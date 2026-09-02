@@ -5,6 +5,7 @@ import { formatPrice } from "@/lib/format";
 import type {
   Answers,
   ConfiguratorDefinition,
+  ContactDraft,
   Customization,
   QuoteSession,
   Suggestion,
@@ -92,6 +93,14 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
           JSON.stringify({ id: next.id, token: next.token }),
         );
         setSession(next);
+        if (next.contactDraft) {
+          setContact((c) => ({
+            name: next.contactDraft.name || c.name,
+            email: next.contactDraft.email || c.email,
+            phone: next.contactDraft.phone || c.phone,
+            company: next.contactDraft.company || c.company,
+          }));
+        }
         if (next.submittedQuoteId) setDone({});
         else {
           track(next, "quotebuilder_started", 0);
@@ -233,7 +242,12 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
         {
           method: "POST",
           token: session.token,
-          body: JSON.stringify(contact),
+          body: JSON.stringify({
+            name: contact.name || session.contactDraft.name || "",
+            email: contact.email || session.contactDraft.email || "",
+            phone: contact.phone || session.contactDraft.phone || "",
+            company: contact.company || session.contactDraft.company || "",
+          }),
         },
       );
       setDone(result);
@@ -341,6 +355,16 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
       </header>
 
       <main className="mx-auto max-w-5xl px-5 py-8">
+        {session.currentStep >= 1 && !session.submittedQuoteId ? (
+          <ContactCapture
+            draft={session.contactDraft}
+            firstName={contact.name}
+            onSave={async (draft) => {
+              setContact((c) => ({ ...c, ...draft }));
+              await persist({ contactDraft: { ...session.contactDraft, ...draft } });
+            }}
+          />
+        ) : null}
         {showChat ? (
           <ChatPanel
             messages={session.chatMessages}
@@ -792,5 +816,117 @@ function ChatPanel({
       </form>
       {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
     </section>
+  );
+}
+
+function ContactCapture({
+  draft,
+  firstName,
+  onSave,
+}: {
+  draft: ContactDraft;
+  firstName: string;
+  onSave: (draft: ContactDraft) => Promise<void>;
+}) {
+  const [name, setName] = useState(draft.name ?? firstName ?? "");
+  const [email, setEmail] = useState(draft.email ?? "");
+  const saved = Boolean(draft.email);
+
+  return (
+    <form
+      className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        if (!email.trim()) return;
+        await onSave({ name: name.trim(), email: email.trim() });
+      }}
+    >
+      {saved ? (
+        <p className="text-sm text-slate-700">
+          {draft.name ? `Merci ${draft.name}, ` : "Merci, "}votre configuration est sauvegardée
+          {draft.email ? ` (${draft.email})` : ""}. Vous pourrez la reprendre même si vous fermez l’onglet.
+        </p>
+      ) : (
+        <div className="grid gap-2 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
+          <label className="text-sm">
+            Prénom
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="mt-1 w-full rounded-md border border-slate-200 bg-white px-2 py-1.5"
+            />
+          </label>
+          <label className="text-sm">
+            Email pour recevoir le récap
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-1 w-full rounded-md border border-slate-200 bg-white px-2 py-1.5"
+            />
+          </label>
+          <button type="submit" className="rounded-md bg-slate-950 px-3 py-2 text-sm text-white">
+            Sauvegarder
+          </button>
+        </div>
+      )}
+    </form>
+  );
+}
+
+function ContactCapture({
+  draft,
+  firstName,
+  onSave,
+}: {
+  draft: ContactDraft;
+  firstName: string;
+  onSave: (draft: ContactDraft) => Promise<void>;
+}) {
+  const [name, setName] = useState(draft.name ?? firstName ?? "");
+  const [email, setEmail] = useState(draft.email ?? "");
+  const saved = Boolean(draft.email);
+
+  return (
+    <form
+      className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        if (!email.trim()) return;
+        await onSave({ name: name.trim(), email: email.trim() });
+      }}
+    >
+      {saved ? (
+        <p className="text-sm text-slate-700">
+          {draft.name ? `Merci ${draft.name}, ` : "Merci, "}votre configuration est sauvegardée
+          {draft.email ? ` (${draft.email})` : ""}. Vous pourrez la reprendre même si vous fermez l’onglet.
+        </p>
+      ) : (
+        <div className="grid gap-2 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
+          <label className="text-sm">
+            Prénom
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="mt-1 w-full rounded-md border border-slate-200 bg-white px-2 py-1.5"
+            />
+          </label>
+          <label className="text-sm">
+            Email pour recevoir le récap
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-1 w-full rounded-md border border-slate-200 bg-white px-2 py-1.5"
+            />
+          </label>
+          <button type="submit" className="rounded-md bg-slate-950 px-3 py-2 text-sm text-white">
+            Sauvegarder
+          </button>
+        </div>
+      )}
+    </form>
   );
 }

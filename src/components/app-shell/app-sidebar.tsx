@@ -7,6 +7,7 @@ type Item = { href: string; label: string; exact: boolean; admin?: boolean };
 
 const NAV: Item[] = [
   { href: "/devis", label: "Devis", exact: false },
+  { href: "/sessions", label: "Abandons", exact: true },
   { href: "/stats", label: "Stats", exact: true },
   { href: "/equipe", label: "Équipe", exact: true, admin: true },
   { href: "/automations", label: "Automations", exact: true, admin: true },
@@ -14,6 +15,7 @@ const NAV: Item[] = [
   { href: "/produits", label: "Produits", exact: true, admin: true },
   { href: "/templates", label: "Templates", exact: true, admin: true },
   { href: "/webhooks", label: "Webhooks", exact: true, admin: true },
+  { href: "/woocommerce", label: "WooCommerce", exact: true, admin: true },
 ];
 
 export function AppSidebar({ isAdmin, isPlatformAdmin = false }: { isAdmin: boolean; isPlatformAdmin?: boolean }) {

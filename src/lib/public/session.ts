@@ -27,6 +27,7 @@ export function mapSession(row: Tables<"quote_sessions">): QuoteSession {
       notes: customization.notes,
     },
     submittedQuoteId: row.submitted_quote_id,
+    contactDraft: (row.contact_draft ?? {}) as QuoteSession["contactDraft"],
   };
 }
 
@@ -68,6 +69,12 @@ export async function createSession(orgSlug: string, configuratorSlug: string) {
   return mapSession(data);
 }
 
+export async function getSessionByToken(token: string) {
+  const supabase = createServiceClient();
+  const { data } = await supabase.from("quote_sessions").select("*").eq("token", token).maybeSingle();
+  return data ? mapSession(data) : null;
+}
+
 export async function getSession(id: string, token: string) {
   const supabase = createServiceClient();
   const { data } = await supabase
@@ -90,10 +97,11 @@ export async function updateSession(
     chatMessages?: ChatMessage[];
     selectedSuggestionId?: string | null;
     customization?: Customization;
+    contactDraft?: QuoteSession["contactDraft"];
   },
 ) {
   const supabase = createServiceClient();
-  const update: DatabaseUpdate = {};
+  const update: DatabaseUpdate = { last_activity_at: new Date().toISOString() };
   if (patch.mode) update.mode = patch.mode;
   if (patch.currentStep != null) update.current_step = patch.currentStep;
   if (patch.answers) update.answers = patch.answers;
@@ -103,6 +111,7 @@ export async function updateSession(
     update.selected_suggestion_id = patch.selectedSuggestionId;
   }
   if (patch.customization) update.customization = patch.customization as unknown as Json;
+  if (patch.contactDraft) update.contact_draft = patch.contactDraft as unknown as Json;
 
   const { data, error } = await supabase
     .from("quote_sessions")
@@ -123,4 +132,6 @@ type DatabaseUpdate = {
   chat_messages?: Json;
   selected_suggestion_id?: string | null;
   customization?: Json;
+  contact_draft?: Json;
+  last_activity_at?: string;
 };

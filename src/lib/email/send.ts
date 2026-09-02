@@ -29,6 +29,8 @@ export async function sendQuoteEmails(input: {
   priceMin: number | null;
   priceMax: number | null;
   pdf: Buffer | null;
+  suiviUrl?: string;
+  pin?: string;
 }) {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
@@ -52,6 +54,8 @@ export async function sendQuoteEmails(input: {
     answers_text: formatAnswers(input.answers),
     suggestion_name: input.suggestionName,
     price_range: formatPrice(input.priceMin, input.priceMax),
+    suivi_url: input.suiviUrl ?? "",
+    pin: input.pin ?? "",
   };
 
   const resend = new Resend(apiKey);

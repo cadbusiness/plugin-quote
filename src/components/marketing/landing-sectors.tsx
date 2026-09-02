@@ -3,29 +3,55 @@
 import { useState } from "react";
 
 const SECTORS = [
-  { id: "racking", label: "Rayonnage & stockage", icon: "🏭" },
-  { id: "kitchen", label: "Cuisiniste", icon: "🍳" },
-  { id: "wood", label: "Menuisier", icon: "🪵" },
-  { id: "garden", label: "Paysagiste", icon: "🌿" },
-  { id: "rental", label: "Location matériel", icon: "🚚" },
-  { id: "fitout", label: "Aménagement industriel", icon: "🏗️" },
+  {
+    id: "racking",
+    label: "Rayonnage & stockage",
+    icon: "🏭",
+    blurb:
+      "Le prospect explore les gammes, indique surface et charge, compose les travées. Vous recevez un brief chiffrable.",
+  },
+  {
+    id: "kitchen",
+    label: "Cuisiniste",
+    icon: "🍳",
+    blurb:
+      "Il parcourt les modules, pose les contraintes de pièce, estime un budget. La demande arrive déjà cadré.",
+  },
+  {
+    id: "wood",
+    label: "Menuisier",
+    icon: "🪵",
+    blurb:
+      "Essence, dimensions, usage. Il configure ce que vous fabriquez vraiment — pas un souhait impossible.",
+  },
+  {
+    id: "garden",
+    label: "Paysagiste",
+    icon: "🌿",
+    blurb:
+      "Surface, usage, niveau d’entretien. Le projet se compose avant l’appel, pas pendant.",
+  },
+  {
+    id: "rental",
+    label: "Location matériel",
+    icon: "🚚",
+    blurb:
+      "Durée, capacité, options. Le prospect voit ce qui est dispo et envoie une demande complète.",
+  },
+  {
+    id: "fitout",
+    label: "Aménagement industriel",
+    icon: "🏗️",
+    blurb:
+      "Usage, contraintes de site, gammes possibles. Vous rappelez pour proposer, pas pour découvrir le besoin.",
+  },
 ] as const;
 
 type SectorId = (typeof SECTORS)[number]["id"];
 
-const CASES: Partial<Record<SectorId, { quote: string; author: string; note: string }>> = {
-  racking: {
-    quote:
-      "Avant on recevait des messages vagues — « bonjour je voudrais un devis ». Notre commercial passait 45 minutes par prospect juste à comprendre le besoin. Maintenant on reçoit surface, type de rayonnage, charge par niveau, délai. On rappelle pour conclure, pas pour découvrir.",
-    author: "[Prénom Nom], Quickly International · Rayonnage industriel, Belgique",
-    note: "Témoignage placeholder — à valider avec Quickly.",
-  },
-};
-
 export function LandingSectors() {
   const [active, setActive] = useState<SectorId>("racking");
   const selected = SECTORS.find((s) => s.id === active) ?? SECTORS[0];
-  const story = CASES[active];
 
   return (
     <div>
@@ -49,26 +75,12 @@ export function LandingSectors() {
         })}
       </div>
       <p className="mx-auto mt-6 max-w-2xl text-center text-[15px] leading-7 text-[#1A1510]/60">
-        Pas un outil générique. Des templates sectoriels prêts à l’emploi — votre wizard est
+        Pas un outil générique. Des templates sectoriels prêts à l’emploi — le parcours d’achat est
         configuré en moins d’une heure.
       </p>
-
-      <figure className="mx-auto mt-12 max-w-3xl text-center">
-        {story ? (
-          <>
-            <blockquote className="text-xl font-medium leading-8 tracking-tight sm:text-2xl sm:leading-10">
-              “{story.quote}”
-            </blockquote>
-            <figcaption className="mt-6 text-sm text-[#1A1510]/55">{story.author}</figcaption>
-            <p className="mt-2 text-xs text-[#1A1510]/40">{story.note}</p>
-          </>
-        ) : (
-          <p className="text-[17px] leading-8 text-[#1A1510]/65">
-            Template {selected.label.toLowerCase()} — même catalogue, même pipeline. Un cas client
-            sera publié ici dès qu’il est validé.
-          </p>
-        )}
-      </figure>
+      <p className="mx-auto mt-10 max-w-2xl text-center text-[17px] leading-8 text-[#1A1510]/75">
+        {selected.blurb}
+      </p>
     </div>
   );
 }

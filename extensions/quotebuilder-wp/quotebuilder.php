@@ -17,9 +17,10 @@ function quotebuilder_app_origin() {
 
 function quotebuilder_render($atts = []) {
     $atts = shortcode_atts([
-        'org' => 'quickly',
-        'id' => 'rayonnage',
+        'org' => 'demo',
+        'id' => 'principal',
         'height' => '720px',
+        'style' => 'embed',
     ], $atts, 'quotebuilder');
 
     $origin = esc_url(quotebuilder_app_origin());
@@ -59,14 +60,14 @@ function quotebuilder_register_block() {
         'editor_script' => 'quotebuilder-block',
         'render_callback' => function ($attributes) {
             return quotebuilder_render([
-                'org' => $attributes['org'] ?? 'quickly',
-                'id' => $attributes['id'] ?? 'rayonnage',
+                'org' => $attributes['org'] ?? 'demo',
+                'id' => $attributes['id'] ?? 'principal',
                 'height' => $attributes['height'] ?? '720px',
             ]);
         },
         'attributes' => [
-            'org' => ['type' => 'string', 'default' => 'quickly'],
-            'id' => ['type' => 'string', 'default' => 'rayonnage'],
+            'org' => ['type' => 'string', 'default' => 'demo'],
+            'id' => ['type' => 'string', 'default' => 'principal'],
             'height' => ['type' => 'string', 'default' => '720px'],
         ],
     ]);

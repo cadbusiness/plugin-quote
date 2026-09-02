@@ -228,6 +228,110 @@ export type Database = {
         }
         Relationships: []
       }
+      product_imports: {
+        Row: {
+          id: string
+          organization_id: string
+          source: string
+          status: string
+          row_count: number
+          imported_at: string
+        }
+        Insert: {
+          id?: string
+          organization_id: string
+          source?: string
+          status?: string
+          row_count?: number
+          imported_at?: string
+        }
+        Update: {
+          id?: string
+          organization_id?: string
+          source?: string
+          status?: string
+          row_count?: number
+          imported_at?: string
+        }
+        Relationships: []
+      }
+      prospect_access: {
+        Row: {
+          id: string
+          organization_id: string
+          quote_id: string
+          token: string
+          pin_hash: string
+          expires_at: string
+          last_accessed: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          organization_id: string
+          quote_id: string
+          token: string
+          pin_hash: string
+          expires_at: string
+          last_accessed?: string | null
+          created_at?: string
+        }
+        Update: {
+          last_accessed?: string | null
+        }
+        Relationships: []
+      }
+      prospect_messages: {
+        Row: {
+          id: string
+          organization_id: string
+          quote_id: string
+          sender: string
+          content: string
+          sent_at: string
+          read_at: string | null
+        }
+        Insert: {
+          id?: string
+          organization_id: string
+          quote_id: string
+          sender: string
+          content: string
+          sent_at?: string
+          read_at?: string | null
+        }
+        Update: {
+          read_at?: string | null
+        }
+        Relationships: []
+      }
+      woo_connections: {
+        Row: {
+          id: string
+          organization_id: string
+          site_url: string
+          consumer_key: string
+          consumer_secret: string
+          last_sync: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          organization_id: string
+          site_url: string
+          consumer_key: string
+          consumer_secret: string
+          last_sync?: string | null
+          created_at?: string
+        }
+        Update: {
+          site_url?: string
+          consumer_key?: string
+          consumer_secret?: string
+          last_sync?: string | null
+        }
+        Relationships: []
+      }
       quote_activities: {
         Row: {
           actor_id: string | null
@@ -406,6 +510,9 @@ export type Database = {
           organization_id: string
           price_max: number | null
           price_min: number | null
+          sku: string | null
+          category: string | null
+          required_fields: Json
           tags: string[]
         }
         Insert: {
@@ -421,6 +528,9 @@ export type Database = {
           organization_id: string
           price_max?: number | null
           price_min?: number | null
+          sku?: string | null
+          category?: string | null
+          required_fields?: Json
           tags?: string[]
         }
         Update: {
@@ -436,6 +546,9 @@ export type Database = {
           organization_id?: string
           price_max?: number | null
           price_min?: number | null
+          sku?: string | null
+          category?: string | null
+          required_fields?: Json
           tags?: string[]
         }
         Relationships: [
@@ -584,6 +697,8 @@ export type Database = {
           submitted_quote_id: string | null
           token: string
           updated_at: string
+          contact_draft: Json
+          last_activity_at: string
         }
         Insert: {
           answers?: Json
@@ -600,6 +715,8 @@ export type Database = {
           submitted_quote_id?: string | null
           token: string
           updated_at?: string
+          contact_draft?: Json
+          last_activity_at?: string
         }
         Update: {
           answers?: Json
@@ -616,6 +733,8 @@ export type Database = {
           submitted_quote_id?: string | null
           token?: string
           updated_at?: string
+          contact_draft?: Json
+          last_activity_at?: string
         }
         Relationships: [
           {

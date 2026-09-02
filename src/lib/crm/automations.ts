@@ -1,6 +1,7 @@
 import { createServiceClient } from "@/lib/supabase/service";
 import { fill, sendTemplateEmail } from "@/lib/email/send";
 import type { Json } from "@/lib/db/database.types";
+import { appUrl } from "@/lib/prospect/access";
 
 export async function runAutomations() {
   const supabase = createServiceClient();
@@ -12,11 +13,22 @@ export async function runAutomations() {
   const { data: templates } = await supabase.from("email_templates").select("*");
   const { data: orgs } = await supabase.from("organizations").select("*");
   const { data: sent } = await supabase.from("quote_activities").select("*").eq("type", "email_sent");
+  const { data: sessions } = await supabase
+    .from("quote_sessions")
+    .select("*")
+    .is("submitted_quote_id", null);
+  const { data: abandonEvents } = await supabase
+    .from("analytics_events")
+    .select("session_id, event_type")
+    .like("event_type", "abandon_email:%");
 
   const statusById = new Map((statuses ?? []).map((s) => [s.id, s]));
   const orgById = new Map((orgs ?? []).map((o) => [o.id, o]));
   const sentKeys = new Set(
     (sent ?? []).map((a) => `${a.quote_id}:${String((a.payload as { template_kind?: string })?.template_kind ?? "")}`),
+  );
+  const sessionSent = new Set(
+    (abandonEvents ?? []).map((e) => `${e.session_id}:${e.event_type.replace("abandon_email:", "")}`),
   );
 
   let count = 0;
@@ -25,6 +37,39 @@ export async function runAutomations() {
   for (const flow of flows) {
     if (flow.trigger === "submitted") continue;
     const kind = flow.template_kind;
+
+    if (flow.trigger === "abandoned") {
+      for (const session of sessions ?? []) {
+        if (session.organization_id !== flow.organization_id) continue;
+        const draft = (session.contact_draft ?? {}) as { email?: string; name?: string };
+        if (!draft.email) continue;
+        const ageH = (now - new Date(session.last_activity_at ?? session.updated_at).getTime()) / 3600000;
+        if (ageH < flow.delay_hours) continue;
+        if (sessionSent.has(`${session.id}:${kind}`)) continue;
+        const template = (templates ?? []).find((t) => t.organization_id === session.organization_id && t.kind === kind);
+        if (!template) continue;
+        const vars = {
+          contact_name: draft.name || "bonjour",
+          contact_email: draft.email,
+          resume_url: `${appUrl()}/reprendre/${session.token}`,
+        };
+        await sendTemplateEmail({
+          to: draft.email,
+          subject: fill(template.subject, vars),
+          body: fill(template.body, vars),
+        });
+        await supabase.from("analytics_events").insert({
+          organization_id: session.organization_id,
+          configurator_id: session.configurator_id,
+          session_id: session.id,
+          event_type: `abandon_email:${kind}`,
+        });
+        sessionSent.add(`${session.id}:${kind}`);
+        count += 1;
+      }
+      continue;
+    }
+
     for (const quote of quotes ?? []) {
       if (quote.organization_id !== flow.organization_id) continue;
       const status = quote.status_id ? statusById.get(quote.status_id) : undefined;
@@ -39,12 +84,19 @@ export async function runAutomations() {
       const to =
         flow.recipient === "prospect" ? quote.contact_email : org?.sales_email;
       if (!to || !template) continue;
+      const { data: access } = await supabase
+        .from("prospect_access")
+        .select("token, quote_id")
+        .eq("quote_id", quote.id)
+        .maybeSingle();
       const vars = {
         contact_name: quote.contact_name,
         contact_email: quote.contact_email,
         contact_company: quote.contact_company ?? "",
         score: String(quote.score ?? ""),
         score_label: quote.score_label ?? "",
+        suivi_url: access ? `${appUrl()}/suivi/${access.token}` : "",
+        pin: "",
       };
       await sendTemplateEmail({
         to,
