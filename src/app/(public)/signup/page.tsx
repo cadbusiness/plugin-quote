@@ -4,7 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { BrandLogo } from "@/components/brand/brand-logo";
+import { AuthSplit } from "@/components/marketing/auth-split";
+
+const fieldClass =
+  "mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-900/10";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -29,49 +32,52 @@ export default function SignupPage() {
   }
 
   return (
-    <main className="flex min-h-dvh items-center justify-center bg-slate-50 px-4">
-      <form onSubmit={onSubmit} className="w-full max-w-sm">
-        <div className="mb-8 w-48">
-          <BrandLogo variant="lockup" priority />
-        </div>
-        <h1 className="text-2xl font-semibold text-slate-900">Créer un accès</h1>
-        <p className="mt-1 text-sm text-slate-500">Ensuite vous créez ou rejoignez un espace client.</p>
-        <label className="mt-6 block text-sm text-slate-600">
+    <AuthSplit>
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Créer un accès</h1>
+      <p className="mt-1.5 text-sm text-slate-500">
+        Ensuite vous créez ou rejoignez un espace client.
+      </p>
+
+      <form onSubmit={onSubmit} className="mt-8">
+        <label className="block text-sm font-medium text-slate-700">
           Email
           <input
             type="email"
             required
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full border border-slate-200 bg-white px-3 py-2 text-sm"
+            className={fieldClass}
           />
         </label>
-        <label className="mt-3 block text-sm text-slate-600">
+        <label className="mt-4 block text-sm font-medium text-slate-700">
           Mot de passe
           <input
             type="password"
             required
             minLength={8}
+            autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full border border-slate-200 bg-white px-3 py-2 text-sm"
+            className={fieldClass}
           />
         </label>
         {error ? <p className="mt-3 text-sm text-red-600">{error}</p> : null}
         <button
           type="submit"
           disabled={busy}
-          className="mt-5 w-full bg-slate-900 py-2.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
+          className="mt-6 w-full rounded-lg bg-slate-900 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 disabled:opacity-50"
         >
           {busy ? "Création…" : "Continuer"}
         </button>
-        <p className="mt-4 text-center text-sm text-slate-500">
-          Déjà inscrit ?{" "}
-          <Link href="/login" className="text-slate-900 underline">
-            Connexion
-          </Link>
-        </p>
       </form>
-    </main>
+
+      <p className="mt-8 text-sm text-slate-500">
+        Déjà inscrit ?{" "}
+        <Link href="/login" className="font-medium text-slate-900 underline-offset-2 hover:underline">
+          Connexion
+        </Link>
+      </p>
+    </AuthSplit>
   );
 }
