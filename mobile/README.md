@@ -5,7 +5,7 @@ iOS / Android. Même backend que le SaaS web (Supabase + API Next.js).
 ## Lancer
 
 ```bash
-cd app
+cd mobile
 flutter pub get
 flutter run
 ```

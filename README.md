@@ -23,7 +23,7 @@ npm run dev
 
 WordPress : shortcode `[quotebuilder org="quickly" id="rayonnage"]` — zip dans `extensions/quotebuilder-wp.zip`.
 
-App Flutter (iOS / Android) : dossier [`app/`](app/) — `cd app && flutter run`.
+App Flutter (iOS / Android) : dossier [`mobile/`](mobile/) — `cd mobile && flutter run`.
 
 ## Stack
 
