@@ -34,7 +34,7 @@ export default function LoginPage() {
   return (
     <AuthSplit>
       <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Connexion</h1>
-      <p className="mt-1.5 text-sm text-slate-500">Pipeline client ou console super admin.</p>
+      <p className="mt-1.5 text-sm text-slate-500">Pipeline des demandes, ou console super admin.</p>
 
       <form onSubmit={onSubmit} className="mt-8">
         <label className="block text-sm font-medium text-slate-700">

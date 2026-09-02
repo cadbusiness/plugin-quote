@@ -14,7 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "QuoteBuilder",
-  description: "Qualifiez un prospect et sortez un devis en moins de 5 minutes.",
+  description:
+    "Configurateur de devis sur votre catalogue — page, wizard ou chat — et pipeline pour manager et relancer les demandes.",
 };
 
 export default function RootLayout({

@@ -25,17 +25,17 @@ export function AuthSplit({ children }: { children: React.ReactNode }) {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-slate-950/20" />
         <div className="relative flex h-full flex-col justify-between p-10 xl:p-14">
           <p className="max-w-sm text-sm font-medium tracking-wide text-white/70">
-            Logiciel de devis pour équipes commerciales
+            Configurateur de devis sur votre catalogue
           </p>
           <div className="space-y-8">
             <ProductPreview />
             <div>
               <p className="max-w-md text-3xl font-semibold leading-tight tracking-tight text-white xl:text-4xl">
-                Un brief clair. Un pipeline propre. Moins de relances à vide.
+                Le bon devis. Puis le pipeline pour le traiter.
               </p>
               <p className="mt-4 max-w-md text-sm leading-relaxed text-white/70">
-                Le configurateur qualifie le prospect. QuoteBuilder livre le dossier à
-                l’équipe — statut, score, notes, relances.
+                Page, wizard ou chat — toujours sur vos produits enregistrés.
+                Ensuite vous manager les demandes : statut, notes, relances.
               </p>
             </div>
           </div>
