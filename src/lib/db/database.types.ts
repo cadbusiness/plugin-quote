@@ -95,23 +95,32 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          invite_token: string | null
+          invited_email: string | null
           organization_id: string
           role: string
-          user_id: string
+          status: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
           id?: string
+          invite_token?: string | null
+          invited_email?: string | null
           organization_id: string
           role: string
-          user_id: string
+          status?: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
           id?: string
+          invite_token?: string | null
+          invited_email?: string | null
           organization_id?: string
           role?: string
-          user_id?: string
+          status?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -123,11 +132,198 @@ export type Database = {
           },
         ]
       }
+      analytics_events: {
+        Row: {
+          configurator_id: string | null
+          created_at: string
+          event_type: string
+          id: string
+          organization_id: string
+          session_id: string | null
+          step: number | null
+        }
+        Insert: {
+          configurator_id?: string | null
+          created_at?: string
+          event_type: string
+          id?: string
+          organization_id: string
+          session_id?: string | null
+          step?: number | null
+        }
+        Update: {
+          configurator_id?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          organization_id?: string
+          session_id?: string | null
+          step?: number | null
+        }
+        Relationships: []
+      }
+      automation_flows: {
+        Row: {
+          active: boolean
+          created_at: string
+          delay_hours: number
+          id: string
+          organization_id: string
+          recipient: string
+          template_kind: string
+          trigger: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          delay_hours?: number
+          id?: string
+          organization_id: string
+          recipient: string
+          template_kind: string
+          trigger: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          delay_hours?: number
+          id?: string
+          organization_id?: string
+          recipient?: string
+          template_kind?: string
+          trigger?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          organization_id: string
+          quote_id: string | null
+          read_at: string | null
+          type: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          organization_id: string
+          quote_id?: string | null
+          read_at?: string | null
+          type: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          organization_id?: string
+          quote_id?: string | null
+          read_at?: string | null
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      quote_activities: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          id: string
+          organization_id: string
+          payload: Json
+          quote_id: string
+          type: string
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          organization_id: string
+          payload?: Json
+          quote_id: string
+          type: string
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          organization_id?: string
+          payload?: Json
+          quote_id?: string
+          type?: string
+        }
+        Relationships: []
+      }
+      quote_notes: {
+        Row: {
+          author_id: string | null
+          content: string
+          created_at: string
+          id: string
+          organization_id: string
+          quote_id: string
+        }
+        Insert: {
+          author_id?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          organization_id: string
+          quote_id: string
+        }
+        Update: {
+          author_id?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          organization_id?: string
+          quote_id?: string
+        }
+        Relationships: []
+      }
+      quote_statuses: {
+        Row: {
+          color: string
+          id: string
+          is_closed: boolean
+          is_default: boolean
+          label: string
+          organization_id: string
+          position: number
+          slug: string
+        }
+        Insert: {
+          color?: string
+          id?: string
+          is_closed?: boolean
+          is_default?: boolean
+          label: string
+          organization_id: string
+          position?: number
+          slug: string
+        }
+        Update: {
+          color?: string
+          id?: string
+          is_closed?: boolean
+          is_default?: boolean
+          label?: string
+          organization_id?: string
+          position?: number
+          slug?: string
+        }
+        Relationships: []
+      }
       organizations: {
         Row: {
           allowed_origins: string[]
           branding: Json
           created_at: string
+          ga_measurement_id: string | null
           id: string
           name: string
           plan: string
@@ -140,6 +336,7 @@ export type Database = {
           allowed_origins?: string[]
           branding?: Json
           created_at?: string
+          ga_measurement_id?: string | null
           id?: string
           name: string
           plan?: string
@@ -152,6 +349,7 @@ export type Database = {
           allowed_origins?: string[]
           branding?: Json
           created_at?: string
+          ga_measurement_id?: string | null
           id?: string
           name?: string
           plan?: string
@@ -446,6 +644,7 @@ export type Database = {
       quotes: {
         Row: {
           answers: Json
+          assigned_to: string | null
           configurator_id: string
           contact_company: string | null
           contact_email: string
@@ -460,9 +659,11 @@ export type Database = {
           score_label: string | null
           session_id: string | null
           status: string
+          status_id: string | null
         }
         Insert: {
           answers?: Json
+          assigned_to?: string | null
           configurator_id: string
           contact_company?: string | null
           contact_email: string
@@ -477,9 +678,11 @@ export type Database = {
           score_label?: string | null
           session_id?: string | null
           status?: string
+          status_id?: string | null
         }
         Update: {
           answers?: Json
+          assigned_to?: string | null
           configurator_id?: string
           contact_company?: string | null
           contact_email?: string
@@ -494,6 +697,7 @@ export type Database = {
           score_label?: string | null
           session_id?: string | null
           status?: string
+          status_id?: string | null
         }
         Relationships: [
           {

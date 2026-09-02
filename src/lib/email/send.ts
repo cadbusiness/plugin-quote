@@ -81,4 +81,34 @@ export async function sendQuoteEmails(input: {
       attachments,
     });
   }
+
+  if (prospect) {
+    await supabase.from("quote_activities").insert({
+      organization_id: input.organization.id,
+      quote_id: input.quote.id,
+      type: "email_sent",
+      payload: { template_kind: "prospect_confirm" },
+    });
+  }
+  if (sales && input.organization.sales_email) {
+    await supabase.from("quote_activities").insert({
+      organization_id: input.organization.id,
+      quote_id: input.quote.id,
+      type: "email_sent",
+      payload: { template_kind: "sales_brief" },
+    });
+  }
 }
+
+export async function sendTemplateEmail(input: { to: string; subject: string; body: string }) {
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  if (!apiKey) {
+    console.warn("RESEND_API_KEY manquante — email non envoyé");
+    return;
+  }
+  const resend = new Resend(apiKey);
+  const from = process.env.RESEND_FROM || "QuoteBuilder <devis@localhost>";
+  await resend.emails.send({ from, to: input.to, subject: input.subject, text: input.body });
+}
+
+export { fill };

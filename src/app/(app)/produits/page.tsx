@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getOrgContext } from "@/lib/auth/org";
+import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { saveProduct, saveRule } from "@/app/(app)/actions";
 import { formatPrice } from "@/lib/format";
@@ -8,6 +8,7 @@ import { formatPrice } from "@/lib/format";
 export default async function ProductsPage() {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");
+  if (!isAdminRole(ctx.role)) redirect("/devis");
   const supabase = await createClient();
   const { data: products } = await supabase
     .from("products")

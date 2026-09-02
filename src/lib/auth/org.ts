@@ -8,6 +8,10 @@ export type OrgContext = {
   role: string;
 };
 
+export function isAdminRole(role: string) {
+  return role === "owner" || role === "admin";
+}
+
 export async function getAuthUser() {
   const supabase = await createClient();
   const {
@@ -27,6 +31,7 @@ export async function getOrgContext(): Promise<OrgContext | null> {
     .from("memberships")
     .select("*")
     .eq("user_id", user.id)
+    .eq("status", "active")
     .limit(1)
     .maybeSingle();
   if (!membership) return null;

@@ -29,6 +29,23 @@ async function api<T>(url: string, init?: RequestInit & { token?: string }): Pro
   return data as T;
 }
 
+function pushGa(measurementId: string | null | undefined, event: string, params?: Record<string, unknown>) {
+  if (typeof window === "undefined") return;
+  const w = window as Window & { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void };
+  w.dataLayer = w.dataLayer ?? [];
+  w.dataLayer.push({ event, ...params });
+  if (measurementId && w.gtag) w.gtag("event", event, params);
+}
+
+async function track(session: QuoteSession | null, eventType: string, step?: number) {
+  if (!session) return;
+  await fetch(`/api/public/sessions/${session.id}/events`, {
+    method: "POST",
+    headers: { "content-type": "application/json", "x-session-token": session.token },
+    body: JSON.stringify({ eventType, step }),
+  }).catch(() => undefined);
+}
+
 export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) {
   const [definition, setDefinition] = useState<ConfiguratorDefinition | null>(null);
   const [session, setSession] = useState<QuoteSession | null>(null);
@@ -76,6 +93,10 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
         );
         setSession(next);
         if (next.submittedQuoteId) setDone({});
+        else {
+          track(next, "quotebuilder_started", 0);
+          pushGa(def.organization.gaMeasurementId, "quotebuilder_started", { step: 0 });
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -84,6 +105,37 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
       cancelled = true;
     };
   }, [orgSlug, configuratorSlug]);
+
+  useEffect(() => {
+    const id = definition?.organization.gaMeasurementId;
+    if (!id || document.getElementById("qb-ga4")) return;
+    const s = document.createElement("script");
+    s.id = "qb-ga4";
+    s.async = true;
+    s.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+    document.head.appendChild(s);
+    const w = window as Window & { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void };
+    w.dataLayer = w.dataLayer ?? [];
+    w.gtag = (...args: unknown[]) => {
+      w.dataLayer!.push(args);
+    };
+    w.gtag("js", new Date());
+    w.gtag("config", id);
+  }, [definition?.organization.gaMeasurementId]);
+
+  useEffect(() => {
+    if (!session || done) return;
+    const onHide = () => {
+      if (document.visibilityState === "hidden" && !done) {
+        track(session, "quotebuilder_abandoned", session.currentStep);
+        pushGa(definition?.organization.gaMeasurementId, "quotebuilder_abandoned", {
+          step: session.currentStep,
+        });
+      }
+    };
+    document.addEventListener("visibilitychange", onHide);
+    return () => document.removeEventListener("visibilitychange", onHide);
+  }, [session, done, definition?.organization.gaMeasurementId]);
 
   async function persist(patch: Partial<QuoteSession>) {
     if (!session) return session;
@@ -120,6 +172,8 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
       }
       const nextStep = Math.min(session.currentStep + 1, definition.steps.length - 1);
       const next = await persist({ answers: nextAnswers, currentStep: nextStep });
+      track(session, `quotebuilder_step_${nextStep}`, nextStep);
+      pushGa(definition.organization.gaMeasurementId, `quotebuilder_step_${nextStep}`, { step: nextStep });
       if (definition.steps[nextStep]?.screenType === "suggestions") {
         await loadSuggestions(next ?? undefined);
       }
@@ -183,6 +237,8 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
         },
       );
       setDone(result);
+      track(session, "quotebuilder_submitted", session.currentStep);
+      pushGa(definition?.organization.gaMeasurementId, "quotebuilder_submitted");
     } catch (error) {
       setErrors({ submit: error instanceof Error ? error.message : "Soumission impossible" });
     } finally {

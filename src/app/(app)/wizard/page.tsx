@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getOrgContext } from "@/lib/auth/org";
+import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { updateQuestion } from "@/app/(app)/actions";
 import { saveStepOrder } from "@/app/(app)/wizard/reorder-action";
@@ -9,6 +9,7 @@ import { WizardDnd } from "@/components/dashboard/wizard-dnd";
 export default async function WizardAdminPage() {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");
+  if (!isAdminRole(ctx.role)) redirect("/devis");
   const supabase = await createClient();
   const { data: steps } = await supabase
     .from("wizard_steps")

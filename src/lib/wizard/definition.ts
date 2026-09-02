@@ -99,6 +99,7 @@ export async function loadDefinition(
       salesName: org.sales_name,
       salesPhone: org.sales_phone,
       branding: asRecord(org.branding),
+      gaMeasurementId: org.ga_measurement_id,
     },
     configurator: {
       id: configurator.id,

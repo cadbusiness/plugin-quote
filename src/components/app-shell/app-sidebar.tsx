@@ -3,21 +3,26 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const NAV = [
+type Item = { href: string; label: string; exact: boolean; admin?: boolean };
+
+const NAV: Item[] = [
   { href: "/devis", label: "Devis", exact: false },
-  { href: "/wizard", label: "Wizard", exact: true },
-  { href: "/produits", label: "Produits", exact: true },
-  { href: "/templates", label: "Templates", exact: true },
-  { href: "/webhooks", label: "Webhooks", exact: true },
+  { href: "/stats", label: "Stats", exact: true },
+  { href: "/equipe", label: "Équipe", exact: true, admin: true },
+  { href: "/automations", label: "Automations", exact: true, admin: true },
+  { href: "/wizard", label: "Wizard", exact: true, admin: true },
+  { href: "/produits", label: "Produits", exact: true, admin: true },
+  { href: "/templates", label: "Templates", exact: true, admin: true },
+  { href: "/webhooks", label: "Webhooks", exact: true, admin: true },
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ isAdmin }: { isAdmin: boolean }) {
   const pathname = usePathname();
 
   return (
     <aside className="flex w-52 shrink-0 flex-col border-r border-slate-200 bg-white lg:w-56">
       <nav className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-2 py-3" aria-label="Navigation">
-        {NAV.map((item) => {
+        {NAV.filter((item) => !item.admin || isAdmin).map((item) => {
           const active = item.exact
             ? pathname === item.href
             : pathname === item.href || pathname.startsWith(`${item.href}/`);

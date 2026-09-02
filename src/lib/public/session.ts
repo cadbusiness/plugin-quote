@@ -58,6 +58,13 @@ export async function createSession(orgSlug: string, configuratorSlug: string) {
     .select("*")
     .single();
   if (error || !data) return null;
+  await supabase.from("analytics_events").insert({
+    organization_id: org.id,
+    configurator_id: cfg.id,
+    session_id: data.id,
+    event_type: "quotebuilder_started",
+    step: 0,
+  });
   return mapSession(data);
 }
 

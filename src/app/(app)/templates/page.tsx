@@ -1,12 +1,13 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getOrgContext } from "@/lib/auth/org";
+import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { saveEmailTemplate, savePdfTemplate } from "@/app/(app)/actions";
 
 export default async function TemplatesPage() {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");
+  if (!isAdminRole(ctx.role)) redirect("/devis");
   const supabase = await createClient();
   const { data: emails } = await supabase
     .from("email_templates")

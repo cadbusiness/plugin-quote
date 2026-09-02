@@ -15,7 +15,8 @@ class QuoteDetailScreen extends StatefulWidget {
 }
 
 class _QuoteDetailScreenState extends State<QuoteDetailScreen> {
-  late Future<({Quote quote, List<QuoteItem> items})> _future;
+  late Future<({Quote quote, List<QuoteItem> items, List<({String slug, String label})> statuses})> _future;
+  final _note = TextEditingController();
 
   @override
   void initState() {
@@ -23,10 +24,17 @@ class _QuoteDetailScreenState extends State<QuoteDetailScreen> {
     _future = _load();
   }
 
-  Future<({Quote quote, List<QuoteItem> items})> _load() async {
+  Future<({Quote quote, List<QuoteItem> items, List<({String slug, String label})> statuses})> _load() async {
     final quote = await widget.quotes.getById(widget.id);
     final items = await widget.quotes.items(widget.id);
-    return (quote: quote, items: items);
+    final statuses = await widget.quotes.statuses();
+    return (quote: quote, items: items, statuses: statuses);
+  }
+
+  @override
+  void dispose() {
+    _note.dispose();
+    super.dispose();
   }
 
   Future<void> _setStatus(String status) async {
@@ -52,18 +60,36 @@ class _QuoteDetailScreenState extends State<QuoteDetailScreen> {
             children: [
               Text(quote.contactName, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600)),
               Text(quote.contactEmail, style: const TextStyle(color: qbMuted)),
+              if (quote.contactPhone != null) Text(quote.contactPhone!),
               if (quote.contactCompany != null) Text(quote.contactCompany!),
               const SizedBox(height: 12),
               Wrap(
                 spacing: 8,
-                children: ['new', 'contacted', 'won', 'lost'].map((status) {
-                  final selected = quote.status == status;
+                children: snapshot.data!.statuses.map((status) {
+                  final selected = quote.status == status.slug;
                   return ChoiceChip(
-                    label: Text(status),
+                    label: Text(status.label),
                     selected: selected,
-                    onSelected: (_) => _setStatus(status),
+                    onSelected: (_) => _setStatus(status.slug),
                   );
                 }).toList(),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: _note,
+                decoration: const InputDecoration(labelText: 'Note interne'),
+              ),
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: FilledButton(
+                  onPressed: () async {
+                    await widget.quotes.addNote(widget.id, _note.text);
+                    _note.clear();
+                    if (mounted) setState(() => _future = _load());
+                  },
+                  child: const Text('Ajouter la note'),
+                ),
               ),
               const SizedBox(height: 16),
               Text(

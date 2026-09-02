@@ -24,7 +24,8 @@ export default function LoginPage() {
       setError(authError.message);
       return;
     }
-    router.push("/onboarding");
+    const next = new URLSearchParams(window.location.search).get("next");
+    router.push(next || "/onboarding");
     router.refresh();
   }
 

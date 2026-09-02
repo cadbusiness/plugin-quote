@@ -62,6 +62,13 @@ export async function submitQuote(input: {
     options: {},
   }) as Customization;
 
+  const { data: defaultStatus } = await supabase
+    .from("quote_statuses")
+    .select("*")
+    .eq("organization_id", session.organization_id)
+    .eq("is_default", true)
+    .maybeSingle();
+
   const { data: quote, error: quoteError } = await supabase
     .from("quotes")
     .insert({
@@ -76,12 +83,27 @@ export async function submitQuote(input: {
       extracted_params: session.extracted_params,
       score,
       score_label: label,
+      status: defaultStatus?.slug ?? "new",
+      status_id: defaultStatus?.id ?? null,
     })
     .select("*")
     .single();
   if (quoteError || !quote) {
     throw new Error(quoteError?.message ?? "Impossible de créer le devis");
   }
+
+  await supabase.from("quote_activities").insert({
+    organization_id: session.organization_id,
+    quote_id: quote.id,
+    type: "submitted",
+    payload: { score, label },
+  });
+  await supabase.from("analytics_events").insert({
+    organization_id: session.organization_id,
+    configurator_id: session.configurator_id,
+    session_id: session.id,
+    event_type: "quotebuilder_submitted",
+  });
 
   const items = (selected?.products ?? []).map((product) => ({
     organization_id: session.organization_id,

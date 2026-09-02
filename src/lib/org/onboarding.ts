@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/db/database.types";
 import { uniqueSlug } from "@/lib/org/slug";
+import { seedOrgCrm } from "@/lib/crm/seed";
 
 export async function createOrganizationForUser(
   supabase: SupabaseClient<Database>,
@@ -47,6 +48,8 @@ export async function createOrganizationForUser(
     wizard_enabled: true,
     chat_enabled: true,
   });
+
+  await seedOrgCrm(supabase, org.id);
 
   return org;
 }

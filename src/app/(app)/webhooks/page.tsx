@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getOrgContext } from "@/lib/auth/org";
+import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { saveWebhook, toggleWebhook } from "@/app/(app)/actions";
 import { formatDate } from "@/lib/format";
@@ -8,6 +8,7 @@ import { formatDate } from "@/lib/format";
 export default async function WebhooksPage() {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");
+  if (!isAdminRole(ctx.role)) redirect("/devis");
   const supabase = await createClient();
   const { data: hooks } = await supabase
     .from("webhooks")

@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const path = request.nextUrl.pathname;
-  const appPaths = ["/devis", "/wizard", "/produits", "/templates", "/webhooks"];
+  const appPaths = ["/devis", "/wizard", "/produits", "/templates", "/webhooks", "/equipe", "/automations", "/stats"];
   const isApp = appPaths.some((p) => path === p || path.startsWith(`${p}/`) || path.startsWith(`${p}.`));
 
   if (path === "/app" || path.startsWith("/app/")) {
@@ -75,6 +75,13 @@ export async function middleware(request: NextRequest) {
   }
 
   if ((path === "/login" || path === "/signup") && user) {
+    const dest = request.nextUrl.searchParams.get("next");
+    if (dest?.startsWith("/invite/")) {
+      const invite = request.nextUrl.clone();
+      invite.pathname = dest;
+      invite.search = "";
+      return NextResponse.redirect(invite);
+    }
     const next = request.nextUrl.clone();
     next.pathname = (await hasOrg()) ? "/devis" : "/onboarding";
     return NextResponse.redirect(next);
@@ -98,6 +105,13 @@ export const config = {
     "/templates/:path*",
     "/webhooks",
     "/webhooks/:path*",
+    "/equipe",
+    "/equipe/:path*",
+    "/automations",
+    "/automations/:path*",
+    "/stats",
+    "/stats/:path*",
+    "/invite/:path*",
     "/login",
     "/signup",
     "/onboarding",

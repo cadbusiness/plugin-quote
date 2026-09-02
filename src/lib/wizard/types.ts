@@ -83,6 +83,7 @@ export type ConfiguratorDefinition = {
     salesName: string | null;
     salesPhone: string | null;
     branding: Record<string, unknown>;
+    gaMeasurementId: string | null;
   };
   configurator: {
     id: string;
