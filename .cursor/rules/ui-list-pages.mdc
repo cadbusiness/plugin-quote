@@ -1,0 +1,13 @@
+---
+description: Conventions UI pour les pages listes du shell QuoteBuilder
+globs:
+  - src/app/(app)/**/*.tsx
+  - src/components/ui/**/*.tsx
+---
+
+# Pages listes — shell QuoteBuilder
+
+- Pas de titre de page redondant si le libellé est déjà dans la sidebar.
+- `ListPanel` pleine largeur, fond blanc, bordure bas uniquement.
+- `ListToolbar` : recherche + actions, sans `<h1>` au-dessus.
+- Jamais de `p-4` + `rounded-* border` autour d’une liste.

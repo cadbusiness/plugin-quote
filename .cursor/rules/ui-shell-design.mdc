@@ -1,0 +1,28 @@
+---
+description: Design system du shell QuoteBuilder — largeur, densité, composants obligatoires
+alwaysApply: true
+---
+
+# Shell QuoteBuilder — design system
+
+## Contenu bord à bord (obligatoire)
+
+Le contenu principal colle aux bords du panneau — **pas de padding externe** autour d’une carte inset.
+
+- Listes, grilles, tableaux : flush dans `ListPanel` (`ListToolbar` + `DataTable`).
+- **Interdit** : wrapper `p-4` / `px-4 py-4` autour d’un bloc `rounded-lg/xl border` ou `Card`.
+- Padding `px-4 lg:px-6` **uniquement** sur toolbar, cellules, ou formulaires inline.
+
+## Largeur
+
+- Le shell applique `px-4 lg:px-6` sur `<main>`. `ListPanel` annule ce padding (`-mx-4 lg:-mx-6`).
+
+## Composants obligatoires
+
+- Section / liste : `ListPanel` + `ListToolbar` + `DataTable`
+- Création / édition : dialog ou formulaire inline dans le panneau
+- Stats : ligne compacte, pas de grosses cartes KPI
+
+## Interdit dans le shell
+
+- Héros gradient, cartes empilées centrées, `<h1>` redondant si la sidebar indique déjà la section
