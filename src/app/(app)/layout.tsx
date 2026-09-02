@@ -1,12 +1,13 @@
 import { redirect } from "next/navigation";
-import { getOrgContext, isAdminRole } from "@/lib/auth/org";
+import { getAuthUser, getOrgContext, isAdminRole } from "@/lib/auth/org";
+import { isSuperAdmin } from "@/lib/auth/platform";
 import { AppHeader } from "@/components/app-shell/app-header";
 import { AppSidebar } from "@/components/app-shell/app-sidebar";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const ctx = await getOrgContext();
-  if (!ctx) redirect("/onboarding");
+  const [ctx, user] = await Promise.all([getOrgContext(), getAuthUser()]);
+  if (!ctx) redirect(isSuperAdmin(user) ? "/admin" : "/onboarding");
   const supabase = await createClient();
   const { data: notifications } = await supabase
     .from("notifications")
@@ -24,7 +25,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         notifications={notifications ?? []}
       />
       <div className="flex min-h-0 flex-1">
-        <AppSidebar isAdmin={isAdminRole(ctx.role)} />
+        <AppSidebar isAdmin={isAdminRole(ctx.role)} isPlatformAdmin={isSuperAdmin(user)} />
         <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-auto">
           <div className="flex min-h-0 w-full flex-1 flex-col px-4 lg:px-6">{children}</div>
         </main>

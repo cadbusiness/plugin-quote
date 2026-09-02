@@ -29,6 +29,8 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const appPaths = ["/devis", "/wizard", "/produits", "/templates", "/webhooks", "/equipe", "/automations", "/stats"];
   const isApp = appPaths.some((p) => path === p || path.startsWith(`${p}/`) || path.startsWith(`${p}.`));
+  const isAdmin = path === "/admin" || path.startsWith("/admin/");
+  const superAdmin = user?.app_metadata?.role === "super_admin";
 
   if (path === "/app" || path.startsWith("/app/")) {
     const next = request.nextUrl.clone();
@@ -49,17 +51,23 @@ export async function middleware(request: NextRequest) {
     return Boolean(data);
   }
 
-  if (isApp && !user) {
+  if ((isApp || isAdmin) && !user) {
     const login = request.nextUrl.clone();
     login.pathname = "/login";
     login.searchParams.set("next", path);
     return NextResponse.redirect(login);
   }
 
+  if (isAdmin && user && !superAdmin) {
+    const home = request.nextUrl.clone();
+    home.pathname = "/devis";
+    return NextResponse.redirect(home);
+  }
+
   if (isApp && user && !(await hasOrg())) {
-    const onboard = request.nextUrl.clone();
-    onboard.pathname = "/onboarding";
-    return NextResponse.redirect(onboard);
+    const dest = request.nextUrl.clone();
+    dest.pathname = superAdmin ? "/admin" : "/onboarding";
+    return NextResponse.redirect(dest);
   }
 
   if (path === "/onboarding" && !user) {
@@ -83,7 +91,8 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(invite);
     }
     const next = request.nextUrl.clone();
-    next.pathname = (await hasOrg()) ? "/devis" : "/onboarding";
+    if (superAdmin) next.pathname = "/admin";
+    else next.pathname = (await hasOrg()) ? "/devis" : "/onboarding";
     return NextResponse.redirect(next);
   }
 
@@ -115,5 +124,7 @@ export const config = {
     "/login",
     "/signup",
     "/onboarding",
+    "/admin",
+    "/admin/:path*",
   ],
 };

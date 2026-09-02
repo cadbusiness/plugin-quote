@@ -2,6 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const DEMO_ORG = { name: "Espace démo", slug: "demo" };
 const ACCOUNTS = [
+  { email: "admin@quotebuilder.app", password: "Demo2026!QB", role: null, platform: "super_admin" },
   { email: "demo@quotebuilder.app", password: "Demo2026!QB", role: "owner" },
   { email: "sales@quotebuilder.app", password: "Demo2026!QB", role: "sales" },
 ];
@@ -56,12 +57,9 @@ if (!url || !key) {
 
 const supabase = createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
 
-async function upsertUser(email, password) {
-  const { data: created, error: createError } = await supabase.auth.admin.createUser({
-    email,
-    password,
-    email_confirm: true,
-  });
+async function upsertUser(email, password, appMetadata) {
+  const payload = { email, password, email_confirm: true, app_metadata: appMetadata ?? {} };
+  const { data: created, error: createError } = await supabase.auth.admin.createUser(payload);
   if (!createError && created.user) return created.user;
 
   const { data: list, error: listError } = await supabase.auth.admin.listUsers({ page: 1, perPage: 200 });
@@ -72,6 +70,7 @@ async function upsertUser(email, password) {
   const { data: updated, error: updateError } = await supabase.auth.admin.updateUserById(existing.id, {
     password,
     email_confirm: true,
+    app_metadata: appMetadata ?? {},
   });
   if (updateError) throw updateError;
   return updated.user;
@@ -127,7 +126,12 @@ const { data: statuses } = await supabase.from("quote_statuses").select("*").eq(
 const statusBySlug = new Map((statuses ?? []).map((s) => [s.slug, s.id]));
 
 for (const account of ACCOUNTS) {
-  const user = await upsertUser(account.email, account.password);
+  const user = await upsertUser(
+    account.email,
+    account.password,
+    account.platform ? { role: account.platform } : {},
+  );
+  if (!account.role) continue;
   const { data: membership } = await supabase
     .from("memberships")
     .select("id")
@@ -169,5 +173,5 @@ if (!quoteCount) {
 
 console.log("Comptes démo prêts :");
 for (const account of ACCOUNTS) {
-  console.log(`  ${account.email} / ${account.password} (${account.role})`);
+  console.log(`  ${account.email} / ${account.password} (${account.platform || account.role})`);
 }

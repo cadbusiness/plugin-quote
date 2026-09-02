@@ -18,6 +18,7 @@ export function AuthSplit({ children }: { children: React.ReactNode }) {
           alt=""
           fill
           priority
+          quality={70}
           sizes="50vw"
           className="object-cover"
         />

@@ -16,12 +16,20 @@ const NAV: Item[] = [
   { href: "/webhooks", label: "Webhooks", exact: true, admin: true },
 ];
 
-export function AppSidebar({ isAdmin }: { isAdmin: boolean }) {
+export function AppSidebar({ isAdmin, isPlatformAdmin = false }: { isAdmin: boolean; isPlatformAdmin?: boolean }) {
   const pathname = usePathname();
 
   return (
     <aside className="flex w-52 shrink-0 flex-col border-r border-slate-200 bg-white lg:w-56">
       <nav className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-2 py-3" aria-label="Navigation">
+        {isPlatformAdmin ? (
+          <Link
+            href="/admin"
+            className="flex items-center rounded-lg px-2.5 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+          >
+            Super admin
+          </Link>
+        ) : null}
         {NAV.filter((item) => !item.admin || isAdmin).map((item) => {
           const active = item.exact
             ? pathname === item.href
