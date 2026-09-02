@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "QuoteBuilder",
+  title: "QuoteBuilder — Configurateur de devis B2B",
   description:
-    "Configurateur de devis sur votre catalogue — page, wizard ou chat — et pipeline pour manager et relancer les demandes.",
+    "Remplacez votre formulaire de contact par un configurateur branché sur vos vrais produits. Vos prospects configurent. Vous recevez un brief prêt à chiffrer.",
 };
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="fr" className={`${geistSans.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}>
       <body className="min-h-full">{children}</body>
     </html>
   );
