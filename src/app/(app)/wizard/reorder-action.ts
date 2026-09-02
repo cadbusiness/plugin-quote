@@ -7,7 +7,7 @@ import { getOrgContext } from "@/lib/auth/org";
 
 export async function saveStepOrder(orderedIds: string[]) {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const supabase = await createClient();
   await Promise.all(
     orderedIds.map((id, index) =>

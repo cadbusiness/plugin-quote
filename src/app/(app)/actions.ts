@@ -13,7 +13,7 @@ export async function logout() {
 
 export async function updateQuoteStatus(quoteId: string, status: string) {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const supabase = await createClient();
   await supabase
     .from("quotes")
@@ -25,7 +25,7 @@ export async function updateQuoteStatus(quoteId: string, status: string) {
 
 export async function saveWebhook(formData: FormData) {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const supabase = await createClient();
   const url = String(formData.get("url") ?? "");
   const secret = String(formData.get("secret") ?? "");
@@ -40,7 +40,7 @@ export async function saveWebhook(formData: FormData) {
 
 export async function toggleWebhook(id: string, isActive: boolean) {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const supabase = await createClient();
   await supabase
     .from("webhooks")
@@ -52,7 +52,7 @@ export async function toggleWebhook(id: string, isActive: boolean) {
 
 export async function saveEmailTemplate(formData: FormData) {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const supabase = await createClient();
   const id = String(formData.get("id") ?? "");
   await supabase
@@ -68,7 +68,7 @@ export async function saveEmailTemplate(formData: FormData) {
 
 export async function savePdfTemplate(formData: FormData) {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const supabase = await createClient();
   const id = String(formData.get("id") ?? "");
   await supabase
@@ -85,7 +85,7 @@ export async function savePdfTemplate(formData: FormData) {
 
 export async function saveProduct(formData: FormData) {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const supabase = await createClient();
   const id = String(formData.get("id") ?? "");
   await supabase
@@ -107,7 +107,7 @@ export async function saveProduct(formData: FormData) {
 
 export async function reorderStep(stepId: string, direction: "up" | "down") {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const supabase = await createClient();
   const { data: steps } = await supabase
     .from("wizard_steps")
@@ -127,7 +127,7 @@ export async function reorderStep(stepId: string, direction: "up" | "down") {
 
 export async function updateQuestion(formData: FormData) {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const supabase = await createClient();
   await supabase
     .from("wizard_questions")
@@ -143,7 +143,7 @@ export async function updateQuestion(formData: FormData) {
 
 export async function saveRule(formData: FormData) {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const supabase = await createClient();
   const id = String(formData.get("id") ?? "");
   await supabase

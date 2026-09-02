@@ -5,14 +5,16 @@ import { AppSidebar } from "@/components/app-shell/app-sidebar";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
 
   return (
-    <div className="flex min-h-dvh bg-slate-50">
-      <AppSidebar orgName={ctx.organization.name} />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <AppHeader email={ctx.email} />
-        <main className="flex min-h-0 flex-1 flex-col px-4 lg:px-6">{children}</main>
+    <div className="flex min-h-dvh flex-col bg-slate-50">
+      <AppHeader orgName={ctx.organization.name} email={ctx.email} />
+      <div className="flex min-h-0 flex-1">
+        <AppSidebar />
+        <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-auto">
+          <div className="flex min-h-0 w-full flex-1 flex-col px-4 lg:px-6">{children}</div>
+        </main>
       </div>
     </div>
   );

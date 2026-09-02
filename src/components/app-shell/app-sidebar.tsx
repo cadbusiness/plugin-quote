@@ -4,34 +4,32 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV = [
-  { href: "/devis", label: "Devis" },
-  { href: "/wizard", label: "Wizard" },
-  { href: "/produits", label: "Produits" },
-  { href: "/templates", label: "Templates" },
-  { href: "/webhooks", label: "Webhooks" },
+  { href: "/devis", label: "Devis", exact: false },
+  { href: "/wizard", label: "Wizard", exact: true },
+  { href: "/produits", label: "Produits", exact: true },
+  { href: "/templates", label: "Templates", exact: true },
+  { href: "/webhooks", label: "Webhooks", exact: true },
 ];
 
-export function AppSidebar({ orgName }: { orgName: string }) {
+export function AppSidebar() {
   const pathname = usePathname();
 
   return (
     <aside className="flex w-52 shrink-0 flex-col border-r border-slate-200 bg-white lg:w-56">
-      <div className="border-b border-slate-200 px-4 py-3">
-        <p className="text-[11px] uppercase tracking-wide text-amber-600">QuoteBuilder</p>
-        <p className="mt-0.5 truncate text-sm font-medium">{orgName}</p>
-      </div>
-      <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto px-2 py-3" aria-label="Navigation">
+      <nav className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-2 py-3" aria-label="Navigation">
         {NAV.map((item) => {
-          const active =
-            item.href === "/devis"
-              ? pathname === "/devis" || pathname.startsWith("/devis/")
-              : pathname === item.href || pathname.startsWith(`${item.href}/`);
+          const active = item.exact
+            ? pathname === item.href
+            : pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`rounded-md px-3 py-2 text-sm ${
-                active ? "bg-slate-100 font-medium text-slate-950" : "text-slate-700 hover:bg-slate-50"
+              prefetch
+              className={`relative flex items-center rounded-lg px-2.5 py-2 text-sm transition-colors ${
+                active
+                  ? "bg-slate-100 font-medium text-slate-900 before:absolute before:inset-y-1 before:left-0 before:w-0.5 before:rounded-full before:bg-slate-900"
+                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
               }`}
             >
               {item.label}

@@ -12,7 +12,7 @@ npm run dev
 ```
 
 - Configurateur public : [http://localhost:3000/c/quickly/rayonnage](http://localhost:3000/c/quickly/rayonnage)
-- Dashboard : [http://localhost:3000/devis](http://localhost:3000/devis) — créer un compte sur `/signup` (premier utilisateur = owner Quickly)
+- Dashboard : [http://localhost:3000/signup](http://localhost:3000/signup) puis `/onboarding` pour créer ou rejoindre un espace (Quickly = un client parmi d’autres)
 - Embed : `/embed/quickly/rayonnage`
 - Widget : `http://localhost:3000/widget.js`
 
@@ -22,6 +22,8 @@ npm run dev
 ```
 
 WordPress : shortcode `[quotebuilder org="quickly" id="rayonnage"]` — zip dans `extensions/quotebuilder-wp.zip`.
+
+App Flutter (iOS / Android) : dossier [`app/`](app/) — `cd app && flutter run`.
 
 ## Stack
 

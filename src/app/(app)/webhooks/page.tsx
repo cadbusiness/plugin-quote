@@ -7,7 +7,7 @@ import { formatDate } from "@/lib/format";
 
 export default async function WebhooksPage() {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const supabase = await createClient();
   const { data: hooks } = await supabase
     .from("webhooks")
@@ -24,7 +24,7 @@ export default async function WebhooksPage() {
   return (
     <ListPanel>
       <ListToolbar />
-      <form action={saveWebhook} className="flex flex-wrap gap-2 border-b border-slate-200 px-5 py-4">
+      <form action={saveWebhook} className="flex flex-wrap gap-2 border-b border-slate-200 px-4 py-4 lg:px-6">
         <input
           name="url"
           required
@@ -39,7 +39,7 @@ export default async function WebhooksPage() {
         />
         <button className="rounded-md bg-slate-950 px-3 py-2 text-sm text-white">Ajouter</button>
       </form>
-      <div className="px-5 py-4">
+      <div className="px-4 py-4 lg:px-6">
         <h2 className="mb-3 text-sm font-medium text-slate-500">Endpoints</h2>
         <ul className="space-y-2 text-sm">
           {(hooks ?? []).map((hook) => (
@@ -61,10 +61,10 @@ export default async function WebhooksPage() {
       <DataTable headers={["Date", "Statut", "HTTP", "Erreur"]}>
         {(deliveries ?? []).map((d) => (
           <tr key={d.id} className="border-b border-slate-100">
-            <td className="px-5 py-2.5">{formatDate(d.created_at)}</td>
-            <td className="px-5 py-2.5">{d.status}</td>
-            <td className="px-5 py-2.5">{d.status_code ?? "—"}</td>
-            <td className="px-5 py-2.5 text-slate-500">{d.last_error ?? ""}</td>
+            <td className="px-4 py-2.5 lg:px-6">{formatDate(d.created_at)}</td>
+            <td className="px-4 py-2.5 lg:px-6">{d.status}</td>
+            <td className="px-4 py-2.5 lg:px-6">{d.status_code ?? "—"}</td>
+            <td className="px-4 py-2.5 text-slate-500 lg:px-6">{d.last_error ?? ""}</td>
           </tr>
         ))}
       </DataTable>

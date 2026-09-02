@@ -38,6 +38,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(next);
   }
 
+  async function hasOrg() {
+    if (!user) return false;
+    const { data } = await supabase
+      .from("memberships")
+      .select("id")
+      .eq("user_id", user.id)
+      .limit(1)
+      .maybeSingle();
+    return Boolean(data);
+  }
+
   if (isApp && !user) {
     const login = request.nextUrl.clone();
     login.pathname = "/login";
@@ -45,10 +56,28 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(login);
   }
 
-  if ((path === "/login" || path === "/signup") && user) {
+  if (isApp && user && !(await hasOrg())) {
+    const onboard = request.nextUrl.clone();
+    onboard.pathname = "/onboarding";
+    return NextResponse.redirect(onboard);
+  }
+
+  if (path === "/onboarding" && !user) {
+    const login = request.nextUrl.clone();
+    login.pathname = "/login";
+    return NextResponse.redirect(login);
+  }
+
+  if (path === "/onboarding" && user && (await hasOrg())) {
     const app = request.nextUrl.clone();
     app.pathname = "/devis";
     return NextResponse.redirect(app);
+  }
+
+  if ((path === "/login" || path === "/signup") && user) {
+    const next = request.nextUrl.clone();
+    next.pathname = (await hasOrg()) ? "/devis" : "/onboarding";
+    return NextResponse.redirect(next);
   }
 
   return response;
@@ -71,5 +100,6 @@ export const config = {
     "/webhooks/:path*",
     "/login",
     "/signup",
+    "/onboarding",
   ],
 };

@@ -7,7 +7,7 @@ import { formatPrice } from "@/lib/format";
 
 export default async function ProductsPage() {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const supabase = await createClient();
   const { data: products } = await supabase
     .from("products")
@@ -25,7 +25,7 @@ export default async function ProductsPage() {
       <ListToolbar />
       <div className="divide-y divide-slate-200">
         {(products ?? []).map((product) => (
-          <form key={product.id} action={saveProduct} className="grid gap-3 px-5 py-5 sm:grid-cols-2">
+          <form key={product.id} action={saveProduct} className="grid gap-3 px-4 py-5 sm:grid-cols-2 lg:px-6">
             <input type="hidden" name="id" value={product.id} />
             <label className="text-sm">
               Nom
@@ -71,7 +71,7 @@ export default async function ProductsPage() {
             </div>
           </form>
         ))}
-        <section className="px-5 py-6">
+        <section className="px-4 py-6 lg:px-6">
           <h2 className="text-lg font-semibold">Règles de suggestion</h2>
           <div className="mt-4 space-y-4">
             {(rules ?? []).map((rule) => (

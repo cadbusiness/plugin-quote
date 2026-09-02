@@ -25,7 +25,7 @@ function SortableStep({
     <section
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className="border-b border-slate-200 px-5 py-5"
+      className="border-b border-slate-200 px-4 py-5 lg:px-6"
     >
       <div className="mb-3 flex items-center gap-3">
         <button

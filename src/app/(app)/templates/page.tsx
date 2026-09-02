@@ -6,7 +6,7 @@ import { saveEmailTemplate, savePdfTemplate } from "@/app/(app)/actions";
 
 export default async function TemplatesPage() {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const supabase = await createClient();
   const { data: emails } = await supabase
     .from("email_templates")
@@ -20,7 +20,7 @@ export default async function TemplatesPage() {
   return (
     <ListPanel>
       <ListToolbar />
-      <div className="space-y-8 px-5 py-6">
+      <div className="space-y-8 px-4 py-6 lg:px-6">
         {(emails ?? []).map((tpl) => (
           <form key={tpl.id} action={saveEmailTemplate} className="space-y-3">
             <input type="hidden" name="id" value={tpl.id} />

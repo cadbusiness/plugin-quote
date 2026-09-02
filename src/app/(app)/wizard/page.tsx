@@ -8,7 +8,7 @@ import { WizardDnd } from "@/components/dashboard/wizard-dnd";
 
 export default async function WizardAdminPage() {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const supabase = await createClient();
   const { data: steps } = await supabase
     .from("wizard_steps")

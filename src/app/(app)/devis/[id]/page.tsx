@@ -12,7 +12,7 @@ export default async function QuoteDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const ctx = await getOrgContext();
-  if (!ctx) redirect("/login");
+  if (!ctx) redirect("/onboarding");
   const { id } = await params;
   const supabase = await createClient();
   const { data: quote } = await supabase
@@ -34,7 +34,7 @@ export default async function QuoteDetailPage({
           Retour
         </Link>
       </ListToolbar>
-      <div className="grid gap-8 px-5 py-6 lg:grid-cols-2">
+      <div className="grid gap-8 px-4 py-6 lg:grid-cols-2 lg:px-6">
         <section>
           <h2 className="text-sm font-medium text-slate-500">Prospect</h2>
           <p className="mt-2">{quote.contact_email}</p>

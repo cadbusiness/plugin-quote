@@ -12,6 +12,7 @@ QuoteBuilder a **deux surfaces dans le même repo**. Dans un même chat, on peut
 |---|---|---|
 | Prospect (configurateur) | `/c/[org]/[slug]`, `/embed/...`, `/widget.js` | `src/app/(public)/`, `src/components/configurator/` |
 | Dashboard client | `/devis`, `/wizard`, `/produits`, `/templates`, `/webhooks` | `src/app/(app)/`, `src/components/app-shell/`, `src/components/ui/` |
+| App Flutter | iOS / Android — devis + configurateur | `app/` |
 
 Si la demande touche les deux (ex. une question wizard + la liste devis), **faire les deux dans le même tour**.
 

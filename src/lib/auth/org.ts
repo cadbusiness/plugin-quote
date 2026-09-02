@@ -8,6 +8,14 @@ export type OrgContext = {
   role: string;
 };
 
+export async function getAuthUser() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user;
+}
+
 export async function getOrgContext(): Promise<OrgContext | null> {
   const supabase = await createClient();
   const {
@@ -15,34 +23,12 @@ export async function getOrgContext(): Promise<OrgContext | null> {
   } = await supabase.auth.getUser();
   if (!user) return null;
 
-  let { data: membership } = await supabase
+  const { data: membership } = await supabase
     .from("memberships")
     .select("*")
     .eq("user_id", user.id)
     .limit(1)
     .maybeSingle();
-
-  if (!membership) {
-    const { data: org } = await supabase
-      .from("organizations")
-      .select("*")
-      .eq("slug", "quickly")
-      .maybeSingle();
-    if (org) {
-      await supabase.from("memberships").insert({
-        organization_id: org.id,
-        user_id: user.id,
-        role: "owner",
-      });
-      const retry = await supabase
-        .from("memberships")
-        .select("*")
-        .eq("user_id", user.id)
-        .limit(1)
-        .maybeSingle();
-      membership = retry.data;
-    }
-  }
   if (!membership) return null;
 
   const { data: organization } = await supabase

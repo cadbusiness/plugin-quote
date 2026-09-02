@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { BrandLogo } from "@/components/brand/brand-logo";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -17,44 +18,35 @@ export default function SignupPage() {
     setBusy(true);
     setError(null);
     const supabase = createClient();
-    const { data, error: authError } = await supabase.auth.signUp({ email, password });
+    const { error: authError } = await supabase.auth.signUp({ email, password });
+    setBusy(false);
     if (authError) {
-      setBusy(false);
       setError(authError.message);
       return;
     }
-    if (data.user) {
-      const { data: orgs } = await supabase.from("organizations").select("id").eq("slug", "quickly").limit(1);
-      const orgId = orgs?.[0]?.id;
-      if (orgId) {
-        await supabase.from("memberships").insert({
-          organization_id: orgId,
-          user_id: data.user.id,
-          role: "owner",
-        });
-      }
-    }
-    setBusy(false);
-    router.push("/devis");
+    router.push("/onboarding");
     router.refresh();
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-      <form onSubmit={onSubmit} className="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-6">
-        <h1 className="text-xl font-semibold">Créer un accès</h1>
-        <p className="mt-1 text-sm text-slate-500">Premier utilisateur Quickly = propriétaire.</p>
-        <label className="mt-6 block text-sm">
+    <main className="flex min-h-dvh items-center justify-center bg-slate-50 px-4">
+      <form onSubmit={onSubmit} className="w-full max-w-sm">
+        <div className="mb-8 w-48">
+          <BrandLogo variant="lockup" priority />
+        </div>
+        <h1 className="text-2xl font-semibold text-slate-900">Créer un accès</h1>
+        <p className="mt-1 text-sm text-slate-500">Ensuite vous créez ou rejoignez un espace client.</p>
+        <label className="mt-6 block text-sm text-slate-600">
           Email
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2"
+            className="mt-1 w-full border border-slate-200 bg-white px-3 py-2 text-sm"
           />
         </label>
-        <label className="mt-3 block text-sm">
+        <label className="mt-3 block text-sm text-slate-600">
           Mot de passe
           <input
             type="password"
@@ -62,19 +54,22 @@ export default function SignupPage() {
             minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2"
+            className="mt-1 w-full border border-slate-200 bg-white px-3 py-2 text-sm"
           />
         </label>
         {error ? <p className="mt-3 text-sm text-red-600">{error}</p> : null}
         <button
           type="submit"
           disabled={busy}
-          className="mt-5 w-full rounded-lg bg-slate-950 py-2.5 text-sm font-medium text-white disabled:opacity-50"
+          className="mt-5 w-full bg-slate-900 py-2.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
         >
-          {busy ? "Création…" : "Créer le compte"}
+          {busy ? "Création…" : "Continuer"}
         </button>
         <p className="mt-4 text-center text-sm text-slate-500">
-          Déjà inscrit ? <Link href="/login" className="text-slate-900 underline">Connexion</Link>
+          Déjà inscrit ?{" "}
+          <Link href="/login" className="text-slate-900 underline">
+            Connexion
+          </Link>
         </p>
       </form>
     </main>
