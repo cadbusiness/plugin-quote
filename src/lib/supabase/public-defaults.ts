@@ -1,0 +1,4 @@
+/** Public Supabase values (same as the browser anon key). Used if Vercel env is empty. */
+export const PUBLIC_SUPABASE_URL = 'https://spgskgtycqxjziwjpjol.supabase.co';
+export const PUBLIC_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwZ3NrZ3R5Y3F4anppd2pwam9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgzNDc4MDAsImV4cCI6MjEwMzkyMzgwMH0.2dtLyVZtpPGqWkCgaSj_Dim-efANRg-IVN01OJDAd0o';
+export const PUBLIC_APP_URL = 'https://quotebuilder-weld.vercel.app';
