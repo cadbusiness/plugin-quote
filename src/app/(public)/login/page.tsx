@@ -2,16 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { DEMO_ACCOUNTS } from "@/lib/auth/demo";
+import { postLoginPath } from "@/lib/auth/platform";
 import { AuthSplit } from "@/components/marketing/auth-split";
 
 const fieldClass =
   "mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-900/10";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -22,21 +21,20 @@ export default function LoginPage() {
     setBusy(true);
     setError(null);
     const supabase = createClient();
-    const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
-    setBusy(false);
+    const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
     if (authError) {
+      setBusy(false);
       setError("Email ou mot de passe incorrect.");
       return;
     }
     const next = new URLSearchParams(window.location.search).get("next");
-    router.push(next || "/devis");
-    router.refresh();
+    window.location.assign(postLoginPath(data.user, next));
   }
 
   return (
     <AuthSplit>
       <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Connexion</h1>
-      <p className="mt-1.5 text-sm text-slate-500">Accédez à votre pipeline de devis.</p>
+      <p className="mt-1.5 text-sm text-slate-500">Pipeline client ou console super admin.</p>
 
       <form onSubmit={onSubmit} className="mt-8">
         <label className="block text-sm font-medium text-slate-700">

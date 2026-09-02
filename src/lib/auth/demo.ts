@@ -1,6 +1,12 @@
 export const DEMO_ACCOUNTS = [
   {
-    label: "Admin",
+    label: "Super admin",
+    email: "admin@quotebuilder.app",
+    password: "Demo2026!QB",
+    role: "super_admin" as const,
+  },
+  {
+    label: "Admin espace",
     email: "demo@quotebuilder.app",
     password: "Demo2026!QB",
     role: "owner" as const,
