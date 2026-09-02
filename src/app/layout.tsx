@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "QuoteBuilder — Configurateur de devis B2B",
   description:
-    "Remplacez votre formulaire de contact par un configurateur branché sur vos vrais produits. Vos prospects configurent. Vous recevez un brief prêt à chiffrer.",
+    "Vos visiteurs ne savent pas comment acheter vos produits. Catalogue interactif, configurateur guidé, chat IA — ils explorent, configurent, demandent. Vous recevez des dossiers.",
 };
 
 export default function RootLayout({

@@ -30,6 +30,7 @@ export async function PATCH(
     chatMessages: body.chatMessages,
     selectedSuggestionId: body.selectedSuggestionId,
     customization: body.customization,
+    contactDraft: body.contactDraft,
   });
   if (!session) return NextResponse.json({ error: "Session introuvable" }, { status: 404 });
   return NextResponse.json(session);

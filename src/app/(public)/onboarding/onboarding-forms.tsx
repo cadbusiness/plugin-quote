@@ -51,7 +51,7 @@ export function JoinSpaceForm() {
         <input
           name="slug"
           required
-          placeholder="quickly"
+          placeholder="atelier-nord"
           className="mt-1 w-full border border-slate-200 bg-white px-3 py-2 text-sm"
         />
       </label>

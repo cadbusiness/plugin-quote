@@ -4,10 +4,12 @@ import { LandingSectors } from "@/components/marketing/landing-sectors";
 import { CatalogShot, PipelineShot, WizardShot } from "@/components/marketing/landing-shots";
 import { ProductWalkthrough } from "@/components/marketing/product-walkthrough";
 
+const DEMO_HREF = "#demo";
+
 const FAQ = [
   {
-    q: "C’est quoi la différence avec un formulaire de contact ?",
-    a: "Un formulaire recueille du texte libre. QuoteBuilder fait configurer une demande à partir de vos vrais produits — dimensions, options, quantités. Vous recevez un dossier qualifié, pas un email à interpréter.",
+    q: "C’est quoi la différence avec un site vitrine et un formulaire ?",
+    a: "Un site montre. Un formulaire recueille du texte. QuoteBuilder est le parcours d’achat : le prospect explore votre catalogue, configure son projet, dialogue si besoin, et soumet une demande complète. Vous recevez un dossier, pas un email à interpréter.",
   },
   {
     q: "Est-ce que je dois avoir une boutique WooCommerce ?",
@@ -89,20 +91,20 @@ const PLANS = [
 const HOW_STEPS = [
   {
     n: "①",
-    title: "Vous enregistrez votre catalogue",
-    text: "Vos produits, vos options, vos gammes. QuoteBuilder ne laisse configurer que ce que vous savez livrer. Pas de promesses impossibles.",
+    title: "Ils explorent votre catalogue",
+    text: "Vos produits, vos options, vos gammes. Le visiteur voit ce qui est possible — et uniquement ce que vous savez livrer. Pas de promesses impossibles.",
     shot: <CatalogShot />,
   },
   {
     n: "②",
-    title: "Votre prospect configure son besoin",
-    text: "Via un wizard guidé, un chat IA, ou une page de configuration libre — selon ce qui convient à votre secteur. Il répond à vos questions, sélectionne vos produits, précise ses contraintes.",
+    title: "Ils configurent leur projet",
+    text: "Page libre, wizard guidé ou chat IA — selon ce qui convient à votre secteur. Ils répondent à vos questions, choisissent vos produits, précisent les contraintes, voient un budget indicatif.",
     shot: <WizardShot />,
   },
   {
     n: "③",
-    title: "Vous recevez un dossier structuré",
-    text: "Surface, produits sélectionnés, quantités, budget indicatif, coordonnées, score de qualification. Votre commercial rappelle en sachant exactement quoi proposer.",
+    title: "Vous recevez un dossier",
+    text: "Produits, quantités, contraintes, budget, coordonnées, score. Votre commercial rappelle pour conclure, pas pour découvrir le besoin.",
     shot: <PipelineShot />,
   },
 ];
@@ -120,9 +122,9 @@ export function Landing() {
             <a href="#tarifs" className="hover:text-[#1A1510]">
               Tarifs
             </a>
-            <Link href="/c/quickly/rayonnage" className="hover:text-[#1A1510]">
+            <a href={DEMO_HREF} className="hover:text-[#1A1510]">
               Démo
-            </Link>
+            </a>
           </nav>
           <div className="flex items-center gap-3">
             <Link href="/login" className="hidden text-sm font-medium text-[#1A1510]/70 hover:text-[#1A1510] sm:inline">
@@ -139,7 +141,7 @@ export function Landing() {
         <nav className="mx-auto flex max-w-6xl gap-5 overflow-x-auto px-6 pb-3 text-sm font-medium text-[#1A1510]/65 md:hidden">
           <a href="#comment-ca-marche">Comment ça marche</a>
           <a href="#tarifs">Tarifs</a>
-          <Link href="/c/quickly/rayonnage">Démo</Link>
+          <a href={DEMO_HREF}>Démo</a>
         </nav>
       </header>
 
@@ -151,14 +153,14 @@ export function Landing() {
         <div className="relative mx-auto max-w-3xl text-center">
           <p className="text-sm font-medium text-[#C45C26]">Configurateur de devis B2B</p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-[3.35rem] sm:leading-[1.08]">
-            Arrêtez de recevoir des emails vides.
+            Vos visiteurs ne savent pas comment acheter vos produits.
             <br />
-            Recevez des devis configurés.
+            QuoteBuilder leur montre.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-[#1A1510]/70">
-            QuoteBuilder remplace votre formulaire de contact par un configurateur branché sur vos
-            vrais produits. Vos prospects configurent leur besoin. Vous recevez un brief structuré,
-            prêt à chiffrer.
+            Catalogue interactif, configurateur guidé, chat IA — vos prospects explorent votre offre,
+            composent leur projet, et vous soumettent une demande complète. Vous recevez un dossier.
+            Pas un email.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
@@ -167,51 +169,50 @@ export function Landing() {
             >
               Commencer gratuitement
             </Link>
-            <Link href="/c/quickly/rayonnage" className="text-sm font-medium text-[#1A1510]/70 underline-offset-4 hover:underline">
-              Voir la démo Quickly
-            </Link>
+            <a href={DEMO_HREF} className="text-sm font-medium text-[#1A1510]/70 underline-offset-4 hover:underline">
+              Voir la démo
+            </a>
           </div>
           <p className="mt-3 text-xs text-[#1A1510]/45">10 devis offerts · pas de carte bancaire</p>
-          <div className="mx-auto mt-8 max-w-lg rounded-2xl bg-white/70 px-5 py-4 text-left ring-1 ring-black/5">
-            <p className="text-sm font-medium">⭐ Utilisé par Quickly International · Rayonnage industriel, Belgique</p>
-            <p className="mt-1 text-sm leading-6 text-[#1A1510]/65">
-              « Avant on recevait des emails vides. Maintenant on reçoit des dossiers. »
-            </p>
-          </div>
+          <p className="mx-auto mt-8 max-w-xl text-[15px] font-medium leading-7 text-[#1A1510]/70">
+            Vos prospects explorent, configurent, demandent. Vous recevez des dossiers.
+          </p>
         </div>
       </section>
 
       <section className="border-y border-[#1A1510]/8 bg-white/50 px-6 py-8">
         <p className="text-center text-xs font-medium uppercase tracking-[0.16em] text-[#1A1510]/40">
-          Ils ont remplacé leur formulaire par QuoteBuilder
+          L’expérience d’un configurateur auto — pour les PME qui vendent sur mesure
         </p>
-        <div className="mx-auto mt-5 flex max-w-3xl flex-wrap items-center justify-center gap-3">
-          <span className="rounded-full bg-[#1A1510] px-4 py-2 text-sm font-medium text-white">Quickly</span>
-          <span className="rounded-full bg-white px-4 py-2 text-sm text-[#1A1510]/35 ring-1 ring-black/8">
-            Client 2
-          </span>
-          <span className="rounded-full bg-white px-4 py-2 text-sm text-[#1A1510]/35 ring-1 ring-black/8">
-            Client 3
-          </span>
+        <div className="mx-auto mt-5 flex max-w-3xl flex-wrap items-center justify-center gap-2">
+          {["Rayonnage", "Cuisine", "Menuiserie", "Paysage", "Location", "Aménagement"].map((label) => (
+            <span key={label} className="rounded-full bg-white px-3.5 py-1.5 text-sm text-[#1A1510]/60 ring-1 ring-black/8">
+              {label}
+            </span>
+          ))}
         </div>
       </section>
 
       <section className="mx-auto max-w-6xl scroll-mt-24 px-6 py-16 sm:py-20">
         <h2 className="mx-auto max-w-2xl text-center text-2xl font-semibold tracking-tight sm:text-3xl">
-          Votre formulaire de contact vous coûte des clients.
+          Sur votre site, l’expérience d’achat n’existe pas.
         </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-center text-[17px] leading-8 text-[#1A1510]/65">
+          Le visiteur arrive. Il ne peut ni s’auto-qualifier, ni voir ce qui est possible, ni estimer
+          un budget. Pour un achat complexe, il n’y a tout simplement pas de parcours.
+        </p>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           <ProblemCard
-            title="Demandes vagues"
-            text="« Bonjour, je voudrais un devis. » Votre commercial rappelle, perd 30 minutes, le prospect a déjà signé ailleurs."
+            title="L’offre est opaque"
+            text="Pas de catalogue à explorer. Le visiteur ne sait pas ce que vous livrez, ni si son projet est dans votre périmètre."
           />
           <ProblemCard
-            title="Qualification impossible"
-            text="Vous ne savez pas si c’est un entrepôt de 200 m² ou 2 000 m². Vous ne savez pas si c’est pour demain ou dans 6 mois."
+            title="Impossible de composer"
+            text="Pas de dimensions, d’options, de contraintes. Il ne peut pas construire son projet — donc il n’estime rien et il n’ose pas demander."
           />
           <ProblemCard
-            title="Relances oubliées"
-            text="Pas de suivi. Le prospect attend. Vous oubliez. La vente meurt en silence."
+            title="La demande n’existe pas"
+            text="Au mieux un email vague. Souvent il part. Votre commercial n’a rien à traiter, parce que le prospect n’avait nulle part où avancer."
           />
         </div>
       </section>
@@ -219,7 +220,7 @@ export function Landing() {
       <section id="comment-ca-marche" className="scroll-mt-24 bg-white/70 px-6 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl">
           <h2 className="mx-auto max-w-2xl text-center text-2xl font-semibold tracking-tight sm:text-3xl">
-            QuoteBuilder guide vos prospects. Vous recevez des dossiers.
+            Vos prospects explorent, configurent, demandent. Vous recevez des dossiers.
           </h2>
           <div className="mt-14 space-y-16">
             {HOW_STEPS.map((step, i) => (
@@ -236,9 +237,9 @@ export function Landing() {
               </article>
             ))}
           </div>
-          <div className="mt-16">
+          <div id="demo" className="mt-16 scroll-mt-24">
             <p className="mb-3 text-center text-sm text-[#1A1510]/50">
-              Simulation — catalogue Quickly, configurateur client, puis le dossier dans le pipeline.
+              Simulation — catalogue, configurateur, puis le dossier dans votre pipeline.
             </p>
             <ProductWalkthrough />
           </div>
@@ -247,24 +248,24 @@ export function Landing() {
 
       <section className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
         <h2 className="text-center text-2xl font-semibold tracking-tight sm:text-3xl">
-          Un seul outil, trois façons d’entrer.
+          Une expérience d’achat, trois façons d’entrer.
         </h2>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           <ModeCard
-            title="Page de configuration"
-            text="Une URL publique ou un embed sur votre site. Le prospect configure librement depuis votre catalogue. Idéal pour les clients qui savent ce qu’ils veulent."
+            title="Catalogue interactif"
+            text="Une URL publique ou un embed. Le prospect parcourt vos produits, compose, voit ce qui est possible. Idéal quand il sait déjà ce qu’il cherche."
           />
           <ModeCard
-            title="Wizard guidé"
-            text="Un parcours à questions dans l’ordre que vous définissez. Cadre le projet avant de parler produits. Idéal pour les achats complexes ou techniques."
+            title="Configurateur guidé"
+            text="Un parcours à questions dans l’ordre que vous définissez. Il cadre le projet avant de parler produits. Idéal pour les achats complexes ou techniques."
           />
           <ModeCard
             title="Chat IA"
-            text="Le prospect décrit son besoin en langage naturel. L’IA pose les questions, propose les produits, génère le dossier. Idéal pour ceux qui ne savent pas encore par où commencer."
+            text="Il décrit son besoin en langage naturel. L’IA pose les questions, propose vos produits, génère le dossier. Idéal quand il ne sait pas encore par où commencer."
           />
         </div>
         <p className="mx-auto mt-8 max-w-2xl text-center text-sm leading-6 text-[#1A1510]/55">
-          Les trois modes utilisent le même catalogue. Le même pipeline reçoit les demandes.
+          Les trois modes sont le même parcours d’achat. Le même catalogue. Le même pipeline.
         </p>
       </section>
 
@@ -381,11 +382,11 @@ export function Landing() {
       <section id="cta" className="px-6 pb-16">
         <div className="mx-auto max-w-4xl rounded-[28px] bg-[#1A1510] px-8 py-14 text-center text-[#F6F0E8] sm:px-16">
           <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            Votre prochain devis arrive dans 10 minutes.
+            Donnez à vos visiteurs un moyen d’acheter vos produits.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-[17px] leading-7 text-[#F6F0E8]/70">
-            Créez votre compte gratuit, importez 3 produits, testez le configurateur. Pas de carte
-            bancaire. Pas de limite de temps.
+            Vos prospects explorent, configurent, demandent. Vous recevez des dossiers. Compte
+            gratuit, 3 produits, pas de carte bancaire.
           </p>
           <Link
             href="/signup"
@@ -407,9 +408,9 @@ export function Landing() {
               <Link href="/" className="hover:text-[#1A1510]">
                 Accueil
               </Link>
-              <Link href="/c/quickly/rayonnage" className="hover:text-[#1A1510]">
+              <a href={DEMO_HREF} className="hover:text-[#1A1510]">
                 Démo
-              </Link>
+              </a>
               <a href="#tarifs" className="hover:text-[#1A1510]">
                 Tarifs
               </a>

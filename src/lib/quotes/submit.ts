@@ -7,6 +7,7 @@ import { dispatchQuoteWebhooks } from "@/lib/webhooks/dispatch";
 import { renderQuotePdf } from "@/lib/pdf/render";
 import type { ContactPayload, Customization } from "@/lib/wizard/types";
 import type { Json } from "@/lib/db/database.types";
+import { createProspectAccess } from "@/lib/prospect/access";
 
 export async function submitQuote(input: {
   sessionId: string;
@@ -156,6 +157,16 @@ export async function submitQuote(input: {
     console.error("PDF generation failed", error);
   }
 
+  let access: { url: string; pin: string } | null = null;
+  try {
+    access = await createProspectAccess({
+      organizationId: session.organization_id,
+      quoteId: quote.id,
+    });
+  } catch (error) {
+    console.error("Prospect access failed", error);
+  }
+
   try {
     await sendQuoteEmails({
       organization: org!,
@@ -165,6 +176,8 @@ export async function submitQuote(input: {
       priceMin: selected?.priceMin ?? null,
       priceMax: selected?.priceMax ?? null,
       pdf: pdfBuffer,
+      suiviUrl: access?.url,
+      pin: access?.pin,
     });
   } catch (error) {
     console.error("Email send failed", error);
@@ -185,5 +198,5 @@ export async function submitQuote(input: {
     console.error("Webhook dispatch failed", error);
   }
 
-  return { quoteId: quote.id, alreadySubmitted: false, score, label };
+  return { quoteId: quote.id, alreadySubmitted: false, score, label, suiviUrl: access?.url, pin: access?.pin };
 }

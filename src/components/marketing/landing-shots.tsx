@@ -30,8 +30,8 @@ export function CatalogShot() {
   return (
     <Window url="app.quotebuilder / produits">
       <div className="border-b border-slate-200 px-4 py-2.5">
-        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-amber-700">Quickly International</p>
-        <p className="text-sm font-medium text-slate-900">Catalogue · Rayonnage</p>
+        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-amber-700">Votre espace</p>
+        <p className="text-sm font-medium text-slate-900">Catalogue · ce que vous livrez vraiment</p>
       </div>
       <ul className="divide-y divide-slate-100 text-sm">
         {PRODUCTS.map((product) => (
@@ -50,10 +50,10 @@ export function CatalogShot() {
 
 export function WizardShot() {
   return (
-    <Window url="quickly.be / devis" dark>
+    <Window url="votre-site.com / devis" dark>
       <div className="bg-slate-950 px-4 pb-3 text-white">
-        <p className="text-[11px] uppercase tracking-[0.16em] text-amber-400">Quickly International</p>
-        <p className="text-sm font-medium">Configurateur rayonnage</p>
+        <p className="text-[11px] uppercase tracking-[0.16em] text-amber-400">Configurateur</p>
+        <p className="text-sm font-medium">Explorer et composer le projet</p>
         <div className="mt-3 flex gap-1.5">
           <div className="h-1 flex-1 rounded-full bg-amber-500" />
           <div className="h-1 flex-1 rounded-full bg-amber-500" />
@@ -62,11 +62,11 @@ export function WizardShot() {
           </div>
           <div className="h-1 flex-1 rounded-full bg-white/20" />
         </div>
-        <p className="mt-2 text-[11px] text-slate-400">Étape 2 / 4 — Type de stockage</p>
+        <p className="mt-2 text-[11px] text-slate-400">Étape 2 / 4 — Type de projet</p>
       </div>
       <div className="p-4">
-        <h3 className="text-lg font-semibold text-slate-900">Quel type de stockage ?</h3>
-        <p className="mt-1 text-sm text-slate-500">Uniquement les gammes Quickly que vous livrez.</p>
+        <h3 className="text-lg font-semibold text-slate-900">De quoi avez-vous besoin ?</h3>
+        <p className="mt-1 text-sm text-slate-500">Uniquement les gammes que vous savez livrer.</p>
         <div className="mt-4 grid gap-2">
           {["Palettes · allées", "Charges longues · cantilever", "Mi-lourd 3 à 5 niveaux"].map((label, i) => (
             <div
@@ -88,13 +88,13 @@ export function PipelineShot() {
   return (
     <Window url="app.quotebuilder / devis">
       <div className="border-b border-slate-200 px-4 py-2.5">
-        <p className="text-sm font-medium text-slate-900">Dossier · LogiSpace</p>
+        <p className="text-sm font-medium text-slate-900">Dossier · Atelier Nord</p>
       </div>
       <div className="grid gap-0 text-sm sm:grid-cols-2">
         <div className="space-y-2 px-4 py-3">
           <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">Prospect</p>
-          <p className="font-medium text-slate-900">Thomas Berger</p>
-          <p className="text-slate-500">LogiSpace · Belgique</p>
+          <p className="font-medium text-slate-900">Claire Martin</p>
+          <p className="text-slate-500">Atelier Nord</p>
           <div className="flex gap-2 pt-1">
             <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-800">Hot</span>
             <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] text-slate-600">Nouveau</span>

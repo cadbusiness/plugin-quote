@@ -27,7 +27,18 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const path = request.nextUrl.pathname;
-  const appPaths = ["/devis", "/wizard", "/produits", "/templates", "/webhooks", "/equipe", "/automations", "/stats"];
+  const appPaths = [
+    "/devis",
+    "/sessions",
+    "/wizard",
+    "/produits",
+    "/templates",
+    "/webhooks",
+    "/woocommerce",
+    "/equipe",
+    "/automations",
+    "/stats",
+  ];
   const isApp = appPaths.some((p) => path === p || path.startsWith(`${p}/`) || path.startsWith(`${p}.`));
   const isAdmin = path === "/admin" || path.startsWith("/admin/");
   const superAdmin = user?.app_metadata?.role === "super_admin";
@@ -120,6 +131,10 @@ export const config = {
     "/automations/:path*",
     "/stats",
     "/stats/:path*",
+    "/sessions",
+    "/sessions/:path*",
+    "/woocommerce",
+    "/woocommerce/:path*",
     "/invite/:path*",
     "/login",
     "/signup",

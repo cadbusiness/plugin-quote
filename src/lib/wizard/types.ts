@@ -111,6 +111,13 @@ export type ChatMessage = {
   content: string;
 };
 
+export type ContactDraft = {
+  name?: string;
+  email?: string;
+  phone?: string;
+  company?: string;
+};
+
 export type QuoteSession = {
   id: string;
   token: string;
@@ -122,6 +129,7 @@ export type QuoteSession = {
   selectedSuggestionId: string | null;
   customization: Customization;
   submittedQuoteId: string | null;
+  contactDraft: ContactDraft;
 };
 
 export type ContactPayload = {

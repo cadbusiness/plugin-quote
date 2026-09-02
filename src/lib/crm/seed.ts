@@ -16,6 +16,8 @@ const FLOWS = [
   { trigger: "unprocessed", delay_hours: 4, recipient: "assignee", template_kind: "sales_unprocessed" },
   { trigger: "delay", delay_hours: 24, recipient: "prospect", template_kind: "prospect_reassure" },
   { trigger: "delay", delay_hours: 72, recipient: "prospect", template_kind: "prospect_followup" },
+  { trigger: "abandoned", delay_hours: 1, recipient: "prospect", template_kind: "session_resume" },
+  { trigger: "abandoned", delay_hours: 24, recipient: "prospect", template_kind: "session_resume_late" },
 ] as const;
 
 const EXTRA_TEMPLATES = [
@@ -33,6 +35,21 @@ const EXTRA_TEMPLATES = [
     kind: "prospect_followup",
     subject: "Avez-vous eu le temps de réfléchir ?",
     body: "Bonjour {{contact_name}}, votre projet est-il toujours d’actualité ?",
+  },
+  {
+    kind: "session_resume",
+    subject: "Votre configuration est sauvegardée",
+    body: "Bonjour {{contact_name}}, vous avez commencé à configurer votre projet. Reprenez ici : {{resume_url}}",
+  },
+  {
+    kind: "session_resume_late",
+    subject: "Votre projet attend",
+    body: "Bonjour {{contact_name}}, votre projet attend. Reprenez où vous en étiez : {{resume_url}}",
+  },
+  {
+    kind: "prospect_photo",
+    subject: "Une photo aiderait à affiner votre devis",
+    body: "Bonjour {{contact_name}}, ajoutez une photo ici : {{suivi_url}}",
   },
 ] as const;
 
