@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
@@ -48,6 +49,15 @@ export default async function StatsPage({
           </form>
         ) : null}
       </ListToolbar>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-slate-100 px-4 py-2.5 text-sm text-slate-600 lg:px-6">
+        <span className="text-slate-900">{stats.story.headline}</span>
+        {stats.story.detail ? <span className="text-slate-500">{stats.story.detail}</span> : null}
+        {stats.story.actionHref ? (
+          <Link href={stats.story.actionHref} className="font-medium text-[#E85D04] hover:underline">
+            {stats.story.actionLabel ?? "Voir"}
+          </Link>
+        ) : null}
+      </div>
       <StatsView stats={stats} />
     </ListPanel>
   );

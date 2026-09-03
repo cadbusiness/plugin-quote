@@ -121,21 +121,21 @@ function buildStory(input: {
       headline: `${people(input.abandonsWithEmail, "personne à rappeler", "personnes à rappeler")} — elles ont laissé leur email.`,
       detail:
         input.recoverable > 0
-          ? `${formatKpiEur(input.recoverable)} peuvent encore revenir. Un message suffit souvent.`
-          : "Elles ont commencé et sont parties. Relancez-les maintenant.",
+          ? `${formatKpiEur(input.recoverable)} récupérables.`
+          : "Parcours commencé puis abandonné.",
       actionHref: "/sessions",
       actionLabel: "Relancer",
     };
   }
   if (waiting > 0) {
     return {
-      headline: `${people(waiting, "demande encore chaude", "demandes encore chaudes")} — pas encore rappelée${waiting > 1 ? "s" : ""}.`,
+      headline: `${people(waiting, "demande sans rappel", "demandes sans rappel")}.`,
       detail:
         input.won > 0
-          ? `${people(input.won, "affaire signée", "affaires signées")}. ${people(input.contacted, "déjà rappelée", "déjà rappelées")}.`
-          : `${people(input.contacted, "déjà rappelée", "déjà rappelées")}. C’est là que le business se joue.`,
+          ? `${people(input.won, "signée", "signées")} · ${people(input.contacted, "déjà rappelée", "déjà rappelées")}.`
+          : `${people(input.contacted, "déjà rappelée", "déjà rappelées")}.`,
       actionHref: "/devis",
-      actionLabel: "Voir les nouvelles",
+      actionLabel: "Voir les demandes",
     };
   }
   if (input.won === 0 && input.submitted > 0) {
@@ -151,8 +151,8 @@ function buildStory(input: {
     headline: `${people(input.submitted, "demande ce mois", "demandes ce mois")} · ${people(input.won, "signée", "signées")}.`,
     detail:
       input.pipelineTotal > 0
-        ? `${formatKpiEur(input.pipelineTotal)} encore en jeu.`
-        : "Le rythme est bon. Gardez le délai de réponse court.",
+        ? `${formatKpiEur(input.pipelineTotal)} en pipeline.`
+        : "Délai de réponse à maintenir court.",
   };
 }
 
@@ -456,57 +456,57 @@ export async function loadStatsDashboard(
 
   const kpis: Kpi[] = [
     {
-      label: "Devis demandés",
+      label: "Devis reçus",
       value: formatKpiNumber(current.submitted),
-      hint: current.submitted ? "dossiers reçus" : "en attente du premier",
+      hint: current.submitted ? "sur la période" : "en attente du premier",
       tone: "orange",
       ...deltaMeta(current.submitted, previous.submitted),
     },
     {
-      label: "Vous avez rappelé",
+      label: "Taux de rappel",
       value: `${Math.round(contactRate)}%`,
-      hint: current.submitted ? `${current.contacted} sur ${current.submitted}` : "rien à rappeler",
+      hint: current.submitted ? `${current.contacted} sur ${current.submitted}` : "—",
       tone: "emerald",
       ...deltaMeta(contactRate, prevContactRate),
     },
     {
-      label: "Argent en jeu",
+      label: "CA en cours",
       value: formatKpiEur(currentValue),
       hint:
         current.submitted && currentValue > 0
           ? `${current.submitted} × ${formatKpiEur(currentValue / current.submitted)}`
           : current.submitted
-            ? "mettez des prix sur le catalogue"
-            : "pas encore de devis",
+            ? "ajoutez des prix au catalogue"
+            : "—",
       tone: "sky",
       ...deltaMeta(currentValue, previousValue),
     },
     {
-      label: "Temps pour répondre",
+      label: "Délai de réponse",
       value: formatKpiHours(avgDelay),
-      hint: avgDelay == null ? "pas encore de 1er appel" : avgDelay <= 4 ? "bon rythme" : "un peu long",
+      hint: avgDelay == null ? "1er changement de statut" : "moyenne depuis soumission",
       tone: avgDelay != null && avgDelay > 4 ? "amber" : "slate",
       ...(avgDelay != null && prevDelay != null
         ? deltaMeta(avgDelay, prevDelay, true)
-        : { deltaLabel: "dès le 1er statut", deltaTone: "muted" as const }),
+        : { deltaLabel: "—", deltaTone: "muted" as const }),
     },
     {
-      label: "Partis en route",
+      label: "Abandons",
       value: formatKpiNumber(abandonedNow.length),
-      hint: abandonedEmail.length ? `${abandonedEmail.length} avec un email` : "sans email — plus durs à rattraper",
+      hint: abandonedEmail.length ? `${abandonedEmail.length} avec email` : "sans email",
       tone: abandonedNow.length ? "rose" : "slate",
       ...deltaMeta(abandonedNow.length, abandonedPrev.length, true),
     },
   ];
 
   const funnelDefs: Array<Omit<FunnelStep, "rateFromPrevious">> = [
-    { key: "visitors", label: "Arrivés", help: "ont ouvert la page", count: current.visitors, tone: "sky" },
-    { key: "opened", label: "Ont commencé", help: "première réponse", count: current.opened, tone: "violet" },
-    { key: "email", label: "Email laissé", help: "on peut les relancer", count: current.emails, tone: "amber" },
-    { key: "completed", label: "Parcours fini", help: "jusqu’au bout", count: current.completed, tone: "orange" },
-    { key: "submitted", label: "Devis demandé", help: "dossier reçu", count: current.submitted, tone: "orange" },
-    { key: "contacted", label: "Rappelés", help: "vous avez appelé", count: current.contacted, tone: "emerald" },
-    { key: "won", label: "Signés", help: "affaire gagnée", count: current.won, tone: "emerald" },
+    { key: "visitors", label: "Visiteurs", help: "page ouverte", count: current.visitors, tone: "sky" },
+    { key: "opened", label: "Commencé", help: "première réponse", count: current.opened, tone: "violet" },
+    { key: "email", label: "Email", help: "coordonnées laissées", count: current.emails, tone: "amber" },
+    { key: "completed", label: "Complété", help: "parcours terminé", count: current.completed, tone: "orange" },
+    { key: "submitted", label: "Devis", help: "demande soumise", count: current.submitted, tone: "orange" },
+    { key: "contacted", label: "Rappelé", help: "statut contacté", count: current.contacted, tone: "emerald" },
+    { key: "won", label: "Signé", help: "affaire gagnée", count: current.won, tone: "emerald" },
   ];
   const funnel: FunnelStep[] = funnelDefs.map((step, i) => ({
     ...step,
