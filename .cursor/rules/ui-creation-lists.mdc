@@ -1,0 +1,25 @@
+---
+description: Création guidée, lignes cliquables, couleur dans le shell
+alwaysApply: true
+---
+
+# Création, listes, couleur
+
+QuoteBuilder n’est pas un formulaire gris. Chaque objet métier (funnel, produit, règle…) se **crée dans un dialog qui pose les bonnes questions** — jamais un champ nom + bouton dans la toolbar.
+
+## Création
+
+- Dialog / mini-wizard : secteur ou template, options (catalogue, chat, écrans, formulaires), puis nom.
+- Un objet naît **déjà structuré** (steps, questions, flags), pas vide.
+- CTA primaire orange `#E85D04`. Hash `#nouveau` ouvre le dialog.
+
+## Listes
+
+- Toute la ligne ouvre l’édition / le détail. Pas de lien « Éditer » / « Voir » comme seul accès.
+- Les liens internes à la ligne (aperçu public, etc.) restent cliquables sans bloquer la ligne.
+- Statut, score, mode, secteur : **pastilles couleur**, pas du texte slate.
+
+## Couleur
+
+- Le shell n’est pas monochrome. Accent orange sur l’item actif, badges chauds (abandons = ambre, hot = rose, actif = émeraude, chat = violet).
+- Pas d’emoji. Pas de héros gradient. Listes toujours flush (`ListPanel`).

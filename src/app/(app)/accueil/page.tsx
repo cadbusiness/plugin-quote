@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getOrgContext } from "@/lib/auth/org";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
+import { Chip, scoreTone } from "@/components/ui/chip";
+import { ClickableRow } from "@/components/ui/clickable-row";
 import { formatDate } from "@/lib/format";
 import { listQuotes } from "@/lib/crm/quotes";
 import { getSidebarSnapshot } from "@/lib/crm/sidebar";
@@ -28,28 +30,23 @@ export default async function AccueilPage() {
           Pipeline
         </Link>
       </ListToolbar>
-      <DataTable headers={["Prospect", "Score", "Statut", "Date", ""]}>
+      <DataTable headers={["Prospect", "Score", "Statut", "Date"]}>
         {quotes.map((quote) => {
           const status = quote.status_id ? statusById.get(quote.status_id) : undefined;
           return (
-            <tr key={quote.id} className="border-b border-slate-100 hover:bg-slate-50">
+            <ClickableRow key={quote.id} href={`/devis/${quote.id}`}>
               <td className="px-4 py-2.5 lg:px-6">
                 <div className="font-medium">{quote.contact_name}</div>
                 <div className="text-slate-500">{quote.contact_company ?? quote.contact_email}</div>
               </td>
-              <td className="px-4 py-2.5 text-xs uppercase text-slate-500 lg:px-6">
-                {quote.score_label ?? "—"}
+              <td className="px-4 py-2.5 lg:px-6">
+                <Chip tone={scoreTone(quote.score_label)}>{(quote.score_label ?? "—").toUpperCase()}</Chip>
               </td>
               <td className="px-4 py-2.5 lg:px-6" style={{ color: status?.color ?? "#64748b" }}>
                 {status?.label ?? quote.status}
               </td>
               <td className="px-4 py-2.5 text-slate-500 lg:px-6">{formatDate(quote.created_at)}</td>
-              <td className="px-4 py-2.5 text-right lg:px-6">
-                <Link href={`/devis/${quote.id}`} className="text-sm underline">
-                  Voir
-                </Link>
-              </td>
-            </tr>
+            </ClickableRow>
           );
         })}
       </DataTable>
