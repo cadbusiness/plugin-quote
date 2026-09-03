@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/quote.dart';
 import '../services/quotes_service.dart';
@@ -25,10 +26,10 @@ class _QuoteDetailScreenState extends State<QuoteDetailScreen> {
   }
 
   Future<({Quote quote, List<QuoteItem> items, List<({String slug, String label})> statuses})> _load() async {
-    final quote = await widget.quotes.getById(widget.id);
-    final items = await widget.quotes.items(widget.id);
-    final statuses = await widget.quotes.statuses();
-    return (quote: quote, items: items, statuses: statuses);
+    final quote = widget.quotes.getById(widget.id);
+    final items = widget.quotes.items(widget.id);
+    final statuses = widget.quotes.statuses();
+    return (quote: await quote, items: await items, statuses: await statuses);
   }
 
   @override
@@ -59,8 +60,15 @@ class _QuoteDetailScreenState extends State<QuoteDetailScreen> {
             padding: const EdgeInsets.all(16),
             children: [
               Text(quote.contactName, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600)),
-              Text(quote.contactEmail, style: const TextStyle(color: qbMuted)),
-              if (quote.contactPhone != null) Text(quote.contactPhone!),
+              InkWell(
+                onTap: () => launchUrl(Uri.parse('mailto:${quote.contactEmail}')),
+                child: Text(quote.contactEmail, style: const TextStyle(color: qbMuted, decoration: TextDecoration.underline)),
+              ),
+              if (quote.contactPhone != null)
+                InkWell(
+                  onTap: () => launchUrl(Uri.parse('tel:${quote.contactPhone}')),
+                  child: Text(quote.contactPhone!, style: const TextStyle(decoration: TextDecoration.underline)),
+                ),
               if (quote.contactCompany != null) Text(quote.contactCompany!),
               const SizedBox(height: 12),
               Wrap(
