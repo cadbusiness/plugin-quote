@@ -6,17 +6,27 @@ import {
   replyToProspectForm,
 } from "@/app/(app)/crm-actions";
 import { AutoSubmitSelect } from "@/components/crm/quote-controls";
-import { Chip, scoreTone, statusTone } from "@/components/ui/chip";
+import { QuoteTabs, quoteTabHref, type QuoteTab } from "@/components/crm/quote-tabs";
+import { Chip, scoreTone, statusTone, type ChipTone } from "@/components/ui/chip";
+import { ClickableRow } from "@/components/ui/clickable-row";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { formatPrice } from "@/lib/format";
-import type { QuoteDetail } from "@/lib/crm/quote-detail";
+import type { QuoteAutomation, QuoteDetail } from "@/lib/crm/quote-detail";
 
-export function QuoteDetailView({ detail }: { detail: QuoteDetail }) {
+const AUTOMATION_TONE: Record<QuoteAutomation["state"], ChipTone> = {
+  sent: "emerald",
+  planned: "sky",
+  due: "amber",
+  skipped: "slate",
+};
+
+export function QuoteDetailView({ detail, tab }: { detail: QuoteDetail; tab: QuoteTab }) {
   const { quote, funnel, status, totals } = detail;
   const changeStatus = changeQuoteStatusForm.bind(null, quote.id);
   const changeAssignee = assignQuoteForm.bind(null, quote.id);
   const addNote = addQuoteNoteForm.bind(null, quote.id);
   const reply = replyToProspectForm.bind(null, quote.id);
+  const liveAutomations = detail.automations.filter((flow) => flow.state === "due" || flow.state === "planned").length;
 
   return (
     <ListPanel>
@@ -50,29 +60,51 @@ export function QuoteDetailView({ detail }: { detail: QuoteDetail }) {
         </Link>
       </ListToolbar>
 
+      <QuoteTabs
+        quoteId={quote.id}
+        active={tab}
+        counts={{
+          projet: detail.items.length,
+          client: detail.siblings.length,
+          echanges: detail.notes.length + detail.messages.length,
+          automations: liveAutomations,
+        }}
+      />
+
+      {tab === "dossier" ? <DossierTab detail={detail} changeStatus={changeStatus} changeAssignee={changeAssignee} /> : null}
+      {tab === "projet" ? <ProjetTab detail={detail} /> : null}
+      {tab === "client" ? <ClientTab detail={detail} /> : null}
+      {tab === "echanges" ? <EchangesTab detail={detail} addNote={addNote} reply={reply} /> : null}
+      {tab === "automations" ? <AutomationsTab detail={detail} /> : null}
+    </ListPanel>
+  );
+}
+
+function DossierTab({
+  detail,
+  changeStatus,
+  changeAssignee,
+}: {
+  detail: QuoteDetail;
+  changeStatus: (formData: FormData) => Promise<void>;
+  changeAssignee: (formData: FormData) => Promise<void>;
+}) {
+  const { quote, funnel, totals } = detail;
+  const lastNote = detail.notes[0];
+  const lastMessage = detail.messages[detail.messages.length - 1];
+  const nextFlow = detail.automations.find((flow) => flow.state === "due") ?? detail.automations.find((flow) => flow.state === "planned");
+
+  return (
+    <>
       <div className="grid grid-cols-2 border-b border-slate-200 lg:grid-cols-5">
-        <Kpi
-          label="Score"
-          value={quote.score != null ? String(quote.score) : "—"}
-          hint={detail.scoreReasons[0] ?? "Qualification automatique"}
-          bordered
-        />
+        <Kpi label="Score" value={quote.score != null ? String(quote.score) : "—"} hint={detail.scoreReasons[0] ?? "Qualification automatique"} bordered />
         <Kpi label="Fourchette" value={totals.label} hint={`${totals.count} ligne${totals.count > 1 ? "s" : ""}`} bordered />
-        <Kpi
-          label="Reçue"
-          value={detail.received.relative}
-          hint={detail.received.exact}
-          bordered
-        />
+        <Kpi label="Reçue" value={detail.received.relative} hint={detail.received.exact} bordered />
         <Kpi label="Source" value={detail.source} hint={attributionHint(quote)} bordered />
-        <Kpi
-          label="Funnel"
-          value={funnel?.name ?? "—"}
-          hint={detail.assignedLabel ? `Assigné à ${detail.assignedLabel}` : "Non assigné"}
-        />
+        <Kpi label="Funnel" value={funnel?.name ?? "—"} hint={detail.assignedLabel ? `Assigné à ${detail.assignedLabel}` : "Non assigné"} />
       </div>
 
-      <section className="grid gap-6 border-b border-slate-100 px-4 py-5 lg:grid-cols-[minmax(0,1.4fr)_minmax(16rem,0.8fr)] lg:px-6">
+      <section className="grid gap-6 border-b border-slate-100 px-4 py-5 lg:grid-cols-[minmax(0,1fr)_16rem] lg:px-6">
         <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
           <Fact label="Email">
             <a className="underline decoration-slate-300 underline-offset-2 hover:text-slate-900" href={`mailto:${quote.contact_email}`}>
@@ -90,12 +122,6 @@ export function QuoteDetailView({ detail }: { detail: QuoteDetail }) {
           </Fact>
           <Fact label="Société">{quote.contact_company || "—"}</Fact>
           <Fact label="Assigné à">{detail.assignedLabel ?? "Personne"}</Fact>
-          {quote.utm_campaign ? <Fact label="Campagne">{quote.utm_campaign}</Fact> : null}
-          {quote.referrer ? (
-            <Fact label="Référent">
-              <span className="break-all">{hostOf(quote.referrer) ?? quote.referrer}</span>
-            </Fact>
-          ) : null}
         </dl>
         <div className="flex flex-col gap-2">
           <label className="text-xs font-medium uppercase tracking-wide text-slate-500">Statut</label>
@@ -130,7 +156,7 @@ export function QuoteDetailView({ detail }: { detail: QuoteDetail }) {
         </div>
       </section>
 
-      {detail.scoreReasons.length > 1 ? (
+      {detail.scoreReasons.length ? (
         <div className="flex flex-wrap gap-1.5 border-b border-slate-100 px-4 py-3 lg:px-6">
           <span className="mr-1 text-xs font-medium uppercase tracking-wide text-slate-500">Pourquoi ce score</span>
           {detail.scoreReasons.map((reason) => (
@@ -141,6 +167,33 @@ export function QuoteDetailView({ detail }: { detail: QuoteDetail }) {
         </div>
       ) : null}
 
+      <div className="grid border-b border-slate-100 lg:grid-cols-3">
+        <Snapshot
+          label="Projet"
+          href={quoteTabHref(quote.id, "projet")}
+          title={totals.count ? `${totals.count} produits · ${totals.label}` : "Pas encore de configuration"}
+          detail={detail.items[0] ? detail.items.map((item) => `${item.quantity} × ${item.name}`).join(" · ") : "Les réponses et la config sont dans l’onglet Projet."}
+        />
+        <Snapshot
+          label="Dernier échange"
+          href={quoteTabHref(quote.id, "echanges")}
+          title={lastMessage ? lastMessage.content : lastNote ? lastNote.content : "Aucun échange"}
+          detail={lastMessage ? `${lastMessage.sender === "prospect" ? "Prospect" : "Équipe"} · ${lastMessage.when}` : lastNote ? `Note · ${lastNote.when}` : "Notes et messages dans Échanges."}
+        />
+        <Snapshot
+          label="Automatisation"
+          href={quoteTabHref(quote.id, "automations")}
+          title={nextFlow ? nextFlow.title : "Aucun flux en cours"}
+          detail={nextFlow ? `${nextFlow.stateLabel} · ${nextFlow.when ?? nextFlow.hint}` : "Voir le parcours email de cette demande."}
+        />
+      </div>
+    </>
+  );
+}
+
+function ProjetTab({ detail }: { detail: QuoteDetail }) {
+  return (
+    <>
       <section>
         <SectionTitle>Réponses du funnel</SectionTitle>
         {detail.answers.length ? (
@@ -187,7 +240,7 @@ export function QuoteDetailView({ detail }: { detail: QuoteDetail }) {
             </DataTable>
             <div className="flex justify-between border-b border-slate-200 px-4 py-3 text-sm lg:px-6">
               <span className="text-slate-500">Total indicatif</span>
-              <span className="font-semibold tabular-nums text-slate-900">{totals.label}</span>
+              <span className="font-semibold tabular-nums text-slate-900">{detail.totals.label}</span>
             </div>
           </>
         ) : (
@@ -216,7 +269,103 @@ export function QuoteDetailView({ detail }: { detail: QuoteDetail }) {
           <Empty>Aucun fichier. Plans et photos envoyés par le prospect s’afficheront ici.</Empty>
         )}
       </section>
+    </>
+  );
+}
 
+function ClientTab({ detail }: { detail: QuoteDetail }) {
+  const { quote } = detail;
+  return (
+    <>
+      <section>
+        <SectionTitle>Fiche client</SectionTitle>
+        <dl className="grid grid-cols-2 gap-x-8 gap-y-3 border-b border-slate-100 px-4 py-4 text-sm lg:grid-cols-3 lg:px-6">
+          <Fact label="Nom">{quote.contact_name}</Fact>
+          <Fact label="Société">{quote.contact_company || "—"}</Fact>
+          <Fact label="Email">
+            <a className="underline decoration-slate-300 underline-offset-2" href={`mailto:${quote.contact_email}`}>
+              {quote.contact_email}
+            </a>
+          </Fact>
+          <Fact label="Téléphone">
+            {quote.contact_phone ? (
+              <a className="underline decoration-slate-300 underline-offset-2" href={`tel:${quote.contact_phone}`}>
+                {quote.contact_phone}
+              </a>
+            ) : (
+              "—"
+            )}
+          </Fact>
+          <Fact label="Demandes">{detail.siblings.length}</Fact>
+          <Fact label="Espace prospect">
+            {detail.suiviUrl ? (
+              <a href={detail.suiviUrl} target="_blank" rel="noreferrer" className="text-[#E85D04] hover:underline">
+                Ouvrir{detail.suiviLastAccess ? ` · vu ${detail.suiviLastAccess}` : ""}
+              </a>
+            ) : (
+              "Pas encore créé"
+            )}
+          </Fact>
+        </dl>
+      </section>
+
+      <section>
+        <SectionTitle>Attribution</SectionTitle>
+        <dl className="grid grid-cols-2 gap-x-8 gap-y-3 border-b border-slate-100 px-4 py-4 text-sm lg:grid-cols-3 lg:px-6">
+          <Fact label="Source">{detail.source}</Fact>
+          <Fact label="Medium">{quote.utm_medium || "—"}</Fact>
+          <Fact label="Campagne">{quote.utm_campaign || "—"}</Fact>
+          <Fact label="Contenu">{quote.utm_content || "—"}</Fact>
+          <Fact label="Terme">{quote.utm_term || "—"}</Fact>
+          <Fact label="Référent">{quote.referrer ? hostOf(quote.referrer) ?? quote.referrer : "—"}</Fact>
+        </dl>
+      </section>
+
+      <section>
+        <SectionTitle>Demandes de ce client</SectionTitle>
+        <DataTable headers={["Demande", "Score", "Statut", "Date"]}>
+          {detail.siblings.map((row) => (
+            <ClickableRow
+              key={row.id}
+              href={quoteTabHref(row.id, "dossier")}
+              className={row.current ? "bg-orange-50/50" : ""}
+            >
+              <td className="px-4 py-2.5 lg:px-6">
+                <div className="font-medium">
+                  {row.contactName}
+                  {row.current ? <span className="ml-2 text-xs font-normal text-[#C2410C]">Cette fiche</span> : null}
+                </div>
+                <div className="text-slate-500">{row.company ?? quote.contact_email}</div>
+              </td>
+              <td className="px-4 py-2.5 lg:px-6">
+                <Chip tone={scoreTone(row.scoreLabel)}>
+                  {(row.scoreLabel ?? "—").toUpperCase()}
+                  {row.score != null ? ` ${row.score}` : ""}
+                </Chip>
+              </td>
+              <td className="px-4 py-2.5 lg:px-6">
+                <Chip tone={statusTone(row.statusSlug)}>{row.statusLabel}</Chip>
+              </td>
+              <td className="px-4 py-2.5 text-slate-500 lg:px-6">{row.when}</td>
+            </ClickableRow>
+          ))}
+        </DataTable>
+      </section>
+    </>
+  );
+}
+
+function EchangesTab({
+  detail,
+  addNote,
+  reply,
+}: {
+  detail: QuoteDetail;
+  addNote: (formData: FormData) => Promise<void>;
+  reply: (formData: FormData) => Promise<void>;
+}) {
+  return (
+    <>
       <div className="grid border-b border-slate-100 lg:grid-cols-2">
         <section className="border-b border-slate-100 lg:border-b-0 lg:border-r">
           <SectionTitle>Notes internes</SectionTitle>
@@ -298,7 +447,56 @@ export function QuoteDetailView({ detail }: { detail: QuoteDetail }) {
           <Empty>La timeline se remplit dès la soumission, les emails et les changements de statut.</Empty>
         )}
       </section>
-    </ListPanel>
+    </>
+  );
+}
+
+function AutomationsTab({ detail }: { detail: QuoteDetail }) {
+  return (
+    <section>
+      <SectionTitle>Parcours de cette demande</SectionTitle>
+      {detail.automations.length ? (
+        <DataTable headers={["Flux", "Déclencheur", "Délai", "Destinataire", "État"]}>
+          {detail.automations.map((flow) => (
+            <tr key={flow.id} className="border-b border-slate-100">
+              <td className="px-4 py-2.5 lg:px-6">
+                <div className="font-medium">{flow.title}</div>
+                <div className="text-xs text-slate-500">{flow.hint}</div>
+              </td>
+              <td className="px-4 py-2.5 text-slate-500 lg:px-6">{flow.triggerLabel}</td>
+              <td className="px-4 py-2.5 tabular-nums lg:px-6">{flow.delayLabel}</td>
+              <td className="px-4 py-2.5 lg:px-6">{flow.recipientLabel}</td>
+              <td className="px-4 py-2.5 lg:px-6">
+                <Chip tone={AUTOMATION_TONE[flow.state]}>{flow.stateLabel}</Chip>
+                {flow.when ? <div className="mt-1 text-xs text-slate-400">{flow.when}</div> : null}
+              </td>
+            </tr>
+          ))}
+        </DataTable>
+      ) : (
+        <Empty>Aucun flux actif pour cette organisation.</Empty>
+      )}
+    </section>
+  );
+}
+
+function Snapshot({
+  label,
+  href,
+  title,
+  detail,
+}: {
+  label: string;
+  href: string;
+  title: string;
+  detail: string;
+}) {
+  return (
+    <Link href={href} className="block border-b border-slate-100 px-4 py-4 last:border-b-0 hover:bg-orange-50/40 lg:border-b-0 lg:border-r lg:last:border-r-0 lg:px-6">
+      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
+      <p className="mt-1 line-clamp-2 text-sm font-medium text-slate-900">{title}</p>
+      <p className="mt-1 line-clamp-2 text-sm text-slate-500">{detail}</p>
+    </Link>
   );
 }
 

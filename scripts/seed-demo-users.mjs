@@ -124,6 +124,14 @@ const QUOTES = [
   },
 ];
 
+const FLOWS = [
+  { trigger: "submitted", delay_hours: 0, recipient: "prospect", template_kind: "prospect_confirm" },
+  { trigger: "submitted", delay_hours: 0, recipient: "assignee", template_kind: "sales_brief" },
+  { trigger: "unprocessed", delay_hours: 4, recipient: "assignee", template_kind: "sales_unprocessed" },
+  { trigger: "delay", delay_hours: 24, recipient: "prospect", template_kind: "prospect_reassure" },
+  { trigger: "delay", delay_hours: 72, recipient: "prospect", template_kind: "prospect_followup" },
+];
+
 const STATUSES = [
   { slug: "new", label: "Nouveau", color: "#2563eb", position: 0, is_default: true, is_closed: false },
   { slug: "contacted", label: "Contacté", color: "#d97706", position: 1, is_default: false, is_closed: false },
@@ -202,6 +210,19 @@ const { count: statusCount } = await supabase
 if (!statusCount) {
   const { error } = await supabase.from("quote_statuses").insert(
     STATUSES.map((s) => ({ organization_id: org.id, ...s })),
+  );
+  if (error) throw error;
+}
+
+const { data: existingFlows } = await supabase
+  .from("automation_flows")
+  .select("template_kind")
+  .eq("organization_id", org.id);
+const haveFlow = new Set((existingFlows ?? []).map((f) => f.template_kind));
+const missingFlows = FLOWS.filter((f) => !haveFlow.has(f.template_kind));
+if (missingFlows.length) {
+  const { error } = await supabase.from("automation_flows").insert(
+    missingFlows.map((f) => ({ organization_id: org.id, ...f, active: true })),
   );
   if (error) throw error;
 }

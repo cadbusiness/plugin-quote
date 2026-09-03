@@ -39,6 +39,23 @@ export function formatEur(value: number | null | undefined) {
   }).format(value);
 }
 
+export function formatWhen(iso: string) {
+  const target = new Date(iso).getTime();
+  const diff = target - Date.now();
+  if (!Number.isFinite(diff)) return formatDate(iso);
+  if (Math.abs(diff) < 60_000) return "Maintenant";
+  if (diff > 0) {
+    const min = Math.round(diff / 60_000);
+    if (min < 60) return `Dans ${min} min`;
+    const hours = Math.round(min / 60);
+    if (hours < 24) return `Dans ${hours} h`;
+    const days = Math.round(hours / 24);
+    if (days < 14) return `Dans ${days} j`;
+    return formatDate(iso);
+  }
+  return formatRelative(iso);
+}
+
 export function formatHours(hours: number | null | undefined) {
   if (hours == null || Number.isNaN(hours)) return "—";
   if (hours < 1) return `${Math.max(1, Math.round(hours * 60))} min`;

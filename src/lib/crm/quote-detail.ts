@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json, Tables } from "@/lib/db/database.types";
 import { classifySource } from "@/lib/stats/attribution";
-import { formatDate, formatPrice, formatRelative } from "@/lib/format";
+import { formatDate, formatHours, formatPrice, formatRelative, formatWhen } from "@/lib/format";
 import { scoreReasons } from "@/lib/quotes/score";
 import { formatItemOptions, labelAnswers, type LabeledAnswer } from "@/lib/crm/answers";
 import { appUrl } from "@/lib/prospect/access";
@@ -27,6 +27,31 @@ export type QuoteNoteView = Tables<"quote_notes"> & { when: string };
 
 export type QuoteMessageView = Tables<"prospect_messages"> & { when: string };
 
+export type QuoteSibling = {
+  id: string;
+  current: boolean;
+  contactName: string;
+  company: string | null;
+  score: number | null;
+  scoreLabel: string | null;
+  statusLabel: string;
+  statusSlug: string;
+  when: string;
+};
+
+export type QuoteAutomation = {
+  id: string;
+  title: string;
+  triggerLabel: string;
+  delayLabel: string;
+  recipientLabel: string;
+  active: boolean;
+  state: "sent" | "planned" | "due" | "skipped";
+  stateLabel: string;
+  when: string | null;
+  hint: string;
+};
+
 export type QuoteDetail = {
   quote: Tables<"quotes">;
   funnel: { id: string; name: string; slug: string } | null;
@@ -41,8 +66,11 @@ export type QuoteDetail = {
   notes: QuoteNoteView[];
   messages: QuoteMessageView[];
   activities: QuoteActivityView[];
+  siblings: QuoteSibling[];
+  automations: QuoteAutomation[];
   source: string;
   suiviUrl: string | null;
+  suiviLastAccess: string | null;
   received: { relative: string; exact: string };
   totals: { min: number | null; max: number | null; label: string; count: number };
 };
@@ -151,6 +179,8 @@ export async function loadQuoteDetail(
     { data: steps },
     { data: questions },
     { data: access },
+    { data: siblingRows },
+    { data: flows },
   ] = await Promise.all([
     supabase.from("quote_items").select("*").eq("quote_id", quote.id),
     supabase.from("quote_files").select("*").eq("quote_id", quote.id).order("created_at", { ascending: false }),
@@ -162,7 +192,14 @@ export async function loadQuoteDetail(
     supabase.from("configurators").select("id, name, slug").eq("id", quote.configurator_id).maybeSingle(),
     supabase.from("wizard_steps").select("id").eq("configurator_id", quote.configurator_id),
     supabase.from("wizard_questions").select("*").eq("organization_id", orgId).order("sort_order"),
-    supabase.from("prospect_access").select("token, expires_at").eq("quote_id", quote.id).maybeSingle(),
+    supabase.from("prospect_access").select("token, expires_at, last_accessed").eq("quote_id", quote.id).maybeSingle(),
+    supabase
+      .from("quotes")
+      .select("id, contact_name, contact_company, score, score_label, status_id, status, created_at")
+      .eq("organization_id", orgId)
+      .eq("contact_email", quote.contact_email)
+      .order("created_at", { ascending: false }),
+    supabase.from("automation_flows").select("*").eq("organization_id", orgId).order("delay_hours"),
   ]);
 
   const productIds = [...new Set((items ?? []).map((item) => item.product_id).filter(Boolean))] as string[];
@@ -227,7 +264,113 @@ export async function loadQuoteDetail(
       utmMedium: quote.utm_medium,
       referrer: quote.referrer,
     }),
+    siblings: (siblingRows ?? []).map((row) => {
+      const rowStatus = row.status_id ? (statuses ?? []).find((s) => s.id === row.status_id) : undefined;
+      return {
+        id: row.id,
+        current: row.id === quote.id,
+        contactName: row.contact_name,
+        company: row.contact_company,
+        score: row.score,
+        scoreLabel: row.score_label,
+        statusLabel: rowStatus?.label ?? row.status,
+        statusSlug: rowStatus?.slug ?? row.status,
+        when: formatRelative(row.created_at),
+      };
+    }),
+    automations: quoteAutomations({
+      quote,
+      status,
+      flows: flows ?? [],
+      activities: activities ?? [],
+    }),
     suiviUrl: suiviAlive ? `${appUrl()}/suivi/${access.token}` : null,
+    suiviLastAccess: access?.last_accessed ? formatRelative(access.last_accessed) : null,
     totals: rangeTotal(items ?? []),
   };
+}
+
+const FLOW_TITLES: Record<string, string> = {
+  prospect_confirm: "Confirmation prospect",
+  sales_brief: "Brief commercial",
+  sales_unprocessed: "Rappel interne si non traité",
+  prospect_reassure: "Email rassurant",
+  prospect_followup: "Relance douce",
+  prospect_photo: "Demande de photo",
+  session_resume: "Reprise de session",
+  session_resume_late: "Seconde relance reprise",
+};
+
+const TRIGGER_LABELS: Record<string, string> = {
+  submitted: "À la soumission",
+  unprocessed: "Si non traité",
+  delay: "Après un délai",
+  abandoned: "Session abandonnée",
+};
+
+const RECIPIENT_LABELS: Record<string, string> = {
+  prospect: "Prospect",
+  assignee: "Commercial",
+};
+
+function quoteAutomations(input: {
+  quote: Tables<"quotes">;
+  status: Tables<"quote_statuses"> | undefined;
+  flows: Tables<"automation_flows">[];
+  activities: Tables<"quote_activities">[];
+}): QuoteAutomation[] {
+  const sentAt = new Map<string, string>();
+  for (const act of input.activities) {
+    if (act.type !== "email_sent") continue;
+    const payload = act.payload && typeof act.payload === "object" && !Array.isArray(act.payload)
+      ? (act.payload as { template_kind?: string })
+      : {};
+    if (payload.template_kind && !sentAt.has(payload.template_kind)) {
+      sentAt.set(payload.template_kind, act.created_at);
+    }
+  }
+
+  const slug = input.status?.slug ?? input.quote.status;
+  const closed = Boolean(input.status?.is_closed);
+  const created = new Date(input.quote.created_at).getTime();
+
+  return input.flows.map((flow) => {
+      const sent = sentAt.get(flow.template_kind);
+      const dueAt = new Date(created + flow.delay_hours * 3600_000);
+      const overdue = Date.now() >= dueAt.getTime();
+      let state: QuoteAutomation["state"] = "planned";
+      let hint = `Prévu ${formatWhen(dueAt.toISOString())}`;
+      if (sent) {
+        state = "sent";
+        hint = "Email déjà parti";
+      } else if (flow.trigger === "abandoned") {
+        state = "skipped";
+        hint = "Concerne les sessions abandonnées, pas cette demande";
+      } else if (flow.trigger === "unprocessed" && slug !== "new") {
+        state = "skipped";
+        hint = "La demande a déjà été prise en charge";
+      } else if (flow.trigger === "delay" && closed) {
+        state = "skipped";
+        hint = "Dossier clôturé, plus de relance";
+      } else if (!flow.active) {
+        state = "skipped";
+        hint = "Flux désactivé";
+      } else if (overdue) {
+        state = "due";
+        hint = "En attente d’envoi";
+      }
+
+      return {
+        id: flow.id,
+        title: FLOW_TITLES[flow.template_kind] ?? flow.template_kind,
+        triggerLabel: TRIGGER_LABELS[flow.trigger] ?? flow.trigger,
+        delayLabel: flow.delay_hours === 0 ? "Immédiat" : formatHours(flow.delay_hours),
+        recipientLabel: RECIPIENT_LABELS[flow.recipient] ?? flow.recipient,
+        active: flow.active,
+        state,
+        stateLabel: state === "sent" ? "Envoyé" : state === "due" ? "Dû" : state === "planned" ? "Planifié" : "Ignoré",
+        when: sent ? formatRelative(sent) : state === "planned" || state === "due" ? formatWhen(dueAt.toISOString()) : null,
+        hint,
+      };
+    });
 }
