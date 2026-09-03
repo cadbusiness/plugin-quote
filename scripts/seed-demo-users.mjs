@@ -17,6 +17,25 @@ const QUOTES = [
     score_label: "hot",
     status: "new",
     status_slug: "new",
+    utm_source: "linkedin",
+    utm_medium: "social",
+    utm_campaign: "atelier-q3",
+    referrer: "https://www.linkedin.com/",
+    answers: {
+      project_type: "atelier",
+      surface: 180,
+      height: 5.5,
+      load: 400,
+      access: "moyenne",
+      constraints: ["dalle_existante"],
+      notes: "Besoin de ranger outillage et pièces, allée chariot 1,20 m.",
+    },
+    items: [
+      { name: "Rayonnage mi-lourd 3 m", quantity: 6, price_min: 420, price_max: 580, options: { finition: "Galvanisé" } },
+      { name: "Plateau mélaminé 1200×800", quantity: 18, price_min: 38, price_max: 52, options: {} },
+    ],
+    note: "Premier contact LinkedIn. Relancer lundi avec un plan d’implantation.",
+    message: "Pouvez-vous passer à l’atelier mardi matin ?",
   },
   {
     contact_name: "Thomas Berger",
@@ -27,6 +46,24 @@ const QUOTES = [
     score_label: "warm",
     status: "contacted",
     status_slug: "contacted",
+    utm_source: "google",
+    utm_medium: "organic",
+    utm_campaign: null,
+    referrer: "https://www.google.com/",
+    answers: {
+      project_type: "entrepot",
+      surface: 90,
+      height: 6,
+      load: 250,
+      access: "facile",
+      constraints: ["aucune"],
+      notes: "Petite réserve, picking fréquent.",
+    },
+    items: [
+      { name: "Rayonnage picking 2,50 m", quantity: 4, price_min: 310, price_max: 390, options: { niveaux: "4" } },
+    ],
+    note: "Appelé le 02/09. Envoie un plan de la réserve cette semaine.",
+    message: null,
   },
   {
     contact_name: "Léa Moreau",
@@ -37,6 +74,53 @@ const QUOTES = [
     score_label: "hot",
     status: "new",
     status_slug: "in_progress",
+    utm_source: "google",
+    utm_medium: "cpc",
+    utm_campaign: "hotel-cuisine-2026",
+    referrer: "https://www.google.com/",
+    answers: {
+      project_type: "cuisine_pro",
+      surface: 420,
+      height: 3.8,
+      load: 800,
+      access: "haute",
+      constraints: ["hauteur", "horaires_nuit"],
+      timeline: "avant saison",
+      budget: "80k+",
+      notes: "Rénovation cuisine centrale, 80 couverts. Accès par monte-charge 1,20 m.",
+    },
+    items: [
+      {
+        name: "Ligne de cuisson professionnelle",
+        quantity: 1,
+        price_min: 12800,
+        price_max: 16400,
+        options: { alimentation: "Gaz + électrique", finition: "Inox 304" },
+      },
+      {
+        name: "Chambre froide positive 8 m³",
+        quantity: 1,
+        price_min: 4200,
+        price_max: 5600,
+        options: { groupe: "À distance" },
+      },
+      {
+        name: "Îlot central inox 2,40 m",
+        quantity: 1,
+        price_min: 3800,
+        price_max: 5200,
+        options: { évier: "2 bacs" },
+      },
+      {
+        name: "Plonge 2 bacs + égouttoir",
+        quantity: 2,
+        price_min: 890,
+        price_max: 1200,
+        options: {},
+      },
+    ],
+    note: "Cuisine existante à démonter. Devis avant le 15/09 pour le comité.",
+    message: "Pouvez-vous passer sur site mercredi matin ?",
   },
 ];
 
@@ -155,20 +239,132 @@ const { count: quoteCount } = await supabase
   .eq("organization_id", org.id);
 if (!quoteCount) {
   const { error } = await supabase.from("quotes").insert(
-    QUOTES.map((q) => ({
-      organization_id: org.id,
-      configurator_id: configurator.id,
-      contact_name: q.contact_name,
-      contact_email: q.contact_email,
-      contact_company: q.contact_company,
-      contact_phone: q.contact_phone,
-      score: q.score,
-      score_label: q.score_label,
-      status: q.status,
-      status_id: statusBySlug.get(q.status_slug) ?? null,
-    })),
+    QUOTES.map((q) => quoteRow(q, org.id, configurator.id, statusBySlug)),
   );
   if (error) throw error;
+}
+
+const { data: existingQuotes } = await supabase
+  .from("quotes")
+  .select("id, contact_email, created_at")
+  .eq("organization_id", org.id);
+const quoteByEmail = new Map((existingQuotes ?? []).map((q) => [q.contact_email, q]));
+
+for (const spec of QUOTES) {
+  const row = quoteByEmail.get(spec.contact_email);
+  if (!row) continue;
+  const { error: updateError } = await supabase
+    .from("quotes")
+    .update(quoteRow(spec, org.id, configurator.id, statusBySlug))
+    .eq("id", row.id);
+  if (updateError) throw updateError;
+
+  const { count: itemCount } = await supabase
+    .from("quote_items")
+    .select("id", { count: "exact", head: true })
+    .eq("quote_id", row.id);
+  if (!itemCount && spec.items?.length) {
+    const { error } = await supabase.from("quote_items").insert(
+      spec.items.map((item) => ({
+        organization_id: org.id,
+        quote_id: row.id,
+        name: item.name,
+        quantity: item.quantity,
+        price_min: item.price_min,
+        price_max: item.price_max,
+        options: item.options ?? {},
+      })),
+    );
+    if (error) throw error;
+  }
+
+  const { count: noteCount } = await supabase
+    .from("quote_notes")
+    .select("id", { count: "exact", head: true })
+    .eq("quote_id", row.id);
+  if (!noteCount && spec.note) {
+    const { error } = await supabase.from("quote_notes").insert({
+      organization_id: org.id,
+      quote_id: row.id,
+      content: spec.note,
+    });
+    if (error) throw error;
+  }
+
+  const { count: activityCount } = await supabase
+    .from("quote_activities")
+    .select("id", { count: "exact", head: true })
+    .eq("quote_id", row.id);
+  if (!activityCount) {
+    const submitted = new Date(row.created_at);
+    const later = new Date(submitted.getTime() + 36 * 60 * 1000);
+    const { error } = await supabase.from("quote_activities").insert([
+      {
+        organization_id: org.id,
+        quote_id: row.id,
+        type: "submitted",
+        payload: { score: spec.score, label: spec.score_label },
+        created_at: submitted.toISOString(),
+      },
+      {
+        organization_id: org.id,
+        quote_id: row.id,
+        type: "email_sent",
+        payload: { template_kind: "prospect_confirm" },
+        created_at: new Date(submitted.getTime() + 2 * 60 * 1000).toISOString(),
+      },
+      {
+        organization_id: org.id,
+        quote_id: row.id,
+        type: "email_sent",
+        payload: { template_kind: "sales_brief" },
+        created_at: new Date(submitted.getTime() + 3 * 60 * 1000).toISOString(),
+      },
+      {
+        organization_id: org.id,
+        quote_id: row.id,
+        type: "status_changed",
+        payload: { status: spec.status_slug, label: STATUSES.find((s) => s.slug === spec.status_slug)?.label },
+        created_at: later.toISOString(),
+      },
+    ]);
+    if (error) throw error;
+  }
+
+  const { count: messageCount } = await supabase
+    .from("prospect_messages")
+    .select("id", { count: "exact", head: true })
+    .eq("quote_id", row.id);
+  if (!messageCount && spec.message) {
+    const { error } = await supabase.from("prospect_messages").insert({
+      organization_id: org.id,
+      quote_id: row.id,
+      sender: "prospect",
+      content: spec.message,
+    });
+    if (error) throw error;
+  }
+}
+
+function quoteRow(q, organizationId, configuratorId, statusBySlug) {
+  return {
+    organization_id: organizationId,
+    configurator_id: configuratorId,
+    contact_name: q.contact_name,
+    contact_email: q.contact_email,
+    contact_company: q.contact_company,
+    contact_phone: q.contact_phone,
+    score: q.score,
+    score_label: q.score_label,
+    status: q.status,
+    status_id: statusBySlug.get(q.status_slug) ?? null,
+    answers: q.answers ?? {},
+    extracted_params: {},
+    utm_source: q.utm_source ?? null,
+    utm_medium: q.utm_medium ?? null,
+    utm_campaign: q.utm_campaign ?? null,
+    referrer: q.referrer ?? null,
+  };
 }
 
 console.log("Comptes démo prêts :");

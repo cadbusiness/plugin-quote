@@ -17,6 +17,19 @@ export function formatDate(iso: string) {
   });
 }
 
+export function formatRelative(iso: string) {
+  const diff = Date.now() - new Date(iso).getTime();
+  if (!Number.isFinite(diff)) return formatDate(iso);
+  const min = Math.round(diff / 60_000);
+  if (min < 1) return "À l’instant";
+  if (min < 60) return `Il y a ${min} min`;
+  const hours = Math.round(min / 60);
+  if (hours < 24) return `Il y a ${hours} h`;
+  const days = Math.round(hours / 24);
+  if (days < 14) return `Il y a ${days} j`;
+  return formatDate(iso);
+}
+
 export function formatEur(value: number | null | undefined) {
   if (value == null || Number.isNaN(value)) return "—";
   return new Intl.NumberFormat("fr-FR", {

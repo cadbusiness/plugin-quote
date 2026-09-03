@@ -31,3 +31,13 @@ export function scoreTone(label: string | null | undefined): ChipTone {
   if (label === "cold") return "sky";
   return "slate";
 }
+
+export function statusTone(slug: string | null | undefined): ChipTone {
+  if (slug === "new") return "sky";
+  if (slug === "contacted") return "amber";
+  if (slug === "in_progress") return "violet";
+  if (slug === "won") return "emerald";
+  if (slug === "lost") return "rose";
+  if (slug === "waiting") return "slate";
+  return "slate";
+}

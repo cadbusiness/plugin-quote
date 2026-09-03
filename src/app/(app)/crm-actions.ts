@@ -100,6 +100,64 @@ export async function addQuoteNote(quoteId: string, content: string) {
   revalidatePath(`/devis/${quoteId}`);
 }
 
+export async function replyToProspect(quoteId: string, content: string) {
+  const ctx = await getOrgContext();
+  if (!ctx) redirect("/onboarding");
+  const trimmed = content.trim();
+  if (!trimmed) return;
+  const supabase = await createClient();
+  const { data: quote } = await supabase
+    .from("quotes")
+    .select("id, contact_email, contact_name")
+    .eq("id", quoteId)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  if (!quote) return;
+  await supabase.from("prospect_messages").insert({
+    organization_id: ctx.organization.id,
+    quote_id: quoteId,
+    sender: "team",
+    content: trimmed,
+  });
+  await logActivity(supabase, {
+    organizationId: ctx.organization.id,
+    quoteId,
+    actorId: ctx.userId,
+    type: "message_sent",
+  });
+  if (quote.contact_email) {
+    const { data: access } = await supabase
+      .from("prospect_access")
+      .select("token")
+      .eq("quote_id", quoteId)
+      .gt("expires_at", new Date().toISOString())
+      .maybeSingle();
+    const suivi = access ? `${getAppUrl()}/suivi/${access.token}` : "";
+    await sendTemplateEmail({
+      to: quote.contact_email,
+      subject: `Message — ${ctx.organization.name}`,
+      body: suivi ? `${trimmed}\n\nRépondre : ${suivi}` : trimmed,
+    });
+  }
+  revalidatePath(`/devis/${quoteId}`);
+}
+
+export async function changeQuoteStatusForm(quoteId: string, formData: FormData) {
+  await changeQuoteStatus(quoteId, String(formData.get("status_id") ?? ""));
+}
+
+export async function assignQuoteForm(quoteId: string, formData: FormData) {
+  await assignQuote(quoteId, String(formData.get("assigned_to") ?? ""));
+}
+
+export async function addQuoteNoteForm(quoteId: string, formData: FormData) {
+  await addQuoteNote(quoteId, String(formData.get("content") ?? ""));
+}
+
+export async function replyToProspectForm(quoteId: string, formData: FormData) {
+  await replyToProspect(quoteId, String(formData.get("content") ?? ""));
+}
+
 export async function inviteMember(formData: FormData) {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");

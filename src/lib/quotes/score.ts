@@ -28,3 +28,32 @@ export function scoreQuote(answers: Answers): { score: number; label: "hot" | "w
   const label = score >= 70 ? "hot" : score >= 45 ? "warm" : "cold";
   return { score, label };
 }
+
+export function scoreReasons(answers: Answers): string[] {
+  const reasons: string[] = [];
+  const surface = Number(answers.surface ?? 0);
+  const load = Number(answers.load ?? 0);
+  const access = String(answers.access ?? "");
+  const project = String(answers.project_type ?? "");
+  const constraints = answers.constraints;
+
+  if (surface >= 400) reasons.push("Grande surface (≥ 400 m²)");
+  else if (surface >= 100) reasons.push("Surface significative");
+  else if (surface > 0) reasons.push("Surface renseignée");
+
+  if (load >= 600) reasons.push("Charge lourde");
+  else if (load >= 200) reasons.push("Charge moyenne");
+
+  if (access === "haute") reasons.push("Accès difficile");
+  else if (access === "moyenne") reasons.push("Accès contraint");
+
+  if (["entrepot", "cuisine_pro", "commerce"].includes(project)) {
+    reasons.push("Projet professionnel");
+  }
+
+  if (Array.isArray(constraints) && constraints.length > 0 && !constraints.includes("aucune")) {
+    reasons.push("Contraintes techniques");
+  }
+
+  return reasons;
+}
