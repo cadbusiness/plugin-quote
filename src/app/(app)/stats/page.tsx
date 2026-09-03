@@ -122,7 +122,7 @@ export default async function StatsPage({
           Hot/warm/cold <strong>{hot}/{warm}/{cold}</strong>
         </span>
         <span>
-          Wizard abouti <strong>{completion}%</strong>
+          Funnel abouti <strong>{completion}%</strong>
         </span>
       </div>
       <div className="grid gap-8 px-4 py-6 text-sm lg:grid-cols-2 lg:px-6">

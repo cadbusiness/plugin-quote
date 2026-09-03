@@ -320,7 +320,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
                 onClick={() => switchMode("wizard")}
                 className={`rounded-full px-3 py-1 ${session.mode === "wizard" ? "bg-white text-slate-950" : ""}`}
               >
-                Wizard
+                Funnel
               </button>
               <button
                 type="button"

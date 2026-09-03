@@ -25,7 +25,7 @@ export function AuthSplit({ children }: { children: React.ReactNode }) {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-slate-950/20" />
         <div className="relative flex h-full flex-col justify-between p-10 xl:p-14">
           <p className="max-w-sm text-sm font-medium tracking-wide text-white/70">
-            Configurateur de devis sur votre catalogue
+            Funnel de devis sur votre catalogue
           </p>
           <div className="space-y-8">
             <ProductPreview />
