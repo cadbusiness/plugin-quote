@@ -31,46 +31,51 @@ export function QuoteDetailView({ detail, tab }: { detail: QuoteDetail; tab: Quo
 
   return (
     <ListPanel>
-      <ListToolbar>
-        <div className="mr-auto flex min-w-0 flex-wrap items-center gap-2">
-          <span className="truncate text-sm font-medium text-slate-900">{quote.contact_name}</span>
-          {quote.contact_company ? (
-            <span className="truncate text-sm text-slate-500">{quote.contact_company}</span>
+      <div className="sticky top-0 z-20 bg-white">
+        <ListToolbar>
+          <Link
+            href="/devis"
+            className="shrink-0 rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+          >
+            Demandes
+          </Link>
+          <div className="mr-auto flex min-w-0 flex-wrap items-center gap-2">
+            <span className="truncate text-sm font-medium text-slate-900">{quote.contact_name}</span>
+            {quote.contact_company ? (
+              <span className="truncate text-sm text-slate-500">{quote.contact_company}</span>
+            ) : null}
+            <Chip tone={scoreTone(quote.score_label)}>
+              {(quote.score_label ?? "—").toUpperCase()}
+              {quote.score != null ? ` ${quote.score}` : ""}
+            </Chip>
+            <Chip tone={statusTone(status?.slug ?? quote.status)}>{status?.label ?? quote.status}</Chip>
+          </div>
+          <a href={`mailto:${quote.contact_email}`} className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]">
+            Écrire
+          </a>
+          {quote.contact_phone ? (
+            <a href={`tel:${quote.contact_phone}`} className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">
+              Appeler
+            </a>
           ) : null}
-          <Chip tone={scoreTone(quote.score_label)}>
-            {(quote.score_label ?? "—").toUpperCase()}
-            {quote.score != null ? ` ${quote.score}` : ""}
-          </Chip>
-          <Chip tone={statusTone(status?.slug ?? quote.status)}>{status?.label ?? quote.status}</Chip>
-        </div>
-        <a href={`mailto:${quote.contact_email}`} className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]">
-          Écrire
-        </a>
-        {quote.contact_phone ? (
-          <a href={`tel:${quote.contact_phone}`} className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">
-            Appeler
-          </a>
-        ) : null}
-        {detail.suiviUrl ? (
-          <a href={detail.suiviUrl} target="_blank" rel="noreferrer" className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">
-            Espace prospect
-          </a>
-        ) : null}
-        <Link href="/devis" className="text-sm text-slate-500 hover:text-slate-900">
-          Retour
-        </Link>
-      </ListToolbar>
+          {detail.suiviUrl ? (
+            <a href={detail.suiviUrl} target="_blank" rel="noreferrer" className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">
+              Espace prospect
+            </a>
+          ) : null}
+        </ListToolbar>
 
-      <QuoteTabs
-        quoteId={quote.id}
-        active={tab}
-        counts={{
-          projet: detail.items.length,
-          client: detail.siblings.length,
-          echanges: detail.notes.length + detail.messages.length,
-          automations: liveAutomations,
-        }}
-      />
+        <QuoteTabs
+          quoteId={quote.id}
+          active={tab}
+          counts={{
+            projet: detail.items.length,
+            client: detail.siblings.length,
+            echanges: detail.notes.length + detail.messages.length,
+            automations: liveAutomations,
+          }}
+        />
+      </div>
 
       {tab === "dossier" ? <DossierTab detail={detail} changeStatus={changeStatus} changeAssignee={changeAssignee} /> : null}
       {tab === "projet" ? <ProjetTab detail={detail} /> : null}
