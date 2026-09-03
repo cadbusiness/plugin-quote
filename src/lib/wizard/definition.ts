@@ -3,6 +3,7 @@ import type { Database, Json } from "@/lib/db/database.types";
 import type {
   ConfiguratorDefinition,
   Product,
+  ProductImage,
   ProductOption,
   QuestionOptions,
   QuestionType,
@@ -19,16 +20,20 @@ function asRecord(value: Json): Record<string, unknown> {
 
 function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Product {
   const options = Array.isArray(row.options) ? (row.options as ProductOption[]) : [];
+  const images = Array.isArray(row.images) ? (row.images as unknown as ProductImage[]) : [];
+  const gallery = images.filter((image) => image && typeof image.src === "string" && image.src);
   return {
     id: row.id,
     name: row.name,
     description: row.description,
-    imageUrl: row.image_url,
+    imageUrl: row.image_url ?? gallery[0]?.src ?? null,
+    images: gallery,
     priceMin: row.price_min,
     priceMax: row.price_max,
     currency: row.currency,
     tags: row.tags ?? [],
     options,
+    stockStatus: row.stock_status ?? null,
   };
 }
 

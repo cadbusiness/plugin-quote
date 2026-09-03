@@ -1,224 +1,202 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { importProductsCsv } from "@/app/(app)/produits/actions";
+import { CreateProductDialog } from "@/components/catalog/create-product-dialog";
+import { Chip, type ChipTone } from "@/components/ui/chip";
+import { ClickableRow } from "@/components/ui/clickable-row";
+import { DataTable, ListPanel, ListPanelFooter, ListToolbar } from "@/components/ui/list-panel";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
-import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
-import { importProductsCsv, saveProduct, saveRule } from "@/app/(app)/actions";
 import { formatPrice } from "@/lib/format";
-import type { RuleConditions } from "@/lib/wizard/types";
+import type { Json } from "@/lib/db/database.types";
+import { createClient } from "@/lib/supabase/server";
 
-export default async function ProductsPage() {
+const SOURCES: Record<string, { label: string; tone: ChipTone }> = {
+  manual: { label: "Manuel", tone: "slate" },
+  csv: { label: "CSV", tone: "slate" },
+  woocommerce: { label: "WooCommerce", tone: "violet" },
+  shopify: { label: "Shopify", tone: "emerald" },
+};
+
+const FILTERS = [
+  { value: "", label: "Tout le catalogue" },
+  { value: "manual", label: "Ajoutés à la main" },
+  { value: "woocommerce", label: "WooCommerce" },
+  { value: "shopify", label: "Shopify" },
+];
+
+function countOf(value: Json) {
+  return Array.isArray(value) ? value.length : 0;
+}
+
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; source?: string; statut?: string }>;
+}) {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");
   if (!isAdminRole(ctx.role)) redirect("/devis");
+
+  const filters = await searchParams;
+  const search = (filters.q ?? "").trim();
+  const source = filters.source ?? "";
+  const statut = filters.statut ?? "";
+
   const supabase = await createClient();
-  const [{ data: products }, { data: rules }, { data: imports }] = await Promise.all([
-    supabase.from("products").select("*").eq("organization_id", ctx.organization.id).order("name"),
-    supabase
-      .from("suggestion_rules")
-      .select("*")
-      .eq("organization_id", ctx.organization.id)
-      .order("priority", { ascending: false }),
-    supabase
-      .from("product_imports")
-      .select("id, row_count, source, imported_at")
-      .eq("organization_id", ctx.organization.id)
-      .order("imported_at", { ascending: false })
-      .limit(5),
-  ]);
+
+  let query = supabase
+    .from("products")
+    .select("*")
+    .eq("organization_id", ctx.organization.id)
+    .order("name");
+  if (search) query = query.or(`name.ilike.%${search}%,sku.ilike.%${search}%,category.ilike.%${search}%`);
+  if (source === "manual") query = query.in("source", ["manual", "csv"]);
+  else if (source) query = query.eq("source", source);
+  if (statut === "actifs") query = query.eq("is_active", true);
+  else if (statut === "inactifs") query = query.eq("is_active", false);
+
+  const [{ data: products }, { data: funnels }, { count: totalCount }, { data: connections }] =
+    await Promise.all([
+      query,
+      supabase
+        .from("configurators")
+        .select("id, name")
+        .eq("organization_id", ctx.organization.id)
+        .order("created_at", { ascending: true }),
+      supabase
+        .from("products")
+        .select("id", { count: "exact", head: true })
+        .eq("organization_id", ctx.organization.id),
+      supabase
+        .from("catalog_connections")
+        .select("id, label, provider")
+        .eq("organization_id", ctx.organization.id),
+    ]);
+
+  const rows = products ?? [];
+  const synced = rows.filter((product) => product.source !== "manual" && product.source !== "csv").length;
 
   return (
     <ListPanel>
       <ListToolbar>
-        <form action={importProductsCsv} className="mr-auto flex items-center gap-2">
-          <input type="file" name="file" accept=".csv,text/csv" className="text-sm" />
-          <button className="rounded-md bg-slate-950 px-3 py-1.5 text-sm text-white">Importer CSV</button>
+        <form className="mr-auto flex flex-wrap items-center gap-2">
+          <input
+            name="q"
+            defaultValue={search}
+            placeholder="Nom, SKU, catégorie…"
+            className="w-56 rounded-md border border-slate-200 px-2 py-1.5 text-sm"
+          />
+          <select
+            name="source"
+            defaultValue={source}
+            className="rounded-md border border-slate-200 px-2 py-1.5 text-sm"
+          >
+            {FILTERS.map((filter) => (
+              <option key={filter.value} value={filter.value}>
+                {filter.label}
+              </option>
+            ))}
+          </select>
+          <select
+            name="statut"
+            defaultValue={statut}
+            className="rounded-md border border-slate-200 px-2 py-1.5 text-sm"
+          >
+            <option value="">Actifs et inactifs</option>
+            <option value="actifs">Actifs</option>
+            <option value="inactifs">Inactifs</option>
+          </select>
+          <button className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">Filtrer</button>
         </form>
-        <span className="text-xs text-slate-500">
-          Colonnes : name, sku, description, price_min, price_max, tags, category
-        </span>
-        <Link href="/woocommerce" className="text-sm underline">
-          Sync WooCommerce
+
+        <form action={importProductsCsv} className="flex items-center gap-2">
+          <input type="hidden" name="configurator_id" value={funnels?.[0]?.id ?? ""} />
+          <input type="file" name="file" accept=".csv,text/csv" className="w-44 text-xs" />
+          <button className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">CSV</button>
+        </form>
+
+        <Link href="/produits/regles" className="text-sm text-slate-600 underline">
+          Règles Si/Alors
         </Link>
+        <CreateProductDialog funnels={funnels ?? []} />
       </ListToolbar>
-      {(imports ?? []).length ? (
-        <p className="border-b border-slate-100 px-4 py-2 text-xs text-slate-500 lg:px-6">
-          Dernier import : {imports![0].row_count} lignes ({imports![0].source})
-        </p>
-      ) : null}
-      <div className="divide-y divide-slate-200">
-        {(products ?? []).map((product) => (
-          <form key={product.id} action={saveProduct} className="grid gap-3 px-4 py-5 sm:grid-cols-2 lg:px-6">
-            <input type="hidden" name="id" value={product.id} />
-            <label className="text-sm">
-              Nom
-              <input name="name" defaultValue={product.name} className="mt-1 w-full border border-slate-200 px-2 py-1.5" />
-            </label>
-            <label className="text-sm">
-              SKU
-              <input name="sku" defaultValue={product.sku ?? ""} className="mt-1 w-full border border-slate-200 px-2 py-1.5" />
-            </label>
-            <label className="text-sm">
-              Tags
-              <input
-                name="tags"
-                defaultValue={product.tags.join(", ")}
-                className="mt-1 w-full border border-slate-200 px-2 py-1.5"
-              />
-            </label>
-            <label className="text-sm">
-              Catégorie
-              <input
-                name="category"
-                defaultValue={product.category ?? ""}
-                className="mt-1 w-full border border-slate-200 px-2 py-1.5"
-              />
-            </label>
-            <label className="text-sm sm:col-span-2">
-              Description
-              <textarea
-                name="description"
-                defaultValue={product.description ?? ""}
-                className="mt-1 w-full border border-slate-200 px-2 py-1.5"
-              />
-            </label>
-            <label className="text-sm">
-              Prix min
-              <input
-                name="price_min"
-                type="number"
-                defaultValue={product.price_min ?? ""}
-                className="mt-1 w-full border border-slate-200 px-2 py-1.5"
-              />
-            </label>
-            <label className="text-sm">
-              Prix max
-              <input
-                name="price_max"
-                type="number"
-                defaultValue={product.price_max ?? ""}
-                className="mt-1 w-full border border-slate-200 px-2 py-1.5"
-              />
-            </label>
-            <div className="sm:col-span-2 text-right">
-              <span className="mr-3 text-xs text-slate-500">{formatPrice(product.price_min, product.price_max)}</span>
-              <button className="rounded-md bg-slate-950 px-3 py-1.5 text-sm text-white">Enregistrer</button>
-            </div>
-          </form>
-        ))}
-        <section className="px-4 py-6 lg:px-6">
-          <h2 className="text-lg font-semibold">Si / Alors — suggestions</h2>
-          <p className="mt-1 text-sm text-slate-500">
-            Si le prospect répond… alors proposer ces produits. Sans code.
+
+      {rows.length ? (
+        <DataTable headers={["", "Produit", "Origine", "Catégorie", "Prix", "Statut"]}>
+          {rows.map((product) => {
+            const origin = SOURCES[product.source ?? "manual"] ?? SOURCES.manual;
+            const variants = countOf(product.variants);
+            return (
+              <ClickableRow key={product.id} href={`/produits/${product.id}`}>
+                <td className="py-2 pl-4 pr-0 lg:pl-6">
+                  {product.image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={product.image_url}
+                      alt=""
+                      className="h-10 w-10 rounded-md object-cover ring-1 ring-slate-200"
+                    />
+                  ) : (
+                    <span className="flex h-10 w-10 items-center justify-center rounded-md bg-slate-100 text-[9px] text-slate-400">
+                      —
+                    </span>
+                  )}
+                </td>
+                <td className="px-4 py-2 lg:px-6">
+                  <span className="block font-medium text-slate-900">{product.name}</span>
+                  <span className="block text-xs text-slate-500">
+                    {product.sku ? `SKU ${product.sku}` : "Sans SKU"}
+                    {variants ? ` · ${variants} déclinaisons` : ""}
+                  </span>
+                </td>
+                <td className="px-4 py-2 lg:px-6">
+                  <Chip tone={origin.tone}>{origin.label}</Chip>
+                </td>
+                <td className="px-4 py-2 text-slate-600 lg:px-6">{product.category ?? "—"}</td>
+                <td className="px-4 py-2 tabular-nums text-slate-900 lg:px-6">
+                  {formatPrice(product.price_min, product.price_max)}
+                </td>
+                <td className="px-4 py-2 lg:px-6">
+                  {product.is_active ? (
+                    <Chip tone="emerald">Actif</Chip>
+                  ) : product.archived_by_sync ? (
+                    <Chip tone="amber">Retiré de la boutique</Chip>
+                  ) : (
+                    <Chip tone="slate">Inactif</Chip>
+                  )}
+                </td>
+              </ClickableRow>
+            );
+          })}
+        </DataTable>
+      ) : (
+        <div className="px-4 py-16 text-center lg:px-6">
+          <p className="text-sm font-medium text-slate-900">
+            {totalCount ? "Aucun produit avec ces filtres" : "Votre catalogue est vide"}
           </p>
-          <div className="mt-4 space-y-8">
-            {(rules ?? []).map((rule) => {
-              const conditions = ((rule.conditions ?? {}) as RuleConditions).all ?? [];
-              const rows = conditions.length ? conditions : [{ key: "", op: "eq" as const, value: "" }];
-              return (
-                <form key={rule.id} action={saveRule} className="grid gap-3 border-t border-slate-100 pt-4">
-                  <input type="hidden" name="id" value={rule.id} />
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <label className="text-sm">
-                      Nom interne
-                      <input name="name" defaultValue={rule.name} className="mt-1 w-full border border-slate-200 px-2 py-1.5" />
-                    </label>
-                    <label className="text-sm">
-                      Priorité
-                      <input
-                        name="priority"
-                        type="number"
-                        defaultValue={rule.priority}
-                        className="mt-1 w-full border border-slate-200 px-2 py-1.5"
-                      />
-                    </label>
-                    <label className="text-sm sm:col-span-2">
-                      Titre affiché
-                      <input
-                        name="headline"
-                        defaultValue={rule.headline ?? ""}
-                        className="mt-1 w-full border border-slate-200 px-2 py-1.5"
-                      />
-                    </label>
-                    <label className="text-sm sm:col-span-2">
-                      Description
-                      <textarea
-                        name="description"
-                        defaultValue={rule.description ?? ""}
-                        className="mt-1 w-full border border-slate-200 px-2 py-1.5"
-                      />
-                    </label>
-                  </div>
-                  <p className="text-sm font-medium">Si…</p>
-                  <div className="space-y-2">
-                    {rows.map((cond, i) => (
-                      <div key={`${rule.id}-${i}`} className="grid gap-2 sm:grid-cols-3">
-                        <input
-                          name="cond_key"
-                          defaultValue={cond.key}
-                          placeholder="clé (ex. type, surface)"
-                          className="border border-slate-200 px-2 py-1.5 text-sm"
-                        />
-                        <select name="cond_op" defaultValue={cond.op} className="border border-slate-200 px-2 py-1.5 text-sm">
-                          <option value="eq">égal</option>
-                          <option value="neq">différent</option>
-                          <option value="gte">≥</option>
-                          <option value="lte">≤</option>
-                          <option value="contains">contient</option>
-                          <option value="in">parmi</option>
-                        </select>
-                        <input
-                          name="cond_value"
-                          defaultValue={Array.isArray(cond.value) ? cond.value.join(",") : String(cond.value ?? "")}
-                          placeholder="valeur"
-                          className="border border-slate-200 px-2 py-1.5 text-sm"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  <p className="text-sm font-medium">Alors suggérer…</p>
-                  <div className="grid gap-2 sm:grid-cols-2">
-                    {(products ?? []).map((product) => (
-                      <label key={product.id} className="flex items-center gap-2 text-sm">
-                        <input
-                          type="checkbox"
-                          name="product_ids"
-                          value={product.id}
-                          defaultChecked={rule.product_ids.includes(product.id)}
-                        />
-                        {product.name}
-                      </label>
-                    ))}
-                  </div>
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <label className="text-sm">
-                      Prix min
-                      <input
-                        name="price_min"
-                        type="number"
-                        defaultValue={rule.price_min ?? ""}
-                        className="mt-1 w-full border border-slate-200 px-2 py-1.5"
-                      />
-                    </label>
-                    <label className="text-sm">
-                      Prix max
-                      <input
-                        name="price_max"
-                        type="number"
-                        defaultValue={rule.price_max ?? ""}
-                        className="mt-1 w-full border border-slate-200 px-2 py-1.5"
-                      />
-                    </label>
-                  </div>
-                  <div className="text-right">
-                    <button className="rounded-md bg-slate-950 px-3 py-1.5 text-sm text-white">Enregistrer la règle</button>
-                  </div>
-                </form>
-              );
-            })}
-          </div>
-        </section>
-      </div>
+          <p className="mx-auto mt-1 max-w-md text-sm text-slate-500">
+            {totalCount
+              ? "Changez la recherche ou l’origine pour retrouver vos produits."
+              : "Ajoutez vos produits à la main, importez un CSV, ou branchez WooCommerce / Shopify pour récupérer descriptions, photos et prix automatiquement."}
+          </p>
+          {!totalCount ? (
+            <p className="mt-4 flex items-center justify-center gap-4">
+              <a href="#nouveau" className="text-sm font-medium text-[#C2410C] underline">
+                Ajouter un produit
+              </a>
+              <Link href="/integrations" className="text-sm text-slate-600 underline">
+                Connecter une boutique
+              </Link>
+            </p>
+          ) : null}
+        </div>
+      )}
+
+      <ListPanelFooter>
+        {rows.length} produit{rows.length > 1 ? "s" : ""} affiché{rows.length > 1 ? "s" : ""} sur{" "}
+        {totalCount ?? 0} · {synced} synchronisé{synced > 1 ? "s" : ""} depuis{" "}
+        {connections?.length ?? 0} boutique{(connections?.length ?? 0) > 1 ? "s" : ""}
+      </ListPanelFooter>
     </ListPanel>
   );
 }

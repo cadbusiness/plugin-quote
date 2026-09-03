@@ -4,7 +4,12 @@ import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
 
 const ROWS: { href: string; label: string; hint: string; admin?: boolean }[] = [
-  { href: "/woocommerce", label: "WooCommerce", hint: "Sync catalogue et commandes", admin: true },
+  {
+    href: "/integrations",
+    label: "Boutiques connectées",
+    hint: "WooCommerce, Shopify — sync du catalogue",
+    admin: true,
+  },
   { href: "/webhooks", label: "API & webhooks", hint: "Notifications vers vos outils", admin: true },
   { href: "/templates", label: "Emails", hint: "Templates prospect et commercial", admin: true },
   { href: "/equipe", label: "Équipe", hint: "Membres et rôles", admin: true },

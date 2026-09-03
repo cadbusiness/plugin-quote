@@ -27,10 +27,11 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 - **Saisie manuelle (nom, SKU, description, prix min/max, tags, catégorie)** — Partiel. Image non exposée dans l’UI.
 - **Import CSV** — Livré.
 - **Gestion des catégories** — Partiel. Champ sur le produit, pas de module dédié.
-- **Activation / désactivation produits** — Partiel. `is_active` en base, pas de toggle catalogue.
+- **Activation / désactivation produits** — Livré. Toggle sur la fiche produit, statut en liste.
 - **Si/Alors réponses → suggestions produits** — Livré.
 - **Page suggestions visuelles côté prospect** — Livré.
-- **Sync WooCommerce (import + sync)** — Partiel. Connexion enregistrée, sync à fiabiliser.
+- **Sync WooCommerce (import + sync)** — Livré. `/integrations` : produits, descriptions, photos, prix, déclinaisons ; sync manuelle, planifiée et webhook.
+- **Sync Shopify (import + sync)** — Livré. Admin GraphQL, app personnalisée `read_products`, mêmes réglages que Woo.
 
 ### Demandes
 - **Vue liste tableau** — Livré. `/devis`, ligne entière cliquable.
@@ -80,7 +81,7 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 - **Widget JS universel** — Livré.
 - **Plugin WordPress + bloc Gutenberg** — Livré.
 - **Webhook sortant / export JSON** — Livré.
-- **WooCommerce (catalogue + commandes + statuts)** — Partiel. Settings only.
+- **WooCommerce (catalogue + commandes + statuts)** — Partiel. Catalogue livré (import, sync, webhooks, appairage plugin) ; commandes et statuts à faire.
 
 ### Paramètres cœur
 - **Templates email personnalisables** — Livré.
@@ -99,7 +100,6 @@ Hors menu tant que le funnel et le catalogue ne sont pas au niveau.
 - **Domaine custom / white-label** — Ensuite.
 
 ### Catalogue & CRM
-- **Sync Shopify** — Ensuite.
 - **Vue pipeline Kanban** — Ensuite.
 - **Newsletter segmentée par données de configuration** — Ensuite.
 

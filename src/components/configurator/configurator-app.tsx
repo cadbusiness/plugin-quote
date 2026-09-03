@@ -739,9 +739,20 @@ function SuggestionsPanel({
             <h3 className="mt-1 text-lg font-semibold">{s.headline ?? s.name}</h3>
             <p className="mt-2 text-sm text-slate-600">{s.description}</p>
             <p className="mt-4 text-sm font-medium">{formatPrice(s.priceMin, s.priceMax)}</p>
-            <ul className="mt-3 space-y-1 text-sm text-slate-500">
+            <ul className="mt-3 space-y-2 text-sm text-slate-500">
               {s.products.map((p) => (
-                <li key={p.id}>{p.name}</li>
+                <li key={p.id} className="flex items-center gap-2">
+                  {p.imageUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={p.imageUrl}
+                      alt=""
+                      loading="lazy"
+                      className="h-9 w-9 shrink-0 rounded-md object-cover ring-1 ring-slate-200"
+                    />
+                  ) : null}
+                  <span className="min-w-0 flex-1 truncate">{p.name}</span>
+                </li>
               ))}
             </ul>
           </button>
@@ -774,9 +785,23 @@ function CustomizePanel({
       {products.map((product) => (
         <div key={product.id} className="rounded-xl border border-slate-200 bg-white p-5">
           <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="font-medium">{product.name}</p>
-              <p className="text-sm text-slate-500">{formatPrice(product.priceMin, product.priceMax)}</p>
+            <div className="flex min-w-0 items-start gap-3">
+              {product.imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={product.imageUrl}
+                  alt={product.name}
+                  loading="lazy"
+                  className="h-20 w-20 shrink-0 rounded-lg object-cover ring-1 ring-slate-200"
+                />
+              ) : null}
+              <div className="min-w-0">
+                <p className="font-medium">{product.name}</p>
+                <p className="text-sm text-slate-500">{formatPrice(product.priceMin, product.priceMax)}</p>
+                {product.description ? (
+                  <p className="mt-1 line-clamp-3 text-sm text-slate-500">{product.description}</p>
+                ) : null}
+              </div>
             </div>
             <label className="text-sm">
               Qté
@@ -797,6 +822,20 @@ function CustomizePanel({
               />
             </label>
           </div>
+          {product.images.length > 1 ? (
+            <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
+              {product.images.slice(0, 6).map((image) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={image.src}
+                  src={image.src}
+                  alt={image.alt ?? ""}
+                  loading="lazy"
+                  className="h-16 w-16 shrink-0 rounded-md object-cover ring-1 ring-slate-200"
+                />
+              ))}
+            </div>
+          ) : null}
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             {product.options.map((opt) => (
               <label key={opt.key} className="text-sm">

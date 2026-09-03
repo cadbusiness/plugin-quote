@@ -12,6 +12,172 @@ export type Database = {
   }
   public: {
     Tables: {
+      catalog_connections: {
+        Row: {
+          configurator_id: string | null
+          created_at: string
+          credentials: Json
+          credentials_hint: string | null
+          currency: string
+          id: string
+          label: string
+          last_error: string | null
+          last_sync_at: string | null
+          organization_id: string
+          product_count: number
+          provider: string
+          settings: Json
+          status: string
+          store_domain: string
+          updated_at: string
+          webhook_secret: string | null
+        }
+        Insert: {
+          configurator_id?: string | null
+          created_at?: string
+          credentials?: Json
+          credentials_hint?: string | null
+          currency?: string
+          id?: string
+          label: string
+          last_error?: string | null
+          last_sync_at?: string | null
+          organization_id: string
+          product_count?: number
+          provider: string
+          settings?: Json
+          status?: string
+          store_domain: string
+          updated_at?: string
+          webhook_secret?: string | null
+        }
+        Update: {
+          configurator_id?: string | null
+          created_at?: string
+          credentials?: Json
+          credentials_hint?: string | null
+          currency?: string
+          id?: string
+          label?: string
+          last_error?: string | null
+          last_sync_at?: string | null
+          organization_id?: string
+          product_count?: number
+          provider?: string
+          settings?: Json
+          status?: string
+          store_domain?: string
+          updated_at?: string
+          webhook_secret?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "catalog_connections_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      catalog_pairings: {
+        Row: {
+          code: string
+          configurator_id: string | null
+          connection_id: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          organization_id: string
+          paired_site: string | null
+          provider: string
+          status: string
+          used_at: string | null
+        }
+        Insert: {
+          code: string
+          configurator_id?: string | null
+          connection_id?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          organization_id: string
+          paired_site?: string | null
+          provider?: string
+          status?: string
+          used_at?: string | null
+        }
+        Update: {
+          code?: string
+          configurator_id?: string | null
+          connection_id?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          organization_id?: string
+          paired_site?: string | null
+          provider?: string
+          status?: string
+          used_at?: string | null
+        }
+        Relationships: []
+      }
+      catalog_sync_runs: {
+        Row: {
+          archived_count: number
+          connection_id: string
+          created_count: number
+          error: string | null
+          failed_count: number
+          finished_at: string | null
+          id: string
+          organization_id: string
+          skipped_count: number
+          started_at: string
+          status: string
+          trigger: string
+          updated_count: number
+        }
+        Insert: {
+          archived_count?: number
+          connection_id: string
+          created_count?: number
+          error?: string | null
+          failed_count?: number
+          finished_at?: string | null
+          id?: string
+          organization_id: string
+          skipped_count?: number
+          started_at?: string
+          status?: string
+          trigger?: string
+          updated_count?: number
+        }
+        Update: {
+          archived_count?: number
+          connection_id?: string
+          created_count?: number
+          error?: string | null
+          failed_count?: number
+          finished_at?: string | null
+          id?: string
+          organization_id?: string
+          skipped_count?: number
+          started_at?: string
+          status?: string
+          trigger?: string
+          updated_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "catalog_sync_runs_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "catalog_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       configurators: {
         Row: {
           chat_enabled: boolean
@@ -504,12 +670,19 @@ export type Database = {
       }
       products: {
         Row: {
+          archived_by_sync: boolean
           configurator_id: string
+          connection_id: string | null
+          content_hash: string | null
           created_at: string
           currency: string
           description: string | null
+          external_id: string | null
+          external_updated_at: string | null
+          external_url: string | null
           id: string
           image_url: string | null
+          images: Json
           is_active: boolean
           name: string
           options: Json
@@ -519,15 +692,27 @@ export type Database = {
           sku: string | null
           category: string | null
           required_fields: Json
+          source: string
+          stock_status: string | null
+          synced_at: string | null
           tags: string[]
+          updated_at: string
+          variants: Json
         }
         Insert: {
+          archived_by_sync?: boolean
           configurator_id: string
+          connection_id?: string | null
+          content_hash?: string | null
           created_at?: string
           currency?: string
           description?: string | null
+          external_id?: string | null
+          external_updated_at?: string | null
+          external_url?: string | null
           id?: string
           image_url?: string | null
+          images?: Json
           is_active?: boolean
           name: string
           options?: Json
@@ -537,15 +722,27 @@ export type Database = {
           sku?: string | null
           category?: string | null
           required_fields?: Json
+          source?: string
+          stock_status?: string | null
+          synced_at?: string | null
           tags?: string[]
+          updated_at?: string
+          variants?: Json
         }
         Update: {
+          archived_by_sync?: boolean
           configurator_id?: string
+          connection_id?: string | null
+          content_hash?: string | null
           created_at?: string
           currency?: string
           description?: string | null
+          external_id?: string | null
+          external_updated_at?: string | null
+          external_url?: string | null
           id?: string
           image_url?: string | null
+          images?: Json
           is_active?: boolean
           name?: string
           options?: Json
@@ -555,7 +752,12 @@ export type Database = {
           sku?: string | null
           category?: string | null
           required_fields?: Json
+          source?: string
+          stock_status?: string | null
+          synced_at?: string | null
           tags?: string[]
+          updated_at?: string
+          variants?: Json
         }
         Relationships: [
           {
@@ -1169,3 +1371,9 @@ export type Database = {
 
 export type Tables<T extends keyof Database["public"]["Tables"]> =
   Database["public"]["Tables"][T]["Row"]
+
+export type TablesInsert<T extends keyof Database["public"]["Tables"]> =
+  Database["public"]["Tables"][T]["Insert"]
+
+export type TablesUpdate<T extends keyof Database["public"]["Tables"]> =
+  Database["public"]["Tables"][T]["Update"]

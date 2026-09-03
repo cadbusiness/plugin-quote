@@ -51,16 +51,24 @@ export type WizardStep = {
   questions: WizardQuestion[];
 };
 
+export type ProductImage = {
+  src: string;
+  alt: string | null;
+};
+
 export type Product = {
   id: string;
   name: string;
   description: string | null;
   imageUrl: string | null;
+  /** Galerie complète quand le produit vient d'une boutique connectée. */
+  images: ProductImage[];
   priceMin: number | null;
   priceMax: number | null;
   currency: string;
   tags: string[];
   options: ProductOption[];
+  stockStatus: string | null;
 };
 
 export type Suggestion = {

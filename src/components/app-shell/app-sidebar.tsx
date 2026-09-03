@@ -22,6 +22,7 @@ const GROUPS: { label: string; items: Item[] }[] = [
       { href: "/accueil", label: "Accueil", exact: true },
       { href: "/funnels", label: "Funnels", admin: true },
       { href: "/produits", label: "Catalogue", exact: true, admin: true },
+      { href: "/integrations", label: "Boutiques", admin: true },
     ],
   },
   {
@@ -155,7 +156,6 @@ export function AppSidebar({
             className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm ${
               pathname.startsWith("/parametres") ||
               pathname.startsWith("/webhooks") ||
-              pathname.startsWith("/woocommerce") ||
               pathname.startsWith("/templates")
                 ? "bg-white font-medium text-[#C2410C] ring-1 ring-orange-200"
                 : "text-slate-700 hover:bg-white/80"
