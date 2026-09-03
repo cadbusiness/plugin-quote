@@ -1383,6 +1383,158 @@ export type Database = {
           },
         ]
       }
+      workflow_run_steps: {
+        Row: {
+          error: string | null
+          finished_at: string | null
+          id: string
+          node_id: string
+          organization_id: string
+          output: Json
+          run_id: string
+          started_at: string
+          status: string
+        }
+        Insert: {
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          node_id: string
+          organization_id: string
+          output?: Json
+          run_id: string
+          started_at?: string
+          status: string
+        }
+        Update: {
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          node_id?: string
+          organization_id?: string
+          output?: Json
+          run_id?: string
+          started_at?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_run_steps_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_run_steps_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_runs: {
+        Row: {
+          context: Json
+          error: string | null
+          id: string
+          organization_id: string
+          started_at: string
+          status: string
+          subject_id: string
+          subject_type: string
+          updated_at: string
+          wakeup_at: string | null
+          workflow_id: string
+        }
+        Insert: {
+          context?: Json
+          error?: string | null
+          id?: string
+          organization_id: string
+          started_at?: string
+          status?: string
+          subject_id: string
+          subject_type: string
+          updated_at?: string
+          wakeup_at?: string | null
+          workflow_id: string
+        }
+        Update: {
+          context?: Json
+          error?: string | null
+          id?: string
+          organization_id?: string
+          started_at?: string
+          status?: string
+          subject_id?: string
+          subject_type?: string
+          updated_at?: string
+          wakeup_at?: string | null
+          workflow_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_runs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_runs_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflows: {
+        Row: {
+          created_at: string
+          definition: Json
+          id: string
+          name: string
+          organization_id: string
+          status: string
+          trigger_config: Json
+          trigger_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          definition?: Json
+          id?: string
+          name: string
+          organization_id: string
+          status?: string
+          trigger_config?: Json
+          trigger_type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          definition?: Json
+          id?: string
+          name?: string
+          organization_id?: string
+          status?: string
+          trigger_config?: Json
+          trigger_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflows_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {}
     Functions: {}

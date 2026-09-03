@@ -7,6 +7,7 @@ import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { logActivity, notifyUser } from "@/lib/crm/activity";
 import { sendTemplateEmail } from "@/lib/email/send";
 import { getAppUrl } from "@/lib/supabase/env";
+import { startWorkflows } from "@/lib/workflows/engine";
 
 export async function changeQuoteStatus(quoteId: string, statusId: string) {
   const ctx = await getOrgContext();
@@ -47,6 +48,17 @@ export async function changeQuoteStatus(quoteId: string, statusId: string) {
     type: "status_changed",
     payload: { from: fromLabel, status: status.slug, label: status.label },
   });
+  try {
+    await startWorkflows({
+      triggerType: "quote.status_changed",
+      organizationId: ctx.organization.id,
+      subjectType: "quote",
+      subjectId: quoteId,
+      statusSlug: status.slug,
+    });
+  } catch (error) {
+    console.error("Workflow status trigger failed", error);
+  }
   revalidatePath("/devis");
   revalidatePath(`/devis/${quoteId}`);
 }
@@ -271,32 +283,6 @@ export async function updateMemberRole(id: string, role: string) {
     .eq("id", id)
     .eq("organization_id", ctx.organization.id);
   revalidatePath("/equipe");
-}
-
-export async function toggleAutomation(id: string, active: boolean) {
-  const ctx = await getOrgContext();
-  if (!ctx) redirect("/onboarding");
-  if (!isAdminRole(ctx.role)) redirect("/devis");
-  const supabase = await createClient();
-  await supabase
-    .from("automation_flows")
-    .update({ active })
-    .eq("id", id)
-    .eq("organization_id", ctx.organization.id);
-  revalidatePath("/automations");
-}
-
-export async function saveAutomationDelay(id: string, hours: number) {
-  const ctx = await getOrgContext();
-  if (!ctx) redirect("/onboarding");
-  if (!isAdminRole(ctx.role)) redirect("/devis");
-  const supabase = await createClient();
-  await supabase
-    .from("automation_flows")
-    .update({ delay_hours: Math.max(0, hours) })
-    .eq("id", id)
-    .eq("organization_id", ctx.organization.id);
-  revalidatePath("/automations");
 }
 
 export async function saveGaMeasurementId(formData: FormData) {

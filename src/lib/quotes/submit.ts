@@ -3,6 +3,7 @@ import { scoreQuote } from "@/lib/quotes/score";
 import { evaluateSuggestions, mergeAnswers } from "@/lib/wizard/suggestions";
 import { mapProductRow } from "@/lib/wizard/definition";
 import { sendQuoteEmails } from "@/lib/email/send";
+import { cancelSessionRuns, startWorkflows } from "@/lib/workflows/engine";
 import { dispatchQuoteWebhooks } from "@/lib/webhooks/dispatch";
 import { renderQuotePdf } from "@/lib/pdf/render";
 import type { ContactPayload, Customization } from "@/lib/wizard/types";
@@ -174,19 +175,49 @@ export async function submitQuote(input: {
   }
 
   try {
-    await sendQuoteEmails({
-      organization: org!,
-      quote,
-      answers,
+    await cancelSessionRuns(session.organization_id, session.id);
+    const started = await startWorkflows({
+      triggerType: "quote.submitted",
+      organizationId: session.organization_id,
+      subjectType: "quote",
+      subjectId: quote.id,
+      suiviUrl: access?.url,
+      pin: access?.pin,
       suggestionName: selected?.headline ?? selected?.name ?? "Configuration",
       priceMin: selected?.priceMin ?? null,
       priceMax: selected?.priceMax ?? null,
       pdf: pdfBuffer,
-      suiviUrl: access?.url,
-      pin: access?.pin,
     });
+    if (started.started === 0) {
+      await sendQuoteEmails({
+        organization: org!,
+        quote,
+        answers,
+        suggestionName: selected?.headline ?? selected?.name ?? "Configuration",
+        priceMin: selected?.priceMin ?? null,
+        priceMax: selected?.priceMax ?? null,
+        pdf: pdfBuffer,
+        suiviUrl: access?.url,
+        pin: access?.pin,
+      });
+    }
   } catch (error) {
-    console.error("Email send failed", error);
+    console.error("Workflow start failed", error);
+    try {
+      await sendQuoteEmails({
+        organization: org!,
+        quote,
+        answers,
+        suggestionName: selected?.headline ?? selected?.name ?? "Configuration",
+        priceMin: selected?.priceMin ?? null,
+        priceMax: selected?.priceMax ?? null,
+        pdf: pdfBuffer,
+        suiviUrl: access?.url,
+        pin: access?.pin,
+      });
+    } catch (emailError) {
+      console.error("Email send failed", emailError);
+    }
   }
 
   try {

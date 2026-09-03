@@ -104,7 +104,12 @@ export async function sendQuoteEmails(input: {
   }
 }
 
-export async function sendTemplateEmail(input: { to: string; subject: string; body: string }) {
+export async function sendTemplateEmail(input: {
+  to: string;
+  subject: string;
+  body: string;
+  attachments?: { filename: string; content: Buffer }[];
+}) {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
     console.warn("RESEND_API_KEY manquante — email non envoyé");
@@ -112,7 +117,13 @@ export async function sendTemplateEmail(input: { to: string; subject: string; bo
   }
   const resend = new Resend(apiKey);
   const from = process.env.RESEND_FROM || "QuoteBuilder <devis@localhost>";
-  await resend.emails.send({ from, to: input.to, subject: input.subject, text: input.body });
+  await resend.emails.send({
+    from,
+    to: input.to,
+    subject: input.subject,
+    text: input.body,
+    attachments: input.attachments,
+  });
 }
 
 export { fill };

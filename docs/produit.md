@@ -54,14 +54,18 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 - **Historique des échanges** — Livré.
 
 ### Automatisations
-- **Confirmation prospect T+0 + PDF** — Livré.
+- **Canvas de parcours (emails, wait, branches devis, assignation, statut)** — Livré. `/automations`, éditeur `/automations/[id]`.
+- **Moteur d’exécution par demande ou session** — Livré. Runs + steps, cron 15 min.
+- **Triggers : soumission, abandon, changement de statut** — Livré.
+- **Branches métier (score, statut, réponses, produits, assignee)** — Livré.
+- **Confirmation prospect T+0 + PDF** — Livré. Nœud email du parcours demande.
 - **Notification commercial à la soumission** — Livré.
-- **Relance abandon** — Partiel. Seed 1 h + 24 h (pas 30 min).
-- **Rappel interne si non traité sous 4 h** — Livré.
-- **Email rassurant prospect T+24 h** — Livré.
-- **Relance douce T+3 j avec lien de reprise** — Partiel. Flux 72 h présent ; lien de reprise surtout sur les abandons.
-- **Délais et contenus configurables** — Livré. `/automations`, `/templates`.
-- **Chaque flux activable / désactivable** — Livré.
+- **Relance abandon 1 h / 24 h** — Livré. Parcours abandon seedé.
+- **Rappel interne si non traité sous 4 h** — Livré. Wait + branche statut Nouveau.
+- **Email rassurant T+24 h, photo, relance T+3 j** — Livré. Dans le même parcours demande.
+- **Suivi des exécutions (liste + fiche demande)** — Livré.
+- **Délais et contenus configurables** — Livré. Canvas + `/templates`.
+- **Chaque parcours activable / désactivable** — Livré. Draft / Actif.
 
 ### Statistiques
 - **KPI + tunnel visiteurs → gagné** — Livré. `/stats`, événements `analytics_events`.
@@ -103,9 +107,14 @@ Hors menu tant que le funnel et le catalogue ne sont pas au niveau.
 - **Vue pipeline Kanban** — Ensuite.
 - **Newsletter segmentée par données de configuration** — Ensuite.
 
-### Automatisations longues
+### Automatisations avancées
 - **Nurturing T+7 j (contenu sectoriel)** — Ensuite.
 - **Réactivation T+30 j** — Ensuite.
+- **A/B test de parcours** — Ensuite.
+- **Tags / segments contacts** — Ensuite.
+- **Branches sur ouverture / clic email** — Ensuite.
+- **Builder IA de parcours** — Ensuite.
+- **SMTP / domaine d’envoi custom** — Ensuite.
 
 ### Pilotage
 - **Taux de complétion par étape du funnel** — Livré (tunnel `/stats`).

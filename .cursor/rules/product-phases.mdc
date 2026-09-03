@@ -10,7 +10,7 @@ Carte officielle : `docs/produit.md`.
 
 ## Cœur (maintenant)
 
-Funnel (création guidée, steps, 3 modes, embed widget/WP, URL publique, session + identité progressive), catalogue + Si/Alors + Woo à fiabiliser, demandes **en liste** (fiche, score, assignation, notes, abandons, CSV), espace prospect, automations de base (T+0, notif, abandon, 4 h, T+24 h, T+3 j), équipe, stats volume/conversion/délai/score, webhooks, templates email/PDF.
+Funnel (création guidée, steps, 3 modes, embed widget/WP, URL publique, session + identité progressive), catalogue + Si/Alors + Woo à fiabiliser, demandes **en liste** (fiche, score, assignation, notes, abandons, CSV), espace prospect, workflows canvas (emails, wait, branches devis, assignation, statut, exécutions), équipe, stats volume/conversion/délai/score, webhooks, templates email/PDF.
 
 ## Phase 2 (pas avant le cœur)
 

@@ -17,10 +17,11 @@ import { formatPrice } from "@/lib/format";
 import type { QuoteAutomation, QuoteDetail } from "@/lib/crm/quote-detail";
 
 const AUTOMATION_TONE: Record<QuoteAutomation["state"], ChipTone> = {
-  sent: "emerald",
-  planned: "sky",
-  due: "amber",
-  skipped: "slate",
+  running: "sky",
+  waiting: "amber",
+  completed: "emerald",
+  failed: "rose",
+  exited: "slate",
 };
 
 export function QuoteDetailView({
@@ -38,7 +39,7 @@ export function QuoteDetailView({
   const addNote = addQuoteNoteForm.bind(null, quote.id);
   const reply = replyToProspectForm.bind(null, quote.id);
   const logCall = logQuoteCallForm.bind(null, quote.id);
-  const liveAutomations = detail.automations.filter((flow) => flow.state === "due" || flow.state === "planned").length;
+  const liveAutomations = detail.automations.filter((flow) => flow.state === "waiting" || flow.state === "running").length;
   const callCount = detail.activities.filter((act) => act.type === "call_logged").length;
   const writeHref = quoteTabHref(quote.id, "echanges", "mail");
   const callHref = quoteTabHref(quote.id, "echanges", "call");
@@ -133,7 +134,9 @@ function DossierTab({
   const lastNote = detail.notes[0];
   const lastMessage = detail.messages[detail.messages.length - 1];
   const lastCall = detail.activities.find((act) => act.type === "call_logged");
-  const nextFlow = detail.automations.find((flow) => flow.state === "due") ?? detail.automations.find((flow) => flow.state === "planned");
+  const nextFlow =
+    detail.automations.find((flow) => flow.state === "waiting") ??
+    detail.automations.find((flow) => flow.state === "running");
   const statusLog = detail.activities.filter((act) => act.type === "status_changed").slice(0, 5);
   const journal = detail.activities
     .filter((act) => ["status_changed", "assigned", "call_logged", "message_sent", "email_sent"].includes(act.type))
@@ -603,25 +606,41 @@ function AutomationsTab({ detail }: { detail: QuoteDetail }) {
     <section>
       <SectionTitle>Parcours de cette demande</SectionTitle>
       {detail.automations.length ? (
-        <DataTable headers={["Flux", "Déclencheur", "Délai", "Destinataire", "État"]}>
+        <ul>
           {detail.automations.map((flow) => (
-            <tr key={flow.id} className="border-b border-slate-100">
-              <td className="px-4 py-2.5 lg:px-6">
-                <div className="font-medium">{flow.title}</div>
-                <div className="text-xs text-slate-500">{flow.hint}</div>
-              </td>
-              <td className="px-4 py-2.5 text-slate-500 lg:px-6">{flow.triggerLabel}</td>
-              <td className="px-4 py-2.5 tabular-nums lg:px-6">{flow.delayLabel}</td>
-              <td className="px-4 py-2.5 lg:px-6">{flow.recipientLabel}</td>
-              <td className="px-4 py-2.5 lg:px-6">
-                <Chip tone={AUTOMATION_TONE[flow.state]}>{flow.stateLabel}</Chip>
-                {flow.when ? <div className="mt-1 text-xs text-slate-400">{flow.when}</div> : null}
-              </td>
-            </tr>
+            <li key={flow.id} className="border-b border-slate-100">
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 px-4 py-3 lg:px-6">
+                <div>
+                  <div className="font-medium text-slate-900">{flow.title}</div>
+                  <div className="mt-0.5 text-xs text-slate-500">
+                    {flow.triggerLabel} · {flow.hint}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <Chip tone={AUTOMATION_TONE[flow.state]}>{flow.stateLabel}</Chip>
+                  {flow.when ? <div className="mt-1 text-xs text-slate-400">{flow.when}</div> : null}
+                </div>
+              </div>
+              {flow.steps.length ? (
+                <ol className="border-t border-slate-50 px-4 py-2 lg:px-6">
+                  {flow.steps.map((step) => (
+                    <li key={step.id} className="flex items-center justify-between gap-3 py-1 text-sm">
+                      <span>
+                        {step.label}
+                        {step.error ? <span className="text-rose-600"> — {step.error}</span> : null}
+                      </span>
+                      <span className="shrink-0 text-xs text-slate-400">
+                        {step.statusLabel} · {step.when}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              ) : null}
+            </li>
           ))}
-        </DataTable>
+        </ul>
       ) : (
-        <Empty>Aucun flux actif pour cette organisation.</Empty>
+        <Empty>Aucun parcours n’a encore démarré pour cette demande.</Empty>
       )}
     </section>
   );
