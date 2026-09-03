@@ -19,6 +19,22 @@ export async function changeQuoteStatus(quoteId: string, statusId: string) {
     .eq("organization_id", ctx.organization.id)
     .maybeSingle();
   if (!status) return;
+  const { data: current } = await supabase
+    .from("quotes")
+    .select("status_id, status")
+    .eq("id", quoteId)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  if (!current || current.status_id === status.id) return;
+  let fromLabel = current.status;
+  if (current.status_id) {
+    const { data: previous } = await supabase
+      .from("quote_statuses")
+      .select("label")
+      .eq("id", current.status_id)
+      .maybeSingle();
+    if (previous?.label) fromLabel = previous.label;
+  }
   await supabase
     .from("quotes")
     .update({ status_id: status.id, status: status.slug })
@@ -29,53 +45,110 @@ export async function changeQuoteStatus(quoteId: string, statusId: string) {
     quoteId,
     actorId: ctx.userId,
     type: "status_changed",
-    payload: { status: status.slug, label: status.label },
+    payload: { from: fromLabel, status: status.slug, label: status.label },
   });
   revalidatePath("/devis");
   revalidatePath(`/devis/${quoteId}`);
 }
 
-export async function assignQuote(quoteId: string, userId: string) {
-  const ctx = await getOrgContext();
-  if (!ctx) redirect("/onboarding");
-  const supabase = await createClient();
-  const assigned = userId || null;
+async function syncPrimaryAssignee(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  orgId: string,
+  quoteId: string,
+) {
+  const { data: rows } = await supabase
+    .from("quote_assignees")
+    .select("user_id")
+    .eq("quote_id", quoteId)
+    .order("created_at", { ascending: true });
   await supabase
     .from("quotes")
-    .update({ assigned_to: assigned })
+    .update({ assigned_to: rows?.[0]?.user_id ?? null })
     .eq("id", quoteId)
-    .eq("organization_id", ctx.organization.id);
-  await logActivity(supabase, {
-    organizationId: ctx.organization.id,
-    quoteId,
-    actorId: ctx.userId,
-    type: "assigned",
-    payload: { assigned_to: assigned },
-  });
-  if (assigned) {
-    const { data: quote } = await supabase.from("quotes").select("contact_name").eq("id", quoteId).single();
+    .eq("organization_id", orgId);
+  return rows ?? [];
+}
+
+export async function toggleQuoteAssignee(quoteId: string, userId: string, on: boolean) {
+  const ctx = await getOrgContext();
+  if (!ctx) redirect("/onboarding");
+  if (!userId) return;
+  const supabase = await createClient();
+  const { data: quote } = await supabase
+    .from("quotes")
+    .select("id, contact_name, organization_id")
+    .eq("id", quoteId)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  if (!quote) return;
+  if (on) {
+    await supabase.from("quote_assignees").upsert({
+      quote_id: quoteId,
+      user_id: userId,
+      organization_id: ctx.organization.id,
+    });
     await notifyUser(supabase, {
       organizationId: ctx.organization.id,
-      userId: assigned,
+      userId,
       quoteId,
       type: "assigned",
-      body: `Demande assignée : ${quote?.contact_name ?? "prospect"}`,
+      body: `Demande assignée : ${quote.contact_name ?? "prospect"}`,
     });
     const { data: member } = await supabase
       .from("memberships")
       .select("invited_email")
       .eq("organization_id", ctx.organization.id)
-      .eq("user_id", assigned)
+      .eq("user_id", userId)
       .maybeSingle();
     if (member?.invited_email) {
       await sendTemplateEmail({
         to: member.invited_email,
-        subject: `Demande assignée — ${quote?.contact_name ?? "prospect"}`,
-        body: `Une demande vous a été assignée : ${quote?.contact_name ?? "prospect"}.\n${getAppUrl()}/devis/${quoteId}`,
+        subject: `Demande assignée — ${quote.contact_name ?? "prospect"}`,
+        body: `Une demande vous a été assignée : ${quote.contact_name ?? "prospect"}.\n${getAppUrl()}/devis/${quoteId}`,
       });
     }
+  } else {
+    await supabase.from("quote_assignees").delete().eq("quote_id", quoteId).eq("user_id", userId);
   }
+  const rows = await syncPrimaryAssignee(supabase, ctx.organization.id, quoteId);
+  const { data: members } = await supabase
+    .from("memberships")
+    .select("user_id, invited_email, role")
+    .eq("organization_id", ctx.organization.id)
+    .eq("status", "active");
+  const labels = rows.map((row) => {
+    const member = (members ?? []).find((item) => item.user_id === row.user_id);
+    return member?.invited_email || (member?.role === "owner" ? "Propriétaire" : member?.role === "admin" ? "Admin" : "Commercial");
+  });
+  await logActivity(supabase, {
+    organizationId: ctx.organization.id,
+    quoteId,
+    actorId: ctx.userId,
+    type: "assigned",
+    payload: { assigned_to: rows[0]?.user_id ?? null, labels },
+  });
   revalidatePath("/devis");
+  revalidatePath(`/devis/${quoteId}`);
+}
+
+export async function logQuoteCall(quoteId: string, note: string) {
+  const ctx = await getOrgContext();
+  if (!ctx) redirect("/onboarding");
+  const supabase = await createClient();
+  const { data: quote } = await supabase
+    .from("quotes")
+    .select("id, contact_phone")
+    .eq("id", quoteId)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  if (!quote) return;
+  await logActivity(supabase, {
+    organizationId: ctx.organization.id,
+    quoteId,
+    actorId: ctx.userId,
+    type: "call_logged",
+    payload: { note: note.trim(), phone: quote.contact_phone },
+  });
   revalidatePath(`/devis/${quoteId}`);
 }
 
@@ -146,8 +219,12 @@ export async function changeQuoteStatusForm(quoteId: string, formData: FormData)
   await changeQuoteStatus(quoteId, String(formData.get("status_id") ?? ""));
 }
 
-export async function assignQuoteForm(quoteId: string, formData: FormData) {
-  await assignQuote(quoteId, String(formData.get("assigned_to") ?? ""));
+export async function toggleQuoteAssigneeForm(quoteId: string, formData: FormData) {
+  await toggleQuoteAssignee(quoteId, String(formData.get("user_id") ?? ""), formData.get("on") === "1");
+}
+
+export async function logQuoteCallForm(quoteId: string, formData: FormData) {
+  await logQuoteCall(quoteId, String(formData.get("note") ?? ""));
 }
 
 export async function addQuoteNoteForm(quoteId: string, formData: FormData) {

@@ -26,6 +26,15 @@ export default async function QuotesPage({
   const memberLabel = new Map(
     (members ?? []).map((m) => [m.user_id ?? "", m.invited_email || m.role]),
   );
+  const { data: assigneeRows } = quotes.length
+    ? await supabase.from("quote_assignees").select("quote_id, user_id").in("quote_id", quotes.map((quote) => quote.id))
+    : { data: [] };
+  const assigneesByQuote = new Map<string, string[]>();
+  for (const row of assigneeRows ?? []) {
+    const labels = assigneesByQuote.get(row.quote_id) ?? [];
+    labels.push(memberLabel.get(row.user_id) ?? "Commercial");
+    assigneesByQuote.set(row.quote_id, labels);
+  }
 
   return (
     <ListPanel>
@@ -95,7 +104,7 @@ export default async function QuotesPage({
                 </span>
               </td>
               <td className="px-4 py-2.5 text-slate-500 lg:px-6">
-                {quote.assigned_to ? (memberLabel.get(quote.assigned_to) ?? "—") : "—"}
+                {(assigneesByQuote.get(quote.id) ?? (quote.assigned_to ? [memberLabel.get(quote.assigned_to) ?? "—"] : [])).join(", ") || "—"}
               </td>
               <td className="px-4 py-2.5 text-slate-500 lg:px-6">{formatDate(quote.created_at)}</td>
             </ClickableRow>

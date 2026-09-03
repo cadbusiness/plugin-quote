@@ -25,8 +25,21 @@ export async function listQuotes(
     .order("created_at", { ascending: false });
   if (filters.limit) query = query.limit(filters.limit);
   if (filters.status) query = query.eq("status_id", filters.status);
-  if (filters.assigned === "none") query = query.is("assigned_to", null);
-  else if (filters.assigned) query = query.eq("assigned_to", filters.assigned);
+  if (filters.assigned === "none") {
+    const { data: taken } = await supabase.from("quote_assignees").select("quote_id").eq("organization_id", orgId);
+    const takenIds = [...new Set((taken ?? []).map((row) => row.quote_id))];
+    query = query.is("assigned_to", null);
+    if (takenIds.length) query = query.not("id", "in", `(${takenIds.join(",")})`);
+  } else if (filters.assigned) {
+    const { data: rows } = await supabase
+      .from("quote_assignees")
+      .select("quote_id")
+      .eq("organization_id", orgId)
+      .eq("user_id", filters.assigned);
+    const ids = [...new Set((rows ?? []).map((row) => row.quote_id))];
+    if (!ids.length) return [];
+    query = query.in("id", ids);
+  }
   if (filters.score) query = query.eq("score_label", filters.score);
   if (filters.from) query = query.gte("created_at", filters.from);
   if (filters.to) query = query.lte("created_at", `${filters.to}T23:59:59`);

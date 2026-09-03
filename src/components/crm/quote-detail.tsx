@@ -1,13 +1,15 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { Mail, Phone } from "lucide-react";
 import {
   addQuoteNoteForm,
-  assignQuoteForm,
   changeQuoteStatusForm,
+  logQuoteCallForm,
   replyToProspectForm,
+  toggleQuoteAssigneeForm,
 } from "@/app/(app)/crm-actions";
 import { AutoSubmitSelect } from "@/components/crm/quote-controls";
-import { QuoteTabs, quoteTabHref, type QuoteTab } from "@/components/crm/quote-tabs";
+import { QuoteTabs, quoteTabHref, type QuoteCompose, type QuoteTab } from "@/components/crm/quote-tabs";
 import { Chip, scoreTone, statusTone, type ChipTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
@@ -21,13 +23,25 @@ const AUTOMATION_TONE: Record<QuoteAutomation["state"], ChipTone> = {
   skipped: "slate",
 };
 
-export function QuoteDetailView({ detail, tab }: { detail: QuoteDetail; tab: QuoteTab }) {
-  const { quote, funnel, status, totals } = detail;
+export function QuoteDetailView({
+  detail,
+  tab,
+  compose,
+}: {
+  detail: QuoteDetail;
+  tab: QuoteTab;
+  compose: QuoteCompose | null;
+}) {
+  const { quote, status } = detail;
   const changeStatus = changeQuoteStatusForm.bind(null, quote.id);
-  const changeAssignee = assignQuoteForm.bind(null, quote.id);
+  const toggleAssignee = toggleQuoteAssigneeForm.bind(null, quote.id);
   const addNote = addQuoteNoteForm.bind(null, quote.id);
   const reply = replyToProspectForm.bind(null, quote.id);
+  const logCall = logQuoteCallForm.bind(null, quote.id);
   const liveAutomations = detail.automations.filter((flow) => flow.state === "due" || flow.state === "planned").length;
+  const callCount = detail.activities.filter((act) => act.type === "call_logged").length;
+  const writeHref = quoteTabHref(quote.id, "echanges", "mail");
+  const callHref = quoteTabHref(quote.id, "echanges", "call");
 
   return (
     <ListPanel>
@@ -39,24 +53,42 @@ export function QuoteDetailView({ detail, tab }: { detail: QuoteDetail; tab: Quo
           >
             Demandes
           </Link>
-          <div className="mr-auto flex min-w-0 flex-wrap items-center gap-2">
-            <span className="truncate text-sm font-medium text-slate-900">{quote.contact_name}</span>
-            {quote.contact_company ? (
-              <span className="truncate text-sm text-slate-500">{quote.contact_company}</span>
-            ) : null}
-            <Chip tone={scoreTone(quote.score_label)}>
-              {(quote.score_label ?? "—").toUpperCase()}
-              {quote.score != null ? ` ${quote.score}` : ""}
-            </Chip>
-            <Chip tone={statusTone(status?.slug ?? quote.status)}>{status?.label ?? quote.status}</Chip>
+          <div className="mr-auto min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="truncate text-sm font-medium text-slate-900">{quote.contact_name}</span>
+              <Chip tone={scoreTone(quote.score_label)}>
+                {(quote.score_label ?? "—").toUpperCase()}
+                {quote.score != null ? ` ${quote.score}` : ""}
+              </Chip>
+              <Chip tone={statusTone(status?.slug ?? quote.status)}>{status?.label ?? quote.status}</Chip>
+            </div>
+            <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
+              {quote.contact_company ? <span className="truncate">{quote.contact_company}</span> : null}
+              <span className="inline-flex items-center gap-1">
+                <span className="truncate">{quote.contact_email}</span>
+                <Link href={writeHref} aria-label="Écrire un email" className="rounded p-0.5 text-slate-400 hover:bg-orange-50 hover:text-[#E85D04]">
+                  <Mail className="h-3.5 w-3.5" />
+                </Link>
+              </span>
+              {quote.contact_phone ? (
+                <span className="inline-flex items-center gap-1">
+                  <span>{quote.contact_phone}</span>
+                  <Link href={callHref} aria-label="Appeler" className="rounded p-0.5 text-slate-400 hover:bg-orange-50 hover:text-[#E85D04]">
+                    <Phone className="h-3.5 w-3.5" />
+                  </Link>
+                </span>
+              ) : null}
+            </div>
           </div>
-          <a href={`mailto:${quote.contact_email}`} className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]">
+          <Link href={writeHref} className="inline-flex items-center gap-1.5 rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]">
+            <Mail className="h-3.5 w-3.5" />
             Écrire
-          </a>
+          </Link>
           {quote.contact_phone ? (
-            <a href={`tel:${quote.contact_phone}`} className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">
+            <Link href={callHref} className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-3 py-1.5 text-sm hover:bg-slate-50">
+              <Phone className="h-3.5 w-3.5" />
               Appeler
-            </a>
+            </Link>
           ) : null}
           {detail.suiviUrl ? (
             <a href={detail.suiviUrl} target="_blank" rel="noreferrer" className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">
@@ -71,16 +103,18 @@ export function QuoteDetailView({ detail, tab }: { detail: QuoteDetail; tab: Quo
           counts={{
             projet: detail.items.length,
             client: detail.siblings.length,
-            echanges: detail.notes.length + detail.messages.length,
+            echanges: detail.notes.length + detail.messages.length + callCount,
             automations: liveAutomations,
           }}
         />
       </div>
 
-      {tab === "dossier" ? <DossierTab detail={detail} changeStatus={changeStatus} changeAssignee={changeAssignee} /> : null}
+      {tab === "dossier" ? (
+        <DossierTab detail={detail} changeStatus={changeStatus} toggleAssignee={toggleAssignee} />
+      ) : null}
       {tab === "projet" ? <ProjetTab detail={detail} /> : null}
-      {tab === "client" ? <ClientTab detail={detail} /> : null}
-      {tab === "echanges" ? <EchangesTab detail={detail} addNote={addNote} reply={reply} /> : null}
+      {tab === "client" ? <ClientTab detail={detail} writeHref={writeHref} callHref={callHref} /> : null}
+      {tab === "echanges" ? <EchangesTab detail={detail} compose={compose} addNote={addNote} reply={reply} logCall={logCall} /> : null}
       {tab === "automations" ? <AutomationsTab detail={detail} /> : null}
     </ListPanel>
   );
@@ -89,16 +123,22 @@ export function QuoteDetailView({ detail, tab }: { detail: QuoteDetail; tab: Quo
 function DossierTab({
   detail,
   changeStatus,
-  changeAssignee,
+  toggleAssignee,
 }: {
   detail: QuoteDetail;
   changeStatus: (formData: FormData) => Promise<void>;
-  changeAssignee: (formData: FormData) => Promise<void>;
+  toggleAssignee: (formData: FormData) => Promise<void>;
 }) {
   const { quote, funnel, totals } = detail;
   const lastNote = detail.notes[0];
   const lastMessage = detail.messages[detail.messages.length - 1];
+  const lastCall = detail.activities.find((act) => act.type === "call_logged");
   const nextFlow = detail.automations.find((flow) => flow.state === "due") ?? detail.automations.find((flow) => flow.state === "planned");
+  const statusLog = detail.activities.filter((act) => act.type === "status_changed").slice(0, 5);
+  const journal = detail.activities
+    .filter((act) => ["status_changed", "assigned", "call_logged", "message_sent", "email_sent"].includes(act.type))
+    .slice(0, 6);
+  const assignedIds = new Set(detail.assignees.map((row) => row.userId));
 
   return (
     <>
@@ -123,25 +163,30 @@ function DossierTab({
         />
       </div>
 
-      <section className="grid gap-6 border-b border-slate-100 px-4 py-5 lg:grid-cols-[minmax(0,1fr)_16rem] lg:px-6">
-        <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
-          <Fact label="Email">
-            <a className="underline decoration-slate-300 underline-offset-2 hover:text-slate-900" href={`mailto:${quote.contact_email}`}>
-              {quote.contact_email}
-            </a>
-          </Fact>
-          <Fact label="Téléphone">
-            {quote.contact_phone ? (
-              <a className="underline decoration-slate-300 underline-offset-2 hover:text-slate-900" href={`tel:${quote.contact_phone}`}>
-                {quote.contact_phone}
-              </a>
-            ) : (
-              "—"
-            )}
-          </Fact>
-          <Fact label="Société">{quote.contact_company || "—"}</Fact>
-          <Fact label="Assigné à">{detail.assignedLabel ?? "Personne"}</Fact>
-        </dl>
+      <section className="grid gap-6 border-b border-slate-100 px-4 py-5 lg:grid-cols-[minmax(0,1fr)_20rem] lg:px-6">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Commerciaux</p>
+          <p className="mt-1 text-sm text-slate-500">Plusieurs personnes peuvent suivre la même demande.</p>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {detail.members.map((member) => {
+              const on = assignedIds.has(member.userId);
+              return (
+                <form key={member.userId} action={toggleAssignee}>
+                  <input type="hidden" name="user_id" value={member.userId} />
+                  <input type="hidden" name="on" value={on ? "0" : "1"} />
+                  <button
+                    type="submit"
+                    className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                      on ? "bg-orange-50 text-[#C2410C] ring-1 ring-orange-200" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    }`}
+                  >
+                    {member.label}
+                  </button>
+                </form>
+              );
+            })}
+          </div>
+        </div>
         <div className="flex flex-col gap-2">
           <label className="text-xs font-medium uppercase tracking-wide text-slate-500">Statut</label>
           <AutoSubmitSelect
@@ -157,21 +202,19 @@ function DossierTab({
               </option>
             ))}
           </AutoSubmitSelect>
-          <label className="mt-2 text-xs font-medium uppercase tracking-wide text-slate-500">Commercial</label>
-          <AutoSubmitSelect
-            key={quote.assigned_to ?? "assignee"}
-            action={changeAssignee}
-            name="assigned_to"
-            defaultValue={quote.assigned_to ?? ""}
-            className="w-full rounded-md border border-slate-200 px-2 py-1.5 text-sm"
-          >
-            <option value="">Non assigné</option>
-            {detail.members.map((member) => (
-              <option key={member.userId} value={member.userId}>
-                {member.label}
-              </option>
-            ))}
-          </AutoSubmitSelect>
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Historique</p>
+          {statusLog.length || journal.length ? (
+            <ol className="space-y-1.5">
+              {(statusLog.length ? statusLog : journal).map((act) => (
+                <li key={act.id} className="text-xs leading-snug text-slate-600">
+                  <span className="font-medium text-slate-800">{act.detail ?? act.label}</span>
+                  <span className="text-slate-400"> · {act.when}</span>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p className="text-xs text-slate-400">Les changements de statut s’afficheront ici.</p>
+          )}
         </div>
       </section>
 
@@ -196,8 +239,16 @@ function DossierTab({
         <Snapshot
           label="Dernier échange"
           href={quoteTabHref(quote.id, "echanges")}
-          title={lastMessage ? lastMessage.content : lastNote ? lastNote.content : "Aucun échange"}
-          detail={lastMessage ? `${lastMessage.sender === "prospect" ? "Prospect" : "Équipe"} · ${lastMessage.when}` : lastNote ? `Note · ${lastNote.when}` : "Notes et messages dans Échanges."}
+          title={lastMessage ? lastMessage.content : lastCall ? lastCall.detail ?? "Appel" : lastNote ? lastNote.content : "Aucun échange"}
+          detail={
+            lastMessage
+              ? `${lastMessage.sender === "prospect" ? "Prospect" : "Email"} · ${lastMessage.when}`
+              : lastCall
+                ? `Appel · ${lastCall.when}`
+                : lastNote
+                  ? `Note · ${lastNote.when}`
+                  : "Email ou appel depuis l’en-tête."
+          }
         />
         <Snapshot
           label="Automatisation"
@@ -292,7 +343,15 @@ function ProjetTab({ detail }: { detail: QuoteDetail }) {
   );
 }
 
-function ClientTab({ detail }: { detail: QuoteDetail }) {
+function ClientTab({
+  detail,
+  writeHref,
+  callHref,
+}: {
+  detail: QuoteDetail;
+  writeHref: string;
+  callHref: string;
+}) {
   const { quote } = detail;
   return (
     <>
@@ -302,15 +361,21 @@ function ClientTab({ detail }: { detail: QuoteDetail }) {
           <Fact label="Nom">{quote.contact_name}</Fact>
           <Fact label="Société">{quote.contact_company || "—"}</Fact>
           <Fact label="Email">
-            <a className="underline decoration-slate-300 underline-offset-2" href={`mailto:${quote.contact_email}`}>
-              {quote.contact_email}
-            </a>
+            <span className="inline-flex items-center gap-1.5">
+              <span>{quote.contact_email}</span>
+              <Link href={writeHref} aria-label="Écrire un email" className="rounded p-0.5 text-slate-400 hover:bg-orange-50 hover:text-[#E85D04]">
+                <Mail className="h-3.5 w-3.5" />
+              </Link>
+            </span>
           </Fact>
           <Fact label="Téléphone">
             {quote.contact_phone ? (
-              <a className="underline decoration-slate-300 underline-offset-2" href={`tel:${quote.contact_phone}`}>
-                {quote.contact_phone}
-              </a>
+              <span className="inline-flex items-center gap-1.5">
+                <span>{quote.contact_phone}</span>
+                <Link href={callHref} aria-label="Appeler" className="rounded p-0.5 text-slate-400 hover:bg-orange-50 hover:text-[#E85D04]">
+                  <Phone className="h-3.5 w-3.5" />
+                </Link>
+              </span>
             ) : (
               "—"
             )}
@@ -376,13 +441,38 @@ function ClientTab({ detail }: { detail: QuoteDetail }) {
 
 function EchangesTab({
   detail,
+  compose,
   addNote,
   reply,
+  logCall,
 }: {
   detail: QuoteDetail;
+  compose: QuoteCompose | null;
   addNote: (formData: FormData) => Promise<void>;
   reply: (formData: FormData) => Promise<void>;
+  logCall: (formData: FormData) => Promise<void>;
 }) {
+  const phone = detail.quote.contact_phone;
+  const calls = detail.activities.filter((act) => act.type === "call_logged");
+  const thread = [
+    ...detail.messages.map((message) => ({
+      id: message.id,
+      kind: "mail" as const,
+      at: message.sent_at,
+      when: message.when,
+      content: message.content,
+      sender: message.sender,
+    })),
+    ...calls.map((act) => ({
+      id: act.id,
+      kind: "call" as const,
+      at: act.created_at,
+      when: act.when,
+      content: act.detail ?? "Appel",
+      sender: "team",
+    })),
+  ].sort((a, b) => a.at.localeCompare(b.at));
+
   return (
     <>
       <div className="grid border-b border-slate-100 lg:grid-cols-2">
@@ -413,34 +503,72 @@ function EchangesTab({
         </section>
 
         <section>
-          <SectionTitle>Messages prospect</SectionTitle>
+          <SectionTitle>Emails et appels</SectionTitle>
+          {compose === "call" ? (
+            <div className="space-y-3 border-b border-slate-100 px-4 py-3 lg:px-6">
+              {phone ? (
+                <a href={`tel:${phone}`} className="inline-flex items-center gap-1.5 rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]">
+                  <Phone className="h-3.5 w-3.5" />
+                  Appeler {phone}
+                </a>
+              ) : (
+                <p className="text-sm text-slate-500">Pas de numéro. Notez quand même l’appel.</p>
+              )}
+              <form action={logCall}>
+                <textarea
+                  name="note"
+                  rows={2}
+                  autoFocus
+                  placeholder="Compte-rendu : décroché, rappel, devis envoyé…"
+                  className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+                />
+                <button className="mt-2 rounded-md bg-slate-950 px-3 py-1.5 text-sm text-white">Noter l’appel</button>
+              </form>
+            </div>
+          ) : null}
           <div className="space-y-2 px-4 pt-3 lg:px-6">
-            {detail.messages.length === 0 ? (
+            {thread.length === 0 ? (
               <p className="text-sm text-slate-400">Aucun échange pour le moment.</p>
             ) : (
-              detail.messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`max-w-[90%] rounded-xl px-3 py-2 text-sm ${
-                    message.sender === "prospect" ? "bg-slate-950 text-white" : "ml-auto bg-orange-50 text-orange-950"
-                  }`}
-                >
-                  <p>{message.content}</p>
-                  <p className={`mt-1 text-[11px] ${message.sender === "prospect" ? "text-white/60" : "text-orange-800/70"}`}>
-                    {message.sender === "prospect" ? "Prospect" : "Équipe"} · {message.when}
-                  </p>
-                </div>
-              ))
+              thread.map((item) =>
+                item.kind === "call" ? (
+                  <div key={item.id} className="max-w-[90%] rounded-xl bg-sky-50 px-3 py-2 text-sm text-sky-950">
+                    <p className="inline-flex items-center gap-1.5 font-medium">
+                      <Phone className="h-3.5 w-3.5" />
+                      Appel
+                    </p>
+                    <p className="mt-1">{item.content}</p>
+                    <p className="mt-1 text-[11px] text-sky-800/70">Équipe · {item.when}</p>
+                  </div>
+                ) : (
+                  <div
+                    key={item.id}
+                    className={`max-w-[90%] rounded-xl px-3 py-2 text-sm ${
+                      item.sender === "prospect" ? "bg-slate-950 text-white" : "ml-auto bg-orange-50 text-orange-950"
+                    }`}
+                  >
+                    <p>{item.content}</p>
+                    <p className={`mt-1 text-[11px] ${item.sender === "prospect" ? "text-white/60" : "text-orange-800/70"}`}>
+                      {item.sender === "prospect" ? "Prospect" : "Email"} · {item.when}
+                    </p>
+                  </div>
+                ),
+              )
             )}
           </div>
-          <form action={reply} className="mt-3 flex gap-2 px-4 pb-4 lg:px-6">
-            <input
+          <form action={reply} className="mt-3 px-4 pb-4 lg:px-6">
+            <textarea
               name="content"
               required
-              placeholder="Répondre au prospect…"
-              className="min-w-0 flex-1 rounded-md border border-slate-200 px-3 py-2 text-sm"
+              rows={compose === "mail" ? 3 : 2}
+              autoFocus={compose === "mail"}
+              placeholder={`Email à ${detail.quote.contact_email}…`}
+              className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
             />
-            <button className="rounded-md bg-slate-950 px-3 py-2 text-sm text-white">Envoyer</button>
+            <button className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-slate-950 px-3 py-1.5 text-sm text-white">
+              <Mail className="h-3.5 w-3.5" />
+              Envoyer l’email
+            </button>
           </form>
         </section>
       </div>

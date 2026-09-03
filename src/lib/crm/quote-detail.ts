@@ -59,6 +59,7 @@ export type QuoteDetail = {
   statuses: Tables<"quote_statuses">[];
   members: QuoteMember[];
   assignedLabel: string | null;
+  assignees: QuoteMember[];
   answers: LabeledAnswer[];
   scoreReasons: string[];
   items: QuoteItemView[];
@@ -129,7 +130,9 @@ export function activityLabel(type: string) {
     case "email_sent":
       return "Email envoyé";
     case "message_sent":
-      return "Message au prospect";
+      return "Email au prospect";
+    case "call_logged":
+      return "Appel";
     default:
       return type;
   }
@@ -138,11 +141,18 @@ export function activityLabel(type: string) {
 function activityDetail(type: string, payload: Json, memberLabel: Map<string, string>) {
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) return null;
   const data = payload as Record<string, unknown>;
-  if (type === "status_changed" && typeof data.label === "string") return data.label;
+  if (type === "status_changed") {
+    if (typeof data.from === "string" && typeof data.label === "string") return `${data.from} → ${data.label}`;
+    if (typeof data.label === "string") return data.label;
+  }
   if (type === "assigned") {
+    if (Array.isArray(data.labels) && data.labels.every((item) => typeof item === "string")) {
+      return data.labels.length ? data.labels.join(", ") : "Personne";
+    }
     const id = typeof data.assigned_to === "string" ? data.assigned_to : "";
     return id ? (memberLabel.get(id) ?? "Commercial") : "Non assigné";
   }
+  if (type === "call_logged" && typeof data.note === "string" && data.note) return data.note;
   if (type === "email_sent" && typeof data.template_kind === "string") {
     if (data.template_kind === "prospect_confirm") return "Confirmation prospect";
     if (data.template_kind === "sales_brief") return "Brief commercial";
@@ -227,6 +237,17 @@ export async function loadQuoteDetail(
   const status = (statuses ?? []).find((s) => s.id === quote.status_id);
   const suiviAlive = access && new Date(access.expires_at).getTime() > Date.now();
   const stepIds = new Set((steps ?? []).map((s) => s.id));
+  const { data: assigneeRows } = await supabase
+    .from("quote_assignees")
+    .select("user_id, created_at")
+    .eq("quote_id", quote.id)
+    .order("created_at", { ascending: true });
+  const assigneeIds = (assigneeRows ?? []).map((row) => row.user_id);
+  if (quote.assigned_to && !assigneeIds.includes(quote.assigned_to)) assigneeIds.unshift(quote.assigned_to);
+  const assignees: QuoteMember[] = assigneeIds.map((userId) => ({
+    userId,
+    label: memberLabel.get(userId) ?? "Commercial",
+  }));
 
   return {
     quote,
@@ -234,7 +255,8 @@ export async function loadQuoteDetail(
     status,
     statuses: statuses ?? [],
     members: memberList,
-    assignedLabel: quote.assigned_to ? (memberLabel.get(quote.assigned_to) ?? null) : null,
+    assignedLabel: assignees.length ? assignees.map((row) => row.label).join(", ") : null,
+    assignees,
     answers: labelAnswers(
       answers,
       (questions ?? []).filter((q) => stepIds.has(q.step_id)).map(optionMeta),
