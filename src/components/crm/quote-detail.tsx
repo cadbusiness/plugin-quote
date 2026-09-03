@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import {
   addQuoteNoteForm,
@@ -96,12 +97,25 @@ function DossierTab({
 
   return (
     <>
-      <div className="grid grid-cols-2 border-b border-slate-200 lg:grid-cols-5">
-        <Kpi label="Score" value={quote.score != null ? String(quote.score) : "—"} hint={detail.scoreReasons[0] ?? "Qualification automatique"} bordered />
-        <Kpi label="Fourchette" value={totals.label} hint={`${totals.count} ligne${totals.count > 1 ? "s" : ""}`} bordered />
-        <Kpi label="Reçue" value={detail.received.relative} hint={detail.received.exact} bordered />
-        <Kpi label="Source" value={detail.source} hint={attributionHint(quote)} bordered />
-        <Kpi label="Funnel" value={funnel?.name ?? "—"} hint={detail.assignedLabel ? `Assigné à ${detail.assignedLabel}` : "Non assigné"} />
+      <div className="flex flex-wrap items-center gap-x-8 gap-y-3 border-b border-slate-200 px-4 py-3.5 lg:px-6">
+        <div className="flex items-center gap-2.5">
+          <span className="text-[1.75rem] font-semibold leading-none tabular-nums tracking-tight text-slate-900">
+            {quote.score != null ? quote.score : "—"}
+          </span>
+          <div>
+            <Chip tone={scoreTone(quote.score_label)}>{(quote.score_label ?? "—").toUpperCase()}</Chip>
+            <p className="mt-0.5 text-xs text-slate-500">{detail.scoreReasons[0] ?? "Qualification automatique"}</p>
+          </div>
+        </div>
+        <span className="hidden h-8 w-px bg-slate-200 sm:block" aria-hidden />
+        <FactMini label="Fourchette" value={totals.label} hint={`${totals.count} produit${totals.count > 1 ? "s" : ""}`} />
+        <FactMini label="Reçue" value={detail.received.relative} hint={detail.received.exact} />
+        <FactMini label="Source" value={detail.source} hint={attributionHint(quote)} />
+        <FactMini
+          label="Funnel"
+          value={funnel?.name ?? "—"}
+          hint={detail.assignedLabel ? `Assigné à ${detail.assignedLabel}` : "Non assigné"}
+        />
       </div>
 
       <section className="grid gap-6 border-b border-slate-100 px-4 py-5 lg:grid-cols-[minmax(0,1fr)_16rem] lg:px-6">
@@ -500,27 +514,17 @@ function Snapshot({
   );
 }
 
-function Kpi({
-  label,
-  value,
-  hint,
-  bordered,
-}: {
-  label: string;
-  value: string;
-  hint: string;
-  bordered?: boolean;
-}) {
+function FactMini({ label, value, hint }: { label: string; value: string; hint: string }) {
   return (
-    <div className={`px-4 py-5 lg:px-6 ${bordered ? "border-r border-slate-200" : ""}`}>
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
-      <p className="mt-1 truncate text-2xl font-semibold tracking-tight text-slate-900 lg:text-3xl">{value}</p>
-      <p className="mt-1 truncate text-sm text-slate-500">{hint}</p>
+    <div className="min-w-0">
+      <p className="text-[11px] font-medium uppercase tracking-wide text-slate-500">{label}</p>
+      <p className="mt-0.5 text-sm font-medium text-slate-900">{value}</p>
+      <p className="text-xs text-slate-500">{hint}</p>
     </div>
   );
 }
 
-function Fact({ label, children }: { label: string; children: React.ReactNode }) {
+function Fact({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div>
       <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</dt>
@@ -529,7 +533,7 @@ function Fact({ label, children }: { label: string; children: React.ReactNode })
   );
 }
 
-function SectionTitle({ children }: { children: React.ReactNode }) {
+function SectionTitle({ children }: { children: ReactNode }) {
   return (
     <p className="border-b border-slate-100 px-4 py-2 text-xs font-medium uppercase tracking-wide text-slate-500 lg:px-6">
       {children}
@@ -537,7 +541,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Empty({ children }: { children: React.ReactNode }) {
+function Empty({ children }: { children: ReactNode }) {
   return <p className="px-4 py-6 text-sm text-slate-500 lg:px-6">{children}</p>;
 }
 
