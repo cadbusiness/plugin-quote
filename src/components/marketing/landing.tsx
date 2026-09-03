@@ -401,7 +401,7 @@ export function Landing() {
         <div className="mx-auto flex max-w-6xl flex-col gap-6 sm:flex-row sm:justify-between">
           <div>
             <p className="font-medium text-[#1A1510]/70">QuoteBuilder · Funnel de devis B2B</p>
-            <p className="mt-1">Produit de Vinci Liberta LTD · Dublin, Irlande</p>
+            <p className="mt-1">© {new Date().getFullYear()} Vinci Liberta LTD · Dublin, Irlande</p>
           </div>
           <div className="flex flex-col gap-2 sm:items-end">
             <div className="flex flex-wrap gap-x-4 gap-y-1">

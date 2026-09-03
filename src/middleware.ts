@@ -28,6 +28,8 @@ export async function middleware(request: NextRequest) {
 
   const path = request.nextUrl.pathname;
   const appPaths = [
+    "/accueil",
+    "/parametres",
     "/devis",
     "/sessions",
     "/wizard",
@@ -109,6 +111,8 @@ export const config = {
   matcher: [
     "/app",
     "/app/:path*",
+    "/accueil",
+    "/parametres",
     "/devis",
     "/devis/:path*",
     "/devis.csv",

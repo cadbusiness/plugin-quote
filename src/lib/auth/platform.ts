@@ -8,5 +8,5 @@ export function isSuperAdmin(user: User | null | undefined) {
 
 export function postLoginPath(user: User | null | undefined, next?: string | null) {
   if (next?.startsWith("/") && !next.startsWith("//")) return next;
-  return isSuperAdmin(user) ? "/admin" : "/devis";
+  return isSuperAdmin(user) ? "/admin" : "/accueil";
 }

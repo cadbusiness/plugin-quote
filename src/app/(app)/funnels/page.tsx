@@ -19,7 +19,7 @@ export default async function FunnelsPage() {
   return (
     <ListPanel>
       <ListToolbar>
-        <form action={createFunnel} className="mr-auto flex items-center gap-2">
+        <form id="nouveau" action={createFunnel} className="mr-auto flex items-center gap-2">
           <input
             name="name"
             required

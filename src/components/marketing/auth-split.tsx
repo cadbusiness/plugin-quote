@@ -4,12 +4,15 @@ import { ProductPreview } from "@/components/marketing/product-preview";
 
 export function AuthSplit({ children }: { children: React.ReactNode }) {
   return (
-    <main className="grid min-h-dvh bg-white lg:grid-cols-2">
-      <section className="flex flex-col px-6 py-8 sm:px-10 lg:px-16">
+    <main className="grid h-dvh overflow-hidden bg-white lg:grid-cols-2">
+      <section className="flex min-h-0 flex-col px-6 py-8 sm:px-10 lg:px-16">
         <BrandLogo variant="wordmark" href="/" className="h-8" priority />
-        <div className="mx-auto flex w-full max-w-[400px] flex-1 flex-col justify-center py-10">
+        <div className="mx-auto flex w-full max-w-[400px] min-h-0 flex-1 flex-col justify-center overflow-auto py-10">
           {children}
         </div>
+        <p className="shrink-0 pt-4 text-center text-[11px] text-slate-400">
+          © {new Date().getFullYear()} Vinci Liberta LTD · QuoteBuilder
+        </p>
       </section>
 
       <aside className="relative hidden overflow-hidden bg-slate-950 lg:block">
