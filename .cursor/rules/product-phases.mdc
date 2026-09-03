@@ -1,0 +1,22 @@
+---
+description: Phases produit QuoteBuilder — ne pas anticiper Kanban, newsletter, marketplace
+alwaysApply: true
+---
+
+# Phases produit
+
+QuoteBuilder = funnel de devis B2B, pas un formulaire.
+
+## Cœur (maintenant)
+
+Funnel (création guidée, steps, 3 modes, embed, URL publique), catalogue + Si/Alors, demandes en liste, espace prospect, automations de base, équipe, webhooks / WP / Woo.
+
+## Phase 2 (pas avant le cœur)
+
+Kanban, newsletter, preview live, duplication, domaine custom, Shopify, Zapier, Stripe, branches entre steps, nurturing long.
+
+## Phase 3 (vision)
+
+Marketplace de templates (gratuit / payant 30 % / premium officiel), Certified Partner, HubSpot / Pipedrive.
+
+Ne pas poser Kanban, newsletter ou marketplace dans le menu ou le schéma tant que le funnel et le catalogue ne sont pas au niveau.

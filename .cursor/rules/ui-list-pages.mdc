@@ -11,3 +11,5 @@ globs:
 - `ListPanel` pleine largeur, fond blanc, bordure bas uniquement.
 - `ListToolbar` : recherche + actions, sans `<h1>` au-dessus.
 - Jamais de `p-4` + `rounded-* border` autour d’une liste.
+- Ligne entière cliquable (`ClickableRow`) — pas de lien « Éditer » / « Voir ».
+- Statut, score, mode : `Chip` couleur, pas du texte slate.

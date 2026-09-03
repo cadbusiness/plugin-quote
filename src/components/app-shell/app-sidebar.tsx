@@ -120,8 +120,8 @@ export function AppSidebar({
                       prefetch
                       className={`relative flex items-center justify-between rounded-lg px-2.5 py-1.5 text-sm transition-colors ${
                         active
-                          ? "bg-slate-100 font-medium text-slate-900 before:absolute before:inset-y-1 before:left-0 before:w-0.5 before:rounded-full before:bg-slate-900"
-                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                          ? "bg-orange-50 font-medium text-[#C2410C] before:absolute before:inset-y-1 before:left-0 before:w-0.5 before:rounded-full before:bg-[#E85D04]"
+                          : "text-slate-600 hover:bg-orange-50/50 hover:text-slate-900"
                       }`}
                     >
                       <span>{item.label}</span>
@@ -148,7 +148,11 @@ export function AppSidebar({
       <div className="border-t border-slate-100 px-3 py-3">
         <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-slate-400">Ce mois-ci</p>
         <p className="mt-1.5 text-xs text-slate-600">{snapshot.monthQuotes} demandes</p>
-        <p className="text-xs text-slate-600">{snapshot.monthHot} hot · {snapshot.abandons} abandons</p>
+        <p className="text-xs text-slate-600">
+          <span className="text-rose-600">{snapshot.monthHot} hot</span>
+          {" · "}
+          <span className="text-amber-700">{snapshot.abandons} abandons</span>
+        </p>
       </div>
 
       <div className="border-t border-slate-200 px-2 py-2">
@@ -156,8 +160,8 @@ export function AppSidebar({
           href="/parametres"
           className={`flex items-center rounded-lg px-2.5 py-1.5 text-sm ${
             pathname.startsWith("/parametres") || pathname.startsWith("/webhooks") || pathname.startsWith("/woocommerce") || pathname.startsWith("/templates")
-              ? "bg-slate-100 font-medium text-slate-900"
-              : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+              ? "bg-orange-50 font-medium text-[#C2410C]"
+              : "text-slate-600 hover:bg-orange-50/50 hover:text-slate-900"
           }`}
         >
           Paramètres
