@@ -190,7 +190,7 @@ export async function loadStatsDashboard(
     supabase
       .from("quote_sessions")
       .select(
-        "id, created_at, current_step, contact_draft, submitted_quote_id, answers, chat_messages, utm_source, utm_medium, referrer, last_activity_at, configurator_id",
+        "id, created_at, current_step, contact_draft, submitted_quote_id, answers, chat_messages, utm_source, utm_medium, referrer, last_activity_at, configurator_id, visitor_id",
       )
       .eq("organization_id", orgId)
       .gte("created_at", sixMonths.toISOString()),
@@ -256,19 +256,20 @@ export async function loadStatsDashboard(
     return t >= from.getTime() && t < to.getTime();
   };
 
-  function uniqueIds(ids: Array<string | null | undefined>) {
-    return new Set(ids.filter((id): id is string => Boolean(id))).size;
-  }
-
   function funnelCounts(from: Date, to: Date) {
     const periodEvents = (events ?? []).filter((e) => inWindow(e.created_at, from, to));
     const periodSessions = (sessions ?? []).filter((s) => inWindow(s.created_at, from, to));
     const periodQuotes = (quotes ?? []).filter((q) => inWindow(q.created_at, from, to));
 
-    const visitorIds = periodEvents
-      .filter((e) => e.event_type === ANALYTICS_EVENTS.pageView)
-      .map((e) => e.visitor_id);
-    const visitors = uniqueIds(visitorIds) || periodSessions.length;
+    const eventVisitors = new Set(
+      periodEvents
+        .filter((e) => e.event_type === ANALYTICS_EVENTS.pageView && e.visitor_id)
+        .map((e) => e.visitor_id as string),
+    );
+    const extraSessions = periodSessions.filter(
+      (s) => !s.visitor_id || !eventVisitors.has(s.visitor_id),
+    ).length;
+    const visitors = eventVisitors.size + extraSessions || periodSessions.length;
 
     const openedIds = new Set<string>();
     for (const session of periodSessions) {
