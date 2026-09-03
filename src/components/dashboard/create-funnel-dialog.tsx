@@ -26,11 +26,23 @@ export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: Exist
   const [pending, startTransition] = useTransition();
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (window.location.hash === "#nouveau") {
-      setOpen(true);
-      history.replaceState(null, "", window.location.pathname + window.location.search);
+    function openFromHash() {
+      if (window.location.hash === "#nouveau") {
+        setOpen(true);
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+      }
     }
+    function openFromEvent() {
+      setOpen(true);
+      setStep(0);
+    }
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
+    window.addEventListener("qb:create-funnel", openFromEvent);
+    return () => {
+      window.removeEventListener("hashchange", openFromHash);
+      window.removeEventListener("qb:create-funnel", openFromEvent);
+    };
   }, []);
 
   function pickSector(id: string) {

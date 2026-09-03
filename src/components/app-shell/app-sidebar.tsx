@@ -48,44 +48,19 @@ function isActive(pathname: string, item: Item) {
 export function AppSidebar({
   isAdmin,
   isPlatformAdmin = false,
-  orgName,
-  plan,
   email,
   snapshot,
 }: {
   isAdmin: boolean;
   isPlatformAdmin?: boolean;
-  orgName: string;
-  plan: string;
   email: string | null;
   snapshot: SidebarSnapshot;
 }) {
   const pathname = usePathname();
-  const initial = (orgName.trim()[0] ?? "Q").toUpperCase();
   const display = email?.split("@")[0] ?? "Compte";
 
   return (
     <aside className="flex w-56 shrink-0 flex-col border-r border-slate-200 bg-white lg:w-60">
-      <div className="border-b border-slate-200 px-3 py-3">
-        <div className="flex items-center gap-2.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-xs font-semibold text-white">
-            {initial}
-          </span>
-          <div className="min-w-0">
-            <p className="truncate text-sm font-medium text-slate-900">{orgName}</p>
-            <p className="truncate text-[11px] capitalize text-slate-500">Plan {plan}</p>
-          </div>
-        </div>
-        {isAdmin ? (
-          <Link
-            href="/funnels#nouveau"
-            className="mt-3 flex w-full items-center justify-center rounded-lg bg-[#E85D04] px-3 py-2 text-sm font-medium text-white hover:bg-[#d35400]"
-          >
-            + Créer un funnel
-          </Link>
-        ) : null}
-      </div>
-
       <nav className="flex min-h-0 flex-1 flex-col overflow-y-auto px-2 py-3" aria-label="Navigation">
         {isPlatformAdmin ? (
           <Link

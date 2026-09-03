@@ -25,13 +25,16 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-slate-50">
-      <AppHeader notifications={notifications ?? []} />
+      <AppHeader
+        orgName={ctx.organization.name}
+        plan={ctx.organization.plan}
+        isAdmin={isAdminRole(ctx.role)}
+        notifications={notifications ?? []}
+      />
       <div className="flex min-h-0 flex-1">
         <AppSidebar
           isAdmin={isAdminRole(ctx.role)}
           isPlatformAdmin={isSuperAdmin(user)}
-          orgName={ctx.organization.name}
-          plan={ctx.organization.plan}
           email={ctx.email}
           snapshot={snapshot}
         />
