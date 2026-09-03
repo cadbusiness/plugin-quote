@@ -139,8 +139,10 @@ export type Database = {
           event_type: string
           id: string
           organization_id: string
+          payload: Json
           session_id: string | null
           step: number | null
+          visitor_id: string | null
         }
         Insert: {
           configurator_id?: string | null
@@ -148,8 +150,10 @@ export type Database = {
           event_type: string
           id?: string
           organization_id: string
+          payload?: Json
           session_id?: string | null
           step?: number | null
+          visitor_id?: string | null
         }
         Update: {
           configurator_id?: string | null
@@ -157,8 +161,10 @@ export type Database = {
           event_type?: string
           id?: string
           organization_id?: string
+          payload?: Json
           session_id?: string | null
           step?: number | null
+          visitor_id?: string | null
         }
         Relationships: []
       }
@@ -691,14 +697,22 @@ export type Database = {
           customization: Json
           extracted_params: Json
           id: string
+          landing_path: string | null
+          last_activity_at: string
           mode: string
           organization_id: string
+          referrer: string | null
           selected_suggestion_id: string | null
           submitted_quote_id: string | null
           token: string
           updated_at: string
           contact_draft: Json
-          last_activity_at: string
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+          visitor_id: string | null
         }
         Insert: {
           answers?: Json
@@ -709,14 +723,22 @@ export type Database = {
           customization?: Json
           extracted_params?: Json
           id?: string
+          landing_path?: string | null
+          last_activity_at?: string
           mode?: string
           organization_id: string
+          referrer?: string | null
           selected_suggestion_id?: string | null
           submitted_quote_id?: string | null
           token: string
           updated_at?: string
           contact_draft?: Json
-          last_activity_at?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          visitor_id?: string | null
         }
         Update: {
           answers?: Json
@@ -727,14 +749,22 @@ export type Database = {
           customization?: Json
           extracted_params?: Json
           id?: string
+          landing_path?: string | null
+          last_activity_at?: string
           mode?: string
           organization_id?: string
+          referrer?: string | null
           selected_suggestion_id?: string | null
           submitted_quote_id?: string | null
           token?: string
           updated_at?: string
           contact_draft?: Json
-          last_activity_at?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          visitor_id?: string | null
         }
         Relationships: [
           {
@@ -774,11 +804,17 @@ export type Database = {
           id: string
           notes: string | null
           organization_id: string
+          referrer: string | null
           score: number | null
           score_label: string | null
           session_id: string | null
           status: string
           status_id: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
         }
         Insert: {
           answers?: Json
@@ -793,11 +829,17 @@ export type Database = {
           id?: string
           notes?: string | null
           organization_id: string
+          referrer?: string | null
           score?: number | null
           score_label?: string | null
           session_id?: string | null
           status?: string
           status_id?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Update: {
           answers?: Json
@@ -812,11 +854,17 @@ export type Database = {
           id?: string
           notes?: string | null
           organization_id?: string
+          referrer?: string | null
           score?: number | null
           score_label?: string | null
           session_id?: string | null
           status?: string
           status_id?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Relationships: [
           {

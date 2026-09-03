@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { formatPrice } from "@/lib/format";
+import { parseAttribution, type Attribution } from "@/lib/stats/attribution";
+import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 import type {
   Answers,
   ConfiguratorDefinition,
@@ -38,12 +40,73 @@ function pushGa(measurementId: string | null | undefined, event: string, params?
   if (measurementId && w.gtag) w.gtag("event", event, params);
 }
 
+function visitorId() {
+  if (typeof window === "undefined") return "";
+  const params = new URLSearchParams(window.location.search);
+  const fromQuery = params.get("qb_vid")?.trim();
+  if (fromQuery) {
+    try {
+      localStorage.setItem("qb-vid", fromQuery);
+    } catch {
+      /* ignore */
+    }
+    return fromQuery;
+  }
+  try {
+    const existing = localStorage.getItem("qb-vid");
+    if (existing) return existing;
+    const next = crypto.randomUUID();
+    localStorage.setItem("qb-vid", next);
+    return next;
+  } catch {
+    return crypto.randomUUID();
+  }
+}
+
+function readAttribution(): Attribution {
+  if (typeof window === "undefined") return {};
+  const params = new URLSearchParams(window.location.search);
+  return parseAttribution({
+    search: params,
+    referrer: params.get("qb_ref") || document.referrer || null,
+    landingPath: window.location.pathname + window.location.search,
+    visitorId: visitorId(),
+  });
+}
+
+function attributionBody(attr: Attribution) {
+  return {
+    visitorId: attr.visitorId ?? undefined,
+    utmSource: attr.utmSource ?? undefined,
+    utmMedium: attr.utmMedium ?? undefined,
+    utmCampaign: attr.utmCampaign ?? undefined,
+    utmContent: attr.utmContent ?? undefined,
+    utmTerm: attr.utmTerm ?? undefined,
+    referrer: attr.referrer ?? undefined,
+    landingPath: attr.landingPath ?? undefined,
+  };
+}
+
+async function trackPageView(orgSlug: string, configuratorSlug: string, attr: Attribution) {
+  await fetch("/api/public/track", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      orgSlug,
+      configuratorSlug,
+      eventType: ANALYTICS_EVENTS.pageView,
+      ...attributionBody(attr),
+      search: typeof window !== "undefined" ? window.location.search : "",
+    }),
+  }).catch(() => undefined);
+}
+
 async function track(session: QuoteSession | null, eventType: string, step?: number) {
   if (!session) return;
   await fetch(`/api/public/sessions/${session.id}/events`, {
     method: "POST",
     headers: { "content-type": "application/json", "x-session-token": session.token },
-    body: JSON.stringify({ eventType, step }),
+    body: JSON.stringify({ eventType, step, visitorId: visitorId() }),
   }).catch(() => undefined);
 }
 
@@ -74,6 +137,11 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
         if (cancelled) return;
         setDefinition(def);
         const stored = localStorage.getItem(SESSION_KEY(orgSlug, configuratorSlug));
+        const attr = readAttribution();
+        const fromWidget = new URLSearchParams(window.location.search).has("qb_vid");
+        if (!embedded || !fromWidget) {
+          await trackPageView(orgSlug, configuratorSlug, attr);
+        }
         let next: QuoteSession | null = null;
         if (stored) {
           const parsed = JSON.parse(stored) as { id: string; token: string };
@@ -84,8 +152,14 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
         if (!next) {
           next = await api<QuoteSession>("/api/public/sessions", {
             method: "POST",
-            body: JSON.stringify({ orgSlug, configuratorSlug }),
+            body: JSON.stringify({ orgSlug, configuratorSlug, ...attributionBody(attr) }),
           });
+        } else {
+          await api<QuoteSession>(`/api/public/sessions/${next.id}`, {
+            method: "PATCH",
+            token: next.token,
+            body: JSON.stringify({ attribution: attr }),
+          }).catch(() => null);
         }
         if (cancelled || !next) return;
         localStorage.setItem(
@@ -103,8 +177,8 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
         }
         if (next.submittedQuoteId) setDone({});
         else {
-          track(next, "quotebuilder_started", 0);
-          pushGa(def.organization.gaMeasurementId, "quotebuilder_started", { step: 0 });
+          track(next, ANALYTICS_EVENTS.started, 0);
+          pushGa(def.organization.gaMeasurementId, ANALYTICS_EVENTS.started, { step: 0 });
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -113,7 +187,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
     return () => {
       cancelled = true;
     };
-  }, [orgSlug, configuratorSlug]);
+  }, [orgSlug, configuratorSlug, embedded]);
 
   useEffect(() => {
     const id = definition?.organization.gaMeasurementId;
@@ -136,8 +210,8 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
     if (!session || done) return;
     const onHide = () => {
       if (document.visibilityState === "hidden" && !done) {
-        track(session, "quotebuilder_abandoned", session.currentStep);
-        pushGa(definition?.organization.gaMeasurementId, "quotebuilder_abandoned", {
+        track(session, ANALYTICS_EVENTS.abandoned, session.currentStep);
+        pushGa(definition?.organization.gaMeasurementId, ANALYTICS_EVENTS.abandoned, {
           step: session.currentStep,
         });
       }
@@ -145,6 +219,14 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
     document.addEventListener("visibilitychange", onHide);
     return () => document.removeEventListener("visibilitychange", onHide);
   }, [session, done, definition?.organization.gaMeasurementId]);
+
+  useEffect(() => {
+    if (!session || done || step?.screenType !== "contact") return;
+    track(session, ANALYTICS_EVENTS.completed, session.currentStep);
+    pushGa(definition?.organization.gaMeasurementId, ANALYTICS_EVENTS.completed, {
+      step: session.currentStep,
+    });
+  }, [session?.id, step?.screenType, done, definition?.organization.gaMeasurementId]);
 
   async function persist(patch: Partial<QuoteSession>) {
     if (!session) return session;
@@ -251,8 +333,8 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
         },
       );
       setDone(result);
-      track(session, "quotebuilder_submitted", session.currentStep);
-      pushGa(definition?.organization.gaMeasurementId, "quotebuilder_submitted");
+      track(session, ANALYTICS_EVENTS.submitted, session.currentStep);
+      pushGa(definition?.organization.gaMeasurementId, ANALYTICS_EVENTS.submitted);
     } catch (error) {
       setErrors({ submit: error instanceof Error ? error.message : "Soumission impossible" });
     } finally {
@@ -360,8 +442,13 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
             draft={session.contactDraft}
             firstName={contact.name}
             onSave={async (draft) => {
+              const firstEmail = Boolean(draft.email && !session.contactDraft.email);
               setContact((c) => ({ ...c, ...draft }));
               await persist({ contactDraft: { ...session.contactDraft, ...draft } });
+              if (firstEmail) {
+                track(session, ANALYTICS_EVENTS.email, session.currentStep);
+                pushGa(definition?.organization.gaMeasurementId, ANALYTICS_EVENTS.email);
+              }
             }}
           />
         ) : null}

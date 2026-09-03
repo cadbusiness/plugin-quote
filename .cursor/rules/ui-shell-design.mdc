@@ -22,7 +22,7 @@ Le contenu principal colle aux bords du panneau — **pas de padding externe** a
 - Section / liste : `ListPanel` + `ListToolbar` + `DataTable`
 - Création : dialog guidé (secteur / options), jamais un champ nom + bouton
 - Édition : dialog ou formulaire inline ; la ligne de liste ouvre l’édition
-- Stats : ligne compacte, pas de grosses cartes KPI
+- Stats : bandeau KPI flush (gros chiffres, séparateurs) + tunnel + tableaux — pas de cartes inset empilées
 
 ## Interdit dans le shell
 

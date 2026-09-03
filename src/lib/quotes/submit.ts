@@ -86,6 +86,12 @@ export async function submitQuote(input: {
       score_label: label,
       status: defaultStatus?.slug ?? "new",
       status_id: defaultStatus?.id ?? null,
+      utm_source: session.utm_source,
+      utm_medium: session.utm_medium,
+      utm_campaign: session.utm_campaign,
+      utm_content: session.utm_content,
+      utm_term: session.utm_term,
+      referrer: session.referrer,
     })
     .select("*")
     .single();

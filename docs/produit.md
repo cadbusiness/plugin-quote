@@ -1,112 +1,152 @@
 # QuoteBuilder — carte produit
 
 Funnel de devis B2B. Vinci Liberta LTD (Dublin).  
-Inventaire croisé avec le code, 3 septembre 2026 — pas la liste marketing.
+Inventaire officiel croisé avec le code, 3 septembre 2026 — pas la liste marketing.
 
 **Cœur** = on le livre et on le soigne maintenant.  
-**Phase 2** = après le cœur (Kanban, newsletter, Shopify, Zapier, preview, billing).  
+**Phase 2** = après le cœur. Hors menu tant que funnel et catalogue ne sont pas au niveau.  
 **Phase 3** = marketplace + CRM tiers. On ne la code pas avant d’avoir des templates sectoriels excellents.
+
+Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 
 ---
 
-## Cœur — déjà là ou à finir
+## Cœur — maintenant
 
 ### Funnel
-- Éditeur de steps (réordonner en drag-and-drop)
-- Questions : choix visuel, nombre, select, multi-select, texte, fichier
-- Écrans : cadrage, suggestions catalogue, personnalisation, contact
-- 3 modes : funnel guidé / chat IA / les deux
-- URL publique `/c/[org]/[slug]`
-- Embed : widget JS, `/embed`, plugin WordPress + bloc Gutenberg
-- Session sauvegardée dès qu’un email est dans le brouillon ; reprise `/reprendre`
-
-À finir dans le cœur : dialog de création (secteur, modes, écrans, catalogue) — plus jamais un champ nom + bouton. Collecte d’identité encore trop tardive (un seul écran contact).
+- **Création guidée (secteur, modes, écrans, catalogue, nom)** — Livré. Dialog multi-étapes, plus un champ nom + bouton.
+- **Éditeur de steps (réordonner en drag-and-drop)** — Livré. Réordonner les écrans, pas un builder visuel type Typeform.
+- **Steps : choix multiple, texte, fichier, produits, identité, chat IA, soumission** — Partiel. Slider dédié et écran récap explicite absents ; le nombre couvre le dimensionnement.
+- **3 modes : wizard guidé / chat IA / les deux** — Livré.
+- **Collecte progressive d’identité (prénom, email, téléphone intercalés)** — Partiel. Capture anticipée prénom + email, puis écran contact (téléphone / société).
+- **Sauvegarde de session dès l’email saisi** — Partiel. Sauvegarde au moment où l’email est soumis dans le bloc de capture, pas à la frappe. Reprise `/reprendre`.
+- **URL publique standalone** — Livré. `/c/[org]/[slug]`.
+- **Embed widget JS + plugin WordPress + bloc Gutenberg** — Livré.
 
 ### Catalogue
-- Produits manuels (nom, SKU, description, prix min/max, tags, catégorie)
-- Import CSV
-- Règles Si/Alors → suggestions
-- Écran suggestions côté prospect
-
-Partiel : sync WooCommerce (connexion enregistrée, sync à fiabiliser), images / activation dans l’UI.
+- **Saisie manuelle (nom, SKU, description, prix min/max, tags, catégorie)** — Partiel. Image non exposée dans l’UI.
+- **Import CSV** — Livré.
+- **Gestion des catégories** — Partiel. Champ sur le produit, pas de module dédié.
+- **Activation / désactivation produits** — Partiel. `is_active` en base, pas de toggle catalogue.
+- **Si/Alors réponses → suggestions produits** — Livré.
+- **Page suggestions visuelles côté prospect** — Livré.
+- **Sync WooCommerce (import + sync)** — Partiel. Connexion enregistrée, sync à fiabiliser.
 
 ### Demandes
-- Liste tableau, filtres, ligne cliquable
-- Fiche prospect (réponses, produits, score)
-- Score hot / warm / cold
-- Assignation, notes, export CSV
-- Abandons `/sessions`
-
-Partiel : statuts seedés mais pas éditables ; timeline d’activité encore mince.  
-Kanban = phase 2, hors menu.
+- **Vue liste tableau** — Livré. `/devis`, ligne entière cliquable.
+- **Statuts (Nouveau / Contacté / En cours / Gagné / Perdu / En attente)** — Partiel. Seedés et sélectionnables, pas d’éditeur CRUD.
+- **Fiche prospect (réponses, produits, score, historique)** — Livré.
+- **Score automatique hot / warm / cold** — Livré.
+- **Assignation à un membre d’équipe** — Livré.
+- **Notes internes** — Livré.
+- **Timeline d’activité** — Partiel. Présente, encore mince.
+- **Sessions abandonnées** — Livré. `/sessions`.
+- **Export CSV** — Livré.
 
 ### Espace prospect
-- Lien magique `/suivi/[token]`
-- PIN 6 chiffres
-- Barre de statut, récap, upload, notes
-- Messagerie légère prospect ↔ commercial
+- **Lien magique post-soumission** — Livré. `/suivi/[token]`.
+- **Code PIN 6 chiffres** — Livré.
+- **Barre de statut** — Partiel. Barre oui, pas de push temps réel.
+- **Récap configuration + PDF téléchargeable** — Partiel. Récap oui ; PDF envoyé par email, pas encore téléchargé depuis l’espace.
+- **Zone de complétion (photos, mesures, notes)** — Partiel. Upload + notes ; pas de mesures structurées.
+- **Messagerie légère prospect ↔ commercial** — Partiel. Prospect → équipe oui ; réponse commercial → prospect à durcir.
+- **Historique des échanges** — Livré.
 
 ### Automatisations
-Actives, délais et on/off dans `/automations` :
-- Confirm prospect + brief commercial (T+0)
-- Rappel interne si non traité (4 h)
-- Reprise abandon (~1 h et 24 h)
-- Rassurant T+24 h, relance T+72 h
-- Templates email et PDF éditables
+- **Confirmation prospect T+0 + PDF** — Livré.
+- **Notification commercial à la soumission** — Livré.
+- **Relance abandon** — Partiel. Seed 1 h + 24 h (pas 30 min).
+- **Rappel interne si non traité sous 4 h** — Livré.
+- **Email rassurant prospect T+24 h** — Livré.
+- **Relance douce T+3 j avec lien de reprise** — Partiel. Flux 72 h présent ; lien de reprise surtout sur les abandons.
+- **Délais et contenus configurables** — Livré. `/automations`, `/templates`.
+- **Chaque flux activable / désactivable** — Livré.
 
-Pas encore : nurturing T+7 j, réactivation T+30 j, newsletter.
+### Statistiques
+- **KPI + tunnel visiteurs → gagné** — Livré. `/stats`, événements `analytics_events`.
+- **Sources UTM (Google Ads, organique, etc.)** — Livré. Capture sur session + widget.
+- **Pipeline financier et CA potentiel** — Livré.
+- **Abandons relançables depuis les stats** — Livré. CTA vers `/sessions`.
+- **Courbe 6 mois + export PDF agence** — Livré.
+- **Connexion GA4** — Partiel. Champ org encore dans la toolbar.
 
-### Pilotage & équipe
-- Stats volume / conversion / délai / mix score
-- Invitation email, rôles Admin / Commercial / Owner
-- Assignation + mail
-
-Partiel : champ GA4, pas de drop-off par étape ni perf par commercial.
+### Équipe
+- **Invitation par email** — Livré.
+- **Rôles Admin / Commercial** — Livré. Owner en plus.
+- **Assignation des demandes** — Livré.
+- **Notifications d’assignation** — Livré.
 
 ### Intégrations cœur
-- Widget JS, WordPress, webhook sortant
-- WooCommerce : settings only
+- **Widget JS universel** — Livré.
+- **Plugin WordPress + bloc Gutenberg** — Livré.
+- **Webhook sortant / export JSON** — Livré.
+- **WooCommerce (catalogue + commandes + statuts)** — Partiel. Settings only.
+
+### Paramètres cœur
+- **Templates email personnalisables** — Livré.
+- **Templates PDF personnalisables** — Livré.
 
 ---
 
 ## Phase 2 — ensuite
 
-- Logique conditionnelle **entre steps** (pas seulement vers les produits)
-- Preview mobile / desktop dans l’éditeur
-- Duplication de funnel
-- Domaine custom / white-label
-- Pipeline Kanban
-- Newsletter segmentée
-- Nurturing T+7 j / réactivation T+30 j
-- Shopify, Zapier
-- Stripe (abonnement)
-- Complétion par étape, perf équipe
-- Écran branding (logo, couleurs)
+Hors menu tant que le funnel et le catalogue ne sont pas au niveau.
+
+### Funnel
+- **Logique conditionnelle Si/Alors entre les steps** — Ensuite. Le Si/Alors actuel mappe vers des produits, pas vers des branches.
+- **Prévisualisation mobile / desktop en temps réel** — Ensuite. Aujourd’hui : lien public dans un nouvel onglet.
+- **Duplication de funnels** — Ensuite.
+- **Domaine custom / white-label** — Ensuite.
+
+### Catalogue & CRM
+- **Sync Shopify** — Ensuite.
+- **Vue pipeline Kanban** — Ensuite.
+- **Newsletter segmentée par données de configuration** — Ensuite.
+
+### Automatisations longues
+- **Nurturing T+7 j (contenu sectoriel)** — Ensuite.
+- **Réactivation T+30 j** — Ensuite.
+
+### Pilotage
+- **Taux de complétion par étape du funnel** — Livré (tunnel `/stats`).
+- **Performance par membre d’équipe** — Ensuite.
+- **Historique des actions par membre (vue dédiée)** — Ensuite. Données partielles aujourd’hui, pas d’écran.
+- **GTM** — Ensuite.
+
+### Intégrations & réglages
+- **Zapier** — Ensuite.
+- **Gestion organisation (logo, couleurs)** — Ensuite. `branding` jsonb existe, pas d’écran.
+- **Abonnement Stripe** — Ensuite.
+- **API keys** — Ensuite.
 
 ---
 
 ## Phase 3 — marketplace
 
-Les clients et agences publient des funnels configurés. D’autres les installent en un clic.
+Les clients et agences publient des funnels configurés. D’autres les installent en un clic. Ce n’est pas un store de thèmes : ce sont des parcours d’achat complets.
 
-**Offre**
-- Templates sectoriels (ex. cuisiniste haut de gamme, location BTP)
-- Packs : funnel + catalogue + mapping + emails
+**Effet** : plus de secteurs couverts → plus de nouveaux clients. Le contenu devient une barrière. Les agences ont un revenu passif. QuoteBuilder prend 30 % sur le payant.
 
-**Distribution**
-- Gratuit (communauté)
-- Payant 5–50 €, QuoteBuilder prend 30 %
-- Premium officiel QuoteBuilder
+### Offre
+- **Templates de funnels sectoriels** — Vision. Ex. cuisiniste haut de gamme, location matériel BTP.
+- **Templates avec catalogue pré-configuré** — Vision.
+- **Packs complets : funnel + mapping produits + séquences email** — Vision.
 
-**Mécaniques**
-- Preview avant achat
-- Filtres secteur / langue / étapes / prix
-- Avis, nombre d’installs, profil créateur
-- Certified Partner pour les agences
+### Distribution
+- **Gratuit — communauté** — Vision.
+- **Payant 5–50 €, commission QuoteBuilder 30 %** — Vision.
+- **Premium officiel QuoteBuilder par secteur** — Vision.
 
-**Effet** : plus de secteurs couverts → plus de nouveaux clients. Le contenu devient une barrière. Les agences ont un revenu passif.
+### Mécaniques
+- **Notation et avis** — Vision.
+- **Nombre d’installations** — Vision.
+- **Preview du funnel avant achat** — Vision.
+- **Filtres secteur / langue / nombre d’étapes / prix** — Vision.
+- **Profil créateur avec portfolio** — Vision.
+- **Programme Certified Partner** — Vision.
 
-Aussi en phase 3 : HubSpot / Pipedrive.
+### CRM tiers
+- **HubSpot / Pipedrive** — Vision.
 
 ---
 
@@ -114,4 +154,4 @@ Aussi en phase 3 : HubSpot / Pipedrive.
 
 QuoteBuilder n’est pas un formulaire de contact, ni un thème de site.  
 On ne met pas Quickly en avant sur la landing.  
-On ne code pas la marketplace, le Kanban ni la newsletter tant que le funnel et le catalogue ne sont pas au niveau.
+On ne pose pas Kanban, newsletter ou marketplace dans le menu ou le schéma tant que le funnel et le catalogue ne sont pas au niveau.
