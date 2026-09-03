@@ -5,18 +5,19 @@ alwaysApply: true
 
 # Phases produit
 
-QuoteBuilder = funnel de devis B2B, pas un formulaire.
+QuoteBuilder = funnel de devis B2B, pas un formulaire.  
+Carte officielle : `docs/produit.md`.
 
 ## Cœur (maintenant)
 
-Funnel (création guidée, steps, 3 modes, embed, URL publique), catalogue + Si/Alors, demandes en liste, espace prospect, automations de base, équipe, webhooks / WP / Woo.
+Funnel (création guidée, steps, 3 modes, embed widget/WP, URL publique, session + identité progressive), catalogue + Si/Alors + Woo à fiabiliser, demandes **en liste** (fiche, score, assignation, notes, abandons, CSV), espace prospect, automations de base (T+0, notif, abandon, 4 h, T+24 h, T+3 j), équipe, stats volume/conversion/délai/score, webhooks, templates email/PDF.
 
 ## Phase 2 (pas avant le cœur)
 
-Kanban, newsletter, preview live, duplication, domaine custom, Shopify, Zapier, Stripe, branches entre steps, nurturing long.
+Branches Si/Alors **entre steps**, preview live mobile/desktop, duplication, domaine custom, branding org (logo, couleurs), Kanban, newsletter, nurturing T+7 j / réactivation T+30 j, Shopify, Zapier, Stripe, API keys, drop-off par étape, perf par commercial, GTM.
 
 ## Phase 3 (vision)
 
-Marketplace de templates (gratuit / payant 30 % / premium officiel), Certified Partner, HubSpot / Pipedrive.
+Marketplace de templates (gratuit / payant 5–50 € avec 30 % de commission / premium officiel), packs funnel + catalogue + emails, avis, installs, preview, filtres, profil créateur, Certified Partner, HubSpot / Pipedrive.
 
 Ne pas poser Kanban, newsletter ou marketplace dans le menu ou le schéma tant que le funnel et le catalogue ne sont pas au niveau.

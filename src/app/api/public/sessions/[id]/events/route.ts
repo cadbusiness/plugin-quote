@@ -22,8 +22,10 @@ export async function POST(
     organization_id: session.organization_id,
     configurator_id: session.configurator_id,
     session_id: session.id,
+    visitor_id: typeof body.visitorId === "string" ? body.visitorId : session.visitor_id,
     event_type: eventType,
     step: typeof body.step === "number" ? body.step : null,
+    payload: body.payload && typeof body.payload === "object" ? body.payload : {},
   });
   return NextResponse.json({ ok: true });
 }

@@ -9,6 +9,8 @@ import type {
   SessionMode,
 } from "@/lib/wizard/types";
 import type { Json } from "@/lib/db/database.types";
+import { ANALYTICS_EVENTS } from "@/lib/stats/events";
+import { attributionColumns, type Attribution } from "@/lib/stats/attribution";
 
 export function mapSession(row: Tables<"quote_sessions">): QuoteSession {
   const customization = (row.customization ?? {}) as Partial<Customization>;
@@ -31,7 +33,7 @@ export function mapSession(row: Tables<"quote_sessions">): QuoteSession {
   };
 }
 
-export async function createSession(orgSlug: string, configuratorSlug: string) {
+export async function resolvePublicConfigurator(orgSlug: string, configuratorSlug: string) {
   const supabase = createServiceClient();
   const { data: org } = await supabase
     .from("organizations")
@@ -47,24 +49,43 @@ export async function createSession(orgSlug: string, configuratorSlug: string) {
     .eq("is_active", true)
     .maybeSingle();
   if (!cfg) return null;
+  return { organizationId: org.id, configuratorId: cfg.id };
+}
+
+export async function createSession(
+  orgSlug: string,
+  configuratorSlug: string,
+  attribution?: Attribution,
+) {
+  const resolved = await resolvePublicConfigurator(orgSlug, configuratorSlug);
+  if (!resolved) return null;
+  const supabase = createServiceClient();
 
   const token = randomBytes(24).toString("hex");
   const { data, error } = await supabase
     .from("quote_sessions")
     .insert({
-      organization_id: org.id,
-      configurator_id: cfg.id,
+      organization_id: resolved.organizationId,
+      configurator_id: resolved.configuratorId,
       token,
+      ...(attribution ? attributionColumns(attribution) : {}),
     })
     .select("*")
     .single();
   if (error || !data) return null;
   await supabase.from("analytics_events").insert({
-    organization_id: org.id,
-    configurator_id: cfg.id,
+    organization_id: resolved.organizationId,
+    configurator_id: resolved.configuratorId,
     session_id: data.id,
-    event_type: "quotebuilder_started",
+    visitor_id: attribution?.visitorId ?? null,
+    event_type: ANALYTICS_EVENTS.started,
     step: 0,
+    payload: {
+      utm_source: attribution?.utmSource ?? null,
+      utm_medium: attribution?.utmMedium ?? null,
+      utm_campaign: attribution?.utmCampaign ?? null,
+      referrer: attribution?.referrer ?? null,
+    },
   });
   return mapSession(data);
 }
@@ -98,6 +119,7 @@ export async function updateSession(
     selectedSuggestionId?: string | null;
     customization?: Customization;
     contactDraft?: QuoteSession["contactDraft"];
+    attribution?: Attribution;
   },
 ) {
   const supabase = createServiceClient();
@@ -112,6 +134,27 @@ export async function updateSession(
   }
   if (patch.customization) update.customization = patch.customization as unknown as Json;
   if (patch.contactDraft) update.contact_draft = patch.contactDraft as unknown as Json;
+  if (patch.attribution) {
+    const { data: existing } = await supabase
+      .from("quote_sessions")
+      .select("utm_source, visitor_id")
+      .eq("id", id)
+      .eq("token", token)
+      .maybeSingle();
+    if (existing && !existing.utm_source) {
+      const cols = attributionColumns(patch.attribution);
+      update.utm_source = cols.utm_source;
+      update.utm_medium = cols.utm_medium;
+      update.utm_campaign = cols.utm_campaign;
+      update.utm_content = cols.utm_content;
+      update.utm_term = cols.utm_term;
+      update.referrer = cols.referrer;
+      update.landing_path = cols.landing_path;
+    }
+    if (existing && !existing.visitor_id && patch.attribution.visitorId) {
+      update.visitor_id = patch.attribution.visitorId;
+    }
+  }
 
   const { data, error } = await supabase
     .from("quote_sessions")
@@ -134,4 +177,12 @@ type DatabaseUpdate = {
   customization?: Json;
   contact_draft?: Json;
   last_activity_at?: string;
+  visitor_id?: string | null;
+  utm_source?: string | null;
+  utm_medium?: string | null;
+  utm_campaign?: string | null;
+  utm_content?: string | null;
+  utm_term?: string | null;
+  referrer?: string | null;
+  landing_path?: string | null;
 };

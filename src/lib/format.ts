@@ -16,3 +16,26 @@ export function formatDate(iso: string) {
     timeStyle: "short",
   });
 }
+
+export function formatEur(value: number | null | undefined) {
+  if (value == null || Number.isNaN(value)) return "—";
+  return new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+export function formatHours(hours: number | null | undefined) {
+  if (hours == null || Number.isNaN(hours)) return "—";
+  if (hours < 1) return `${Math.max(1, Math.round(hours * 60))} min`;
+  const h = Math.floor(hours);
+  const m = Math.round((hours - h) * 60);
+  if (m === 0) return `${h}h`;
+  return `${h}h${String(m).padStart(2, "0")}`;
+}
+
+export function formatPercent(value: number | null | undefined) {
+  if (value == null || Number.isNaN(value)) return "—";
+  return `${Math.round(value)}%`;
+}
