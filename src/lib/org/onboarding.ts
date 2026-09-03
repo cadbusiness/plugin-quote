@@ -42,7 +42,7 @@ export async function createOrganizationForUser(
 
   await supabase.from("configurators").insert({
     organization_id: org.id,
-    name: "Configurateur principal",
+    name: "Funnel principal",
     slug: "principal",
     sector: "general",
     wizard_enabled: true,

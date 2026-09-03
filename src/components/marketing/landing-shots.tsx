@@ -52,7 +52,7 @@ export function WizardShot() {
   return (
     <Window url="votre-site.com / devis" dark>
       <div className="bg-slate-950 px-4 pb-3 text-white">
-        <p className="text-[11px] uppercase tracking-[0.16em] text-amber-400">Configurateur</p>
+        <p className="text-[11px] uppercase tracking-[0.16em] text-amber-400">Funnel</p>
         <p className="text-sm font-medium">Explorer et composer le projet</p>
         <div className="mt-3 flex gap-1.5">
           <div className="h-1 flex-1 rounded-full bg-amber-500" />

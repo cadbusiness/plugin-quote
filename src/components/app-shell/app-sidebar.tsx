@@ -6,16 +6,15 @@ import { usePathname } from "next/navigation";
 type Item = { href: string; label: string; exact: boolean; admin?: boolean };
 
 const NAV: Item[] = [
-  { href: "/devis", label: "Devis", exact: false },
+  { href: "/funnels", label: "Funnels", exact: false, admin: true },
+  { href: "/produits", label: "Catalogue", exact: true, admin: true },
+  { href: "/devis", label: "Pipeline", exact: false },
   { href: "/sessions", label: "Abandons", exact: true },
-  { href: "/stats", label: "Stats", exact: true },
+  { href: "/automations", label: "Automatisations", exact: true, admin: true },
+  { href: "/stats", label: "Statistiques", exact: true },
   { href: "/equipe", label: "Équipe", exact: true, admin: true },
-  { href: "/automations", label: "Automations", exact: true, admin: true },
-  { href: "/wizard", label: "Wizard", exact: true, admin: true },
-  { href: "/produits", label: "Produits", exact: true, admin: true },
-  { href: "/templates", label: "Templates", exact: true, admin: true },
+  { href: "/templates", label: "Emails", exact: true, admin: true },
   { href: "/webhooks", label: "Webhooks", exact: true, admin: true },
-  { href: "/woocommerce", label: "WooCommerce", exact: true, admin: true },
 ];
 
 export function AppSidebar({ isAdmin, isPlatformAdmin = false }: { isAdmin: boolean; isPlatformAdmin?: boolean }) {

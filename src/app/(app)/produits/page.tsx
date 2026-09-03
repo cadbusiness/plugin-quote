@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
@@ -36,6 +37,9 @@ export default async function ProductsPage() {
         <span className="text-xs text-slate-500">
           Colonnes : name, sku, description, price_min, price_max, tags, category
         </span>
+        <Link href="/woocommerce" className="text-sm underline">
+          Sync WooCommerce
+        </Link>
       </ListToolbar>
       {(imports ?? []).length ? (
         <p className="border-b border-slate-100 px-4 py-2 text-xs text-slate-500 lg:px-6">

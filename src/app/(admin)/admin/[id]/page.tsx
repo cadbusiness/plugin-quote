@@ -20,7 +20,7 @@ export default async function AdminOrgPage({ params }: { params: Promise<{ id: s
           <span className="text-sm text-slate-500">{org.name}</span>
         </ListToolbar>
         <div className="border-b border-slate-100 px-4 py-3 text-sm text-slate-600 lg:px-6">
-          {org.slug} · {org.plan} · {configurators.length} configurateur{configurators.length > 1 ? "s" : ""}
+          {org.slug} · {org.plan} · {configurators.length} funnel{configurators.length > 1 ? "s" : ""}
         </div>
         <DataTable headers={["Membre", "Rôle", "Statut"]}>
           {members.map((member) => (

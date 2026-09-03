@@ -18,5 +18,5 @@ export async function saveStepOrder(orderedIds: string[]) {
         .eq("organization_id", ctx.organization.id),
     ),
   );
-  revalidatePath("/wizard");
+  revalidatePath("/funnels");
 }

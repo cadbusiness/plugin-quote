@@ -3,9 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getOrgContext } from "@/lib/auth/org";
+import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { parseProductCsv } from "@/lib/catalog/csv";
 import { parseConditions } from "@/lib/catalog/rules";
+import { uniqueSlug } from "@/lib/org/slug";
 
 export async function logout() {
   const supabase = await createClient();
@@ -126,7 +127,7 @@ export async function reorderStep(stepId: string, direction: "up" | "down") {
   const b = steps[swapWith];
   await supabase.from("wizard_steps").update({ sort_order: b.sort_order }).eq("id", a.id);
   await supabase.from("wizard_steps").update({ sort_order: a.sort_order }).eq("id", b.id);
-  revalidatePath("/wizard");
+  revalidatePath("/funnels");
 }
 
 export async function updateQuestion(formData: FormData) {
@@ -142,7 +143,78 @@ export async function updateQuestion(formData: FormData) {
     })
     .eq("id", String(formData.get("id")))
     .eq("organization_id", ctx.organization.id);
-  revalidatePath("/wizard");
+  revalidatePath("/funnels");
+}
+
+export async function createFunnel(formData: FormData) {
+  const ctx = await getOrgContext();
+  if (!ctx) redirect("/onboarding");
+  if (!isAdminRole(ctx.role)) redirect("/devis");
+  const name = String(formData.get("name") ?? "").trim();
+  if (name.length < 2) return;
+  const supabase = await createClient();
+  const slug = await uniqueSlug(async (candidate) => {
+    const { data } = await supabase
+      .from("configurators")
+      .select("id")
+      .eq("organization_id", ctx.organization.id)
+      .eq("slug", candidate)
+      .maybeSingle();
+    return Boolean(data);
+  }, name);
+  const { data: funnel, error } = await supabase
+    .from("configurators")
+    .insert({
+      organization_id: ctx.organization.id,
+      name,
+      slug,
+      sector: "general",
+      wizard_enabled: true,
+      chat_enabled: false,
+    })
+    .select("id")
+    .single();
+  if (error || !funnel) return;
+  await supabase.from("wizard_steps").insert([
+    {
+      organization_id: ctx.organization.id,
+      configurator_id: funnel.id,
+      sort_order: 0,
+      title: "Votre projet",
+      subtitle: "Quelques questions pour cadrer le besoin",
+      screen_type: "questions",
+    },
+    {
+      organization_id: ctx.organization.id,
+      configurator_id: funnel.id,
+      sort_order: 1,
+      title: "Vos coordonnées",
+      subtitle: null,
+      screen_type: "contact",
+    },
+  ]);
+  revalidatePath("/funnels");
+  redirect(`/funnels/${funnel.id}`);
+}
+
+export async function saveFunnel(formData: FormData) {
+  const ctx = await getOrgContext();
+  if (!ctx) redirect("/onboarding");
+  if (!isAdminRole(ctx.role)) redirect("/devis");
+  const id = String(formData.get("id") ?? "");
+  const supabase = await createClient();
+  await supabase
+    .from("configurators")
+    .update({
+      name: String(formData.get("name") ?? "").trim() || "Funnel",
+      wizard_enabled: formData.get("wizard_enabled") === "on",
+      chat_enabled: formData.get("chat_enabled") === "on",
+      is_active: formData.get("is_active") === "on",
+    })
+    .eq("id", id)
+    .eq("organization_id", ctx.organization.id);
+  revalidatePath("/funnels");
+  revalidatePath(`/funnels/${id}`);
 }
 
 export async function saveRule(formData: FormData) {

@@ -17,7 +17,7 @@ const FAQ = [
   },
   {
     q: "Comment s’intègre QuoteBuilder sur mon site ?",
-    a: "Deux lignes de code JavaScript, ou un plugin WordPress à installer en un clic. Le configurateur apparaît sur votre site sans toucher à votre design.",
+    a: "Deux lignes de code JavaScript, ou un plugin WordPress à installer en un clic. Le funnel apparaît sur votre site sans toucher à votre design.",
   },
   {
     q: "Que se passe-t-il quand j’atteins la limite de 10 devis en Free ?",
@@ -29,7 +29,7 @@ const FAQ = [
   },
   {
     q: "Est-ce que je peux le tester sur mon secteur avant de payer ?",
-    a: "Oui. Le plan Free est illimité dans le temps. Vous pouvez configurer votre catalogue, tester le wizard, recevoir vos 10 premiers dossiers — sans carte bancaire.",
+    a: "Oui. Le plan Free est illimité dans le temps. Vous pouvez configurer votre catalogue, tester le funnel, recevoir vos 10 premiers dossiers — sans carte bancaire.",
   },
 ];
 
@@ -39,7 +39,7 @@ const PLANS = [
     price: "0 €",
     period: "",
     quotes: "10 devis / mois",
-    modes: "Wizard",
+    modes: "Funnel",
     crm: "Basique",
     team: "1 user",
     whiteLabel: false,
@@ -52,7 +52,7 @@ const PLANS = [
     price: "19 €",
     period: "/mois",
     quotes: "50 devis / mois",
-    modes: "Wizard + Chat",
+    modes: "Funnel + Chat",
     crm: "Complet",
     team: "3 users",
     whiteLabel: false,
@@ -98,7 +98,7 @@ const HOW_STEPS = [
   {
     n: "②",
     title: "Ils configurent leur projet",
-    text: "Page libre, wizard guidé ou chat IA — selon ce qui convient à votre secteur. Ils répondent à vos questions, choisissent vos produits, précisent les contraintes, voient un budget indicatif.",
+    text: "Funnel guidé ou chat IA — selon ce qui convient à votre secteur. Ils répondent à vos questions, choisissent vos produits, précisent les contraintes, voient un budget indicatif.",
     shot: <WizardShot />,
   },
   {
@@ -151,14 +151,14 @@ export function Landing() {
           className="pointer-events-none absolute left-1/2 top-8 h-72 w-72 -translate-x-1/2 rounded-full bg-[#F3B184]/45 blur-3xl sm:h-[26rem] sm:w-[26rem]"
         />
         <div className="relative mx-auto max-w-3xl text-center">
-          <p className="text-sm font-medium text-[#C45C26]">Configurateur de devis B2B</p>
+          <p className="text-sm font-medium text-[#C45C26]">Funnel de devis B2B</p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-[3.35rem] sm:leading-[1.08]">
             Vos visiteurs ne savent pas comment acheter vos produits.
             <br />
             QuoteBuilder leur montre.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-[#1A1510]/70">
-            Catalogue interactif, configurateur guidé, chat IA — vos prospects explorent votre offre,
+            Catalogue interactif, funnel guidé, chat IA — vos prospects explorent votre offre,
             composent leur projet, et vous soumettent une demande complète. Vous recevez un dossier.
             Pas un email.
           </p>
@@ -182,7 +182,7 @@ export function Landing() {
 
       <section className="border-y border-[#1A1510]/8 bg-white/50 px-6 py-8">
         <p className="text-center text-xs font-medium uppercase tracking-[0.16em] text-[#1A1510]/40">
-          L’expérience d’un configurateur auto — pour les PME qui vendent sur mesure
+          Un funnel builder branché sur vos vrais produits — pour les PME B2B sur mesure
         </p>
         <div className="mx-auto mt-5 flex max-w-3xl flex-wrap items-center justify-center gap-2">
           {["Rayonnage", "Cuisine", "Menuiserie", "Paysage", "Location", "Aménagement"].map((label) => (
@@ -239,7 +239,7 @@ export function Landing() {
           </div>
           <div id="demo" className="mt-16 scroll-mt-24">
             <p className="mb-3 text-center text-sm text-[#1A1510]/50">
-              Simulation — catalogue, configurateur, puis le dossier dans votre pipeline.
+              Simulation — catalogue, funnel, puis le dossier dans votre pipeline.
             </p>
             <ProductWalkthrough />
           </div>
@@ -256,8 +256,8 @@ export function Landing() {
             text="Une URL publique ou un embed. Le prospect parcourt vos produits, compose, voit ce qui est possible. Idéal quand il sait déjà ce qu’il cherche."
           />
           <ModeCard
-            title="Configurateur guidé"
-            text="Un parcours à questions dans l’ordre que vous définissez. Il cadre le projet avant de parler produits. Idéal pour les achats complexes ou techniques."
+            title="Funnel guidé"
+            text="Une séquence de steps que vous construisez. Il cadre le projet avant de parler produits. Idéal pour les achats complexes ou techniques."
           />
           <ModeCard
             title="Chat IA"
@@ -400,7 +400,7 @@ export function Landing() {
       <footer className="border-t border-[#1A1510]/10 px-6 py-10 text-sm text-[#1A1510]/50">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 sm:flex-row sm:justify-between">
           <div>
-            <p className="font-medium text-[#1A1510]/70">QuoteBuilder · Configurateur de devis B2B</p>
+            <p className="font-medium text-[#1A1510]/70">QuoteBuilder · Funnel de devis B2B</p>
             <p className="mt-1">Produit de Vinci Liberta LTD · Dublin, Irlande</p>
           </div>
           <div className="flex flex-col gap-2 sm:items-end">
