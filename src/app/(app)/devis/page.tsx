@@ -18,7 +18,7 @@ export default async function QuotesPage({
   const [{ data: statuses }, { data: members }, quotes] = await Promise.all([
     supabase.from("quote_statuses").select("*").eq("organization_id", ctx.organization.id).order("position"),
     supabase.from("memberships").select("*").eq("organization_id", ctx.organization.id).eq("status", "active"),
-    listQuotes(supabase, ctx.organization.id, filters),
+    listQuotes(supabase, ctx.organization.id, { ...filters, limit: 150 }),
   ]);
   const statusById = new Map((statuses ?? []).map((s) => [s.id, s]));
   const memberLabel = new Map(

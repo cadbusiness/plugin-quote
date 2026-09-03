@@ -8,6 +8,7 @@ export type QuoteFilters = {
   q?: string;
   from?: string;
   to?: string;
+  limit?: number;
 };
 
 export async function listQuotes(
@@ -17,9 +18,12 @@ export async function listQuotes(
 ) {
   let query = supabase
     .from("quotes")
-    .select("*")
+    .select(
+      "id, contact_name, contact_email, contact_phone, contact_company, score, score_label, status_id, status, assigned_to, created_at",
+    )
     .eq("organization_id", orgId)
     .order("created_at", { ascending: false });
+  if (filters.limit) query = query.limit(filters.limit);
   if (filters.status) query = query.eq("status_id", filters.status);
   if (filters.assigned === "none") query = query.is("assigned_to", null);
   else if (filters.assigned) query = query.eq("assigned_to", filters.assigned);
@@ -38,7 +42,8 @@ export async function listQuotes(
 export function csvQuery(filters: QuoteFilters) {
   const params = new URLSearchParams();
   for (const [key, value] of Object.entries(filters)) {
-    if (value) params.set(key, value);
+    if (key === "limit" || value == null || value === "") continue;
+    params.set(key, String(value));
   }
   const qs = params.toString();
   return qs ? `/devis.csv?${qs}` : "/devis.csv";

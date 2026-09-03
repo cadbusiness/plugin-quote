@@ -11,22 +11,20 @@ export default async function ProductsPage() {
   if (!ctx) redirect("/onboarding");
   if (!isAdminRole(ctx.role)) redirect("/devis");
   const supabase = await createClient();
-  const { data: products } = await supabase
-    .from("products")
-    .select("*")
-    .eq("organization_id", ctx.organization.id)
-    .order("name");
-  const { data: rules } = await supabase
-    .from("suggestion_rules")
-    .select("*")
-    .eq("organization_id", ctx.organization.id)
-    .order("priority", { ascending: false });
-  const { data: imports } = await supabase
-    .from("product_imports")
-    .select("*")
-    .eq("organization_id", ctx.organization.id)
-    .order("imported_at", { ascending: false })
-    .limit(5);
+  const [{ data: products }, { data: rules }, { data: imports }] = await Promise.all([
+    supabase.from("products").select("*").eq("organization_id", ctx.organization.id).order("name"),
+    supabase
+      .from("suggestion_rules")
+      .select("*")
+      .eq("organization_id", ctx.organization.id)
+      .order("priority", { ascending: false }),
+    supabase
+      .from("product_imports")
+      .select("id, row_count, source, imported_at")
+      .eq("organization_id", ctx.organization.id)
+      .order("imported_at", { ascending: false })
+      .limit(5),
+  ]);
 
   return (
     <ListPanel>

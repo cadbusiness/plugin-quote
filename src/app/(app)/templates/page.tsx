@@ -9,14 +9,10 @@ export default async function TemplatesPage() {
   if (!ctx) redirect("/onboarding");
   if (!isAdminRole(ctx.role)) redirect("/devis");
   const supabase = await createClient();
-  const { data: emails } = await supabase
-    .from("email_templates")
-    .select("*")
-    .eq("organization_id", ctx.organization.id);
-  const { data: pdfs } = await supabase
-    .from("pdf_templates")
-    .select("*")
-    .eq("organization_id", ctx.organization.id);
+  const [{ data: emails }, { data: pdfs }] = await Promise.all([
+    supabase.from("email_templates").select("*").eq("organization_id", ctx.organization.id),
+    supabase.from("pdf_templates").select("*").eq("organization_id", ctx.organization.id),
+  ]);
 
   return (
     <ListPanel>

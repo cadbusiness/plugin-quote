@@ -9,10 +9,11 @@ export default async function AbandonedSessionsPage() {
   const supabase = await createClient();
   const { data: sessions } = await supabase
     .from("quote_sessions")
-    .select("*")
+    .select("id, contact_draft, current_step, last_activity_at, updated_at")
     .eq("organization_id", ctx.organization.id)
     .is("submitted_quote_id", null)
-    .order("last_activity_at", { ascending: false });
+    .order("last_activity_at", { ascending: false })
+    .limit(150);
 
   const abandoned = (sessions ?? []).filter((s) => {
     const draft = (s.contact_draft ?? {}) as { email?: string };

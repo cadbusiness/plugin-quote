@@ -6,7 +6,8 @@ import { AppSidebar } from "@/components/app-shell/app-sidebar";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const [ctx, user] = await Promise.all([getOrgContext(), getAuthUser()]);
+  const ctx = await getOrgContext();
+  const user = await getAuthUser();
   if (!ctx) redirect(isSuperAdmin(user) ? "/admin" : "/onboarding");
   const supabase = await createClient();
   const { data: notifications } = await supabase

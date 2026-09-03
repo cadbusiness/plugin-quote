@@ -18,13 +18,21 @@ export default async function StatsPage({
 
   const [{ data: quotes }, { data: statuses }, { data: events }, { data: configurators }, { data: activities }] =
     await Promise.all([
-      supabase.from("quotes").select("*").eq("organization_id", ctx.organization.id).gte("created_at", since),
-      supabase.from("quote_statuses").select("*").eq("organization_id", ctx.organization.id),
-      supabase.from("analytics_events").select("*").eq("organization_id", ctx.organization.id).gte("created_at", since),
+      supabase
+        .from("quotes")
+        .select("id, status_id, status, score_label, configurator_id, created_at")
+        .eq("organization_id", ctx.organization.id)
+        .gte("created_at", since),
+      supabase.from("quote_statuses").select("id, label, slug").eq("organization_id", ctx.organization.id),
+      supabase
+        .from("analytics_events")
+        .select("event_type")
+        .eq("organization_id", ctx.organization.id)
+        .gte("created_at", since),
       supabase.from("configurators").select("id, name").eq("organization_id", ctx.organization.id),
       supabase
         .from("quote_activities")
-        .select("*")
+        .select("quote_id, created_at")
         .eq("organization_id", ctx.organization.id)
         .eq("type", "status_changed")
         .gte("created_at", since),
@@ -47,13 +55,16 @@ export default async function StatsPage({
   const conversion = list.length ? Math.round((won / list.length) * 100) : 0;
   const contactedRate = list.length ? Math.round((contacted / list.length) * 100) : 0;
 
+  const quotesById = new Map(list.map((q) => [q.id, q]));
   const firstChange = new Map<string, number>();
   for (const a of activities ?? []) {
-    if (!firstChange.has(a.quote_id)) {
-      const quote = list.find((q) => q.id === a.quote_id);
-      if (quote) {
-        firstChange.set(a.quote_id, (new Date(a.created_at).getTime() - new Date(quote.created_at).getTime()) / 3600000);
-      }
+    if (firstChange.has(a.quote_id)) continue;
+    const quote = quotesById.get(a.quote_id);
+    if (quote) {
+      firstChange.set(
+        a.quote_id,
+        (new Date(a.created_at).getTime() - new Date(quote.created_at).getTime()) / 3600000,
+      );
     }
   }
   const delays = [...firstChange.values()];

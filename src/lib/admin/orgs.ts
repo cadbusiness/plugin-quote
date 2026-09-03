@@ -4,7 +4,7 @@ export async function listPlatformOrgs() {
   const supabase = createServiceClient();
   const [{ data: orgs }, { data: members }, { data: quotes }] = await Promise.all([
     supabase.from("organizations").select("id, name, slug, plan, created_at").order("created_at", { ascending: false }),
-    supabase.from("memberships").select("organization_id, role, status, user_id, invited_email"),
+    supabase.from("memberships").select("organization_id"),
     supabase.from("quotes").select("organization_id"),
   ]);
 
