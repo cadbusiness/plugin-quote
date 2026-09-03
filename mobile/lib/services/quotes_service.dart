@@ -60,6 +60,15 @@ class QuotesService {
       patch['status_id'] = statusId;
     }
     await _client.from('quotes').update(patch).eq('id', id);
+    if (orgId != null) {
+      await _client.from('quote_activities').insert({
+        'organization_id': orgId,
+        'quote_id': id,
+        'actor_id': _client.auth.currentUser?.id,
+        'type': 'status_changed',
+        'payload': {'status': status},
+      });
+    }
   }
 
   Future<void> addNote(String quoteId, String content) async {
@@ -68,7 +77,14 @@ class QuotesService {
     await _client.from('quote_notes').insert({
       'organization_id': orgId,
       'quote_id': quoteId,
+      'author_id': _client.auth.currentUser?.id,
       'content': content.trim(),
+    });
+    await _client.from('quote_activities').insert({
+      'organization_id': orgId,
+      'quote_id': quoteId,
+      'actor_id': _client.auth.currentUser?.id,
+      'type': 'note_added',
     });
   }
 

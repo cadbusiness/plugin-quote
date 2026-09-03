@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { logActivity, notifyUser } from "@/lib/crm/activity";
 import { sendTemplateEmail } from "@/lib/email/send";
+import { getAppUrl } from "@/lib/supabase/env";
 
 export async function changeQuoteStatus(quoteId: string, statusId: string) {
   const ctx = await getOrgContext();
@@ -60,6 +61,19 @@ export async function assignQuote(quoteId: string, userId: string) {
       type: "assigned",
       body: `Demande assignée : ${quote?.contact_name ?? "prospect"}`,
     });
+    const { data: member } = await supabase
+      .from("memberships")
+      .select("invited_email")
+      .eq("organization_id", ctx.organization.id)
+      .eq("user_id", assigned)
+      .maybeSingle();
+    if (member?.invited_email) {
+      await sendTemplateEmail({
+        to: member.invited_email,
+        subject: `Demande assignée — ${quote?.contact_name ?? "prospect"}`,
+        body: `Une demande vous a été assignée : ${quote?.contact_name ?? "prospect"}.\n${getAppUrl()}/devis/${quoteId}`,
+      });
+    }
   }
   revalidatePath("/devis");
   revalidatePath(`/devis/${quoteId}`);
@@ -102,11 +116,10 @@ export async function inviteMember(formData: FormData) {
     invited_email: email,
     invite_token: token,
   });
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
   await sendTemplateEmail({
     to: email,
     subject: `Invitation ${ctx.organization.name}`,
-    body: `Vous êtes invité sur QuoteBuilder (${ctx.organization.name}).\n${appUrl}/invite/${token}`,
+    body: `Vous êtes invité sur QuoteBuilder (${ctx.organization.name}).\n${getAppUrl()}/invite/${token}`,
   });
   revalidatePath("/equipe");
 }
