@@ -1,23 +1,16 @@
 import Link from "next/link";
-import { logout } from "@/app/(app)/actions";
 import { markNotificationsRead } from "@/app/(app)/crm-actions";
 import { BrandLogo } from "@/components/brand/brand-logo";
 
 export function AppHeader({
-  orgName,
-  email,
   notifications,
 }: {
-  orgName: string;
-  email: string | null;
   notifications: { id: string; body: string; quote_id: string | null }[];
 }) {
   const unread = notifications.length;
   return (
     <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-4 border-b border-slate-200 bg-white px-4 lg:px-6">
-      <BrandLogo href="/devis" priority />
-      <span className="hidden h-6 w-px bg-slate-200 sm:block" aria-hidden />
-      <span className="min-w-0 truncate text-sm text-slate-600">{orgName}</span>
+      <BrandLogo href="/accueil" priority />
       <div className="flex-1" />
       <details className="relative">
         <summary className="cursor-pointer list-none text-sm text-slate-600 hover:text-slate-900">
@@ -48,12 +41,6 @@ export function AppHeader({
           )}
         </div>
       </details>
-      <form action={logout} className="flex items-center gap-3">
-        <span className="max-w-[16rem] truncate text-sm text-slate-500">{email}</span>
-        <button type="submit" className="text-sm text-slate-600 hover:text-slate-900">
-          Déconnexion
-        </button>
-      </form>
     </header>
   );
 }

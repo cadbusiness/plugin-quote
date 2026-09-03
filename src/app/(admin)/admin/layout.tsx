@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { logout } from "@/app/(app)/actions";
+import { AppFooter } from "@/components/app-shell/app-footer";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { getAuthUser, getOrgContext } from "@/lib/auth/org";
 import { isSuperAdmin } from "@/lib/auth/platform";
@@ -11,14 +12,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const ctx = await getOrgContext();
 
   return (
-    <div className="flex min-h-dvh flex-col bg-slate-50">
+    <div className="flex h-dvh flex-col overflow-hidden bg-slate-50">
       <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-4 border-b border-slate-200 bg-white px-4 lg:px-6">
         <BrandLogo href="/admin" priority />
         <span className="hidden h-6 w-px bg-slate-200 sm:block" aria-hidden />
         <span className="text-sm text-slate-600">Super admin</span>
         <div className="flex-1" />
         {ctx ? (
-          <Link href="/devis" className="text-sm text-slate-600 hover:text-slate-900">
+          <Link href="/accueil" className="text-sm text-slate-600 hover:text-slate-900">
             Espace {ctx.organization.name}
           </Link>
         ) : null}
@@ -40,8 +41,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             </Link>
           </nav>
         </aside>
-        <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-auto">
-          <div className="flex min-h-0 w-full flex-1 flex-col px-4 lg:px-6">{children}</div>
+        <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+          <div className="flex min-h-0 w-full flex-1 flex-col overflow-auto px-4 lg:px-6">{children}</div>
+          <AppFooter />
         </main>
       </div>
     </div>
