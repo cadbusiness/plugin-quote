@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { importProductsCsv } from "@/app/(app)/produits/actions";
+import { CatalogTabs } from "@/components/catalog/catalog-tabs";
 import { CreateProductDialog } from "@/components/catalog/create-product-dialog";
 import { Chip, type ChipTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
@@ -78,6 +79,7 @@ export default async function ProductsPage({
 
   return (
     <ListPanel>
+      <CatalogTabs active="produits" />
       <ListToolbar>
         <form className="mr-auto flex flex-wrap items-center gap-2">
           <input
@@ -115,9 +117,6 @@ export default async function ProductsPage({
           <button className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">CSV</button>
         </form>
 
-        <Link href="/produits/regles" className="text-sm text-slate-600 underline">
-          Règles Si/Alors
-        </Link>
         <CreateProductDialog funnels={funnels ?? []} />
       </ListToolbar>
 

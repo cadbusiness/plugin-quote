@@ -208,6 +208,59 @@ export async function importProductsCsv(formData: FormData) {
   revalidatePath("/produits");
 }
 
+export async function createRule(
+  _prev: ProductFormState,
+  formData: FormData,
+): Promise<ProductFormState> {
+  const ctx = await requireAdmin();
+  const name = String(formData.get("name") ?? "").trim();
+  if (name.length < 2) return { error: "Donnez un nom à la règle." };
+
+  const configuratorId = String(formData.get("configurator_id") ?? "");
+  if (!configuratorId) return { error: "Choisissez le funnel concerné." };
+
+  const productIds = formData.getAll("product_ids").map(String).filter(Boolean);
+  if (!productIds.length) return { error: "Choisissez au moins un produit à proposer." };
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("suggestion_rules").insert({
+    organization_id: ctx.organization.id,
+    configurator_id: configuratorId,
+    name,
+    headline: String(formData.get("headline") ?? "").trim() || null,
+    description: String(formData.get("description") ?? "").trim() || null,
+    priority: Number(formData.get("priority") || 0),
+    conditions: parseConditions(formData) as unknown as Json,
+    product_ids: productIds,
+  });
+  if (error) return { error: error.message };
+
+  revalidatePath("/produits/regles");
+  return {};
+}
+
+export async function toggleRule(ruleId: string, active: boolean) {
+  const ctx = await requireAdmin();
+  const supabase = await createClient();
+  await supabase
+    .from("suggestion_rules")
+    .update({ is_active: active })
+    .eq("id", ruleId)
+    .eq("organization_id", ctx.organization.id);
+  revalidatePath("/produits/regles");
+}
+
+export async function deleteRule(ruleId: string) {
+  const ctx = await requireAdmin();
+  const supabase = await createClient();
+  await supabase
+    .from("suggestion_rules")
+    .delete()
+    .eq("id", ruleId)
+    .eq("organization_id", ctx.organization.id);
+  revalidatePath("/produits/regles");
+}
+
 export async function saveRule(formData: FormData) {
   const ctx = await requireAdmin();
   const id = String(formData.get("id") ?? "");

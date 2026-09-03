@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { saveRule } from "@/app/(app)/produits/actions";
+import { CatalogTabs } from "@/components/catalog/catalog-tabs";
 import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { createClient } from "@/lib/supabase/server";
@@ -27,16 +28,10 @@ export default async function RulesPage() {
 
   return (
     <ListPanel>
+      <CatalogTabs active="regles" />
       <ListToolbar>
-        <div className="mr-auto flex items-center gap-2">
-          <Link href="/produits" className="text-sm text-slate-500 hover:text-slate-900">
-            Catalogue
-          </Link>
-          <span className="text-slate-300">/</span>
-          <span className="text-sm font-medium text-slate-900">Règles Si / Alors</span>
-        </div>
-        <p className="text-sm text-slate-500">
-          Si le prospect répond… alors proposer ces produits. Sans code.
+        <p className="mr-auto text-sm text-slate-500">
+          Quand le prospect répond, proposer ces produits.
         </p>
       </ListToolbar>
 

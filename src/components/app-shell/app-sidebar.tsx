@@ -21,7 +21,7 @@ const GROUPS: { label: string; items: Item[] }[] = [
     items: [
       { href: "/accueil", label: "Accueil", exact: true },
       { href: "/funnels", label: "Funnels", admin: true },
-      { href: "/produits", label: "Catalogue", exact: true, admin: true },
+      { href: "/produits", label: "Catalogue", admin: true },
       { href: "/integrations", label: "Boutiques", admin: true },
     ],
   },
