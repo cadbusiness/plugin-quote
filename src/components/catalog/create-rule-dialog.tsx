@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
+import { useFormStatus } from "react-dom";
 import { createRule } from "@/app/(app)/produits/actions";
 
 export type RuleQuestion = {
