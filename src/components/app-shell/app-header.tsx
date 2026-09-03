@@ -1,46 +1,37 @@
 import Link from "next/link";
-import { markNotificationsRead } from "@/app/(app)/crm-actions";
 import { BrandLogo } from "@/components/brand/brand-logo";
+import { HeaderActions } from "@/components/app-shell/header-actions";
 
 export function AppHeader({
+  orgName,
+  plan,
+  isAdmin,
   notifications,
 }: {
+  orgName: string;
+  plan: string;
+  isAdmin: boolean;
   notifications: { id: string; body: string; quote_id: string | null }[];
 }) {
-  const unread = notifications.length;
+  const initial = (orgName.trim()[0] ?? "Q").toUpperCase();
+
   return (
-    <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-4 border-b border-slate-200 bg-white px-4 lg:px-6">
+    <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-3 border-b border-slate-200 bg-white px-4 lg:px-6">
       <BrandLogo href="/accueil" priority />
       <div className="flex-1" />
-      <details className="relative">
-        <summary className="cursor-pointer list-none text-sm text-slate-600 hover:text-slate-900">
-          Alertes{unread ? ` (${unread})` : ""}
-        </summary>
-        <div className="absolute right-0 z-40 mt-2 w-72 border border-slate-200 bg-white p-2 text-sm shadow-sm">
-          {unread === 0 ? (
-            <p className="px-2 py-3 text-slate-500">Aucune notification</p>
-          ) : (
-            <>
-              <form action={markNotificationsRead}>
-                <button className="mb-2 text-xs underline">Tout marquer lu</button>
-              </form>
-              <ul className="max-h-64 space-y-1 overflow-auto">
-                {notifications.map((n) => (
-                  <li key={n.id}>
-                    {n.quote_id ? (
-                      <Link href={`/devis/${n.quote_id}`} className="block px-2 py-1 hover:bg-slate-50">
-                        {n.body}
-                      </Link>
-                    ) : (
-                      <span className="block px-2 py-1">{n.body}</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-        </div>
-      </details>
+      <HeaderActions isAdmin={isAdmin} plan={plan} notifications={notifications} />
+      <Link
+        href="/parametres"
+        className="flex min-w-0 items-center gap-2 rounded-lg px-1.5 py-1 hover:bg-orange-50"
+      >
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-xs font-semibold text-white">
+          {initial}
+        </span>
+        <span className="hidden min-w-0 sm:block">
+          <span className="block truncate text-sm font-medium text-slate-900">{orgName}</span>
+          <span className="block text-[11px] text-slate-500">Paramètres</span>
+        </span>
+      </Link>
     </header>
   );
 }
