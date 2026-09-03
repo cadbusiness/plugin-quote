@@ -24,27 +24,27 @@ export default async function StatsPage({
       <ListToolbar>
         <form className="mr-auto flex gap-2">
           <select name="range" defaultValue={range} className="rounded-md border border-slate-200 px-2 py-1.5 text-sm">
-            <option value="day">Jour</option>
-            <option value="week">Semaine</option>
-            <option value="month">Mois</option>
+            <option value="day">Aujourd’hui</option>
+            <option value="week">7 jours</option>
+            <option value="month">30 jours</option>
           </select>
-          <button className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">OK</button>
+          <button className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">Voir</button>
         </form>
         <a
           href={`/stats/export?range=${range}`}
           className="rounded-md border border-slate-200 px-3 py-1.5 text-sm"
         >
-          Export PDF
+          Rapport PDF
         </a>
         {admin ? (
-          <form action={saveGaMeasurementId} className="flex gap-2">
+          <form action={saveGaMeasurementId} className="hidden gap-2 lg:flex">
             <input
               name="ga_measurement_id"
               defaultValue={ctx.organization.ga_measurement_id ?? ""}
-              placeholder="G-XXXXXXXX"
-              className="w-40 rounded-md border border-slate-200 px-2 py-1.5 text-sm"
+              placeholder="GA4"
+              className="w-28 rounded-md border border-slate-200 px-2 py-1.5 text-sm"
             />
-            <button className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">GA4</button>
+            <button className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">OK</button>
           </form>
         ) : null}
       </ListToolbar>

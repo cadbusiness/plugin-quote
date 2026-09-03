@@ -5,11 +5,15 @@ import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 
 export type StatsRange = "day" | "week" | "month";
 
+export type BubbleTone = "orange" | "emerald" | "amber" | "rose" | "sky" | "violet" | "slate";
+
 export type FunnelStep = {
   key: string;
   label: string;
+  help: string;
   count: number;
   rateFromPrevious: number | null;
+  tone: BubbleTone;
 };
 
 export type SourceRow = {
@@ -25,6 +29,7 @@ export type PipelineRow = {
   label: string;
   quotes: number;
   value: number;
+  tone: BubbleTone;
 };
 
 export type MonthPoint = {
@@ -41,10 +46,19 @@ export type Kpi = {
   hint: string;
   deltaLabel: string;
   deltaTone: "good" | "bad" | "muted";
+  tone: BubbleTone;
+};
+
+export type StatsStory = {
+  headline: string;
+  detail: string;
+  actionHref?: string;
+  actionLabel?: string;
 };
 
 export type StatsDashboard = {
   range: StatsRange;
+  story: StatsStory;
   kpis: Kpi[];
   funnel: FunnelStep[];
   sources: SourceRow[];
@@ -80,6 +94,66 @@ const MONTH_LABELS = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.",
 function monthLabel(key: string) {
   const month = Number(key.split("-")[1] ?? "1");
   return MONTH_LABELS[(month - 1 + 12) % 12] ?? key;
+}
+
+function people(n: number, one: string, many: string) {
+  return `${n} ${n > 1 ? many : one}`;
+}
+
+function buildStory(input: {
+  submitted: number;
+  contacted: number;
+  won: number;
+  abandons: number;
+  abandonsWithEmail: number;
+  recoverable: number;
+  pipelineTotal: number;
+}): StatsStory {
+  const waiting = Math.max(0, input.submitted - input.contacted);
+  if (input.submitted === 0 && input.abandons === 0) {
+    return {
+      headline: "Encore aucun devis demandé.",
+      detail: "Partagez le lien du funnel. Dès qu’un prospect clique, le tableau de bord s’allume.",
+    };
+  }
+  if (input.abandonsWithEmail > 0) {
+    return {
+      headline: `${people(input.abandonsWithEmail, "personne à rappeler", "personnes à rappeler")} — elles ont laissé leur email.`,
+      detail:
+        input.recoverable > 0
+          ? `${formatKpiEur(input.recoverable)} peuvent encore revenir. Un message suffit souvent.`
+          : "Elles ont commencé et sont parties. Relancez-les maintenant.",
+      actionHref: "/sessions",
+      actionLabel: "Relancer",
+    };
+  }
+  if (waiting > 0) {
+    return {
+      headline: `${people(waiting, "demande encore chaude", "demandes encore chaudes")} — pas encore rappelée${waiting > 1 ? "s" : ""}.`,
+      detail:
+        input.won > 0
+          ? `${people(input.won, "affaire signée", "affaires signées")}. ${people(input.contacted, "déjà rappelée", "déjà rappelées")}.`
+          : `${people(input.contacted, "déjà rappelée", "déjà rappelées")}. C’est là que le business se joue.`,
+      actionHref: "/devis",
+      actionLabel: "Voir les nouvelles",
+    };
+  }
+  if (input.won === 0 && input.submitted > 0) {
+    return {
+      headline: `${people(input.submitted, "demande reçue", "demandes reçues")}, aucune encore signée.`,
+      detail:
+        input.pipelineTotal > 0
+          ? `${formatKpiEur(input.pipelineTotal)} attendent dans le pipeline.`
+          : "Tout le monde a été rappelé. Il reste à transformer.",
+    };
+  }
+  return {
+    headline: `${people(input.submitted, "demande ce mois", "demandes ce mois")} · ${people(input.won, "signée", "signées")}.`,
+    detail:
+      input.pipelineTotal > 0
+        ? `${formatKpiEur(input.pipelineTotal)} encore en jeu.`
+        : "Le rythme est bon. Gardez le délai de réponse court.",
+  };
 }
 
 function deltaMeta(current: number, previous: number, invert = false): Pick<Kpi, "deltaLabel" | "deltaTone"> {
@@ -382,52 +456,57 @@ export async function loadStatsDashboard(
 
   const kpis: Kpi[] = [
     {
-      label: "Demandes",
+      label: "Devis demandés",
       value: formatKpiNumber(current.submitted),
-      hint: range === "month" ? "vs mois -1" : range === "week" ? "vs semaine -1" : "vs veille",
+      hint: current.submitted ? "dossiers reçus" : "en attente du premier",
+      tone: "orange",
       ...deltaMeta(current.submitted, previous.submitted),
     },
     {
-      label: "Taux contact",
+      label: "Vous avez rappelé",
       value: `${Math.round(contactRate)}%`,
-      hint: current.submitted ? `${current.contacted} / ${current.submitted}` : "Aucune demande",
+      hint: current.submitted ? `${current.contacted} sur ${current.submitted}` : "rien à rappeler",
+      tone: "emerald",
       ...deltaMeta(contactRate, prevContactRate),
     },
     {
-      label: "CA potentiel",
+      label: "Argent en jeu",
       value: formatKpiEur(currentValue),
       hint:
         current.submitted && currentValue > 0
           ? `${current.submitted} × ${formatKpiEur(currentValue / current.submitted)}`
           : current.submitted
-            ? "Ajoutez des prix catalogue"
-            : "En attente de demandes",
+            ? "mettez des prix sur le catalogue"
+            : "pas encore de devis",
+      tone: "sky",
       ...deltaMeta(currentValue, previousValue),
     },
     {
-      label: "Délai moy.",
+      label: "Temps pour répondre",
       value: formatKpiHours(avgDelay),
-      hint: avgDelay == null ? "Pas encore de 1er statut" : avgDelay <= 4 ? "bon" : "à raccourcir",
+      hint: avgDelay == null ? "pas encore de 1er appel" : avgDelay <= 4 ? "bon rythme" : "un peu long",
+      tone: avgDelay != null && avgDelay > 4 ? "amber" : "slate",
       ...(avgDelay != null && prevDelay != null
         ? deltaMeta(avgDelay, prevDelay, true)
-        : { deltaLabel: "vs période préc.", deltaTone: "muted" as const }),
+        : { deltaLabel: "dès le 1er statut", deltaTone: "muted" as const }),
     },
     {
-      label: "Abandons",
+      label: "Partis en route",
       value: formatKpiNumber(abandonedNow.length),
-      hint: abandonedEmail.length ? `${abandonedEmail.length} à relancer` : "Aucun email saisi",
+      hint: abandonedEmail.length ? `${abandonedEmail.length} avec un email` : "sans email — plus durs à rattraper",
+      tone: abandonedNow.length ? "rose" : "slate",
       ...deltaMeta(abandonedNow.length, abandonedPrev.length, true),
     },
   ];
 
-  const funnelDefs = [
-    { key: "visitors", label: "Visiteurs", count: current.visitors },
-    { key: "opened", label: "Funnel ouvert", count: current.opened },
-    { key: "email", label: "Email saisi", count: current.emails },
-    { key: "completed", label: "Complété", count: current.completed },
-    { key: "submitted", label: "Soumis", count: current.submitted },
-    { key: "contacted", label: "Contacté", count: current.contacted },
-    { key: "won", label: "Gagné", count: current.won },
+  const funnelDefs: Array<Omit<FunnelStep, "rateFromPrevious">> = [
+    { key: "visitors", label: "Arrivés", help: "ont ouvert la page", count: current.visitors, tone: "sky" },
+    { key: "opened", label: "Ont commencé", help: "première réponse", count: current.opened, tone: "violet" },
+    { key: "email", label: "Email laissé", help: "on peut les relancer", count: current.emails, tone: "amber" },
+    { key: "completed", label: "Parcours fini", help: "jusqu’au bout", count: current.completed, tone: "orange" },
+    { key: "submitted", label: "Devis demandé", help: "dossier reçu", count: current.submitted, tone: "orange" },
+    { key: "contacted", label: "Rappelés", help: "vous avez appelé", count: current.contacted, tone: "emerald" },
+    { key: "won", label: "Signés", help: "affaire gagnée", count: current.won, tone: "emerald" },
   ];
   const funnel: FunnelStep[] = funnelDefs.map((step, i) => ({
     ...step,
@@ -499,6 +578,7 @@ export async function loadStatsDashboard(
         label: statusBySlug.get(slug)?.label ?? slug,
         quotes: list.length,
         value: list.reduce((sum, q) => sum + valueOf(q.id), 0),
+        tone: (slug === "new" ? "sky" : slug === "contacted" ? "amber" : slug === "in_progress" ? "violet" : "slate") as BubbleTone,
       };
     })
     .filter((row) => row.quotes > 0 || pipelineOrder.slice(0, 3).includes(row.slug));
@@ -524,19 +604,32 @@ export async function loadStatsDashboard(
     });
   }
 
+  const pipelineTotal = pipeline.reduce((sum, row) => sum + row.value, 0);
+  const wonValue = wonThisMonth.reduce((sum, q) => sum + valueOf(q.id), 0);
+  const recoverable = abandonedEmail.length * (avgDeal || 0);
+
   return {
     range,
+    story: buildStory({
+      submitted: current.submitted,
+      contacted: current.contacted,
+      won: current.won,
+      abandons: abandonedNow.length,
+      abandonsWithEmail: abandonedEmail.length,
+      recoverable,
+      pipelineTotal,
+    }),
     kpis,
     funnel,
     sources,
     pipeline,
-    pipelineTotal: pipeline.reduce((sum, row) => sum + row.value, 0),
-    wonValue: wonThisMonth.reduce((sum, q) => sum + valueOf(q.id), 0),
+    pipelineTotal,
+    wonValue,
     wonCount: wonThisMonth.length,
     abandons: {
       total: abandonedNow.length,
       withEmail: abandonedEmail.length,
-      recoverable: abandonedEmail.length * (avgDeal || 0),
+      recoverable,
     },
     months,
   };

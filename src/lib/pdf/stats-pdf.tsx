@@ -30,8 +30,10 @@ export function StatsPdf({
     <Document>
       <Page size="A4" style={styles.page}>
         <Text style={styles.kicker}>{organizationName.toUpperCase()}</Text>
-        <Text style={styles.title}>Pilotage commercial</Text>
-        <Text style={styles.muted}>Période : {RANGE_LABEL[stats.range]}</Text>
+        <Text style={styles.title}>{stats.story.headline}</Text>
+        <Text style={styles.muted}>
+          {RANGE_LABEL[stats.range]} · {stats.story.detail}
+        </Text>
 
         <View style={styles.kpis}>
           {stats.kpis.map((kpi) => (
