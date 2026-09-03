@@ -10,17 +10,19 @@ export default async function WebhooksPage() {
   if (!ctx) redirect("/onboarding");
   if (!isAdminRole(ctx.role)) redirect("/devis");
   const supabase = await createClient();
-  const { data: hooks } = await supabase
-    .from("webhooks")
-    .select("*")
-    .eq("organization_id", ctx.organization.id)
-    .order("created_at", { ascending: false });
-  const { data: deliveries } = await supabase
-    .from("webhook_deliveries")
-    .select("*")
-    .eq("organization_id", ctx.organization.id)
-    .order("created_at", { ascending: false })
-    .limit(50);
+  const [{ data: hooks }, { data: deliveries }] = await Promise.all([
+    supabase
+      .from("webhooks")
+      .select("*")
+      .eq("organization_id", ctx.organization.id)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("webhook_deliveries")
+      .select("id, webhook_id, status, created_at, status_code, last_error")
+      .eq("organization_id", ctx.organization.id)
+      .order("created_at", { ascending: false })
+      .limit(50),
+  ]);
 
   return (
     <ListPanel>

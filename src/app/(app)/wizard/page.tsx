@@ -11,16 +11,18 @@ export default async function WizardAdminPage() {
   if (!ctx) redirect("/onboarding");
   if (!isAdminRole(ctx.role)) redirect("/devis");
   const supabase = await createClient();
-  const { data: steps } = await supabase
-    .from("wizard_steps")
-    .select("*")
-    .eq("organization_id", ctx.organization.id)
-    .order("sort_order", { ascending: true });
-  const { data: questions } = await supabase
-    .from("wizard_questions")
-    .select("*")
-    .eq("organization_id", ctx.organization.id)
-    .order("sort_order", { ascending: true });
+  const [{ data: steps }, { data: questions }] = await Promise.all([
+    supabase
+      .from("wizard_steps")
+      .select("*")
+      .eq("organization_id", ctx.organization.id)
+      .order("sort_order", { ascending: true }),
+    supabase
+      .from("wizard_questions")
+      .select("*")
+      .eq("organization_id", ctx.organization.id)
+      .order("sort_order", { ascending: true }),
+  ]);
 
   return (
     <ListPanel>

@@ -51,17 +51,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(next);
   }
 
-  async function hasOrg() {
-    if (!user) return false;
-    const { data } = await supabase
-      .from("memberships")
-      .select("id")
-      .eq("user_id", user.id)
-      .limit(1)
-      .maybeSingle();
-    return Boolean(data);
-  }
-
   if ((isApp || isAdmin) && !user) {
     const login = request.nextUrl.clone();
     login.pathname = "/login";
@@ -75,16 +64,21 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(home);
   }
 
-  if (isApp && user && !(await hasOrg())) {
-    const dest = request.nextUrl.clone();
-    dest.pathname = superAdmin ? "/admin" : "/onboarding";
-    return NextResponse.redirect(dest);
-  }
-
   if (path === "/onboarding" && !user) {
     const login = request.nextUrl.clone();
     login.pathname = "/login";
     return NextResponse.redirect(login);
+  }
+
+  async function hasOrg() {
+    if (!user) return false;
+    const { data } = await supabase
+      .from("memberships")
+      .select("id")
+      .eq("user_id", user.id)
+      .limit(1)
+      .maybeSingle();
+    return Boolean(data);
   }
 
   if (path === "/onboarding" && user && (await hasOrg())) {

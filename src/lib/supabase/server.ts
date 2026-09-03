@@ -1,9 +1,10 @@
+import { cache } from "react";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { requireSupabaseEnv } from "@/lib/supabase/env";
 import type { Database } from "@/lib/db/database.types";
 
-export async function createClient() {
+export const createClient = cache(async function createClient() {
   const cookieStore = await cookies();
   const env = requireSupabaseEnv();
 
@@ -23,4 +24,4 @@ export async function createClient() {
       },
     },
   });
-}
+});
