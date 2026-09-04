@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
-import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
+import { DataTable, ListPanel } from "@/components/ui/list-panel";
 import { Chip } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
 import { CreateFunnelDialog } from "@/components/dashboard/create-funnel-dialog";
@@ -23,12 +22,6 @@ export default async function FunnelsPage() {
 
   return (
     <ListPanel>
-      <ListToolbar>
-        <p className="mr-auto text-sm text-slate-500">
-          {list.length} funnel{list.length > 1 ? "s" : ""}
-        </p>
-        <CreateFunnelDialog existingFunnels={list.map((f) => ({ id: f.id, name: f.name }))} />
-      </ListToolbar>
       <DataTable headers={["Funnel", "Secteur", "Modes", "Lien public"]}>
         {list.map((funnel) => {
           const template = getFunnelTemplate(funnel.sector);
@@ -36,19 +29,10 @@ export default async function FunnelsPage() {
           return (
             <ClickableRow key={funnel.id} href={`/funnels/${funnel.id}`}>
               <td className="px-4 py-3 lg:px-6">
-                <div className="flex items-center gap-2.5">
-                  <span
-                    className="h-8 w-1.5 shrink-0 rounded-full"
-                    style={{ background: template.accent }}
-                    aria-hidden
-                  />
-                  <div>
-                    <div className="font-medium text-slate-900">{funnel.name}</div>
-                    <Chip tone={funnel.is_active ? "emerald" : "amber"}>
-                      {funnel.is_active ? "Actif" : "Brouillon"}
-                    </Chip>
-                  </div>
-                </div>
+                <div className="font-medium text-slate-900">{funnel.name}</div>
+                <Chip tone={funnel.is_active ? "emerald" : "amber"}>
+                  {funnel.is_active ? "Actif" : "Brouillon"}
+                </Chip>
               </td>
               <td className="px-4 py-3 lg:px-6">
                 <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ${template.tint}`}>
@@ -65,9 +49,15 @@ export default async function FunnelsPage() {
                 </div>
               </td>
               <td className="px-4 py-3 lg:px-6">
-                <Link href={href} className="relative z-10 text-sm text-sky-700 underline" target="_blank">
-                  {href}
-                </Link>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  title="Ouvrir le lien public"
+                  className="relative z-10 inline-flex max-w-[16rem] items-center truncate rounded-md bg-slate-50 px-2 py-1 font-mono text-[11px] text-slate-600 ring-1 ring-slate-200 hover:bg-orange-50 hover:text-[#C2410C] hover:ring-orange-200"
+                >
+                  /{ctx.organization.slug}/{funnel.slug}
+                </a>
               </td>
             </ClickableRow>
           );
@@ -78,6 +68,7 @@ export default async function FunnelsPage() {
           Créez un premier funnel — un template de secteur, vos écrans, puis le catalogue.
         </p>
       ) : null}
+      <CreateFunnelDialog existingFunnels={list.map((f) => ({ id: f.id, name: f.name }))} />
     </ListPanel>
   );
 }

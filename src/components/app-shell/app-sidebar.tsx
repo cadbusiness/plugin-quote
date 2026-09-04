@@ -94,26 +94,24 @@ export function AppSidebar({
 
   return (
     <aside
-      className={`flex shrink-0 flex-col border-r border-slate-200 bg-white transition-[width] duration-200 ${
-        collapsed ? "w-[4.25rem]" : "w-56 lg:w-60"
+      className={`flex shrink-0 flex-col overflow-hidden border-r border-slate-200 bg-white transition-[width] duration-200 ${
+        collapsed ? "w-16" : "w-56 lg:w-60"
       }`}
     >
-      <div
-        className={`flex shrink-0 items-center border-b border-slate-200 ${
-          collapsed ? "h-14 flex-col justify-center gap-0 px-1 py-1" : "h-14 justify-between gap-1 px-3"
-        }`}
-      >
+      <div className={`flex h-14 shrink-0 items-center border-b border-slate-200 ${collapsed ? "justify-center" : "justify-between px-3"}`}>
         <BrandLogo href="/accueil" variant={collapsed ? "mark" : "wordmark"} priority />
-        <button
-          type="button"
-          onClick={toggle}
-          aria-expanded={!collapsed}
-          aria-label={collapsed ? "Ouvrir le menu" : "Réduire le menu"}
-          title={collapsed ? "Ouvrir le menu" : "Réduire le menu"}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-orange-50 hover:text-[#E85D04]"
-        >
-          {collapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
-        </button>
+        {collapsed ? null : (
+          <button
+            type="button"
+            onClick={toggle}
+            aria-expanded
+            aria-label="Réduire le menu"
+            title="Réduire le menu"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-orange-50 hover:text-[#E85D04]"
+          >
+            <PanelLeftClose className="h-4 w-4" />
+          </button>
+        )}
       </div>
 
       <nav className="flex min-h-0 flex-1 flex-col overflow-y-auto px-2 py-2" aria-label="Navigation">
@@ -134,9 +132,9 @@ export function AppSidebar({
           const items = group.items.filter((item) => !item.admin || isAdmin);
           if (!items.length) return null;
           return (
-            <div key={group.label} className="mb-3">
+            <div key={group.label} className={collapsed ? "mb-1" : "mb-3"}>
               {collapsed ? (
-                <div className="mx-2 mb-1 border-t border-slate-100" aria-hidden />
+                group.label === "Acquisition" ? null : <div className="mx-3 my-1 border-t border-slate-100" aria-hidden />
               ) : (
                 <p className="px-2.5 pb-1 text-[10px] font-medium uppercase tracking-[0.14em] text-slate-400">
                   {group.label}
@@ -198,20 +196,8 @@ export function AppSidebar({
         })}
       </nav>
 
-      <div className="border-t border-orange-100 bg-[#FFF6EE] px-2 py-2.5">
-        {collapsed ? (
-          <div className="flex flex-col gap-1.5">
-            <Link href="/devis" title={`${snapshot.monthQuotes} demandes`} className="rounded-lg bg-white py-1.5 text-center ring-1 ring-orange-100">
-              <span className="block text-sm font-semibold text-slate-900">{snapshot.monthQuotes}</span>
-            </Link>
-            <Link href="/devis?score=hot" title={`${snapshot.monthHot} hot`} className="rounded-lg bg-rose-50 py-1.5 text-center ring-1 ring-rose-100">
-              <span className="block text-sm font-semibold text-rose-700">{snapshot.monthHot}</span>
-            </Link>
-            <Link href="/sessions" title={`${snapshot.abandons} abandons`} className="rounded-lg bg-amber-50 py-1.5 text-center ring-1 ring-amber-100">
-              <span className="block text-sm font-semibold text-amber-800">{snapshot.abandons}</span>
-            </Link>
-          </div>
-        ) : (
+      <div className={`border-t border-orange-100 bg-[#FFF6EE] ${collapsed ? "px-1.5 py-2" : "px-2 py-2.5"}`}>
+        {collapsed ? null : (
           <>
             <p className="px-1.5 text-[10px] font-medium uppercase tracking-[0.14em] text-[#C2410C]/70">Ce mois-ci</p>
             <div className="mt-2 grid grid-cols-3 gap-1.5">
@@ -231,7 +217,19 @@ export function AppSidebar({
           </>
         )}
 
-        <div className={`mt-2 flex flex-col gap-0.5 ${collapsed ? "items-center" : ""}`}>
+        <div className={`flex flex-col gap-0.5 ${collapsed ? "items-center" : "mt-2"}`}>
+          {collapsed ? (
+            <button
+              type="button"
+              onClick={toggle}
+              aria-expanded={false}
+              aria-label="Ouvrir le menu"
+              title="Ouvrir le menu"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-white hover:text-[#E85D04]"
+            >
+              <PanelLeftOpen className="h-4 w-4" />
+            </button>
+          ) : null}
           <Link
             href="/parametres"
             title="Paramètres"
@@ -258,34 +256,51 @@ export function AppSidebar({
           </a>
         </div>
 
-        <div className={`mt-2 rounded-xl bg-white ring-1 ring-orange-100 ${collapsed ? "p-1.5" : "p-2.5"}`}>
-          <div className={`flex items-center ${collapsed ? "justify-center" : "gap-2.5"}`}>
+        {collapsed ? (
+          <div className="mt-2 flex flex-col items-center gap-1">
             <span
               title={display}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#E85D04] text-xs font-semibold text-white"
+              className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#E85D04] text-xs font-semibold text-white"
             >
               {(display[0] ?? "Q").toUpperCase()}
             </span>
-            {collapsed ? null : (
+            <form action={logout}>
+              <button
+                type="submit"
+                title="Sortir"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-rose-700 hover:bg-rose-50"
+              >
+                <LogOut className="h-3.5 w-3.5" aria-hidden />
+                <span className="sr-only">Sortir</span>
+              </button>
+            </form>
+          </div>
+        ) : (
+          <div className="mt-2 rounded-xl bg-white p-2.5 ring-1 ring-orange-100">
+            <div className="flex items-center gap-2.5">
+              <span
+                title={display}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#E85D04] text-xs font-semibold text-white"
+              >
+                {(display[0] ?? "Q").toUpperCase()}
+              </span>
               <div className="min-w-0">
                 <p className="truncate text-sm font-medium text-slate-900">{display}</p>
                 <p className="truncate text-[11px] text-slate-500">{email}</p>
               </div>
-            )}
+            </div>
+            <form action={logout} className="mt-2">
+              <button
+                type="submit"
+                title="Sortir"
+                className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-rose-50 px-2 py-1.5 text-xs font-medium text-rose-700 ring-1 ring-rose-100 hover:bg-rose-100"
+              >
+                <LogOut className="h-3.5 w-3.5" aria-hidden />
+                Sortir
+              </button>
+            </form>
           </div>
-          <form action={logout} className="mt-2">
-            <button
-              type="submit"
-              title="Sortir"
-              className={`flex w-full items-center justify-center rounded-lg bg-rose-50 py-1.5 text-xs font-medium text-rose-700 ring-1 ring-rose-100 hover:bg-rose-100 ${
-                collapsed ? "px-1" : "gap-1.5 px-2"
-              }`}
-            >
-              <LogOut className="h-3.5 w-3.5" aria-hidden />
-              {collapsed ? <span className="sr-only">Sortir</span> : "Sortir"}
-            </button>
-          </form>
-        </div>
+        )}
       </div>
     </aside>
   );

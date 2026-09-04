@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { createFunnel } from "@/app/(app)/actions";
+import { ListAddRow } from "@/components/ui/list-panel";
 import { FUNNEL_TEMPLATES, getFunnelTemplate } from "@/lib/funnels/templates";
 import type { ScreenType } from "@/lib/wizard/types";
 
@@ -82,13 +83,7 @@ export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: Exist
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]"
-      >
-        Nouveau funnel
-      </button>
+      <ListAddRow onClick={() => setOpen(true)}>Ajouter un funnel</ListAddRow>
 
       {open ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">

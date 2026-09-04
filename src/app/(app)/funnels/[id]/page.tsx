@@ -1,21 +1,25 @@
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
-import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
-import { saveFunnel, updateQuestion } from "@/app/(app)/actions";
-import { saveStepOrder } from "@/app/(app)/wizard/reorder-action";
-import { WizardDnd } from "@/components/dashboard/wizard-dnd";
+import { FunnelEditor } from "@/components/funnels/funnel-editor";
+import { parseFunnelTab } from "@/lib/funnels/tabs";
+import { parseFunnelTracking } from "@/lib/funnels/tracking";
+import { getAppUrl } from "@/lib/supabase/env";
+import { parseTriggerConfig } from "@/lib/workflows/types";
+import type { WorkflowStatus, WorkflowTriggerType } from "@/lib/workflows/types";
 
 export default async function FunnelEditorPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ tab?: string }>;
 }) {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");
   if (!isAdminRole(ctx.role)) redirect("/devis");
   const { id } = await params;
+  const { tab: tabParam } = await searchParams;
   const supabase = await createClient();
   const { data: funnel } = await supabase
     .from("configurators")
@@ -25,7 +29,7 @@ export default async function FunnelEditorPage({
     .maybeSingle();
   if (!funnel) notFound();
 
-  const [{ data: steps }, { data: questions }] = await Promise.all([
+  const [{ data: steps }, { data: questions }, { data: workflows }] = await Promise.all([
     supabase
       .from("wizard_steps")
       .select("*")
@@ -37,49 +41,47 @@ export default async function FunnelEditorPage({
       .select("*")
       .eq("organization_id", ctx.organization.id)
       .order("sort_order", { ascending: true }),
+    supabase
+      .from("workflows")
+      .select("id, name, status, trigger_type, trigger_config")
+      .eq("organization_id", ctx.organization.id)
+      .neq("status", "archived")
+      .order("created_at", { ascending: false }),
   ]);
 
-  const stepIds = new Set((steps ?? []).map((s) => s.id));
-  const funnelQuestions = (questions ?? []).filter((q) => stepIds.has(q.step_id));
-  const publicHref = `/c/${ctx.organization.slug}/${funnel.slug}`;
+  const stepIds = new Set((steps ?? []).map((step) => step.id));
+  const funnelQuestions = (questions ?? []).filter((question) => stepIds.has(question.step_id));
+  const origin = getAppUrl();
+  const publicUrl = `${origin}/c/${ctx.organization.slug}/${funnel.slug}`;
 
   return (
-    <ListPanel>
-      <ListToolbar>
-        <form action={saveFunnel} className="mr-auto flex flex-wrap items-center gap-3">
-          <input type="hidden" name="id" value={funnel.id} />
-          <input
-            name="name"
-            defaultValue={funnel.name}
-            className="rounded-md border border-slate-200 px-3 py-1.5 text-sm"
-          />
-          <label className="flex items-center gap-1.5 text-sm text-slate-600">
-            <input type="checkbox" name="wizard_enabled" defaultChecked={funnel.wizard_enabled} />
-            Funnel
-          </label>
-          <label className="flex items-center gap-1.5 text-sm text-slate-600">
-            <input type="checkbox" name="chat_enabled" defaultChecked={funnel.chat_enabled} />
-            Chat IA
-          </label>
-          <label className="flex items-center gap-1.5 text-sm text-slate-600">
-            <input type="checkbox" name="is_active" defaultChecked={funnel.is_active} />
-            Actif
-          </label>
-          <button className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">Enregistrer</button>
-        </form>
-        <Link href={publicHref} target="_blank" className="text-sm underline">
-          Aperçu
-        </Link>
-        <Link href="/funnels" className="text-sm underline">
-          Tous les funnels
-        </Link>
-      </ListToolbar>
-      <WizardDnd
-        steps={steps ?? []}
-        questions={funnelQuestions}
-        saveOrder={saveStepOrder}
-        saveQuestionAction={updateQuestion}
-      />
-    </ListPanel>
+    <FunnelEditor
+      funnel={{
+        id: funnel.id,
+        name: funnel.name,
+        slug: funnel.slug,
+        wizardEnabled: funnel.wizard_enabled,
+        chatEnabled: funnel.chat_enabled,
+        isActive: funnel.is_active,
+        hasCatalog: (steps ?? []).some((step) => step.screen_type === "suggestions"),
+      }}
+      steps={steps ?? []}
+      questions={funnelQuestions}
+      workflows={(workflows ?? []).map((workflow) => {
+        const ids = parseTriggerConfig(workflow.trigger_config).configuratorIds ?? [];
+        return {
+          id: workflow.id,
+          name: workflow.name,
+          status: workflow.status as WorkflowStatus,
+          triggerType: workflow.trigger_type as WorkflowTriggerType,
+          scope: !ids.length ? "all" : ids.includes(funnel.id) ? "this" : "other",
+        };
+      })}
+      tracking={parseFunnelTracking(funnel.theme)}
+      orgGa={ctx.organization.ga_measurement_id ?? ""}
+      publicUrl={publicUrl}
+      orgSlug={ctx.organization.slug}
+      tab={parseFunnelTab(tabParam)}
+    />
   );
 }

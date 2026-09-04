@@ -11,7 +11,15 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { GripVertical } from "lucide-react";
 import type { Tables } from "@/lib/db/database.types";
+
+const SCREEN_LABEL: Record<string, string> = {
+  questions: "Questions",
+  suggestions: "Catalogue",
+  customize: "Options",
+  contact: "Identité",
+};
 
 function SortableStep({
   step,
@@ -30,15 +38,18 @@ function SortableStep({
       <div className="mb-3 flex items-center gap-3">
         <button
           type="button"
-          className="cursor-grab rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-500"
+          aria-label="Réordonner l’étape"
+          className="flex h-8 w-8 cursor-grab items-center justify-center rounded-md text-slate-400 hover:bg-slate-50 hover:text-slate-700"
           {...attributes}
           {...listeners}
         >
-          Déplacer
+          <GripVertical className="h-4 w-4" aria-hidden />
         </button>
         <div>
-          <p className="text-xs uppercase tracking-wide text-slate-500">{step.screen_type}</p>
-          <h2 className="text-lg font-semibold">{step.title}</h2>
+          <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
+            {SCREEN_LABEL[step.screen_type] ?? step.screen_type}
+          </p>
+          <h2 className="text-base font-semibold text-slate-900">{step.title}</h2>
         </div>
       </div>
       {children}
@@ -89,7 +100,7 @@ export function WizardDnd({
                 <form
                   key={q.id}
                   action={saveQuestionAction}
-                  className="grid gap-2 border border-slate-200 p-3 sm:grid-cols-2"
+                  className="grid gap-2 border-t border-slate-100 pt-3 sm:grid-cols-2"
                 >
                   <input type="hidden" name="id" value={q.id} />
                   <label className="text-sm sm:col-span-2">

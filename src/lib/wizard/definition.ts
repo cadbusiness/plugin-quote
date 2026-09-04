@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/db/database.types";
 import { normalizeAttributes, toProspectOptions } from "@/lib/catalog/attributes";
+import { parseFunnelTracking } from "@/lib/funnels/tracking";
 import type {
   ConfiguratorDefinition,
   Product,
@@ -104,7 +105,7 @@ export async function loadDefinition(
       salesName: org.sales_name,
       salesPhone: org.sales_phone,
       branding: asRecord(org.branding),
-      gaMeasurementId: org.ga_measurement_id,
+      gaMeasurementId: parseFunnelTracking(configurator.theme).ga || org.ga_measurement_id,
     },
     configurator: {
       id: configurator.id,
