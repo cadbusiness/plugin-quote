@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { createWorkflow } from "@/app/(app)/workflow-actions";
+import { ListAddRow } from "@/components/ui/list-panel";
 import type { WorkflowTriggerType } from "@/lib/workflows/types";
 import { defaultWorkflowName } from "@/lib/workflows/defaults";
 import { TRIGGER_LABELS } from "@/lib/workflows/labels";
@@ -68,13 +69,7 @@ export function CreateWorkflowDialog({
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]"
-      >
-        Nouveau parcours
-      </button>
+      <ListAddRow onClick={() => setOpen(true)}>Ajouter un parcours</ListAddRow>
 
       {open ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">

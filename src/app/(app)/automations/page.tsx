@@ -62,7 +62,6 @@ export default async function AutomationsPage() {
         <p className="mr-auto text-sm text-slate-500">
           {list.length} parcours
         </p>
-        <CreateWorkflowDialog funnels={funnels ?? []} statuses={statuses ?? []} />
       </ListToolbar>
       <DataTable headers={["Parcours", "Déclencheur", "Funnels", "En cours", "En attente", "Échecs"]}>
         {list.map((workflow) => {
@@ -95,6 +94,7 @@ export default async function AutomationsPage() {
           Créez un parcours : un déclencheur, puis les emails, délais et branches sur le canvas.
         </p>
       ) : null}
+      <CreateWorkflowDialog funnels={funnels ?? []} statuses={statuses ?? []} />
     </ListPanel>
   );
 }

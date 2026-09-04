@@ -6,9 +6,9 @@ import dynamic from "next/dynamic";
 import { ChevronLeft } from "lucide-react";
 import { renameWorkflow, setWorkflowStatus } from "@/app/(app)/workflow-actions";
 import { Chip, type ChipTone } from "@/components/ui/chip";
-import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
+import { DataTable, ListPanel } from "@/components/ui/list-panel";
 import { ClickableRow } from "@/components/ui/clickable-row";
-import { TRIGGER_LABELS, RUN_STATUS_LABELS } from "@/lib/workflows/labels";
+import { RUN_STATUS_LABELS } from "@/lib/workflows/labels";
 import type { WorkflowDefinition, WorkflowStatus, WorkflowTriggerType } from "@/lib/workflows/types";
 
 const WorkflowCanvas = dynamic(() => import("./canvas").then((mod) => mod.WorkflowCanvas), { ssr: false });
@@ -82,34 +82,27 @@ export function WorkflowEditor({
     });
   }
 
-  const scope = workflow.configuratorIds.length ? `${workflow.configuratorIds.length} funnel${workflow.configuratorIds.length > 1 ? "s" : ""}` : "Tous les funnels";
-
   return (
     <ListPanel className="min-h-0">
       <div className="sticky top-0 z-20 bg-white">
-        <ListToolbar>
+        <div className="flex items-center gap-2 border-b border-slate-200 px-4 py-2 lg:px-6">
           <Link
             href="/automations"
-            className="-ml-1 inline-flex shrink-0 items-center gap-0.5 rounded-md px-1.5 py-1.5 text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+            aria-label="Retour aux parcours"
+            className="inline-flex h-8 shrink-0 items-center gap-1 rounded-md px-1.5 text-sm text-slate-500 hover:bg-slate-100 hover:text-slate-900"
           >
             <ChevronLeft className="h-4 w-4" aria-hidden />
-            Parcours
+            Retour
           </Link>
-          <div className="mr-auto min-w-0">
-            <input
-              defaultValue={workflow.name}
-              aria-label="Nom du parcours"
-              onBlur={(event) => commitName(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") (event.target as HTMLInputElement).blur();
-              }}
-              className="w-full min-w-[10rem] max-w-sm bg-transparent text-sm font-medium text-slate-900 outline-none placeholder:text-slate-400"
-            />
-            <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
-              <Chip tone="slate">{TRIGGER_LABELS[workflow.triggerType]}</Chip>
-              <span className="text-xs text-slate-400">{scope}</span>
-            </div>
-          </div>
+          <input
+            defaultValue={workflow.name}
+            aria-label="Nom du parcours"
+            onBlur={(event) => commitName(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") (event.target as HTMLInputElement).blur();
+            }}
+            className="mr-auto min-w-0 flex-1 bg-transparent text-sm font-semibold text-slate-900 outline-none placeholder:text-slate-400"
+          />
           {tab === "canvas" && canvas?.dirty ? (
             <>
               <button
@@ -167,7 +160,7 @@ export function WorkflowEditor({
               />
             </span>
           </button>
-        </ListToolbar>
+        </div>
         <nav className="flex items-end gap-6 border-b border-slate-200 px-4 lg:px-6">
           {(
             [

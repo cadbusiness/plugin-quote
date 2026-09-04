@@ -1,6 +1,8 @@
 "use client";
 
-import { Handle, Position, type NodeProps } from "@xyflow/react";
+import { Handle, Position, useReactFlow, type NodeProps } from "@xyflow/react";
+import { Plus } from "lucide-react";
+import { useWorkflowEdit } from "@/components/workflows/edit-context";
 import { StepIcon } from "@/components/workflows/step-icon";
 import { nodeTitle } from "@/lib/workflows/labels";
 import type { WorkflowNodeData, WorkflowNodeType } from "@/lib/workflows/types";
@@ -21,6 +23,7 @@ export type CanvasNodeData = WorkflowNodeData & {
 };
 
 function Card({
+  id,
   type,
   selected,
   children,
@@ -28,6 +31,7 @@ function Card({
   target = true,
   handles,
 }: {
+  id: string;
   type: WorkflowNodeType;
   selected?: boolean;
   children: React.ReactNode;
@@ -35,9 +39,14 @@ function Card({
   target?: boolean;
   handles?: { id: string; label: string }[];
 }) {
+  const edit = useWorkflowEdit();
+  const { getEdges } = useReactFlow();
+  const outgoing = getEdges().filter((edge) => edge.source === id);
+  const showAdd = type !== "exit" && outgoing.length === 0;
+
   return (
     <div
-      className={`w-56 rounded-lg border bg-white shadow-sm ${TONES[type]} ${
+      className={`relative w-56 rounded-lg border bg-white shadow-sm ${TONES[type]} ${
         selected ? "ring-2 ring-[#E85D04]" : ""
       }`}
     >
@@ -63,6 +72,19 @@ function Card({
       ) : source ? (
         <Handle type="source" position={Position.Bottom} className="!h-2.5 !w-2.5 !bg-slate-400" />
       ) : null}
+      {showAdd ? (
+        <button
+          type="button"
+          aria-label="Ajouter une étape"
+          className="nodrag nopan absolute -bottom-3 left-1/2 z-10 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm hover:border-[#E85D04] hover:text-[#E85D04]"
+          onClick={(event) => {
+            event.stopPropagation();
+            edit?.openPicker({ mode: "after", nodeId: id }, event.clientX, event.clientY);
+          }}
+        >
+          <Plus className="h-3.5 w-3.5" strokeWidth={2.25} />
+        </button>
+      ) : null}
     </div>
   );
 }
@@ -78,10 +100,10 @@ function Stats({ stats }: { stats?: { ok: number; waiting: number; failed: numbe
   );
 }
 
-export function TriggerNode({ data, selected }: NodeProps) {
+export function TriggerNode({ id, data, selected }: NodeProps) {
   const node = data as CanvasNodeData;
   return (
-    <Card type="trigger" selected={selected} target={false}>
+    <Card id={id} type="trigger" selected={selected} target={false}>
       <p className="text-[10px] font-medium uppercase tracking-wide text-emerald-700">Déclencheur</p>
       <p className="text-sm font-semibold text-slate-900">{node.label ?? "Démarrage"}</p>
       <Stats stats={node.stats} />
@@ -89,11 +111,11 @@ export function TriggerNode({ data, selected }: NodeProps) {
   );
 }
 
-export function ActionNode({ data, selected, type }: NodeProps) {
+export function ActionNode({ id, data, selected, type }: NodeProps) {
   const nodeType = (type as WorkflowNodeType) ?? "send_email";
   const node = { ...(data as CanvasNodeData), type: nodeType };
   return (
-    <Card type={nodeType} selected={selected} source={nodeType !== "exit"} target={nodeType !== "trigger"}>
+    <Card id={id} type={nodeType} selected={selected} source={nodeType !== "exit"} target={nodeType !== "trigger"}>
       <p className="text-[10px] font-medium uppercase tracking-wide text-slate-500">
         {nodeType === "send_email"
           ? "Email"
@@ -111,14 +133,14 @@ export function ActionNode({ data, selected, type }: NodeProps) {
   );
 }
 
-export function BranchNode({ data, selected }: NodeProps) {
+export function BranchNode({ id, data, selected }: NodeProps) {
   const node = data as CanvasNodeData;
   const handles = [
     ...(node.conditions ?? []).map((condition) => ({ id: condition.id, label: condition.id })),
     { id: "else", label: "sinon" },
   ];
   return (
-    <Card type="branch" selected={selected} source={false} handles={handles}>
+    <Card id={id} type="branch" selected={selected} source={false} handles={handles}>
       <p className="text-[10px] font-medium uppercase tracking-wide text-orange-700">Condition</p>
       <p className="text-sm font-semibold text-slate-900">{node.label ?? "Branche"}</p>
       <Stats stats={node.stats} />

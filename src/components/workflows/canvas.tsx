@@ -17,8 +17,11 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { saveWorkflowDefinition } from "@/app/(app)/workflow-actions";
+import { WorkflowEditContext, type InsertTarget, type PaletteType } from "@/components/workflows/edit-context";
+import { InsertEdge } from "@/components/workflows/insert-edge";
 import { NodeInspector } from "@/components/workflows/inspector";
 import { nodeTypes, type CanvasNodeData } from "@/components/workflows/nodes";
+import { StepPicker } from "@/components/workflows/step-picker";
 import { NODE_TYPE_LABELS } from "@/lib/workflows/labels";
 import type { CanvasActions } from "@/components/workflows/workflow-editor";
 import { StepIcon } from "@/components/workflows/step-icon";
@@ -28,6 +31,8 @@ import {
   type WorkflowNode,
   type WorkflowNodeType,
 } from "@/lib/workflows/types";
+
+const edgeTypes = { insert: InsertEdge };
 
 const PALETTE: Exclude<WorkflowNodeType, "trigger">[] = ["send_email", "wait", "branch", "assign", "set_status", "exit"];
 
@@ -54,6 +59,7 @@ function toFlow(
     })),
     edges: definition.edges.map((edge) => ({
       id: edge.id,
+      type: "insert",
       source: edge.source,
       target: edge.target,
       sourceHandle: edge.sourceHandle ?? undefined,
@@ -119,6 +125,7 @@ function CanvasInner({
   const [nodes, setNodes, onNodesChange] = useNodesState(initial.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initial.edges);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [picker, setPicker] = useState<{ target: InsertTarget; x: number; y: number } | null>(null);
   const [history, setHistory] = useState<WorkflowDefinition[]>([definition]);
   const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -133,7 +140,7 @@ function CanvasInner({
   const onConnect = useCallback(
     (connection: Connection) => {
       setEdges((current) => {
-        const next = addEdge({ ...connection, id: `e-${crypto.randomUUID()}` }, current);
+        const next = addEdge({ ...connection, id: `e-${crypto.randomUUID()}`, type: "insert" }, current);
         snapshot(nodes, next);
         return next;
       });
@@ -175,16 +182,129 @@ function CanvasInner({
 
   function deleteSelected() {
     if (!selectedId || selected?.type === "trigger") return;
-    setNodes((current) => {
-      const next = current.filter((node) => node.id !== selectedId);
-      setEdges((currentEdges) => {
-        const nextEdges = currentEdges.filter((edge) => edge.source !== selectedId && edge.target !== selectedId);
-        snapshot(next, nextEdges);
-        return nextEdges;
-      });
-      return next;
-    });
+    const incoming = edges.filter((edge) => edge.target === selectedId);
+    const outgoing = edges.filter((edge) => edge.source === selectedId);
+    const rest = edges.filter((edge) => edge.source !== selectedId && edge.target !== selectedId);
+    let nextEdges = rest;
+    if (incoming.length === 1 && outgoing.length === 1) {
+      nextEdges = [
+        ...rest,
+        {
+          id: `e-${crypto.randomUUID()}`,
+          type: "insert",
+          source: incoming[0].source,
+          target: outgoing[0].target,
+          sourceHandle: incoming[0].sourceHandle,
+        },
+      ];
+    } else if (incoming.length > 1 && outgoing.length === 1) {
+      nextEdges = [
+        ...rest,
+        ...incoming.map((edge) => ({
+          id: `e-${crypto.randomUUID()}`,
+          type: "insert",
+          source: edge.source,
+          target: outgoing[0].target,
+          sourceHandle: edge.sourceHandle,
+        })),
+      ];
+    }
+    const nextNodes = nodes.filter((node) => node.id !== selectedId);
+    setNodes(nextNodes);
+    setEdges(nextEdges);
+    snapshot(nextNodes, nextEdges);
     setSelectedId(null);
+  }
+
+  function openPicker(target: InsertTarget, clientX: number, clientY: number) {
+    setPicker({ target, x: clientX, y: clientY });
+  }
+
+  function insertNode(type: PaletteType, target: InsertTarget) {
+    const id = crypto.randomUUID();
+    let position = { x: 280, y: 180 };
+    let nextEdges = [...edges];
+
+    if (target.mode === "edge") {
+      const edge = edges.find((item) => item.id === target.edgeId);
+      const source = nodes.find((node) => node.id === edge?.source);
+      const dest = nodes.find((node) => node.id === edge?.target);
+      if (edge && source && dest) {
+        position = {
+          x: (source.position.x + dest.position.x) / 2,
+          y: (source.position.y + dest.position.y) / 2,
+        };
+        nextEdges = [
+          ...edges.filter((item) => item.id !== edge.id),
+          {
+            id: `e-${crypto.randomUUID()}`,
+            type: "insert",
+            source: edge.source,
+            target: id,
+            sourceHandle: edge.sourceHandle,
+          },
+          { id: `e-${crypto.randomUUID()}`, type: "insert", source: id, target: edge.target },
+        ];
+      }
+    } else {
+      const source = nodes.find((node) => node.id === target.nodeId);
+      const outgoing = edges.filter(
+        (edge) => edge.source === target.nodeId && (target.handle == null || edge.sourceHandle === target.handle),
+      );
+      if (source) {
+        position = { x: source.position.x, y: source.position.y + 150 };
+      }
+      if (outgoing.length === 1) {
+        const edge = outgoing[0];
+        const dest = nodes.find((node) => node.id === edge.target);
+        if (source && dest) {
+          position = {
+            x: (source.position.x + dest.position.x) / 2,
+            y: (source.position.y + dest.position.y) / 2,
+          };
+        }
+        nextEdges = [
+          ...edges.filter((item) => item.id !== edge.id),
+          {
+            id: `e-${crypto.randomUUID()}`,
+            type: "insert",
+            source: edge.source,
+            target: id,
+            sourceHandle: edge.sourceHandle,
+          },
+          { id: `e-${crypto.randomUUID()}`, type: "insert", source: id, target: edge.target },
+        ];
+      } else {
+        const offset = outgoing.length * 220;
+        position = {
+          x: (source?.position.x ?? 280) + offset,
+          y: (source?.position.y ?? 0) + 150,
+        };
+        nextEdges = [
+          ...edges,
+          {
+            id: `e-${crypto.randomUUID()}`,
+            type: "insert",
+            source: target.nodeId,
+            target: id,
+            sourceHandle: target.handle ?? undefined,
+          },
+        ];
+      }
+    }
+
+    const node: Node<CanvasNodeData> = {
+      id,
+      type,
+      position,
+      data: { ...DEFAULTS[type], nodeType: type },
+    };
+    const nextNodes = [...nodes, node];
+    setNodes(nextNodes);
+    setEdges(nextEdges);
+    snapshot(nextNodes, nextEdges);
+    setSelectedId(id);
+    setPicker(null);
   }
 
   const undo = useCallback(() => {
@@ -218,11 +338,12 @@ function CanvasInner({
   }, [dirty, history.length, onActionsChange, save, saving, undo]);
 
   return (
+    <WorkflowEditContext.Provider value={{ openPicker }}>
     <div className="flex min-h-0 flex-1">
       <aside className="flex w-56 shrink-0 flex-col border-r border-slate-200 bg-white">
         <div className="border-b border-slate-100 px-4 py-3">
           <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-500">Étapes</p>
-          <p className="mt-1 text-xs text-slate-400">Glissez sur le canvas</p>
+          <p className="mt-1 text-xs text-slate-400">Cliquez un + sur le parcours, ou glissez ici</p>
         </div>
         <div className="space-y-1 p-2">
           {PALETTE.map((type) => (
@@ -230,6 +351,10 @@ function CanvasInner({
               key={type}
               draggable
               onDragStart={(event) => event.dataTransfer.setData("application/qb-node", type)}
+              onClick={() => {
+                const after = selectedId && selected?.type !== "exit" ? selectedId : "trigger";
+                insertNode(type, { mode: "after", nodeId: after });
+              }}
               className="flex cursor-grab items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-slate-700 hover:bg-orange-50"
             >
               <StepIcon type={type} />
@@ -244,6 +369,8 @@ function CanvasInner({
           nodes={nodes}
           edges={edges}
           nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          defaultEdgeOptions={{ type: "insert", interactionWidth: 28 }}
           onNodesChange={(changes) => {
             onNodesChange(changes);
             if (changes.some((change) => change.type === "position" && change.dragging === false)) setDirty(true);
@@ -286,6 +413,15 @@ function CanvasInner({
           onDelete={deleteSelected}
         />
       ) : null}
+      {picker ? (
+        <StepPicker
+          x={picker.x}
+          y={picker.y}
+          onPick={(type) => insertNode(type, picker.target)}
+          onClose={() => setPicker(null)}
+        />
+      ) : null}
     </div>
+    </WorkflowEditContext.Provider>
   );
 }

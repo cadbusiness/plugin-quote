@@ -52,3 +52,24 @@ export function ListPanelFooter({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+export function ListAddRow({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="group flex w-full items-center gap-3 border-t border-dashed border-slate-200 px-4 py-3.5 text-left text-sm text-slate-500 hover:bg-orange-50/70 hover:text-[#C2410C] lg:px-6"
+    >
+      <span className="flex h-8 w-8 items-center justify-center rounded-full border border-dashed border-slate-300 text-[#E85D04] group-hover:border-[#E85D04] group-hover:bg-white">
+        <span className="text-lg leading-none font-medium">+</span>
+      </span>
+      <span className="font-medium">{children}</span>
+    </button>
+  );
+}

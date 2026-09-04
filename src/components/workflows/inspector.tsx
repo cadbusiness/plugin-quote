@@ -74,13 +74,22 @@ export function NodeInspector({
                 <option value="sales_email">Email commercial</option>
               </select>
             </Field>
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={Boolean(data.attachPdf)}
-                onChange={(e) => patch({ attachPdf: e.target.checked })}
-              />
-              Joindre le PDF
+            <label className="block rounded-lg border border-slate-200 p-3">
+              <span className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  className="mt-0.5"
+                  checked={Boolean(data.attachPdf)}
+                  onChange={(e) => patch({ attachPdf: e.target.checked })}
+                />
+                <span>
+                  <span className="block font-medium text-slate-900">Joindre le récapitulatif</span>
+                  <span className="mt-0.5 block text-xs leading-relaxed text-slate-500">
+                    Le client reçoit un PDF de sa demande : produits, fourchette de prix, réponses. Utile à la
+                    confirmation. Inutile sur une relance d’abandon — il n’y a pas encore de devis.
+                  </span>
+                </span>
+              </span>
             </label>
           </>
         ) : null}
@@ -205,14 +214,17 @@ export function NodeInspector({
         ) : null}
       </div>
       {node.type !== "trigger" ? (
-        <div className="border-t border-slate-100 px-4 py-3">
+        <div className="border-t border-rose-100 bg-rose-50/40 px-4 py-3">
           <button
             type="button"
             onClick={onDelete}
-            className="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700"
+            className="w-full rounded-md border border-rose-200 bg-white px-3 py-2 text-sm font-medium text-rose-700 hover:bg-rose-50"
           >
-            Supprimer l’étape
+            Supprimer cette étape
           </button>
+          <p className="mt-1.5 text-xs leading-relaxed text-rose-700/80">
+            Le parcours se recollera tout seul. Les emails déjà envoyés ne sont pas annulés.
+          </p>
         </div>
       ) : null}
     </aside>
