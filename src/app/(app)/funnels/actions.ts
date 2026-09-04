@@ -48,14 +48,14 @@ export async function setFunnelActive(funnelId: string, active: boolean) {
   revalidatePath(`/funnels/${funnelId}`);
 }
 
-export async function setFunnelModes(funnelId: string, wizard: boolean, chat: boolean) {
+export async function setFunnelKind(funnelId: string, kind: "form" | "chat") {
   const ctx = await requireAdmin();
   const supabase = await createClient();
   await supabase
     .from("configurators")
     .update({
-      wizard_enabled: wizard || !chat,
-      chat_enabled: chat,
+      wizard_enabled: kind === "form",
+      chat_enabled: kind === "chat",
     })
     .eq("id", funnelId)
     .eq("organization_id", ctx.organization.id);

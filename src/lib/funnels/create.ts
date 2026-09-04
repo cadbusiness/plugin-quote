@@ -19,14 +19,14 @@ export function parseCreateFunnelForm(formData: FormData): CreateFunnelInput | n
   const name = String(formData.get("name") ?? "").trim();
   if (name.length < 2) return null;
   const sector = String(formData.get("sector") ?? "general");
-  let wizardEnabled = formData.get("wizard_enabled") === "on";
-  const chatEnabled = formData.get("chat_enabled") === "on";
-  if (!wizardEnabled && !chatEnabled) wizardEnabled = true;
+  const kind = String(formData.get("kind") ?? "form") === "chat" ? "chat" : "form";
+  const wizardEnabled = kind === "form";
+  const chatEnabled = kind === "chat";
   const picked = formData.getAll("screens").map(String);
   const screens = (picked.length ? picked : ["questions", "contact"]).filter((s): s is ScreenType =>
     (ALL_SCREENS as readonly string[]).includes(s),
   );
-  if (wizardEnabled && !screens.includes("contact")) screens.push("contact");
+  if (!screens.includes("contact")) screens.push("contact");
   const catalogFrom = String(formData.get("catalog_from") ?? "").trim();
   return {
     name,

@@ -8,7 +8,8 @@ import { CopyBlock } from "@/components/funnels/copy-block";
 import { FunnelAutomations, type FunnelWorkflowRow } from "@/components/funnels/funnel-automations";
 import { ParcoursBuilder } from "@/components/funnels/parcours-builder";
 import type { PreviewProduct } from "@/components/funnels/parcours-preview";
-import { renameFunnel, saveFunnelTracking, setFunnelActive } from "@/app/(app)/funnels/actions";
+import { renameFunnel, saveFunnelTracking, setFunnelActive, setFunnelKind } from "@/app/(app)/funnels/actions";
+import type { FunnelKind } from "@/lib/funnels/builder";
 import type { Tables } from "@/lib/db/database.types";
 import { FUNNEL_TABS, type FunnelTab } from "@/lib/funnels/tabs";
 import type { FunnelTracking } from "@/lib/funnels/tracking";
@@ -54,6 +55,7 @@ export function FunnelEditor({
   tab: FunnelTab;
 }) {
   const [pending, startTransition] = useTransition();
+  const kind: FunnelKind = funnel.chatEnabled && !funnel.wizardEnabled ? "chat" : "form";
   const embedUrl = publicUrl.replace("/c/", "/embed/");
   const widget = `<div data-quotebuilder data-org="${orgSlug}" data-id="${funnel.slug}"></div>\n<script src="${new URL("/widget.js", publicUrl).origin}/widget.js" async></script>`;
   const iframe = `<iframe src="${embedUrl}" title="${funnel.name}" style="width:100%;min-height:720px;border:0"></iframe>`;
@@ -88,6 +90,24 @@ export function FunnelEditor({
             }}
             className="min-w-0 flex-1 bg-transparent text-sm font-semibold text-slate-900 outline-none"
           />
+          <div className="flex shrink-0 rounded-full bg-slate-100 p-0.5 text-xs font-medium">
+            <button
+              type="button"
+              disabled={pending || kind === "form"}
+              onClick={() => startTransition(() => void setFunnelKind(funnel.id, "form"))}
+              className={`rounded-full px-2.5 py-1 ${kind === "form" ? "bg-white text-[#C2410C] shadow-sm" : "text-slate-500"}`}
+            >
+              Formulaire
+            </button>
+            <button
+              type="button"
+              disabled={pending || kind === "chat"}
+              onClick={() => startTransition(() => void setFunnelKind(funnel.id, "chat"))}
+              className={`rounded-full px-2.5 py-1 ${kind === "chat" ? "bg-white text-violet-800 shadow-sm" : "text-slate-500"}`}
+            >
+              Chat IA
+            </button>
+          </div>
           <Link
             href={publicUrl}
             target="_blank"
@@ -151,8 +171,7 @@ export function FunnelEditor({
             funnelId={funnel.id}
             funnelName={funnel.name}
             orgName={orgName}
-            wizardEnabled={funnel.wizardEnabled}
-            chatEnabled={funnel.chatEnabled}
+            kind={kind}
             steps={steps}
             questions={questions}
             products={products}

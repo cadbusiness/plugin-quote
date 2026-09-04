@@ -1,6 +1,6 @@
 import type { QuestionOptions, QuestionType, ScreenType } from "@/lib/wizard/types";
 
-export type FunnelPreviewMode = "form" | "chat" | "catalog";
+export type FunnelKind = "form" | "chat";
 
 export const SCREEN_LABEL: Record<ScreenType, string> = {
   questions: "Questions",

@@ -1,8 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { formatPrice } from "@/lib/format";
-import type { FunnelPreviewMode } from "@/lib/funnels/builder";
 import type { QuestionOptions, QuestionType, ScreenType } from "@/lib/wizard/types";
 
 export type PreviewQuestion = {
@@ -30,47 +29,7 @@ export type PreviewProduct = {
   priceMax: number | null;
 };
 
-export function ParcoursPreview({
-  mode,
-  funnelName,
-  orgName,
-  step,
-  steps,
-  products,
-}: {
-  mode: FunnelPreviewMode;
-  funnelName: string;
-  orgName: string;
-  step: PreviewStep | null;
-  steps: PreviewStep[];
-  products: PreviewProduct[];
-}) {
-  return (
-    <div className="flex h-full min-h-0 flex-col bg-slate-100">
-      <div className="border-b border-slate-200 bg-slate-950 px-4 py-3 text-white">
-        <p className="text-[10px] uppercase tracking-[0.16em] text-amber-400">{orgName}</p>
-        <p className="text-sm font-medium">{funnelName}</p>
-        {mode === "form" && step ? (
-          <p className="mt-2 text-[11px] text-slate-300">
-            {steps.findIndex((item) => item.id === step.id) + 1} / {steps.length} — {step.title}
-          </p>
-        ) : null}
-        {mode === "chat" ? <p className="mt-2 text-[11px] text-slate-300">Chat IA · même brief, en conversation</p> : null}
-        {mode === "catalog" ? <p className="mt-2 text-[11px] text-slate-300">Catalogue proposé au prospect</p> : null}
-      </div>
-      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5">
-        {mode === "chat" ? <ChatPreview steps={steps} products={products} /> : null}
-        {mode === "catalog" ? <CatalogPreview products={products} /> : null}
-        {mode === "form" && step ? <FormPreview step={step} products={products} /> : null}
-        {mode === "form" && !step ? (
-          <p className="text-sm text-slate-500">Ajoutez un écran pour voir le parcours.</p>
-        ) : null}
-      </div>
-    </div>
-  );
-}
-
-function FormPreview({ step, products }: { step: PreviewStep; products: PreviewProduct[] }) {
+export function FormScreenBody({ step, products }: { step: PreviewStep; products: PreviewProduct[] }) {
   return (
     <div>
       <h2 className="text-xl font-semibold tracking-tight text-slate-900">{step.title}</h2>
@@ -82,7 +41,7 @@ function FormPreview({ step, products }: { step: PreviewStep; products: PreviewP
           ))}
         </div>
       ) : null}
-      {step.screenType === "suggestions" ? <CatalogPreview products={products} /> : null}
+      {step.screenType === "suggestions" ? <div className="mt-5"><CatalogPreview products={products} /></div> : null}
       {step.screenType === "customize" ? <CustomizePreview products={products} /> : null}
       {step.screenType === "contact" ? <ContactPreview /> : null}
       <div className="mt-8 flex items-center justify-between">
@@ -95,7 +54,53 @@ function FormPreview({ step, products }: { step: PreviewStep; products: PreviewP
   );
 }
 
-function QuestionPreview({ question }: { question: PreviewQuestion }) {
+export function ChatStepBody({ step, products }: { step: PreviewStep; products: PreviewProduct[] }) {
+  const question = step.questions[0];
+  const choices = question?.options.choices ?? [];
+  return (
+    <div className="space-y-2.5">
+      <div className="max-w-[88%] rounded-2xl bg-slate-100 px-3 py-2 text-sm text-slate-800">
+        {question ? (
+          <>
+            {question.label}
+            {question.helpText ? <span className="mt-1 block text-slate-500">{question.helpText}</span> : null}
+          </>
+        ) : step.screenType === "suggestions" ? (
+          products[0]
+            ? `Je vous propose ${products[0].name}${products[1] ? ` et ${products[1].name}` : ""} — on affine ensuite.`
+            : "Je vous montrerai les gammes du catalogue adaptées à ces réponses."
+        ) : step.screenType === "customize" ? (
+          "On règle ensuite quantités et options sur la gamme choisie."
+        ) : step.screenType === "contact" ? (
+          "Il me reste vos coordonnées pour envoyer le récapitulatif."
+        ) : (
+          step.title
+        )}
+      </div>
+      {choices.length ? (
+        <div className="flex flex-wrap gap-1.5 pl-1">
+          {choices.map((choice) => (
+            <span key={choice.value} className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs text-slate-700">
+              {choice.label}
+            </span>
+          ))}
+        </div>
+      ) : null}
+      {step.screenType === "suggestions" && products.length ? (
+        <div className="pl-1">
+          <CatalogPreview products={products.slice(0, 2)} />
+        </div>
+      ) : null}
+      {step.questions.slice(1).map((item) => (
+        <div key={item.id} className="max-w-[88%] rounded-2xl bg-slate-100 px-3 py-2 text-sm text-slate-800">
+          {item.label}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function QuestionPreview({ question }: { question: PreviewQuestion }) {
   const [value, setValue] = useState<string | string[]>("");
   const choices = question.options.choices ?? [];
 
@@ -207,7 +212,7 @@ function QuestionPreview({ question }: { question: PreviewQuestion }) {
   );
 }
 
-function CatalogPreview({ products }: { products: PreviewProduct[] }) {
+export function CatalogPreview({ products }: { products: PreviewProduct[] }) {
   if (!products.length) {
     return (
       <p className="text-sm text-slate-500">
@@ -216,7 +221,7 @@ function CatalogPreview({ products }: { products: PreviewProduct[] }) {
     );
   }
   return (
-    <div className="grid gap-3 sm:grid-cols-2">
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {products.map((product) => (
         <div key={product.id} className="rounded-xl border border-slate-200 bg-white p-3 text-left">
           {product.imageUrl ? (
@@ -271,68 +276,4 @@ function ContactPreview() {
       ))}
     </div>
   );
-}
-
-function ChatPreview({ steps, products }: { steps: PreviewStep[]; products: PreviewProduct[] }) {
-  const messages = useMemo(() => buildChatPreview(steps, products), [steps, products]);
-  return (
-    <div>
-      <div className="min-h-[18rem] space-y-2.5 rounded-2xl border border-slate-200 bg-white p-4">
-        {messages.map((message, index) => (
-          <div
-            key={`${message.role}-${index}`}
-            className={`max-w-[88%] rounded-2xl px-3 py-2 text-sm ${
-              message.role === "user" ? "ml-auto bg-slate-950 text-white" : "bg-slate-100 text-slate-800"
-            }`}
-          >
-            {message.content}
-          </div>
-        ))}
-      </div>
-      <div className="mt-3 flex gap-2">
-        <div className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-400">
-          Votre besoin…
-        </div>
-        <span className="rounded-lg bg-slate-950 px-3 py-2 text-sm text-white">Envoyer</span>
-      </div>
-    </div>
-  );
-}
-
-function buildChatPreview(steps: PreviewStep[], products: PreviewProduct[]) {
-  const messages: { role: "assistant" | "user"; content: string }[] = [];
-  const questions = steps.flatMap((step) => step.questions);
-  if (!questions.length) {
-    messages.push({
-      role: "assistant",
-      content: "Décrivez votre projet en une phrase — par exemple un entrepôt de 600 m² à équiper.",
-    });
-  } else {
-    messages.push({
-      role: "assistant",
-      content: `Pour commencer — ${questions[0].label}${questions[0].helpText ? `. ${questions[0].helpText}` : ""}`,
-    });
-    const firstChoice = questions[0].options.choices?.[0];
-    messages.push({ role: "user", content: firstChoice?.label ?? "Je vous envoie le brief." });
-    if (questions[1]) {
-      messages.push({ role: "assistant", content: questions[1].label });
-      messages.push({
-        role: "user",
-        content: questions[1].options.placeholder || questions[1].options.choices?.[0]?.label || "Voici l’ordre de grandeur.",
-      });
-    }
-  }
-  if (products[0]) {
-    messages.push({
-      role: "assistant",
-      content: `Je vous propose ${products[0].name}${products[1] ? ` et ${products[1].name}` : ""} — on affine ensuite les quantités.`,
-    });
-  } else if (steps.some((step) => step.screenType === "suggestions")) {
-    messages.push({
-      role: "assistant",
-      content: "Je vous montrerai ensuite les gammes du catalogue adaptées à ces réponses.",
-    });
-  }
-  messages.push({ role: "assistant", content: "Il me reste vos coordonnées pour envoyer le récapitulatif." });
-  return messages;
 }

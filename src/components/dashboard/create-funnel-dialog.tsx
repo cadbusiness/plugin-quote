@@ -20,8 +20,7 @@ export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: Exist
   const [step, setStep] = useState(0);
   const [sector, setSector] = useState("kitchen");
   const [name, setName] = useState(getFunnelTemplate("kitchen").defaultName);
-  const [wizardEnabled, setWizardEnabled] = useState(true);
-  const [chatEnabled, setChatEnabled] = useState(false);
+  const [kind, setKind] = useState<"form" | "chat">("form");
   const [screens, setScreens] = useState<ScreenType[]>(["questions", "suggestions", "customize", "contact"]);
   const [catalogFrom, setCatalogFrom] = useState("");
   const [pending, startTransition] = useTransition();
@@ -72,8 +71,7 @@ export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: Exist
     const data = new FormData();
     data.set("name", name.trim());
     data.set("sector", sector);
-    if (wizardEnabled) data.set("wizard_enabled", "on");
-    if (chatEnabled) data.set("chat_enabled", "on");
+    data.set("kind", kind);
     for (const screen of screens) data.append("screens", screen);
     if (catalogFrom) data.set("catalog_from", catalogFrom);
     startTransition(() => {
@@ -138,21 +136,11 @@ export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: Exist
                     />
                   </label>
                   <div>
-                    <p className="text-sm font-medium text-slate-900">Modes</p>
-                    <p className="mt-0.5 text-xs text-slate-500">Le prospect avance en funnel guidé, en chat, ou les deux.</p>
+                    <p className="text-sm font-medium text-slate-900">Type</p>
+                    <p className="mt-0.5 text-xs text-slate-500">Un funnel est un formulaire ou un chat — pas les deux.</p>
                     <div className="mt-2 flex flex-wrap gap-2">
-                      <ToggleChip
-                        on={wizardEnabled}
-                        tone="orange"
-                        label="Funnel guidé"
-                        onClick={() => setWizardEnabled((v) => !v || !chatEnabled)}
-                      />
-                      <ToggleChip
-                        on={chatEnabled}
-                        tone="violet"
-                        label="Chat IA"
-                        onClick={() => setChatEnabled((v) => !v || !wizardEnabled)}
-                      />
+                      <ToggleChip on={kind === "form"} tone="orange" label="Formulaire" onClick={() => setKind("form")} />
+                      <ToggleChip on={kind === "chat"} tone="violet" label="Chat IA" onClick={() => setKind("chat")} />
                     </div>
                   </div>
                   <div>

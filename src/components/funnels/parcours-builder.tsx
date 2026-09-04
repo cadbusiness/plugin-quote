@@ -17,20 +17,12 @@ import {
   addFunnelStep,
   deleteFunnelQuestion,
   deleteFunnelStep,
-  ensureCatalogSteps,
   saveFunnelStepOrder,
-  setFunnelModes,
   updateFunnelQuestion,
   updateFunnelStep,
 } from "@/app/(app)/funnels/actions";
-import { ParcoursPreview, type PreviewProduct } from "@/components/funnels/parcours-preview";
-import {
-  QUESTION_ADD,
-  QUESTION_LABEL,
-  SCREEN_ADD,
-  SCREEN_LABEL,
-  type FunnelPreviewMode,
-} from "@/lib/funnels/builder";
+import { ChatStepBody, FormScreenBody, type PreviewProduct, type PreviewStep } from "@/components/funnels/parcours-preview";
+import { QUESTION_ADD, QUESTION_LABEL, SCREEN_ADD, SCREEN_LABEL, type FunnelKind } from "@/lib/funnels/builder";
 import type { QuestionOptions, QuestionType, ScreenType } from "@/lib/wizard/types";
 import type { Tables } from "@/lib/db/database.types";
 
@@ -45,8 +37,7 @@ export function ParcoursBuilder({
   funnelId,
   funnelName,
   orgName,
-  wizardEnabled,
-  chatEnabled,
+  kind,
   steps,
   questions,
   products,
@@ -54,19 +45,14 @@ export function ParcoursBuilder({
   funnelId: string;
   funnelName: string;
   orgName: string;
-  wizardEnabled: boolean;
-  chatEnabled: boolean;
+  kind: FunnelKind;
   steps: Tables<"wizard_steps">[];
   questions: Tables<"wizard_questions">[];
   products: PreviewProduct[];
 }) {
   const [pending, startTransition] = useTransition();
-  const [, startMode] = useTransition();
   const [ordered, setOrdered] = useState(steps);
-  const [selectedId, setSelectedId] = useState<string | null>(steps[0]?.id ?? null);
-  const [preview, setPreview] = useState<FunnelPreviewMode>(
-    chatEnabled && !wizardEnabled ? "chat" : "form",
-  );
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [picker, setPicker] = useState<string | "start" | null>(null);
   const [mounted, setMounted] = useState(false);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
@@ -78,7 +64,7 @@ export function ParcoursBuilder({
   useEffect(() => {
     setOrdered(steps);
     if (selectedId && !steps.some((step) => step.id === selectedId)) {
-      setSelectedId(steps[0]?.id ?? null);
+      setSelectedId(null);
     }
   }, [steps, selectedId]);
 
@@ -92,7 +78,7 @@ export function ParcoursBuilder({
     return map;
   }, [questions]);
 
-  const previewSteps = ordered.map((step) => ({
+  const previewSteps: PreviewStep[] = ordered.map((step) => ({
     id: step.id,
     title: step.title,
     subtitle: step.subtitle,
@@ -105,8 +91,7 @@ export function ParcoursBuilder({
       options: asOptions(question.options),
     })),
   }));
-  const selected = previewSteps.find((step) => step.id === selectedId) ?? previewSteps[0] ?? null;
-  const selectedRow = ordered.find((step) => step.id === selected?.id) ?? null;
+  const selectedRow = ordered.find((step) => step.id === selectedId) ?? null;
 
   function run(action: () => Promise<unknown>) {
     startTransition(() => {
@@ -124,43 +109,15 @@ export function ParcoursBuilder({
     run(() => saveFunnelStepOrder(funnelId, next.map((step) => step.id)));
   }
 
-  function chooseMode(mode: FunnelPreviewMode) {
-    setPreview(mode);
-    if (mode === "form") {
-      startMode(() => {
-        void setFunnelModes(funnelId, true, chatEnabled);
-      });
-    }
-    if (mode === "chat") {
-      startMode(() => {
-        void setFunnelModes(funnelId, wizardEnabled, true);
-      });
-    }
-    if (mode === "catalog") {
-      const existing = ordered.find((step) => step.screen_type === "suggestions");
-      if (existing) {
-        setSelectedId(existing.id);
-        return;
-      }
-      run(async () => {
-        const id = await ensureCatalogSteps(funnelId);
-        if (id) setSelectedId(id);
-      });
-    }
-  }
-
   function addScreen(type: ScreenType, afterId: string | null) {
     setPicker(null);
     run(async () => {
       const id = await addFunnelStep(funnelId, type, afterId);
+      if (type === "suggestions" && !ordered.some((step) => step.screen_type === "customize") && id) {
+        await addFunnelStep(funnelId, "customize", id);
+      }
       if (id) setSelectedId(id);
     });
-  }
-
-  function selectStep(step: Tables<"wizard_steps">) {
-    setSelectedId(step.id);
-    if (step.screen_type === "suggestions") setPreview("catalog");
-    else if (preview !== "chat") setPreview("form");
   }
 
   const canvas = (
@@ -171,141 +128,84 @@ export function ParcoursBuilder({
         onToggle={() => setPicker((current) => (current === "start" ? null : "start"))}
         onPick={(type) => addScreen(type, null)}
       />
-      {ordered.map((step) => (
-        <div key={step.id}>
-          {mounted ? (
-            <SortableScreen
-              step={step}
-              questions={byStep.get(step.id) ?? []}
-              selected={step.id === selected?.id}
-              onSelect={() => selectStep(step)}
+      {ordered.map((step, index) => {
+        const preview = previewSteps[index];
+        return (
+          <div key={step.id}>
+            {mounted ? (
+              <SortableScreen
+                step={step}
+                preview={preview}
+                products={products}
+                kind={kind}
+                selected={step.id === selectedId}
+                onSelect={() => setSelectedId(step.id === selectedId ? null : step.id)}
+              />
+            ) : (
+              <ScreenCard
+                step={step}
+                preview={preview}
+                products={products}
+                kind={kind}
+                selected={step.id === selectedId}
+                onSelect={() => setSelectedId(step.id === selectedId ? null : step.id)}
+              />
+            )}
+            <InsertPlus
+              open={picker === step.id}
+              disabled={pending}
+              onToggle={() => setPicker((current) => (current === step.id ? null : step.id))}
+              onPick={(type) => addScreen(type, step.id)}
             />
-          ) : (
-            <ScreenCard
-              step={step}
-              questions={byStep.get(step.id) ?? []}
-              selected={step.id === selected?.id}
-              onSelect={() => selectStep(step)}
-            />
-          )}
-          <InsertPlus
-            open={picker === step.id}
-            disabled={pending}
-            onToggle={() => setPicker((current) => (current === step.id ? null : step.id))}
-            onPick={(type) => addScreen(type, step.id)}
-          />
-        </div>
-      ))}
+          </div>
+        );
+      })}
     </>
   );
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-4 py-3 lg:px-6">
-        <p className="mr-auto text-sm text-slate-500">Ce que le prospect voit — cliquez pour changer de vue.</p>
-        <ModeChip
-          label="Formulaire"
-          on={preview === "form"}
-          active={wizardEnabled}
-          tone="orange"
-          onClick={() => chooseMode("form")}
-        />
-        <ModeChip
-          label="Chat IA"
-          on={preview === "chat"}
-          active={chatEnabled}
-          tone="violet"
-          onClick={() => chooseMode("chat")}
-        />
-        <ModeChip
-          label="Catalogue"
-          on={preview === "catalog"}
-          active={ordered.some((step) => step.screen_type === "suggestions")}
-          tone="emerald"
-          onClick={() => chooseMode("catalog")}
-        />
-      </div>
-
-      <div className="grid min-h-0 flex-1 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,28rem)]">
-        <div className="min-h-0 overflow-y-auto bg-slate-50 px-4 py-5 lg:px-6">
-          {mounted ? (
-            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-              <SortableContext items={ordered.map((step) => step.id)} strategy={verticalListSortingStrategy}>
-                {canvas}
-              </SortableContext>
-            </DndContext>
-          ) : (
-            canvas
-          )}
+    <div className="flex min-h-0 flex-1">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col bg-slate-100">
+        <div className="border-b border-slate-200 bg-slate-950 px-4 py-3 text-white lg:px-6">
+          <p className="text-[10px] uppercase tracking-[0.16em] text-amber-400">{orgName}</p>
+          <p className="text-sm font-medium">{funnelName}</p>
+          <p className="mt-1 text-[11px] text-slate-300">
+            {kind === "chat" ? "Chat IA · glissez les blocs dans la conversation" : "Formulaire · glissez les écrans du parcours"}
+          </p>
         </div>
-
-        <div className="flex min-h-0 flex-col border-t border-slate-200 lg:border-l lg:border-t-0">
-          <div className="min-h-[22rem] flex-1 lg:min-h-0">
-            <ParcoursPreview
-              mode={preview}
-              funnelName={funnelName}
-              orgName={orgName}
-              step={selected}
-              steps={previewSteps}
-              products={products}
-            />
+        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 lg:px-8">
+          <div className="mx-auto max-w-3xl">
+            {mounted ? (
+              <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+                <SortableContext items={ordered.map((step) => step.id)} strategy={verticalListSortingStrategy}>
+                  {canvas}
+                </SortableContext>
+              </DndContext>
+            ) : (
+              canvas
+            )}
           </div>
-          {selectedRow ? (
-            <StepInspector
-              funnelId={funnelId}
-              step={selectedRow}
-              questions={byStep.get(selectedRow.id) ?? []}
-              canDelete={ordered.length > 1}
-              pending={pending}
-              onAddQuestion={(type) => run(() => addFunnelQuestion(funnelId, selectedRow.id, type))}
-              onDelete={() =>
-                run(async () => {
-                  await deleteFunnelStep(funnelId, selectedRow.id);
-                  setSelectedId(ordered.find((step) => step.id !== selectedRow.id)?.id ?? null);
-                })
-              }
-              onRun={run}
-            />
-          ) : null}
         </div>
       </div>
-    </div>
-  );
-}
 
-function ModeChip({
-  label,
-  on,
-  active,
-  tone,
-  disabled,
-  onClick,
-}: {
-  label: string;
-  on: boolean;
-  active: boolean;
-  tone: "orange" | "violet" | "emerald";
-  disabled?: boolean;
-  onClick: () => void;
-}) {
-  const onClass =
-    tone === "orange"
-      ? "bg-orange-50 text-[#C2410C] ring-orange-200"
-      : tone === "violet"
-        ? "bg-violet-50 text-violet-800 ring-violet-200"
-        : "bg-emerald-50 text-emerald-800 ring-emerald-200";
-  return (
-    <button
-      type="button"
-      disabled={disabled}
-      onClick={onClick}
-      className={`rounded-full px-2.5 py-1 text-xs font-medium ring-1 disabled:opacity-50 ${
-        on ? onClass : "bg-white text-slate-500 ring-slate-200"
-      }`}
-    >
-      {label}
-      {active && !on ? <span className="ml-1 text-[10px] text-slate-400">actif</span> : null}
-    </button>
+      {selectedRow ? (
+        <StepInspector
+          funnelId={funnelId}
+          step={selectedRow}
+          questions={byStep.get(selectedRow.id) ?? []}
+          canDelete={ordered.length > 1}
+          pending={pending}
+          onAddQuestion={(type) => run(() => addFunnelQuestion(funnelId, selectedRow.id, type))}
+          onDelete={() =>
+            run(async () => {
+              await deleteFunnelStep(funnelId, selectedRow.id);
+              setSelectedId(null);
+            })
+          }
+          onRun={run}
+        />
+      ) : null}
+    </div>
   );
 }
 
@@ -352,12 +252,16 @@ function InsertPlus({
 
 function SortableScreen({
   step,
-  questions,
+  preview,
+  products,
+  kind,
   selected,
   onSelect,
 }: {
   step: Tables<"wizard_steps">;
-  questions: Tables<"wizard_questions">[];
+  preview: PreviewStep;
+  products: PreviewProduct[];
+  kind: FunnelKind;
   selected: boolean;
   onSelect: () => void;
 }) {
@@ -366,7 +270,9 @@ function SortableScreen({
     <div ref={setNodeRef} style={{ transform: CSS.Transform.toString(transform), transition }}>
       <ScreenCard
         step={step}
-        questions={questions}
+        preview={preview}
+        products={products}
+        kind={kind}
         selected={selected}
         onSelect={onSelect}
         handle={
@@ -387,24 +293,28 @@ function SortableScreen({
 
 function ScreenCard({
   step,
-  questions,
+  preview,
+  products,
+  kind,
   selected,
   onSelect,
   handle,
 }: {
   step: Tables<"wizard_steps">;
-  questions: Tables<"wizard_questions">[];
+  preview: PreviewStep;
+  products: PreviewProduct[];
+  kind: FunnelKind;
   selected: boolean;
   onSelect: () => void;
   handle?: React.ReactNode;
 }) {
   return (
     <div
-      className={`w-full rounded-xl border bg-white p-4 text-left shadow-sm ${
+      className={`rounded-xl border bg-white p-5 text-left shadow-sm ${
         selected ? "border-[#E85D04] ring-2 ring-[#E85D04]/15" : "border-slate-200 hover:border-slate-300"
       }`}
     >
-      <div className="mb-3 flex items-center gap-2">
+      <div className="mb-4 flex items-center gap-2">
         {handle ?? (
           <span className="flex h-7 w-7 items-center justify-center text-slate-300">
             <GripVertical className="h-4 w-4" aria-hidden />
@@ -417,70 +327,24 @@ function ScreenCard({
           <p className="truncate text-sm font-semibold text-slate-900">{step.title}</p>
         </button>
       </div>
-      <button type="button" onClick={onSelect} className="w-full text-left">
-        <ScreenThumb step={step} questions={questions} />
-      </button>
-    </div>
-  );
-}
-
-function ScreenThumb({
-  step,
-  questions,
-}: {
-  step: Tables<"wizard_steps">;
-  questions: Tables<"wizard_questions">[];
-}) {
-  if (step.screen_type === "suggestions") {
-    return <p className="text-sm text-slate-500">Grille catalogue — le prospect choisit une gamme.</p>;
-  }
-  if (step.screen_type === "customize") {
-    return <p className="text-sm text-slate-500">Quantités, variantes et plan à joindre.</p>;
-  }
-  if (step.screen_type === "contact") {
-    return (
-      <div className="grid grid-cols-2 gap-1.5">
-        {["Nom", "Email", "Téléphone", "Société"].map((label) => (
-          <div key={label} className="rounded-md border border-slate-100 bg-slate-50 px-2 py-1.5 text-[11px] text-slate-400">
-            {label}
-          </div>
-        ))}
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={onSelect}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onSelect();
+          }
+        }}
+        className="w-full text-left"
+      >
+        {kind === "chat" ? (
+          <ChatStepBody step={preview} products={products} />
+        ) : (
+          <FormScreenBody step={preview} products={products} />
+        )}
       </div>
-    );
-  }
-  return (
-    <div className="space-y-2">
-      {questions.map((question) => {
-        const options = asOptions(question.options);
-        const choices = options.choices ?? [];
-        return (
-          <div key={question.id}>
-            <p className="text-xs font-medium text-slate-700">{question.label}</p>
-            {question.type === "visual_choice" ? (
-              <div className="mt-1 grid grid-cols-2 gap-1.5">
-                {choices.slice(0, 4).map((choice) => (
-                  <div key={choice.value} className="rounded-md border border-slate-100 bg-slate-50 px-2 py-1.5 text-[11px] text-slate-600">
-                    {choice.label}
-                  </div>
-                ))}
-              </div>
-            ) : question.type === "multi_select" ? (
-              <div className="mt-1 flex flex-wrap gap-1">
-                {choices.slice(0, 4).map((choice) => (
-                  <span key={choice.value} className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] text-slate-600">
-                    {choice.label}
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <div className="mt-1 rounded-md border border-slate-100 bg-slate-50 px-2 py-1.5 text-[11px] text-slate-400">
-                {QUESTION_LABEL[question.type as QuestionType] ?? question.type}
-                {options.unit ? ` · ${options.unit}` : ""}
-              </div>
-            )}
-          </div>
-        );
-      })}
     </div>
   );
 }
@@ -506,7 +370,7 @@ function StepInspector({
 }) {
   const [adding, setAdding] = useState(false);
   return (
-    <div className="max-h-[22rem] overflow-y-auto border-t border-slate-200 bg-white px-4 py-4">
+    <aside className="flex w-80 shrink-0 flex-col overflow-y-auto border-l border-slate-200 bg-white px-4 py-4">
       <div className="mb-3 flex items-center gap-2">
         <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
           {SCREEN_LABEL[step.screen_type as ScreenType] ?? step.screen_type}
@@ -519,7 +383,7 @@ function StepInspector({
             className="ml-auto inline-flex items-center gap-1 text-xs text-slate-400 hover:text-rose-700"
           >
             <Trash2 className="h-3.5 w-3.5" aria-hidden />
-            Retirer l’écran
+            Retirer
           </button>
         ) : null}
       </div>
@@ -553,13 +417,7 @@ function StepInspector({
       {step.screen_type === "questions" ? (
         <div className="mt-4 space-y-3">
           {questions.map((question) => (
-            <QuestionEditor
-              key={question.id}
-              funnelId={funnelId}
-              question={question}
-              pending={pending}
-              onRun={onRun}
-            />
+            <QuestionEditor key={question.id} funnelId={funnelId} question={question} pending={pending} onRun={onRun} />
           ))}
           {adding ? (
             <div className="grid grid-cols-2 gap-1.5">
@@ -580,12 +438,7 @@ function StepInspector({
               ))}
             </div>
           ) : (
-            <button
-              type="button"
-              disabled={pending}
-              onClick={() => setAdding(true)}
-              className="text-sm font-medium text-[#C2410C]"
-            >
+            <button type="button" disabled={pending} onClick={() => setAdding(true)} className="text-sm font-medium text-[#C2410C]">
               + Ajouter un champ
             </button>
           )}
@@ -599,7 +452,7 @@ function StepInspector({
               : "Le prospect laisse nom, email, téléphone et société."}
         </p>
       )}
-    </div>
+    </aside>
   );
 }
 
@@ -687,7 +540,10 @@ function QuestionEditor({
           />
         </div>
       ) : null}
-      {choices.length || question.type === "visual_choice" || question.type === "select" || question.type === "multi_select" ? (
+      {choices.length ||
+      question.type === "visual_choice" ||
+      question.type === "select" ||
+      question.type === "multi_select" ? (
         <div className="mt-2 space-y-1.5">
           {choices.map((choice, index) => (
             <div key={`${choice.value}-${index}`} className="flex gap-1.5">
@@ -696,9 +552,7 @@ function QuestionEditor({
                 onBlur={(event) => {
                   const label = event.target.value.trim();
                   if (!label || label === choice.label) return;
-                  const next = choices.map((item, itemIndex) =>
-                    itemIndex === index ? { ...item, label } : item,
-                  );
+                  const next = choices.map((item, itemIndex) => (itemIndex === index ? { ...item, label } : item));
                   saveOptions({ ...options, choices: next });
                 }}
                 className="min-w-0 flex-1 border border-slate-200 px-2 py-1.5 text-sm"

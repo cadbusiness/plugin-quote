@@ -22,7 +22,7 @@ export default async function FunnelsPage() {
 
   return (
     <ListPanel>
-      <DataTable headers={["Funnel", "Secteur", "Modes", "Lien public"]}>
+      <DataTable headers={["Funnel", "Secteur", "Type", "Lien public"]}>
         {list.map((funnel) => {
           const template = getFunnelTemplate(funnel.sector);
           const href = `/c/${ctx.organization.slug}/${funnel.slug}`;
@@ -40,13 +40,9 @@ export default async function FunnelsPage() {
                 </span>
               </td>
               <td className="px-4 py-3 lg:px-6">
-                <div className="flex flex-wrap gap-1.5">
-                  {funnel.wizard_enabled ? <Chip tone="orange">Funnel</Chip> : null}
-                  {funnel.chat_enabled ? <Chip tone="violet">Chat IA</Chip> : null}
-                  {!funnel.wizard_enabled && !funnel.chat_enabled ? (
-                    <span className="text-slate-400">—</span>
-                  ) : null}
-                </div>
+                <Chip tone={funnel.chat_enabled && !funnel.wizard_enabled ? "violet" : "orange"}>
+                  {funnel.chat_enabled && !funnel.wizard_enabled ? "Chat IA" : "Formulaire"}
+                </Chip>
               </td>
               <td className="px-4 py-3 lg:px-6">
                 <a
