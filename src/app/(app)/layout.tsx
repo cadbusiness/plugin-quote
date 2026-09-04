@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getAuthUser, getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { isSuperAdmin } from "@/lib/auth/platform";
@@ -10,6 +11,7 @@ import { getSidebarSnapshot } from "@/lib/crm/sidebar";
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const ctx = await getOrgContext();
   const user = await getAuthUser();
+  const sidebarCollapsed = (await cookies()).get("qb-sidebar")?.value === "1";
   if (!ctx) redirect(isSuperAdmin(user) ? "/admin" : "/onboarding");
   const supabase = await createClient();
   const [{ data: notifications }, snapshot] = await Promise.all([
@@ -37,6 +39,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           isPlatformAdmin={isSuperAdmin(user)}
           email={ctx.email}
           snapshot={snapshot}
+          collapsed={sidebarCollapsed}
         />
         <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
           <div className="flex min-h-0 w-full flex-1 flex-col overflow-auto px-4 lg:px-6">{children}</div>

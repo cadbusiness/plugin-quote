@@ -5,8 +5,8 @@ import { getOrgContext } from "@/lib/auth/org";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { Chip, scoreTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
-import { formatDate } from "@/lib/format";
-import { csvQuery, listQuotes } from "@/lib/crm/quotes";
+import { QuoteProjectCell, QuoteReceivedCell } from "@/components/crm/quote-list-cells";
+import { csvQuery, listQuotes, loadQuoteListExtras } from "@/lib/crm/quotes";
 
 export default async function QuotesPage({
   searchParams,
@@ -35,6 +35,7 @@ export default async function QuotesPage({
     labels.push(memberLabel.get(row.user_id) ?? "Commercial");
     assigneesByQuote.set(row.quote_id, labels);
   }
+  const extras = await loadQuoteListExtras(supabase, quotes);
 
   return (
     <ListPanel>
@@ -79,15 +80,27 @@ export default async function QuotesPage({
           Export CSV
         </Link>
       </ListToolbar>
-      <DataTable headers={["Prospect", "Score", "Statut", "Assigné à", "Date"]}>
+      <DataTable headers={["Prospect", "Projet", "Score", "Statut", "Assigné à", "Reçue"]}>
         {quotes.map((quote) => {
           const status = quote.status_id ? statusById.get(quote.status_id) : undefined;
+          const extra = extras.get(quote.id) ?? {
+            itemCount: 0,
+            firstName: null,
+            priceMin: null,
+            priceMax: null,
+            opened: quote.status !== "new",
+          };
           return (
-            <ClickableRow key={quote.id} href={`/devis/${quote.id}`}>
+            <ClickableRow
+              key={quote.id}
+              href={`/devis/${quote.id}`}
+              className={extra.opened ? "" : "bg-orange-50/50"}
+            >
               <td className="px-4 py-2.5 lg:px-6">
-                <div className="font-medium">{quote.contact_name}</div>
+                <div className="font-medium text-slate-900">{quote.contact_name}</div>
                 <div className="text-slate-500">{quote.contact_company ?? quote.contact_email}</div>
               </td>
+              <QuoteProjectCell extras={extra} />
               <td className="px-4 py-2.5 lg:px-6">
                 <Chip tone={scoreTone(quote.score_label)}>
                   {(quote.score_label ?? "—").toUpperCase()}
@@ -106,7 +119,7 @@ export default async function QuotesPage({
               <td className="px-4 py-2.5 text-slate-500 lg:px-6">
                 {(assigneesByQuote.get(quote.id) ?? (quote.assigned_to ? [memberLabel.get(quote.assigned_to) ?? "—"] : [])).join(", ") || "—"}
               </td>
-              <td className="px-4 py-2.5 text-slate-500 lg:px-6">{formatDate(quote.created_at)}</td>
+              <QuoteReceivedCell createdAt={quote.created_at} extras={extra} />
             </ClickableRow>
           );
         })}

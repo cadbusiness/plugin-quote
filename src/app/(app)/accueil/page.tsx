@@ -5,8 +5,8 @@ import { getOrgContext } from "@/lib/auth/org";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { Chip, scoreTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
-import { formatDate } from "@/lib/format";
-import { listQuotes } from "@/lib/crm/quotes";
+import { QuoteProjectCell, QuoteReceivedCell } from "@/components/crm/quote-list-cells";
+import { listQuotes, loadQuoteListExtras } from "@/lib/crm/quotes";
 import { getSidebarSnapshot } from "@/lib/crm/sidebar";
 
 export default async function AccueilPage() {
@@ -19,6 +19,7 @@ export default async function AccueilPage() {
     supabase.from("quote_statuses").select("id, label, color").eq("organization_id", ctx.organization.id),
   ]);
   const statusById = new Map((statuses ?? []).map((s) => [s.id, s]));
+  const extras = await loadQuoteListExtras(supabase, quotes);
 
   return (
     <ListPanel>
@@ -30,22 +31,37 @@ export default async function AccueilPage() {
           Pipeline
         </Link>
       </ListToolbar>
-      <DataTable headers={["Prospect", "Score", "Statut", "Date"]}>
+      <DataTable headers={["Prospect", "Projet", "Score", "Statut", "Reçue"]}>
         {quotes.map((quote) => {
           const status = quote.status_id ? statusById.get(quote.status_id) : undefined;
+          const extra = extras.get(quote.id) ?? {
+            itemCount: 0,
+            firstName: null,
+            priceMin: null,
+            priceMax: null,
+            opened: quote.status !== "new",
+          };
           return (
-            <ClickableRow key={quote.id} href={`/devis/${quote.id}`}>
+            <ClickableRow
+              key={quote.id}
+              href={`/devis/${quote.id}`}
+              className={extra.opened ? "" : "bg-orange-50/50"}
+            >
               <td className="px-4 py-2.5 lg:px-6">
-                <div className="font-medium">{quote.contact_name}</div>
+                <div className="font-medium text-slate-900">{quote.contact_name}</div>
                 <div className="text-slate-500">{quote.contact_company ?? quote.contact_email}</div>
               </td>
+              <QuoteProjectCell extras={extra} />
               <td className="px-4 py-2.5 lg:px-6">
-                <Chip tone={scoreTone(quote.score_label)}>{(quote.score_label ?? "—").toUpperCase()}</Chip>
+                <Chip tone={scoreTone(quote.score_label)}>
+                  {(quote.score_label ?? "—").toUpperCase()}
+                  {quote.score != null ? ` ${quote.score}` : ""}
+                </Chip>
               </td>
               <td className="px-4 py-2.5 lg:px-6" style={{ color: status?.color ?? "#64748b" }}>
                 {status?.label ?? quote.status}
               </td>
-              <td className="px-4 py-2.5 text-slate-500 lg:px-6">{formatDate(quote.created_at)}</td>
+              <QuoteReceivedCell createdAt={quote.created_at} extras={extra} />
             </ClickableRow>
           );
         })}
