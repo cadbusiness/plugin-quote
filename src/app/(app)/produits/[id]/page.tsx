@@ -8,7 +8,8 @@ import { priceModeOf } from "@/lib/catalog/product-form";
 import { formatDate } from "@/lib/format";
 import type { Json } from "@/lib/db/database.types";
 import { createClient } from "@/lib/supabase/server";
-import type { ProductOption } from "@/lib/wizard/types";
+import { ProductEditorFields } from "@/components/catalog/product-editor-fields";
+import { normalizeAttributes } from "@/lib/catalog/attributes";
 
 const SOURCES: Record<string, { label: string; tone: ChipTone }> = {
   manual: { label: "Ajouté à la main", tone: "slate" },
@@ -59,9 +60,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const synced = product.source === "woocommerce" || product.source === "shopify";
   const images = asArray<StoredImage>(product.images).filter((image) => image.src);
   const variants = asArray<StoredVariant>(product.variants);
-  const options = asArray<ProductOption>(product.options);
-  // Une ligne vide en fin de liste sert d'emplacement pour ajouter une option.
-  const optionRows = [...options, { key: "", label: "", values: [] }];
+  const attributes = normalizeAttributes(product.options);
   const priceMode = priceModeOf(product.price_min, product.price_max);
 
   const toggle = toggleProduct.bind(null, product.id, !product.is_active);
@@ -212,39 +211,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           </label>
         </div>
 
-        <label className="text-sm">
-          <span className="font-medium text-slate-900">Photo principale (URL)</span>
-          <input
-            name="image_url"
-            defaultValue={product.image_url ?? ""}
-            className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-          />
-        </label>
-
-        <div>
-          <p className="text-sm font-medium text-slate-900">Options proposées au prospect</p>
-          <p className="mt-0.5 text-xs text-slate-500">
-            Un libellé et ses valeurs séparées par des virgules. Laissez vide pour ne rien proposer.
-          </p>
-          <div className="mt-2 space-y-2">
-            {optionRows.map((option, index) => (
-              <div key={`${option.key}-${index}`} className="grid gap-2 sm:grid-cols-3">
-                <input
-                  name="option_label"
-                  defaultValue={option.label}
-                  placeholder="Couleur"
-                  className="rounded-md border border-slate-200 px-3 py-2 text-sm"
-                />
-                <input
-                  name="option_values"
-                  defaultValue={option.values.map((value) => value.label).join(", ")}
-                  placeholder="Noir, Blanc, Galvanisé"
-                  className="rounded-md border border-slate-200 px-3 py-2 text-sm sm:col-span-2"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+        <ProductEditorFields imageUrl={product.image_url} attributes={attributes} />
 
         <div className="text-right">
           <button className="rounded-md bg-slate-950 px-3 py-1.5 text-sm text-white">

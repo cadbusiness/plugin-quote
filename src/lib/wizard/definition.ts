@@ -1,10 +1,10 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/db/database.types";
+import { normalizeAttributes, toProspectOptions } from "@/lib/catalog/attributes";
 import type {
   ConfiguratorDefinition,
   Product,
   ProductImage,
-  ProductOption,
   QuestionOptions,
   QuestionType,
   ScreenType,
@@ -19,7 +19,7 @@ function asRecord(value: Json): Record<string, unknown> {
 }
 
 function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Product {
-  const options = Array.isArray(row.options) ? (row.options as ProductOption[]) : [];
+  const options = toProspectOptions(normalizeAttributes(row.options));
   const images = Array.isArray(row.images) ? (row.images as unknown as ProductImage[]) : [];
   const gallery = images.filter((image) => image && typeof image.src === "string" && image.src);
   return {

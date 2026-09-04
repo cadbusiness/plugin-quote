@@ -179,11 +179,12 @@ export function CreateProductDialog({ funnels }: { funnels: Funnel[] }) {
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <label className="block text-sm">
-                      <span className="font-medium text-slate-900">Photo (URL)</span>
+                      <span className="font-medium text-slate-900">Photo</span>
                       <input
-                        name="image_url"
-                        placeholder="https://…/photo.jpg"
-                        className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+                        type="file"
+                        name="image"
+                        accept="image/jpeg,image/png,image/webp,image/gif"
+                        className="mt-1 w-full text-sm"
                       />
                     </label>
                     <label className="block text-sm">

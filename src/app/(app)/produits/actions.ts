@@ -5,7 +5,9 @@ import { redirect } from "next/navigation";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { parseProductCsv } from "@/lib/catalog/csv";
 import { parseConditions } from "@/lib/catalog/rules";
-import { parseProductOptions, readPriceRange } from "@/lib/catalog/product-form";
+import { parseProductAttributes } from "@/lib/catalog/attributes";
+import { readPriceRange } from "@/lib/catalog/product-form";
+import { uploadCatalogImage } from "@/lib/catalog/upload";
 import type { Json } from "@/lib/db/database.types";
 import { createClient } from "@/lib/supabase/server";
 
@@ -77,6 +79,22 @@ export async function createProduct(
 
   if (error || !data) return { error: error?.message ?? "Création impossible." };
 
+  const image = formData.get("image");
+  if (image instanceof File && image.size) {
+    try {
+      const uploaded = await uploadCatalogImage(ctx.organization.id, data.id, image);
+      await supabase
+        .from("products")
+        .update({
+          image_url: uploaded,
+          images: [{ src: uploaded, alt: null }] as unknown as Json,
+        })
+        .eq("id", data.id);
+    } catch (uploadError) {
+      return { error: uploadError instanceof Error ? uploadError.message : "Image non envoyée." };
+    }
+  }
+
   revalidatePath("/produits");
   redirect(`/produits/${data.id}`);
 }
@@ -87,9 +105,24 @@ export async function updateProduct(formData: FormData) {
   if (!id) return;
 
   const { priceMin, priceMax } = readPriceRange(formData);
-  const imageUrl = String(formData.get("image_url") ?? "").trim() || null;
+  let imageUrl = String(formData.get("image_url") ?? "").trim() || null;
+  const image = formData.get("image");
+  if (image instanceof File && image.size) {
+    imageUrl = await uploadCatalogImage(ctx.organization.id, id, image);
+  }
 
   const supabase = await createClient();
+  const { data: current } = await supabase
+    .from("products")
+    .select("images")
+    .eq("id", id)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  const gallery = Array.isArray(current?.images) ? [...(current.images as { src?: string }[])] : [];
+  if (imageUrl && !gallery.some((item) => item.src === imageUrl)) {
+    gallery.unshift({ src: imageUrl, alt: null });
+  }
+
   await supabase
     .from("products")
     .update({
@@ -101,8 +134,9 @@ export async function updateProduct(formData: FormData) {
       price_max: priceMax,
       currency: String(formData.get("currency") ?? "EUR").trim() || "EUR",
       image_url: imageUrl,
+      images: gallery as unknown as Json,
       tags: readTags(formData),
-      options: parseProductOptions(formData) as unknown as Json,
+      options: parseProductAttributes(formData) as unknown as Json,
       is_active: formData.get("is_active") === "on",
       updated_at: new Date().toISOString(),
     })
