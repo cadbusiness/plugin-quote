@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { BrandLogo } from "@/components/brand/brand-logo";
 import { HeaderActions } from "@/components/app-shell/header-actions";
 
 export function AppHeader({
@@ -16,9 +15,7 @@ export function AppHeader({
   const initial = (orgName.trim()[0] ?? "Q").toUpperCase();
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-3 border-b border-slate-200 bg-white px-4 lg:px-6">
-      <BrandLogo href="/accueil" priority />
-      <div className="flex-1" />
+    <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-end gap-3 border-b border-slate-200 bg-white px-4 lg:px-6">
       <HeaderActions isAdmin={isAdmin} plan={plan} notifications={notifications} />
       <Link
         href="/parametres"

@@ -18,7 +18,6 @@ const SOURCES: Record<string, { label: string; tone: ChipTone }> = {
   shopify: { label: "Shopify", tone: "emerald" },
 };
 
-type StoredImage = { src?: string; alt?: string | null };
 type StoredVariant = {
   externalId?: string;
   title?: string;
@@ -58,7 +57,6 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 
   const source = SOURCES[product.source ?? "manual"] ?? SOURCES.manual;
   const synced = product.source === "woocommerce" || product.source === "shopify";
-  const images = asArray<StoredImage>(product.images).filter((image) => image.src);
   const variants = asArray<StoredVariant>(product.variants);
   const attributes = normalizeAttributes(product.options);
   const priceMode = priceModeOf(product.price_min, product.price_max);
@@ -109,20 +107,6 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             </>
           ) : null}
         </p>
-      ) : null}
-
-      {images.length ? (
-        <div className="flex gap-2 overflow-x-auto border-b border-slate-100 px-4 py-3 lg:px-6">
-          {images.slice(0, 10).map((image) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              key={image.src}
-              src={image.src}
-              alt={image.alt ?? ""}
-              className="h-24 w-24 shrink-0 rounded-lg object-cover ring-1 ring-slate-200"
-            />
-          ))}
-        </div>
       ) : null}
 
       <form action={updateProduct} className="grid gap-4 border-b border-slate-100 px-4 py-6 lg:px-6">

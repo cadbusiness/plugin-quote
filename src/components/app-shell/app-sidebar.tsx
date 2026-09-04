@@ -22,6 +22,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { logout } from "@/app/(app)/actions";
+import { BrandLogo } from "@/components/brand/brand-logo";
 import type { SidebarSnapshot } from "@/lib/crm/sidebar";
 
 type Item = {
@@ -97,14 +98,19 @@ export function AppSidebar({
         collapsed ? "w-[4.25rem]" : "w-56 lg:w-60"
       }`}
     >
-      <div className={`flex shrink-0 items-center border-b border-slate-100 px-2 py-2 ${collapsed ? "justify-center" : "justify-end"}`}>
+      <div
+        className={`flex shrink-0 items-center border-b border-slate-200 ${
+          collapsed ? "h-14 flex-col justify-center gap-0 px-1 py-1" : "h-14 justify-between gap-1 px-3"
+        }`}
+      >
+        <BrandLogo href="/accueil" variant={collapsed ? "mark" : "wordmark"} priority />
         <button
           type="button"
           onClick={toggle}
           aria-expanded={!collapsed}
           aria-label={collapsed ? "Ouvrir le menu" : "Réduire le menu"}
           title={collapsed ? "Ouvrir le menu" : "Réduire le menu"}
-          className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-orange-50 hover:text-[#E85D04]"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-orange-50 hover:text-[#E85D04]"
         >
           {collapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
         </button>

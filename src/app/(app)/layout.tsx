@@ -26,20 +26,20 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   ]);
 
   return (
-    <div className="flex h-dvh flex-col overflow-hidden bg-slate-50">
-      <AppHeader
-        orgName={ctx.organization.name}
-        plan={ctx.organization.plan}
+    <div className="flex h-dvh overflow-hidden bg-slate-50">
+      <AppSidebar
         isAdmin={isAdminRole(ctx.role)}
-        notifications={notifications ?? []}
+        isPlatformAdmin={isSuperAdmin(user)}
+        email={ctx.email}
+        snapshot={snapshot}
+        collapsed={sidebarCollapsed}
       />
-      <div className="flex min-h-0 flex-1">
-        <AppSidebar
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+        <AppHeader
+          orgName={ctx.organization.name}
+          plan={ctx.organization.plan}
           isAdmin={isAdminRole(ctx.role)}
-          isPlatformAdmin={isSuperAdmin(user)}
-          email={ctx.email}
-          snapshot={snapshot}
-          collapsed={sidebarCollapsed}
+          notifications={notifications ?? []}
         />
         <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
           <div className="flex min-h-0 w-full flex-1 flex-col overflow-auto px-4 lg:px-6">{children}</div>
