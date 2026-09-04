@@ -118,7 +118,7 @@ export async function updateProduct(formData: FormData) {
     .eq("id", id)
     .eq("organization_id", ctx.organization.id)
     .maybeSingle();
-  const gallery = Array.isArray(current?.images) ? [...(current.images as { src?: string }[])] : [];
+  const gallery = Array.isArray(current?.images) ? [...(current.images as { src?: string; alt?: string | null }[])] : [];
   if (imageUrl && !gallery.some((item) => item.src === imageUrl)) {
     gallery.unshift({ src: imageUrl, alt: null });
   }

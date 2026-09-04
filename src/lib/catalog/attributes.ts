@@ -78,7 +78,7 @@ export function parseProductAttributes(formData: FormData): ProductAttribute[] {
   const values = formData.getAll("attr_value").map(String);
   const units = formData.getAll("attr_unit").map(String);
 
-  return labels.flatMap((label, index) => {
+  return labels.flatMap((label, index): ProductAttribute[] => {
     const trimmed = label.trim();
     if (!trimmed) return [];
     const kind = asKind(kinds[index]);
