@@ -21,6 +21,7 @@ import { NodeInspector } from "@/components/workflows/inspector";
 import { nodeTypes, type CanvasNodeData } from "@/components/workflows/nodes";
 import { NODE_TYPE_LABELS } from "@/lib/workflows/labels";
 import type { CanvasActions } from "@/components/workflows/workflow-editor";
+import { StepIcon } from "@/components/workflows/step-icon";
 import {
   parseDefinition,
   type WorkflowDefinition,
@@ -80,15 +81,6 @@ function fromFlow(nodes: Node[], edges: Edge[]): WorkflowDefinition {
     })),
   });
 }
-
-const PALETTE_MARK: Record<Exclude<WorkflowNodeType, "trigger">, string> = {
-  send_email: "bg-sky-500",
-  wait: "bg-violet-500",
-  branch: "bg-[#E85D04]",
-  assign: "bg-indigo-500",
-  set_status: "bg-amber-500",
-  exit: "bg-slate-400",
-};
 
 export function WorkflowCanvas(props: {
   workflowId: string;
@@ -240,7 +232,7 @@ function CanvasInner({
               onDragStart={(event) => event.dataTransfer.setData("application/qb-node", type)}
               className="flex cursor-grab items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-slate-700 hover:bg-orange-50"
             >
-              <span className={`h-2 w-2 shrink-0 rounded-full ${PALETTE_MARK[type]}`} />
+              <StepIcon type={type} />
               {NODE_TYPE_LABELS[type]}
             </div>
           ))}

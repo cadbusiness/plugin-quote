@@ -3,20 +3,15 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { ChevronLeft } from "lucide-react";
 import { renameWorkflow, setWorkflowStatus } from "@/app/(app)/workflow-actions";
 import { Chip, type ChipTone } from "@/components/ui/chip";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { ClickableRow } from "@/components/ui/clickable-row";
-import { TRIGGER_LABELS, WORKFLOW_STATUS_LABELS, RUN_STATUS_LABELS } from "@/lib/workflows/labels";
+import { TRIGGER_LABELS, RUN_STATUS_LABELS } from "@/lib/workflows/labels";
 import type { WorkflowDefinition, WorkflowStatus, WorkflowTriggerType } from "@/lib/workflows/types";
 
 const WorkflowCanvas = dynamic(() => import("./canvas").then((mod) => mod.WorkflowCanvas), { ssr: false });
-
-const STATUS_TONE: Record<WorkflowStatus, ChipTone> = {
-  draft: "amber",
-  active: "emerald",
-  archived: "slate",
-};
 
 const RUN_TONE: Record<string, ChipTone> = {
   running: "sky",
@@ -95,9 +90,10 @@ export function WorkflowEditor({
         <ListToolbar>
           <Link
             href="/automations"
-            className="shrink-0 rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+            className="-ml-1 inline-flex shrink-0 items-center gap-0.5 rounded-md px-1.5 py-1.5 text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-900"
           >
-            Automatisations
+            <ChevronLeft className="h-4 w-4" aria-hidden />
+            Parcours
           </Link>
           <div className="mr-auto min-w-0">
             <input
@@ -110,7 +106,6 @@ export function WorkflowEditor({
               className="w-full min-w-[10rem] max-w-sm bg-transparent text-sm font-medium text-slate-900 outline-none placeholder:text-slate-400"
             />
             <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
-              <Chip tone={STATUS_TONE[workflow.status]}>{WORKFLOW_STATUS_LABELS[workflow.status]}</Chip>
               <Chip tone="slate">{TRIGGER_LABELS[workflow.triggerType]}</Chip>
               <span className="text-xs text-slate-400">{scope}</span>
             </div>
@@ -137,15 +132,40 @@ export function WorkflowEditor({
           ) : null}
           <button
             type="button"
+            role="switch"
+            aria-checked={workflow.status === "active"}
             disabled={pending}
             onClick={activate}
-            className={
+            className={`inline-flex items-center gap-2.5 rounded-lg border px-2.5 py-1.5 disabled:opacity-50 ${
               workflow.status === "active"
-                ? "rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50"
-                : "rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400] disabled:opacity-50"
-            }
+                ? "border-emerald-200 bg-emerald-50"
+                : "border-slate-200 bg-slate-50"
+            }`}
           >
-            {workflow.status === "active" ? "Désactiver" : "Activer"}
+            <span className="text-left">
+              <span
+                className={`block text-sm font-medium leading-none ${
+                  workflow.status === "active" ? "text-emerald-800" : "text-slate-700"
+                }`}
+              >
+                {workflow.status === "active" ? "Actif" : "Inactif"}
+              </span>
+              <span className="mt-0.5 block text-[11px] leading-none text-slate-500">
+                {workflow.status === "active" ? "Les emails partent" : "Aucun envoi"}
+              </span>
+            </span>
+            <span
+              aria-hidden
+              className={`relative h-5 w-9 shrink-0 rounded-full transition-colors ${
+                workflow.status === "active" ? "bg-emerald-500" : "bg-slate-300"
+              }`}
+            >
+              <span
+                className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-[left] ${
+                  workflow.status === "active" ? "left-4" : "left-0.5"
+                }`}
+              />
+            </span>
           </button>
         </ListToolbar>
         <nav className="flex items-end gap-6 border-b border-slate-200 px-4 lg:px-6">

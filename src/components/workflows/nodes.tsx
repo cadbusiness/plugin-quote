@@ -1,6 +1,7 @@
 "use client";
 
 import { Handle, Position, type NodeProps } from "@xyflow/react";
+import { StepIcon } from "@/components/workflows/step-icon";
 import { nodeTitle } from "@/lib/workflows/labels";
 import type { WorkflowNodeData, WorkflowNodeType } from "@/lib/workflows/types";
 
@@ -12,16 +13,6 @@ const TONES: Record<WorkflowNodeType, string> = {
   assign: "border-slate-200 bg-white",
   set_status: "border-slate-200 bg-white",
   exit: "border-slate-200 bg-white",
-};
-
-const BARS: Record<WorkflowNodeType, string> = {
-  trigger: "bg-emerald-500",
-  send_email: "bg-sky-500",
-  wait: "bg-violet-500",
-  branch: "bg-[#E85D04]",
-  assign: "bg-indigo-500",
-  set_status: "bg-amber-500",
-  exit: "bg-slate-400",
 };
 
 export type CanvasNodeData = WorkflowNodeData & {
@@ -51,9 +42,9 @@ function Card({
       }`}
     >
       {target ? <Handle type="target" position={Position.Top} className="!h-2.5 !w-2.5 !bg-slate-400" /> : null}
-      <div className="flex gap-0">
-        <div className={`w-1.5 shrink-0 rounded-l-lg ${BARS[type]}`} />
-        <div className="min-w-0 flex-1 px-3 py-2">{children}</div>
+      <div className="flex items-start gap-2.5 px-3 py-2.5">
+        <StepIcon type={type} className="mt-0.5 h-4 w-4" />
+        <div className="min-w-0 flex-1">{children}</div>
       </div>
       {handles?.length ? (
         <div className="flex justify-around border-t border-white/60 px-2 pb-1 pt-1">
