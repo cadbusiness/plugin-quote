@@ -5,13 +5,13 @@ import { nodeTitle } from "@/lib/workflows/labels";
 import type { WorkflowNodeData, WorkflowNodeType } from "@/lib/workflows/types";
 
 const TONES: Record<WorkflowNodeType, string> = {
-  trigger: "border-emerald-300 bg-emerald-50",
-  send_email: "border-sky-300 bg-sky-50",
-  wait: "border-violet-300 bg-violet-50",
-  branch: "border-orange-300 bg-orange-50",
-  assign: "border-indigo-300 bg-indigo-50",
-  set_status: "border-amber-300 bg-amber-50",
-  exit: "border-slate-300 bg-slate-50",
+  trigger: "border-slate-200 bg-white",
+  send_email: "border-slate-200 bg-white",
+  wait: "border-slate-200 bg-white",
+  branch: "border-slate-200 bg-white",
+  assign: "border-slate-200 bg-white",
+  set_status: "border-slate-200 bg-white",
+  exit: "border-slate-200 bg-white",
 };
 
 const BARS: Record<WorkflowNodeType, string> = {

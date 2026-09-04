@@ -70,6 +70,20 @@ export async function saveWorkflowDefinition(workflowId: string, definitionJson:
   revalidatePath(`/automations/${workflowId}`);
 }
 
+export async function renameWorkflow(workflowId: string, name: string) {
+  const ctx = await requireAdmin();
+  const trimmed = name.trim();
+  if (!workflowId || !trimmed) return;
+  const supabase = await createClient();
+  await supabase
+    .from("workflows")
+    .update({ name: trimmed, updated_at: new Date().toISOString() })
+    .eq("id", workflowId)
+    .eq("organization_id", ctx.organization.id);
+  revalidatePath("/automations");
+  revalidatePath(`/automations/${workflowId}`);
+}
+
 export async function saveWorkflowMeta(formData: FormData) {
   const ctx = await requireAdmin();
   const id = String(formData.get("id") ?? "");

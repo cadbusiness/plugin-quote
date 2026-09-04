@@ -206,7 +206,11 @@ export function NodeInspector({
       </div>
       {node.type !== "trigger" ? (
         <div className="border-t border-slate-100 px-4 py-3">
-          <button type="button" onClick={onDelete} className="text-sm text-rose-600 underline">
+          <button
+            type="button"
+            onClick={onDelete}
+            className="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700"
+          >
             Supprimer l’étape
           </button>
         </div>

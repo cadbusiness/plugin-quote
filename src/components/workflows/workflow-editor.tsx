@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { saveWorkflowMeta, setWorkflowStatus } from "@/app/(app)/workflow-actions";
+import { renameWorkflow, setWorkflowStatus } from "@/app/(app)/workflow-actions";
 import { Chip, type ChipTone } from "@/components/ui/chip";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { ClickableRow } from "@/components/ui/clickable-row";
@@ -37,6 +37,14 @@ export type EditorRun = {
   href: string | null;
 };
 
+export type CanvasActions = {
+  dirty: boolean;
+  canUndo: boolean;
+  saving: boolean;
+  save: () => Promise<void>;
+  undo: () => void;
+};
+
 export function WorkflowEditor({
   workflow,
   templates,
@@ -63,6 +71,7 @@ export function WorkflowEditor({
 }) {
   const [tab, setTab] = useState<"canvas" | "runs">("canvas");
   const [pending, startTransition] = useTransition();
+  const [canvas, setCanvas] = useState<CanvasActions | null>(null);
 
   function activate() {
     startTransition(() => {
@@ -70,55 +79,112 @@ export function WorkflowEditor({
     });
   }
 
+  function commitName(value: string) {
+    const next = value.trim();
+    if (!next || next === workflow.name) return;
+    startTransition(() => {
+      void renameWorkflow(workflow.id, next);
+    });
+  }
+
+  const scope = workflow.configuratorIds.length ? `${workflow.configuratorIds.length} funnel${workflow.configuratorIds.length > 1 ? "s" : ""}` : "Tous les funnels";
+
   return (
     <ListPanel className="min-h-0">
-      <ListToolbar>
-        <Link href="/automations" className="text-sm underline">
-          Tous les parcours
-        </Link>
-        <form action={saveWorkflowMeta} className="mr-auto flex flex-wrap items-center gap-2">
-          <input type="hidden" name="id" value={workflow.id} />
-          <input type="hidden" name="trigger_type" value={workflow.triggerType} />
-          {workflow.configuratorIds.map((id) => (
-            <input key={id} type="hidden" name="funnels" value={id} />
-          ))}
-          <input type="hidden" name="abandon_hours" value={workflow.abandonHours} />
-          <input type="hidden" name="status_slug" value={workflow.statusSlug} />
-          <input
-            name="name"
-            defaultValue={workflow.name}
-            className="rounded-md border border-slate-200 px-3 py-1.5 text-sm"
-          />
-          <Chip tone={STATUS_TONE[workflow.status]}>{WORKFLOW_STATUS_LABELS[workflow.status]}</Chip>
-          <Chip tone="slate">{TRIGGER_LABELS[workflow.triggerType]}</Chip>
-          <button className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">Renommer</button>
-        </form>
-        <button
-          type="button"
-          onClick={() => setTab("canvas")}
-          className={`text-sm ${tab === "canvas" ? "font-medium text-[#E85D04]" : "underline"}`}
-        >
-          Parcours
-        </button>
-        <button
-          type="button"
-          onClick={() => setTab("runs")}
-          className={`text-sm ${tab === "runs" ? "font-medium text-[#E85D04]" : "underline"}`}
-        >
-          Exécutions
-        </button>
-        <button
-          type="button"
-          disabled={pending}
-          onClick={activate}
-          className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50"
-        >
-          {workflow.status === "active" ? "Désactiver" : "Activer"}
-        </button>
-      </ListToolbar>
+      <div className="sticky top-0 z-20 bg-white">
+        <ListToolbar>
+          <Link
+            href="/automations"
+            className="shrink-0 rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+          >
+            Automatisations
+          </Link>
+          <div className="mr-auto min-w-0">
+            <input
+              defaultValue={workflow.name}
+              aria-label="Nom du parcours"
+              onBlur={(event) => commitName(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") (event.target as HTMLInputElement).blur();
+              }}
+              className="w-full min-w-[10rem] max-w-sm bg-transparent text-sm font-medium text-slate-900 outline-none placeholder:text-slate-400"
+            />
+            <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
+              <Chip tone={STATUS_TONE[workflow.status]}>{WORKFLOW_STATUS_LABELS[workflow.status]}</Chip>
+              <Chip tone="slate">{TRIGGER_LABELS[workflow.triggerType]}</Chip>
+              <span className="text-xs text-slate-400">{scope}</span>
+            </div>
+          </div>
+          {tab === "canvas" && canvas?.dirty ? (
+            <>
+              <button
+                type="button"
+                onClick={canvas.undo}
+                disabled={!canvas.canUndo}
+                className="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-40"
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                onClick={() => void canvas.save()}
+                disabled={canvas.saving}
+                className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400] disabled:opacity-50"
+              >
+                {canvas.saving ? "Enregistrement…" : "Enregistrer"}
+              </button>
+            </>
+          ) : null}
+          <button
+            type="button"
+            disabled={pending}
+            onClick={activate}
+            className={
+              workflow.status === "active"
+                ? "rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+                : "rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400] disabled:opacity-50"
+            }
+          >
+            {workflow.status === "active" ? "Désactiver" : "Activer"}
+          </button>
+        </ListToolbar>
+        <nav className="flex items-end gap-6 border-b border-slate-200 px-4 lg:px-6">
+          {(
+            [
+              ["canvas", "Parcours"],
+              ["runs", "Exécutions"],
+            ] as const
+          ).map(([id, label]) => {
+            const on = tab === id;
+            return (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setTab(id)}
+                className={`relative py-2.5 text-sm ${on ? "font-medium text-slate-900" : "text-slate-500 hover:text-slate-900"}`}
+              >
+                {label}
+                {id === "runs" ? (
+                  <span
+                    className={`ml-1.5 rounded-full px-1.5 py-0.5 text-[11px] tabular-nums ${
+                      on ? "bg-orange-50 text-[#C2410C]" : "bg-slate-100 text-slate-500"
+                    }`}
+                  >
+                    {runs.length}
+                  </span>
+                ) : null}
+                <span
+                  aria-hidden
+                  className={`absolute inset-x-0 -bottom-px h-0.5 ${on ? "bg-[#E85D04]" : "bg-transparent"}`}
+                />
+              </button>
+            );
+          })}
+        </nav>
+      </div>
 
       {tab === "canvas" ? (
-        <div className="flex min-h-[36rem] flex-1 flex-col lg:min-h-[calc(100dvh-10rem)]">
+        <div className="flex min-h-[36rem] flex-1 flex-col lg:min-h-[calc(100dvh-12rem)]">
           <WorkflowCanvas
             workflowId={workflow.id}
             definition={workflow.definition}
@@ -126,6 +192,7 @@ export function WorkflowEditor({
             templates={templates}
             statuses={statuses}
             members={members}
+            onActionsChange={setCanvas}
           />
         </div>
       ) : (

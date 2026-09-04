@@ -1,11 +1,10 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Background,
   BackgroundVariant,
   Controls,
-  MiniMap,
   ReactFlow,
   ReactFlowProvider,
   addEdge,
@@ -21,6 +20,7 @@ import { saveWorkflowDefinition } from "@/app/(app)/workflow-actions";
 import { NodeInspector } from "@/components/workflows/inspector";
 import { nodeTypes, type CanvasNodeData } from "@/components/workflows/nodes";
 import { NODE_TYPE_LABELS } from "@/lib/workflows/labels";
+import type { CanvasActions } from "@/components/workflows/workflow-editor";
 import {
   parseDefinition,
   type WorkflowDefinition,
@@ -28,7 +28,7 @@ import {
   type WorkflowNodeType,
 } from "@/lib/workflows/types";
 
-const PALETTE: WorkflowNodeType[] = ["send_email", "wait", "branch", "assign", "set_status", "exit"];
+const PALETTE: Exclude<WorkflowNodeType, "trigger">[] = ["send_email", "wait", "branch", "assign", "set_status", "exit"];
 
 const DEFAULTS: Record<Exclude<WorkflowNodeType, "trigger">, WorkflowNode["data"]> = {
   send_email: { label: "Envoyer un email", templateKind: "prospect_confirm", recipient: "prospect" },
@@ -81,6 +81,15 @@ function fromFlow(nodes: Node[], edges: Edge[]): WorkflowDefinition {
   });
 }
 
+const PALETTE_MARK: Record<Exclude<WorkflowNodeType, "trigger">, string> = {
+  send_email: "bg-sky-500",
+  wait: "bg-violet-500",
+  branch: "bg-[#E85D04]",
+  assign: "bg-indigo-500",
+  set_status: "bg-amber-500",
+  exit: "bg-slate-400",
+};
+
 export function WorkflowCanvas(props: {
   workflowId: string;
   definition: WorkflowDefinition;
@@ -88,6 +97,7 @@ export function WorkflowCanvas(props: {
   templates: { kind: string; subject: string }[];
   statuses: { slug: string; label: string }[];
   members: { userId: string; label: string }[];
+  onActionsChange?: (actions: CanvasActions) => void;
 }) {
   return (
     <ReactFlowProvider>
@@ -103,6 +113,7 @@ function CanvasInner({
   templates,
   statuses,
   members,
+  onActionsChange,
 }: {
   workflowId: string;
   definition: WorkflowDefinition;
@@ -110,6 +121,7 @@ function CanvasInner({
   templates: { kind: string; subject: string }[];
   statuses: { slug: string; label: string }[];
   members: { userId: string; label: string }[];
+  onActionsChange?: (actions: CanvasActions) => void;
 }) {
   const initial = useMemo(() => toFlow(definition, stats), [definition, stats]);
   const [nodes, setNodes, onNodesChange] = useNodesState(initial.nodes);
@@ -183,7 +195,7 @@ function CanvasInner({
     setSelectedId(null);
   }
 
-  function undo() {
+  const undo = useCallback(() => {
     if (history.length < 2) return;
     const previous = history[history.length - 2];
     const flow = toFlow(previous, stats);
@@ -191,9 +203,9 @@ function CanvasInner({
     setEdges(flow.edges);
     setHistory((current) => current.slice(0, -1));
     setDirty(true);
-  }
+  }, [history, setEdges, setNodes, stats]);
 
-  async function save() {
+  const save = useCallback(async () => {
     setSaving(true);
     try {
       await saveWorkflowDefinition(workflowId, JSON.stringify(fromFlow(nodes, edges)));
@@ -201,38 +213,37 @@ function CanvasInner({
     } finally {
       setSaving(false);
     }
-  }
+  }, [edges, nodes, workflowId]);
+
+  useEffect(() => {
+    onActionsChange?.({
+      dirty,
+      canUndo: history.length > 1,
+      saving,
+      save,
+      undo,
+    });
+  }, [dirty, history.length, onActionsChange, save, saving, undo]);
 
   return (
     <div className="flex min-h-0 flex-1">
-      <aside className="flex w-52 shrink-0 flex-col border-r border-slate-200 bg-white">
-        <p className="border-b border-slate-100 px-4 py-3 text-[11px] font-medium uppercase tracking-[0.14em] text-slate-500">
-          Actions
-        </p>
-        <div className="space-y-2 p-3">
+      <aside className="flex w-56 shrink-0 flex-col border-r border-slate-200 bg-white">
+        <div className="border-b border-slate-100 px-4 py-3">
+          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-500">Étapes</p>
+          <p className="mt-1 text-xs text-slate-400">Glissez sur le canvas</p>
+        </div>
+        <div className="space-y-1 p-2">
           {PALETTE.map((type) => (
             <div
               key={type}
               draggable
               onDragStart={(event) => event.dataTransfer.setData("application/qb-node", type)}
-              className="cursor-grab rounded-md border border-slate-200 bg-white px-3 py-2 text-sm hover:border-[#E85D04]"
+              className="flex cursor-grab items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-slate-700 hover:bg-orange-50"
             >
+              <span className={`h-2 w-2 shrink-0 rounded-full ${PALETTE_MARK[type]}`} />
               {NODE_TYPE_LABELS[type]}
             </div>
           ))}
-        </div>
-        <div className="mt-auto space-y-2 border-t border-slate-100 p-3">
-          <button type="button" onClick={undo} className="w-full text-left text-sm underline">
-            Annuler
-          </button>
-          <button
-            type="button"
-            onClick={() => void save()}
-            disabled={saving || !dirty}
-            className="w-full rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50"
-          >
-            {saving ? "Enregistrement…" : dirty ? "Enregistrer" : "Enregistré"}
-          </button>
         </div>
       </aside>
 
@@ -263,9 +274,8 @@ function CanvasInner({
           fitView
           proOptions={{ hideAttribution: true }}
         >
-          <Background variant={BackgroundVariant.Dots} gap={18} size={1} color="#cbd5e1" />
+          <Background variant={BackgroundVariant.Dots} gap={18} size={1} color="#e2e8f0" />
           <Controls showInteractive={false} />
-          <MiniMap pannable zoomable />
         </ReactFlow>
       </div>
 
