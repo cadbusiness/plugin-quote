@@ -3,33 +3,15 @@
 import { useTransition } from "react";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import { Chip } from "@/components/ui/chip";
-import { ClickableRow } from "@/components/ui/clickable-row";
-import { DataTable, ListPanel } from "@/components/ui/list-panel";
-import { WizardDnd } from "@/components/dashboard/wizard-dnd";
+import { ListPanel } from "@/components/ui/list-panel";
 import { CopyBlock } from "@/components/funnels/copy-block";
-import {
-  renameFunnel,
-  saveFunnelTracking,
-  setFunnelActive,
-  setFunnelModes,
-  setWorkflowOnFunnel,
-} from "@/app/(app)/funnels/actions";
-import { updateQuestion } from "@/app/(app)/actions";
-import { saveStepOrder } from "@/app/(app)/wizard/reorder-action";
+import { FunnelAutomations, type FunnelWorkflowRow } from "@/components/funnels/funnel-automations";
+import { ParcoursBuilder } from "@/components/funnels/parcours-builder";
+import type { PreviewProduct } from "@/components/funnels/parcours-preview";
+import { renameFunnel, saveFunnelTracking, setFunnelActive } from "@/app/(app)/funnels/actions";
 import type { Tables } from "@/lib/db/database.types";
 import { FUNNEL_TABS, type FunnelTab } from "@/lib/funnels/tabs";
 import type { FunnelTracking } from "@/lib/funnels/tracking";
-import { TRIGGER_LABELS, WORKFLOW_STATUS_LABELS } from "@/lib/workflows/labels";
-import type { WorkflowStatus, WorkflowTriggerType } from "@/lib/workflows/types";
-
-export type FunnelWorkflowRow = {
-  id: string;
-  name: string;
-  status: WorkflowStatus;
-  triggerType: WorkflowTriggerType;
-  scope: "all" | "this" | "other";
-};
 
 function tabHref(funnelId: string, tab: FunnelTab) {
   return tab === "parcours" ? `/funnels/${funnelId}` : `/funnels/${funnelId}?tab=${tab}`;
@@ -37,9 +19,13 @@ function tabHref(funnelId: string, tab: FunnelTab) {
 
 export function FunnelEditor({
   funnel,
+  orgName,
   steps,
   questions,
+  products,
   workflows,
+  funnels,
+  statuses,
   tracking,
   orgGa,
   publicUrl,
@@ -53,11 +39,14 @@ export function FunnelEditor({
     wizardEnabled: boolean;
     chatEnabled: boolean;
     isActive: boolean;
-    hasCatalog: boolean;
   };
+  orgName: string;
   steps: Tables<"wizard_steps">[];
   questions: Tables<"wizard_questions">[];
+  products: PreviewProduct[];
   workflows: FunnelWorkflowRow[];
+  funnels: { id: string; name: string }[];
+  statuses: { slug: string; label: string }[];
   tracking: FunnelTracking;
   orgGa: string;
   publicUrl: string;
@@ -79,7 +68,7 @@ export function FunnelEditor({
   }
 
   return (
-    <ListPanel>
+    <ListPanel className="min-h-0">
       <div className="sticky top-0 z-20 bg-white">
         <div className="flex items-center gap-2 border-b border-slate-200 px-4 py-2 lg:px-6">
           <Link
@@ -157,108 +146,28 @@ export function FunnelEditor({
       </div>
 
       {tab === "parcours" ? (
-        <>
-          <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-4 py-3 lg:px-6">
-            <p className="mr-auto text-sm text-slate-500">Type de parcours proposé au prospect.</p>
-            <button
-              type="button"
-              disabled={pending}
-              onClick={() => startTransition(() => void setFunnelModes(funnel.id, !funnel.wizardEnabled, funnel.chatEnabled))}
-              className={`rounded-full px-2.5 py-1 text-xs font-medium ring-1 ${
-                funnel.wizardEnabled ? "bg-orange-50 text-[#C2410C] ring-orange-200" : "bg-white text-slate-500 ring-slate-200"
-              }`}
-            >
-              Formulaire
-            </button>
-            <button
-              type="button"
-              disabled={pending}
-              onClick={() => startTransition(() => void setFunnelModes(funnel.id, funnel.wizardEnabled, !funnel.chatEnabled))}
-              className={`rounded-full px-2.5 py-1 text-xs font-medium ring-1 ${
-                funnel.chatEnabled ? "bg-violet-50 text-violet-800 ring-violet-200" : "bg-white text-slate-500 ring-slate-200"
-              }`}
-            >
-              Chat IA
-            </button>
-            <span
-              className={`rounded-full px-2.5 py-1 text-xs font-medium ring-1 ${
-                funnel.hasCatalog ? "bg-emerald-50 text-emerald-800 ring-emerald-200" : "bg-white text-slate-400 ring-slate-200"
-              }`}
-            >
-              Catalogue
-            </span>
-          </div>
-          <WizardDnd steps={steps} questions={questions} saveOrder={saveStepOrder} saveQuestionAction={updateQuestion} />
-        </>
+        <div className="flex min-h-[36rem] flex-1 flex-col lg:min-h-[calc(100dvh-12rem)]">
+          <ParcoursBuilder
+            funnelId={funnel.id}
+            funnelName={funnel.name}
+            orgName={orgName}
+            wizardEnabled={funnel.wizardEnabled}
+            chatEnabled={funnel.chatEnabled}
+            steps={steps}
+            questions={questions}
+            products={products}
+          />
+        </div>
       ) : null}
 
       {tab === "automations" ? (
-        <>
-          <p className="border-b border-slate-100 px-4 py-3 text-sm text-slate-500 lg:px-6">
-            Les parcours qui partent quand ce funnel reçoit une demande ou un abandon.
-          </p>
-          <DataTable headers={["Parcours", "Déclencheur", "Portée", ""]}>
-            {workflows.map((workflow) => (
-              <ClickableRow key={workflow.id} href={`/automations/${workflow.id}`}>
-                <td className="px-4 py-3 lg:px-6">
-                  <div className="font-medium text-slate-900">{workflow.name}</div>
-                  <Chip tone={workflow.status === "active" ? "emerald" : "amber"}>
-                    {WORKFLOW_STATUS_LABELS[workflow.status]}
-                  </Chip>
-                </td>
-                <td className="px-4 py-3 lg:px-6">
-                  <Chip tone="slate">{TRIGGER_LABELS[workflow.triggerType]}</Chip>
-                </td>
-                <td className="px-4 py-3 lg:px-6">
-                  <Chip tone={workflow.scope === "other" ? "slate" : "orange"}>
-                    {workflow.scope === "all" ? "Tous les funnels" : workflow.scope === "this" ? "Ce funnel" : "Autres"}
-                  </Chip>
-                </td>
-                <td className="px-4 py-3 text-right lg:px-6">
-                  {workflow.scope === "other" ? (
-                    <button
-                      type="button"
-                      className="relative z-10 text-sm font-medium text-[#C2410C]"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        startTransition(() => void setWorkflowOnFunnel(workflow.id, funnel.id, "add"));
-                      }}
-                    >
-                      Assigner
-                    </button>
-                  ) : workflow.scope === "all" ? (
-                    <button
-                      type="button"
-                      className="relative z-10 text-sm text-slate-500"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        startTransition(() => void setWorkflowOnFunnel(workflow.id, funnel.id, "only"));
-                      }}
-                    >
-                      Limiter ici
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="relative z-10 text-sm text-slate-500"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        startTransition(() => void setWorkflowOnFunnel(workflow.id, funnel.id, "all"));
-                      }}
-                    >
-                      Tous
-                    </button>
-                  )}
-                </td>
-              </ClickableRow>
-            ))}
-          </DataTable>
-          {workflows.length === 0 ? (
-            <p className="px-4 py-10 text-sm text-slate-500 lg:px-6">
-              Aucun parcours pour l’instant. Créez-en un depuis Automatisations.
-            </p>
-          ) : null}
-        </>
+        <FunnelAutomations
+          funnelId={funnel.id}
+          funnelName={funnel.name}
+          workflows={workflows}
+          funnels={funnels}
+          statuses={statuses}
+        />
       ) : null}
 
       {tab === "lien" ? (

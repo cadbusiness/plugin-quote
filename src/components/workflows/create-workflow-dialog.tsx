@@ -16,16 +16,20 @@ const TRIGGERS: { id: WorkflowTriggerType; hint: string }[] = [
 export function CreateWorkflowDialog({
   funnels,
   statuses,
+  presetFunnelId,
+  addLabel = "Ajouter un parcours",
 }: {
   funnels: { id: string; name: string }[];
   statuses: { slug: string; label: string }[];
+  presetFunnelId?: string;
+  addLabel?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
   const [trigger, setTrigger] = useState<WorkflowTriggerType>("quote.submitted");
   const [name, setName] = useState(defaultWorkflowName("quote.submitted"));
-  const [allFunnels, setAllFunnels] = useState(true);
-  const [funnelIds, setFunnelIds] = useState<string[]>([]);
+  const [allFunnels, setAllFunnels] = useState(!presetFunnelId);
+  const [funnelIds, setFunnelIds] = useState<string[]>(presetFunnelId ? [presetFunnelId] : []);
   const [abandonHours, setAbandonHours] = useState(1);
   const [statusSlug, setStatusSlug] = useState(statuses[0]?.slug ?? "");
   const [pending, startTransition] = useTransition();
@@ -69,7 +73,7 @@ export function CreateWorkflowDialog({
 
   return (
     <>
-      <ListAddRow onClick={() => setOpen(true)}>Ajouter un parcours</ListAddRow>
+      <ListAddRow onClick={() => setOpen(true)}>{addLabel}</ListAddRow>
 
       {open ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">

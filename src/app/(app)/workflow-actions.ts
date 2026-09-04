@@ -51,6 +51,7 @@ export async function createWorkflow(formData: FormData) {
     .single();
   if (error || !data) throw new Error(error?.message ?? "Impossible de créer le parcours");
   revalidatePath("/automations");
+  revalidatePath("/funnels");
   redirect(`/automations/${data.id}`);
 }
 
