@@ -16,9 +16,9 @@ const START_QUOTES: QuoteRow[] = [
 ];
 
 const PHASES = [
-  { id: "catalog", label: "1. Votre catalogue" },
-  { id: "client", label: "2. Le client configure" },
-  { id: "inbox", label: "3. Vous recevez le devis" },
+  { id: "catalog", label: "1. Votre offre" },
+  { id: "client", label: "2. Ils configurent" },
+  { id: "inbox", label: "3. Dossier + autopilote" },
 ] as const;
 
 type Phase = (typeof PHASES)[number]["id"];
@@ -275,11 +275,20 @@ export function ProductWalkthrough() {
                 ))}
               </tbody>
             </table>
-            <p className="border-t border-slate-100 px-4 py-3 text-xs text-slate-500">
-              {received
-                ? "La ligne jaune, c’est le devis qui vient d’arriver — avec le produit du catalogue, pas un texte libre."
-                : "Envoyez d’abord un devis côté client pour le voir apparaître ici."}
-            </p>
+            <div className="border-t border-slate-100 px-4 py-3 text-xs text-slate-500">
+              {received ? (
+                <div className="space-y-2">
+                  <p>
+                    La ligne jaune : le devis vient d’arriver — produit du catalogue, pas un texte libre.
+                  </p>
+                  <p className="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900">
+                    Autopilote : confirmation envoyée · commercial notifié · rappel si non traité sous 4 h.
+                  </p>
+                </div>
+              ) : (
+                <p>Envoyez d’abord un devis côté client pour le voir apparaître ici.</p>
+              )}
+            </div>
           </Window>
         ) : null}
       </div>

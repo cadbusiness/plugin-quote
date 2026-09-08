@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "QuoteBuilder — Funnel de devis B2B",
+  title: "QuoteBuilder — Devis en autopilote",
   description:
-    "Funnel builder branché sur votre catalogue. Les prospects explorent, configurent, demandent. Vous recevez des dossiers.",
+    "Posez votre offre dans un funnel, collectez des dossiers complets, puis pilotez chaque devis : score, relances, workflows. Pas un catalogue de plus.",
 };
 
 export default function RootLayout({

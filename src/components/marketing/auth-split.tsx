@@ -28,17 +28,17 @@ export function AuthSplit({ children }: { children: React.ReactNode }) {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-slate-950/20" />
         <div className="relative flex h-full flex-col justify-between p-10 xl:p-14">
           <p className="max-w-sm text-sm font-medium tracking-wide text-white/70">
-            Funnel de devis sur votre catalogue
+            Offre en parcours · devis en autopilote
           </p>
           <div className="space-y-8">
             <ProductPreview />
             <div>
               <p className="max-w-md text-3xl font-semibold leading-tight tracking-tight text-white xl:text-4xl">
-                Le bon devis. Puis le pipeline pour le traiter.
+                Un catalogue, ce n’est que l’entrée.
               </p>
               <p className="mt-4 max-w-md text-sm leading-relaxed text-white/70">
-                Page, wizard ou chat — toujours sur vos produits enregistrés.
-                Ensuite vous manager les demandes : statut, notes, relances.
+                Funnel ou chat sur vos produits. Ensuite score, assignation, relances —
+                vous pilotez les devis comme jamais.
               </p>
             </div>
           </div>

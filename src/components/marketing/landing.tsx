@@ -1,35 +1,35 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { LandingSectors } from "@/components/marketing/landing-sectors";
-import { CatalogShot, PipelineShot, WizardShot } from "@/components/marketing/landing-shots";
+import { AutopilotShot, CatalogShot, PipelineShot, WizardShot } from "@/components/marketing/landing-shots";
 import { ProductWalkthrough } from "@/components/marketing/product-walkthrough";
 
 const DEMO_HREF = "#demo";
 
 const FAQ = [
   {
-    q: "C’est quoi la différence avec un site vitrine et un formulaire ?",
-    a: "Un site montre. Un formulaire recueille du texte. QuoteBuilder est le parcours d’achat : le prospect explore votre catalogue, configure son projet, dialogue si besoin, et soumet une demande complète. Vous recevez un dossier, pas un email à interpréter.",
+    q: "C’est quoi la différence avec un catalogue ou une boutique ?",
+    a: "Un catalogue stocke des produits. Une boutique encaisse. QuoteBuilder pose votre offre dans un parcours de devis, puis pilote chaque demande : score, assignation, relances, workflows. Le catalogue est l’entrée — l’autopilote, c’est le produit.",
   },
   {
     q: "Est-ce que je dois avoir une boutique WooCommerce ?",
-    a: "Non. Vous importez votre catalogue directement dans QuoteBuilder (saisie manuelle ou CSV). Si vous avez WooCommerce, une sync automatique est disponible en plan Pro.",
+    a: "Non. Vous importez votre catalogue directement (saisie ou CSV). Si vous avez WooCommerce ou Shopify, une sync est disponible en plan Pro.",
   },
   {
     q: "Comment s’intègre QuoteBuilder sur mon site ?",
-    a: "Deux lignes de code JavaScript, ou un plugin WordPress à installer en un clic. Le funnel apparaît sur votre site sans toucher à votre design.",
+    a: "Deux lignes de JavaScript, ou un plugin WordPress. Le funnel s’affiche sur votre site sans toucher à votre design.",
   },
   {
     q: "Que se passe-t-il quand j’atteins la limite de 10 devis en Free ?",
-    a: "Les demandes suivantes sont visibles dans votre pipeline mais grisées. Vous voyez qu’il y a un prospect — vous ne pouvez pas ouvrir le dossier sans passer au plan Starter.",
+    a: "Les demandes suivantes restent visibles dans le pipeline, mais grisées. Vous voyez qu’il y a un prospect — vous ouvrez le dossier en passant au plan Starter.",
   },
   {
     q: "Je n’ai pas d’équipe commerciale. C’est fait pour moi ?",
-    a: "Oui. Beaucoup de clients utilisent QuoteBuilder seuls. Le pipeline et les relances automatiques fonctionnent pour un solo comme pour une équipe de 10.",
+    a: "Oui. L’autopilote (confirmation, relances, rappels) travaille pour un solo comme pour une équipe de dix.",
   },
   {
-    q: "Est-ce que je peux le tester sur mon secteur avant de payer ?",
-    a: "Oui. Le plan Free est illimité dans le temps. Vous pouvez configurer votre catalogue, tester le funnel, recevoir vos 10 premiers dossiers — sans carte bancaire.",
+    q: "Est-ce que je peux le tester avant de payer ?",
+    a: "Oui. Le plan Free est illimité dans le temps. Catalogue, funnel, 10 premiers dossiers — sans carte bancaire.",
   },
 ];
 
@@ -91,21 +91,27 @@ const PLANS = [
 const HOW_STEPS = [
   {
     n: "①",
-    title: "Ils explorent votre catalogue",
-    text: "Vos produits, vos options, vos gammes. Le visiteur voit ce qui est possible — et uniquement ce que vous savez livrer. Pas de promesses impossibles.",
+    title: "Posez votre offre",
+    text: "Produits, gammes, prix min/max — à la main, en CSV, ou via Woo / Shopify. Ce n’est pas le différenciateur : c’est le socle. Sans offre claire, pas de devis propre.",
     shot: <CatalogShot />,
   },
   {
     n: "②",
-    title: "Ils configurent leur projet",
-    text: "Funnel guidé ou chat IA — selon ce qui convient à votre secteur. Ils répondent à vos questions, choisissent vos produits, précisent les contraintes, voient un budget indicatif.",
+    title: "Ils configurent le projet",
+    text: "Funnel guidé ou chat IA. Le prospect répond à vos questions, choisit dans votre catalogue, précise les contraintes. Il soumet un dossier — pas un email vague.",
     shot: <WizardShot />,
   },
   {
     n: "③",
-    title: "Vous recevez un dossier",
-    text: "Produits, quantités, contraintes, budget, coordonnées, score. Votre commercial rappelle pour conclure, pas pour découvrir le besoin.",
+    title: "Vous recevez un dossier exploitable",
+    text: "Produits, quantités, budget indicatif, coordonnées, score hot / warm / cold. Votre commercial rappelle pour conclure, pas pour découvrir le besoin.",
     shot: <PipelineShot />,
+  },
+  {
+    n: "④",
+    title: "L’autopilote prend le relais",
+    text: "Confirmation, relances d’abandon, rappel si non traité, assignation, branches selon le score. Vous pilotez les devis comme vous ne l’avez jamais pu — sans traquer chaque fil de mails.",
+    shot: <AutopilotShot />,
   },
 ];
 
@@ -118,6 +124,9 @@ export function Landing() {
           <nav className="hidden items-center gap-7 text-sm font-medium text-[#1A1510]/70 md:flex">
             <a href="#comment-ca-marche" className="hover:text-[#1A1510]">
               Comment ça marche
+            </a>
+            <a href="#autopilote" className="hover:text-[#1A1510]">
+              Autopilote
             </a>
             <a href="#tarifs" className="hover:text-[#1A1510]">
               Tarifs
@@ -140,6 +149,7 @@ export function Landing() {
         </div>
         <nav className="mx-auto flex max-w-6xl gap-5 overflow-x-auto px-6 pb-3 text-sm font-medium text-[#1A1510]/65 md:hidden">
           <a href="#comment-ca-marche">Comment ça marche</a>
+          <a href="#autopilote">Autopilote</a>
           <a href="#tarifs">Tarifs</a>
           <a href={DEMO_HREF}>Démo</a>
         </nav>
@@ -153,14 +163,14 @@ export function Landing() {
         <div className="relative mx-auto max-w-3xl text-center">
           <p className="text-sm font-medium text-[#C45C26]">Funnel de devis B2B</p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-[3.35rem] sm:leading-[1.08]">
-            Vos visiteurs ne savent pas comment acheter vos produits.
+            Votre offre en parcours.
             <br />
-            QuoteBuilder leur montre.
+            Vos devis en autopilote.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-[#1A1510]/70">
-            Catalogue interactif, funnel guidé, chat IA — vos prospects explorent votre offre,
-            composent leur projet, et vous soumettent une demande complète. Vous recevez un dossier.
-            Pas un email.
+            Un catalogue, d’autres outils le font. QuoteBuilder pose votre offre dans un funnel,
+            collecte des dossiers complets, puis fait avancer chaque devis — score, relances,
+            workflows — sans que vous traquiez les emails.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
@@ -174,15 +184,12 @@ export function Landing() {
             </a>
           </div>
           <p className="mt-3 text-xs text-[#1A1510]/45">10 devis offerts · pas de carte bancaire</p>
-          <p className="mx-auto mt-8 max-w-xl text-[15px] font-medium leading-7 text-[#1A1510]/70">
-            Vos prospects explorent, configurent, demandent. Vous recevez des dossiers.
-          </p>
         </div>
       </section>
 
       <section className="border-y border-[#1A1510]/8 bg-white/50 px-6 py-8">
         <p className="text-center text-xs font-medium uppercase tracking-[0.16em] text-[#1A1510]/40">
-          Un funnel builder branché sur vos vrais produits — pour les PME B2B sur mesure
+          Pas un catalogue de plus — un système pour piloter les devis sur mesure
         </p>
         <div className="mx-auto mt-5 flex max-w-3xl flex-wrap items-center justify-center gap-2">
           {["Rayonnage", "Cuisine", "Menuiserie", "Paysage", "Location", "Aménagement"].map((label) => (
@@ -195,24 +202,24 @@ export function Landing() {
 
       <section className="mx-auto max-w-6xl scroll-mt-24 px-6 py-16 sm:py-20">
         <h2 className="mx-auto max-w-2xl text-center text-2xl font-semibold tracking-tight sm:text-3xl">
-          Sur votre site, l’expérience d’achat n’existe pas.
+          Le problème n’est pas d’afficher des produits.
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-center text-[17px] leading-8 text-[#1A1510]/65">
-          Le visiteur arrive. Il ne peut ni s’auto-qualifier, ni voir ce qui est possible, ni estimer
-          un budget. Pour un achat complexe, il n’y a tout simplement pas de parcours.
+          Afficher un catalogue, tout le monde sait le faire. Ce qui manque : un parcours pour
+          composer le projet, puis un système pour faire avancer chaque demande jusqu’à la vente.
         </p>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           <ProblemCard
-            title="L’offre est opaque"
-            text="Pas de catalogue à explorer. Le visiteur ne sait pas ce que vous livrez, ni si son projet est dans votre périmètre."
+            title="Des demandes floues"
+            text="Email vague, formulaire générique, ou rien. Votre commercial perd la première heure à comprendre le besoin au lieu de proposer."
           />
           <ProblemCard
-            title="Impossible de composer"
-            text="Pas de dimensions, d’options, de contraintes. Il ne peut pas construire son projet — donc il n’estime rien et il n’ose pas demander."
+            title="Rien ne bouge sans vous"
+            text="Pas de score, pas de relance, pas d’assignation claire. Les bons dossiers refroidissent dans la boîte mail."
           />
           <ProblemCard
-            title="La demande n’existe pas"
-            text="Au mieux un email vague. Souvent il part. Votre commercial n’a rien à traiter, parce que le prospect n’avait nulle part où avancer."
+            title="Aucun autopilote"
+            text="Chaque suivi est manuel. Abandons oubliés, confirmations oubliées, rappels oubliés. Le volume monte — la méthode ne suit pas."
           />
         </div>
       </section>
@@ -220,8 +227,12 @@ export function Landing() {
       <section id="comment-ca-marche" className="scroll-mt-24 bg-white/70 px-6 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl">
           <h2 className="mx-auto max-w-2xl text-center text-2xl font-semibold tracking-tight sm:text-3xl">
-            Vos prospects explorent, configurent, demandent. Vous recevez des dossiers.
+            Le catalogue ouvre la porte. L’autopilote gère la suite.
           </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-center text-[17px] leading-8 text-[#1A1510]/65">
+            Quatre temps. Les deux premiers, d’autres outils les touchent. Les deux derniers,
+            c’est là que QuoteBuilder change la façon de vendre au devis.
+          </p>
           <div className="mt-14 space-y-16">
             {HOW_STEPS.map((step, i) => (
               <article
@@ -239,7 +250,7 @@ export function Landing() {
           </div>
           <div id="demo" className="mt-16 scroll-mt-24">
             <p className="mb-3 text-center text-sm text-[#1A1510]/50">
-              Simulation — catalogue, funnel, puis le dossier dans votre pipeline.
+              Simulation — offre, funnel, dossier, puis l’autopilote.
             </p>
             <ProductWalkthrough />
           </div>
@@ -248,52 +259,54 @@ export function Landing() {
 
       <section className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
         <h2 className="text-center text-2xl font-semibold tracking-tight sm:text-3xl">
-          Une expérience d’achat, trois façons d’entrer.
+          L’entrée : trois façons de composer le devis.
         </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-center text-[17px] leading-8 text-[#1A1510]/65">
+          Toujours le même catalogue. Toujours le même pipeline. Seule l’expérience prospect change.
+        </p>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           <ModeCard
             title="Catalogue interactif"
-            text="Une URL publique ou un embed. Le prospect parcourt vos produits, compose, voit ce qui est possible. Idéal quand il sait déjà ce qu’il cherche."
+            text="URL publique ou embed. Le prospect parcourt vos produits, compose, voit ce qui est possible. Quand il sait déjà ce qu’il cherche."
           />
           <ModeCard
             title="Funnel guidé"
-            text="Une séquence de steps que vous construisez. Il cadre le projet avant de parler produits. Idéal pour les achats complexes ou techniques."
+            text="Une séquence de steps que vous construisez. Il cadre le projet avant les produits. Pour les achats complexes ou techniques."
           />
           <ModeCard
             title="Chat IA"
-            text="Il décrit son besoin en langage naturel. L’IA pose les questions, propose vos produits, génère le dossier. Idéal quand il ne sait pas encore par où commencer."
+            text="Il décrit le besoin en langage naturel. L’IA pose les questions, propose vos produits, génère le dossier. Quand il ne sait pas par où commencer."
           />
         </div>
-        <p className="mx-auto mt-8 max-w-2xl text-center text-sm leading-6 text-[#1A1510]/55">
-          Les trois modes sont le même parcours d’achat. Le même catalogue. Le même pipeline.
-        </p>
       </section>
 
-      <section className="bg-[#1A1510] px-6 py-16 text-[#F6F0E8] sm:py-20">
+      <section id="autopilote" className="scroll-mt-24 bg-[#1A1510] px-6 py-16 text-[#F6F0E8] sm:py-20">
         <div className="mx-auto max-w-6xl">
-          <h2 className="max-w-2xl text-2xl font-semibold tracking-tight sm:text-3xl">
-            La demande est reçue. Et après ?
+          <p className="text-sm font-medium text-[#F3B184]">Le différenciateur</p>
+          <h2 className="mt-3 max-w-2xl text-2xl font-semibold tracking-tight sm:text-3xl">
+            Après la soumission, les devis avancent tout seuls.
           </h2>
           <p className="mt-5 max-w-2xl text-[17px] leading-8 text-[#F6F0E8]/75">
-            QuoteBuilder ne s’arrête pas à la soumission. Chaque demande entre dans votre pipeline :
-            statut, assignation, notes, historique des échanges, relances automatiques.
+            C’est là que les catalogues s’arrêtent. QuoteBuilder enchaîne : pipeline, score,
+            assignation, canvas d’automatisations. Vous managez les devis comme vous ne l’avez
+            jamais pu — sans refaire le travail à la main.
           </p>
           <div className="mt-10 grid gap-5 sm:grid-cols-2">
             <CrmCard
-              title="Pipeline visuel"
-              text="Nouveau → Contacté → En cours → Gagné → Perdu. Vous voyez d’un coup d’œil où en est chaque dossier."
+              title="Pipeline + score"
+              text="Nouveau → Contacté → En cours → Gagné / Perdu. Hot, warm, cold calculés sur le dossier. Vous priorisez en un coup d’œil."
             />
             <CrmCard
-              title="Gestion d’équipe"
-              text="Assignez une demande à un commercial. Il reçoit une notification. Tout le monde sait qui fait quoi."
+              title="Assignation d’équipe"
+              text="Une demande, un commercial. Notification, notes, historique. Tout le monde sait qui fait quoi."
             />
             <CrmCard
-              title="Relances automatiques"
-              text="Confirmation immédiate au prospect. Rappel si personne n’a traité. Suivi à J+1, J+3, J+7. Tout configurable."
+              title="Workflows canvas"
+              text="Emails, waits, branches sur score / statut / réponses. Confirmation T+0, relance abandon, rappel si non traité — tout activable."
             />
             <CrmCard
-              title="Statistiques"
-              text="Combien de demandes reçues, quel taux de conversion, quel commercial performe. Connecté à Google Analytics en 30 secondes."
+              title="Statistiques utiles"
+              text="Volume, conversion, délai, CA potentiel. Les abandons relançables sont à un clic — pas perdus dans Analytics."
             />
           </div>
         </div>
@@ -382,11 +395,11 @@ export function Landing() {
       <section id="cta" className="px-6 pb-16">
         <div className="mx-auto max-w-4xl rounded-[28px] bg-[#1A1510] px-8 py-14 text-center text-[#F6F0E8] sm:px-16">
           <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            Donnez à vos visiteurs un moyen d’acheter vos produits.
+            Posez votre offre. Pilotez vos devis.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-[17px] leading-7 text-[#F6F0E8]/70">
-            Vos prospects explorent, configurent, demandent. Vous recevez des dossiers. Compte
-            gratuit, 3 produits, pas de carte bancaire.
+            Funnel sur votre catalogue, puis autopilote sur chaque demande. Compte gratuit,
+            pas de carte bancaire.
           </p>
           <Link
             href="/signup"
@@ -400,7 +413,7 @@ export function Landing() {
       <footer className="border-t border-[#1A1510]/10 px-6 py-10 text-sm text-[#1A1510]/50">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 sm:flex-row sm:justify-between">
           <div>
-            <p className="font-medium text-[#1A1510]/70">QuoteBuilder · Funnel de devis B2B</p>
+            <p className="font-medium text-[#1A1510]/70">QuoteBuilder · Devis en autopilote</p>
             <p className="mt-1">© {new Date().getFullYear()} Vinci Liberta LTD · Dublin, Irlande</p>
           </div>
           <div className="flex flex-col gap-2 sm:items-end">
