@@ -23,6 +23,19 @@ npm run dev
 
 WordPress : shortcode `[quotebuilder org="quickly" id="rayonnage"]` — zip dans `extensions/quotebuilder-wp.zip`, servi aussi sur `/quotebuilder-wp.zip`.
 
+### Plugin WP — auto-update (pattern BeautyHub)
+
+Le plugin vérifie le manifeste public Supabase (`bucket wp-plugin` → `info.json`) et propose la mise à jour dans **Extensions**, sans passer par wordpress.org.
+
+```bash
+# 1. Appliquer la migration 0014_wp_plugin_bucket.sql
+# 2. Bumper Version dans extensions/quotebuilder-wp/quotebuilder.php
+# 3. Publier zip + manifeste
+SUPABASE_SERVICE_ROLE_KEY=… npm run publish:wp-plugin
+```
+
+Secours : `GET /api/public/wp-plugin` (Vercel) si le bucket n’est pas encore peuplé.
+
 ## Catalogue connecté (WooCommerce / Shopify)
 
 `Boutiques` (`/integrations`) branche le catalogue d’une boutique sur un funnel : produits, descriptions, photos, prix, déclinaisons.

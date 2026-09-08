@@ -1,20 +1,26 @@
 <?php
 /**
  * Plugin Name: QuoteBuilder
- * Description: Embed le configurateur QuoteBuilder (shortcode / bloc) et connecte le catalogue WooCommerce en un code d'appairage.
- * Version: 1.1.0
+ * Description: Embed le configurateur QuoteBuilder (shortcode / bloc) et connecte le catalogue WooCommerce en un code d'appairage. Mises à jour automatiques via le cloud QuoteBuilder.
+ * Version: 1.2.0
  * Author: Vinci Liberta LTD
+ * Update URI: https://quotebuilder-weld.vercel.app/api/public/wp-plugin
+ * Requires at least: 6.0
+ * Requires PHP: 8.0
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-define('QUOTEBUILDER_VERSION', '1.1.0');
+define('QUOTEBUILDER_VERSION', '1.2.0');
 define('QUOTEBUILDER_KEY_DESCRIPTION', 'QuoteBuilder (lecture catalogue)');
+define('QUOTEBUILDER_PLUGIN_FILE', __FILE__);
+
+require_once __DIR__ . '/includes/updater.php';
 
 function quotebuilder_app_origin() {
-    $origin = get_option('quotebuilder_origin', 'https://quotebuilder.example.com');
+    $origin = get_option('quotebuilder_origin', 'https://quotebuilder-weld.vercel.app');
     return untrailingslashit($origin);
 }
 
@@ -294,12 +300,13 @@ function quotebuilder_render_settings() {
         $notices[] = ['updated', 'Connexion catalogue supprimée.'];
     }
 
-    $origin = esc_attr(get_option('quotebuilder_origin', 'https://quotebuilder.example.com'));
+    $origin = esc_attr(get_option('quotebuilder_origin', 'https://quotebuilder-weld.vercel.app'));
     $connection_id = get_option('quotebuilder_connection_id', '');
     $paired_at = get_option('quotebuilder_paired_at', '');
     $imported = (int) get_option('quotebuilder_last_imported', 0);
 
     echo '<div class="wrap"><h1>QuoteBuilder</h1>';
+    echo '<p class="description">Version ' . esc_html(QUOTEBUILDER_VERSION) . ' — les mises à jour arrivent automatiquement depuis le cloud QuoteBuilder (comme une extension wordpress.org).</p>';
 
     foreach ($notices as $notice) {
         printf('<div class="%s notice is-dismissible"><p>%s</p></div>', esc_attr($notice[0]), esc_html($notice[1]));
@@ -308,7 +315,7 @@ function quotebuilder_render_settings() {
     echo '<h2>Espace QuoteBuilder</h2>';
     echo '<form method="post">';
     wp_nonce_field('quotebuilder_settings');
-    echo '<p><label>Adresse de votre espace<br><input class="regular-text" name="quotebuilder_origin" value="' . $origin . '" placeholder="https://app.quotebuilder.fr"></label></p>';
+    echo '<p><label>Adresse de votre espace<br><input class="regular-text" name="quotebuilder_origin" value="' . $origin . '" placeholder="https://quotebuilder-weld.vercel.app"></label></p>';
     echo '<p>Shortcode d’intégration : <code>[quotebuilder org="mon-org" id="mon-funnel"]</code></p>';
     submit_button('Enregistrer');
     echo '</form>';

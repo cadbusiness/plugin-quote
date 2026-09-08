@@ -19,8 +19,8 @@ export function PairingCard({ configuratorId }: { configuratorId: string | null 
       <div className="mr-auto min-w-0">
         <p className="text-sm font-medium text-slate-900">Site WordPress : appairage en un code</p>
         <p className="text-xs text-slate-500">
-          Le plugin QuoteBuilder crée lui-même la clé WooCommerce en lecture seule et les webhooks
-          produits. Aucune clé à copier à la main.
+          Le plugin crée la clé WooCommerce et les webhooks. Les mises à jour arrivent ensuite
+          toutes seules depuis le cloud (même schéma que BeautyHub).
         </p>
       </div>
       <a

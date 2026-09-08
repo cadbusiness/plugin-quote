@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "node scripts/build-wp-plugin-zip.mjs && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:wp-plugin": "node scripts/build-wp-plugin-zip.mjs",
+    "publish:wp-plugin": "node scripts/publish-wp-plugin.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.68.0",

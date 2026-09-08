@@ -1,0 +1,16 @@
+{
+  "name": "QuoteBuilder",
+  "slug": "quotebuilder-wp",
+  "version": "1.2.0",
+  "download_url": "https://spgskgtycqxjziwjpjol.supabase.co/storage/v1/object/public/wp-plugin/quotebuilder-wp.zip",
+  "homepage": "https://quotebuilder-weld.vercel.app",
+  "requires": "6.0",
+  "tested": "6.7",
+  "requires_php": "8.0",
+  "last_updated": "2026-09-08",
+  "sections": {
+    "description": "Embed QuoteBuilder (shortcode / bloc Gutenberg) et sync du catalogue WooCommerce. Les mises à jour sont poussées depuis le cloud QuoteBuilder.",
+    "changelog": "<h4>1.2.0</h4><ul><li>Release build 2026-09-08.</li><li>Auto-update via bucket Supabase <code>wp-plugin</code>.</li></ul>"
+  },
+  "download_url_fallback": "https://quotebuilder-weld.vercel.app/quotebuilder-wp.zip"
+}
