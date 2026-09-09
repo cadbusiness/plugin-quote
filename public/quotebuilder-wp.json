@@ -1,10 +1,10 @@
 {
   "slug": "quotebuilder-wp",
   "name": "QuoteBuilder",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "requires": "6.0",
   "requires_php": "7.4",
   "tested": "6.8",
   "author": "Vinci Liberta LTD",
-  "changelog": "<h4>2.1.0</h4><ul><li>Vitrine devis WooCommerce branchée sur QuoteBuilder.</li><li>Mises à jour automatiques depuis le logiciel.</li></ul>"
+  "changelog": "<h4>2.2.0</h4><ul><li>Connexion en un clic vers QuoteBuilder (WooCommerce + funnel).</li><li>Header plugin, plus de bandeau noir, réglages boutique / bouton / liste.</li></ul>"
 }

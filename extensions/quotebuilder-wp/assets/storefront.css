@@ -5,7 +5,10 @@
 
 .qb-hide-cart .single_add_to_cart_button,
 .qb-hide-cart .add_to_cart_button,
-.qb-hide-cart form.cart .quantity {
+.qb-hide-cart form.cart .quantity,
+.qb-hide-checkout #place_order,
+.qb-hide-checkout .wc-proceed-to-checkout .checkout-button,
+.qb-hide-sale .onsale {
   display: none !important;
 }
 

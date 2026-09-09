@@ -6,10 +6,87 @@ if (!defined('ABSPATH')) {
 
 class QuoteBuilder_Pairing {
     public static function init() {
+        add_action('admin_init', [self::class, 'handle_connect']);
         add_action('wp_ajax_quotebuilder_pair', [self::class, 'ajax_pair']);
         add_action('wp_ajax_quotebuilder_unpair', [self::class, 'ajax_unpair']);
         add_action('wp_ajax_quotebuilder_save_origin', [self::class, 'ajax_save_origin']);
     }
+
+    public static function state_key() {
+        return 'quotebuilder_oauth_' . get_current_user_id();
+    }
+
+    public static function flash($message = null) {
+        $key = 'quotebuilder_flash_' . get_current_user_id();
+        if ($message !== null) {
+            set_transient($key, $message, 120);
+            return $message;
+        }
+        $saved = get_transient($key);
+        if ($saved) {
+            delete_transient($key);
+        }
+        return $saved;
+    }
+
+    public static function authorize_url() {
+        $state = wp_generate_password(24, false, false);
+        set_transient(self::state_key(), $state, 20 * MINUTE_IN_SECONDS);
+        $query = [
+            'site_url' => home_url(),
+            'site_name' => wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES),
+            'return' => admin_url('admin.php?page=quotebuilder'),
+            'state' => $state,
+        ];
+        return QuoteBuilder_Settings::origin() . '/integrations/plugin/connect?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986);
+    }
+
+    public static function start_url() {
+        return wp_nonce_url(admin_url('admin.php?page=quotebuilder&qb_connect=start'), 'quotebuilder_connect');
+    }
+
+    public static function handle_connect() {
+        if (!is_admin() || !isset($_GET['page']) || $_GET['page'] !== 'quotebuilder') {
+            return;
+        }
+        if (!quotebuilder_user_can()) {
+            return;
+        }
+        $action = sanitize_key($_GET['qb_connect'] ?? '');
+        if ($action === 'start') {
+            check_admin_referer('quotebuilder_connect');
+            if (!self::woocommerce_ready()) {
+                self::flash("Activez WooCommerce avant de connecter le catalogue.");
+                wp_safe_redirect(admin_url('admin.php?page=quotebuilder'));
+                exit;
+            }
+            wp_redirect(self::authorize_url());
+            exit;
+        }
+        if ($action !== 'done') {
+            return;
+        }
+        $state = sanitize_text_field(wp_unslash($_GET['state'] ?? ''));
+        $code = sanitize_text_field(wp_unslash($_GET['code'] ?? ''));
+        $saved = get_transient(self::state_key());
+        if (!$saved || !$state || !hash_equals((string) $saved, $state)) {
+            self::flash("La session de connexion a expiré. Cliquez à nouveau sur Connecter.");
+            wp_safe_redirect(admin_url('admin.php?page=quotebuilder'));
+            exit;
+        }
+        delete_transient(self::state_key());
+        $result = self::pair($code);
+        if (is_wp_error($result)) {
+            self::flash($result->get_error_message());
+            wp_safe_redirect(admin_url('admin.php?page=quotebuilder'));
+            exit;
+        }
+        $imported = isset($result['imported']) ? (int) $result['imported'] : 0;
+        self::flash($imported ? "Catalogue connecté. {$imported} produits importés." : 'Catalogue connecté.');
+        wp_safe_redirect(admin_url('admin.php?page=quotebuilder&connected=1'));
+        exit;
+    }
+
 
     public static function woocommerce_ready() {
         return class_exists('WooCommerce') && function_exists('wc_rand_hash') && function_exists('wc_api_hash');
@@ -98,6 +175,9 @@ class QuoteBuilder_Pairing {
         if (!empty($body['org_slug'])) {
             update_option('quotebuilder_org_slug', sanitize_title($body['org_slug']));
         }
+        if (!empty($body['org_name'])) {
+            update_option('quotebuilder_org_name', sanitize_text_field($body['org_name']));
+        }
         if (!empty($body['funnel_slug'])) {
             update_option('quotebuilder_funnel_slug', sanitize_title($body['funnel_slug']));
         }
@@ -107,8 +187,13 @@ class QuoteBuilder_Pairing {
         if (!empty($body['storefront']) && is_array($body['storefront'])) {
             update_option('quotebuilder_storefront', array_merge(QuoteBuilder_Settings::storefront(), $body['storefront']));
         }
-        if (isset($body['imported'])) {
+        if (isset($body['product_count'])) {
+            update_option('quotebuilder_last_imported', (int) $body['product_count']);
+        } elseif (isset($body['imported'])) {
             update_option('quotebuilder_last_imported', (int) $body['imported']);
+        }
+        if (!empty($body['last_sync_at'])) {
+            update_option('quotebuilder_last_sync_at', sanitize_text_field($body['last_sync_at']));
         }
         update_option('quotebuilder_paired_at', current_time('mysql'));
     }
@@ -170,10 +255,12 @@ class QuoteBuilder_Pairing {
         delete_option('quotebuilder_connection_id');
         delete_option('quotebuilder_plugin_token');
         delete_option('quotebuilder_org_slug');
+        delete_option('quotebuilder_org_name');
         delete_option('quotebuilder_funnel_slug');
         delete_option('quotebuilder_funnel_name');
         delete_option('quotebuilder_paired_at');
         delete_option('quotebuilder_last_imported');
+        delete_option('quotebuilder_last_sync_at');
     }
 
     public static function refresh() {
@@ -188,6 +275,27 @@ class QuoteBuilder_Pairing {
         $body = json_decode(wp_remote_retrieve_body($response), true);
         if ($code < 200 || $code >= 300 || !is_array($body)) {
             return new WP_Error('quotebuilder_refresh', is_array($body) && !empty($body['error']) ? $body['error'] : 'Espace injoignable.');
+        }
+        self::apply_payload($body);
+        return $body;
+    }
+
+    public static function sync_catalog() {
+        if (!QuoteBuilder_Settings::connected()) {
+            return new WP_Error('quotebuilder_pair', 'Plugin non connecté.');
+        }
+        $response = QuoteBuilder_Settings::request('/api/integrations/plugin', [
+            'method' => 'PATCH',
+            'timeout' => 120,
+            'body' => wp_json_encode(['sync' => true]),
+        ]);
+        if (is_wp_error($response)) {
+            return $response;
+        }
+        $code = wp_remote_retrieve_response_code($response);
+        $body = json_decode(wp_remote_retrieve_body($response), true);
+        if ($code < 200 || $code >= 300 || !is_array($body)) {
+            return new WP_Error('quotebuilder_sync', is_array($body) && !empty($body['error']) ? $body['error'] : 'Synchronisation impossible.');
         }
         self::apply_payload($body);
         return $body;

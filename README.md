@@ -21,13 +21,13 @@ npm run dev
 <script src="https://VOTRE_DOMAINE/widget.js"></script>
 ```
 
-WordPress : plugin dans `extensions/quotebuilder-wp/`. Shortcode `[quotebuilder org="quickly" id="rayonnage"]`. Le zip et la version sont générés au build (`/quotebuilder-wp.zip`, `/api/public/plugin/wordpress`). Les sites qui ont le plugin 2.1+ voient les mises à jour dans Extensions.
+WordPress : plugin dans `extensions/quotebuilder-wp/`. Shortcode `[quotebuilder org="quickly" id="rayonnage"]`. Dans WordPress, **Connecter** ouvre QuoteBuilder (login + choix du funnel) puis importe le catalogue WooCommerce. Le zip et la version sont générés au build (`/quotebuilder-wp.zip`, `/api/public/plugin/wordpress`). Les sites en 2.1+ voient les mises à jour dans Extensions.
 
 ## Catalogue connecté (WooCommerce / Shopify)
 
 `Boutiques` (`/integrations`) branche le catalogue d’une boutique sur un funnel : produits, descriptions, photos, prix, déclinaisons.
 
-- **WooCommerce** : URL du site + clé API REST en lecture seule (`/wp-json/wc/v3`). Le plugin WordPress peut aussi s’appairer tout seul avec un code : il crée la clé et les webhooks produits.
+- **WooCommerce** : URL du site + clé API REST en lecture seule (`/wp-json/wc/v3`). Le plugin WordPress se connecte en un clic : il ouvre QuoteBuilder, crée la clé et les webhooks produits, puis importe le catalogue.
 - **Shopify** : domaine `*.myshopify.com` + jeton d’une app personnalisée avec la portée `read_products` (Admin GraphQL, version pilotée par `SHOPIFY_API_VERSION`).
 - Sync manuelle, planifiée (`/api/cron/catalog-sync`, 4h30) et temps réel par webhook signé (`/api/integrations/<id>/webhook`).
 - Les accès boutique sont chiffrés en AES-256-GCM avec `INTEGRATIONS_SECRET_KEY` (à défaut `SUPABASE_SERVICE_ROLE_KEY`).

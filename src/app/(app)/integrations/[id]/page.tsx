@@ -177,13 +177,27 @@ export default async function ConnectionPage({
         <div className="grid gap-2 sm:grid-cols-2">
           <Check name="hidePrices" defaultChecked={settings.storefront.hidePrices} label="Masquer les prix" />
           <Check name="hideAddToCart" defaultChecked={settings.storefront.hideAddToCart} label="Masquer Ajouter au panier" />
+          <Check name="hideSaleFlash" defaultChecked={settings.storefront.hideSaleFlash} label="Masquer les badges promo" />
+          <Check name="hideCheckout" defaultChecked={settings.storefront.hideCheckout} label="Masquer le bouton commander" />
           <Check name="showOnShop" defaultChecked={settings.storefront.showOnShop} label="Bouton sur la boutique" />
           <Check name="showOnProduct" defaultChecked={settings.storefront.showOnProduct} label="Bouton sur la fiche produit" />
           <Check name="showOnCart" defaultChecked={settings.storefront.showOnCart} label="Convertir le panier en devis" />
           <Check name="showOnCheckout" defaultChecked={settings.storefront.showOnCheckout} label="Bouton au checkout" />
           <Check name="outOfStockOnly" defaultChecked={settings.storefront.outOfStockOnly} label="Uniquement les ruptures de stock" />
+          <Check name="showFloatingButton" defaultChecked={settings.storefront.showFloatingButton} label="Bouton flottant liste de devis" />
+          <Check name="showImages" defaultChecked={settings.storefront.showImages} label="Photos dans la liste" />
+          <Check name="showSku" defaultChecked={settings.storefront.showSku} label="SKU dans la liste" />
+          <Check name="showQty" defaultChecked={settings.storefront.showQty} label="Quantité modifiable" />
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Texte à la place du prix</span>
+            <input
+              name="priceLabel"
+              defaultValue={settings.storefront.priceLabel}
+              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+            />
+          </label>
           <label className="text-sm">
             <span className="font-medium text-slate-900">Libellé du bouton</span>
             <input
@@ -201,6 +215,18 @@ export default async function ConnectionPage({
             >
               <option value="all">Tous les visiteurs</option>
               <option value="logged_in">Clients connectés seulement</option>
+            </select>
+          </label>
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Après ajout à la liste</span>
+            <select
+              name="afterAdd"
+              defaultValue={settings.storefront.afterAdd}
+              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+            >
+              <option value="drawer">Ouvrir le tiroir</option>
+              <option value="stay">Rester sur la page</option>
+              <option value="list">Aller à la liste de devis</option>
             </select>
           </label>
           <label className="text-sm">
@@ -242,6 +268,38 @@ export default async function ConnectionPage({
               type="color"
               defaultValue={settings.storefront.buttonColor}
               className="mt-1 h-10 w-full rounded-md border border-slate-200 px-2 py-1"
+            />
+          </label>
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Titre de la liste</span>
+            <input
+              name="listTitle"
+              defaultValue={settings.storefront.listTitle}
+              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Bouton d’envoi</span>
+            <input
+              name="funnelCta"
+              defaultValue={settings.storefront.funnelCta}
+              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-sm sm:col-span-2">
+            <span className="font-medium text-slate-900">Liste vide</span>
+            <input
+              name="emptyMessage"
+              defaultValue={settings.storefront.emptyMessage}
+              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-sm sm:col-span-2">
+            <span className="font-medium text-slate-900">Retour boutique</span>
+            <input
+              name="continueShoppingLabel"
+              defaultValue={settings.storefront.continueShoppingLabel}
+              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
             />
           </label>
         </div>

@@ -162,15 +162,15 @@ class QuoteBuilder_Quote {
         <div class="qb-quote-page">
             <div class="qb-quote-list">
                 <p class="qb-kicker">Votre liste</p>
-                <h2>Demande de devis</h2>
+                <h2><?php echo esc_html($settings['listTitle']); ?></h2>
                 <?php if (!$items) : ?>
-                    <p class="qb-empty">Votre liste est vide. Ajoutez des produits depuis la boutique.</p>
-                    <a class="qb-atq" href="<?php echo esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/')); ?>">Retour à la boutique</a>
+                    <p class="qb-empty"><?php echo esc_html($settings['emptyMessage']); ?></p>
+                    <a class="qb-atq" href="<?php echo esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/')); ?>"><?php echo esc_html($settings['continueShoppingLabel']); ?></a>
                 <?php else : ?>
                     <ul class="qb-quote-items">
                         <?php foreach ($items as $item) : ?>
                             <li data-id="<?php echo esc_attr($item['id']); ?>" data-variation="<?php echo esc_attr($item['variation_id'] ?? ''); ?>">
-                                <?php if (!empty($item['image'])) : ?>
+                                <?php if ($settings['showImages'] && !empty($item['image'])) : ?>
                                     <img src="<?php echo esc_url($item['image']); ?>" alt="">
                                 <?php endif; ?>
                                 <div>
@@ -178,8 +178,15 @@ class QuoteBuilder_Quote {
                                     <?php if (!empty($item['variation'])) : ?>
                                         <span><?php echo esc_html($item['variation']); ?></span>
                                     <?php endif; ?>
+                                    <?php if ($settings['showSku'] && !empty($item['sku'])) : ?>
+                                        <span><?php echo esc_html($item['sku']); ?></span>
+                                    <?php endif; ?>
                                 </div>
-                                <input type="number" min="1" class="qb-qty" value="<?php echo esc_attr((int) $item['qty']); ?>">
+                                <?php if ($settings['showQty']) : ?>
+                                    <input type="number" min="1" class="qb-qty" value="<?php echo esc_attr((int) $item['qty']); ?>">
+                                <?php else : ?>
+                                    <em>×<?php echo esc_html((int) $item['qty']); ?></em>
+                                <?php endif; ?>
                                 <button type="button" class="qb-remove" aria-label="Retirer">Retirer</button>
                             </li>
                         <?php endforeach; ?>
@@ -198,7 +205,6 @@ class QuoteBuilder_Quote {
             </div>
         </div>
         <?php
-        unset($settings);
         return ob_get_clean();
     }
 

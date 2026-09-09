@@ -8,6 +8,8 @@ class QuoteBuilder_Storefront {
     public static function init() {
         add_action('wp_enqueue_scripts', [self::class, 'assets']);
         add_filter('woocommerce_get_price_html', [self::class, 'price_html'], 20, 2);
+        add_filter('woocommerce_sale_flash', [self::class, 'sale_flash'], 20, 3);
+        add_filter('woocommerce_order_button_html', [self::class, 'order_button']);
         add_filter('woocommerce_loop_add_to_cart_link', [self::class, 'loop_button'], 20, 2);
         add_action('woocommerce_after_add_to_cart_button', [self::class, 'product_button']);
         add_action('woocommerce_proceed_to_checkout', [self::class, 'cart_button'], 20);
@@ -40,6 +42,7 @@ class QuoteBuilder_Storefront {
             'quoteUrl' => QuoteBuilder_Quote::page_url(),
             'count' => QuoteBuilder_Quote::count(),
             'label' => QuoteBuilder_Settings::storefront()['buttonLabel'],
+            'afterAdd' => QuoteBuilder_Settings::storefront()['afterAdd'],
             'origin' => QuoteBuilder_Settings::origin(),
             'org' => $funnel['org'],
             'funnel' => $funnel['id'],
@@ -53,6 +56,12 @@ class QuoteBuilder_Storefront {
         }
         if ($settings['hideAddToCart']) {
             $classes[] = 'qb-hide-cart';
+        }
+        if ($settings['hideCheckout']) {
+            $classes[] = 'qb-hide-checkout';
+        }
+        if ($settings['hideSaleFlash']) {
+            $classes[] = 'qb-hide-sale';
         }
         return $classes;
     }
@@ -96,10 +105,25 @@ class QuoteBuilder_Storefront {
         return true;
     }
 
+    public static function sale_flash($html, $post, $product) {
+        $settings = QuoteBuilder_Settings::storefront();
+        if ($settings['hideSaleFlash'] && self::applies($product)) {
+            return '';
+        }
+        return $html;
+    }
+
+    public static function order_button($html) {
+        if (QuoteBuilder_Settings::storefront()['hideCheckout']) {
+            return '';
+        }
+        return $html;
+    }
+
     public static function price_html($html, $product) {
         $settings = QuoteBuilder_Settings::storefront();
         if ($settings['hidePrices'] && self::applies($product)) {
-            return '<span class="qb-price-hidden">Sur devis</span>';
+            return '<span class="qb-price-hidden">' . esc_html($settings['priceLabel']) . '</span>';
         }
         return $html;
     }
@@ -167,7 +191,7 @@ class QuoteBuilder_Storefront {
         <aside class="qb-drawer" hidden>
             <button type="button" class="qb-drawer-close" aria-label="Fermer">×</button>
             <p class="qb-kicker">Liste de devis</p>
-            <h2><?php echo esc_html($settings['buttonLabel']); ?></h2>
+            <h2><?php echo esc_html($settings['listTitle']); ?></h2>
             <ul class="qb-drawer-items">
                 <?php foreach ($items as $item) : ?>
                     <li>
@@ -176,12 +200,14 @@ class QuoteBuilder_Storefront {
                     </li>
                 <?php endforeach; ?>
             </ul>
-            <a class="qb-atq" href="<?php echo esc_url(QuoteBuilder_Quote::page_url()); ?>">Voir ma demande</a>
+            <a class="qb-atq" href="<?php echo esc_url(QuoteBuilder_Quote::page_url()); ?>"><?php echo esc_html($settings['funnelCta']); ?></a>
         </aside>
+        <?php if ($settings['showFloatingButton']) : ?>
         <button type="button" class="qb-fab" data-count="<?php echo esc_attr($count); ?>" <?php echo $count ? '' : 'hidden'; ?>>
             <span><?php echo esc_html($count); ?></span>
             Devis
         </button>
+        <?php endif; ?>
         <?php
     }
 

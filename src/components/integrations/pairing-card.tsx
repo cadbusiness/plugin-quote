@@ -25,8 +25,8 @@ export function PairingCard({
       <div className="mr-auto min-w-0">
         <p className="text-sm font-medium text-slate-900">Plugin boutique · v{pluginVersion}</p>
         <p className="text-xs text-slate-500">
-          Un seul zip, servi par QuoteBuilder. Les sites déjà en 2.1+ voient la mise à jour dans
-          WordPress → Extensions, comme n’importe quel plugin pro.
+          Dans WordPress, QuoteBuilder → Connecter. Le site s’ouvre ici, vous choisissez le funnel,
+          WooCommerce envoie le catalogue.
         </p>
       </div>
       <a
@@ -46,11 +46,11 @@ export function PairingCard({
         disabled={pending}
         className="rounded-md bg-slate-950 px-3 py-1.5 text-sm text-white disabled:opacity-50"
       >
-        {pending ? "Génération…" : code ? "Nouveau code" : "Générer un code"}
+        {pending ? "Génération…" : code ? "Nouveau code" : "Code manuel"}
       </button>
       {code ? (
         <p className="w-full text-xs text-slate-500">
-          Collez ce code dans WordPress → QuoteBuilder → Funnel. Valable 30 minutes, un seul usage.
+          Collez ce code uniquement si la connexion en un clic n’est pas possible. Valable 30 minutes.
         </p>
       ) : null}
     </div>

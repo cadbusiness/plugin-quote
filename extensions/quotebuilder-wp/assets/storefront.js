@@ -39,6 +39,13 @@
       .replace(/>/g, "&gt;");
   }
 
+  function quantity(button) {
+    var form = button.closest("form.cart");
+    if (!form) return 1;
+    var field = form.querySelector("input.qty, input[name=quantity]");
+    return field ? field.value : 1;
+  }
+
   function variationId(button) {
     var form = button.closest("form.cart");
     if (!form) return 0;
@@ -53,12 +60,18 @@
       post("add", {
         product_id: add.getAttribute("data-product"),
         variation_id: variationId(add),
-        qty: 1,
+        qty: quantity(add),
       }).then(function (json) {
         if (json.success) {
           paint(json.data);
-          var drawer = document.querySelector(".qb-drawer");
-          if (drawer) drawer.hidden = false;
+          if (cfg.afterAdd === "list" && json.data.url) {
+            window.location.href = json.data.url;
+            return;
+          }
+          if (cfg.afterAdd !== "stay") {
+            var drawer = document.querySelector(".qb-drawer");
+            if (drawer) drawer.hidden = false;
+          }
         }
       });
     }

@@ -20,6 +20,7 @@ import {
   type ResolvedConnection,
 } from "@/lib/integrations/types";
 import { parseStorefront } from "@/lib/integrations/storefront";
+import { pluginConnectCallback } from "@/lib/integrations/plugin-connect";
 import { normalizeSiteUrl } from "@/lib/integrations/woocommerce";
 import type { Json } from "@/lib/db/database.types";
 import { createClient } from "@/lib/supabase/server";
@@ -215,10 +216,15 @@ export async function updateStorefront(formData: FormData) {
     storefront: parseStorefront({
       hidePrices: formData.get("hidePrices") === "on",
       hideAddToCart: formData.get("hideAddToCart") === "on",
+      hideSaleFlash: formData.get("hideSaleFlash") === "on",
+      hideCheckout: formData.get("hideCheckout") === "on",
+      priceLabel: String(formData.get("priceLabel") ?? ""),
       buttonLabel: String(formData.get("buttonLabel") ?? ""),
       buttonStyle: String(formData.get("buttonStyle") ?? "button"),
       buttonBg: String(formData.get("buttonBg") ?? ""),
       buttonColor: String(formData.get("buttonColor") ?? ""),
+      afterAdd: String(formData.get("afterAdd") ?? "drawer"),
+      showFloatingButton: formData.get("showFloatingButton") === "on",
       showOnShop: formData.get("showOnShop") === "on",
       showOnProduct: formData.get("showOnProduct") === "on",
       showOnCart: formData.get("showOnCart") === "on",
@@ -228,6 +234,13 @@ export async function updateStorefront(formData: FormData) {
       scope: String(formData.get("scope") ?? "all"),
       productIds: current.storefront.productIds,
       categoryIds: current.storefront.categoryIds,
+      listTitle: String(formData.get("listTitle") ?? ""),
+      emptyMessage: String(formData.get("emptyMessage") ?? ""),
+      funnelCta: String(formData.get("funnelCta") ?? ""),
+      continueShoppingLabel: String(formData.get("continueShoppingLabel") ?? ""),
+      showImages: formData.get("showImages") === "on",
+      showSku: formData.get("showSku") === "on",
+      showQty: formData.get("showQty") === "on",
     }),
   };
   await supabase
@@ -300,4 +313,31 @@ export async function createPairingCode(configuratorId: string | null) {
     });
   revalidatePath("/integrations");
   return { code };
+}
+
+/** Le plugin WordPress ouvre cette action après login : on choisit le funnel, WP reçoit le code. */
+export async function authorizePluginConnect(formData: FormData) {
+  const ctx = await requireAdmin();
+  const siteUrl = String(formData.get("site_url") ?? "").trim();
+  const returnUrl = String(formData.get("return") ?? "").trim();
+  const state = String(formData.get("state") ?? "").trim();
+  const configuratorId = String(formData.get("configurator_id") ?? "").trim() || null;
+  if (!siteUrl || !returnUrl || !state) {
+    throw new Error("Requête de connexion incomplète.");
+  }
+
+  const supabase = await createClient();
+  const code = randomPairingCode();
+  const callback = pluginConnectCallback(siteUrl, returnUrl, code, state);
+  const { error } = await supabase.from("catalog_pairings").insert({
+    organization_id: ctx.organization.id,
+    configurator_id: configuratorId,
+    provider: "woocommerce",
+    code,
+    expires_at: new Date(Date.now() + 30 * 60_000).toISOString(),
+  });
+  if (error) {
+    throw new Error("Impossible de créer la connexion. Réessayez.");
+  }
+  redirect(callback);
 }

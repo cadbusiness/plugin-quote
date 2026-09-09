@@ -83,7 +83,7 @@ class QuoteBuilder_Admin {
         if (!$screen || $screen->id !== 'plugins' || !quotebuilder_user_can()) {
             return;
         }
-        echo '<div class="notice notice-info"><p><strong>QuoteBuilder</strong> v' . esc_html(QUOTEBUILDER_VERSION) . ' est actif. <a href="' . esc_url(admin_url('admin.php?page=quotebuilder')) . '">Ouvrir l’interface</a>. Les mises à jour arrivent dans Extensions comme WooCommerce.</p></div>';
+        echo '<div class="notice notice-info"><p><strong>QuoteBuilder</strong> v' . esc_html(QUOTEBUILDER_VERSION) . ' est actif. <a href="' . esc_url(admin_url('admin.php?page=quotebuilder')) . '">Ouvrir l’interface</a>.</p></div>';
     }
 
     public static function admin_bar($bar) {
@@ -131,11 +131,12 @@ class QuoteBuilder_Admin {
         }
         $tab = sanitize_key($_GET['tab'] ?? 'accueil');
         $tabs = [
-            'accueil' => 'Accueil',
+            'accueil' => 'Tableau de bord',
             'boutique' => 'Boutique',
             'bouton' => 'Bouton',
-            'visibilite' => 'Où l’afficher',
-            'funnel' => 'Funnel',
+            'liste' => 'Liste',
+            'visibilite' => 'Visibilité',
+            'compte' => 'Compte',
         ];
         if (!isset($tabs[$tab])) {
             $tab = 'accueil';
@@ -145,26 +146,37 @@ class QuoteBuilder_Admin {
         $settings = QuoteBuilder_Settings::storefront();
         $quotes = $tab === 'accueil' ? QuoteBuilder_Pairing::quotes() : [];
         $woo = QuoteBuilder_Pairing::woocommerce_ready();
+        $flash = QuoteBuilder_Pairing::flash();
         ?>
-        <div class="qb-shell">
-            <aside class="qb-nav">
+        <div class="qb-wrap">
+            <header class="qb-header">
                 <div class="qb-brand">
-                    <span class="qb-mark"></span>
+                    <span class="qb-logo" aria-hidden="true"></span>
                     <div>
                         <strong>QuoteBuilder</strong>
-                        <em><?php echo $connected ? 'Connecté' : 'À appairer'; ?></em>
+                        <span>v<?php echo esc_html(QUOTEBUILDER_VERSION); ?></span>
                     </div>
                 </div>
-                <nav>
+                <nav class="qb-tabs">
                     <?php foreach ($tabs as $key => $label) : ?>
                         <a class="<?php echo $tab === $key ? 'is-active' : ''; ?>" href="<?php echo esc_url(admin_url('admin.php?page=quotebuilder&tab=' . $key)); ?>">
                             <?php echo esc_html($label); ?>
                         </a>
                     <?php endforeach; ?>
                 </nav>
-                <a class="qb-nav-link" href="<?php echo esc_url(QuoteBuilder_Quote::page_url()); ?>" target="_blank" rel="noopener">Page devis</a>
-            </aside>
-            <main class="qb-main">
+                <div class="qb-header-actions">
+                    <?php if ($connected) : ?>
+                        <span class="qb-pill is-on">Connecté</span>
+                        <a class="qb-ghost" href="<?php echo esc_url(QuoteBuilder_Settings::origin() . '/devis'); ?>" target="_blank" rel="noopener">Ouvrir QuoteBuilder</a>
+                    <?php else : ?>
+                        <a class="qb-primary" href="<?php echo esc_url(QuoteBuilder_Pairing::start_url()); ?>">Connecter</a>
+                    <?php endif; ?>
+                </div>
+            </header>
+            <div class="qb-body">
+                <?php if ($flash) : ?>
+                    <p class="qb-banner"><?php echo esc_html($flash); ?></p>
+                <?php endif; ?>
                 <?php
                 if ($tab === 'accueil') {
                     self::view_home($connected, $woo, $funnel, $quotes, $settings);
@@ -172,38 +184,39 @@ class QuoteBuilder_Admin {
                     self::view_catalog($settings);
                 } elseif ($tab === 'bouton') {
                     self::view_button($settings);
+                } elseif ($tab === 'liste') {
+                    self::view_list($settings);
                 } elseif ($tab === 'visibilite') {
                     self::view_visibility($settings);
                 } else {
-                    self::view_funnel($connected, $funnel);
+                    self::view_account($connected, $funnel, $woo);
                 }
                 ?>
-            </main>
+            </div>
         </div>
         <?php
     }
 
     private static function view_home($connected, $woo, $funnel, $quotes, $settings) {
         $imported = (int) get_option('quotebuilder_last_imported', 0);
-        $paired = get_option('quotebuilder_paired_at', '');
+        $space = $connected ? ($funnel['orgName'] ?: $funnel['org'] ?: 'Connecté') : 'Non connecté';
         ?>
-        <header class="qb-hero">
-            <p class="qb-kicker">Vitrine devis</p>
-            <h1>La boutique demande un devis, QuoteBuilder le traite.</h1>
-            <p>Masquez les prix, remplacez le panier, envoyez la liste dans votre funnel. Les relances, le PDF et le suivi restent dans QuoteBuilder.</p>
-        </header>
+        <div class="qb-title">
+            <h1>Tableau de bord</h1>
+            <p>WooCommerce envoie le catalogue, QuoteBuilder traite les demandes.</p>
+        </div>
         <section class="qb-kpis">
             <div>
                 <span>Espace</span>
-                <strong><?php echo $connected ? esc_html($funnel['name'] ?: 'Connecté') : 'Non connecté'; ?></strong>
+                <strong><?php echo esc_html($space); ?></strong>
             </div>
             <div>
-                <span>Produits importés</span>
+                <span>Produits</span>
                 <strong><?php echo esc_html((string) $imported); ?></strong>
             </div>
             <div>
-                <span>Appairé le</span>
-                <strong><?php echo $paired ? esc_html($paired) : '—'; ?></strong>
+                <span>Funnel</span>
+                <strong><?php echo $connected ? esc_html($funnel['name'] ?: $funnel['id'] ?: '—') : '—'; ?></strong>
             </div>
             <div>
                 <span>WooCommerce</span>
@@ -211,47 +224,45 @@ class QuoteBuilder_Admin {
             </div>
         </section>
         <?php if (!$connected) : ?>
-            <section class="qb-card qb-pair-card">
-                <p class="qb-kicker">Première étape</p>
-                <h2>Connecter cet espace QuoteBuilder</h2>
-                <p>Dans QuoteBuilder, ouvrez <strong>Boutiques</strong>, générez un code, collez-le ici. Le plugin crée la clé WooCommerce, les webhooks, et récupère le funnel.</p>
-                <label>Adresse de l’espace
-                    <input id="qb-origin" type="url" value="<?php echo esc_attr(QuoteBuilder_Settings::origin()); ?>" placeholder="https://app.quotebuilder.fr">
-                </label>
-                <label>Code d’appairage
-                    <input id="qb-code" type="text" placeholder="XXXXXXXXXXXX" autocomplete="off">
-                </label>
-                <button type="button" class="qb-primary" id="qb-pair">Connecter le catalogue</button>
-                <p class="qb-status" id="qb-pair-status" hidden></p>
+            <section class="qb-connect">
+                <div>
+                    <h2>Connecter WooCommerce</h2>
+                    <p>Un clic ouvre QuoteBuilder. Vous choisissez l’espace, le plugin crée la clé catalogue et importe les produits.</p>
+                </div>
+                <?php if ($woo) : ?>
+                    <a class="qb-primary qb-primary-lg" href="<?php echo esc_url(QuoteBuilder_Pairing::start_url()); ?>">Connecter QuoteBuilder</a>
+                <?php else : ?>
+                    <p class="qb-banner is-warn">Activez WooCommerce pour brancher le catalogue.</p>
+                <?php endif; ?>
             </section>
         <?php else : ?>
             <section class="qb-grid">
-                <article class="qb-card">
+                <article>
                     <p class="qb-kicker">Vitrine</p>
                     <h2><?php echo $settings['hidePrices'] ? 'Prix masqués' : 'Prix visibles'; ?></h2>
                     <p><?php echo $settings['hideAddToCart'] ? 'Le panier est remplacé par le bouton devis.' : 'Le panier WooCommerce reste actif.'; ?></p>
                     <a href="<?php echo esc_url(admin_url('admin.php?page=quotebuilder&tab=boutique')); ?>">Régler la boutique</a>
                 </article>
-                <article class="qb-card">
+                <article>
                     <p class="qb-kicker">Funnel</p>
                     <h2><?php echo esc_html($funnel['name'] ?: $funnel['id']); ?></h2>
                     <p>Les produits de la liste arrivent déjà sélectionnés dans le configurateur.</p>
-                    <a href="<?php echo esc_url(QuoteBuilder_Settings::origin() . '/devis'); ?>" target="_blank" rel="noopener">Ouvrir les demandes</a>
+                    <button type="button" class="qb-ghost" id="qb-sync">Synchroniser les produits</button>
                 </article>
             </section>
         <?php endif; ?>
-        <section class="qb-card">
+        <section class="qb-panel">
             <div class="qb-row">
                 <div>
                     <p class="qb-kicker">Demandes</p>
-                    <h2>Dernières demandes QuoteBuilder</h2>
+                    <h2>Dernières demandes</h2>
                 </div>
                 <button type="button" class="qb-ghost" id="qb-refresh">Actualiser</button>
             </div>
             <?php if (!$connected) : ?>
-                <p class="qb-empty">Connectez le plugin pour voir les demandes ici, sans quitter WordPress.</p>
+                <p class="qb-empty">Connectez le plugin pour voir les demandes ici.</p>
             <?php elseif (!$quotes) : ?>
-                <p class="qb-empty">Aucune demande pour l’instant. Dès qu’un prospect envoie le funnel, elle apparaît ici.</p>
+                <p class="qb-empty">Aucune demande pour l’instant.</p>
             <?php else : ?>
                 <table class="qb-table">
                     <thead>
@@ -279,17 +290,21 @@ class QuoteBuilder_Admin {
 
     private static function view_catalog($settings) {
         ?>
-        <header class="qb-hero">
-            <p class="qb-kicker">Boutique</p>
-            <h1>Transformez WooCommerce en catalogue devis.</h1>
-            <p>Deux interrupteurs suffisent : plus de prix affichés, plus de bouton panier. Le prospect constitue une liste puis envoie une demande.</p>
-        </header>
+        <div class="qb-title">
+            <h1>Boutique</h1>
+            <p>Prix, panier, promo : ce que le visiteur voit avant de demander un devis.</p>
+        </div>
         <form class="qb-form" data-qb-form>
             <section class="qb-toggles">
-                <?php self::toggle('hidePrices', 'Masquer les prix', 'Remplace le tarif par « Sur devis » sur toute la boutique.', $settings['hidePrices']); ?>
+                <?php self::toggle('hidePrices', 'Masquer les prix', 'Remplace le tarif par le texte ci-dessous.', $settings['hidePrices']); ?>
                 <?php self::toggle('hideAddToCart', 'Masquer Ajouter au panier', 'Empêche l’achat immédiat. Le bouton devis prend la place.', $settings['hideAddToCart']); ?>
+                <?php self::toggle('hideSaleFlash', 'Masquer les badges promo', 'Cache « Promo » sur les fiches et les grilles.', $settings['hideSaleFlash']); ?>
+                <?php self::toggle('hideCheckout', 'Masquer Commander', 'Retire le bouton de paiement WooCommerce.', $settings['hideCheckout']); ?>
                 <?php self::toggle('outOfStockOnly', 'Uniquement les ruptures', 'Le devis n’apparaît que sur les produits en rupture de stock.', $settings['outOfStockOnly']); ?>
             </section>
+            <label>Texte à la place du prix
+                <input name="priceLabel" value="<?php echo esc_attr($settings['priceLabel']); ?>">
+            </label>
             <button type="submit" class="qb-primary">Enregistrer</button>
         </form>
         <?php
@@ -297,10 +312,10 @@ class QuoteBuilder_Admin {
 
     private static function view_button($settings) {
         ?>
-        <header class="qb-hero">
-            <p class="qb-kicker">Bouton</p>
-            <h1>Le même orange que QuoteBuilder, ou le vôtre.</h1>
-        </header>
+        <div class="qb-title">
+            <h1>Bouton devis</h1>
+            <p>Libellé, couleurs, et ce qui se passe après un ajout à la liste.</p>
+        </div>
         <form class="qb-form qb-split" data-qb-form>
             <div class="qb-fields">
                 <label>Libellé
@@ -309,7 +324,14 @@ class QuoteBuilder_Admin {
                 <label>Style
                     <select name="buttonStyle">
                         <option value="button" <?php selected($settings['buttonStyle'], 'button'); ?>>Bouton</option>
-                        <option value="link">Lien texte</option>
+                        <option value="link" <?php selected($settings['buttonStyle'], 'link'); ?>>Lien texte</option>
+                    </select>
+                </label>
+                <label>Après l’ajout
+                    <select name="afterAdd">
+                        <option value="drawer" <?php selected($settings['afterAdd'], 'drawer'); ?>>Ouvrir le tiroir</option>
+                        <option value="stay" <?php selected($settings['afterAdd'], 'stay'); ?>>Rester sur la page</option>
+                        <option value="list" <?php selected($settings['afterAdd'], 'list'); ?>>Aller à la liste de devis</option>
                     </select>
                 </label>
                 <label>Couleur
@@ -318,6 +340,7 @@ class QuoteBuilder_Admin {
                 <label>Texte
                     <input name="buttonColor" type="color" value="<?php echo esc_attr($settings['buttonColor']); ?>">
                 </label>
+                <?php self::toggle('showFloatingButton', 'Bouton flottant', 'Pastille en bas à droite avec le nombre de produits.', $settings['showFloatingButton']); ?>
                 <button type="submit" class="qb-primary">Enregistrer</button>
             </div>
             <aside class="qb-preview">
@@ -325,10 +348,39 @@ class QuoteBuilder_Admin {
                 <div class="qb-fake-product">
                     <div class="qb-swatch"></div>
                     <p>Étagère industrielle 3 m</p>
-                    <span class="qb-price-hidden">Sur devis</span>
+                    <span class="qb-price-hidden"><?php echo esc_html($settings['priceLabel']); ?></span>
                     <button type="button" id="qb-preview-btn" class="qb-atq"><?php echo esc_html($settings['buttonLabel']); ?></button>
                 </div>
             </aside>
+        </form>
+        <?php
+    }
+
+    private static function view_list($settings) {
+        ?>
+        <div class="qb-title">
+            <h1>Liste de devis</h1>
+            <p>Page [quotebuilder_quote] : ce que le prospect voit avant le funnel.</p>
+        </div>
+        <form class="qb-form" data-qb-form>
+            <label>Titre
+                <input name="listTitle" value="<?php echo esc_attr($settings['listTitle']); ?>">
+            </label>
+            <label>Liste vide
+                <input name="emptyMessage" value="<?php echo esc_attr($settings['emptyMessage']); ?>">
+            </label>
+            <label>Bouton d’envoi
+                <input name="funnelCta" value="<?php echo esc_attr($settings['funnelCta']); ?>">
+            </label>
+            <label>Retour boutique
+                <input name="continueShoppingLabel" value="<?php echo esc_attr($settings['continueShoppingLabel']); ?>">
+            </label>
+            <section class="qb-toggles">
+                <?php self::toggle('showImages', 'Photos produits', 'Affiche l’image dans la liste et le tiroir.', $settings['showImages']); ?>
+                <?php self::toggle('showSku', 'Référence (SKU)', 'Montre le SKU WooCommerce sous le nom.', $settings['showSku']); ?>
+                <?php self::toggle('showQty', 'Quantité modifiable', 'Le prospect peut changer les quantités avant d’envoyer.', $settings['showQty']); ?>
+            </section>
+            <button type="submit" class="qb-primary">Enregistrer</button>
         </form>
         <?php
     }
@@ -337,10 +389,10 @@ class QuoteBuilder_Admin {
         $product_labels = self::labels('product', $settings['productIds']);
         $category_labels = self::labels('product_cat', $settings['categoryIds']);
         ?>
-        <header class="qb-hero">
-            <p class="qb-kicker">Visibilité</p>
-            <h1>Choisissez où et pour qui le devis apparaît.</h1>
-        </header>
+        <div class="qb-title">
+            <h1>Visibilité</h1>
+            <p>Où le bouton apparaît, pour qui, et sur quels produits.</p>
+        </div>
         <form class="qb-form" data-qb-form>
             <section class="qb-toggles">
                 <?php self::toggle('showOnProduct', 'Fiche produit', 'Bouton sous le titre, à la place du panier.', $settings['showOnProduct']); ?>
@@ -384,36 +436,49 @@ class QuoteBuilder_Admin {
         <?php
     }
 
-    private static function view_funnel($connected, $funnel) {
+    private static function view_account($connected, $funnel, $woo) {
         ?>
-        <header class="qb-hero">
-            <p class="qb-kicker">Funnel</p>
-            <h1>Le plugin n’est pas un second logiciel. C’est la vitrine du vôtre.</h1>
-            <p>Version <code><?php echo esc_html(QUOTEBUILDER_VERSION); ?></code> — les prochaines versions apparaissent dans <strong>Extensions → Mises à jour</strong>, comme WooCommerce.</p>
-        </header>
-        <section class="qb-card">
-            <label>Adresse de l’espace QuoteBuilder
+        <div class="qb-title">
+            <h1>Compte</h1>
+            <p>Connexion QuoteBuilder, funnel et catalogue WooCommerce.</p>
+        </div>
+        <?php if ($connected) : ?>
+            <section class="qb-panel">
+                <p class="qb-kicker">Connecté</p>
+                <h2><?php echo esc_html($funnel['orgName'] ?: $funnel['org']); ?></h2>
+                <p>Funnel <strong><?php echo esc_html($funnel['name'] ?: $funnel['id']); ?></strong></p>
+                <p>Shortcode funnel : <code>[quotebuilder]</code> · Liste : <code>[quotebuilder_quote]</code></p>
+                <div class="qb-row">
+                    <button type="button" class="qb-ghost" id="qb-sync">Synchroniser les produits</button>
+                    <button type="button" class="qb-danger" id="qb-unpair">Déconnecter</button>
+                </div>
+            </section>
+        <?php else : ?>
+            <section class="qb-connect">
+                <div>
+                    <h2>Connecter WooCommerce</h2>
+                    <p><?php echo $woo ? 'Ouvre QuoteBuilder, choisit l’espace, importe le catalogue.' : 'WooCommerce doit être actif.'; ?></p>
+                </div>
+                <?php if ($woo) : ?>
+                    <a class="qb-primary qb-primary-lg" href="<?php echo esc_url(QuoteBuilder_Pairing::start_url()); ?>">Connecter QuoteBuilder</a>
+                <?php endif; ?>
+            </section>
+        <?php endif; ?>
+        <details class="qb-advanced">
+            <summary>Connexion avancée</summary>
+            <p>Adresse de l’espace si vous n’utilisez pas l’instance par défaut, et code manuel si le clic ne peut pas s’ouvrir.</p>
+            <label>Adresse QuoteBuilder
                 <input id="qb-origin" type="url" value="<?php echo esc_attr(QuoteBuilder_Settings::origin()); ?>">
             </label>
             <button type="button" class="qb-ghost" id="qb-save-origin">Enregistrer l’adresse</button>
-        </section>
-        <?php if ($connected) : ?>
-            <section class="qb-card">
-                <p class="qb-kicker">Connecté</p>
-                <h2><?php echo esc_html($funnel['name'] ?: $funnel['id']); ?></h2>
-                <p>Organisation <code><?php echo esc_html($funnel['org']); ?></code> · Funnel <code><?php echo esc_html($funnel['id']); ?></code></p>
-                <p>Shortcode : <code>[quotebuilder]</code> · Page liste : <code>[quotebuilder_quote]</code></p>
-                <button type="button" class="qb-danger" id="qb-unpair">Déconnecter le catalogue</button>
-            </section>
-        <?php else : ?>
-            <section class="qb-card qb-pair-card">
-                <label>Code d’appairage
+            <?php if (!$connected) : ?>
+                <label>Code manuel
                     <input id="qb-code" type="text" placeholder="XXXXXXXXXXXX" autocomplete="off">
                 </label>
-                <button type="button" class="qb-primary" id="qb-pair">Connecter</button>
+                <button type="button" class="qb-ghost" id="qb-pair">Connecter avec un code</button>
                 <p class="qb-status" id="qb-pair-status" hidden></p>
-            </section>
-        <?php endif; ?>
+            <?php endif; ?>
+        </details>
         <?php
     }
 

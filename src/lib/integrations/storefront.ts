@@ -6,14 +6,20 @@
 export type StorefrontAudience = "all" | "logged_in";
 export type StorefrontScope = "all" | "include" | "exclude";
 export type StorefrontButtonStyle = "button" | "link";
+export type StorefrontAfterAdd = "drawer" | "stay" | "list";
 
 export type StorefrontSettings = {
   hidePrices: boolean;
   hideAddToCart: boolean;
+  hideSaleFlash: boolean;
+  hideCheckout: boolean;
+  priceLabel: string;
   buttonLabel: string;
   buttonStyle: StorefrontButtonStyle;
   buttonBg: string;
   buttonColor: string;
+  afterAdd: StorefrontAfterAdd;
+  showFloatingButton: boolean;
   showOnShop: boolean;
   showOnProduct: boolean;
   showOnCart: boolean;
@@ -23,15 +29,27 @@ export type StorefrontSettings = {
   scope: StorefrontScope;
   productIds: string[];
   categoryIds: string[];
+  listTitle: string;
+  emptyMessage: string;
+  funnelCta: string;
+  continueShoppingLabel: string;
+  showImages: boolean;
+  showSku: boolean;
+  showQty: boolean;
 };
 
 export const DEFAULT_STOREFRONT: StorefrontSettings = {
   hidePrices: true,
   hideAddToCart: true,
+  hideSaleFlash: true,
+  hideCheckout: false,
+  priceLabel: "Sur devis",
   buttonLabel: "Demander un devis",
   buttonStyle: "button",
   buttonBg: "#E85D04",
   buttonColor: "#FFFFFF",
+  afterAdd: "drawer",
+  showFloatingButton: true,
   showOnShop: true,
   showOnProduct: true,
   showOnCart: true,
@@ -41,6 +59,13 @@ export const DEFAULT_STOREFRONT: StorefrontSettings = {
   scope: "all",
   productIds: [],
   categoryIds: [],
+  listTitle: "Demande de devis",
+  emptyMessage: "Votre liste est vide. Ajoutez des produits depuis la boutique.",
+  funnelCta: "Envoyer ma demande",
+  continueShoppingLabel: "Retour à la boutique",
+  showImages: true,
+  showSku: false,
+  showQty: true,
 };
 
 function asBool(value: unknown, fallback: boolean) {
@@ -48,6 +73,11 @@ function asBool(value: unknown, fallback: boolean) {
   if (value === "1" || value === "true" || value === "on") return true;
   if (value === "0" || value === "false" || value === "off") return false;
   return fallback;
+}
+
+function asText(value: unknown, fallback: string) {
+  const text = String(value ?? "").trim();
+  return text || fallback;
 }
 
 function asList(value: unknown) {
@@ -66,13 +96,20 @@ export function parseStorefront(value: unknown): StorefrontSettings {
   const audience = raw.audience === "logged_in" ? "logged_in" : DEFAULT_STOREFRONT.audience;
   const scope = raw.scope === "include" || raw.scope === "exclude" ? raw.scope : DEFAULT_STOREFRONT.scope;
   const buttonStyle = raw.buttonStyle === "link" ? "link" : "button";
+  const afterAdd =
+    raw.afterAdd === "stay" || raw.afterAdd === "list" ? raw.afterAdd : DEFAULT_STOREFRONT.afterAdd;
   return {
     hidePrices: asBool(raw.hidePrices, DEFAULT_STOREFRONT.hidePrices),
     hideAddToCart: asBool(raw.hideAddToCart, DEFAULT_STOREFRONT.hideAddToCart),
-    buttonLabel: String(raw.buttonLabel ?? DEFAULT_STOREFRONT.buttonLabel).trim() || DEFAULT_STOREFRONT.buttonLabel,
+    hideSaleFlash: asBool(raw.hideSaleFlash, DEFAULT_STOREFRONT.hideSaleFlash),
+    hideCheckout: asBool(raw.hideCheckout, DEFAULT_STOREFRONT.hideCheckout),
+    priceLabel: asText(raw.priceLabel, DEFAULT_STOREFRONT.priceLabel),
+    buttonLabel: asText(raw.buttonLabel, DEFAULT_STOREFRONT.buttonLabel),
     buttonStyle,
-    buttonBg: String(raw.buttonBg ?? DEFAULT_STOREFRONT.buttonBg).trim() || DEFAULT_STOREFRONT.buttonBg,
-    buttonColor: String(raw.buttonColor ?? DEFAULT_STOREFRONT.buttonColor).trim() || DEFAULT_STOREFRONT.buttonColor,
+    buttonBg: asText(raw.buttonBg, DEFAULT_STOREFRONT.buttonBg),
+    buttonColor: asText(raw.buttonColor, DEFAULT_STOREFRONT.buttonColor),
+    afterAdd,
+    showFloatingButton: asBool(raw.showFloatingButton, DEFAULT_STOREFRONT.showFloatingButton),
     showOnShop: asBool(raw.showOnShop, DEFAULT_STOREFRONT.showOnShop),
     showOnProduct: asBool(raw.showOnProduct, DEFAULT_STOREFRONT.showOnProduct),
     showOnCart: asBool(raw.showOnCart, DEFAULT_STOREFRONT.showOnCart),
@@ -82,6 +119,13 @@ export function parseStorefront(value: unknown): StorefrontSettings {
     scope,
     productIds: asList(raw.productIds),
     categoryIds: asList(raw.categoryIds),
+    listTitle: asText(raw.listTitle, DEFAULT_STOREFRONT.listTitle),
+    emptyMessage: asText(raw.emptyMessage, DEFAULT_STOREFRONT.emptyMessage),
+    funnelCta: asText(raw.funnelCta, DEFAULT_STOREFRONT.funnelCta),
+    continueShoppingLabel: asText(raw.continueShoppingLabel, DEFAULT_STOREFRONT.continueShoppingLabel),
+    showImages: asBool(raw.showImages, DEFAULT_STOREFRONT.showImages),
+    showSku: asBool(raw.showSku, DEFAULT_STOREFRONT.showSku),
+    showQty: asBool(raw.showQty, DEFAULT_STOREFRONT.showQty),
   };
 }
 

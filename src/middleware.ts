@@ -44,6 +44,7 @@ export async function middleware(request: NextRequest) {
     "/canaux",
     "/emails",
     "/segments",
+    "/integrations",
   ];
   const isApp = appPaths.some((p) => path === p || path.startsWith(`${p}/`) || path.startsWith(`${p}.`));
   const isAdmin = path === "/admin" || path.startsWith("/admin/");
@@ -60,7 +61,11 @@ export async function middleware(request: NextRequest) {
   if ((isApp || isAdmin) && !user) {
     const login = request.nextUrl.clone();
     login.pathname = "/login";
-    login.searchParams.set("next", path);
+    login.search = "";
+    const next = path + (request.nextUrl.search || "");
+    if (next.startsWith("/") && !next.startsWith("//")) {
+      login.searchParams.set("next", next);
+    }
     return NextResponse.redirect(login);
   }
 
@@ -95,11 +100,8 @@ export async function middleware(request: NextRequest) {
 
   if ((path === "/login" || path === "/signup") && user) {
     const dest = request.nextUrl.searchParams.get("next");
-    if (dest?.startsWith("/invite/")) {
-      const invite = request.nextUrl.clone();
-      invite.pathname = dest;
-      invite.search = "";
-      return NextResponse.redirect(invite);
+    if (dest?.startsWith("/") && !dest.startsWith("//") && !dest.includes("://")) {
+      return NextResponse.redirect(new URL(dest, request.nextUrl.origin));
     }
     const next = request.nextUrl.clone();
     if (superAdmin) next.pathname = "/admin";
@@ -145,6 +147,8 @@ export const config = {
     "/emails/:path*",
     "/segments",
     "/segments/:path*",
+    "/integrations",
+    "/integrations/:path*",
     "/invite/:path*",
     "/login",
     "/signup",

@@ -83,7 +83,7 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 
 ### Intégrations cœur
 - **Widget JS universel**, Livré.
-- **Plugin WordPress + bloc Gutenberg**, Livré. Vitrine devis Woo (prix, panier, liste, funnel) branchée sur QuoteBuilder.
+- **Plugin WordPress + bloc Gutenberg**, Livré. Vitrine devis Woo (prix, panier, liste, funnel) branchée sur QuoteBuilder. Connexion en un clic depuis le plugin.
 - **Webhook sortant / export JSON**, Livré.
 - **WooCommerce (catalogue + commandes + statuts)**, Partiel. Catalogue livré (import, sync, webhooks, appairage plugin). Plugin vitrine : masquer prix / panier, liste de devis, funnel prérempli. Commandes et statuts Woo à faire.
 

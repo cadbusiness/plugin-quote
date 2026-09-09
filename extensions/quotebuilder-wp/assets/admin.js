@@ -107,6 +107,18 @@
     });
   }
 
+  var sync = document.getElementById("qb-sync");
+  if (sync) {
+    sync.addEventListener("click", function () {
+      var previous = sync.textContent;
+      sync.textContent = "Synchronisation…";
+      post("quotebuilder_sync").then(function (json) {
+        sync.textContent = json.success ? "Catalogue à jour" : previous;
+        if (json.success) setTimeout(function () { window.location.reload(); }, 700);
+      });
+    });
+  }
+
   var refresh = document.getElementById("qb-refresh");
   if (refresh) {
     refresh.addEventListener("click", function () {
