@@ -1,4 +1,4 @@
-import { Chip } from "@/components/ui/chip";
+import { Chip, type ChipTone } from "@/components/ui/chip";
 import { formatPrice, formatRelative } from "@/lib/format";
 
 export type QuoteListExtras = {
@@ -7,7 +7,18 @@ export type QuoteListExtras = {
   priceMin: number | null;
   priceMax: number | null;
   opened: boolean;
+  validationStatus: string;
+  validationApproved: number;
+  validationTotal: number;
 };
+
+function validationTone(status: string): ChipTone {
+  if (status === "approved") return "emerald";
+  if (status === "changes_requested") return "amber";
+  if (status === "partial") return "orange";
+  if (status === "pending") return "violet";
+  return "slate";
+}
 
 export function QuoteProjectCell({ extras }: { extras: QuoteListExtras }) {
   const count = extras.itemCount;
@@ -21,6 +32,17 @@ export function QuoteProjectCell({ extras }: { extras: QuoteListExtras }) {
       </div>
       {count && extras.firstName ? (
         <div className="text-xs tabular-nums text-slate-400">{formatPrice(extras.priceMin, extras.priceMax)}</div>
+      ) : null}
+      {extras.validationTotal > 0 ? (
+        <div className="mt-1">
+          <Chip tone={validationTone(extras.validationStatus)}>
+            {extras.validationStatus === "approved"
+              ? `Validé ${extras.validationApproved}/${extras.validationTotal}`
+              : extras.validationStatus === "changes_requested"
+                ? "Modifs demandées"
+                : `${extras.validationApproved}/${extras.validationTotal} validations`}
+          </Chip>
+        </div>
       ) : null}
     </td>
   );

@@ -20,7 +20,7 @@ export async function listQuotes(
   let query = supabase
     .from("quotes")
     .select(
-      "id, contact_name, contact_email, contact_phone, contact_company, score, score_label, status_id, status, assigned_to, created_at",
+      "id, contact_name, contact_email, contact_phone, contact_company, score, score_label, status_id, status, assigned_to, created_at, validation_status, validation_approved_count, validation_total_count",
     )
     .eq("organization_id", orgId)
     .order("created_at", { ascending: false });
@@ -61,7 +61,13 @@ function viewedAt(value: Json | null | undefined) {
 
 export async function loadQuoteListExtras(
   supabase: SupabaseClient<Database>,
-  quotes: { id: string; status: string }[],
+  quotes: {
+    id: string;
+    status: string;
+    validation_status?: string | null;
+    validation_approved_count?: number | null;
+    validation_total_count?: number | null;
+  }[],
 ): Promise<Map<string, QuoteListExtras>> {
   const extras = new Map<string, QuoteListExtras>();
   for (const quote of quotes) {
@@ -71,6 +77,9 @@ export async function loadQuoteListExtras(
       priceMin: null,
       priceMax: null,
       opened: quote.status !== "new",
+      validationStatus: quote.validation_status ?? "none",
+      validationApproved: quote.validation_approved_count ?? 0,
+      validationTotal: quote.validation_total_count ?? 0,
     });
   }
   const ids = quotes.map((quote) => quote.id);
@@ -78,13 +87,19 @@ export async function loadQuoteListExtras(
 
   const [{ data: items }, { data: rows }] = await Promise.all([
     supabase.from("quote_items").select("quote_id, name, price_min, price_max").in("quote_id", ids),
-    supabase.from("quotes").select("id, status, extracted_params").in("id", ids),
+    supabase
+      .from("quotes")
+      .select("id, status, extracted_params, validation_status, validation_approved_count, validation_total_count")
+      .in("id", ids),
   ]);
 
   for (const row of rows ?? []) {
     const current = extras.get(row.id);
     if (!current) continue;
     current.opened = row.status !== "new" || Boolean(viewedAt(row.extracted_params));
+    current.validationStatus = row.validation_status ?? "none";
+    current.validationApproved = row.validation_approved_count ?? 0;
+    current.validationTotal = row.validation_total_count ?? 0;
   }
 
   for (const item of items ?? []) {

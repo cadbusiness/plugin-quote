@@ -6,6 +6,9 @@ export async function POST(req: Request, { params }: { params: Promise<{ token: 
   const { token } = await params;
   const bundle = await loadProspectByToken(token);
   if (!bundle) return NextResponse.json({ error: "Introuvable" }, { status: 404 });
+  if (bundle.viewer.kind !== "primary") {
+    return NextResponse.json({ error: "Réservé au contact principal" }, { status: 403 });
+  }
   const form = await req.formData();
   const file = form.get("file");
   if (!(file instanceof File)) return NextResponse.json({ error: "Fichier manquant" }, { status: 400 });

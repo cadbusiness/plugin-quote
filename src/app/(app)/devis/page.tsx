@@ -89,6 +89,9 @@ export default async function QuotesPage({
             priceMin: null,
             priceMax: null,
             opened: quote.status !== "new",
+            validationStatus: quote.validation_status ?? "none",
+            validationApproved: quote.validation_approved_count ?? 0,
+            validationTotal: quote.validation_total_count ?? 0,
           };
           return (
             <ClickableRow

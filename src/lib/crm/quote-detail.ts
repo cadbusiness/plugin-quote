@@ -79,6 +79,7 @@ export type QuoteDetail = {
   activities: QuoteActivityView[];
   siblings: QuoteSibling[];
   automations: QuoteAutomation[];
+  collaborators: Tables<"quote_collaborators">[];
   source: string;
   suiviUrl: string | null;
   suiviLastAccess: string | null;
@@ -145,6 +146,14 @@ export function activityLabel(type: string) {
       return "Appel";
     case "campaign_sent":
       return "Campagne email";
+    case "collaborator_invited":
+      return "Décideur invité";
+    case "collaborator_approved":
+      return "Validation décideur";
+    case "collaborator_changes_requested":
+      return "Modifications demandées";
+    case "validation_complete":
+      return "Dossier validé";
     default:
       return type;
   }
@@ -173,6 +182,20 @@ function activityDetail(type: string, payload: Json, memberLabel: Map<string, st
   }
   if (type === "submitted" && typeof data.label === "string") {
     return `Score ${data.score ?? "-"} ${String(data.label).toUpperCase()}`;
+  }
+  if (type === "collaborator_invited") {
+    const name = typeof data.name === "string" ? data.name : "Décideur";
+    const role = typeof data.role_label === "string" ? data.role_label : null;
+    return role ? `${name} · ${role}` : name;
+  }
+  if (type === "collaborator_approved" || type === "collaborator_changes_requested") {
+    const name = typeof data.name === "string" ? data.name : "Décideur";
+    if (typeof data.comment === "string" && data.comment) return `${name} · ${data.comment}`;
+    return name;
+  }
+  if (type === "validation_complete") {
+    const n = typeof data.approved_count === "number" ? data.approved_count : null;
+    return n != null ? `Validé par ${n} décideur${n > 1 ? "s" : ""}` : null;
   }
   return null;
 }
@@ -204,6 +227,7 @@ export async function loadQuoteDetail(
     { data: siblingRows },
     { data: runs },
     { data: assigneeRows },
+    { data: collaborators },
   ] = await Promise.all([
     supabase.from("quote_items").select("*").eq("quote_id", quote.id),
     supabase.from("quote_files").select("*").eq("quote_id", quote.id).order("created_at", { ascending: false }),
@@ -232,6 +256,11 @@ export async function loadQuoteDetail(
     supabase.from("quote_assignees").select("user_id, created_at").eq("quote_id", quote.id).order("created_at", {
       ascending: true,
     }),
+    supabase
+      .from("quote_collaborators")
+      .select("*")
+      .eq("quote_id", quote.id)
+      .order("created_at", { ascending: true }),
   ]);
 
   const runIds = (runs ?? []).map((run) => run.id);
@@ -379,6 +408,7 @@ export async function loadQuoteDetail(
         })),
       };
     }),
+    collaborators: collaborators ?? [],
     suiviUrl: suiviAlive ? `${appUrl()}/suivi/${access.token}` : null,
     suiviLastAccess: access?.last_accessed ? formatRelative(access.last_accessed) : null,
     totals: rangeTotal(items ?? []),
