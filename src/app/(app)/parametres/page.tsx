@@ -12,7 +12,7 @@ const ROWS: { href: string; label: string; hint: string; admin?: boolean }[] = [
     hint: "WooCommerce, Shopify, sync du catalogue",
     admin: true,
   },
-  { href: "/webhooks", label: "API & webhooks", hint: "Notifications vers vos outils", admin: true },
+  { href: "/webhooks", label: "API & webhooks", hint: "Clés MCP, webhooks sortants", admin: true },
   { href: "/templates", label: "Emails", hint: "Templates prospect et commercial", admin: true },
   { href: "/equipe", label: "Équipe", hint: "Membres et rôles", admin: true },
   { href: "/stats?tab=suivi", label: "Suivi Google", hint: "Analytics 4 et Tag Manager", admin: true },

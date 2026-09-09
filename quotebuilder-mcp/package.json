@@ -1,0 +1,49 @@
+{
+  "name": "quotebuilder-mcp",
+  "version": "1.0.0",
+  "description": "MCP Server QuoteBuilder — gérez leads, stats et relances depuis Claude Desktop",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "quotebuilder-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "mcp.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "prepare": "npm run build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "smoke": "npm run build && node scripts/smoke.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "quotebuilder",
+    "claude",
+    "crm",
+    "b2b",
+    "devis"
+  ],
+  "author": "Vinci Liberta LTD",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.11",
+    "typescript": "^5.9.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cadbusiness/plugin-quote.git",
+    "directory": "quotebuilder-mcp"
+  }
+}
