@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
-import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
+import { ListPanel } from "@/components/ui/list-panel";
 import { AcquisitionView } from "@/components/ads/acquisition-view";
 import { loadStatsDashboard } from "@/lib/stats/dashboard";
 import { googleAdsConfigured } from "@/lib/ads/google";
@@ -53,30 +53,20 @@ export default async function AcquisitionPage({
   });
   const pendingCustomers = pendingFromSettings(row?.settings);
   const configured = googleAdsConfigured();
+  const connectHref = configured
+    ? "/api/ads/google/start"
+    : "mailto:hello@quotebuilder.app?subject=Activer%20Google%20Ads";
 
   return (
     <ListPanel>
-      <ListToolbar>
-        <p className="mr-auto text-sm text-slate-500">
-          Combien coûte un devis venu de Google Ads, et combien coûte un client une fois le dossier signé.
+      <div className="border-b border-slate-200 px-4 py-5 lg:px-8">
+        <p className="text-lg font-semibold tracking-tight text-slate-900">
+          Combien coûte un devis venu de Google Ads
         </p>
-        {admin && configured ? (
-          <a
-            href="/api/ads/google/start"
-            className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#D45203]"
-          >
-            {row ? "Reconnecter Google Ads" : "Connecter Google Ads"}
-          </a>
-        ) : null}
-        {admin && !configured ? (
-          <a
-            href="mailto:hello@quotebuilder.app?subject=Activer%20Google%20Ads"
-            className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#D45203]"
-          >
-            Demander l’activation
-          </a>
-        ) : null}
-      </ListToolbar>
+        <p className="mt-1 text-sm leading-relaxed text-slate-500">
+          Et combien coûte un client une fois le dossier signé.
+        </p>
+      </div>
       <AcquisitionView
         stats={stats}
         connection={row ? mapAdsConnection(row) : null}
@@ -87,6 +77,7 @@ export default async function AcquisitionPage({
         pick={query.pick === "1" || (!!row && row.status === "pending" && pendingCustomers.length > 0)}
         error={query.error}
         admin={admin}
+        connectHref={connectHref}
       />
     </ListPanel>
   );
