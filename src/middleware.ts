@@ -62,7 +62,8 @@ export async function middleware(request: NextRequest) {
     const login = request.nextUrl.clone();
     login.pathname = "/login";
     login.search = "";
-    const next = path + (request.nextUrl.search || "");
+    const qs = request.nextUrl.searchParams.toString();
+    const next = qs ? `${path}?${qs}` : path;
     if (next.startsWith("/") && !next.startsWith("//")) {
       login.searchParams.set("next", next);
     }
