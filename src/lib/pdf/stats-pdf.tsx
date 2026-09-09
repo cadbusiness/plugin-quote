@@ -38,7 +38,7 @@ export function StatsPdf({
 
         <View style={styles.kpis}>
           {stats.kpis.map((kpi) => (
-            <View key={kpi.label} style={styles.kpi}>
+            <View key={kpi.id} style={styles.kpi}>
               <Text style={styles.kpiLabel}>{kpi.label}</Text>
               <Text style={styles.kpiValue}>{kpi.value}</Text>
               <Text style={styles.label}>{kpi.hint}</Text>

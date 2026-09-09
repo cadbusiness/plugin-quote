@@ -41,13 +41,26 @@ export type MonthPoint = {
   abandons: number;
 };
 
+export type KpiId = "visits" | "quotes" | "conversion" | "volume" | "contact";
+
 export type Kpi = {
+  id: KpiId;
   label: string;
   value: string;
   hint: string;
   deltaLabel: string;
   deltaTone: "good" | "bad" | "muted";
   tone: BubbleTone;
+};
+
+export const HOME_PULSE_IDS: KpiId[] = ["visits", "quotes", "conversion", "volume"];
+
+export const KPI_HREF: Record<KpiId, string> = {
+  visits: "/stats",
+  quotes: "/devis",
+  conversion: "/stats",
+  volume: "/stats?tab=pipeline",
+  contact: "/devis",
 };
 
 export type StatsStory = {
@@ -221,7 +234,7 @@ function buildStory(input: {
   };
 }
 
-function deltaMeta(current: number, previous: number, invert = false): Pick<Kpi, "deltaLabel" | "deltaTone"> {
+export function deltaMeta(current: number, previous: number, invert = false): Pick<Kpi, "deltaLabel" | "deltaTone"> {
   const pct = deltaPct(current, previous);
   if (pct == null) return { deltaLabel: "vs période préc.", deltaTone: "muted" };
   const rounded = Math.abs(Math.round(pct));
@@ -266,11 +279,11 @@ function deltaPct(current: number, previous: number) {
   return ((current - previous) / previous) * 100;
 }
 
-function formatKpiNumber(n: number) {
+export function formatKpiNumber(n: number) {
   return new Intl.NumberFormat("fr-FR").format(n);
 }
 
-function formatKpiEur(n: number) {
+export function formatKpiEur(n: number) {
   return new Intl.NumberFormat("fr-FR", {
     style: "currency",
     currency: "EUR",
@@ -536,33 +549,43 @@ export async function loadStatsDashboard(
   const avgDelay = firstChangeHours.length
     ? firstChangeHours.reduce((a, b) => a + b, 0) / firstChangeHours.length
     : null;
-  const prevDelay = prevFirstChangeHours.length
-    ? prevFirstChangeHours.reduce((a, b) => a + b, 0) / prevFirstChangeHours.length
-    : null;
 
   const abandonedNow = current.sessions.filter((s) => !s.submitted_quote_id);
   const abandonedEmail = abandonedNow.filter((s) => draftEmail(s.contact_draft));
-  const abandonedPrev = previous.sessions.filter((s) => !s.submitted_quote_id);
   const contactRate = rate(current.contacted, current.submitted) ?? 0;
   const prevContactRate = rate(previous.contacted, previous.submitted) ?? 0;
 
+  const conversion = rate(current.submitted, current.visitors) ?? 0;
+  const prevConversion = rate(previous.submitted, previous.visitors) ?? 0;
+
   const kpis: Kpi[] = [
     {
-      label: "Devis reçus",
+      id: "visits",
+      label: "Visites",
+      value: formatKpiNumber(current.visitors),
+      hint: "funnel ouvert",
+      tone: "slate",
+      ...deltaMeta(current.visitors, previous.visitors),
+    },
+    {
+      id: "quotes",
+      label: "Devis",
       value: formatKpiNumber(current.submitted),
-      hint: current.submitted ? "sur la période" : "en attente du premier",
+      hint: current.submitted ? "reçus" : "en attente du premier",
       tone: "orange",
       ...deltaMeta(current.submitted, previous.submitted),
     },
     {
-      label: "Taux de rappel",
-      value: `${Math.round(contactRate)}%`,
-      hint: current.submitted ? `${current.contacted} sur ${current.submitted}` : "-",
-      tone: "emerald",
-      ...deltaMeta(contactRate, prevContactRate),
+      id: "conversion",
+      label: "Conversion",
+      value: `${Math.round(conversion)}%`,
+      hint: current.visitors ? `${current.submitted} / ${current.visitors}` : "-",
+      tone: "orange",
+      ...deltaMeta(conversion, prevConversion),
     },
     {
-      label: "CA en cours",
+      id: "volume",
+      label: "CA",
       value: formatKpiEur(currentValue),
       hint:
         current.submitted && currentValue > 0
@@ -574,20 +597,12 @@ export async function loadStatsDashboard(
       ...deltaMeta(currentValue, previousValue),
     },
     {
-      label: "Délai de réponse",
-      value: formatKpiHours(avgDelay),
-      hint: avgDelay == null ? "1er changement de statut" : "moyenne depuis soumission",
-      tone: avgDelay != null && avgDelay > 4 ? "amber" : "slate",
-      ...(avgDelay != null && prevDelay != null
-        ? deltaMeta(avgDelay, prevDelay, true)
-        : { deltaLabel: "-", deltaTone: "muted" as const }),
-    },
-    {
-      label: "Abandons",
-      value: formatKpiNumber(abandonedNow.length),
-      hint: abandonedEmail.length ? `${abandonedEmail.length} avec email` : "sans email",
-      tone: abandonedNow.length ? "rose" : "slate",
-      ...deltaMeta(abandonedNow.length, abandonedPrev.length, true),
+      id: "contact",
+      label: "Rappel",
+      value: `${Math.round(contactRate)}%`,
+      hint: current.submitted ? `${current.contacted} sur ${current.submitted}` : "-",
+      tone: "emerald",
+      ...deltaMeta(contactRate, prevContactRate),
     },
   ];
 

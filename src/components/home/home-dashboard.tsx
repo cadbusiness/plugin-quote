@@ -3,11 +3,12 @@ import type { ReactNode } from "react";
 import { Chip, scoreTone, statusTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
 import { DataTable } from "@/components/ui/list-panel";
-import { RingGauge, type GaugeTone } from "@/components/ui/gauge";
 import { AbandonGauges } from "@/components/crm/abandon-gauges";
-import { formatEur, formatPercent } from "@/lib/format";
+import { MonthChart } from "@/components/stats/month-chart";
+import { KpiStrip } from "@/components/stats/kpi-strip";
 import { WORKFLOW_STATUS_LABELS } from "@/lib/workflows/labels";
 import type { WorkflowStatus } from "@/lib/workflows/types";
+import { HOME_PULSE_IDS } from "@/lib/stats/dashboard";
 import { moduleSpan, type HomeDashboard, type HomeModuleId } from "@/lib/crm/home";
 
 const CAMPAIGN: Record<string, { tone: "amber" | "sky" | "emerald" | "violet"; label: string }> = {
@@ -54,38 +55,6 @@ function ModuleFrame({
 
 function Empty({ children }: { children: ReactNode }) {
   return <p className="px-4 py-5 text-sm text-slate-500 lg:px-5">{children}</p>;
-}
-
-function StatGauge({
-  href,
-  value,
-  max,
-  tone,
-  label,
-  hint,
-}: {
-  href: string;
-  value: number;
-  max: number;
-  tone: GaugeTone;
-  label: string;
-  hint: string;
-}) {
-  return (
-    <Link href={href} className="flex items-center gap-2.5 bg-white px-3 py-3 hover:bg-orange-50/50">
-      <RingGauge
-        value={value}
-        pct={max <= 0 ? 0 : value / max}
-        tone={tone}
-        size="sm"
-        label={`${label}: ${value}`}
-      />
-      <div className="min-w-0">
-        <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
-        <p className="mt-0.5 truncate text-xs text-slate-500">{hint}</p>
-      </div>
-    </Link>
-  );
 }
 
 function QuotesModule({ data }: { data: HomeDashboard }) {
@@ -165,54 +134,11 @@ function AbandonsModule({ data }: { data: HomeDashboard }) {
 }
 
 function StatsModule({ data }: { data: HomeDashboard }) {
-  const stats = data.stats;
-  if (!stats) {
-    return (
-      <ModuleFrame title="Statistiques" href="/stats" hrefLabel="Rapport">
-        <Empty>Pas encore de volume ce mois.</Empty>
-      </ModuleFrame>
-    );
-  }
-  const visitors = stats.visitors;
-  const submitted = stats.submitted;
-  const contacted = stats.contacted;
-  const won = stats.won;
+  const months = data.stats?.months ?? [];
+  const hasSeries = months.some((month) => month.quotes || month.won || month.abandons);
   return (
-    <ModuleFrame title="Statistiques" href="/stats" hrefLabel="Rapport">
-      <div className="grid grid-cols-2 gap-px bg-slate-200">
-        <StatGauge
-          href="/stats"
-          value={submitted}
-          max={Math.max(visitors, submitted, 1)}
-          tone="orange"
-          label="Devis"
-          hint={visitors ? `${formatPercent((submitted / visitors) * 100)} visites` : "ce mois"}
-        />
-        <StatGauge
-          href="/devis"
-          value={contacted}
-          max={Math.max(submitted, 1)}
-          tone="emerald"
-          label="Rappelés"
-          hint={submitted ? `${contacted} / ${submitted}` : "-"}
-        />
-        <StatGauge
-          href="/devis"
-          value={won}
-          max={Math.max(submitted, 1)}
-          tone="slate"
-          label="Signés"
-          hint={formatEur(stats.wonValue)}
-        />
-        <StatGauge
-          href="/sessions"
-          value={stats.abandonsWithEmail}
-          max={Math.max(stats.abandonsTotal, stats.abandonsWithEmail, 1)}
-          tone="amber"
-          label="Relançables"
-          hint={formatEur(stats.pipelineTotal)}
-        />
-      </div>
+    <ModuleFrame title="Tendance" href="/stats" hrefLabel="Rapport">
+      {hasSeries ? <MonthChart months={months} /> : <Empty>Pas encore de volume ce mois.</Empty>}
     </ModuleFrame>
   );
 }
@@ -364,21 +290,27 @@ const RENDER: Record<HomeModuleId, (data: HomeDashboard) => ReactNode> = {
 };
 
 export function HomeDashboardView({ data }: { data: HomeDashboard }) {
-  if (!data.modules.length) {
+  const pulse = (data.stats?.kpis ?? []).filter((kpi) => HOME_PULSE_IDS.includes(kpi.id));
+  if (!data.modules.length && !pulse.length) {
     return <Empty>Aucun module affiché. Ajoutez-en un pour composer votre tableau de bord.</Empty>;
   }
   return (
-    <div className="grid gap-px bg-slate-200 lg:grid-cols-2">
-      {data.modules.map((id) => {
-        const render = RENDER[id];
-        if (!render) return null;
-        const span = moduleSpan(id);
-        return (
-          <div key={id} className={span === "full" ? "min-h-0 lg:col-span-2" : "min-h-0"}>
-            {render(data)}
-          </div>
-        );
-      })}
+    <div className="flex flex-col gap-px bg-slate-200">
+      {pulse.length ? <KpiStrip items={pulse} compact /> : null}
+      {data.modules.length ? (
+        <div className="grid gap-px bg-slate-200 lg:grid-cols-2">
+          {data.modules.map((id) => {
+            const render = RENDER[id];
+            if (!render) return null;
+            const span = moduleSpan(id);
+            return (
+              <div key={id} className={span === "full" ? "min-h-0 lg:col-span-2" : "min-h-0"}>
+                {render(data)}
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
     </div>
   );
 }
