@@ -91,6 +91,12 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 - **Templates email personnalisables** — Livré.
 - **Templates PDF personnalisables** — Livré.
 
+### Canaux & email marketing
+- **Canaux de communication (boîte org + boîte de chaque commercial)** — Livré. `/canaux`. Gmail, Outlook, IMAP. Instagram / Facebook / WhatsApp enregistrés, OAuth ensuite.
+- **Inbox + réponse depuis le canal** — Livré. Webhook inbound, matching sur l’email du devis.
+- **Campagnes email (personnel ou groupe)** — Livré. `/emails`, builder drag-and-drop.
+- **Segmentation (funnel, B2B/B2C, score, déjà relancés)** — Livré. `/segments`.
+
 ---
 
 ## Phase 2 — ensuite
@@ -105,16 +111,16 @@ Hors menu tant que le funnel et le catalogue ne sont pas au niveau.
 
 ### Catalogue & CRM
 - **Vue pipeline Kanban** — Ensuite.
-- **Newsletter segmentée par données de configuration** — Ensuite.
+- **Newsletter segmentée par données de configuration** — Livré (campagnes `/emails` + `/segments`).
 
 ### Automatisations avancées
 - **Nurturing T+7 j (contenu sectoriel)** — Ensuite.
 - **Réactivation T+30 j** — Ensuite.
 - **A/B test de parcours** — Ensuite.
-- **Tags / segments contacts** — Ensuite.
+- **Tags / segments contacts** — Livré (`/segments`).
 - **Branches sur ouverture / clic email** — Ensuite.
 - **Builder IA de parcours** — Ensuite.
-- **SMTP / domaine d’envoi custom** — Ensuite.
+- **SMTP / domaine d’envoi custom** — Partiel. Boîte connectée comme reply-to / from, pas encore de domaine SPF dédié.
 
 ### Pilotage
 - **Taux de complétion par étape du funnel** — Livré (tunnel `/stats`).
@@ -163,4 +169,4 @@ Les clients et agences publient des funnels configurés. D’autres les installe
 
 QuoteBuilder n’est pas un formulaire de contact, ni un thème de site.  
 On ne met pas Quickly en avant sur la landing.  
-On ne pose pas Kanban, newsletter ou marketplace dans le menu ou le schéma tant que le funnel et le catalogue ne sont pas au niveau.
+On ne pose pas Kanban ou marketplace dans le menu tant que le funnel et le catalogue ne sont pas au niveau.

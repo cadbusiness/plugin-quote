@@ -7,7 +7,7 @@ export async function logActivity(
     organizationId: string;
     quoteId: string;
     actorId?: string | null;
-    type: "submitted" | "status_changed" | "assigned" | "note_added" | "email_sent" | "message_sent" | "call_logged";
+    type: "submitted" | "status_changed" | "assigned" | "note_added" | "email_sent" | "message_sent" | "call_logged" | "campaign_sent";
     payload?: Record<string, unknown>;
   },
 ) {

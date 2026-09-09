@@ -17,9 +17,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const [{ data: notifications }, snapshot] = await Promise.all([
     supabase
       .from("notifications")
-      .select("id, body, quote_id")
+      .select("id, body, quote_id, type, created_at, read_at")
       .eq("user_id", ctx.userId)
-      .is("read_at", null)
       .order("created_at", { ascending: false })
       .limit(20),
     getSidebarSnapshot(supabase, ctx.organization.id),

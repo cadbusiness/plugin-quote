@@ -7,13 +7,16 @@ import {
   BarChart3,
   CircleHelp,
   Clock,
+  Filter,
   Inbox,
   LayoutDashboard,
   LogOut,
+  Mail,
   Package,
   PanelLeftClose,
   PanelLeftOpen,
   PanelsTopLeft,
+  Radio,
   Settings,
   Shield,
   Store,
@@ -49,6 +52,8 @@ const GROUPS: { label: string; items: Item[] }[] = [
       { href: "/devis", label: "Demandes", icon: Inbox },
       { href: "/sessions", label: "Abandons", icon: Clock, exact: true },
       { href: "/automations", label: "Automatisations", icon: Zap, exact: true, admin: true },
+      { href: "/emails", label: "Emails", icon: Mail },
+      { href: "/segments", label: "Segmentation", icon: Filter },
     ],
   },
   {
@@ -56,6 +61,7 @@ const GROUPS: { label: string; items: Item[] }[] = [
     items: [
       { href: "/stats", label: "Statistiques", icon: BarChart3, exact: true },
       { href: "/equipe", label: "Équipe", icon: Users, exact: true, admin: true },
+      { href: "/canaux", label: "Canaux", icon: Radio },
     ],
   },
 ];

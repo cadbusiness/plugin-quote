@@ -307,5 +307,5 @@ export async function markNotificationsRead() {
     .update({ read_at: new Date().toISOString() })
     .eq("user_id", ctx.userId)
     .is("read_at", null);
-  revalidatePath("/devis");
+  revalidatePath("/", "layout");
 }
