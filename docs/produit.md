@@ -14,7 +14,7 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 ## Cœur, maintenant
 
 ### Funnel
-- **Création guidée (secteur, type, écrans, catalogue, nom)**, Livré. Dialog multi-étapes, plus un champ nom + bouton.
+- **Création guidée (famille → template, type, écrans, catalogue, nom)**, Livré. Dialog multi-étapes, métier de l’espace présélectionné, plus un champ nom + bouton.
 - **Éditeur de steps (réordonner en drag-and-drop)**, Livré. Réordonner les écrans, pas un builder visuel type Typeform.
 - **Steps : choix multiple, texte, fichier, produits, identité, chat IA, soumission**, Partiel. Slider dédié et écran récap explicite absents ; le nombre couvre le dimensionnement.
 - **3 types : formulaire / chat IA / catalogue**, Livré. Le catalogue est une vitrine : catégories, fiches produits, ajout au devis, demande globale.

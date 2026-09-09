@@ -5,7 +5,8 @@ import { DataTable, ListPanel } from "@/components/ui/list-panel";
 import { Chip } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
 import { CreateFunnelDialog } from "@/components/dashboard/create-funnel-dialog";
-import { getFunnelTemplate } from "@/lib/funnels/templates";
+import { getTemplateFamily } from "@/lib/funnels/templates";
+import { parseOrgFamily } from "@/lib/funnels/families";
 import { funnelKindLabel, funnelKindTone, parseFunnelKind } from "@/lib/funnels/kind";
 
 export default async function FunnelsPage() {
@@ -23,9 +24,9 @@ export default async function FunnelsPage() {
 
   return (
     <ListPanel>
-      <DataTable headers={["Funnel", "Secteur", "Type", "Lien public"]}>
+      <DataTable headers={["Funnel", "Famille", "Type", "Lien public"]}>
         {list.map((funnel) => {
-          const template = getFunnelTemplate(funnel.sector);
+          const family = getTemplateFamily(funnel.sector);
           const href = `/c/${ctx.organization.slug}/${funnel.slug}`;
           const kind = parseFunnelKind(funnel.theme, funnel.wizard_enabled, funnel.chat_enabled);
           return (
@@ -37,8 +38,8 @@ export default async function FunnelsPage() {
                 </Chip>
               </td>
               <td className="px-4 py-3 lg:px-6">
-                <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ${template.tint}`}>
-                  {template.label}
+                <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ${family.tint}`}>
+                  {family.label}
                 </span>
               </td>
               <td className="px-4 py-3 lg:px-6">
@@ -61,10 +62,13 @@ export default async function FunnelsPage() {
       </DataTable>
       {list.length === 0 ? (
         <p className="px-4 py-10 text-sm text-slate-500 lg:px-6">
-          Créez un premier funnel, un template de secteur, vos écrans, puis le catalogue.
+          Créez un premier funnel : une famille, un template, vos écrans, puis le catalogue.
         </p>
       ) : null}
-      <CreateFunnelDialog existingFunnels={list.map((f) => ({ id: f.id, name: f.name }))} />
+      <CreateFunnelDialog
+        existingFunnels={list.map((f) => ({ id: f.id, name: f.name }))}
+        defaultFamily={parseOrgFamily(ctx.organization.branding)}
+      />
     </ListPanel>
   );
 }

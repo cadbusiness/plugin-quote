@@ -1,10 +1,15 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { createFunnel } from "@/app/(app)/actions";
 import { ListAddRow } from "@/components/ui/list-panel";
-import { FUNNEL_TEMPLATES, getFunnelTemplate } from "@/lib/funnels/templates";
-import { catalogDefaultName, FUNNEL_KIND_OPTIONS } from "@/lib/funnels/kind";
+import { FUNNEL_FAMILIES, type FunnelFamilyId } from "@/lib/funnels/families";
+import {
+  defaultTemplateForFamily,
+  getFunnelTemplate,
+  templatesForFamily,
+} from "@/lib/funnels/templates";
+import { catalogDefaultName, FUNNEL_KIND_OPTIONS, funnelKindLabel } from "@/lib/funnels/kind";
 import type { FunnelKind } from "@/lib/funnels/builder";
 import type { ScreenType } from "@/lib/wizard/types";
 
@@ -23,26 +28,64 @@ const CATALOG_SCREENS = [
   { label: "Demande globale", hint: "Une seule demande pour tout le panier" },
 ];
 
-export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: ExistingFunnel[] }) {
+function seedFromFamily(family: FunnelFamilyId) {
+  const template = defaultTemplateForFamily(family);
+  return {
+    family,
+    sector: template.id,
+    kind: template.defaultKind,
+    name: template.defaultKind === "catalog" ? catalogDefaultName(template.defaultName) : template.defaultName,
+  };
+}
+
+export function CreateFunnelDialog({
+  existingFunnels,
+  defaultFamily,
+}: {
+  existingFunnels: ExistingFunnel[];
+  defaultFamily?: FunnelFamilyId | null;
+}) {
+  const startFamily = defaultFamily ?? "custom";
+  const startFamilyRef = useRef(startFamily);
+  startFamilyRef.current = startFamily;
+  const seed = seedFromFamily(startFamily);
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
-  const [sector, setSector] = useState("kitchen");
-  const [name, setName] = useState(getFunnelTemplate("kitchen").defaultName);
-  const [kind, setKind] = useState<FunnelKind>("form");
+  const [family, setFamily] = useState<FunnelFamilyId>(seed.family);
+  const [showAllFamilies, setShowAllFamilies] = useState(!defaultFamily);
+  const [sector, setSector] = useState(seed.sector);
+  const [name, setName] = useState(seed.name);
+  const [kind, setKind] = useState<FunnelKind>(seed.kind);
   const [screens, setScreens] = useState<ScreenType[]>(["questions", "suggestions", "customize", "contact"]);
   const [catalogFrom, setCatalogFrom] = useState("");
   const [pending, startTransition] = useTransition();
 
+  function reset(nextFamily = startFamilyRef.current) {
+    const next = seedFromFamily(nextFamily);
+    setStep(0);
+    setFamily(next.family);
+    setShowAllFamilies(!defaultFamily);
+    setSector(next.sector);
+    setKind(next.kind);
+    setName(next.name);
+    setScreens(["questions", "suggestions", "customize", "contact"]);
+    setCatalogFrom("");
+  }
+
+  function openDialog() {
+    reset();
+    setOpen(true);
+  }
+
   useEffect(() => {
     function openFromHash() {
       if (window.location.hash === "#nouveau") {
-        setOpen(true);
+        openDialog();
         history.replaceState(null, "", window.location.pathname + window.location.search);
       }
     }
     function openFromEvent() {
-      setOpen(true);
-      setStep(0);
+      openDialog();
     }
     openFromHash();
     window.addEventListener("hashchange", openFromHash);
@@ -58,9 +101,19 @@ export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: Exist
     setName(nextKind === "catalog" ? catalogDefaultName(template.defaultName) : template.defaultName);
   }
 
-  function pickSector(id: string) {
+  function pickFamily(id: FunnelFamilyId) {
+    const template = defaultTemplateForFamily(id);
+    setFamily(id);
+    setSector(template.id);
+    setKind(template.defaultKind);
+    applyName(template.id, template.defaultKind);
+  }
+
+  function pickTemplate(id: string) {
+    const template = getFunnelTemplate(id);
     setSector(id);
-    applyName(id, kind);
+    setKind(template.defaultKind);
+    applyName(id, template.defaultKind);
   }
 
   function pickKind(next: FunnelKind) {
@@ -96,9 +149,14 @@ export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: Exist
     });
   }
 
+  const visibleFamilies = showAllFamilies
+    ? FUNNEL_FAMILIES
+    : FUNNEL_FAMILIES.filter((item) => item.id === family);
+  const familyTemplates = templatesForFamily(family);
+
   return (
     <>
-      <ListAddRow onClick={() => setOpen(true)}>Ajouter un funnel</ListAddRow>
+      <ListAddRow onClick={openDialog}>Ajouter un funnel</ListAddRow>
 
       {open ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -107,14 +165,14 @@ export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: Exist
             role="dialog"
             aria-modal="true"
             aria-labelledby="create-funnel-title"
-            className="relative z-10 flex max-h-[min(36rem,calc(100dvh-2rem))] w-full max-w-2xl flex-col overflow-hidden rounded-xl bg-white shadow-xl"
+            className="relative z-10 flex max-h-[min(40rem,calc(100dvh-2rem))] w-full max-w-4xl flex-col overflow-hidden rounded-xl bg-white shadow-xl"
           >
             <div className="border-b border-slate-100 px-5 py-4">
               <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#E85D04]">
                 Nouveau funnel · {step + 1} / 3
               </p>
               <h2 id="create-funnel-title" className="mt-1 text-lg font-semibold text-slate-900">
-                {step === 0 && "Pour quel secteur ?"}
+                {step === 0 && "Famille et template"}
                 {step === 1 && "Parcours et écrans"}
                 {step === 2 && "Catalogue"}
               </h2>
@@ -122,23 +180,63 @@ export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: Exist
 
             <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
               {step === 0 ? (
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {FUNNEL_TEMPLATES.map((template) => {
-                    const on = sector === template.id;
-                    return (
+                <div className="grid gap-4 sm:grid-cols-[14rem_minmax(0,1fr)]">
+                  <div>
+                    <p className="mb-2 text-xs font-medium uppercase tracking-[0.12em] text-slate-400">Famille</p>
+                    <div className="grid gap-2">
+                      {visibleFamilies.map((item) => {
+                        const on = family === item.id;
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => pickFamily(item.id)}
+                            className={`rounded-lg px-3 py-2.5 text-left ring-1 transition-colors ${
+                              on ? `${item.tint} ring-current` : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
+                            }`}
+                          >
+                            <span className="block text-sm font-medium">{item.label}</span>
+                            <span className="mt-0.5 block text-xs leading-5 opacity-80">{item.blurb}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {!showAllFamilies ? (
                       <button
-                        key={template.id}
                         type="button"
-                        onClick={() => pickSector(template.id)}
-                        className={`rounded-lg px-3 py-3 text-left ring-1 transition-colors ${
-                          on ? `${template.tint} ring-current` : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
-                        }`}
+                        onClick={() => setShowAllFamilies(true)}
+                        className="mt-3 text-sm font-medium text-[#E85D04] hover:text-[#d35400]"
                       >
-                        <span className="block text-sm font-medium">{template.label}</span>
-                        <span className="mt-1 block text-xs leading-5 opacity-80">{template.blurb}</span>
+                        Autre famille
                       </button>
-                    );
-                  })}
+                    ) : null}
+                  </div>
+                  <div>
+                    <p className="mb-2 text-xs font-medium uppercase tracking-[0.12em] text-slate-400">Template</p>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      {familyTemplates.map((template) => {
+                        const on = sector === template.id;
+                        return (
+                          <button
+                            key={template.id}
+                            type="button"
+                            onClick={() => pickTemplate(template.id)}
+                            className={`rounded-lg px-3 py-3 text-left ring-1 transition-colors ${
+                              on ? `${template.tint} ring-current` : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
+                            }`}
+                          >
+                            <span className="flex items-center justify-between gap-2">
+                              <span className="text-sm font-medium">{template.label}</span>
+                              <span className="shrink-0 text-[11px] font-medium opacity-70">
+                                {funnelKindLabel(template.defaultKind)}
+                              </span>
+                            </span>
+                            <span className="mt-1 block text-xs leading-5 opacity-80">{template.blurb}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               ) : null}
 
@@ -155,7 +253,7 @@ export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: Exist
                   <div>
                     <p className="text-sm font-medium text-slate-900">Type</p>
                     <p className="mt-0.5 text-xs text-slate-500">
-                      Formulaire, chat, ou catalogue à parcourir. Un funnel, un parcours.
+                      Formulaire, chat, ou catalogue à parcourir. Un funnel, un parcours. Pré-rempli selon le template.
                     </p>
                     <div className="mt-2 grid gap-2">
                       {FUNNEL_KIND_OPTIONS.map((item) => {

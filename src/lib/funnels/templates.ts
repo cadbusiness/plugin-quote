@@ -1,4 +1,14 @@
 import type { Json } from "@/lib/db/database.types";
+import type { FunnelKind } from "@/lib/funnels/builder";
+import {
+  catalogSteps,
+  equipSteps,
+  makeSteps,
+  projectSteps,
+  rentalSteps,
+  serviceSteps,
+} from "@/lib/funnels/archetypes";
+import { getFunnelFamily, type FunnelFamily, type FunnelFamilyId } from "@/lib/funnels/families";
 import type { QuestionType, ScreenType } from "@/lib/wizard/types";
 
 export type TemplateQuestion = {
@@ -19,6 +29,8 @@ export type TemplateStep = {
 
 export type FunnelTemplate = {
   id: string;
+  family: FunnelFamilyId;
+  defaultKind: FunnelKind;
   label: string;
   blurb: string;
   defaultName: string;
@@ -45,28 +57,32 @@ const customizeStep: TemplateStep = {
   screen_type: "customize",
 };
 
-export const CATALOG_FUNNEL_STEPS: TemplateStep[] = [
-  {
-    title: "Catalogue",
-    subtitle: "Parcourez les gammes et ajoutez les produits au devis",
-    screen_type: "suggestions",
-  },
-  {
-    title: "Votre devis",
-    subtitle: "Quantités, options et précisions",
-    screen_type: "customize",
-  },
-  contactStep,
-];
+export const CATALOG_FUNNEL_STEPS: TemplateStep[] = catalogSteps();
 
 function choices(items: { value: string; label: string; description?: string }[]): Json {
   return { choices: items };
 }
 
+function thin(
+  id: string,
+  family: FunnelFamilyId,
+  defaultKind: FunnelKind,
+  label: string,
+  blurb: string,
+  defaultName: string,
+  tint: string,
+  accent: string,
+  steps: TemplateStep[],
+): FunnelTemplate {
+  return { id, family, defaultKind, label, blurb, defaultName, accent, tint, steps };
+}
+
 export const FUNNEL_TEMPLATES: FunnelTemplate[] = [
   {
     id: "racking",
-    label: "Rayonnage & stockage",
+    family: "racking",
+    defaultKind: "form",
+    label: "Configurateur projet",
     blurb: "Type d’espace, surface, charge, puis les gammes adaptées.",
     defaultName: "Funnel rayonnage",
     accent: "#D97706",
@@ -132,8 +148,43 @@ export const FUNNEL_TEMPLATES: FunnelTemplate[] = [
       contactStep,
     ],
   },
+  thin(
+    "racking_catalog",
+    "racking",
+    "catalog",
+    "Catalogue gammes",
+    "Le prospect parcourt vos travées et ajoute au devis.",
+    "Catalogue rayonnage",
+    "bg-amber-50 text-amber-800 ring-amber-200",
+    "#D97706",
+    catalogSteps(),
+  ),
+  thin(
+    "racking_chat",
+    "racking",
+    "chat",
+    "Brief chat",
+    "Le prospect décrit l’espace, l’IA cadré le besoin.",
+    "Chat rayonnage",
+    "bg-amber-50 text-amber-800 ring-amber-200",
+    "#D97706",
+    equipSteps({
+      title: "Votre stockage",
+      subtitle: "Décrivez l’espace à équiper",
+      spaceLabel: "Type d’espace",
+      spaces: [
+        { value: "entrepot", label: "Entrepôt", description: "Palettes, allées" },
+        { value: "commerce", label: "Commerce", description: "Réserve, picking" },
+        { value: "atelier", label: "Atelier", description: "Outillage, charges" },
+        { value: "archive", label: "Archives", description: "Rayonnage léger" },
+      ],
+      suggestions: "Gammes adaptées à votre brief",
+    }),
+  ),
   {
     id: "kitchen",
+    family: "habitat",
+    defaultKind: "form",
     label: "Cuisiniste",
     blurb: "Pièce, style, budget, le prospect compose avant l’appel.",
     defaultName: "Funnel cuisine",
@@ -192,6 +243,8 @@ export const FUNNEL_TEMPLATES: FunnelTemplate[] = [
   },
   {
     id: "wood",
+    family: "habitat",
+    defaultKind: "form",
     label: "Menuisier",
     blurb: "Usage, essence, dimensions, uniquement ce que vous fabriquez.",
     defaultName: "Funnel menuiserie",
@@ -247,6 +300,8 @@ export const FUNNEL_TEMPLATES: FunnelTemplate[] = [
   },
   {
     id: "garden",
+    family: "habitat",
+    defaultKind: "form",
     label: "Paysagiste",
     blurb: "Surface, usage, entretien, le projet se compose avant le RDV.",
     defaultName: "Funnel jardin",
@@ -298,8 +353,21 @@ export const FUNNEL_TEMPLATES: FunnelTemplate[] = [
       contactStep,
     ],
   },
+  thin(
+    "habitat_catalog",
+    "habitat",
+    "catalog",
+    "Catalogue aménagement",
+    "Gammes cuisine, menuiserie ou jardin à parcourir.",
+    "Catalogue habitat",
+    "bg-rose-50 text-rose-800 ring-rose-200",
+    "#E11D48",
+    catalogSteps(),
+  ),
   {
     id: "rental",
+    family: "events",
+    defaultKind: "form",
     label: "Location matériel",
     blurb: "Durée, capacité, options, une demande complète, pas un appel à vide.",
     defaultName: "Funnel location",
@@ -351,8 +419,65 @@ export const FUNNEL_TEMPLATES: FunnelTemplate[] = [
       contactStep,
     ],
   },
+  thin(
+    "events_catering",
+    "events",
+    "form",
+    "Traiteur",
+    "Date, lieu, convives, le brief arrive avant le devis.",
+    "Funnel traiteur",
+    "bg-sky-50 text-sky-800 ring-sky-200",
+    "#0284C7",
+    rentalSteps({
+      title: "Votre événement",
+      subtitle: "Date, lieu et nombre de convives",
+      categoryLabel: "Type de prestation",
+      categories: [
+        { value: "cocktail", label: "Cocktail / standing" },
+        { value: "seated", label: "Assis" },
+        { value: "buffet", label: "Buffet" },
+        { value: "other", label: "Autre" },
+      ],
+      suggestions: "Formules adaptées à votre brief",
+    }),
+  ),
+  thin(
+    "events_venue",
+    "events",
+    "form",
+    "Chapiteaux & agence",
+    "Durée, jauge, options — un brief événementiel, pas un appel.",
+    "Funnel événementiel",
+    "bg-sky-50 text-sky-800 ring-sky-200",
+    "#0284C7",
+    rentalSteps({
+      title: "Votre événement",
+      subtitle: "Jauge, lieu et durée",
+      categoryLabel: "Type d’événement",
+      categories: [
+        { value: "tent", label: "Chapiteau / structure" },
+        { value: "corporate", label: "Séminaire / soirée" },
+        { value: "private", label: "Privé" },
+        { value: "other", label: "Autre" },
+      ],
+      suggestions: "Structures et options de votre catalogue",
+    }),
+  ),
+  thin(
+    "events_catalog",
+    "events",
+    "catalog",
+    "Catalogue événementiel",
+    "Matériel, formules ou structures à parcourir.",
+    "Catalogue événementiel",
+    "bg-sky-50 text-sky-800 ring-sky-200",
+    "#0284C7",
+    catalogSteps(),
+  ),
   {
     id: "fitout",
+    family: "industry",
+    defaultKind: "form",
     label: "Aménagement industriel",
     blurb: "Site, contraintes, gammes, vous rappelez pour proposer, pas pour découvrir.",
     defaultName: "Funnel aménagement",
@@ -397,9 +522,346 @@ export const FUNNEL_TEMPLATES: FunnelTemplate[] = [
       contactStep,
     ],
   },
+  thin(
+    "industry_parts",
+    "industry",
+    "form",
+    "Pièces & sous-traitance",
+    "Pièce, série, matière, délai — un brief atelier.",
+    "Funnel pièces",
+    "bg-indigo-50 text-indigo-800 ring-indigo-200",
+    "#4F46E5",
+    makeSteps({
+      title: "Votre pièce",
+      subtitle: "Série, matière et délai",
+      pieceLabel: "Type de besoin",
+      pieces: [
+        { value: "proto", label: "Prototype", description: "Une pièce ou petite série" },
+        { value: "series", label: "Série", description: "Production répétée" },
+        { value: "repair", label: "Reprise / usinage" },
+        { value: "other", label: "Autre" },
+      ],
+      materialLabel: "Matière",
+      materials: [
+        { value: "steel", label: "Acier" },
+        { value: "alu", label: "Aluminium" },
+        { value: "plastic", label: "Plastique" },
+        { value: "open", label: "À conseiller" },
+      ],
+      suggestions: "Capacités et finitions de votre atelier",
+    }),
+  ),
+  thin(
+    "industry_packaging",
+    "industry",
+    "form",
+    "Emballages",
+    "Volume, matière, délai — une demande de conditionnement cadrée.",
+    "Funnel emballages",
+    "bg-indigo-50 text-indigo-800 ring-indigo-200",
+    "#4F46E5",
+    makeSteps({
+      title: "Votre conditionnement",
+      subtitle: "Volume, matière et délai",
+      pieceLabel: "Type d’emballage",
+      pieces: [
+        { value: "box", label: "Carton / caisse" },
+        { value: "film", label: "Film / sachet" },
+        { value: "wood", label: "Caisse bois" },
+        { value: "other", label: "Autre" },
+      ],
+      materialLabel: "Matière",
+      materials: [
+        { value: "cardboard", label: "Carton" },
+        { value: "plastic", label: "Plastique" },
+        { value: "wood", label: "Bois" },
+        { value: "open", label: "À conseiller" },
+      ],
+      suggestions: "Solutions de votre catalogue",
+    }),
+  ),
+  thin(
+    "industry_lab",
+    "industry",
+    "form",
+    "Labos & fabrication",
+    "Série, contrainte, délai — un brief labo, pas un appel à vide.",
+    "Funnel labo",
+    "bg-indigo-50 text-indigo-800 ring-indigo-200",
+    "#4F46E5",
+    makeSteps({
+      title: "Votre fabrication",
+      subtitle: "Série, contrainte et délai",
+      pieceLabel: "Type de besoin",
+      pieces: [
+        { value: "batch", label: "Lot / série" },
+        { value: "custom", label: "Formule sur mesure" },
+        { value: "pack", label: "Conditionnement" },
+        { value: "other", label: "Autre" },
+      ],
+      materialLabel: "Contrainte principale",
+      materials: [
+        { value: "iso", label: "Norme / ISO" },
+        { value: "food", label: "Alimentaire / cosmétique" },
+        { value: "delay", label: "Délai court" },
+        { value: "open", label: "À préciser" },
+      ],
+      suggestions: "Prestations adaptées à votre brief",
+    }),
+  ),
+  thin(
+    "services_spaces",
+    "services",
+    "form",
+    "Location d’espaces",
+    "Durée, jauge, usage — coworking, salle ou studio partagent le même brief.",
+    "Funnel espaces",
+    "bg-violet-50 text-violet-800 ring-violet-200",
+    "#7C3AED",
+    rentalSteps({
+      title: "Votre réservation",
+      subtitle: "Usage, jauge et durée",
+      categoryLabel: "Type d’espace",
+      categories: [
+        { value: "cowork", label: "Coworking / bureau" },
+        { value: "meeting", label: "Salle de réunion" },
+        { value: "event", label: "Salle événementielle" },
+        { value: "other", label: "Autre" },
+      ],
+      suggestions: "Espaces disponibles",
+    }),
+  ),
+  thin(
+    "services_training",
+    "services",
+    "form",
+    "Formation",
+    "Besoin, volume, échéance — un brief pédagogique cadré.",
+    "Funnel formation",
+    "bg-violet-50 text-violet-800 ring-violet-200",
+    "#7C3AED",
+    serviceSteps({
+      title: "Votre formation",
+      subtitle: "Public, format et échéance",
+      needLabel: "Format souhaité",
+      needs: [
+        { value: "intra", label: "Intra-entreprise" },
+        { value: "inter", label: "Inter / catalogue" },
+        { value: "online", label: "Distanciel" },
+        { value: "other", label: "Autre" },
+      ],
+      suggestions: "Parcours de votre catalogue",
+    }),
+  ),
+  thin(
+    "services_studio",
+    "services",
+    "form",
+    "Studio & imprimerie",
+    "Besoin, volume, échéance — un brief prod, pas un cahier flou.",
+    "Funnel studio",
+    "bg-violet-50 text-violet-800 ring-violet-200",
+    "#7C3AED",
+    serviceSteps({
+      title: "Votre projet",
+      subtitle: "Support, volume et échéance",
+      needLabel: "Type de besoin",
+      needs: [
+        { value: "print", label: "Impression" },
+        { value: "photo", label: "Studio / shooting" },
+        { value: "sign", label: "Signalétique" },
+        { value: "other", label: "Autre" },
+      ],
+      suggestions: "Prestations de votre catalogue",
+    }),
+  ),
+  thin(
+    "property_developer",
+    "property",
+    "form",
+    "Promoteur",
+    "Type de bien, échéance, le prospect cadre avant le RDV.",
+    "Funnel promoteur",
+    "bg-stone-100 text-stone-800 ring-stone-200",
+    "#78716C",
+    serviceSteps({
+      title: "Votre projet",
+      subtitle: "Type de bien et échéance",
+      needLabel: "Type de projet",
+      needs: [
+        { value: "new", label: "Programme neuf" },
+        { value: "invest", label: "Investissement" },
+        { value: "residence", label: "Résidence principale" },
+        { value: "other", label: "Autre" },
+      ],
+      suggestions: "Programmes adaptés",
+    }),
+  ),
+  thin(
+    "property_architect",
+    "property",
+    "form",
+    "Architecte / BET",
+    "Mission, volume, échéance — un brief de mission, pas un appel à vide.",
+    "Funnel architecte",
+    "bg-stone-100 text-stone-800 ring-stone-200",
+    "#78716C",
+    serviceSteps({
+      title: "Votre mission",
+      subtitle: "Type de mission et échéance",
+      needLabel: "Type de mission",
+      needs: [
+        { value: "design", label: "Conception / PC" },
+        { value: "site", label: "Suivi de chantier" },
+        { value: "study", label: "Étude / BET" },
+        { value: "other", label: "Autre" },
+      ],
+      suggestions: "Missions types",
+    }),
+  ),
+  thin(
+    "property_surveyor",
+    "property",
+    "form",
+    "Géomètre",
+    "Type de levé, délai — une demande technique cadrée.",
+    "Funnel géomètre",
+    "bg-stone-100 text-stone-800 ring-stone-200",
+    "#78716C",
+    serviceSteps({
+      title: "Votre levé",
+      subtitle: "Type de mission et échéance",
+      needLabel: "Type de levé",
+      needs: [
+        { value: "boundary", label: "Bornage / division" },
+        { value: "topo", label: "Topographie" },
+        { value: "copro", label: "Copropriété" },
+        { value: "other", label: "Autre" },
+      ],
+      suggestions: "Prestations adaptées",
+    }),
+  ),
+  thin(
+    "health_clinic",
+    "health",
+    "form",
+    "Clinique esthétique",
+    "Acte, style, budget — le prospect se qualifie avant le bilan.",
+    "Funnel clinique",
+    "bg-emerald-50 text-emerald-800 ring-emerald-200",
+    "#059669",
+    projectSteps({
+      title: "Votre projet",
+      subtitle: "Acte, attente et budget",
+      typeLabel: "Type d’acte",
+      types: [
+        { value: "face", label: "Visage" },
+        { value: "body", label: "Silhouette" },
+        { value: "skin", label: "Peau / laser" },
+        { value: "other", label: "Autre" },
+      ],
+      styleLabel: "Objectif",
+      styles: [
+        { value: "natural", label: "Naturel" },
+        { value: "marked", label: "Plus marqué" },
+        { value: "undecided", label: "À préciser en bilan" },
+      ],
+      suggestions: "Actes adaptés à votre brief",
+    }),
+  ),
+  thin(
+    "health_equipment",
+    "health",
+    "form",
+    "Équipement médical",
+    "Espace, contraintes, volume — un brief d’équipement.",
+    "Funnel équipement médical",
+    "bg-emerald-50 text-emerald-800 ring-emerald-200",
+    "#059669",
+    equipSteps({
+      title: "Votre équipement",
+      subtitle: "Espace et contraintes",
+      spaceLabel: "Type d’espace",
+      spaces: [
+        { value: "cabinet", label: "Cabinet" },
+        { value: "clinic", label: "Clinique / bloc" },
+        { value: "home", label: "Domicile / EHPAD" },
+        { value: "other", label: "Autre" },
+      ],
+      suggestions: "Équipements adaptés",
+    }),
+  ),
+  thin(
+    "tech_agency",
+    "tech",
+    "form",
+    "Agence / ESN",
+    "Besoin, volume, échéance — un brief projet, pas un cahier flou.",
+    "Funnel agence",
+    "bg-slate-100 text-slate-800 ring-slate-200",
+    "#334155",
+    serviceSteps({
+      title: "Votre projet",
+      subtitle: "Besoin, volume et échéance",
+      needLabel: "Type de besoin",
+      needs: [
+        { value: "web", label: "Site / produit" },
+        { value: "staff", label: "Renfort / TMA" },
+        { value: "data", label: "Data / SI" },
+        { value: "other", label: "Autre" },
+      ],
+      suggestions: "Offres adaptées",
+    }),
+  ),
+  thin(
+    "tech_consulting",
+    "tech",
+    "form",
+    "Conseil",
+    "Sujet, volume, échéance — une mission cadrée.",
+    "Funnel conseil",
+    "bg-slate-100 text-slate-800 ring-slate-200",
+    "#334155",
+    serviceSteps({
+      title: "Votre mission",
+      subtitle: "Sujet et échéance",
+      needLabel: "Type de mission",
+      needs: [
+        { value: "audit", label: "Audit / diagnostic" },
+        { value: "transform", label: "Accompagnement" },
+        { value: "interim", label: "Management de transition" },
+        { value: "other", label: "Autre" },
+      ],
+      suggestions: "Missions types",
+    }),
+  ),
+  thin(
+    "tech_software",
+    "tech",
+    "form",
+    "Logiciel sur mesure",
+    "Besoin, volume, échéance — un brief produit.",
+    "Funnel logiciel",
+    "bg-slate-100 text-slate-800 ring-slate-200",
+    "#334155",
+    serviceSteps({
+      title: "Votre logiciel",
+      subtitle: "Besoin et échéance",
+      needLabel: "Type de besoin",
+      needs: [
+        { value: "new", label: "Nouveau produit" },
+        { value: "rebuild", label: "Refonte" },
+        { value: "integrate", label: "Intégration" },
+        { value: "other", label: "Autre" },
+      ],
+      suggestions: "Approches adaptées",
+    }),
+  ),
   {
     id: "general",
-    label: "Sur mesure",
+    family: "custom",
+    defaultKind: "form",
+    label: "Questionnaire générique",
     blurb: "Un funnel générique : cadrage, catalogue, contact. Vous affinez ensuite.",
     defaultName: "Nouveau funnel",
     accent: "#E85D04",
@@ -438,14 +900,36 @@ export const FUNNEL_TEMPLATES: FunnelTemplate[] = [
       contactStep,
     ],
   },
+  thin(
+    "custom_catalog",
+    "custom",
+    "catalog",
+    "Catalogue générique",
+    "Parcours vitrine : rayons, fiches, une demande globale.",
+    "Catalogue",
+    "bg-orange-50 text-orange-800 ring-orange-200",
+    "#E85D04",
+    catalogSteps(),
+  ),
 ];
 
 const LEGACY: Record<string, string> = {
   rayonnage: "racking",
-  general: "general",
 };
 
 export function getFunnelTemplate(id: string) {
   const normalized = LEGACY[id] ?? id;
-  return FUNNEL_TEMPLATES.find((t) => t.id === normalized) ?? FUNNEL_TEMPLATES[FUNNEL_TEMPLATES.length - 1];
+  return FUNNEL_TEMPLATES.find((t) => t.id === normalized) ?? FUNNEL_TEMPLATES.find((t) => t.id === "general")!;
+}
+
+export function templatesForFamily(family: FunnelFamilyId) {
+  return FUNNEL_TEMPLATES.filter((template) => template.family === family);
+}
+
+export function defaultTemplateForFamily(family: FunnelFamilyId) {
+  return templatesForFamily(family)[0] ?? getFunnelTemplate("general");
+}
+
+export function getTemplateFamily(id: string): FunnelFamily {
+  return getFunnelFamily(getFunnelTemplate(id).family);
 }

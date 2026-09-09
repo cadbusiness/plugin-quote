@@ -15,7 +15,12 @@ export async function createSpace(
   if (!user) redirect("/login");
 
   try {
-    await createOrganizationForUser(supabase, user.id, String(formData.get("name") ?? ""));
+    await createOrganizationForUser(
+      supabase,
+      user.id,
+      String(formData.get("name") ?? ""),
+      String(formData.get("family") ?? ""),
+    );
   } catch (error) {
     return { error: error instanceof Error ? error.message : "Création impossible" };
   }
