@@ -1,9 +1,10 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { ListPanel } from "@/components/ui/list-panel";
+import { LocalTabNav, replaceClientUrl } from "@/components/ui/local-tabs";
 import { CopyBlock } from "@/components/funnels/copy-block";
 import { FunnelAutomations, type FunnelWorkflowRow } from "@/components/funnels/funnel-automations";
 import { ParcoursBuilder } from "@/components/funnels/parcours-builder";
@@ -32,7 +33,7 @@ export function FunnelEditor({
   orgGa,
   publicUrl,
   orgSlug,
-  tab,
+  tab: initialTab,
 }: {
   funnel: {
     id: string;
@@ -57,6 +58,7 @@ export function FunnelEditor({
   tab: FunnelTab;
 }) {
   const [pending, startTransition] = useTransition();
+  const [tab, setTab] = useState(initialTab);
   const kind = funnel.kind;
   const embedUrl = publicUrl.replace("/c/", "/embed/");
   const widget = `<div data-quotebuilder data-org="${orgSlug}" data-id="${funnel.slug}"></div>\n<script src="${new URL("/widget.js", publicUrl).origin}/widget.js" async></script>`;
@@ -150,24 +152,14 @@ export function FunnelEditor({
             </span>
           </button>
         </div>
-        <nav className="flex items-end gap-6 overflow-x-auto border-b border-slate-200 px-4 lg:px-6">
-          {FUNNEL_TABS.map((item) => {
-            const on = item.id === tab;
-            return (
-              <Link
-                key={item.id}
-                href={tabHref(funnel.id, item.id)}
-                aria-current={on ? "page" : undefined}
-                className={`relative shrink-0 py-2.5 text-sm ${
-                  on ? "font-medium text-slate-900" : "text-slate-500 hover:text-slate-900"
-                }`}
-              >
-                {item.label}
-                <span aria-hidden className={`absolute inset-x-0 -bottom-px h-0.5 ${on ? "bg-[#E85D04]" : "bg-transparent"}`} />
-              </Link>
-            );
-          })}
-        </nav>
+        <LocalTabNav
+          items={FUNNEL_TABS}
+          active={tab}
+          onSelect={(next) => {
+            setTab(next);
+            replaceClientUrl(tabHref(funnel.id, next));
+          }}
+        />
       </div>
 
       {tab === "parcours" ? (

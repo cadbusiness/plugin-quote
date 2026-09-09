@@ -8,39 +8,35 @@ export type SidebarSnapshot = {
   abandons: number;
 };
 
+export const EMPTY_SIDEBAR_SNAPSHOT: SidebarSnapshot = {
+  monthQuotes: 0,
+  monthHot: 0,
+  newQuotes: 0,
+  abandons: 0,
+};
+
 export async function getSidebarSnapshot(
   supabase: SupabaseClient<Database>,
   orgId: string,
 ): Promise<SidebarSnapshot> {
-  const since = new Date();
-  since.setDate(1);
-  since.setHours(0, 0, 0, 0);
-  const iso = since.toISOString();
-
-  const [{ data: quotes }, { data: sessions }] = await Promise.all([
+  const [{ count: newQuotes }, { count: abandons }] = await Promise.all([
     supabase
       .from("quotes")
-      .select("id, score_label, status")
+      .select("id", { count: "exact", head: true })
       .eq("organization_id", orgId)
-      .gte("created_at", iso),
+      .eq("status", "new"),
     supabase
       .from("quote_sessions")
-      .select("id, contact_draft")
+      .select("id", { count: "exact", head: true })
       .eq("organization_id", orgId)
       .is("submitted_quote_id", null)
-      .limit(80),
+      .neq("contact_draft->>email", ""),
   ]);
 
-  const list = quotes ?? [];
-  const abandons = (sessions ?? []).filter((s) => {
-    const draft = (s.contact_draft ?? {}) as { email?: string };
-    return Boolean(draft.email);
-  }).length;
-
   return {
-    monthQuotes: list.length,
-    monthHot: list.filter((q) => q.score_label === "hot").length,
-    newQuotes: list.filter((q) => q.status === "new").length,
-    abandons,
+    monthQuotes: 0,
+    monthHot: 0,
+    newQuotes: newQuotes ?? 0,
+    abandons: abandons ?? 0,
   };
 }

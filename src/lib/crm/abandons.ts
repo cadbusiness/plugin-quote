@@ -81,7 +81,8 @@ export async function loadAbandonSnapshot(
       .from("workflow_runs")
       .select("subject_id")
       .eq("organization_id", orgId)
-      .eq("subject_type", "session"),
+      .eq("subject_type", "session")
+      .limit(500),
   ]);
 
   const funnelName = new Map((funnels ?? []).map((funnel) => [funnel.id, funnel.name]));

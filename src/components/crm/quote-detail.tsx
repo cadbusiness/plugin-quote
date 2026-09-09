@@ -1,6 +1,9 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { Mail, Phone } from "lucide-react";
+import { replaceClientUrl } from "@/components/ui/local-tabs";
 import {
   addQuoteNoteForm,
   changeQuoteStatusForm,
@@ -26,14 +29,16 @@ const AUTOMATION_TONE: Record<QuoteAutomation["state"], ChipTone> = {
 
 export function QuoteDetailView({
   detail,
-  tab,
-  compose,
+  tab: initialTab,
+  compose: initialCompose,
 }: {
   detail: QuoteDetail;
   tab: QuoteTab;
   compose: QuoteCompose | null;
 }) {
   const { quote, status } = detail;
+  const [tab, setTab] = useState(initialTab);
+  const [compose, setCompose] = useState(initialCompose);
   const changeStatus = changeQuoteStatusForm.bind(null, quote.id);
   const toggleAssignee = toggleQuoteAssigneeForm.bind(null, quote.id);
   const addNote = addQuoteNoteForm.bind(null, quote.id);
@@ -41,8 +46,12 @@ export function QuoteDetailView({
   const logCall = logQuoteCallForm.bind(null, quote.id);
   const liveAutomations = detail.automations.filter((flow) => flow.state === "waiting" || flow.state === "running").length;
   const callCount = detail.activities.filter((act) => act.type === "call_logged").length;
-  const writeHref = quoteTabHref(quote.id, "echanges", "mail");
-  const callHref = quoteTabHref(quote.id, "echanges", "call");
+
+  function openTab(next: QuoteTab, nextCompose: QuoteCompose | null = null) {
+    setTab(next);
+    setCompose(nextCompose);
+    replaceClientUrl(quoteTabHref(quote.id, next, nextCompose));
+  }
 
   return (
     <ListPanel>
@@ -67,29 +76,29 @@ export function QuoteDetailView({
               {quote.contact_company ? <span className="truncate">{quote.contact_company}</span> : null}
               <span className="inline-flex items-center gap-1">
                 <span className="truncate">{quote.contact_email}</span>
-                <Link href={writeHref} aria-label="Écrire un email" className="rounded p-0.5 text-slate-400 hover:bg-orange-50 hover:text-[#E85D04]">
+                <button type="button" onClick={() => openTab("echanges", "mail")} aria-label="Écrire un email" className="rounded p-0.5 text-slate-400 hover:bg-orange-50 hover:text-[#E85D04]">
                   <Mail className="h-3.5 w-3.5" />
-                </Link>
+                </button>
               </span>
               {quote.contact_phone ? (
                 <span className="inline-flex items-center gap-1">
                   <span>{quote.contact_phone}</span>
-                  <Link href={callHref} aria-label="Appeler" className="rounded p-0.5 text-slate-400 hover:bg-orange-50 hover:text-[#E85D04]">
+                  <button type="button" onClick={() => openTab("echanges", "call")} aria-label="Appeler" className="rounded p-0.5 text-slate-400 hover:bg-orange-50 hover:text-[#E85D04]">
                     <Phone className="h-3.5 w-3.5" />
-                  </Link>
+                  </button>
                 </span>
               ) : null}
             </div>
           </div>
-          <Link href={writeHref} className="inline-flex items-center gap-1.5 rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]">
+          <button type="button" onClick={() => openTab("echanges", "mail")} className="inline-flex items-center gap-1.5 rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]">
             <Mail className="h-3.5 w-3.5" />
             Écrire
-          </Link>
+          </button>
           {quote.contact_phone ? (
-            <Link href={callHref} className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-3 py-1.5 text-sm hover:bg-slate-50">
+            <button type="button" onClick={() => openTab("echanges", "call")} className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-3 py-1.5 text-sm hover:bg-slate-50">
               <Phone className="h-3.5 w-3.5" />
               Appeler
-            </Link>
+            </button>
           ) : null}
           {detail.suiviUrl ? (
             <a href={detail.suiviUrl} target="_blank" rel="noreferrer" className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">
@@ -101,6 +110,7 @@ export function QuoteDetailView({
         <QuoteTabs
           quoteId={quote.id}
           active={tab}
+          onSelect={(next) => openTab(next)}
           counts={{
             projet: detail.items.length,
             client: detail.siblings.length,
@@ -111,10 +121,16 @@ export function QuoteDetailView({
       </div>
 
       {tab === "dossier" ? (
-        <DossierTab detail={detail} changeStatus={changeStatus} toggleAssignee={toggleAssignee} />
+        <DossierTab detail={detail} changeStatus={changeStatus} toggleAssignee={toggleAssignee} onTab={openTab} />
       ) : null}
       {tab === "projet" ? <ProjetTab detail={detail} /> : null}
-      {tab === "client" ? <ClientTab detail={detail} writeHref={writeHref} callHref={callHref} /> : null}
+      {tab === "client" ? (
+        <ClientTab
+          detail={detail}
+          onWrite={() => openTab("echanges", "mail")}
+          onCall={() => openTab("echanges", "call")}
+        />
+      ) : null}
       {tab === "echanges" ? <EchangesTab detail={detail} compose={compose} addNote={addNote} reply={reply} logCall={logCall} /> : null}
       {tab === "automations" ? <AutomationsTab detail={detail} /> : null}
     </ListPanel>
@@ -125,10 +141,12 @@ function DossierTab({
   detail,
   changeStatus,
   toggleAssignee,
+  onTab,
 }: {
   detail: QuoteDetail;
   changeStatus: (formData: FormData) => Promise<void>;
   toggleAssignee: (formData: FormData) => Promise<void>;
+  onTab: (tab: QuoteTab, compose?: QuoteCompose | null) => void;
 }) {
   const { quote, funnel, totals } = detail;
   const lastNote = detail.notes[0];
@@ -235,13 +253,13 @@ function DossierTab({
       <div className="grid border-b border-slate-100 lg:grid-cols-3">
         <Snapshot
           label="Projet"
-          href={quoteTabHref(quote.id, "projet")}
+          onClick={() => onTab("projet")}
           title={totals.count ? `${totals.count} produits · ${totals.label}` : "Pas encore de configuration"}
           detail={detail.items[0] ? detail.items.map((item) => `${item.quantity} × ${item.name}`).join(" · ") : "Les réponses et la config sont dans l’onglet Projet."}
         />
         <Snapshot
           label="Dernier échange"
-          href={quoteTabHref(quote.id, "echanges")}
+          onClick={() => onTab("echanges")}
           title={lastMessage ? lastMessage.content : lastCall ? lastCall.detail ?? "Appel" : lastNote ? lastNote.content : "Aucun échange"}
           detail={
             lastMessage
@@ -255,7 +273,7 @@ function DossierTab({
         />
         <Snapshot
           label="Automatisation"
-          href={quoteTabHref(quote.id, "automations")}
+          onClick={() => onTab("automations")}
           title={nextFlow ? nextFlow.title : "Aucun flux en cours"}
           detail={nextFlow ? `${nextFlow.stateLabel} · ${nextFlow.when ?? nextFlow.hint}` : "Voir le parcours email de cette demande."}
         />
@@ -348,12 +366,12 @@ function ProjetTab({ detail }: { detail: QuoteDetail }) {
 
 function ClientTab({
   detail,
-  writeHref,
-  callHref,
+  onWrite,
+  onCall,
 }: {
   detail: QuoteDetail;
-  writeHref: string;
-  callHref: string;
+  onWrite: () => void;
+  onCall: () => void;
 }) {
   const { quote } = detail;
   return (
@@ -366,18 +384,18 @@ function ClientTab({
           <Fact label="Email">
             <span className="inline-flex items-center gap-1.5">
               <span>{quote.contact_email}</span>
-              <Link href={writeHref} aria-label="Écrire un email" className="rounded p-0.5 text-slate-400 hover:bg-orange-50 hover:text-[#E85D04]">
+              <button type="button" onClick={onWrite} aria-label="Écrire un email" className="rounded p-0.5 text-slate-400 hover:bg-orange-50 hover:text-[#E85D04]">
                 <Mail className="h-3.5 w-3.5" />
-              </Link>
+              </button>
             </span>
           </Fact>
           <Fact label="Téléphone">
             {quote.contact_phone ? (
               <span className="inline-flex items-center gap-1.5">
                 <span>{quote.contact_phone}</span>
-                <Link href={callHref} aria-label="Appeler" className="rounded p-0.5 text-slate-400 hover:bg-orange-50 hover:text-[#E85D04]">
+                <button type="button" onClick={onCall} aria-label="Appeler" className="rounded p-0.5 text-slate-400 hover:bg-orange-50 hover:text-[#E85D04]">
                   <Phone className="h-3.5 w-3.5" />
-                </Link>
+                </button>
               </span>
             ) : (
               "-"
@@ -648,21 +666,21 @@ function AutomationsTab({ detail }: { detail: QuoteDetail }) {
 
 function Snapshot({
   label,
-  href,
+  onClick,
   title,
   detail,
 }: {
   label: string;
-  href: string;
+  onClick: () => void;
   title: string;
   detail: string;
 }) {
   return (
-    <Link href={href} className="block border-b border-slate-100 px-4 py-4 last:border-b-0 hover:bg-orange-50/40 lg:border-b-0 lg:border-r lg:last:border-r-0 lg:px-6">
+    <button type="button" onClick={onClick} className="block w-full border-b border-slate-100 px-4 py-4 text-left last:border-b-0 hover:bg-orange-50/40 lg:border-b-0 lg:border-r lg:last:border-r-0 lg:px-6">
       <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
       <p className="mt-1 line-clamp-2 text-sm font-medium text-slate-900">{title}</p>
       <p className="mt-1 line-clamp-2 text-sm text-slate-500">{detail}</p>
-    </Link>
+    </button>
   );
 }
 

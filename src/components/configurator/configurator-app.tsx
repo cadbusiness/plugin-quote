@@ -263,15 +263,28 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
     });
   }, [session?.id, step?.screenType, done, definition?.organization.gaMeasurementId]);
 
-  async function persist(patch: Partial<QuoteSession>) {
+  async function persist(patch: Partial<QuoteSession>, wait = false) {
     if (!session) return session;
-    const next = await api<QuoteSession>(`/api/public/sessions/${session.id}`, {
+    const optimistic = { ...session, ...patch };
+    setSession(optimistic);
+    const req = api<QuoteSession>(`/api/public/sessions/${session.id}`, {
       method: "PATCH",
       token: session.token,
       body: JSON.stringify(patch),
+    }).then((next) => {
+      setSession(next);
+      return next;
     });
-    setSession(next);
-    return next;
+    if (wait) {
+      try {
+        return await req;
+      } catch (error) {
+        setSession(session);
+        throw error;
+      }
+    }
+    void req.catch(() => setSession(session));
+    return optimistic;
   }
 
   async function loadSuggestions(current = session) {
@@ -297,10 +310,11 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
         if (value !== undefined) nextAnswers[q.key] = value;
       }
       const nextStep = Math.min(session.currentStep + 1, definition.steps.length - 1);
-      const next = await persist({ answers: nextAnswers, currentStep: nextStep });
+      const needsSuggestions = definition.steps[nextStep]?.screenType === "suggestions";
+      const next = await persist({ answers: nextAnswers, currentStep: nextStep }, needsSuggestions);
       track(session, `quotebuilder_step_${nextStep}`, nextStep);
       pushGa(definition.organization.gaMeasurementId, `quotebuilder_step_${nextStep}`, { step: nextStep });
-      if (definition.steps[nextStep]?.screenType === "suggestions") {
+      if (needsSuggestions) {
         await loadSuggestions(next ?? undefined);
       }
       return;
@@ -494,7 +508,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
             onSave={async (draft) => {
               const firstEmail = Boolean(draft.email && !session.contactDraft.email);
               setContact((c) => ({ ...c, ...draft }));
-              await persist({ contactDraft: { ...session.contactDraft, ...draft } });
+              await persist({ contactDraft: { ...session.contactDraft, ...draft } }, true);
               if (firstEmail) {
                 track(session, ANALYTICS_EVENTS.email, session.currentStep);
                 pushGa(definition?.organization.gaMeasurementId, ANALYTICS_EVENTS.email);

@@ -173,10 +173,10 @@ function StatsModule({ data }: { data: HomeDashboard }) {
       </ModuleFrame>
     );
   }
-  const visitors = stats.funnel.find((s) => s.key === "visitors")?.count ?? 0;
-  const submitted = stats.funnel.find((s) => s.key === "submitted")?.count ?? 0;
-  const contacted = stats.funnel.find((s) => s.key === "contacted")?.count ?? 0;
-  const won = stats.funnel.find((s) => s.key === "won")?.count ?? 0;
+  const visitors = stats.visitors;
+  const submitted = stats.submitted;
+  const contacted = stats.contacted;
+  const won = stats.won;
   return (
     <ModuleFrame title="Statistiques" href="/stats" hrefLabel="Rapport">
       <div className="grid grid-cols-2 gap-px bg-slate-200">
@@ -206,8 +206,8 @@ function StatsModule({ data }: { data: HomeDashboard }) {
         />
         <StatGauge
           href="/sessions"
-          value={stats.abandons.withEmail}
-          max={Math.max(stats.abandons.total, stats.abandons.withEmail, 1)}
+          value={stats.abandonsWithEmail}
+          max={Math.max(stats.abandonsTotal, stats.abandonsWithEmail, 1)}
           tone="amber"
           label="Relançables"
           hint={formatEur(stats.pipelineTotal)}
