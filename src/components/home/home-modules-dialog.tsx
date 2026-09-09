@@ -8,11 +8,9 @@ import type { HomeModuleDef, HomeModuleId } from "@/lib/crm/home";
 export function HomeModulesDialog({
   catalog,
   enabled,
-  variant,
 }: {
   catalog: HomeModuleDef[];
   enabled: HomeModuleId[];
-  variant: "toolbar" | "add";
 }) {
   const [open, setOpen] = useState(false);
   const [pending, start] = useTransition();
@@ -39,17 +37,7 @@ export function HomeModulesDialog({
 
   return (
     <>
-      {variant === "toolbar" ? (
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-orange-50 hover:text-[#C2410C]"
-        >
-          Modules
-        </button>
-      ) : (
-        <ListAddRow onClick={() => setOpen(true)}>Ajouter un module</ListAddRow>
-      )}
+      <ListAddRow onClick={() => setOpen(true)}>Ajouter un module</ListAddRow>
 
       {open ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -71,7 +59,7 @@ export function HomeModulesDialog({
                 Modules du tableau de bord
               </p>
               <p className="mt-1 text-sm text-slate-500">
-                Moins de listes empilées : les demandes restent en pleine largeur, le reste en tuiles 1/2.
+                Demandes en pleine largeur, le reste en tuiles 1/2. On n’affiche que l’utile.
               </p>
             </div>
             <div className="min-h-0 flex-1 overflow-y-auto px-5 py-3">

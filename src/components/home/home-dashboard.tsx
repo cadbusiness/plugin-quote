@@ -27,17 +27,22 @@ function ModuleFrame({
   title,
   href,
   hrefLabel,
+  badge,
   children,
 }: {
   title: string;
   href: string;
   hrefLabel: string;
+  badge?: ReactNode;
   children: ReactNode;
 }) {
   return (
     <section className="h-full bg-white">
-      <div className="flex items-center justify-between gap-3 px-4 py-2.5 lg:px-5">
-        <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{title}</p>
+      <div className="flex items-center justify-between gap-3 px-4 py-2 lg:px-5">
+        <div className="flex min-w-0 items-center gap-2">
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{title}</p>
+          {badge}
+        </div>
         <Link href={href} className="text-sm font-medium text-[#E85D04] hover:underline">
           {hrefLabel}
         </Link>
@@ -48,7 +53,7 @@ function ModuleFrame({
 }
 
 function Empty({ children }: { children: ReactNode }) {
-  return <p className="px-4 py-6 text-sm text-slate-500 lg:px-5">{children}</p>;
+  return <p className="px-4 py-5 text-sm text-slate-500 lg:px-5">{children}</p>;
 }
 
 function StatGauge({
@@ -93,8 +98,20 @@ function QuotesModule({ data }: { data: HomeDashboard }) {
       return aOpen ? 1 : -1;
     })
     .slice(0, 4);
+  const newCount = ranked.filter((quote) => quote.status === "new").length;
   return (
-    <ModuleFrame title="Demandes" href="/devis" hrefLabel="Toutes">
+    <ModuleFrame
+      title="Demandes"
+      href="/devis"
+      hrefLabel="Toutes"
+      badge={
+        newCount ? (
+          <Chip tone="orange">
+            {newCount} nouveau{newCount > 1 ? "x" : ""}
+          </Chip>
+        ) : undefined
+      }
+    >
       {ranked.length === 0 ? (
         <Empty>
           Aucune demande.{" "}
