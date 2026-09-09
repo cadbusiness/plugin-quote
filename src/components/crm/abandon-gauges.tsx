@@ -1,5 +1,5 @@
-import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { RingGauge } from "@/components/ui/gauge";
 import type { AbandonSnapshot, AbandonView } from "@/lib/crm/abandons";
 
