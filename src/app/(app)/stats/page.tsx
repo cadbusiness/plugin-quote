@@ -4,8 +4,8 @@ import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { ListPanel } from "@/components/ui/list-panel";
 import { loadStatsDashboard, resolveRange } from "@/lib/stats/dashboard";
 import { parseOrgGtm } from "@/lib/funnels/tracking";
-import { STATS_TABS } from "@/lib/stats/tabs";
-import { resolveVisibleStatsTab, StatsScreen } from "@/components/stats/stats-screen";
+import { STATS_TABS, resolveVisibleStatsTab } from "@/lib/stats/tabs";
+import { StatsScreen } from "@/components/stats/stats-screen";
 
 export default async function StatsPage({
   searchParams,

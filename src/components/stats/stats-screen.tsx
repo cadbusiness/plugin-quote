@@ -8,7 +8,7 @@ import { LocalTabNav, replaceClientUrl } from "@/components/ui/local-tabs";
 import { StatsView } from "@/components/stats/stats-view";
 import { StatsTrackingPanel } from "@/components/stats/tracking-panel";
 import type { StatsDashboard, StatsRange } from "@/lib/stats/dashboard";
-import { parseStatsTab, statsHref, type StatsTab } from "@/lib/stats/tabs";
+import { statsHref, type StatsTab } from "@/lib/stats/tabs";
 
 const RANGES: { id: StatsRange; label: string }[] = [
   { id: "day", label: "Aujourd’hui" },
@@ -85,10 +85,4 @@ export function StatsScreen({
       )}
     </>
   );
-}
-
-export function resolveVisibleStatsTab(value: string | undefined, admin: boolean): StatsTab {
-  const tab = parseStatsTab(value);
-  if (tab === "suivi" && !admin) return "vue";
-  return tab;
 }

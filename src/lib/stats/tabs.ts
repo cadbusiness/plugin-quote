@@ -13,6 +13,12 @@ export function parseStatsTab(value: string | undefined): StatsTab {
   return STATS_TABS.some((tab) => tab.id === value) ? (value as StatsTab) : "vue";
 }
 
+export function resolveVisibleStatsTab(value: string | undefined, admin: boolean): StatsTab {
+  const tab = parseStatsTab(value);
+  if (tab === "suivi" && !admin) return "vue";
+  return tab;
+}
+
 export function statsHref(tab: StatsTab, range: StatsRange) {
   const query = new URLSearchParams();
   if (tab !== "vue") query.set("tab", tab);
