@@ -20,27 +20,39 @@ function Ring({
   label: string;
 }) {
   const pct = max <= 0 ? 0 : Math.min(1, value / max);
-  const r = 36;
+  const r = 34;
   const c = 2 * Math.PI * r;
+  const track = c * 0.75;
+  const fill = track * pct;
   return (
     <svg viewBox="0 0 92 92" className="h-20 w-20 shrink-0" role="img" aria-label={label}>
-      <g transform="rotate(-90 46 46)">
-        <circle cx="46" cy="46" r={r} fill="none" stroke="#f1f5f9" strokeWidth="8" />
+      <g transform="rotate(135 46 46)">
         <circle
           cx="46"
           cy="46"
           r={r}
           fill="none"
-          stroke={TONES[tone]}
-          strokeWidth="8"
+          stroke="#e2e8f0"
+          strokeWidth="9"
           strokeLinecap="round"
-          strokeDasharray={`${c * pct} ${c}`}
-          opacity={value ? 1 : 0.4}
+          strokeDasharray={`${track} ${c}`}
         />
+        {pct > 0 ? (
+          <circle
+            cx="46"
+            cy="46"
+            r={r}
+            fill="none"
+            stroke={TONES[tone]}
+            strokeWidth="9"
+            strokeLinecap="round"
+            strokeDasharray={`${fill} ${c}`}
+          />
+        ) : null}
       </g>
       <text
         x="46"
-        y="54"
+        y="50"
         textAnchor="middle"
         fill={TONES[tone]}
         fontSize={value > 99 ? 18 : 24}
