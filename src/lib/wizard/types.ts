@@ -92,6 +92,7 @@ export type ConfiguratorDefinition = {
     salesPhone: string | null;
     branding: Record<string, unknown>;
     gaMeasurementId: string | null;
+    gtmContainerId: string | null;
   };
   configurator: {
     id: string;

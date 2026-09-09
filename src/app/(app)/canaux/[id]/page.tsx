@@ -104,7 +104,7 @@ export default async function ChannelPage({
             ) : null}
           </p>
           <div className="mt-4 whitespace-pre-wrap text-sm leading-6 text-slate-800">
-            {selected.body_text || selected.body_html?.replace(/<[^>]+>/g, " ") || "—"}
+            {selected.body_text || selected.body_html?.replace(/<[^>]+>/g, " ") || "-"}
           </div>
           {selected.direction === "inbound" ? (
             <form action={replyOnChannel} className="mt-6 space-y-2">

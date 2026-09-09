@@ -119,7 +119,7 @@ function QuotesModule({ data }: { data: HomeDashboard }) {
                 </td>
                 <td className="px-4 py-2 lg:px-5">
                   <Chip tone={scoreTone(quote.score_label)}>
-                    {(quote.score_label ?? "—").toUpperCase()}
+                    {(quote.score_label ?? "-").toUpperCase()}
                     {quote.score != null ? ` ${quote.score}` : ""}
                   </Chip>
                 </td>
@@ -174,7 +174,7 @@ function StatsModule({ data }: { data: HomeDashboard }) {
           max={Math.max(submitted, 1)}
           tone="emerald"
           label="Rappelés"
-          hint={submitted ? `${contacted} / ${submitted}` : "—"}
+          hint={submitted ? `${contacted} / ${submitted}` : "-"}
         />
         <StatGauge
           href="/devis"

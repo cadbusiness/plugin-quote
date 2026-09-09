@@ -32,7 +32,7 @@ export type HomeModuleDef = {
 export const HOME_MODULES: HomeModuleDef[] = [
   { id: "quotes", label: "Demandes", hint: "Les 4 derniers dossiers, pleine largeur.", defaultOn: true, span: "full" },
   { id: "abandons", label: "Abandons", hint: "Jauges visites → email → relance.", defaultOn: true, span: "half" },
-  { id: "stats", label: "Statistiques", hint: "Devis, rappelés, signés — ce mois.", defaultOn: true, span: "half" },
+  { id: "stats", label: "Statistiques", hint: "Devis, rappelés, signés, ce mois.", defaultOn: true, span: "half" },
   { id: "automations", label: "Automatisations", hint: "Parcours actifs, 4 lignes.", defaultOn: true, admin: true, span: "half" },
   { id: "emails", label: "Emails", hint: "Campagnes récentes, 4 lignes.", defaultOn: true, span: "half" },
   { id: "segments", label: "Segmentation", hint: "Listes et volume de contacts.", defaultOn: true, span: "half" },

@@ -137,7 +137,7 @@ export default async function ProductsPage({
                     />
                   ) : (
                     <span className="flex h-10 w-10 items-center justify-center rounded-md bg-slate-100 text-[9px] text-slate-400">
-                      —
+                      -
                     </span>
                   )}
                 </td>
@@ -151,7 +151,7 @@ export default async function ProductsPage({
                 <td className="px-4 py-2 lg:px-6">
                   <Chip tone={origin.tone}>{origin.label}</Chip>
                 </td>
-                <td className="px-4 py-2 text-slate-600 lg:px-6">{product.category ?? "—"}</td>
+                <td className="px-4 py-2 text-slate-600 lg:px-6">{product.category ?? "-"}</td>
                 <td className="px-4 py-2 tabular-nums text-slate-900 lg:px-6">
                   {formatPrice(product.price_min, product.price_max)}
                 </td>

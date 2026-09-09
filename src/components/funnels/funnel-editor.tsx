@@ -194,7 +194,7 @@ export function FunnelEditor({
           <div className="border-b border-slate-100 px-4 py-3 lg:px-6">
             <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Diffusion</p>
             <p className="mt-0.5 text-sm text-slate-500">
-              Page publique, widget sur votre site, ou shortcode WordPress — le même funnel.
+              Page publique, widget sur votre site, ou shortcode WordPress, le même funnel.
             </p>
           </div>
           <CopyBlock label="Lien public" value={publicUrl} />
@@ -208,8 +208,8 @@ export function FunnelEditor({
         <form action={saveFunnelTracking} className="grid gap-4 px-4 py-6 lg:px-6">
           <input type="hidden" name="id" value={funnel.id} />
           <p className="text-sm text-slate-500">
-            Mesurez ce funnel. Les IDs ici priment sur le suivi d’espace
-            {orgGa ? ` (GA espace : ${orgGa})` : ""}.
+            Mesurez ce funnel. Les IDs ici remplacent le suivi d’espace
+            {orgGa ? ` (GA espace : ${orgGa})` : ""}. GTM charge le conteneur ; sans GTM, GA4 part en direct.
           </p>
           <label className="text-sm">
             <span className="font-medium text-slate-900">Google Analytics 4</span>

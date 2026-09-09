@@ -62,7 +62,7 @@ export function WizardShot() {
           </div>
           <div className="h-1 flex-1 rounded-full bg-white/20" />
         </div>
-        <p className="mt-2 text-[11px] text-slate-400">Étape 2 / 4 — Type de projet</p>
+        <p className="mt-2 text-[11px] text-slate-400">Étape 2 / 4, Type de projet</p>
       </div>
       <div className="p-4">
         <h3 className="text-lg font-semibold text-slate-900">De quoi avez-vous besoin ?</h3>

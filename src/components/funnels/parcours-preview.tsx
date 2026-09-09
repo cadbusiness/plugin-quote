@@ -67,7 +67,7 @@ export function ChatStepBody({ step, products }: { step: PreviewStep; products: 
           </>
         ) : step.screenType === "suggestions" ? (
           products[0]
-            ? `Je vous propose ${products[0].name}${products[1] ? ` et ${products[1].name}` : ""} — on affine ensuite.`
+            ? `Je vous propose ${products[0].name}${products[1] ? ` et ${products[1].name}` : ""}, on affine ensuite.`
             : "Je vous montrerai les gammes du catalogue adaptées à ces réponses."
         ) : step.screenType === "customize" ? (
           "On règle ensuite quantités et options sur la gamme choisie."

@@ -42,7 +42,7 @@ export function FunnelAutomations({
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <p className="border-b border-slate-100 px-4 py-3 text-sm text-slate-500 lg:px-6">
-        Ce qui part quand ce funnel reçoit une demande ou un abandon. Assignez, limitez ou retirez — le canvas
+        Ce qui part quand ce funnel reçoit une demande ou un abandon. Assignez, limitez ou retirez, le canvas
         reste dans Automatisations.
       </p>
       <Section

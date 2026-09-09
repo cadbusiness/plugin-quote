@@ -212,10 +212,10 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           <DataTable headers={["Déclinaison", "SKU", "Prix", "Disponibilité"]}>
             {variants.map((variant, index) => (
               <tr key={variant.externalId ?? index} className="border-b border-slate-100">
-                <td className="px-4 py-2 lg:px-6">{variant.title ?? "—"}</td>
-                <td className="px-4 py-2 text-slate-500 lg:px-6">{variant.sku ?? "—"}</td>
+                <td className="px-4 py-2 lg:px-6">{variant.title ?? "-"}</td>
+                <td className="px-4 py-2 text-slate-500 lg:px-6">{variant.sku ?? "-"}</td>
                 <td className="px-4 py-2 tabular-nums lg:px-6">
-                  {variant.price != null ? `${variant.price} ${product.currency}` : "—"}
+                  {variant.price != null ? `${variant.price} ${product.currency}` : "-"}
                 </td>
                 <td className="px-4 py-2 lg:px-6">
                   {variant.available === false ? (

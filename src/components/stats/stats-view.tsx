@@ -176,7 +176,7 @@ function SourceGauges({ rows }: { rows: SourceRow[] }) {
               <td className="px-4 py-2.5 lg:px-6">
                 <Chip tone={SOURCE_CHIP[row.source] ?? "sky"}>{row.source}</Chip>
               </td>
-              <td className="px-4 py-2.5 tabular-nums lg:px-6">{row.visitors || "—"}</td>
+              <td className="px-4 py-2.5 tabular-nums lg:px-6">{row.visitors || "-"}</td>
               <td className="px-4 py-2.5 tabular-nums lg:px-6">{row.quotes}</td>
               <td className="px-4 py-2.5 lg:px-6">
                 <div className="min-w-[6.5rem]">
@@ -198,8 +198,21 @@ function SourceGauges({ rows }: { rows: SourceRow[] }) {
   );
 }
 
-export function StatsView({ stats }: { stats: StatsDashboard }) {
+export function StatsView({ stats, tab }: { stats: StatsDashboard; tab: "vue" | "pipeline" | "sources" }) {
   const { pulse, abandons } = stats;
+  if (tab === "pipeline") {
+    return (
+      <PipelineStrip
+        rows={stats.pipeline}
+        total={stats.pipelineTotal}
+        wonValue={stats.wonValue}
+        wonCount={stats.wonCount}
+      />
+    );
+  }
+  if (tab === "sources") {
+    return <SourceGauges rows={stats.sources} />;
+  }
   return (
     <>
       <ConversionFlow pulse={pulse} />
@@ -243,14 +256,6 @@ export function StatsView({ stats }: { stats: StatsDashboard }) {
           </div>
         </Link>
       </div>
-
-      <PipelineStrip
-        rows={stats.pipeline}
-        total={stats.pipelineTotal}
-        wonValue={stats.wonValue}
-        wonCount={stats.wonCount}
-      />
-      <SourceGauges rows={stats.sources} />
 
       <section>
         <div className="border-b border-slate-100 px-4 py-3 lg:px-6">

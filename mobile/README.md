@@ -1,4 +1,4 @@
-# QuoteBuilder — app Flutter
+# QuoteBuilder, app Flutter
 
 iOS / Android. Même backend que le SaaS web (Supabase + API Next.js).
 

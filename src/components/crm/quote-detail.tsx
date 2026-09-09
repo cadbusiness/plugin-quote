@@ -58,7 +58,7 @@ export function QuoteDetailView({
             <div className="flex flex-wrap items-center gap-2">
               <span className="truncate text-sm font-medium text-slate-900">{quote.contact_name}</span>
               <Chip tone={scoreTone(quote.score_label)}>
-                {(quote.score_label ?? "—").toUpperCase()}
+                {(quote.score_label ?? "-").toUpperCase()}
                 {quote.score != null ? ` ${quote.score}` : ""}
               </Chip>
               <Chip tone={statusTone(status?.slug ?? quote.status)}>{status?.label ?? quote.status}</Chip>
@@ -148,10 +148,10 @@ function DossierTab({
       <div className="flex flex-wrap items-center gap-x-8 gap-y-3 border-b border-slate-200 px-4 py-3.5 lg:px-6">
         <div className="flex items-center gap-2.5">
           <span className="text-[1.75rem] font-semibold leading-none tabular-nums tracking-tight text-slate-900">
-            {quote.score != null ? quote.score : "—"}
+            {quote.score != null ? quote.score : "-"}
           </span>
           <div>
-            <Chip tone={scoreTone(quote.score_label)}>{(quote.score_label ?? "—").toUpperCase()}</Chip>
+            <Chip tone={scoreTone(quote.score_label)}>{(quote.score_label ?? "-").toUpperCase()}</Chip>
             <p className="mt-0.5 text-xs text-slate-500">{detail.scoreReasons[0] ?? "Qualification automatique"}</p>
           </div>
         </div>
@@ -161,7 +161,7 @@ function DossierTab({
         <FactMini label="Source" value={detail.source} hint={attributionHint(quote)} />
         <FactMini
           label="Funnel"
-          value={funnel?.name ?? "—"}
+          value={funnel?.name ?? "-"}
           hint={detail.assignedLabel ? `Assigné à ${detail.assignedLabel}` : "Non assigné"}
         />
       </div>
@@ -306,7 +306,7 @@ function ProjetTab({ detail }: { detail: QuoteDetail }) {
                     </div>
                   </td>
                   <td className="px-4 py-2.5 tabular-nums lg:px-6">{item.quantity}</td>
-                  <td className="px-4 py-2.5 text-slate-500 lg:px-6">{item.optionsLabel ?? "—"}</td>
+                  <td className="px-4 py-2.5 text-slate-500 lg:px-6">{item.optionsLabel ?? "-"}</td>
                   <td className="px-4 py-2.5 tabular-nums lg:px-6">{formatPrice(item.price_min, item.price_max)}</td>
                 </tr>
               ))}
@@ -362,7 +362,7 @@ function ClientTab({
         <SectionTitle>Fiche client</SectionTitle>
         <dl className="grid grid-cols-2 gap-x-8 gap-y-3 border-b border-slate-100 px-4 py-4 text-sm lg:grid-cols-3 lg:px-6">
           <Fact label="Nom">{quote.contact_name}</Fact>
-          <Fact label="Société">{quote.contact_company || "—"}</Fact>
+          <Fact label="Société">{quote.contact_company || "-"}</Fact>
           <Fact label="Email">
             <span className="inline-flex items-center gap-1.5">
               <span>{quote.contact_email}</span>
@@ -380,7 +380,7 @@ function ClientTab({
                 </Link>
               </span>
             ) : (
-              "—"
+              "-"
             )}
           </Fact>
           <Fact label="Demandes">{detail.siblings.length}</Fact>
@@ -400,11 +400,11 @@ function ClientTab({
         <SectionTitle>Attribution</SectionTitle>
         <dl className="grid grid-cols-2 gap-x-8 gap-y-3 border-b border-slate-100 px-4 py-4 text-sm lg:grid-cols-3 lg:px-6">
           <Fact label="Source">{detail.source}</Fact>
-          <Fact label="Medium">{quote.utm_medium || "—"}</Fact>
-          <Fact label="Campagne">{quote.utm_campaign || "—"}</Fact>
-          <Fact label="Contenu">{quote.utm_content || "—"}</Fact>
-          <Fact label="Terme">{quote.utm_term || "—"}</Fact>
-          <Fact label="Référent">{quote.referrer ? hostOf(quote.referrer) ?? quote.referrer : "—"}</Fact>
+          <Fact label="Medium">{quote.utm_medium || "-"}</Fact>
+          <Fact label="Campagne">{quote.utm_campaign || "-"}</Fact>
+          <Fact label="Contenu">{quote.utm_content || "-"}</Fact>
+          <Fact label="Terme">{quote.utm_term || "-"}</Fact>
+          <Fact label="Référent">{quote.referrer ? hostOf(quote.referrer) ?? quote.referrer : "-"}</Fact>
         </dl>
       </section>
 
@@ -426,7 +426,7 @@ function ClientTab({
               </td>
               <td className="px-4 py-2.5 lg:px-6">
                 <Chip tone={scoreTone(row.scoreLabel)}>
-                  {(row.scoreLabel ?? "—").toUpperCase()}
+                  {(row.scoreLabel ?? "-").toUpperCase()}
                   {row.score != null ? ` ${row.score}` : ""}
                 </Chip>
               </td>
@@ -627,7 +627,7 @@ function AutomationsTab({ detail }: { detail: QuoteDetail }) {
                     <li key={step.id} className="flex items-center justify-between gap-3 py-1 text-sm">
                       <span>
                         {step.label}
-                        {step.error ? <span className="text-rose-600"> — {step.error}</span> : null}
+                        {step.error ? <span className="text-rose-600">, {step.error}</span> : null}
                       </span>
                       <span className="shrink-0 text-xs text-slate-400">
                         {step.statusLabel} · {step.when}

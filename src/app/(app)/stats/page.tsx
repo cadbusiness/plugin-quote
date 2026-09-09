@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { FileDown } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
-import { saveGaMeasurementId } from "@/app/(app)/crm-actions";
 import { loadStatsDashboard, resolveRange, type StatsRange } from "@/lib/stats/dashboard";
+import { parseOrgGtm } from "@/lib/funnels/tracking";
+import { parseStatsTab, statsHref, STATS_TABS } from "@/lib/stats/tabs";
 import { StatsView } from "@/components/stats/stats-view";
+import { StatsTrackingPanel } from "@/components/stats/tracking-panel";
 
 const RANGES: { id: StatsRange; label: string }[] = [
   { id: "day", label: "Aujourd’hui" },
@@ -16,21 +19,24 @@ const RANGES: { id: StatsRange; label: string }[] = [
 export default async function StatsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ range?: string }>;
+  searchParams: Promise<{ range?: string; tab?: string; error?: string }>;
 }) {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");
-  const { range: rangeParam } = await searchParams;
-  const range = resolveRange(rangeParam);
+  const query = await searchParams;
+  const range = resolveRange(query.range);
+  const admin = isAdminRole(ctx.role);
+  let tab = parseStatsTab(query.tab);
+  if (tab === "suivi" && !admin) tab = "vue";
   const supabase = await createClient();
   const stats = await loadStatsDashboard(supabase, ctx.organization.id, range);
-  const admin = isAdminRole(ctx.role);
   const action =
     stats.pulse.waiting > 0
       ? { href: "/devis", label: `À rappeler ${stats.pulse.waiting}` }
       : stats.abandons.withEmail > 0
         ? { href: "/sessions", label: `Relancer ${stats.abandons.withEmail}` }
         : null;
+  const tabs = STATS_TABS.filter((item) => !item.admin || admin);
 
   return (
     <ListPanel>
@@ -41,7 +47,7 @@ export default async function StatsPage({
             return (
               <Link
                 key={item.id}
-                href={item.id === "month" ? "/stats" : `/stats?range=${item.id}`}
+                href={statsHref(tab, item.id)}
                 className={`inline-flex items-center rounded-full px-2.5 py-1 text-sm ${
                   active
                     ? "bg-orange-50 font-medium text-[#C2410C]"
@@ -60,23 +66,44 @@ export default async function StatsPage({
         ) : null}
         <a
           href={`/stats/export?range=${range}`}
-          className="rounded-md border border-slate-200 px-2.5 py-1 text-sm text-slate-600 hover:bg-slate-50"
+          className="inline-flex items-center gap-1.5 rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#D45203]"
         >
-          PDF
+          <FileDown className="h-4 w-4" strokeWidth={2} />
+          Rapport PDF
         </a>
-        {admin ? (
-          <form action={saveGaMeasurementId} className="hidden items-center gap-1.5 lg:flex">
-            <input
-              name="ga_measurement_id"
-              defaultValue={ctx.organization.ga_measurement_id ?? ""}
-              placeholder="GA4"
-              className="w-24 rounded-md border border-slate-200 px-2 py-1 text-sm"
-            />
-            <button className="text-sm text-slate-500">OK</button>
-          </form>
-        ) : null}
       </ListToolbar>
-      <StatsView stats={stats} />
+
+      <nav className="flex items-end gap-6 overflow-x-auto border-b border-slate-200 px-4 lg:px-6">
+        {tabs.map((item) => {
+          const on = item.id === tab;
+          return (
+            <Link
+              key={item.id}
+              href={statsHref(item.id, range)}
+              aria-current={on ? "page" : undefined}
+              className={`relative shrink-0 py-2.5 text-sm ${
+                on ? "font-medium text-slate-900" : "text-slate-500 hover:text-slate-900"
+              }`}
+            >
+              {item.label}
+              <span
+                aria-hidden
+                className={`absolute inset-x-0 -bottom-px h-0.5 ${on ? "bg-[#E85D04]" : "bg-transparent"}`}
+              />
+            </Link>
+          );
+        })}
+      </nav>
+
+      {tab === "suivi" ? (
+        <StatsTrackingPanel
+          ga={ctx.organization.ga_measurement_id ?? ""}
+          gtm={parseOrgGtm(ctx.organization.branding)}
+          error={query.error}
+        />
+      ) : (
+        <StatsView stats={stats} tab={tab} />
+      )}
     </ListPanel>
   );
 }

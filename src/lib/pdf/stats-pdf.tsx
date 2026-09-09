@@ -68,7 +68,7 @@ export function StatsPdf({
               <View key={row.source} style={styles.row}>
                 <Text>{row.source}</Text>
                 <Text>
-                  {row.quotes} demandes · {row.conversion != null ? `${Math.round(row.conversion)}%` : "—"} ·{" "}
+                  {row.quotes} demandes · {row.conversion != null ? `${Math.round(row.conversion)}%` : "-"} ·{" "}
                   {new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(
                     row.pipeline,
                   )}

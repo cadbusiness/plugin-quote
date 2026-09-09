@@ -10,7 +10,7 @@ type Client = SupabaseClient<Database>;
 
 function answersText(answers: Record<string, unknown>) {
   return Object.entries(answers)
-    .map(([key, value]) => `- ${key}: ${Array.isArray(value) ? value.join(", ") : String(value ?? "—")}`)
+    .map(([key, value]) => `- ${key}: ${Array.isArray(value) ? value.join(", ") : String(value ?? "-")}`)
     .join("\n");
 }
 

@@ -137,7 +137,7 @@ export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: Exist
                   </label>
                   <div>
                     <p className="text-sm font-medium text-slate-900">Type</p>
-                    <p className="mt-0.5 text-xs text-slate-500">Un funnel est un formulaire ou un chat — pas les deux.</p>
+                    <p className="mt-0.5 text-xs text-slate-500">Un funnel est un formulaire ou un chat, pas les deux.</p>
                     <div className="mt-2 flex flex-wrap gap-2">
                       <ToggleChip on={kind === "form"} tone="orange" label="Formulaire" onClick={() => setKind("form")} />
                       <ToggleChip on={kind === "chat"} tone="violet" label="Chat IA" onClick={() => setKind("chat")} />

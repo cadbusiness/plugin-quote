@@ -84,7 +84,7 @@ export async function ingestInboundEmail(input: {
         user_id: notifyUserId,
         quote_id: quote.id,
         type: "inbound_email",
-        body: `Email de ${input.fromName || from}${input.subject ? ` — ${input.subject}` : ""}`,
+        body: `Email de ${input.fromName || from}${input.subject ? `, ${input.subject}` : ""}`,
       });
     }
   }
