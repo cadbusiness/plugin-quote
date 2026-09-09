@@ -6,6 +6,7 @@ import { Chip } from "@/components/ui/chip";
 import { GaugeBar, RingGauge, type GaugeTone } from "@/components/ui/gauge";
 import { HelpTip, LabelHelp } from "@/components/ui/help-tip";
 import { MonthChart } from "@/components/stats/month-chart";
+import { KpiStrip } from "@/components/stats/kpi-strip";
 import { formatEur, formatEurExact, formatPercent } from "@/lib/format";
 import type {
   CampaignStatsRow,
@@ -29,12 +30,6 @@ const PIPELINE_TONE: Record<string, GaugeTone> = {
   in_progress: "violet",
   waiting: "slate",
 };
-
-function compactEur(value: number) {
-  if (value >= 10_000) return `${Math.round(value / 1000)}\u00a0k€`;
-  if (value >= 1000) return `${(value / 1000).toFixed(1).replace(".", ",")}\u00a0k€`;
-  return formatEur(value);
-}
 
 function pct(part: number, total: number) {
   if (total <= 0) return 0;
@@ -251,22 +246,10 @@ export function StatsView({
   }
   return (
     <>
+      <KpiStrip items={stats.kpis} />
       <ConversionFlow pulse={pulse} />
 
-      <div className="grid grid-cols-1 border-b border-slate-200 sm:grid-cols-3">
-        <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-4 sm:border-b-0 sm:border-r lg:px-6">
-          <RingGauge
-            value={compactEur(pulse.pipeline)}
-            pct={pulse.pipeline > 0 ? 1 : 0}
-            tone="sky"
-            label={`${formatEur(pulse.pipeline)} en pipeline`}
-          />
-          <p className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-wide text-slate-500">
-            <LabelHelp help="Somme des devis encore ouverts, au milieu de leur fourchette de prix. Ce n’est pas du chiffre d’affaires signé.">
-              CA en cours
-            </LabelHelp>
-          </p>
-        </div>
+      <div className="grid grid-cols-1 border-b border-slate-200 sm:grid-cols-2">
         <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-4 sm:border-b-0 sm:border-r lg:px-6">
           <RingGauge
             value={pulse.delayLabel}
@@ -309,7 +292,7 @@ export function StatsView({
 
       <section>
         <div className="border-b border-slate-100 px-4 py-3 lg:px-6">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">6 mois</p>
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Tendance</p>
         </div>
         <MonthChart months={stats.months} />
       </section>

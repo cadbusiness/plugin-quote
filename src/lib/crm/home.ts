@@ -6,6 +6,13 @@ import { listQuotes, loadQuoteListExtras } from "@/lib/crm/quotes";
 import { loadSegmentContacts } from "@/lib/segments/resolve";
 import { matchSegment, parseSegmentRules } from "@/lib/segments/match";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
+import {
+  deltaMeta,
+  formatKpiEur,
+  formatKpiNumber,
+  type Kpi,
+  type MonthPoint,
+} from "@/lib/stats/dashboard";
 
 export const HOME_MODULE_IDS = [
   "quotes",
@@ -32,7 +39,7 @@ export type HomeModuleDef = {
 export const HOME_MODULES: HomeModuleDef[] = [
   { id: "quotes", label: "Demandes", hint: "Les 4 derniers dossiers, pleine largeur.", defaultOn: true, span: "full" },
   { id: "abandons", label: "Abandons", hint: "Jauges visites → email → relance.", defaultOn: true, span: "half" },
-  { id: "stats", label: "Statistiques", hint: "Devis, rappelés, signés, ce mois.", defaultOn: true, span: "half" },
+  { id: "stats", label: "Tendance", hint: "Devis et signés sur 6 mois.", defaultOn: true, span: "half" },
   { id: "automations", label: "Automatisations", hint: "Parcours actifs, 4 lignes.", defaultOn: true, admin: true, span: "half" },
   { id: "emails", label: "Emails", hint: "Campagnes récentes, 4 lignes.", defaultOn: true, span: "half" },
   { id: "segments", label: "Segmentation", hint: "Listes et volume de contacts.", defaultOn: true, span: "half" },
@@ -123,14 +130,8 @@ export type HomeFunnel = {
 };
 
 export type HomeStats = {
-  visitors: number;
-  submitted: number;
-  contacted: number;
-  won: number;
-  wonValue: number;
-  pipelineTotal: number;
-  abandonsWithEmail: number;
-  abandonsTotal: number;
+  kpis: Kpi[];
+  months: MonthPoint[];
 };
 
 export type HomeDashboard = {
@@ -150,38 +151,56 @@ export type HomeDashboard = {
   orgSlug: string;
 };
 
-const CONTACTED = new Set(["contacted", "in_progress", "won", "waiting"]);
+const MONTH_LABELS = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
+
+function monthKey(iso: string) {
+  const d = new Date(iso);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function itemValue(priceMin: number | null, priceMax: number | null, quantity: number) {
+  const min = priceMin ?? 0;
+  const max = priceMax ?? priceMin ?? 0;
+  return ((min + max) / 2) * (quantity || 1);
+}
 
 async function loadHomeStats(
   supabase: SupabaseClient<Database>,
   orgId: string,
 ): Promise<HomeStats> {
-  const since = new Date();
-  since.setDate(1);
-  since.setHours(0, 0, 0, 0);
-  const iso = since.toISOString();
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const prevStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const sixStart = new Date(now.getFullYear(), now.getMonth() - 5, 1);
 
-  const [{ data: quotes }, { data: statuses }, { count: visitors }, { data: sessions }] = await Promise.all([
-    supabase
-      .from("quotes")
-      .select("id, status, status_id")
-      .eq("organization_id", orgId)
-      .gte("created_at", iso),
-    supabase.from("quote_statuses").select("id, slug").eq("organization_id", orgId),
-    supabase
-      .from("analytics_events")
-      .select("id", { count: "exact", head: true })
-      .eq("organization_id", orgId)
-      .eq("event_type", ANALYTICS_EVENTS.pageView)
-      .gte("created_at", iso),
-    supabase
-      .from("quote_sessions")
-      .select("id, contact_draft, submitted_quote_id")
-      .eq("organization_id", orgId)
-      .is("submitted_quote_id", null)
-      .gte("created_at", iso)
-      .limit(200),
-  ]);
+  const [{ data: quotes }, { data: statuses }, { count: visitors }, { count: prevVisitors }, { data: sessions }] =
+    await Promise.all([
+      supabase
+        .from("quotes")
+        .select("id, status, status_id, created_at")
+        .eq("organization_id", orgId)
+        .gte("created_at", sixStart.toISOString()),
+      supabase.from("quote_statuses").select("id, slug").eq("organization_id", orgId),
+      supabase
+        .from("analytics_events")
+        .select("id", { count: "exact", head: true })
+        .eq("organization_id", orgId)
+        .eq("event_type", ANALYTICS_EVENTS.pageView)
+        .gte("created_at", monthStart.toISOString()),
+      supabase
+        .from("analytics_events")
+        .select("id", { count: "exact", head: true })
+        .eq("organization_id", orgId)
+        .eq("event_type", ANALYTICS_EVENTS.pageView)
+        .gte("created_at", prevStart.toISOString())
+        .lt("created_at", monthStart.toISOString()),
+      supabase
+        .from("quote_sessions")
+        .select("created_at, submitted_quote_id")
+        .eq("organization_id", orgId)
+        .gte("created_at", sixStart.toISOString())
+        .limit(800),
+    ]);
 
   const list = quotes ?? [];
   const quoteIds = list.map((quote) => quote.id);
@@ -195,35 +214,79 @@ async function loadHomeStats(
   const slugById = new Map((statuses ?? []).map((row) => [row.id, row.slug]));
   const slugOf = (quote: { status_id: string | null; status: string }) =>
     (quote.status_id ? slugById.get(quote.status_id) : null) ?? quote.status;
-  const submitted = list.length;
-  const contacted = list.filter((quote) => CONTACTED.has(slugOf(quote))).length;
-  const wonQuotes = list.filter((quote) => slugOf(quote) === "won");
-  const openQuotes = list.filter((quote) => slugOf(quote) !== "won" && slugOf(quote) !== "lost");
   const valueByQuote = new Map<string, number>();
   for (const item of items ?? []) {
-    const min = item.price_min ?? 0;
-    const max = item.price_max ?? item.price_min ?? 0;
-    const qty = item.quantity ?? 1;
-    valueByQuote.set(item.quote_id, (valueByQuote.get(item.quote_id) ?? 0) + ((min + max) / 2) * qty);
+    valueByQuote.set(
+      item.quote_id,
+      (valueByQuote.get(item.quote_id) ?? 0) + itemValue(item.price_min, item.price_max, item.quantity ?? 1),
+    );
   }
-  const wonValue = wonQuotes.reduce((sum, quote) => sum + (valueByQuote.get(quote.id) ?? 0), 0);
-  const pipelineTotal = openQuotes.reduce((sum, quote) => sum + (valueByQuote.get(quote.id) ?? 0), 0);
-  const sessionRows = sessions ?? [];
-  const abandonsWithEmail = sessionRows.filter((session) => {
-    const draft = session.contact_draft;
-    return Boolean(draft && typeof draft === "object" && !Array.isArray(draft) && (draft as { email?: string }).email);
-  }).length;
 
-  return {
-    visitors: visitors ?? sessionRows.length,
-    submitted,
-    contacted,
-    won: wonQuotes.length,
-    wonValue,
-    pipelineTotal,
-    abandonsWithEmail,
-    abandonsTotal: sessionRows.length,
+  const inMonth = (iso: string, start: Date, end: Date) => {
+    const t = new Date(iso).getTime();
+    return t >= start.getTime() && t < end.getTime();
   };
+  const monthQuotes = list.filter((quote) => inMonth(quote.created_at, monthStart, now));
+  const prevQuotes = list.filter((quote) => inMonth(quote.created_at, prevStart, monthStart));
+  const submitted = monthQuotes.length;
+  const prevSubmitted = prevQuotes.length;
+  const volume = monthQuotes.reduce((sum, quote) => sum + (valueByQuote.get(quote.id) ?? 0), 0);
+  const prevVolume = prevQuotes.reduce((sum, quote) => sum + (valueByQuote.get(quote.id) ?? 0), 0);
+  const visits = visitors ?? 0;
+  const prevVisits = prevVisitors ?? 0;
+  const conversion = visits ? (submitted / visits) * 100 : 0;
+  const prevConversion = prevVisits ? (prevSubmitted / prevVisits) * 100 : 0;
+
+  const kpis: Kpi[] = [
+    {
+      id: "visits",
+      label: "Visites",
+      value: formatKpiNumber(visits),
+      hint: "ce mois",
+      tone: "slate",
+      ...deltaMeta(visits, prevVisits),
+    },
+    {
+      id: "quotes",
+      label: "Devis",
+      value: formatKpiNumber(submitted),
+      hint: submitted ? "reçus" : "en attente du premier",
+      tone: "orange",
+      ...deltaMeta(submitted, prevSubmitted),
+    },
+    {
+      id: "conversion",
+      label: "Conversion",
+      value: `${Math.round(conversion)}%`,
+      hint: visits ? `${submitted} / ${visits}` : "-",
+      tone: "orange",
+      ...deltaMeta(conversion, prevConversion),
+    },
+    {
+      id: "volume",
+      label: "CA",
+      value: formatKpiEur(volume),
+      hint: submitted ? "demandes du mois" : "-",
+      tone: "sky",
+      ...deltaMeta(volume, prevVolume),
+    },
+  ];
+
+  const months: MonthPoint[] = [];
+  for (let i = 5; i >= 0; i -= 1) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    months.push({
+      key,
+      label: MONTH_LABELS[d.getMonth()] ?? key,
+      quotes: list.filter((quote) => monthKey(quote.created_at) === key).length,
+      won: list.filter((quote) => monthKey(quote.created_at) === key && slugOf(quote) === "won").length,
+      abandons: (sessions ?? []).filter((session) => monthKey(session.created_at) === key && !session.submitted_quote_id)
+        .length,
+    });
+  }
+
+  return { kpis, months };
 }
 
 export async function loadHomeDashboard(
@@ -256,7 +319,7 @@ export async function loadHomeDashboard(
         ? supabase.from("quote_statuses").select("id, label, slug").eq("organization_id", orgId)
         : Promise.resolve({ data: [] as { id: string; label: string; slug: string }[] }),
       need.has("abandons") ? loadAbandonSnapshot(supabase, orgId) : Promise.resolve(null),
-      need.has("stats") ? loadHomeStats(supabase, orgId) : Promise.resolve(null),
+      loadHomeStats(supabase, orgId),
       need.has("emails")
         ? supabase
             .from("email_campaigns")

@@ -59,7 +59,7 @@ export function HomeModulesDialog({
                 Modules du tableau de bord
               </p>
               <p className="mt-1 text-sm text-slate-500">
-                Demandes en pleine largeur, le reste en tuiles 1/2. On n’affiche que l’utile.
+                Moins de listes : le pulse (visites, devis, conversion, CA) reste en tête, le reste en tuiles.
               </p>
             </div>
             <div className="min-h-0 flex-1 overflow-y-auto px-5 py-3">
