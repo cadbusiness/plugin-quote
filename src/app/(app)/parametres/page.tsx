@@ -2,6 +2,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
+import { OrgFamilyPicker } from "@/components/dashboard/org-family-picker";
+import { parseOrgFamily } from "@/lib/funnels/families";
 
 const ROWS: { href: string; label: string; hint: string; admin?: boolean }[] = [
   {
@@ -28,6 +30,7 @@ export default async function SettingsPage() {
           {ctx.organization.name} · plan {ctx.organization.plan} · {ctx.email}
         </p>
       </ListToolbar>
+      {admin ? <OrgFamilyPicker initialFamily={parseOrgFamily(ctx.organization.branding)} /> : null}
       <ul className="divide-y divide-slate-100">
         {ROWS.filter((row) => !row.admin || admin).map((row) => (
           <li key={row.href}>

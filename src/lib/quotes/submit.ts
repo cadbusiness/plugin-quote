@@ -143,6 +143,8 @@ export async function submitQuote(input: {
       price_max: null as number | null,
     })),
   ];
+  const requestName =
+    selected?.headline ?? selected?.name ?? (catalogItems.length ? "Demande catalogue" : "Configuration");
   if (items.length) {
     await supabase.from("quote_items").insert(items);
   }
@@ -176,7 +178,7 @@ export async function submitQuote(input: {
         priceMax: item.price_max,
       })),
       answers,
-      suggestionName: selected?.headline ?? selected?.name ?? "Configuration",
+      suggestionName: requestName,
       priceMin: selected?.priceMin ?? null,
       priceMax: selected?.priceMax ?? null,
     });
@@ -203,7 +205,7 @@ export async function submitQuote(input: {
       subjectId: quote.id,
       suiviUrl: access?.url,
       pin: access?.pin,
-      suggestionName: selected?.headline ?? selected?.name ?? "Configuration",
+      suggestionName: requestName,
       priceMin: selected?.priceMin ?? null,
       priceMax: selected?.priceMax ?? null,
       pdf: pdfBuffer,
@@ -213,7 +215,7 @@ export async function submitQuote(input: {
         organization: org!,
         quote,
         answers,
-        suggestionName: selected?.headline ?? selected?.name ?? "Configuration",
+        suggestionName: requestName,
         priceMin: selected?.priceMin ?? null,
         priceMax: selected?.priceMax ?? null,
         pdf: pdfBuffer,
@@ -228,7 +230,7 @@ export async function submitQuote(input: {
         organization: org!,
         quote,
         answers,
-        suggestionName: selected?.headline ?? selected?.name ?? "Configuration",
+        suggestionName: requestName,
         priceMin: selected?.priceMin ?? null,
         priceMax: selected?.priceMax ?? null,
         pdf: pdfBuffer,

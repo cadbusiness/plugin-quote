@@ -67,6 +67,7 @@ export type Product = {
   priceMax: number | null;
   currency: string;
   tags: string[];
+  category: string | null;
   options: ProductOption[];
   stockStatus: string | null;
   /** Identifiant boutique (Woo / Shopify) pour préremplir depuis la vitrine. */
@@ -103,6 +104,7 @@ export type ConfiguratorDefinition = {
     sector: string;
     wizardEnabled: boolean;
     chatEnabled: boolean;
+    kind: "form" | "chat" | "catalog";
     theme: Record<string, unknown>;
   };
   steps: WizardStep[];

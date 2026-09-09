@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { createSpace, joinSpace } from "@/app/(public)/onboarding/actions";
+import { FUNNEL_FAMILIES } from "@/lib/funnels/families";
 
 function Submit({ label }: { label: string }) {
   const { pending } = useFormStatus();
@@ -33,6 +34,30 @@ export function CreateSpaceForm({ next = "" }: { next?: string }) {
           className="mt-1 w-full border border-slate-200 bg-white px-3 py-2 text-sm"
         />
       </label>
+      <fieldset className="mt-4">
+        <legend className="text-sm text-slate-600">Votre métier</legend>
+        <p className="mt-1 text-xs text-slate-500">Le wizard ouvrira déjà cette famille. Vous pourrez en changer.</p>
+        <div className="mt-2 grid gap-2">
+          {FUNNEL_FAMILIES.map((family, index) => (
+            <label
+              key={family.id}
+              className="flex cursor-pointer items-start gap-3 rounded-lg px-3 py-2.5 ring-1 ring-slate-200 has-checked:bg-orange-50 has-checked:ring-orange-200"
+            >
+              <input
+                type="radio"
+                name="family"
+                value={family.id}
+                defaultChecked={index === FUNNEL_FAMILIES.length - 1}
+                className="mt-1"
+              />
+              <span>
+                <span className="block text-sm font-medium text-slate-900">{family.label}</span>
+                <span className="block text-xs text-slate-500">{family.blurb}</span>
+              </span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
       {state?.error ? <p className="mt-2 text-sm text-red-600">{state.error}</p> : null}
       <Submit label="Créer l’espace" />
     </form>
