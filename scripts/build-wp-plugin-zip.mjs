@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "Vinci Liberta LTD",
-      changelog: `<h4>${version}</h4><ul><li>Logo QuoteBuilder.</li><li>Compte obligatoire : sans espace connecté, aucune collecte.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>Réglages regroupés : Demandes, Réglages (Bouton, Produits, Page, Style), Compte.</li><li>Options vitrine : audience, stock, liste d’exclusion (produits, catégories, étiquettes), page devis, colonnes, couleurs au survol.</li></ul>`,
     },
     null,
     2,

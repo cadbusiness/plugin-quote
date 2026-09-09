@@ -16,10 +16,28 @@
 
   function gather(form) {
     var next = Object.assign({}, storefront);
-    form.querySelectorAll("input, select").forEach(function (field) {
+    var lists = {};
+    form.querySelectorAll("input, select, textarea").forEach(function (field) {
       if (!field.name) return;
+      if (field.name.slice(-2) === "[]") {
+        var key = field.name.slice(0, -2);
+        if (!lists[key]) lists[key] = [];
+        if (field.type === "checkbox") {
+          if (field.checked) lists[key].push(field.value);
+        } else if (field.value) {
+          lists[key].push(field.value);
+        }
+        return;
+      }
+      if (field.type === "radio") {
+        if (field.checked) next[field.name] = field.value;
+        return;
+      }
       if (field.type === "checkbox") next[field.name] = field.checked;
       else next[field.name] = field.value;
+    });
+    Object.keys(lists).forEach(function (key) {
+      next[key] = lists[key];
     });
     form.querySelectorAll("[data-chips]").forEach(function (box) {
       next[box.getAttribute("data-chips")] = Array.prototype.map.call(box.querySelectorAll("button"), function (chip) {
@@ -27,6 +45,17 @@
       });
     });
     return next;
+  }
+
+  function syncConditional(form) {
+    form.querySelectorAll("[data-show-when]").forEach(function (el) {
+      var spec = (el.getAttribute("data-show-when") || "").split(":");
+      var name = spec[0];
+      var values = (spec[1] || "").split("|");
+      var field = form.querySelector('[name="' + name + '"]:checked') || form.querySelector('[name="' + name + '"]');
+      var current = field ? field.value : "";
+      el.hidden = values.indexOf(current) === -1;
+    });
   }
 
   function paintPreview() {
@@ -38,11 +67,22 @@
     btn.textContent = data.buttonLabel;
     btn.style.background = data.buttonBg;
     btn.style.color = data.buttonColor;
+    btn.style.borderColor = data.buttonBorder;
     btn.className = data.buttonStyle === "link" ? "qb-atq qb-atq-link" : "qb-atq";
+    var price = form.querySelector(".qb-price-hidden");
+    if (price && data.priceLabel) price.textContent = data.priceLabel;
   }
 
   document.querySelectorAll("[data-qb-form]").forEach(function (form) {
-    form.addEventListener("input", paintPreview);
+    syncConditional(form);
+    form.addEventListener("input", function () {
+      syncConditional(form);
+      paintPreview();
+    });
+    form.addEventListener("change", function () {
+      syncConditional(form);
+      paintPreview();
+    });
     form.addEventListener("submit", function (event) {
       event.preventDefault();
       var payload = gather(form);
@@ -62,6 +102,42 @@
     });
   });
   paintPreview();
+
+  var sub = document.querySelector("[data-qb-subnav]");
+  if (sub) {
+    sub.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+        var id = (link.getAttribute("href") || "").replace("#", "");
+        var target = document.getElementById(id);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        sub.querySelectorAll("a").forEach(function (item) {
+          item.classList.toggle("is-active", item === link);
+        });
+      });
+    });
+  }
+
+  var createPage = document.getElementById("qb-create-page");
+  if (createPage) {
+    createPage.addEventListener("click", function () {
+      post("quotebuilder_create_quote_page").then(function (json) {
+        if (!json.success || !json.data) return;
+        var select = document.querySelector("[name=quotePageId]");
+        if (!select) return;
+        var existing = select.querySelector('option[value="' + json.data.id + '"]');
+        if (existing) {
+          existing.selected = true;
+          return;
+        }
+        var opt = document.createElement("option");
+        opt.value = json.data.id;
+        opt.textContent = json.data.title;
+        opt.selected = true;
+        select.appendChild(opt);
+      });
+    });
+  }
 
   function pair() {
     var code = document.getElementById("qb-code");
@@ -140,7 +216,9 @@
         box.innerHTML = "";
         return;
       }
-      var action = kind === "categories" ? "quotebuilder_search_categories" : "quotebuilder_search_products";
+      var action = "quotebuilder_search_products";
+      if (kind === "categories") action = "quotebuilder_search_categories";
+      if (kind === "tags") action = "quotebuilder_search_tags";
       fetch(cfg.ajax + "?action=" + action + "&_wpnonce=" + encodeURIComponent(cfg.nonce) + "&q=" + encodeURIComponent(q))
         .then(function (res) { return res.json(); })
         .then(function (json) {

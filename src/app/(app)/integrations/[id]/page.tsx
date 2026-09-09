@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { notFound, redirect } from "next/navigation";
 import {
   deleteConnection,
@@ -63,6 +64,7 @@ export default async function ConnectionPage({
   ]);
 
   const settings = parseSettings(connection.settings);
+  const sf = settings.storefront;
   const provider = connection.provider as CatalogProvider;
   const status = STATUS[connection.status] ?? STATUS.active;
   const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "").replace(/\/$/, "");
@@ -165,148 +167,110 @@ export default async function ConnectionPage({
         </div>
       </form>
 
-      <form action={updateStorefront} className="grid gap-4 border-b border-slate-100 px-4 py-6 lg:px-6">
+      <form action={updateStorefront} className="border-b border-slate-100">
         <input type="hidden" name="id" value={connection.id} />
-        <div>
+        <div className="border-b border-slate-100 px-4 py-4 lg:px-6">
           <p className="text-sm font-medium text-slate-900">Vitrine devis</p>
           <p className="mt-1 text-sm text-slate-500">
-            Ces réglages sont les mêmes que dans le plugin. WordPress et Shopify les appliquent
-            sur la boutique : masquer les prix, retirer le panier, bouton « Demander un devis ».
+            Même contrat que le plugin WordPress. La liste d’exclusion et les rôles se règlent
+            dans WooCommerce ; enregistrer ici ne les écrase pas.
           </p>
         </div>
-        <div className="grid gap-2 sm:grid-cols-2">
-          <Check name="hidePrices" defaultChecked={settings.storefront.hidePrices} label="Masquer les prix" />
-          <Check name="hideAddToCart" defaultChecked={settings.storefront.hideAddToCart} label="Masquer Ajouter au panier" />
-          <Check name="hideSaleFlash" defaultChecked={settings.storefront.hideSaleFlash} label="Masquer les badges promo" />
-          <Check name="hideCheckout" defaultChecked={settings.storefront.hideCheckout} label="Masquer le bouton commander" />
-          <Check name="showOnShop" defaultChecked={settings.storefront.showOnShop} label="Bouton sur la boutique" />
-          <Check name="showOnProduct" defaultChecked={settings.storefront.showOnProduct} label="Bouton sur la fiche produit" />
-          <Check name="showOnCart" defaultChecked={settings.storefront.showOnCart} label="Convertir le panier en devis" />
-          <Check name="showOnCheckout" defaultChecked={settings.storefront.showOnCheckout} label="Bouton au checkout" />
-          <Check name="outOfStockOnly" defaultChecked={settings.storefront.outOfStockOnly} label="Uniquement les ruptures de stock" />
-          <Check name="showFloatingButton" defaultChecked={settings.storefront.showFloatingButton} label="Bouton flottant liste de devis" />
-          <Check name="showImages" defaultChecked={settings.storefront.showImages} label="Photos dans la liste" />
-          <Check name="showSku" defaultChecked={settings.storefront.showSku} label="SKU dans la liste" />
-          <Check name="showQty" defaultChecked={settings.storefront.showQty} label="Quantité modifiable" />
+
+        <div className="grid gap-2 border-b border-slate-100 px-4 py-4 sm:grid-cols-2 lg:px-6">
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-400 sm:col-span-2">Bouton</p>
+          <Check name="hidePrices" defaultChecked={sf.hidePrices} label="Masquer les prix" />
+          <Check name="hideAddToCart" defaultChecked={sf.hideAddToCart} label="Masquer Ajouter au panier" />
+          <Check name="hideSaleFlash" defaultChecked={sf.hideSaleFlash} label="Masquer les badges promo" />
+          <Check name="hideCheckout" defaultChecked={sf.hideCheckout} label="Masquer Commander" />
+          <Check name="showOnProduct" defaultChecked={sf.showOnProduct} label="Fiche produit" />
+          <Check name="showOnShop" defaultChecked={sf.showOnShop} label="Boutique / catégories" />
+          <Check name="showOnBlocks" defaultChecked={sf.showOnBlocks} label="Blocs WooCommerce" />
+          <Check name="showOnCart" defaultChecked={sf.showOnCart} label="Page panier" />
+          <Check name="showOnCheckout" defaultChecked={sf.showOnCheckout} label="Page paiement" />
+          <Check name="showFloatingButton" defaultChecked={sf.showFloatingButton} label="Bouton flottant" />
+          <Field name="audience" label="Visible pour" defaultValue={sf.audience}>
+            <option value="all">Tous</option>
+            <option value="logged_in">Connectés</option>
+            <option value="guests">Invités</option>
+            <option value="roles">Rôles (réglés dans WordPress)</option>
+          </Field>
+          <Field name="stockMode" label="Rupture de stock" defaultValue={sf.stockMode}>
+            <option value="all">Tous les produits</option>
+            <option value="oos_only">Ruptures seulement</option>
+            <option value="hide_oos">Masquer en rupture</option>
+          </Field>
+          <Field name="productButtonPosition" label="Position fiche" defaultValue={sf.productButtonPosition}>
+            <option value="inline">En ligne avec le panier</option>
+            <option value="below">Sous le panier</option>
+          </Field>
+          <Field name="afterAdd" label="Après un ajout" defaultValue={sf.afterAdd}>
+            <option value="drawer">Ouvrir le tiroir</option>
+            <option value="notice">Afficher un lien</option>
+            <option value="list">Aller à la liste</option>
+            <option value="stay">Rester sur la page</option>
+          </Field>
+          <Field name="scope" label="Périmètre" defaultValue={sf.scope}>
+            <option value="all">Tous les produits</option>
+            <option value="exclude">Tous sauf la liste</option>
+            <option value="include">Liste uniquement</option>
+          </Field>
+          <Text name="priceLabel" label="Texte à la place du prix" defaultValue={sf.priceLabel} />
+          <Text name="buttonLabel" label="Ajouter au devis" defaultValue={sf.buttonLabel} />
+          <Text name="requestQuoteLabel" label="Demander un devis (panier)" defaultValue={sf.requestQuoteLabel} />
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Texte à la place du prix</span>
-            <input
-              name="priceLabel"
-              defaultValue={settings.storefront.priceLabel}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Libellé du bouton</span>
-            <input
-              name="buttonLabel"
-              defaultValue={settings.storefront.buttonLabel}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Qui voit le bouton</span>
-            <select
-              name="audience"
-              defaultValue={settings.storefront.audience}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            >
-              <option value="all">Tous les visiteurs</option>
-              <option value="logged_in">Clients connectés seulement</option>
-            </select>
-          </label>
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Après ajout à la liste</span>
-            <select
-              name="afterAdd"
-              defaultValue={settings.storefront.afterAdd}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            >
-              <option value="drawer">Ouvrir le tiroir</option>
-              <option value="stay">Rester sur la page</option>
-              <option value="list">Aller à la liste de devis</option>
-            </select>
-          </label>
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Style</span>
-            <select
-              name="buttonStyle"
-              defaultValue={settings.storefront.buttonStyle}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            >
-              <option value="button">Bouton</option>
-              <option value="link">Lien texte</option>
-            </select>
-          </label>
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Où l’afficher</span>
-            <select
-              name="scope"
-              defaultValue={settings.storefront.scope}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            >
-              <option value="all">Tous les produits</option>
-              <option value="include">Seulement les produits / catégories choisis</option>
-              <option value="exclude">Tous sauf la liste d’exclusion</option>
-            </select>
-          </label>
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Couleur du bouton</span>
-            <input
-              name="buttonBg"
-              type="color"
-              defaultValue={settings.storefront.buttonBg}
-              className="mt-1 h-10 w-full rounded-md border border-slate-200 px-2 py-1"
-            />
-          </label>
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Texte du bouton</span>
-            <input
-              name="buttonColor"
-              type="color"
-              defaultValue={settings.storefront.buttonColor}
-              className="mt-1 h-10 w-full rounded-md border border-slate-200 px-2 py-1"
-            />
-          </label>
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Titre de la liste</span>
-            <input
-              name="listTitle"
-              defaultValue={settings.storefront.listTitle}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Bouton d’envoi</span>
-            <input
-              name="funnelCta"
-              defaultValue={settings.storefront.funnelCta}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="text-sm sm:col-span-2">
-            <span className="font-medium text-slate-900">Liste vide</span>
-            <input
-              name="emptyMessage"
-              defaultValue={settings.storefront.emptyMessage}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="text-sm sm:col-span-2">
-            <span className="font-medium text-slate-900">Retour boutique</span>
-            <input
-              name="continueShoppingLabel"
-              defaultValue={settings.storefront.continueShoppingLabel}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            />
-          </label>
+
+        <div className="grid gap-2 border-b border-slate-100 px-4 py-4 sm:grid-cols-2 lg:px-6">
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-400 sm:col-span-2">Page liste</p>
+          <Check name="showFormWhenEmpty" defaultChecked={sf.showFormWhenEmpty} label="Formulaire si liste vide" />
+          <Check name="showBackToShop" defaultChecked={sf.showBackToShop} label="Retour boutique" />
+          <Check name="showUpdateList" defaultChecked={sf.showUpdateList} label="Mettre à jour la liste" />
+          <Check name="showClearList" defaultChecked={sf.showClearList} label="Effacer la liste" />
+          <Check name="showImages" defaultChecked={sf.showImages} label="Images" />
+          <Check name="showSku" defaultChecked={sf.showSku} label="UGS" />
+          <Check name="showQty" defaultChecked={sf.showQty} label="Quantité" />
+          <Check name="showPrice" defaultChecked={sf.showPrice} label="Prix" />
+          <Check name="showLineTotal" defaultChecked={sf.showLineTotal} label="Total ligne" />
+          <Check name="showGrandTotal" defaultChecked={sf.showGrandTotal} label="Montant total" />
+          <Check name="showTaxes" defaultChecked={sf.showTaxes} label="Taxes" />
+          <Check name="showUniqueCount" defaultChecked={sf.showUniqueCount} label="Nombre de produits" />
+          <Field name="pageLayout" label="Mise en page" defaultValue={sf.pageLayout}>
+            <option value="split">Liste à gauche</option>
+            <option value="stack">Liste au-dessus</option>
+          </Field>
+          <Text name="listTitle" label="Titre de la liste" defaultValue={sf.listTitle} />
+          <Text name="formTitle" label="Titre avant le formulaire" defaultValue={sf.formTitle} />
+          <Text name="funnelCta" label="Bouton d’envoi" defaultValue={sf.funnelCta} />
+          <Text name="emptyMessage" label="Liste vide" defaultValue={sf.emptyMessage} />
+          <Text name="continueShoppingLabel" label="Retour boutique" defaultValue={sf.continueShoppingLabel} />
         </div>
-        <div className="text-right">
-          <button className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]">
-            Enregistrer la vitrine
-          </button>
+
+        <div className="grid gap-2 px-4 py-4 sm:grid-cols-2 lg:px-6">
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-400 sm:col-span-2">Style</p>
+          <Field name="buttonStyle" label="Style ajouter au devis" defaultValue={sf.buttonStyle}>
+            <option value="button">Bouton</option>
+            <option value="link">Lien texte</option>
+          </Field>
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Fond</span>
+            <input name="buttonBg" type="color" defaultValue={sf.buttonBg} className="mt-1 h-10 w-full rounded-md border border-slate-200 px-2 py-1" />
+          </label>
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Fond survol</span>
+            <input name="buttonBgHover" type="color" defaultValue={sf.buttonBgHover} className="mt-1 h-10 w-full rounded-md border border-slate-200 px-2 py-1" />
+          </label>
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Texte</span>
+            <input name="buttonColor" type="color" defaultValue={sf.buttonColor} className="mt-1 h-10 w-full rounded-md border border-slate-200 px-2 py-1" />
+          </label>
+          <Text name="addedLabel" label="Produit ajouté" defaultValue={sf.addedLabel} />
+          <Text name="alreadyInListLabel" label="Déjà dans la liste" defaultValue={sf.alreadyInListLabel} />
+          <Text name="browseListLabel" label="Lien vers la liste" defaultValue={sf.browseListLabel} />
+          <div className="sm:col-span-2 text-right">
+            <button className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]">
+              Enregistrer la vitrine
+            </button>
+          </div>
         </div>
       </form>
 
@@ -423,6 +387,44 @@ function Check({
     <label className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm ring-1 ring-slate-200 has-checked:bg-orange-50 has-checked:ring-orange-200">
       <input type="checkbox" name={name} defaultChecked={defaultChecked} />
       {label}
+    </label>
+  );
+}
+
+function Text({ name, label, defaultValue }: { name: string; label: string; defaultValue: string }) {
+  return (
+    <label className="text-sm">
+      <span className="font-medium text-slate-900">{label}</span>
+      <input
+        name={name}
+        defaultValue={defaultValue}
+        className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+      />
+    </label>
+  );
+}
+
+function Field({
+  name,
+  label,
+  defaultValue,
+  children,
+}: {
+  name: string;
+  label: string;
+  defaultValue: string;
+  children: ReactNode;
+}) {
+  return (
+    <label className="text-sm">
+      <span className="font-medium text-slate-900">{label}</span>
+      <select
+        name={name}
+        defaultValue={defaultValue}
+        className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+      >
+        {children}
+      </select>
     </label>
   );
 }

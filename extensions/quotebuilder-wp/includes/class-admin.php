@@ -134,22 +134,29 @@ class QuoteBuilder_Admin {
         if (!quotebuilder_user_can()) {
             wp_die('Vous n’avez pas les droits pour ouvrir QuoteBuilder.');
         }
-        $tab = sanitize_key($_GET['tab'] ?? 'accueil');
+        $legacy = [
+            'accueil' => 'demandes',
+            'boutique' => 'reglages',
+            'bouton' => 'reglages',
+            'liste' => 'reglages',
+            'visibilite' => 'reglages',
+        ];
+        $tab = sanitize_key($_GET['tab'] ?? 'demandes');
+        if (isset($legacy[$tab])) {
+            $tab = $legacy[$tab];
+        }
         $tabs = [
-            'accueil' => 'Tableau de bord',
-            'boutique' => 'Boutique',
-            'bouton' => 'Bouton',
-            'liste' => 'Liste',
-            'visibilite' => 'Visibilité',
+            'demandes' => 'Demandes',
+            'reglages' => 'Réglages',
             'compte' => 'Compte',
         ];
         if (!isset($tabs[$tab])) {
-            $tab = 'accueil';
+            $tab = 'demandes';
         }
         $connected = QuoteBuilder_Settings::connected();
         $funnel = QuoteBuilder_Settings::funnel();
         $settings = QuoteBuilder_Settings::storefront();
-        $quotes = ($connected && $tab === 'accueil') ? QuoteBuilder_Pairing::quotes() : [];
+        $quotes = ($connected && $tab === 'demandes') ? QuoteBuilder_Pairing::quotes() : [];
         $woo = QuoteBuilder_Pairing::woocommerce_ready();
         $flash = QuoteBuilder_Pairing::flash();
         $logo = QUOTEBUILDER_URL . 'assets/quotebuilder-mark.png';
@@ -188,16 +195,10 @@ class QuoteBuilder_Admin {
                 <?php
                 if (!$connected) {
                     self::view_setup($woo);
-                } elseif ($tab === 'accueil') {
-                    self::view_home($connected, $woo, $funnel, $quotes, $settings);
-                } elseif ($tab === 'boutique') {
-                    self::view_catalog($settings);
-                } elseif ($tab === 'bouton') {
-                    self::view_button($settings);
-                } elseif ($tab === 'liste') {
-                    self::view_list($settings);
-                } elseif ($tab === 'visibilite') {
-                    self::view_visibility($settings);
+                } elseif ($tab === 'demandes') {
+                    self::view_home($woo, $funnel, $quotes, $settings);
+                } elseif ($tab === 'reglages') {
+                    self::view_settings($settings);
                 } else {
                     self::view_account($connected, $funnel, $woo);
                 }
@@ -224,14 +225,10 @@ class QuoteBuilder_Admin {
         <?php
     }
 
-    private static function view_home($connected, $woo, $funnel, $quotes, $settings) {
+    private static function view_home($woo, $funnel, $quotes, $settings) {
         $imported = (int) get_option('quotebuilder_last_imported', 0);
-        $space = $connected ? ($funnel['orgName'] ?: $funnel['org'] ?: 'Connecté') : 'Non connecté';
+        $space = $funnel['orgName'] ?: $funnel['org'] ?: 'Connecté';
         ?>
-        <div class="qb-title">
-            <h1>Tableau de bord</h1>
-            <p>WooCommerce envoie le catalogue, QuoteBuilder traite les demandes.</p>
-        </div>
         <section class="qb-kpis">
             <div>
                 <span>Espace</span>
@@ -243,34 +240,23 @@ class QuoteBuilder_Admin {
             </div>
             <div>
                 <span>Funnel</span>
-                <strong><?php echo $connected ? esc_html($funnel['name'] ?: $funnel['id'] ?: '—') : '—'; ?></strong>
+                <strong><?php echo esc_html($funnel['name'] ?: $funnel['id'] ?: '—'); ?></strong>
             </div>
             <div>
                 <span>WooCommerce</span>
                 <strong><?php echo $woo ? 'Actif' : 'Absent'; ?></strong>
             </div>
         </section>
-            <section class="qb-grid">
-                <article>
-                    <p class="qb-kicker">Vitrine</p>
-                    <h2><?php echo $settings['hidePrices'] ? 'Prix masqués' : 'Prix visibles'; ?></h2>
-                    <p><?php echo $settings['hideAddToCart'] ? 'Le panier est remplacé par le bouton devis.' : 'Le panier WooCommerce reste actif.'; ?></p>
-                    <a href="<?php echo esc_url(admin_url('admin.php?page=quotebuilder&tab=boutique')); ?>">Régler la boutique</a>
-                </article>
-                <article>
-                    <p class="qb-kicker">Funnel</p>
-                    <h2><?php echo esc_html($funnel['name'] ?: $funnel['id']); ?></h2>
-                    <p>Les produits de la liste arrivent déjà sélectionnés dans le configurateur.</p>
-                    <button type="button" class="qb-ghost" id="qb-sync">Synchroniser les produits</button>
-                </article>
-            </section>
         <section class="qb-panel">
             <div class="qb-row">
                 <div>
                     <p class="qb-kicker">Demandes</p>
-                    <h2>Dernières demandes</h2>
+                    <h2><?php echo $settings['hidePrices'] ? 'Prix masqués · ' : ''; ?>Dernières demandes</h2>
                 </div>
-                <button type="button" class="qb-ghost" id="qb-refresh">Actualiser</button>
+                <div class="qb-row">
+                    <a class="qb-ghost" href="<?php echo esc_url(admin_url('admin.php?page=quotebuilder&tab=reglages')); ?>">Réglages vitrine</a>
+                    <button type="button" class="qb-ghost" id="qb-refresh">Actualiser</button>
+                </div>
             </div>
             <?php if (!$quotes) : ?>
                 <p class="qb-empty">Aucune demande pour l’instant.</p>
@@ -299,182 +285,287 @@ class QuoteBuilder_Admin {
         <?php
     }
 
-    private static function view_catalog($settings) {
-        ?>
-        <div class="qb-title">
-            <h1>Boutique</h1>
-            <p>Prix, panier, promo : ce que le visiteur voit avant de demander un devis.</p>
-        </div>
-        <form class="qb-form" data-qb-form>
-            <section class="qb-toggles">
-                <?php self::toggle('hidePrices', 'Masquer les prix', 'Remplace le tarif par le texte ci-dessous.', $settings['hidePrices']); ?>
-                <?php self::toggle('hideAddToCart', 'Masquer Ajouter au panier', 'Empêche l’achat immédiat. Le bouton devis prend la place.', $settings['hideAddToCart']); ?>
-                <?php self::toggle('hideSaleFlash', 'Masquer les badges promo', 'Cache « Promo » sur les fiches et les grilles.', $settings['hideSaleFlash']); ?>
-                <?php self::toggle('hideCheckout', 'Masquer Commander', 'Retire le bouton de paiement WooCommerce.', $settings['hideCheckout']); ?>
-                <?php self::toggle('outOfStockOnly', 'Uniquement les ruptures', 'Le devis n’apparaît que sur les produits en rupture de stock.', $settings['outOfStockOnly']); ?>
-            </section>
-            <label>Texte à la place du prix
-                <input name="priceLabel" value="<?php echo esc_attr($settings['priceLabel']); ?>">
-            </label>
-            <button type="submit" class="qb-primary">Enregistrer</button>
-        </form>
-        <?php
-    }
-
-    private static function view_button($settings) {
-        ?>
-        <div class="qb-title">
-            <h1>Bouton devis</h1>
-            <p>Libellé, couleurs, et ce qui se passe après un ajout à la liste.</p>
-        </div>
-        <form class="qb-form qb-split" data-qb-form>
-            <div class="qb-fields">
-                <label>Libellé
-                    <input name="buttonLabel" value="<?php echo esc_attr($settings['buttonLabel']); ?>">
-                </label>
-                <label>Style
-                    <select name="buttonStyle">
-                        <option value="button" <?php selected($settings['buttonStyle'], 'button'); ?>>Bouton</option>
-                        <option value="link" <?php selected($settings['buttonStyle'], 'link'); ?>>Lien texte</option>
-                    </select>
-                </label>
-                <label>Après l’ajout
-                    <select name="afterAdd">
-                        <option value="drawer" <?php selected($settings['afterAdd'], 'drawer'); ?>>Ouvrir le tiroir</option>
-                        <option value="stay" <?php selected($settings['afterAdd'], 'stay'); ?>>Rester sur la page</option>
-                        <option value="list" <?php selected($settings['afterAdd'], 'list'); ?>>Aller à la liste de devis</option>
-                    </select>
-                </label>
-                <label>Couleur
-                    <input name="buttonBg" type="color" value="<?php echo esc_attr($settings['buttonBg']); ?>">
-                </label>
-                <label>Texte
-                    <input name="buttonColor" type="color" value="<?php echo esc_attr($settings['buttonColor']); ?>">
-                </label>
-                <?php self::toggle('showFloatingButton', 'Bouton flottant', 'Pastille en bas à droite avec le nombre de produits.', $settings['showFloatingButton']); ?>
-                <button type="submit" class="qb-primary">Enregistrer</button>
-            </div>
-            <aside class="qb-preview">
-                <p class="qb-kicker">Aperçu fiche produit</p>
-                <div class="qb-fake-product">
-                    <div class="qb-swatch"></div>
-                    <p>Étagère industrielle 3 m</p>
-                    <span class="qb-price-hidden"><?php echo esc_html($settings['priceLabel']); ?></span>
-                    <button type="button" id="qb-preview-btn" class="qb-atq"><?php echo esc_html($settings['buttonLabel']); ?></button>
-                </div>
-            </aside>
-        </form>
-        <?php
-    }
-
-    private static function view_list($settings) {
-        ?>
-        <div class="qb-title">
-            <h1>Liste de devis</h1>
-            <p>Page [quotebuilder_quote] : ce que le prospect voit avant le funnel.</p>
-        </div>
-        <form class="qb-form" data-qb-form>
-            <label>Titre
-                <input name="listTitle" value="<?php echo esc_attr($settings['listTitle']); ?>">
-            </label>
-            <label>Liste vide
-                <input name="emptyMessage" value="<?php echo esc_attr($settings['emptyMessage']); ?>">
-            </label>
-            <label>Bouton d’envoi
-                <input name="funnelCta" value="<?php echo esc_attr($settings['funnelCta']); ?>">
-            </label>
-            <label>Retour boutique
-                <input name="continueShoppingLabel" value="<?php echo esc_attr($settings['continueShoppingLabel']); ?>">
-            </label>
-            <section class="qb-toggles">
-                <?php self::toggle('showImages', 'Photos produits', 'Affiche l’image dans la liste et le tiroir.', $settings['showImages']); ?>
-                <?php self::toggle('showSku', 'Référence (SKU)', 'Montre le SKU WooCommerce sous le nom.', $settings['showSku']); ?>
-                <?php self::toggle('showQty', 'Quantité modifiable', 'Le prospect peut changer les quantités avant d’envoyer.', $settings['showQty']); ?>
-            </section>
-            <button type="submit" class="qb-primary">Enregistrer</button>
-        </form>
-        <?php
-    }
-
-    private static function view_visibility($settings) {
+    private static function view_settings($settings) {
         $product_labels = self::labels('product', $settings['productIds']);
         $category_labels = self::labels('product_cat', $settings['categoryIds']);
+        $tag_labels = self::labels('product_tag', $settings['tagIds']);
+        $pages = get_pages(['sort_column' => 'post_title', 'sort_order' => 'ASC']);
+        $roles = function_exists('get_editable_roles') ? get_editable_roles() : [];
+        $section = sanitize_key($_GET['section'] ?? 'bouton');
+        if (!in_array($section, ['bouton', 'produits', 'page', 'style'], true)) {
+            $section = 'bouton';
+        }
         ?>
-        <div class="qb-title">
-            <h1>Visibilité</h1>
-            <p>Où le bouton apparaît, pour qui, et sur quels produits.</p>
-        </div>
-        <form class="qb-form" data-qb-form>
-            <section class="qb-toggles">
-                <?php self::toggle('showOnProduct', 'Fiche produit', 'Bouton sous le titre, à la place du panier.', $settings['showOnProduct']); ?>
-                <?php self::toggle('showOnShop', 'Boutique et catégories', 'Bouton dans les grilles WooCommerce.', $settings['showOnShop']); ?>
-                <?php self::toggle('showOnCart', 'Page panier', 'Convertit le panier en liste de devis.', $settings['showOnCart']); ?>
-                <?php self::toggle('showOnCheckout', 'Page commande', 'Propose le devis avant le paiement.', $settings['showOnCheckout']); ?>
+        <nav class="qb-subnav" data-qb-subnav>
+            <a href="#bouton" class="<?php echo $section === 'bouton' ? 'is-active' : ''; ?>">Bouton</a>
+            <a href="#produits" class="<?php echo $section === 'produits' ? 'is-active' : ''; ?>">Produits</a>
+            <a href="#page" class="<?php echo $section === 'page' ? 'is-active' : ''; ?>">Page</a>
+            <a href="#style" class="<?php echo $section === 'style' ? 'is-active' : ''; ?>">Style</a>
+        </nav>
+        <form class="qb-settings" data-qb-form>
+            <section class="qb-card" id="bouton">
+                <header>
+                    <h2>Bouton « Ajouter au devis »</h2>
+                    <p>Qui le voit, où il apparaît, ce qui se passe ensuite.</p>
+                </header>
+                <?php
+                self::row('Visible pour', 'Tous, comptes, invités, ou rôles WordPress.', function () use ($settings) {
+                    self::pills('audience', [
+                        'all' => 'Tous',
+                        'logged_in' => 'Connectés',
+                        'guests' => 'Invités',
+                        'roles' => 'Rôles',
+                    ], $settings['audience']);
+                });
+                ?>
+                <div class="qb-set-row" data-show-when="audience:roles">
+                    <div class="qb-set-label"><strong>Rôles autorisés</strong><span>Le bouton n’apparaît que pour ces rôles.</span></div>
+                    <div class="qb-set-control qb-checks">
+                        <?php foreach ($roles as $key => $role) : ?>
+                            <label>
+                                <input type="checkbox" name="roles[]" value="<?php echo esc_attr($key); ?>" <?php checked(in_array($key, $settings['roles'], true)); ?>>
+                                <?php echo esc_html(translate_user_role($role['name'])); ?>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <?php
+                self::row('Emplacements', 'Fiche, grilles, blocs Gutenberg, panier, paiement.', function () use ($settings) {
+                    echo '<div class="qb-checks">';
+                    self::check('showOnProduct', 'Fiche produit', $settings['showOnProduct']);
+                    self::check('showOnShop', 'Boutique / catégories', $settings['showOnShop']);
+                    self::check('showOnBlocks', 'Blocs WooCommerce', $settings['showOnBlocks']);
+                    self::check('showOnCart', 'Page panier', $settings['showOnCart']);
+                    self::check('showOnCheckout', 'Page paiement', $settings['showOnCheckout']);
+                    self::check('showFloatingButton', 'Bouton flottant', $settings['showFloatingButton']);
+                    echo '</div>';
+                });
+                self::row('Position sur la fiche', 'À côté ou sous « Ajouter au panier ».', function () use ($settings) {
+                    self::pills('productButtonPosition', [
+                        'inline' => 'En ligne',
+                        'below' => 'En dessous',
+                    ], $settings['productButtonPosition']);
+                });
+                self::row('Rupture de stock', 'Afficher, limiter, ou masquer le bouton.', function () use ($settings) {
+                    self::pills('stockMode', [
+                        'all' => 'Tous les produits',
+                        'oos_only' => 'Ruptures seulement',
+                        'hide_oos' => 'Masquer en rupture',
+                    ], $settings['stockMode']);
+                });
+                self::row('Après un ajout', 'Tiroir, lien vers la liste, ou redirection.', function () use ($settings) {
+                    self::pills('afterAdd', [
+                        'drawer' => 'Ouvrir le tiroir',
+                        'notice' => 'Afficher un lien',
+                        'list' => 'Aller à la liste',
+                        'stay' => 'Rester sur la page',
+                    ], $settings['afterAdd']);
+                });
+                ?>
+                <div class="qb-switches">
+                    <?php self::switch_row('hideAddToCart', 'Masquer « Ajouter au panier »', $settings['hideAddToCart']); ?>
+                    <?php self::switch_row('hidePrices', 'Masquer les prix', $settings['hidePrices']); ?>
+                    <?php self::switch_row('hideSaleFlash', 'Masquer les badges promo', $settings['hideSaleFlash']); ?>
+                    <?php self::switch_row('hideCheckout', 'Masquer « Commander »', $settings['hideCheckout']); ?>
+                </div>
+                <?php
+                self::row('Texte à la place du prix', '', function () use ($settings) {
+                    self::input('priceLabel', $settings['priceLabel']);
+                });
+                self::row('Libellé panier / paiement', 'Bouton « Demander un devis » sur le panier Woo.', function () use ($settings) {
+                    self::input('requestQuoteLabel', $settings['requestQuoteLabel']);
+                });
+                ?>
             </section>
-            <label>Qui voit le bouton
-                <select name="audience">
-                    <option value="all" <?php selected($settings['audience'], 'all'); ?>>Tous les visiteurs</option>
-                    <option value="logged_in" <?php selected($settings['audience'], 'logged_in'); ?>>Clients connectés seulement</option>
-                </select>
-            </label>
-            <label>Périmètre produits
-                <select name="scope">
-                    <option value="all" <?php selected($settings['scope'], 'all'); ?>>Tous les produits</option>
-                    <option value="include" <?php selected($settings['scope'], 'include'); ?>>Seulement une liste</option>
-                    <option value="exclude" <?php selected($settings['scope'], 'exclude'); ?>>Tous sauf une liste</option>
-                </select>
-            </label>
-            <div class="qb-picker">
-                <p>Produits</p>
-                <input type="search" data-search="products" placeholder="Rechercher un produit">
-                <div class="qb-chips" data-chips="productIds">
-                    <?php foreach ($product_labels as $id => $name) : ?>
-                        <button type="button" data-id="<?php echo esc_attr($id); ?>"><?php echo esc_html($name); ?></button>
-                    <?php endforeach; ?>
+
+            <section class="qb-card" id="produits">
+                <header>
+                    <h2>Produits concernés</h2>
+                    <p>Tous sauf une liste, ou uniquement la liste (produits, catégories, étiquettes).</p>
+                </header>
+                <?php
+                self::row('Périmètre', '', function () use ($settings) {
+                    self::pills('scope', [
+                        'all' => 'Tous les produits',
+                        'exclude' => 'Tous sauf la liste',
+                        'include' => 'Liste uniquement',
+                    ], $settings['scope']);
+                });
+                ?>
+                <div data-show-when="scope:include|exclude">
+                    <?php self::picker('Produits', 'products', 'productIds', $product_labels, 'Rechercher un produit'); ?>
+                    <?php self::picker('Catégories', 'categories', 'categoryIds', $category_labels, 'Rechercher une catégorie'); ?>
+                    <?php self::picker('Étiquettes', 'tags', 'tagIds', $tag_labels, 'Rechercher une étiquette'); ?>
                 </div>
-            </div>
-            <div class="qb-picker">
-                <p>Catégories</p>
-                <input type="search" data-search="categories" placeholder="Rechercher une catégorie">
-                <div class="qb-chips" data-chips="categoryIds">
-                    <?php foreach ($category_labels as $id => $name) : ?>
-                        <button type="button" data-id="<?php echo esc_attr($id); ?>"><?php echo esc_html($name); ?></button>
-                    <?php endforeach; ?>
+            </section>
+
+            <section class="qb-card" id="page">
+                <header>
+                    <h2>Page « Demander un devis »</h2>
+                    <p>Liste des produits + funnel. Shortcode <code>[quotebuilder_quote]</code>.</p>
+                </header>
+                <div class="qb-set-row">
+                    <div class="qb-set-label"><strong>Page</strong><span>Les visiteurs y voient leur liste et envoient la demande.</span></div>
+                    <div class="qb-set-control qb-page-pick">
+                        <select name="quotePageId">
+                            <?php foreach ($pages as $page) : ?>
+                                <option value="<?php echo esc_attr((string) $page->ID); ?>" <?php selected((string) $settings['quotePageId'], (string) $page->ID); ?>>
+                                    <?php echo esc_html($page->post_title); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <button type="button" class="qb-ghost" id="qb-create-page">Créer une page</button>
+                    </div>
                 </div>
+                <?php
+                self::row('Mise en page', '', function () use ($settings) {
+                    self::pills('pageLayout', [
+                        'split' => 'Liste à gauche, formulaire à droite',
+                        'stack' => 'Liste au-dessus, formulaire en dessous',
+                    ], $settings['pageLayout']);
+                });
+                self::row('Titre de la liste', '', function () use ($settings) {
+                    self::input('listTitle', $settings['listTitle']);
+                });
+                self::row('Message liste vide', '', function () use ($settings) {
+                    self::input('emptyMessage', $settings['emptyMessage']);
+                });
+                self::row('Titre avant le formulaire', 'Laissé vide = pas de titre.', function () use ($settings) {
+                    self::input('formTitle', $settings['formTitle']);
+                });
+                self::row('Bouton d’envoi', '', function () use ($settings) {
+                    self::input('funnelCta', $settings['funnelCta']);
+                });
+                ?>
+                <div class="qb-switches">
+                    <?php self::switch_row('showFormWhenEmpty', 'Montrer le formulaire même si la liste est vide', $settings['showFormWhenEmpty']); ?>
+                </div>
+                <?php
+                self::row('Colonnes du tableau', 'Le PDF se génère dans QuoteBuilder après envoi.', function () use ($settings) {
+                    echo '<div class="qb-checks">';
+                    self::check('showImages', 'Images', $settings['showImages']);
+                    self::check('showPrice', 'Prix', $settings['showPrice']);
+                    self::check('showSku', 'UGS', $settings['showSku']);
+                    self::check('showQty', 'Quantité', $settings['showQty']);
+                    self::check('showUniqueCount', 'Nombre de produits', $settings['showUniqueCount']);
+                    self::check('showLineTotal', 'Total ligne', $settings['showLineTotal']);
+                    self::check('showGrandTotal', 'Montant total', $settings['showGrandTotal']);
+                    self::check('showTaxes', 'Taxes', $settings['showTaxes']);
+                    echo '</div>';
+                });
+                ?>
+                <div class="qb-switches">
+                    <?php self::switch_row('showBackToShop', 'Bouton « Retour à la boutique »', $settings['showBackToShop']); ?>
+                    <?php self::switch_row('showUpdateList', 'Bouton « Mettre à jour la liste »', $settings['showUpdateList']); ?>
+                    <?php self::switch_row('showClearList', 'Bouton « Effacer la liste »', $settings['showClearList']); ?>
+                </div>
+                <?php
+                self::row('Libellé retour boutique', '', function () use ($settings) {
+                    self::input('continueShoppingLabel', $settings['continueShoppingLabel']);
+                });
+                self::row('URL retour boutique', '', function () use ($settings) {
+                    self::pills('continueShoppingUrlMode', [
+                        'shop' => 'Page boutique Woo',
+                        'custom' => 'URL personnalisée',
+                    ], $settings['continueShoppingUrlMode']);
+                });
+                ?>
+                <div class="qb-set-row" data-show-when="continueShoppingUrlMode:custom">
+                    <div class="qb-set-label"><strong>URL personnalisée</strong></div>
+                    <div class="qb-set-control">
+                        <input name="continueShoppingCustomUrl" type="url" value="<?php echo esc_attr($settings['continueShoppingCustomUrl']); ?>" placeholder="https://">
+                    </div>
+                </div>
+                <?php
+                self::row('Libellé mise à jour', '', function () use ($settings) {
+                    self::input('updateListLabel', $settings['updateListLabel']);
+                });
+                self::row('Libellé effacer', '', function () use ($settings) {
+                    self::input('clearListLabel', $settings['clearListLabel']);
+                });
+                ?>
+            </section>
+
+            <section class="qb-card" id="style">
+                <header>
+                    <h2>Style et libellés</h2>
+                    <p>Bouton ou lien, couleurs, textes affichés au visiteur.</p>
+                </header>
+                <div class="qb-style-grid">
+                    <div>
+                        <?php
+                        self::row('Style « Ajouter au devis »', '', function () use ($settings) {
+                            self::pills('buttonStyle', ['button' => 'Bouton', 'link' => 'Lien texte'], $settings['buttonStyle']);
+                        });
+                        ?>
+                        <div class="qb-colors">
+                            <?php self::color('buttonBg', 'Fond', $settings['buttonBg']); ?>
+                            <?php self::color('buttonBgHover', 'Fond survol', $settings['buttonBgHover']); ?>
+                            <?php self::color('buttonBorder', 'Bordure', $settings['buttonBorder']); ?>
+                            <?php self::color('buttonBorderHover', 'Bordure survol', $settings['buttonBorderHover']); ?>
+                            <?php self::color('buttonColor', 'Texte', $settings['buttonColor']); ?>
+                            <?php self::color('buttonColorHover', 'Texte survol', $settings['buttonColorHover']); ?>
+                        </div>
+                    </div>
+                    <div>
+                        <?php
+                        self::row('Style « Demander un devis »', 'Panier et paiement.', function () use ($settings) {
+                            self::pills('requestButtonStyle', ['button' => 'Bouton', 'link' => 'Lien texte'], $settings['requestButtonStyle']);
+                        });
+                        ?>
+                        <div class="qb-colors">
+                            <?php self::color('requestBg', 'Fond', $settings['requestBg']); ?>
+                            <?php self::color('requestBgHover', 'Fond survol', $settings['requestBgHover']); ?>
+                            <?php self::color('requestBorder', 'Bordure', $settings['requestBorder']); ?>
+                            <?php self::color('requestBorderHover', 'Bordure survol', $settings['requestBorderHover']); ?>
+                            <?php self::color('requestColor', 'Texte', $settings['requestColor']); ?>
+                            <?php self::color('requestColorHover', 'Texte survol', $settings['requestColorHover']); ?>
+                        </div>
+                    </div>
+                    <aside class="qb-preview">
+                        <p class="qb-kicker">Aperçu</p>
+                        <div class="qb-fake-product">
+                            <div class="qb-swatch"></div>
+                            <p>Étagère industrielle 3 m</p>
+                            <span class="qb-price-hidden"><?php echo esc_html($settings['priceLabel']); ?></span>
+                            <button type="button" id="qb-preview-btn" class="qb-atq"><?php echo esc_html($settings['buttonLabel']); ?></button>
+                        </div>
+                    </aside>
+                </div>
+                <?php
+                self::row('Libellé « Ajouter au devis »', '', function () use ($settings) {
+                    self::input('buttonLabel', $settings['buttonLabel']);
+                });
+                self::row('Produit ajouté', '', function () use ($settings) {
+                    self::input('addedLabel', $settings['addedLabel']);
+                });
+                self::row('Déjà dans la liste', '', function () use ($settings) {
+                    self::input('alreadyInListLabel', $settings['alreadyInListLabel']);
+                });
+                self::row('Lien vers la liste', '', function () use ($settings) {
+                    self::input('browseListLabel', $settings['browseListLabel']);
+                });
+                ?>
+            </section>
+            <div class="qb-savebar">
+                <button type="submit" class="qb-primary">Enregistrer</button>
             </div>
-            <button type="submit" class="qb-primary">Enregistrer</button>
         </form>
         <?php
     }
 
     private static function view_account($connected, $funnel, $woo) {
         ?>
-        <div class="qb-title">
-            <h1>Compte</h1>
-            <p>Connexion QuoteBuilder, funnel et catalogue WooCommerce.</p>
-        </div>
-        <?php if ($connected) : ?>
-            <section class="qb-panel">
-                <p class="qb-kicker">Connecté</p>
-                <h2><?php echo esc_html($funnel['orgName'] ?: $funnel['org']); ?></h2>
-                <p>Funnel <strong><?php echo esc_html($funnel['name'] ?: $funnel['id']); ?></strong></p>
-                <p>Shortcode funnel : <code>[quotebuilder]</code> · Liste : <code>[quotebuilder_quote]</code></p>
-                <div class="qb-row">
-                    <button type="button" class="qb-ghost" id="qb-sync">Synchroniser les produits</button>
-                    <button type="button" class="qb-danger" id="qb-unpair">Déconnecter</button>
-                </div>
-            </section>
-        <?php else : ?>
-            <section class="qb-connect">
-                <div>
-                    <h2>Connecter WooCommerce</h2>
-                    <p><?php echo $woo ? 'Ouvre QuoteBuilder, choisit l’espace, importe le catalogue.' : 'WooCommerce doit être actif.'; ?></p>
-                </div>
-                <?php if ($woo) : ?>
-                    <a class="qb-primary qb-primary-lg" href="<?php echo esc_url(QuoteBuilder_Pairing::start_url()); ?>">Connecter QuoteBuilder</a>
-                <?php endif; ?>
-            </section>
-        <?php endif; ?>
+        <section class="qb-panel">
+            <p class="qb-kicker">Connecté</p>
+            <h2><?php echo esc_html($funnel['orgName'] ?: $funnel['org']); ?></h2>
+            <p>Funnel <strong><?php echo esc_html($funnel['name'] ?: $funnel['id']); ?></strong></p>
+            <p>Shortcode funnel : <code>[quotebuilder]</code> · Liste : <code>[quotebuilder_quote]</code></p>
+            <div class="qb-row">
+                <button type="button" class="qb-ghost" id="qb-sync">Synchroniser les produits</button>
+                <button type="button" class="qb-danger" id="qb-unpair">Déconnecter</button>
+            </div>
+        </section>
         <details class="qb-advanced">
             <summary>Connexion avancée</summary>
             <p>Adresse de l’espace si vous n’utilisez pas l’instance par défaut, et code manuel si le clic ne peut pas s’ouvrir.</p>
@@ -491,17 +582,56 @@ class QuoteBuilder_Admin {
             <?php endif; ?>
         </details>
         <?php
+        unset($woo);
     }
 
-    private static function toggle($name, $title, $help, $on) {
+    private static function row($label, $hint, $control) {
+        echo '<div class="qb-set-row"><div class="qb-set-label"><strong>' . esc_html($label) . '</strong>';
+        if ($hint) {
+            echo '<span>' . esc_html($hint) . '</span>';
+        }
+        echo '</div><div class="qb-set-control">';
+        $control();
+        echo '</div></div>';
+    }
+
+    private static function pills($name, $options, $value) {
+        echo '<div class="qb-choice">';
+        foreach ($options as $val => $label) {
+            echo '<label><input type="radio" name="' . esc_attr($name) . '" value="' . esc_attr($val) . '"' . checked($value, $val, false) . '> ' . esc_html($label) . '</label>';
+        }
+        echo '</div>';
+    }
+
+    private static function input($name, $value) {
+        echo '<input name="' . esc_attr($name) . '" value="' . esc_attr($value) . '">';
+    }
+
+    private static function check($name, $label, $on) {
+        echo '<label><input type="checkbox" name="' . esc_attr($name) . '"' . checked($on, true, false) . '> ' . esc_html($label) . '</label>';
+    }
+
+    private static function switch_row($name, $label, $on) {
+        echo '<label class="qb-switch"><span>' . esc_html($label) . '</span><input type="checkbox" name="' . esc_attr($name) . '"' . checked($on, true, false) . '></label>';
+    }
+
+    private static function color($name, $label, $value) {
+        echo '<label>' . esc_html($label) . '<input name="' . esc_attr($name) . '" type="color" value="' . esc_attr($value) . '"></label>';
+    }
+
+    private static function picker($title, $search, $chips, $labels, $placeholder) {
         ?>
-        <label class="qb-toggle">
-            <input type="checkbox" name="<?php echo esc_attr($name); ?>" <?php checked($on); ?>>
-            <span>
-                <strong><?php echo esc_html($title); ?></strong>
-                <em><?php echo esc_html($help); ?></em>
-            </span>
-        </label>
+        <div class="qb-picker qb-set-row">
+            <div class="qb-set-label"><strong><?php echo esc_html($title); ?></strong></div>
+            <div class="qb-set-control">
+                <input type="search" data-search="<?php echo esc_attr($search); ?>" placeholder="<?php echo esc_attr($placeholder); ?>">
+                <div class="qb-chips" data-chips="<?php echo esc_attr($chips); ?>">
+                    <?php foreach ($labels as $id => $name) : ?>
+                        <button type="button" data-id="<?php echo esc_attr($id); ?>"><?php echo esc_html($name); ?></button>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
         <?php
     }
 
@@ -514,7 +644,7 @@ class QuoteBuilder_Admin {
                     $out[$id] = $title;
                 }
             } else {
-                $term = get_term((int) $id, 'product_cat');
+                $term = get_term((int) $id, $type);
                 if ($term && !is_wp_error($term)) {
                     $out[$id] = $term->name;
                 }

@@ -6,33 +6,64 @@
 .qb-hide-cart .single_add_to_cart_button,
 .qb-hide-cart .add_to_cart_button,
 .qb-hide-cart form.cart .quantity,
+.qb-hide-cart .wp-block-woocommerce-product-button .wp-block-button__link,
 .qb-hide-checkout #place_order,
 .qb-hide-checkout .wc-proceed-to-checkout .checkout-button,
 .qb-hide-sale .onsale {
   display: none !important;
 }
 
+body.qb-atq-inline form.cart {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+body.qb-atq-below .qb-atq[data-product] {
+  display: flex;
+  width: 100%;
+  margin-top: 8px;
+}
+
 .qb-atq {
   --qb-btn-bg: #e85d04;
+  --qb-btn-bg-hover: #c2410c;
+  --qb-btn-border: #e85d04;
+  --qb-btn-border-hover: #c2410c;
   --qb-btn-color: #fff;
+  --qb-btn-color-hover: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin: 8px 0;
   padding: 10px 16px;
-  border: 0;
+  border: 1px solid var(--qb-btn-border);
   border-radius: 8px;
   background: var(--qb-btn-bg);
   color: var(--qb-btn-color);
   font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
+}
+
+.qb-atq:hover {
+  background: var(--qb-btn-bg-hover);
+  border-color: var(--qb-btn-border-hover);
+  color: var(--qb-btn-color-hover);
 }
 
 .qb-atq-link {
   background: transparent;
   color: var(--qb-btn-bg);
   padding: 0;
+  border: 0;
   text-decoration: underline;
+}
+
+.qb-atq-link:hover {
+  background: transparent;
+  color: var(--qb-btn-bg-hover);
 }
 
 .qb-fab {
@@ -89,6 +120,30 @@
   cursor: pointer;
 }
 
+.qb-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 10000;
+  transform: translateX(-50%);
+  max-width: min(420px, calc(100vw - 32px));
+  background: #16110d;
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  box-shadow: 0 12px 32px rgba(22, 17, 13, 0.2);
+}
+
+.qb-toast[hidden] {
+  display: none;
+}
+
+.qb-toast a {
+  color: #fdba74;
+  margin-left: 8px;
+}
+
 .qb-kicker {
   margin: 0;
   font-size: 11px;
@@ -113,7 +168,7 @@
 .qb-drawer-items li,
 .qb-quote-items li {
   display: grid;
-  grid-template-columns: 56px minmax(0, 1fr) auto auto;
+  grid-template-columns: 56px minmax(0, 1fr) auto auto auto;
   gap: 10px;
   align-items: center;
   padding: 8px 0;
@@ -142,10 +197,46 @@
   margin: 24px 0;
 }
 
+.qb-quote-page.is-stack {
+  grid-template-columns: 1fr;
+}
+
 .qb-quote-list {
   background: #f8f5f1;
   border-radius: 16px;
   padding: 20px;
+}
+
+.qb-quote-funnel h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.qb-quote-totals {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: #5c5348;
+}
+
+.qb-quote-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.qb-ghost {
+  border: 1px solid #efe7de;
+  background: #fff;
+  color: #1a1510;
+  border-radius: 8px;
+  padding: 8px 12px;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 600;
 }
 
 .qb-empty {
