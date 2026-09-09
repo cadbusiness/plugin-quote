@@ -27,64 +27,87 @@ export const FAQ = [
   },
   {
     q: "Puis-je tester sans payer ?",
-    a: "Oui. Free illimité dans le temps, 10 devis / mois, pas de carte bancaire.",
+    a: "Oui. Essai Pro 14 jours, sans carte bancaire. Assez pour voir l’interface ; les plans payants débloquent le volume et l’autopilote.",
+  },
+  {
+    q: "Mensuel ou annuel ?",
+    a: "Les deux. L’annuel revient à 39 €/mois (Starter) ou 79 €/mois (Pro), soit deux mois offerts.",
+  },
+  {
+    q: "Vous travaillez avec des agences ?",
+    a: "Oui, sur devis. Agency n’est pas affiché ici : contactez-nous pour du multi-compte et du white-label.",
   },
 ] as const;
 
-export const PLANS = [
+/** Plans visibles sur /tarifs — Free et Agency restent hors grille. */
+export const PUBLIC_PLANS = [
   {
-    name: "Free",
-    price: "0 €",
-    period: "",
-    quotes: "10 devis / mois",
-    modes: "Funnel",
-    crm: "Basique",
-    team: "1 user",
-    whiteLabel: false,
-    cta: "Commencer",
-    href: "/signup",
-    featured: false,
-  },
-  {
+    id: "starter",
     name: "Starter",
-    price: "19 €",
-    period: "/mois",
-    quotes: "50 devis / mois",
-    modes: "Funnel + Chat",
-    crm: "Complet",
-    team: "3 users",
-    whiteLabel: false,
+    audience: "Artisan solo ou très petite PME",
+    monthlyPrice: 49,
+    annualMonthly: 39,
+    annualTotal: 390,
+    href: "/signup?plan=starter",
     cta: "Commencer",
-    href: "/signup",
     featured: false,
+    badge: null as string | null,
+    features: [
+      "Soumissions illimitées",
+      "3 funnels",
+      "Wizard + Chat IA",
+      "Catalogue produits (50 max)",
+      "Espace prospect basique",
+      "Flux automatisé (T+0, T+24h, T+3j)",
+      "CRM basique (statuts, notes)",
+      "1 membre d’équipe",
+      "Intégration WooCommerce",
+    ],
   },
   {
+    id: "pro",
     name: "Pro",
-    price: "49 €",
-    period: "/mois",
-    quotes: "Illimité",
-    modes: "Tout",
-    crm: "Complet",
-    team: "10 users",
-    whiteLabel: false,
+    audience: "PME avec équipe commerciale",
+    monthlyPrice: 99,
+    annualMonthly: 79,
+    annualTotal: 790,
+    href: "/signup?plan=pro",
     cta: "Commencer",
-    href: "/signup",
     featured: true,
-  },
-  {
-    name: "Agency",
-    price: "149 €",
-    period: "/mois",
-    quotes: "Illimité",
-    modes: "Tout",
-    crm: "Complet",
-    team: "Illimité",
-    whiteLabel: true,
-    cta: "Nous contacter",
-    href: "mailto:hello@quotebuilder.app",
-    featured: false,
+    badge: "Recommandé",
+    features: [
+      "Soumissions illimitées",
+      "Funnels illimités",
+      "Wizard + Chat IA",
+      "Catalogue illimité",
+      "Espace prospect complet + messagerie",
+      "Flux automatisé complet (jusqu’à J+30)",
+      "Panier abandonné",
+      "Newsletter segmentée",
+      "CRM complet + pipeline Kanban",
+      "Stats avancées + GA4",
+      "5 membres d’équipe",
+      "WooCommerce + Shopify",
+      "Webhook / export JSON",
+    ],
   },
 ] as const;
+
+export const FREE_TRIAL = {
+  href: "/signup?trial=14",
+  label: "Essayer gratuitement - 14 jours sans carte bancaire",
+  hint: "1 funnel · Wizard · 10 soumissions au total. Sans chat IA, flux auto, espace prospect ni catalogue.",
+} as const;
+
+export const AGENCY_PLAN = {
+  name: "Agency",
+  monthlyPrice: 199,
+  href: "mailto:hello@quotebuilder.app?subject=Agency",
+  blurb: "Multi-compte, white-label, accompagnement. Sur demande uniquement.",
+} as const;
+
+/** @deprecated Prefer PUBLIC_PLANS — kept for imports that still expect PLANS. */
+export const PLANS = PUBLIC_PLANS;
 
 export type FeatureSlug =
   | "funnel"

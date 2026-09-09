@@ -37,7 +37,7 @@ export default function CommentCaMarchePage() {
       </section>
 
       <div className="pt-10">
-        <MarketingCta title="À vous de jouer." text="Compte gratuit. 10 devis. Pas de carte." />
+        <MarketingCta title="À vous de jouer." text="Essai 14 jours. Pas de carte." />
       </div>
     </>
   );

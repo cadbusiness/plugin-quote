@@ -442,7 +442,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
 
 export function MarketingCta({
   title = "Bouchez le trou. Maintenant.",
-  text = "Parcours pour le prospect. Autopilote pour vous. Compte gratuit, pas de carte.",
+  text = "Parcours pour le prospect. Autopilote pour vous. Essai 14 jours, pas de carte.",
 }: {
   title?: string;
   text?: string;

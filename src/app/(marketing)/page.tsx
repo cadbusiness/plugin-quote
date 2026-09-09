@@ -33,7 +33,7 @@ export default function HomePage() {
               Voir les fonctionnalités
             </Link>
           </div>
-          <p className="mt-3 text-xs text-[#1A1510]/45">10 devis offerts · pas de carte</p>
+          <p className="mt-3 text-xs text-[#1A1510]/45">Essai 14 jours · pas de carte</p>
         </div>
       </section>
 

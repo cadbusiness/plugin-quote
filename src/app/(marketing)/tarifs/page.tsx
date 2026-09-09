@@ -1,70 +1,45 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MarketingCta } from "@/components/marketing/marketing-shell";
-import { FAQ, PLANS } from "@/lib/marketing/content";
+import { PricingPlans } from "@/components/marketing/pricing-plans";
+import { AGENCY_PLAN, FAQ } from "@/lib/marketing/content";
 
 export const metadata: Metadata = {
   title: "Tarifs · QuoteBuilder",
-  description: "Free, Starter, Pro, Agency. Simple, sans surprise.",
+  description: "Starter 49 €, Pro 99 €. Essai 14 jours sans carte. Annuel avec 2 mois offerts.",
 };
 
 export default function TarifsPage() {
   return (
     <>
-      <section className="px-6 pb-8 pt-12 sm:pt-16">
+      <section className="px-6 pb-6 pt-12 sm:pt-16">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-medium text-[#C45C26]">Tarifs</p>
           <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl">
-            Simple. Sans surprise.
+            Deux plans. Clair.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base text-[#1A1510]/70 sm:text-lg">
-            10 premiers devis toujours gratuits. Pas de carte bancaire pour démarrer.
+            Starter pour démarrer. Pro pour scaler l’équipe. Essai 14 jours sans carte, en dessous.
           </p>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 pb-10">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {PLANS.map((plan) => (
-            <article
-              key={plan.name}
-              className={`flex flex-col rounded-2xl p-6 ${
-                plan.featured ? "bg-[#1A1510] text-white shadow-xl" : "bg-white ring-1 ring-black/8"
-              }`}
-            >
-              <p className="text-sm font-medium">{plan.name}</p>
-              {plan.featured ? <p className="mt-1 text-xs text-[#F3B184]">Le plus choisi</p> : null}
-              <p className="mt-4 text-3xl font-semibold tracking-tight">
-                {plan.price}
-                {plan.period ? (
-                  <span
-                    className={`text-sm font-normal ${plan.featured ? "text-white/55" : "text-[#1A1510]/45"}`}
-                  >
-                    {plan.period}
-                  </span>
-                ) : null}
-              </p>
-              <ul
-                className={`mt-6 space-y-2.5 text-sm ${plan.featured ? "text-white/75" : "text-[#1A1510]/70"}`}
-              >
-                <li>{plan.quotes}</li>
-                <li>{plan.modes}</li>
-                <li>CRM {plan.crm}</li>
-                <li>{plan.team}</li>
-                <li>{plan.whiteLabel ? "White-label inclus" : "White-label : non"}</li>
-              </ul>
-              <Link
-                href={plan.href}
-                className={`mt-8 rounded-full px-4 py-2.5 text-center text-sm font-semibold ${
-                  plan.featured
-                    ? "bg-[#E85D04] text-white hover:bg-[#d35400]"
-                    : "bg-[#F6F0E8] text-[#1A1510] hover:bg-[#EFE6DA]"
-                }`}
-              >
-                {plan.cta}
-              </Link>
-            </article>
-          ))}
+      <section className="px-6 pb-12 sm:pb-16">
+        <PricingPlans />
+      </section>
+
+      <section className="border-y border-[#1A1510]/8 bg-white/50 px-6 py-8">
+        <div className="mx-auto flex max-w-3xl flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+          <div>
+            <p className="text-sm font-semibold text-[#1A1510]">Agence ou multi-marques ?</p>
+            <p className="mt-1 text-sm text-[#1A1510]/55">{AGENCY_PLAN.blurb}</p>
+          </div>
+          <Link
+            href={AGENCY_PLAN.href}
+            className="shrink-0 text-sm font-semibold text-[#1A1510] underline-offset-4 hover:text-[#E85D04] hover:underline"
+          >
+            Nous contacter →
+          </Link>
         </div>
       </section>
 
@@ -86,7 +61,10 @@ export default function TarifsPage() {
         </div>
       </section>
 
-      <MarketingCta />
+      <MarketingCta
+        title="Choisissez votre rythme."
+        text="Essai 14 jours sans carte. Puis Starter ou Pro, mensuel ou annuel."
+      />
     </>
   );
 }
