@@ -203,10 +203,10 @@ color:#fff!important}
                     <?php endif; ?>
                 </div>
             </header>
+            <?php if ($flash) : ?>
+                <p class="qb-banner qb-flash-bar<?php echo (stripos($flash, 'connecté') === false && stripos($flash, 'import') === false) ? ' is-warn' : ''; ?>"><?php echo esc_html($flash); ?></p>
+            <?php endif; ?>
             <div class="qb-body">
-                <?php if ($flash) : ?>
-                    <p class="qb-banner"><?php echo esc_html($flash); ?></p>
-                <?php endif; ?>
                 <?php
                 if (!$connected) {
                     self::view_setup($woo);

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { z } from "zod";
 import { encryptCredentials, maskHint, randomToken } from "@/lib/integrations/secrets";
 import { runCatalogSync } from "@/lib/integrations/sync";
@@ -108,12 +108,16 @@ export async function POST(req: Request) {
     })
     .eq("id", pairing.id);
 
-  const result = await runCatalogSync({ connectionId: connection.id, trigger: "pairing" });
+  after(() => {
+    void runCatalogSync({ connectionId: connection.id, trigger: "pairing" }).catch((error) => {
+      console.error("[pair] sync", error);
+    });
+  });
   const payload = await pluginPayload(connection);
 
   return NextResponse.json({
     ...payload,
-    imported: result.created + result.updated,
-    error: result.error,
+    imported: typeof payload.product_count === "number" ? payload.product_count : 0,
+    syncing: true,
   });
 }

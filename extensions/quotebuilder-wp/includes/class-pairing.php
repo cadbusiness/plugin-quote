@@ -97,7 +97,14 @@ class QuoteBuilder_Pairing {
             exit;
         }
         $imported = isset($result['imported']) ? (int) $result['imported'] : 0;
-        self::flash($imported ? "Catalogue connecté. {$imported} produits importés." : 'Catalogue connecté.');
+        $syncing = !empty($result['syncing']);
+        if ($imported) {
+            self::flash("Boutique connectée. {$imported} produits importés.");
+        } elseif ($syncing) {
+            self::flash("Boutique connectée. L’import du catalogue continue en arrière-plan.");
+        } else {
+            self::flash('Boutique connectée.');
+        }
         wp_safe_redirect(admin_url('admin.php?page=quotebuilder&connected=1'));
         exit;
     }
@@ -229,7 +236,7 @@ class QuoteBuilder_Pairing {
         }
 
         $response = wp_remote_post($origin . '/api/integrations/pair', [
-            'timeout' => 60,
+            'timeout' => 25,
             'headers' => ['Content-Type' => 'application/json'],
             'body' => wp_json_encode([
                 'code' => strtoupper(trim($code)),
@@ -261,6 +268,7 @@ class QuoteBuilder_Pairing {
             'imported' => isset($body['imported']) ? (int) $body['imported'] : 0,
             'funnel' => $body['funnel_name'] ?? '',
             'error' => $body['error'] ?? null,
+            'syncing' => !empty($body['syncing']),
         ];
     }
 

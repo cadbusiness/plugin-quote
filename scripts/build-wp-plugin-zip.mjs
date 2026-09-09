@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>Survol orange QuoteBuilder (plus le bleu WordPress) sur les boutons et le menu.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>Admin WordPress en pleine largeur (plus de colonne vide à droite).</li><li>Notification en bandeau, plus collée à gauche du setup.</li><li>Connexion boutique sans attendre l’import catalogue.</li></ul>`,
     },
     null,
     2,
