@@ -161,7 +161,7 @@ class QuoteBuilder_Admin {
         $flash = QuoteBuilder_Pairing::flash();
         $logo = QUOTEBUILDER_URL . 'assets/quotebuilder-mark.png';
         ?>
-        <div class="qb-wrap">
+        <div class="qb-wrap<?php echo $connected ? '' : ' is-setup'; ?>">
             <header class="qb-header">
                 <div class="qb-brand">
                     <img class="qb-logo" src="<?php echo esc_url($logo); ?>" alt="QuoteBuilder" width="32" height="32">
@@ -183,8 +183,6 @@ class QuoteBuilder_Admin {
                     <?php if ($connected) : ?>
                         <span class="qb-pill is-on">Connecté</span>
                         <a class="qb-ghost" href="<?php echo esc_url(QuoteBuilder_Settings::origin() . '/devis'); ?>" target="_blank" rel="noopener">Ouvrir QuoteBuilder</a>
-                    <?php else : ?>
-                        <a class="qb-primary" href="<?php echo esc_url(QuoteBuilder_Pairing::start_url('signup')); ?>">Créer un compte</a>
                     <?php endif; ?>
                 </div>
             </header>

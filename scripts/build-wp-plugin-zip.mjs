@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>Réglages regroupés : Demandes, Réglages (Bouton, Produits, Page, Style), Compte.</li><li>Logo QuoteBuilder sur l’écran Mises à jour WordPress, auteur QuoteBuilder.</li><li>Options vitrine : audience, stock, liste d’exclusion, page devis, colonnes, couleurs au survol.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>Écran de connexion centré dans WordPress.</li></ul>`,
     },
     null,
     2,

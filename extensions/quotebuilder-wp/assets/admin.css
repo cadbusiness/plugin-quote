@@ -2,9 +2,11 @@
   padding-left: 0;
 }
 
+.toplevel_page_quotebuilder #wpbody,
 .toplevel_page_quotebuilder #wpbody-content {
   padding: 0;
   float: none;
+  min-height: calc(100vh - 32px);
 }
 
 .toplevel_page_quotebuilder #wpbody-content > .notice,
@@ -17,6 +19,8 @@
   background: #f8f5f1;
   color: #1a1510;
   min-height: calc(100vh - 32px);
+  display: flex;
+  flex-direction: column;
   font-family: "Inter", "Helvetica Neue", sans-serif;
 }
 
@@ -93,6 +97,16 @@
   max-width: 920px;
 }
 
+.qb-wrap.is-setup .qb-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: none;
+  width: 100%;
+  padding: 32px 24px;
+}
+
 .qb-kicker {
   margin: 0;
   font-size: 11px;
@@ -147,8 +161,8 @@
 }
 
 .qb-setup {
-  max-width: 36rem;
-  margin: 48px auto;
+  max-width: 28rem;
+  margin: 0;
   text-align: center;
 }
 
