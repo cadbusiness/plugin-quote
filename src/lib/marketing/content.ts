@@ -151,39 +151,174 @@ export const PUBLIC_PLANS: PublicPlan[] = [
   },
 ];
 
-export const PRICING_COMPARE_ROWS: {
+export type PricingCell = boolean | string;
+
+export type PricingMatrixRow = {
   label: string;
-  values: Record<PlanId, string>;
-}[] = [
+  tip?: string;
+  values: Record<PlanId, PricingCell>;
+};
+
+export type PricingMatrixSection = {
+  id: string;
+  title: string;
+  rows: PricingMatrixRow[];
+};
+
+/** Matrice Typeform-like : sections + cellules bool/texte. */
+export const PRICING_MATRIX: PricingMatrixSection[] = [
   {
-    label: "Funnels",
-    values: { free: "1", starter: "3", pro: "Illimités", agency: "Illimités" },
+    id: "usage",
+    title: "Limites d’usage",
+    rows: [
+      {
+        label: "Funnels",
+        tip: "Nombre de parcours de devis actifs sur votre compte.",
+        values: { free: "1", starter: "3", pro: "Illimités", agency: "Illimités" },
+      },
+      {
+        label: "Soumissions",
+        tip: "Demandes reçues via vos funnels. Free = plafond total, pas mensuel.",
+        values: { free: "10 au total", starter: "Illimitées", pro: "Illimitées", agency: "Illimitées" },
+      },
+      {
+        label: "Produits catalogue",
+        tip: "Références actives proposées dans le funnel.",
+        values: { free: false, starter: "50", pro: "Illimités", agency: "Illimités" },
+      },
+      {
+        label: "Sièges équipe",
+        tip: "Membres avec accès au dashboard.",
+        values: { free: "1", starter: "1", pro: "5", agency: "Illimités" },
+      },
+      {
+        label: "Comptes / marques",
+        tip: "Espaces séparés pour multi-clients ou multi-enseignes.",
+        values: { free: "1", starter: "1", pro: "1", agency: "Illimités" },
+      },
+    ],
   },
   {
-    label: "Soumissions",
-    values: { free: "10 total", starter: "Illimitées", pro: "Illimitées", agency: "Illimitées" },
+    id: "acquisition",
+    title: "Acquisition",
+    rows: [
+      {
+        label: "Wizard guidé",
+        tip: "Parcours étape par étape pour le prospect.",
+        values: { free: true, starter: true, pro: true, agency: true },
+      },
+      {
+        label: "Chat IA",
+        tip: "Conversation IA branchée sur votre catalogue.",
+        values: { free: false, starter: true, pro: true, agency: true },
+      },
+      {
+        label: "Règles Si / Alors",
+        tip: "Suggestions produits selon les réponses.",
+        values: { free: false, starter: true, pro: true, agency: true },
+      },
+      {
+        label: "Widget / embed",
+        tip: "Intégration JS ou WordPress sur votre site.",
+        values: { free: true, starter: true, pro: true, agency: true },
+      },
+      {
+        label: "Identité progressive",
+        tip: "Email et téléphone captés au bon moment du parcours.",
+        values: { free: true, starter: true, pro: true, agency: true },
+      },
+    ],
   },
   {
-    label: "Chat IA",
-    values: { free: "Non", starter: "Oui", pro: "Oui", agency: "Oui" },
+    id: "pilotage",
+    title: "Pilotage",
+    rows: [
+      {
+        label: "Pipeline demandes",
+        tip: "Liste flush, score, assignation, notes.",
+        values: { free: "Basique", starter: true, pro: true, agency: true },
+      },
+      {
+        label: "Score Hot / Warm / Cold",
+        values: { free: false, starter: true, pro: true, agency: true },
+      },
+      {
+        label: "Espace prospect",
+        tip: "Lien magique, statut, compléments.",
+        values: { free: false, starter: "Basique", pro: "Complet", agency: "Complet" },
+      },
+      {
+        label: "Messagerie prospect",
+        values: { free: false, starter: false, pro: true, agency: true },
+      },
+      {
+        label: "Autopilote / workflows",
+        tip: "Emails, waits, branches, assignation.",
+        values: { free: false, starter: "T+0 → T+3j", pro: "Jusqu’à J+30", agency: "Jusqu’à J+30" },
+      },
+      {
+        label: "Panier abandonné",
+        values: { free: false, starter: false, pro: true, agency: true },
+      },
+      {
+        label: "Newsletter segmentée",
+        values: { free: false, starter: false, pro: true, agency: true },
+      },
+      {
+        label: "Kanban pipeline",
+        values: { free: false, starter: false, pro: true, agency: true },
+      },
+    ],
   },
   {
-    label: "Catalogue",
-    values: { free: "Non", starter: "50", pro: "Illimité", agency: "Illimité" },
-  },
-  {
-    label: "Autopilote",
-    values: { free: "Non", starter: "T+3j", pro: "J+30", agency: "J+30" },
-  },
-  {
-    label: "Équipe",
-    values: { free: "1", starter: "1", pro: "5", agency: "Illimitée" },
-  },
-  {
-    label: "Intégrations",
-    values: { free: "Widget", starter: "Woo", pro: "Woo + Shopify", agency: "Stack + white-label" },
+    id: "organisation",
+    title: "Organisation & stack",
+    rows: [
+      {
+        label: "Stats tunnel / UTM",
+        values: { free: "Basique", starter: "Basique", pro: "Avancées", agency: "Avancées" },
+      },
+      {
+        label: "GA4",
+        values: { free: false, starter: false, pro: true, agency: true },
+      },
+      {
+        label: "WooCommerce",
+        values: { free: false, starter: true, pro: true, agency: true },
+      },
+      {
+        label: "Shopify",
+        values: { free: false, starter: false, pro: true, agency: true },
+      },
+      {
+        label: "Webhooks / export JSON",
+        values: { free: false, starter: false, pro: true, agency: true },
+      },
+      {
+        label: "White-label",
+        tip: "Marque agence sur les espaces clients.",
+        values: { free: false, starter: false, pro: false, agency: true },
+      },
+      {
+        label: "Support prioritaire",
+        values: { free: false, starter: false, pro: "Standard", agency: "Prioritaire" },
+      },
+    ],
   },
 ];
+
+/** @deprecated Prefer PRICING_MATRIX. */
+export const PRICING_COMPARE_ROWS = PRICING_MATRIX.flatMap((section) =>
+  section.rows.map((row) => ({
+    label: row.label,
+    values: Object.fromEntries(
+      Object.entries(row.values).map(([k, v]) => [
+        k,
+        typeof v === "boolean" ? (v ? "Oui" : "Non") : v,
+      ]),
+    ) as Record<PlanId, string>,
+  })),
+);
 
 export const FREE_TRIAL = {
   href: "/signup?plan=free",

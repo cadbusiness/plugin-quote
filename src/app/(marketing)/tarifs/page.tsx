@@ -6,26 +6,27 @@ import { FAQ } from "@/lib/marketing/content";
 export const metadata: Metadata = {
   title: "Tarifs · QuoteBuilder",
   description:
-    "Free, Starter 49 €, Pro 99 €, Agency 199 €. Gratuit pour démarrer. Annuel avec 2 mois offerts.",
+    "Comparez Free, Starter, Pro et Agency. Matrice complète, mensuel ou annuel, inscription directe.",
 };
 
 export default function TarifsPage() {
   return (
     <>
-      <section className="px-6 pb-4 pt-10 sm:pt-14">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#C45C26]">Tarifs</p>
-          <h1 className="mt-2 text-[1.7rem] font-semibold tracking-tight sm:text-[2.35rem] sm:leading-tight">
-            Gratuit pour démarrer.
-            <span className="block text-[#1A1510]/45">Pro quand ça scale.</span>
+      <section className="px-6 pb-6 pt-10 sm:pb-8 sm:pt-12">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C45C26]">
+            Tarifs
+          </p>
+          <h1 className="mt-2 text-[1.65rem] font-semibold tracking-tight sm:text-[2.2rem] sm:leading-tight">
+            Starter, Pro, Agency.
           </h1>
-          <p className="mx-auto mt-3 max-w-lg text-[15px] leading-6 text-[#1A1510]/60">
-            Quatre plans. Free en premier. Agency en self-serve. Pas de devis pour commencer.
+          <p className="mx-auto mt-3 max-w-xl text-[15px] leading-6 text-[#1A1510]/55">
+            Comparez les plans payants. Free reste disponible en dessous, sans carte.
           </p>
         </div>
       </section>
 
-      <section className="px-6 pb-12 sm:pb-16">
+      <section className="px-4 pb-14 sm:px-6 sm:pb-20">
         <PricingPlans />
       </section>
 

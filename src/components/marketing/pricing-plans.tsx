@@ -1,176 +1,218 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { PRICING_COMPARE_ROWS, PUBLIC_PLANS, type PublicPlan } from "@/lib/marketing/content";
+import { useMemo, useState } from "react";
+import {
+  PRICING_MATRIX,
+  PUBLIC_PLANS,
+  type PricingCell,
+  type PublicPlan,
+} from "@/lib/marketing/content";
 
 type Billing = "monthly" | "annual";
+
+const PAID_PLANS = PUBLIC_PLANS.filter((plan) => plan.id !== "free");
+const FREE_PLAN = PUBLIC_PLANS.find((plan) => plan.id === "free")!;
 
 function planHref(plan: PublicPlan, billing: Billing) {
   if (plan.id === "free") return plan.href;
   return `${plan.href}&billing=${billing}`;
 }
 
-function priceLabel(plan: PublicPlan, billing: Billing) {
-  if (plan.monthlyPrice === 0) return { main: "0 €", suffix: "pour toujours" };
-  const value = billing === "monthly" ? plan.monthlyPrice! : plan.annualMonthly!;
-  return { main: `${value} €`, suffix: "/mois" };
+function priceParts(plan: PublicPlan, billing: Billing) {
+  if (plan.monthlyPrice === 0) {
+    return { amount: "0 €", note: "sans carte" };
+  }
+  const amount = billing === "monthly" ? plan.monthlyPrice! : plan.annualMonthly!;
+  return {
+    amount: `${amount} €`,
+    note: billing === "annual" ? `${plan.annualTotal} € / an` : "facturé mensuellement",
+  };
 }
 
-function cardClass(plan: PublicPlan) {
-  if (plan.highlight === "featured") {
-    return "border-[#1A1510] bg-[#1A1510] text-[#F6F0E8] shadow-[0_18px_40px_-28px_rgba(26,21,16,0.55)]";
+function CellValue({ value }: { value: PricingCell }) {
+  if (value === true) {
+    return (
+      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#1A1510] text-[11px] font-bold text-white">
+        ✓
+      </span>
+    );
   }
-  if (plan.highlight === "free") {
-    return "border-[#E85D04]/35 bg-gradient-to-b from-[#FFF4EB] to-white text-[#1A1510]";
+  if (value === false) {
+    return <span className="text-[#1A1510]/22">–</span>;
   }
-  return "border-[#1A1510]/10 bg-white text-[#1A1510]";
+  return <span className="text-[13px] font-medium text-[#1A1510]">{value}</span>;
+}
+
+function Tip({ text }: { text: string }) {
+  return (
+    <span className="group/tip relative ml-1 inline-flex align-middle">
+      <button
+        type="button"
+        className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[#1A1510]/15 text-[10px] font-semibold text-[#1A1510]/40 hover:border-[#1A1510]/30 hover:text-[#1A1510]"
+        aria-label={text}
+      >
+        i
+      </button>
+      <span className="pointer-events-none absolute bottom-[calc(100%+8px)] left-1/2 z-20 w-56 -translate-x-1/2 rounded-md bg-[#1A1510] px-3 py-2 text-left text-[12px] font-normal leading-4 text-white opacity-0 shadow-lg transition group-hover/tip:opacity-100 group-focus-within/tip:opacity-100">
+        {text}
+      </span>
+    </span>
+  );
 }
 
 export function PricingPlans() {
   const [billing, setBilling] = useState<Billing>("annual");
+  const gridClass = useMemo(
+    () => "grid grid-cols-[minmax(200px,1.2fr)_repeat(3,minmax(0,1fr))]",
+    [],
+  );
 
   return (
     <div className="mx-auto max-w-6xl">
-      <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-        <div
-          className="inline-flex rounded-md border border-[#1A1510]/10 bg-white p-0.5"
-          role="group"
-          aria-label="Facturation"
-        >
-          <button
-            type="button"
-            onClick={() => setBilling("monthly")}
-            className={`rounded-[5px] px-3 py-1.5 text-[13px] font-medium transition ${
-              billing === "monthly" ? "bg-[#1A1510] text-white" : "text-[#1A1510]/55 hover:text-[#1A1510]"
-            }`}
-          >
-            Mensuel
-          </button>
-          <button
-            type="button"
-            onClick={() => setBilling("annual")}
-            className={`rounded-[5px] px-3 py-1.5 text-[13px] font-medium transition ${
-              billing === "annual" ? "bg-[#1A1510] text-white" : "text-[#1A1510]/55 hover:text-[#1A1510]"
-            }`}
-          >
-            Annuel
-            <span className={`ml-1.5 text-[11px] ${billing === "annual" ? "text-[#F3B184]" : "text-[#E85D04]"}`}>
-              -2 mois
-            </span>
-          </button>
-        </div>
-      </div>
-
-      <div className="mt-8 grid gap-3 lg:grid-cols-4">
-        {PUBLIC_PLANS.map((plan) => {
-          const price = priceLabel(plan, billing);
-          const featured = plan.highlight === "featured";
-          const muted = featured ? "text-white/50" : "text-[#1A1510]/45";
-          const body = featured ? "text-white/72" : "text-[#1A1510]/68";
-
-          return (
-            <article
-              key={plan.id}
-              className={`relative flex flex-col rounded-xl border px-4 pb-4 pt-4 ${cardClass(plan)}`}
-            >
-              <div className="flex items-center justify-between gap-2">
-                <p className="text-[13px] font-semibold tracking-tight">{plan.name}</p>
-                {plan.badge ? (
-                  <span
-                    className={`rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
-                      plan.highlight === "free"
-                        ? "bg-[#E85D04] text-white"
-                        : featured
-                          ? "bg-[#E85D04] text-white"
-                          : "bg-[#1A1510]/06 text-[#1A1510]/70"
+      <div className="overflow-x-auto pb-2">
+        <div className="min-w-[780px]">
+          {/* Sticky header: paid plans only */}
+          <div className="sticky top-[4.25rem] z-30 overflow-hidden rounded-t-xl border border-[#1A1510]/10 bg-[#F6F0E8]/95 backdrop-blur-md">
+            <div className={gridClass}>
+              <div className="flex items-end border-r border-[#1A1510]/08 px-4 pb-4 pt-4">
+                <div
+                  className="inline-flex rounded-full border border-[#1A1510]/12 bg-white p-0.5"
+                  role="group"
+                  aria-label="Facturation"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setBilling("monthly")}
+                    className={`rounded-full px-3 py-1.5 text-[12px] font-medium transition ${
+                      billing === "monthly"
+                        ? "bg-[#1A1510] text-white"
+                        : "text-[#1A1510]/55 hover:text-[#1A1510]"
                     }`}
                   >
-                    {plan.badge}
-                  </span>
-                ) : (
-                  <span className="h-4" />
-                )}
-              </div>
-              <p className={`mt-1 text-[11px] leading-4 ${muted}`}>{plan.audience}</p>
-
-              <div className="mt-4 min-h-[3.25rem]">
-                <p className="flex items-baseline gap-1">
-                  <span className="text-[1.75rem] font-semibold tracking-tight">{price.main}</span>
-                  <span className={`text-[12px] ${muted}`}>{price.suffix}</span>
-                </p>
-                {plan.id !== "free" && billing === "annual" ? (
-                  <p className={`mt-0.5 text-[11px] ${muted}`}>
-                    {plan.annualTotal}&nbsp;€ / an
-                  </p>
-                ) : plan.id !== "free" && billing === "monthly" ? (
-                  <p className={`mt-0.5 text-[11px] ${muted}`}>
-                    ou {plan.annualMonthly}&nbsp;€/mois en annuel
-                  </p>
-                ) : (
-                  <p className={`mt-0.5 text-[11px] ${muted}`}>Sans carte bancaire</p>
-                )}
+                    Mensuel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBilling("annual")}
+                    className={`rounded-full px-3 py-1.5 text-[12px] font-medium transition ${
+                      billing === "annual"
+                        ? "bg-[#1A1510] text-white"
+                        : "text-[#1A1510]/55 hover:text-[#1A1510]"
+                    }`}
+                  >
+                    Annuel
+                    <span className="ml-1 text-[11px] text-[#E85D04]">-2 mois</span>
+                  </button>
+                </div>
               </div>
 
-              <Link
-                href={planHref(plan, billing)}
-                className={`mt-4 inline-flex h-9 items-center justify-center rounded-md text-[13px] font-semibold transition ${
-                  plan.highlight === "free"
-                    ? "bg-[#E85D04] text-white hover:bg-[#d35400]"
-                    : featured
-                      ? "bg-white text-[#1A1510] hover:bg-[#FFF4EB]"
-                      : "bg-[#1A1510] text-white hover:bg-[#E85D04]"
-                }`}
-              >
-                {plan.cta}
-              </Link>
+              {PAID_PLANS.map((plan) => {
+                const price = priceParts(plan, billing);
+                const featured = plan.highlight === "featured";
+                return (
+                  <div
+                    key={plan.id}
+                    className={`flex flex-col border-r border-[#1A1510]/08 px-3 pb-4 pt-4 last:border-r-0 ${
+                      featured ? "bg-[#1A1510] text-[#F6F0E8]" : ""
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <p className="text-[13px] font-semibold tracking-tight">{plan.name}</p>
+                      {plan.badge ? (
+                        <span className="rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide bg-[#E85D04] text-white">
+                          {plan.badge}
+                        </span>
+                      ) : null}
+                    </div>
+                    <p className="mt-2 text-[22px] font-semibold tracking-tight">
+                      {price.amount}
+                      <span className={`ml-1 text-[12px] font-medium ${featured ? "text-white/45" : "text-[#1A1510]/40"}`}>
+                        /mois
+                      </span>
+                    </p>
+                    <p className={`mt-0.5 text-[11px] ${featured ? "text-white/45" : "text-[#1A1510]/45"}`}>
+                      {price.note}
+                    </p>
+                    <Link
+                      href={planHref(plan, billing)}
+                      className={`mt-3 inline-flex h-8 items-center justify-center rounded-md border text-[12px] font-semibold transition ${
+                        featured
+                          ? "border-white/20 bg-white text-[#1A1510] hover:bg-[#FFF4EB]"
+                          : "border-[#1A1510]/15 bg-white text-[#1A1510] hover:border-[#1A1510] hover:bg-[#1A1510] hover:text-white"
+                      }`}
+                    >
+                      {plan.cta}
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
 
-              <ul className={`mt-4 space-y-1.5 border-t pt-3 text-[12px] leading-4 ${body} ${
-                featured ? "border-white/12" : "border-[#1A1510]/08"
-              }`}>
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex gap-2">
-                    <span className={`shrink-0 ${featured ? "text-[#F3B184]" : "text-[#E85D04]"}`} aria-hidden>
-                      ·
-                    </span>
-                    <span>{feature}</span>
-                  </li>
+          {/* Matrix body */}
+          <div className="overflow-hidden rounded-b-xl border-x border-b border-[#1A1510]/10 bg-white">
+            {PRICING_MATRIX.map((section) => (
+              <div key={section.id}>
+                <div className={`${gridClass} border-t border-[#1A1510]/08 bg-[#F6F0E8]/55`}>
+                  <div className="col-span-4 px-4 py-2.5">
+                    <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#1A1510]/45">
+                      {section.title}
+                    </p>
+                  </div>
+                </div>
+
+                {section.rows.map((row) => (
+                  <div
+                    key={row.label}
+                    className={`${gridClass} border-t border-[#1A1510]/06`}
+                  >
+                    <div className="flex items-center border-r border-[#1A1510]/06 px-4 py-3.5">
+                      <span className="text-[13px] font-medium text-[#1A1510]/80">
+                        {row.label}
+                        {row.tip ? <Tip text={row.tip} /> : null}
+                      </span>
+                    </div>
+                    {PAID_PLANS.map((plan) => (
+                      <div
+                        key={plan.id}
+                        className={`flex items-center justify-center border-r border-[#1A1510]/06 px-2 py-3.5 last:border-r-0 ${
+                          plan.highlight === "featured" ? "bg-[#1A1510]/[0.03]" : ""
+                        }`}
+                      >
+                        <CellValue value={row.values[plan.id]} />
+                      </div>
+                    ))}
+                  </div>
                 ))}
-              </ul>
-            </article>
-          );
-        })}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      <div className="mt-10 overflow-hidden rounded-xl border border-[#1A1510]/10 bg-white">
-        <div className="border-b border-[#1A1510]/08 px-4 py-3">
-          <p className="text-[13px] font-semibold text-[#1A1510]">Comparer en un coup d’œil</p>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-[640px] w-full text-left text-[12px]">
-            <thead>
-              <tr className="border-b border-[#1A1510]/08 text-[#1A1510]/45">
-                <th className="px-4 py-2.5 font-medium">Capacité</th>
-                {PUBLIC_PLANS.map((plan) => (
-                  <th key={plan.id} className="px-3 py-2.5 font-semibold text-[#1A1510]">
-                    {plan.name}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {PRICING_COMPARE_ROWS.map((row) => (
-                <tr key={row.label} className="border-b border-[#1A1510]/06 last:border-0">
-                  <td className="px-4 py-2.5 font-medium text-[#1A1510]/70">{row.label}</td>
-                  {PUBLIC_PLANS.map((plan) => (
-                    <td key={plan.id} className="px-3 py-2.5 text-[#1A1510]/75">
-                      {row.values[plan.id]}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* Free: single discreet framed line */}
+      <div className="mt-5 overflow-hidden rounded-xl border border-[#1A1510]/10 bg-white/70">
+        <div className="flex flex-col gap-3 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-[13px] font-semibold text-[#1A1510]">{FREE_PLAN.name}</p>
+              <span className="rounded bg-[#1A1510]/06 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[#1A1510]/55">
+                {FREE_PLAN.badge}
+              </span>
+              <span className="text-[13px] font-semibold text-[#1A1510]/70">0 €</span>
+            </div>
+            <p className="mt-1 text-[12px] leading-5 text-[#1A1510]/50">
+              1 funnel · Wizard · 10 soumissions au total · sans carte. Pour voir l’interface avant
+              d’upgrader.
+            </p>
+          </div>
+          <Link
+            href={FREE_PLAN.href}
+            className="inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-[#1A1510]/12 bg-transparent px-3.5 text-[12px] font-semibold text-[#1A1510]/70 transition hover:border-[#1A1510]/30 hover:bg-[#1A1510]/[0.03] hover:text-[#1A1510]"
+          >
+            {FREE_PLAN.cta}
+          </Link>
         </div>
       </div>
     </div>
