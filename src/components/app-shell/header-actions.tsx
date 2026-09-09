@@ -140,11 +140,7 @@ export function HeaderActions({
         onClick={() => toggle("alerts")}
         aria-expanded={menu === "alerts"}
         aria-haspopup="dialog"
-        className={`relative inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium shadow-sm ${
-          unread
-            ? "bg-rose-50 text-rose-700 ring-1 ring-rose-200 hover:bg-rose-100"
-            : "bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"
-        }`}
+        className="relative inline-flex items-center gap-1.5 rounded-lg bg-rose-50 px-2.5 py-1.5 text-sm font-medium text-rose-700 shadow-sm shadow-rose-900/10 ring-1 ring-rose-200 hover:bg-rose-100"
       >
         <span className="relative flex h-5 w-5 items-center justify-center rounded-full bg-rose-100 text-rose-700">
           <Bell className="h-3.5 w-3.5" strokeWidth={2.25} />
@@ -163,7 +159,7 @@ export function HeaderActions({
           onClick={() => toggle("plan")}
           aria-expanded={menu === "plan"}
           aria-haspopup="dialog"
-          className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1.5 text-sm font-medium capitalize text-emerald-800 shadow-sm ring-1 ring-emerald-200 hover:bg-emerald-100"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1.5 text-sm font-medium capitalize text-emerald-800 shadow-sm shadow-emerald-900/10 ring-1 ring-emerald-200 hover:bg-emerald-100"
         >
           <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-200/80 text-emerald-800">
             <Sparkles className="h-3.5 w-3.5" strokeWidth={2.25} />
