@@ -15,11 +15,13 @@ export function RingGauge({
   pct,
   tone,
   label,
+  size = "md",
 }: {
   value: string | number;
   pct: number;
   tone: GaugeTone;
   label: string;
+  size?: "sm" | "md";
 }) {
   const fillPct = Math.max(0, Math.min(1, pct));
   const r = 34;
@@ -29,7 +31,12 @@ export function RingGauge({
   const text = String(value);
   const fontSize = text.length > 5 ? 12 : text.length > 3 ? 16 : 24;
   return (
-    <svg viewBox="0 0 92 92" className="h-20 w-20 shrink-0" role="img" aria-label={label}>
+    <svg
+      viewBox="0 0 92 92"
+      className={`shrink-0 ${size === "sm" ? "h-14 w-14" : "h-20 w-20"}`}
+      role="img"
+      aria-label={label}
+    >
       <g transform="rotate(135 46 46)">
         <circle
           cx="46"
