@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/db/database.types";
 import type { QuoteListExtras } from "@/components/crm/quote-list-cells";
+import { computeValidation } from "@/lib/prospect/collaborators";
 
 export type QuoteFilters = {
   status?: string;
@@ -20,7 +21,7 @@ export async function listQuotes(
   let query = supabase
     .from("quotes")
     .select(
-      "id, contact_name, contact_email, contact_phone, contact_company, score, score_label, status_id, status, assigned_to, created_at, validation_status, validation_approved_count, validation_total_count",
+      "id, contact_name, contact_email, contact_phone, contact_company, score, score_label, status_id, status, assigned_to, created_at",
     )
     .eq("organization_id", orgId)
     .order("created_at", { ascending: false });
@@ -61,13 +62,7 @@ function viewedAt(value: Json | null | undefined) {
 
 export async function loadQuoteListExtras(
   supabase: SupabaseClient<Database>,
-  quotes: {
-    id: string;
-    status: string;
-    validation_status?: string | null;
-    validation_approved_count?: number | null;
-    validation_total_count?: number | null;
-  }[],
+  quotes: { id: string; status: string }[],
 ): Promise<Map<string, QuoteListExtras>> {
   const extras = new Map<string, QuoteListExtras>();
   for (const quote of quotes) {
@@ -77,29 +72,43 @@ export async function loadQuoteListExtras(
       priceMin: null,
       priceMax: null,
       opened: quote.status !== "new",
-      validationStatus: quote.validation_status ?? "none",
-      validationApproved: quote.validation_approved_count ?? 0,
-      validationTotal: quote.validation_total_count ?? 0,
+      validationStatus: "none",
+      validationApproved: 0,
+      validationTotal: 0,
     });
   }
   const ids = quotes.map((quote) => quote.id);
   if (!ids.length) return extras;
 
-  const [{ data: items }, { data: rows }] = await Promise.all([
+  const [{ data: items }, { data: rows }, collabResult] = await Promise.all([
     supabase.from("quote_items").select("quote_id, name, price_min, price_max").in("quote_id", ids),
+    supabase.from("quotes").select("id, status, extracted_params").in("id", ids),
     supabase
-      .from("quotes")
-      .select("id, status, extracted_params, validation_status, validation_approved_count, validation_total_count")
-      .in("id", ids),
+      .from("quote_collaborators")
+      .select("quote_id, status")
+      .in("quote_id", ids)
+      .then((result) => (result.error ? { data: [] as { quote_id: string; status: string }[] } : result)),
   ]);
 
   for (const row of rows ?? []) {
     const current = extras.get(row.id);
     if (!current) continue;
     current.opened = row.status !== "new" || Boolean(viewedAt(row.extracted_params));
-    current.validationStatus = row.validation_status ?? "none";
-    current.validationApproved = row.validation_approved_count ?? 0;
-    current.validationTotal = row.validation_total_count ?? 0;
+  }
+
+  const byQuote = new Map<string, { status: string }[]>();
+  for (const row of collabResult.data ?? []) {
+    const list = byQuote.get(row.quote_id) ?? [];
+    list.push({ status: row.status });
+    byQuote.set(row.quote_id, list);
+  }
+  for (const [quoteId, list] of byQuote) {
+    const current = extras.get(quoteId);
+    if (!current) continue;
+    const stats = computeValidation(list);
+    current.validationStatus = stats.validation_status;
+    current.validationApproved = stats.validation_approved_count;
+    current.validationTotal = stats.validation_total_count;
   }
 
   for (const item of items ?? []) {

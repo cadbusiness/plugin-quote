@@ -6,6 +6,7 @@ import { Chip, type ChipTone } from "@/components/ui/chip";
 import {
   COLLABORATOR_ROLE_LABELS,
   COLLABORATOR_STATUS_LABELS,
+  computeValidation,
   type CollaboratorRole,
   type CollaboratorStatus,
 } from "@/lib/prospect/collaborators";
@@ -26,25 +27,23 @@ function validationTone(status: string | null | undefined): ChipTone {
   return "slate";
 }
 
-function validationLabel(quote: Tables<"quotes">) {
-  const status = quote.validation_status;
-  if (status === "approved") {
-    return `Validé · ${quote.validation_approved_count}/${quote.validation_total_count}`;
+function validationLabel(stats: ReturnType<typeof computeValidation>) {
+  if (stats.validation_status === "approved") {
+    return `Validé · ${stats.validation_approved_count}/${stats.validation_total_count}`;
   }
-  if (status === "changes_requested") return "Modifications demandées";
-  if (status === "partial" || status === "pending") {
-    return `${quote.validation_approved_count}/${quote.validation_total_count} validations`;
+  if (stats.validation_status === "changes_requested") return "Modifications demandées";
+  if (stats.validation_status === "partial" || stats.validation_status === "pending") {
+    return `${stats.validation_approved_count}/${stats.validation_total_count} validations`;
   }
   return null;
 }
 
 export function QuoteValidationSection({
   quoteId,
-  quote,
   collaborators,
 }: {
   quoteId: string;
-  quote: Tables<"quotes">;
+  quote?: Tables<"quotes">;
   collaborators: Tables<"quote_collaborators">[];
 }) {
   const [open, setOpen] = useState(false);
@@ -54,7 +53,8 @@ export function QuoteValidationSection({
   const [role, setRole] = useState<CollaboratorRole>("finance");
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
-  const label = validationLabel(quote);
+  const stats = computeValidation(collaborators);
+  const label = validationLabel(stats);
 
   function submit() {
     setError(null);
@@ -82,7 +82,7 @@ export function QuoteValidationSection({
           </p>
           {label ? (
             <div className="mt-2">
-              <Chip tone={validationTone(quote.validation_status)}>{label}</Chip>
+              <Chip tone={validationTone(stats.validation_status)}>{label}</Chip>
             </div>
           ) : null}
         </div>

@@ -197,7 +197,7 @@ function DossierTab({
         />
       </div>
 
-      <QuoteValidationSection quoteId={quote.id} quote={quote} collaborators={detail.collaborators} />
+      <QuoteValidationSection quoteId={quote.id} collaborators={detail.collaborators} />
 
       <section className="grid gap-6 border-b border-slate-100 px-4 py-5 lg:grid-cols-[minmax(0,1fr)_20rem] lg:px-6">
         <div>

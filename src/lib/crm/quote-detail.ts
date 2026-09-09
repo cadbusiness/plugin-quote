@@ -260,7 +260,8 @@ export async function loadQuoteDetail(
       .from("quote_collaborators")
       .select("*")
       .eq("quote_id", quote.id)
-      .order("created_at", { ascending: true }),
+      .order("created_at", { ascending: true })
+      .then((result) => (result.error ? { data: [] } : result)),
   ]);
 
   const runIds = (runs ?? []).map((run) => run.id);

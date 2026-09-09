@@ -79,7 +79,7 @@ async function syncQuoteValidation(
     .select("status")
     .eq("quote_id", quoteId);
   const stats = computeValidation(rows ?? []);
-  await supabase
+  const { error } = await supabase
     .from("quotes")
     .update({
       validation_status: stats.validation_status,
@@ -88,6 +88,9 @@ async function syncQuoteValidation(
     })
     .eq("id", quoteId)
     .eq("organization_id", organizationId);
+  if (error) {
+    console.warn("syncQuoteValidation", error.message);
+  }
   return stats;
 }
 
