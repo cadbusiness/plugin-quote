@@ -50,9 +50,13 @@ class QuoteBuilder_Updater {
         return $icons;
     }
 
-    public static function remote() {
+    public static function remote($force = false) {
+        $force = $force || !empty($_GET['force-check']);
+        if ($force) {
+            delete_transient('quotebuilder_update_payload');
+        }
         $cached = get_transient('quotebuilder_update_payload');
-        if (is_array($cached) && !empty($cached['version'])) {
+        if (!$force && is_array($cached) && !empty($cached['version'])) {
             return $cached;
         }
         foreach (self::endpoints() as $url) {
@@ -73,7 +77,30 @@ class QuoteBuilder_Updater {
             set_transient('quotebuilder_update_payload', $body, 5 * MINUTE_IN_SECONDS);
             return $body;
         }
-        return null;
+        return is_array($cached) ? $cached : null;
+    }
+
+    public static function newer() {
+        $remote = self::remote();
+        if (!$remote || empty($remote['version'])) {
+            return null;
+        }
+        if (version_compare(QUOTEBUILDER_VERSION, $remote['version'], '>=')) {
+            return null;
+        }
+        return $remote;
+    }
+
+    public static function upgrade_url() {
+        return wp_nonce_url(
+            self_admin_url('update.php?action=upgrade-plugin&plugin=' . rawurlencode(self::plugin_file())),
+            'upgrade-plugin_' . self::plugin_file()
+        );
+    }
+
+    public static function download_url() {
+        $origin = QuoteBuilder_Settings::origin() ?: QUOTEBUILDER_DEFAULT_ORIGIN;
+        return untrailingslashit($origin) . '/api/public/plugin/wordpress/download';
     }
 
     public static function package($remote) {

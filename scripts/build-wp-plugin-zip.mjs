@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>Admin WordPress bord à bord : plus de colonne vide à droite ni de pied de page au milieu.</li><li>Notification en bandeau sous le header.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>QuoteBuilder n’est pas dans le catalogue WordPress : bandeau de mise à jour + zip à téléverser.</li><li>Admin bord à bord, notification en bandeau.</li></ul>`,
     },
     null,
     2,

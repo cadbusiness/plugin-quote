@@ -9,6 +9,7 @@ class QuoteBuilder_Admin {
         add_action('admin_menu', [self::class, 'menu'], 9);
         add_action('admin_init', [self::class, 'activation_redirect']);
         add_action('admin_notices', [self::class, 'plugins_notice']);
+        add_action('admin_notices', [self::class, 'update_notice']);
         add_action('admin_bar_menu', [self::class, 'admin_bar'], 80);
         add_action('admin_enqueue_scripts', [self::class, 'assets']);
         add_action('admin_head', [self::class, 'menu_icon']);
@@ -73,11 +74,30 @@ class QuoteBuilder_Admin {
     }
 
     public static function action_links($links) {
+        $newer = QuoteBuilder_Updater::newer();
+        if ($newer) {
+            array_unshift(
+                $links,
+                '<a href="' . esc_url(QuoteBuilder_Updater::upgrade_url()) . '">Mettre à jour ' . esc_html($newer['version']) . '</a>'
+            );
+        }
         array_unshift(
             $links,
             '<a href="' . esc_url(admin_url('admin.php?page=quotebuilder')) . '"><strong>Ouvrir QuoteBuilder</strong></a>'
         );
         return $links;
+    }
+
+    public static function update_notice() {
+        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+        if (!$screen || !in_array($screen->id, ['plugins', 'update-core'], true) || !quotebuilder_user_can()) {
+            return;
+        }
+        $newer = QuoteBuilder_Updater::newer();
+        if (!$newer) {
+            return;
+        }
+        echo '<div class="notice notice-warning"><p><strong>QuoteBuilder ' . esc_html($newer['version']) . '</strong> est disponible (vous avez ' . esc_html(QUOTEBUILDER_VERSION) . '). Ce n’est pas une extension du catalogue WordPress. <a class="button button-primary" href="' . esc_url(QuoteBuilder_Updater::upgrade_url()) . '">Mettre à jour</a> ou <a href="' . esc_url(QuoteBuilder_Updater::download_url()) . '">télécharger le zip</a>.</p></div>';
     }
 
     public static function plugins_notice() {
@@ -228,6 +248,17 @@ body.toplevel_page_quotebuilder .qb-settings{width:auto!important;max-width:none
                     <?php endif; ?>
                 </div>
             </header>
+            <?php
+            $newer = QuoteBuilder_Updater::newer();
+            if ($newer) :
+            ?>
+                <p class="qb-banner qb-flash-bar is-warn">
+                    Version <?php echo esc_html($newer['version']); ?> disponible (vous avez <?php echo esc_html(QUOTEBUILDER_VERSION); ?>).
+                    <a href="<?php echo esc_url(QuoteBuilder_Updater::upgrade_url()); ?>">Mettre à jour</a>
+                    ·
+                    <a href="<?php echo esc_url(QuoteBuilder_Updater::download_url()); ?>">Télécharger le zip</a>
+                </p>
+            <?php endif; ?>
             <?php if ($flash) : ?>
                 <p class="qb-banner qb-flash-bar<?php echo (stripos($flash, 'connecté') === false && stripos($flash, 'import') === false) ? ' is-warn' : ''; ?>"><?php echo esc_html($flash); ?></p>
             <?php endif; ?>
@@ -607,6 +638,7 @@ body.toplevel_page_quotebuilder .qb-settings{width:auto!important;max-width:none
             <p>Shortcode funnel : <code>[quotebuilder]</code> · Liste : <code>[quotebuilder_quote]</code></p>
             <div class="qb-row">
                 <button type="button" class="qb-ghost" id="qb-sync">Synchroniser les produits</button>
+                <a class="qb-ghost" href="<?php echo esc_url(QuoteBuilder_Updater::download_url()); ?>">Télécharger le plugin</a>
                 <button type="button" class="qb-danger" id="qb-unpair">Déconnecter</button>
             </div>
         </section>
