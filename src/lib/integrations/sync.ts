@@ -1,5 +1,7 @@
 import { createHash } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { parseGallery } from "@/lib/catalog/media";
+import { shouldPushLocal, shouldSkipOverwrite } from "@/lib/catalog/sync-policy";
 import type { Database, Json, TablesInsert } from "@/lib/db/database.types";
 import { getAdapter, loadConnection, resolveConfiguratorId, resolveConnection } from "@/lib/integrations/connections";
 import type { NormalizedProduct, ResolvedConnection } from "@/lib/integrations/types";
@@ -13,6 +15,7 @@ export type SyncResult = {
   updated: number;
   skipped: number;
   archived: number;
+  pushed: number;
   failed: number;
   error: string | null;
 };
@@ -107,7 +110,7 @@ export async function runCatalogSync({
   trigger?: "manual" | "cron" | "webhook" | "pairing";
 }): Promise<SyncResult> {
   const supabase = createServiceClient();
-  const result: SyncResult = { created: 0, updated: 0, skipped: 0, archived: 0, failed: 0, error: null };
+  const result: SyncResult = { created: 0, updated: 0, skipped: 0, archived: 0, pushed: 0, failed: 0, error: null };
 
   const row = await loadConnection(supabase, connectionId);
   if (!row) return { ...result, error: "Connexion introuvable." };
@@ -139,7 +142,7 @@ export async function runCatalogSync({
   try {
     const { data: existing } = await supabase
       .from("products")
-      .select("id, external_id, content_hash, is_active, archived_by_sync")
+      .select("id, external_id, content_hash, is_active, archived_by_sync, updated_at, synced_at, sync_lock")
       .eq("connection_id", connection.id);
     const known = new Map(
       (existing ?? [])
@@ -152,49 +155,85 @@ export async function runCatalogSync({
     const pending: (ProductRow & { content_hash: string })[] = [];
     const toReactivate: string[] = [];
 
-    let cursor: string | null = null;
-    for (let page = 0; page < MAX_PAGES; page += 1) {
-      const batch = await adapter.fetchPage(connection, cursor);
-      for (const product of batch.products) {
-        if (!keeps(product, connection)) continue;
-        seen.add(product.externalId);
-        const built = buildProductRow(product, connection, configuratorId);
-        const previous = known.get(product.externalId);
-        if (previous?.archived_by_sync) toReactivate.push(product.externalId);
-        if (previous && previous.content_hash === built.content_hash) {
-          result.skipped += 1;
-          continue;
+    if (connection.settings.pullFromStore) {
+      let cursor: string | null = null;
+      for (let page = 0; page < MAX_PAGES; page += 1) {
+        const batch = await adapter.fetchPage(connection, cursor);
+        for (const product of batch.products) {
+          if (!keeps(product, connection)) continue;
+          seen.add(product.externalId);
+          const built = buildProductRow(product, connection, configuratorId);
+          const previous = known.get(product.externalId);
+          if (previous?.archived_by_sync) toReactivate.push(product.externalId);
+          if (shouldSkipOverwrite(previous, connection.settings)) {
+            result.skipped += 1;
+            continue;
+          }
+          if (previous && previous.content_hash === built.content_hash) {
+            result.skipped += 1;
+            continue;
+          }
+          if (previous) result.updated += 1;
+          else result.created += 1;
+          pending.push(built);
         }
-        if (previous) result.updated += 1;
-        else result.created += 1;
-        pending.push(built);
+        cursor = batch.cursor;
+        if (!cursor) break;
       }
-      cursor = batch.cursor;
-      if (!cursor) break;
-    }
 
-    result.failed += await writeChunks(supabase, pending);
+      result.failed += await writeChunks(supabase, pending);
 
-    // Produits revenus en boutique après avoir disparu.
-    for (const part of chunk(toReactivate, CHUNK)) {
-      await supabase
-        .from("products")
-        .update({ is_active: true, archived_by_sync: false })
-        .eq("connection_id", connection.id)
-        .in("external_id", part);
-    }
-
-    // Produits disparus de la boutique.
-    if (connection.settings.archiveMissing) {
-      const missing = [...known.keys()].filter((id) => !seen.has(id));
-      for (const part of chunk(missing, CHUNK)) {
-        const { count } = await supabase
+      // Produits revenus en boutique après avoir disparu.
+      for (const part of chunk(toReactivate, CHUNK)) {
+        await supabase
           .from("products")
-          .update({ is_active: false, archived_by_sync: true }, { count: "exact" })
+          .update({ is_active: true, archived_by_sync: false })
           .eq("connection_id", connection.id)
-          .eq("is_active", true)
           .in("external_id", part);
-        result.archived += count ?? 0;
+      }
+
+      // Produits disparus de la boutique.
+      if (connection.settings.archiveMissing) {
+        const missing = [...known.keys()].filter((id) => !seen.has(id));
+        for (const part of chunk(missing, CHUNK)) {
+          const { count } = await supabase
+            .from("products")
+            .update({ is_active: false, archived_by_sync: true }, { count: "exact" })
+            .eq("connection_id", connection.id)
+            .eq("is_active", true)
+            .eq("sync_lock", false)
+            .in("external_id", part);
+          result.archived += count ?? 0;
+        }
+      }
+    }
+
+    if (connection.settings.pushToStore && adapter.pushProduct) {
+      const { data: outbound } = await supabase
+        .from("products")
+        .select("id, external_id, name, sku, description, price_min, images, updated_at, synced_at, sync_lock")
+        .eq("connection_id", connection.id)
+        .not("external_id", "is", null);
+      for (const row of outbound ?? []) {
+        if (!row.external_id || !shouldPushLocal(row, connection.settings)) continue;
+        try {
+          await adapter.pushProduct(connection, {
+            externalId: row.external_id,
+            name: row.name,
+            sku: row.sku,
+            description: row.description,
+            priceMin: row.price_min,
+            images: parseGallery(row.images),
+          });
+          result.pushed += 1;
+          await supabase
+            .from("products")
+            .update({ synced_at: new Date().toISOString() })
+            .eq("id", row.id);
+        } catch (error) {
+          result.failed += 1;
+          console.error("[catalog-sync] push produit", error);
+        }
       }
     }
 
@@ -273,13 +312,25 @@ export async function syncExternalProduct({
 
   const connection = resolveConnection(row);
 
+  const { data: current } = await supabase
+    .from("products")
+    .select("updated_at, synced_at, sync_lock")
+    .eq("connection_id", connection.id)
+    .eq("external_id", externalId)
+    .maybeSingle();
+
   if (deleted) {
+    if (current?.sync_lock) return { ok: true as const, action: "skipped" as const };
     await supabase
       .from("products")
       .update({ is_active: false, archived_by_sync: true, updated_at: new Date().toISOString() })
       .eq("connection_id", connection.id)
       .eq("external_id", externalId);
     return { ok: true as const, action: "archived" as const };
+  }
+
+  if (!connection.settings.pullFromStore || shouldSkipOverwrite(current ?? undefined, connection.settings)) {
+    return { ok: true as const, action: "skipped" as const };
   }
 
   const configuratorId = await resolveConfiguratorId(supabase, connection);

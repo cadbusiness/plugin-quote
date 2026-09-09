@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { ProductHtml } from "@/components/catalog/product-html";
 import { formatPrice } from "@/lib/format";
 import { groupProductsByCategory } from "@/lib/catalog/group";
 import { quoteLineCount } from "@/lib/funnels/kind";
@@ -126,7 +127,7 @@ export function CatalogBrowse({
                     <div className="mb-3 h-36 rounded-lg bg-slate-100" />
                   )}
                   <p className="font-medium text-slate-900">{item.name}</p>
-                  <p className="mt-1 text-sm font-medium text-slate-700">{formatPrice(item.priceMin, item.priceMax)}</p>
+                  <p className="mt-1 text-sm font-medium text-slate-700">{formatPrice(item.priceMin, item.priceMax, item.currency)}</p>
                   {inQuote ? <p className="mt-2 text-xs font-medium text-amber-700">Dans le devis</p> : null}
                 </button>
               );
@@ -140,36 +141,14 @@ export function CatalogBrowse({
       {view.name === "product" && product ? (
         <article className="rounded-xl border border-slate-200 bg-white p-5">
           <div className="grid gap-6 lg:grid-cols-[minmax(0,18rem)_1fr]">
-            <div>
-              {product.imageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={product.imageUrl}
-                  alt={product.name}
-                  className="h-56 w-full rounded-lg object-cover ring-1 ring-slate-200"
-                />
-              ) : (
-                <div className="h-56 rounded-lg bg-slate-100" />
-              )}
-              {product.images.length > 1 ? (
-                <div className="mt-3 flex gap-2 overflow-x-auto">
-                  {product.images.slice(0, 6).map((image) => (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      key={image.src}
-                      src={image.src}
-                      alt={image.alt ?? ""}
-                      className="h-14 w-14 shrink-0 rounded-md object-cover ring-1 ring-slate-200"
-                    />
-                  ))}
-                </div>
-              ) : null}
-            </div>
+            <ProductShot product={product} />
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-slate-400">{view.category}</p>
               <h2 className="mt-1 text-2xl font-semibold">{product.name}</h2>
-              <p className="mt-2 text-sm font-medium">{formatPrice(product.priceMin, product.priceMax)}</p>
-              {product.description ? <p className="mt-3 text-sm leading-6 text-slate-600">{product.description}</p> : null}
+              <p className="mt-2 text-sm font-medium">{formatPrice(product.priceMin, product.priceMax, product.currency)}</p>
+              {product.description ? (
+                <ProductHtml html={product.description} className="mt-3" />
+              ) : null}
               {product.options.length ? (
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   {product.options.map((opt) => (
@@ -275,6 +254,38 @@ export function CatalogBrowsePreview({
           <p className="mt-1 text-xs text-slate-500">{formatPrice(product.priceMin, product.priceMax)}</p>
         </div>
       ))}
+    </div>
+  );
+}
+
+function ProductShot({ product }: { product: Product }) {
+  const gallery = product.images.length ? product.images : product.imageUrl ? [{ src: product.imageUrl, alt: null }] : [];
+  const [current, setCurrent] = useState(gallery[0]?.src ?? null);
+  return (
+    <div>
+      {current ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={current} alt={product.name} className="h-56 w-full rounded-lg object-cover ring-1 ring-slate-200" />
+      ) : (
+        <div className="h-56 rounded-lg bg-slate-100" />
+      )}
+      {gallery.length > 1 ? (
+        <div className="mt-3 flex gap-2 overflow-x-auto">
+          {gallery.slice(0, 8).map((image) => (
+            <button
+              key={image.src}
+              type="button"
+              onClick={() => setCurrent(image.src)}
+              className={`shrink-0 overflow-hidden rounded-md ring-1 ${
+                current === image.src ? "ring-[#E85D04]" : "ring-slate-200"
+              }`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={image.src} alt={image.alt ?? ""} className="h-14 w-14 object-cover" />
+            </button>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }

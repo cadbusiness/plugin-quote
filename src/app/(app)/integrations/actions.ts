@@ -34,8 +34,9 @@ async function requireAdmin() {
   return ctx;
 }
 
-function readSettings(formData: FormData): ConnectionSettings {
-  return parseSettings({
+function readSettings(formData: FormData, existing?: ConnectionSettings): ConnectionSettings {
+  const parsed = parseSettings({
+    ...existing,
     importDrafts: formData.get("importDrafts") === "on",
     skipOutOfStock: formData.get("skipOutOfStock") === "on",
     archiveMissing: formData.get("archiveMissing") === "on",
@@ -45,6 +46,19 @@ function readSettings(formData: FormData): ConnectionSettings {
       .map((c) => c.trim())
       .filter(Boolean),
   });
+  return {
+    ...parsed,
+    pullFromStore: formData.has("sync_policy")
+      ? formData.get("pullFromStore") === "on"
+      : (existing?.pullFromStore ?? parsed.pullFromStore),
+    pushToStore: formData.has("sync_policy")
+      ? formData.get("pushToStore") === "on"
+      : (existing?.pushToStore ?? parsed.pushToStore),
+    protectLocalEdits: formData.has("sync_policy")
+      ? formData.get("protectLocalEdits") === "on"
+      : (existing?.protectLocalEdits ?? parsed.protectLocalEdits),
+    storefront: existing?.storefront ?? parsed.storefront,
+  };
 }
 
 export async function connectStore(
@@ -180,9 +194,10 @@ export async function updateConnection(formData: FormData) {
     .eq("id", id)
     .eq("organization_id", ctx.organization.id)
     .maybeSingle();
+  const current = parseSettings(existing?.settings);
   const settings: ConnectionSettings = {
-    ...readSettings(formData),
-    storefront: parseSettings(existing?.settings).storefront,
+    ...readSettings(formData, current),
+    storefront: current.storefront,
   };
   await supabase
     .from("catalog_connections")
@@ -196,6 +211,8 @@ export async function updateConnection(formData: FormData) {
     .eq("organization_id", ctx.organization.id);
   revalidatePath(`/integrations/${id}`);
   revalidatePath("/integrations");
+  revalidatePath("/produits");
+  revalidatePath("/produits/import");
 }
 
 export async function updateStorefront(formData: FormData) {

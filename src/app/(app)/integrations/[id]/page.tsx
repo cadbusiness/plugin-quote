@@ -138,6 +138,17 @@ export default async function ConnectionPage({
           <Check name="importDrafts" defaultChecked={settings.importDrafts} label="Importer les brouillons" />
         </div>
 
+        <input type="hidden" name="sync_policy" value="1" />
+        <div className="grid gap-2 sm:grid-cols-3">
+          <Check name="pullFromStore" defaultChecked={settings.pullFromStore} label="Importer depuis la boutique" />
+          <Check name="protectLocalEdits" defaultChecked={settings.protectLocalEdits} label="Garder nos modifications" />
+          <Check
+            name="pushToStore"
+            defaultChecked={settings.pushToStore}
+            label={provider === "woocommerce" ? "Renvoyer vers WordPress" : "Push Shopify (bientôt)"}
+          />
+        </div>
+
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="text-sm">
             <span className="font-medium text-slate-900">Marge sur les prix (%)</span>

@@ -1,4 +1,5 @@
 import { createHmac } from "node:crypto";
+import { sanitizeProductHtml } from "@/lib/catalog/html";
 import { htmlToText, parsePrice } from "@/lib/integrations/html";
 import { safeEqual } from "@/lib/integrations/secrets";
 import {
@@ -7,6 +8,7 @@ import {
   type NormalizedProduct,
   type ProductImage,
   type ProductVariant,
+  type PushableProduct,
   type ResolvedConnection,
 } from "@/lib/integrations/types";
 import type { ProductOption } from "@/lib/wizard/types";
@@ -75,6 +77,7 @@ async function wooFetch<T>(
   connection: ResolvedConnection,
   path: string,
   params: Record<string, string | number> = {},
+  init: { method?: string; body?: unknown } = {},
 ): Promise<{ data: T; headers: Headers }> {
   const key = connection.credentials.consumer_key;
   const secret = connection.credentials.consumer_secret;
@@ -85,12 +88,14 @@ async function wooFetch<T>(
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, String(v));
 
   const auth = Buffer.from(`${key}:${secret}`).toString("base64");
+  const method = init.method ?? "GET";
 
   for (let attempt = 0; attempt < 3; attempt += 1) {
     // Certains hébergeurs mutualisés suppriment l'en-tête Authorization :
     // au deuxième essai on repasse par les paramètres de requête.
     const target = new URL(url);
     const headers: Record<string, string> = { Accept: "application/json" };
+    if (init.body != null) headers["Content-Type"] = "application/json";
     if (attempt === 0) {
       headers.Authorization = `Basic ${auth}`;
     } else {
@@ -100,7 +105,12 @@ async function wooFetch<T>(
 
     let response: Response;
     try {
-      response = await fetch(target, { headers, signal: AbortSignal.timeout(TIMEOUT_MS) });
+      response = await fetch(target, {
+        method,
+        headers,
+        body: init.body != null ? JSON.stringify(init.body) : undefined,
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+      });
     } catch (error) {
       if (attempt === 2) {
         const reason = error instanceof Error ? error.message : "inconnue";
@@ -226,7 +236,11 @@ function normalizeProduct(
   const priceMax = variantPrices.length ? Math.max(...variantPrices) : base;
 
   const description =
-    htmlToText(product.description) ?? htmlToText(product.short_description) ?? null;
+    sanitizeProductHtml(product.description || "") ||
+    sanitizeProductHtml(product.short_description || "") ||
+    htmlToText(product.description) ||
+    htmlToText(product.short_description) ||
+    null;
 
   return {
     externalId: String(product.id),
@@ -337,4 +351,24 @@ export const wooAdapter: CatalogAdapter = {
       return null;
     }
   },
+
+  async pushProduct(connection, product) {
+    await pushWooProduct(connection, product);
+  },
 };
+
+async function pushWooProduct(connection: ResolvedConnection, product: PushableProduct) {
+  const markup = 1 + connection.settings.markupPercent / 100;
+  const price =
+    product.priceMin == null ? undefined : String(Math.round((product.priceMin / markup) * 100) / 100);
+  await wooFetch(connection, `/products/${product.externalId}`, {}, {
+    method: "PUT",
+    body: {
+      name: product.name,
+      sku: product.sku ?? "",
+      description: product.description ?? "",
+      ...(price != null ? { regular_price: price } : {}),
+      images: product.images.map((image) => ({ src: image.src, alt: image.alt ?? "" })),
+    },
+  });
+}
