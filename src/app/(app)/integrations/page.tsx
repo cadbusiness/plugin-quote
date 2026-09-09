@@ -7,6 +7,7 @@ import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { SyncButton } from "@/components/integrations/sync-button";
 import { PairingCard } from "@/components/integrations/pairing-card";
 import { formatDate } from "@/lib/format";
+import { wordpressPluginRelease } from "@/lib/integrations/plugin-release";
 import { PROVIDER_LABELS, type CatalogProvider } from "@/lib/integrations/types";
 import { createClient } from "@/lib/supabase/server";
 
@@ -44,6 +45,7 @@ export default async function IntegrationsPage() {
   ]);
 
   const rows = connections ?? [];
+  const pluginVersion = wordpressPluginRelease().version;
 
   return (
     <ListPanel>
@@ -54,7 +56,7 @@ export default async function IntegrationsPage() {
         <ConnectStoreDialog funnels={funnels ?? []} />
       </ListToolbar>
 
-      <PairingCard configuratorId={funnels?.[0]?.id ?? null} />
+      <PairingCard configuratorId={funnels?.[0]?.id ?? null} pluginVersion={pluginVersion} />
 
       {rows.length ? (
         <DataTable headers={["Boutique", "Canal", "Produits", "Dernière sync", "Statut", ""]}>

@@ -27,6 +27,7 @@ export function mapSession(row: Tables<"quote_sessions">): QuoteSession {
       quantities: customization.quantities ?? {},
       options: customization.options ?? {},
       notes: customization.notes,
+      storefrontLines: customization.storefrontLines,
     },
     submittedQuoteId: row.submitted_quote_id,
     contactDraft: (row.contact_draft ?? {}) as QuoteSession["contactDraft"],

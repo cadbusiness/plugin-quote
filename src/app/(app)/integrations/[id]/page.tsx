@@ -5,6 +5,7 @@ import {
   rotateWebhookSecret,
   toggleConnection,
   updateConnection,
+  updateStorefront,
 } from "@/app/(app)/integrations/actions";
 import { Chip, type ChipTone } from "@/components/ui/chip";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
@@ -160,6 +161,93 @@ export default async function ConnectionPage({
         <div className="text-right">
           <button className="rounded-md bg-slate-950 px-3 py-1.5 text-sm text-white">
             Enregistrer les réglages
+          </button>
+        </div>
+      </form>
+
+      <form action={updateStorefront} className="grid gap-4 border-b border-slate-100 px-4 py-6 lg:px-6">
+        <input type="hidden" name="id" value={connection.id} />
+        <div>
+          <p className="text-sm font-medium text-slate-900">Vitrine devis</p>
+          <p className="mt-1 text-sm text-slate-500">
+            Ces réglages sont les mêmes que dans le plugin. WordPress et Shopify les appliquent
+            sur la boutique : masquer les prix, retirer le panier, bouton « Demander un devis ».
+          </p>
+        </div>
+        <div className="grid gap-2 sm:grid-cols-2">
+          <Check name="hidePrices" defaultChecked={settings.storefront.hidePrices} label="Masquer les prix" />
+          <Check name="hideAddToCart" defaultChecked={settings.storefront.hideAddToCart} label="Masquer Ajouter au panier" />
+          <Check name="showOnShop" defaultChecked={settings.storefront.showOnShop} label="Bouton sur la boutique" />
+          <Check name="showOnProduct" defaultChecked={settings.storefront.showOnProduct} label="Bouton sur la fiche produit" />
+          <Check name="showOnCart" defaultChecked={settings.storefront.showOnCart} label="Convertir le panier en devis" />
+          <Check name="showOnCheckout" defaultChecked={settings.storefront.showOnCheckout} label="Bouton au checkout" />
+          <Check name="outOfStockOnly" defaultChecked={settings.storefront.outOfStockOnly} label="Uniquement les ruptures de stock" />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Libellé du bouton</span>
+            <input
+              name="buttonLabel"
+              defaultValue={settings.storefront.buttonLabel}
+              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Qui voit le bouton</span>
+            <select
+              name="audience"
+              defaultValue={settings.storefront.audience}
+              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+            >
+              <option value="all">Tous les visiteurs</option>
+              <option value="logged_in">Clients connectés seulement</option>
+            </select>
+          </label>
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Style</span>
+            <select
+              name="buttonStyle"
+              defaultValue={settings.storefront.buttonStyle}
+              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+            >
+              <option value="button">Bouton</option>
+              <option value="link">Lien texte</option>
+            </select>
+          </label>
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Où l’afficher</span>
+            <select
+              name="scope"
+              defaultValue={settings.storefront.scope}
+              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+            >
+              <option value="all">Tous les produits</option>
+              <option value="include">Seulement les produits / catégories choisis</option>
+              <option value="exclude">Tous sauf la liste d’exclusion</option>
+            </select>
+          </label>
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Couleur du bouton</span>
+            <input
+              name="buttonBg"
+              type="color"
+              defaultValue={settings.storefront.buttonBg}
+              className="mt-1 h-10 w-full rounded-md border border-slate-200 px-2 py-1"
+            />
+          </label>
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Texte du bouton</span>
+            <input
+              name="buttonColor"
+              type="color"
+              defaultValue={settings.storefront.buttonColor}
+              className="mt-1 h-10 w-full rounded-md border border-slate-200 px-2 py-1"
+            />
+          </label>
+        </div>
+        <div className="text-right">
+          <button className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]">
+            Enregistrer la vitrine
           </button>
         </div>
       </form>

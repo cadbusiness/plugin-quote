@@ -21,7 +21,7 @@ npm run dev
 <script src="https://VOTRE_DOMAINE/widget.js"></script>
 ```
 
-WordPress : shortcode `[quotebuilder org="quickly" id="rayonnage"]`, zip dans `extensions/quotebuilder-wp.zip`, servi aussi sur `/quotebuilder-wp.zip`.
+WordPress : plugin dans `extensions/quotebuilder-wp/`. Shortcode `[quotebuilder org="quickly" id="rayonnage"]`. Le zip et la version sont générés au build (`/quotebuilder-wp.zip`, `/api/public/plugin/wordpress`). Les sites qui ont le plugin 2.1+ voient les mises à jour dans Extensions.
 
 ## Catalogue connecté (WooCommerce / Shopify)
 

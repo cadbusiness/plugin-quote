@@ -4,15 +4,16 @@
 
   blocks.registerBlockType("quotebuilder/embed", {
     title: "QuoteBuilder",
-    icon: "feedback",
+    icon: "clipboard",
     category: "widgets",
     attributes: {
-      org: { type: "string", default: "quickly" },
-      id: { type: "string", default: "rayonnage" },
+      org: { type: "string", default: "" },
+      id: { type: "string", default: "" },
       height: { type: "string", default: "720px" },
     },
     edit: function (props) {
       return el("div", { className: "quotebuilder-block-editor" }, [
+        el("p", { key: "hint", className: "components-placeholder__instructions" }, "Laissez vide pour utiliser le funnel appairé."),
         el(TextControl, {
           key: "org",
           label: "Organisation",
@@ -23,7 +24,7 @@
         }),
         el(TextControl, {
           key: "id",
-          label: "Configurateur",
+          label: "Funnel",
           value: props.attributes.id,
           onChange: function (value) {
             props.setAttributes({ id: value });

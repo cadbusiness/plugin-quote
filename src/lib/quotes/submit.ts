@@ -113,16 +113,36 @@ export async function submitQuote(input: {
     event_type: "quotebuilder_submitted",
   });
 
-  const items = (selected?.products ?? []).map((product) => ({
-    organization_id: session.organization_id,
-    quote_id: quote.id,
-    product_id: product.id,
-    name: product.name,
-    quantity: customization.quantities[product.id] ?? 1,
-    options: customization.options[product.id] ?? {},
-    price_min: product.priceMin,
-    price_max: product.priceMax,
-  }));
+  const fromQuantities = products.filter((product) => (customization.quantities[product.id] ?? 0) > 0);
+  const fromSuggestion = selected?.products ?? [];
+  const seen = new Set<string>();
+  const catalogItems = [...fromQuantities, ...fromSuggestion].filter((product) => {
+    if (seen.has(product.id)) return false;
+    seen.add(product.id);
+    return true;
+  });
+  const items = [
+    ...catalogItems.map((product) => ({
+      organization_id: session.organization_id,
+      quote_id: quote.id,
+      product_id: product.id,
+      name: product.name,
+      quantity: customization.quantities[product.id] ?? 1,
+      options: customization.options[product.id] ?? {},
+      price_min: product.priceMin,
+      price_max: product.priceMax,
+    })),
+    ...(customization.storefrontLines ?? []).map((line) => ({
+      organization_id: session.organization_id,
+      quote_id: quote.id,
+      product_id: null as string | null,
+      name: line.variation ? `${line.name} (${line.variation})` : line.name,
+      quantity: line.quantity,
+      options: line.options ?? {},
+      price_min: null as number | null,
+      price_max: null as number | null,
+    })),
+  ];
   if (items.length) {
     await supabase.from("quote_items").insert(items);
   }

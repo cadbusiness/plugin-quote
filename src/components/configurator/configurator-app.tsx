@@ -4,11 +4,14 @@ import { useEffect, useMemo, useState } from "react";
 import { formatPrice } from "@/lib/format";
 import { parseAttribution, type Attribution } from "@/lib/stats/attribution";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
+import { parseStorefrontCart } from "@/lib/integrations/storefront";
+import { applyStorefrontCart, suggestionFromProducts } from "@/lib/wizard/storefront-cart";
 import type {
   Answers,
   ConfiguratorDefinition,
   ContactDraft,
   Customization,
+  Product,
   QuoteSession,
   Suggestion,
   WizardQuestion,
@@ -162,22 +165,39 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
           }).catch(() => null);
         }
         if (cancelled || !next) return;
+        let sessionNext = next;
+        const cart = parseStorefrontCart(new URLSearchParams(window.location.search).get("qb_cart"));
+        if (cart.length) {
+          const applied = applyStorefrontCart(def.products, cart, sessionNext.customization);
+          const customizeIndex = def.steps.findIndex((stepDef) => stepDef.screenType === "customize");
+          const patched = await api<QuoteSession>(`/api/public/sessions/${sessionNext.id}`, {
+            method: "PATCH",
+            token: sessionNext.token,
+            body: JSON.stringify({
+              customization: applied.customization,
+              currentStep: customizeIndex >= 0 ? customizeIndex : sessionNext.currentStep,
+            }),
+          }).catch(() => null);
+          sessionNext = patched ?? { ...sessionNext, customization: applied.customization };
+          const seeded = suggestionFromProducts(applied.matched);
+          if (seeded) setSuggestions([seeded]);
+        }
         localStorage.setItem(
           SESSION_KEY(orgSlug, configuratorSlug),
-          JSON.stringify({ id: next.id, token: next.token }),
+          JSON.stringify({ id: sessionNext.id, token: sessionNext.token }),
         );
-        setSession(next);
-        if (next.contactDraft) {
+        setSession(sessionNext);
+        if (sessionNext.contactDraft) {
           setContact((c) => ({
-            name: next.contactDraft.name || c.name,
-            email: next.contactDraft.email || c.email,
-            phone: next.contactDraft.phone || c.phone,
-            company: next.contactDraft.company || c.company,
+            name: sessionNext.contactDraft.name || c.name,
+            email: sessionNext.contactDraft.email || c.email,
+            phone: sessionNext.contactDraft.phone || c.phone,
+            company: sessionNext.contactDraft.company || c.company,
           }));
         }
-        if (next.submittedQuoteId) setDone({});
+        if (sessionNext.submittedQuoteId) setDone({});
         else {
-          track(next, ANALYTICS_EVENTS.started, 0);
+          track(sessionNext, ANALYTICS_EVENTS.started, 0);
           pushGa(def.organization.gaMeasurementId, ANALYTICS_EVENTS.started, { step: 0 });
         }
       } finally {
@@ -511,6 +531,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
             {step.screenType === "customize" ? (
               <CustomizePanel
                 suggestions={suggestions}
+                catalog={definition.products}
                 selectedId={session.selectedSuggestionId}
                 customization={session.customization}
                 onChange={(customization) => persist({ customization })}
@@ -777,6 +798,7 @@ function SuggestionsPanel({
 
 function CustomizePanel({
   suggestions,
+  catalog,
   selectedId,
   customization,
   onChange,
@@ -784,6 +806,7 @@ function CustomizePanel({
   fileError,
 }: {
   suggestions: Suggestion[];
+  catalog: Product[];
   selectedId: string | null;
   customization: Customization;
   onChange: (c: Customization) => void;
@@ -791,7 +814,12 @@ function CustomizePanel({
   fileError?: string;
 }) {
   const selected = suggestions.find((s) => s.id === selectedId) ?? suggestions[0];
-  const products = selected?.products ?? [];
+  const fromSuggestion = selected?.products ?? [];
+  const fromCart = catalog.filter(
+    (product) => (customization.quantities[product.id] ?? 0) > 0 && !fromSuggestion.some((p) => p.id === product.id),
+  );
+  const products = [...fromSuggestion, ...fromCart];
+  const extraLines = customization.storefrontLines ?? [];
 
   return (
     <div className="mt-8 space-y-6">
@@ -881,6 +909,16 @@ function CustomizePanel({
           </div>
         </div>
       ))}
+      {extraLines.map((line) => (
+        <div key={line.externalId} className="rounded-xl border border-dashed border-slate-200 bg-white p-5">
+          <p className="font-medium">{line.name}</p>
+          {line.variation ? <p className="mt-1 text-sm text-slate-500">{line.variation}</p> : null}
+          <p className="mt-2 text-sm text-slate-500">Quantité {line.quantity}</p>
+        </div>
+      ))}
+      {!products.length && !extraLines.length ? (
+        <p className="text-sm text-slate-500">Aucun produit dans cette demande pour l’instant.</p>
+      ) : null}
       <label className="block text-sm">
         <span className="mb-1.5 block font-medium">Plan (PDF ou image)</span>
         <input
