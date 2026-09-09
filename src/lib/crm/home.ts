@@ -5,7 +5,7 @@ import { loadAbandonSnapshot, type AbandonSnapshot } from "@/lib/crm/abandons";
 import { listQuotes, loadQuoteListExtras } from "@/lib/crm/quotes";
 import { loadSegmentContacts } from "@/lib/segments/resolve";
 import { matchSegment, parseSegmentRules } from "@/lib/segments/match";
-import { loadStatsDashboard, type StatsDashboard } from "@/lib/stats/dashboard";
+import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 
 export const HOME_MODULE_IDS = [
   "quotes",
@@ -122,6 +122,17 @@ export type HomeFunnel = {
   is_active: boolean;
 };
 
+export type HomeStats = {
+  visitors: number;
+  submitted: number;
+  contacted: number;
+  won: number;
+  wonValue: number;
+  pipelineTotal: number;
+  abandonsWithEmail: number;
+  abandonsTotal: number;
+};
+
 export type HomeDashboard = {
   modules: HomeModuleId[];
   quotes: HomeQuote[];
@@ -129,7 +140,7 @@ export type HomeDashboard = {
   statuses: { id: string; label: string; slug: string }[];
   newStatusId?: string;
   abandons: AbandonSnapshot | null;
-  stats: StatsDashboard | null;
+  stats: HomeStats | null;
   campaigns: HomeCampaign[];
   workflows: HomeWorkflow[];
   segments: HomeSegment[];
@@ -138,6 +149,82 @@ export type HomeDashboard = {
   funnels: HomeFunnel[];
   orgSlug: string;
 };
+
+const CONTACTED = new Set(["contacted", "in_progress", "won", "waiting"]);
+
+async function loadHomeStats(
+  supabase: SupabaseClient<Database>,
+  orgId: string,
+): Promise<HomeStats> {
+  const since = new Date();
+  since.setDate(1);
+  since.setHours(0, 0, 0, 0);
+  const iso = since.toISOString();
+
+  const [{ data: quotes }, { data: statuses }, { count: visitors }, { data: sessions }] = await Promise.all([
+    supabase
+      .from("quotes")
+      .select("id, status, status_id")
+      .eq("organization_id", orgId)
+      .gte("created_at", iso),
+    supabase.from("quote_statuses").select("id, slug").eq("organization_id", orgId),
+    supabase
+      .from("analytics_events")
+      .select("id", { count: "exact", head: true })
+      .eq("organization_id", orgId)
+      .eq("event_type", ANALYTICS_EVENTS.pageView)
+      .gte("created_at", iso),
+    supabase
+      .from("quote_sessions")
+      .select("id, contact_draft, submitted_quote_id")
+      .eq("organization_id", orgId)
+      .is("submitted_quote_id", null)
+      .gte("created_at", iso)
+      .limit(200),
+  ]);
+
+  const list = quotes ?? [];
+  const quoteIds = list.map((quote) => quote.id);
+  const { data: items } = quoteIds.length
+    ? await supabase
+        .from("quote_items")
+        .select("quote_id, price_min, price_max, quantity")
+        .in("quote_id", quoteIds)
+    : { data: [] };
+
+  const slugById = new Map((statuses ?? []).map((row) => [row.id, row.slug]));
+  const slugOf = (quote: { status_id: string | null; status: string }) =>
+    (quote.status_id ? slugById.get(quote.status_id) : null) ?? quote.status;
+  const submitted = list.length;
+  const contacted = list.filter((quote) => CONTACTED.has(slugOf(quote))).length;
+  const wonQuotes = list.filter((quote) => slugOf(quote) === "won");
+  const openQuotes = list.filter((quote) => slugOf(quote) !== "won" && slugOf(quote) !== "lost");
+  const valueByQuote = new Map<string, number>();
+  for (const item of items ?? []) {
+    const min = item.price_min ?? 0;
+    const max = item.price_max ?? item.price_min ?? 0;
+    const qty = item.quantity ?? 1;
+    valueByQuote.set(item.quote_id, (valueByQuote.get(item.quote_id) ?? 0) + ((min + max) / 2) * qty);
+  }
+  const wonValue = wonQuotes.reduce((sum, quote) => sum + (valueByQuote.get(quote.id) ?? 0), 0);
+  const pipelineTotal = openQuotes.reduce((sum, quote) => sum + (valueByQuote.get(quote.id) ?? 0), 0);
+  const sessionRows = sessions ?? [];
+  const abandonsWithEmail = sessionRows.filter((session) => {
+    const draft = session.contact_draft;
+    return Boolean(draft && typeof draft === "object" && !Array.isArray(draft) && (draft as { email?: string }).email);
+  }).length;
+
+  return {
+    visitors: visitors ?? sessionRows.length,
+    submitted,
+    contacted,
+    won: wonQuotes.length,
+    wonValue,
+    pipelineTotal,
+    abandonsWithEmail,
+    abandonsTotal: sessionRows.length,
+  };
+}
 
 export async function loadHomeDashboard(
   supabase: SupabaseClient<Database>,
@@ -169,7 +256,7 @@ export async function loadHomeDashboard(
         ? supabase.from("quote_statuses").select("id, label, slug").eq("organization_id", orgId)
         : Promise.resolve({ data: [] as { id: string; label: string; slug: string }[] }),
       need.has("abandons") ? loadAbandonSnapshot(supabase, orgId) : Promise.resolve(null),
-      need.has("stats") ? loadStatsDashboard(supabase, orgId, "month") : Promise.resolve(null),
+      need.has("stats") ? loadHomeStats(supabase, orgId) : Promise.resolve(null),
       need.has("emails")
         ? supabase
             .from("email_campaigns")
@@ -188,7 +275,7 @@ export async function loadHomeDashboard(
             .limit(4)
         : Promise.resolve({ data: [] as { id: string; name: string; status: string; trigger_type: string }[] }),
       need.has("automations")
-        ? supabase.from("workflow_runs").select("workflow_id, status").eq("organization_id", orgId)
+        ? supabase.from("workflow_runs").select("workflow_id, status").eq("organization_id", orgId).limit(400)
         : Promise.resolve({ data: [] as { workflow_id: string; status: string }[] }),
       need.has("segments")
         ? supabase
@@ -228,7 +315,7 @@ export async function loadHomeDashboard(
 
   let segments: HomeSegment[] = [];
   if (need.has("segments") && (segmentsRes.data ?? []).length) {
-    const contacts = await loadSegmentContacts(supabase, orgId);
+    const contacts = await loadSegmentContacts(supabase, orgId, 300);
     segments = (segmentsRes.data ?? []).map((segment) => ({
       id: segment.id,
       name: segment.name,

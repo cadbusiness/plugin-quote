@@ -21,6 +21,7 @@ export function CatalogTabs({
           <Link
             key={tab.id}
             href={tab.href}
+            prefetch
             aria-current={on ? "page" : undefined}
             className={`relative flex shrink-0 items-center gap-1.5 py-2.5 text-sm ${
               on ? "font-medium text-slate-900" : "text-slate-500 hover:text-slate-900"

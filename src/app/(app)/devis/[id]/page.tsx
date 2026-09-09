@@ -4,7 +4,7 @@ import { getOrgContext } from "@/lib/auth/org";
 import { markQuoteViewed } from "@/lib/crm/quotes";
 import { loadQuoteDetail } from "@/lib/crm/quote-detail";
 import { QuoteDetailView } from "@/components/crm/quote-detail";
-import { parseQuoteCompose, parseQuoteTab } from "@/components/crm/quote-tabs";
+import { parseQuoteCompose, parseQuoteTab } from "@/lib/crm/quote-tabs";
 
 export default async function QuoteDetailPage({
   params,

@@ -14,6 +14,7 @@ function asAnswers(value: Json | null): Answers {
 export async function loadSegmentContacts(
   supabase: Client,
   orgId: string,
+  limit = 2000,
 ): Promise<SegmentContact[]> {
   const [{ data: quotes }, { data: statuses }, { data: sends }] = await Promise.all([
     supabase
@@ -23,7 +24,7 @@ export async function loadSegmentContacts(
       )
       .eq("organization_id", orgId)
       .order("created_at", { ascending: false })
-      .limit(2000),
+      .limit(limit),
     supabase.from("quote_statuses").select("id, slug").eq("organization_id", orgId),
     supabase
       .from("email_campaign_sends")

@@ -1,20 +1,11 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { FileDown } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
-import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
-import { loadStatsDashboard, resolveRange, type StatsRange } from "@/lib/stats/dashboard";
+import { ListPanel } from "@/components/ui/list-panel";
+import { loadStatsDashboard, resolveRange } from "@/lib/stats/dashboard";
 import { parseOrgGtm } from "@/lib/funnels/tracking";
-import { parseStatsTab, statsHref, STATS_TABS } from "@/lib/stats/tabs";
-import { StatsView } from "@/components/stats/stats-view";
-import { StatsTrackingPanel } from "@/components/stats/tracking-panel";
-
-const RANGES: { id: StatsRange; label: string }[] = [
-  { id: "day", label: "Aujourd’hui" },
-  { id: "week", label: "7 jours" },
-  { id: "month", label: "30 jours" },
-];
+import { STATS_TABS, resolveVisibleStatsTab } from "@/lib/stats/tabs";
+import { StatsScreen } from "@/components/stats/stats-screen";
 
 export default async function StatsPage({
   searchParams,
@@ -26,8 +17,7 @@ export default async function StatsPage({
   const query = await searchParams;
   const range = resolveRange(query.range);
   const admin = isAdminRole(ctx.role);
-  let tab = parseStatsTab(query.tab);
-  if (tab === "suivi" && !admin) tab = "vue";
+  const tab = resolveVisibleStatsTab(query.tab, admin);
   const supabase = await createClient();
   const funnelId = query.funnel?.trim() || null;
   const stats = await loadStatsDashboard(supabase, ctx.organization.id, range, funnelId);
@@ -38,100 +28,22 @@ export default async function StatsPage({
         ? { href: "/sessions", label: `Relancer ${stats.abandons.withEmail}` }
         : null;
   const tabs = STATS_TABS.filter((item) => !item.admin || admin);
-  const funnelFilter = stats.funnels.length > 1 || funnelId;
+  const funnelFilter = stats.funnels.length > 1 || Boolean(funnelId);
 
   return (
     <ListPanel>
-      <ListToolbar>
-        <div className="mr-auto flex items-center gap-1">
-          {RANGES.map((item) => {
-            const active = item.id === range;
-            return (
-              <Link
-                key={item.id}
-                href={statsHref(tab, item.id, funnelId)}
-                className={`inline-flex items-center rounded-full px-2.5 py-1 text-sm ${
-                  active
-                    ? "bg-orange-50 font-medium text-[#C2410C]"
-                    : "text-slate-600 hover:bg-slate-50"
-                }`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </div>
-        {action ? (
-          <Link href={action.href} className="text-sm font-medium text-[#E85D04] hover:underline">
-            {action.label}
-          </Link>
-        ) : null}
-        <a
-          href={`/stats/export?range=${range}${funnelId ? `&funnel=${funnelId}` : ""}`}
-          className="inline-flex items-center gap-1.5 rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#D45203]"
-        >
-          <FileDown className="h-4 w-4" strokeWidth={2} />
-          Rapport PDF
-        </a>
-      </ListToolbar>
-
-      <nav className="flex items-end gap-6 overflow-x-auto border-b border-slate-200 px-4 lg:px-6">
-        {tabs.map((item) => {
-          const on = item.id === tab;
-          return (
-            <Link
-              key={item.id}
-              href={statsHref(item.id, range, funnelId)}
-              aria-current={on ? "page" : undefined}
-              className={`relative shrink-0 py-2.5 text-sm ${
-                on ? "font-medium text-slate-900" : "text-slate-500 hover:text-slate-900"
-              }`}
-            >
-              {item.label}
-              <span
-                aria-hidden
-                className={`absolute inset-x-0 -bottom-px h-0.5 ${on ? "bg-[#E85D04]" : "bg-transparent"}`}
-              />
-            </Link>
-          );
-        })}
-      </nav>
-
-      {funnelFilter && tab !== "suivi" ? (
-        <div className="flex flex-wrap items-center gap-1.5 border-b border-slate-100 px-4 py-2 lg:px-6">
-          <Link
-            href={statsHref(tab, range)}
-            className={`rounded-full px-2.5 py-1 text-sm ${
-              !funnelId ? "bg-orange-50 font-medium text-[#C2410C]" : "text-slate-600 hover:bg-slate-50"
-            }`}
-          >
-            Tous les funnels
-          </Link>
-          {stats.funnels.map((funnel) => (
-            <Link
-              key={funnel.id}
-              href={statsHref(tab, range, funnel.id)}
-              className={`rounded-full px-2.5 py-1 text-sm ${
-                funnelId === funnel.id
-                  ? "bg-orange-50 font-medium text-[#C2410C]"
-                  : "text-slate-600 hover:bg-slate-50"
-              }`}
-            >
-              {funnel.name}
-            </Link>
-          ))}
-        </div>
-      ) : null}
-
-      {tab === "suivi" ? (
-        <StatsTrackingPanel
-          ga={ctx.organization.ga_measurement_id ?? ""}
-          gtm={parseOrgGtm(ctx.organization.branding)}
-          error={query.error}
-        />
-      ) : (
-        <StatsView stats={stats} tab={tab} />
-      )}
+      <StatsScreen
+        stats={stats}
+        initialTab={tab}
+        range={range}
+        action={action}
+        tabs={tabs}
+        ga={ctx.organization.ga_measurement_id ?? ""}
+        gtm={parseOrgGtm(ctx.organization.branding)}
+        error={query.error}
+        funnelId={funnelId}
+        funnelFilter={funnelFilter}
+      />
     </ListPanel>
   );
 }

@@ -200,10 +200,10 @@ export async function loadQuoteDetail(
     { data: messages },
     { data: funnel },
     { data: steps },
-    { data: questions },
     { data: access },
     { data: siblingRows },
     { data: runs },
+    { data: assigneeRows },
   ] = await Promise.all([
     supabase.from("quote_items").select("*").eq("quote_id", quote.id),
     supabase.from("quote_files").select("*").eq("quote_id", quote.id).order("created_at", { ascending: false }),
@@ -214,7 +214,6 @@ export async function loadQuoteDetail(
     supabase.from("prospect_messages").select("*").eq("quote_id", quote.id).order("sent_at"),
     supabase.from("configurators").select("id, name, slug").eq("id", quote.configurator_id).maybeSingle(),
     supabase.from("wizard_steps").select("id").eq("configurator_id", quote.configurator_id),
-    supabase.from("wizard_questions").select("*").eq("organization_id", orgId).order("sort_order"),
     supabase.from("prospect_access").select("token, expires_at, last_accessed").eq("quote_id", quote.id).maybeSingle(),
     supabase
       .from("quotes")
@@ -230,17 +229,33 @@ export async function loadQuoteDetail(
       .eq("subject_id", quote.id)
       .order("started_at", { ascending: false })
       .then((result) => (result.error ? { data: [] } : result)),
+    supabase.from("quote_assignees").select("user_id, created_at").eq("quote_id", quote.id).order("created_at", {
+      ascending: true,
+    }),
   ]);
 
   const runIds = (runs ?? []).map((run) => run.id);
   const workflowIds = [...new Set((runs ?? []).map((run) => run.workflow_id))];
-  const [{ data: runSteps }, { data: runWorkflows }] = await Promise.all([
+  const stepIdList = (steps ?? []).map((s) => s.id);
+  const productIds = [...new Set((items ?? []).map((item) => item.product_id).filter(Boolean))] as string[];
+  const filePaths = (files ?? []).map((file) => file.storage_path);
+
+  const [{ data: runSteps }, { data: runWorkflows }, { data: questions }, { data: products }, signed] = await Promise.all([
     runIds.length
       ? supabase.from("workflow_run_steps").select("*").in("run_id", runIds).order("started_at")
       : Promise.resolve({ data: [] }),
     workflowIds.length
       ? supabase.from("workflows").select("id, name, trigger_type, definition").in("id", workflowIds)
       : Promise.resolve({ data: [] }),
+    stepIdList.length
+      ? supabase.from("wizard_questions").select("*").in("step_id", stepIdList).order("sort_order")
+      : Promise.resolve({ data: [] }),
+    productIds.length
+      ? supabase.from("products").select("id, image_url, sku").in("id", productIds)
+      : Promise.resolve({ data: [] }),
+    filePaths.length
+      ? supabase.storage.from("quote-uploads").createSignedUrls(filePaths, 3600)
+      : Promise.resolve({ data: [] as { signedUrl: string; path: string }[] }),
   ]);
   const stepsByRun = new Map<string, Tables<"workflow_run_steps">[]>();
   for (const step of runSteps ?? []) {
@@ -249,19 +264,14 @@ export async function loadQuoteDetail(
     stepsByRun.set(step.run_id, list);
   }
   const workflowById = new Map((runWorkflows ?? []).map((row) => [row.id, row]));
-
-  const productIds = [...new Set((items ?? []).map((item) => item.product_id).filter(Boolean))] as string[];
-  const { data: products } = productIds.length
-    ? await supabase.from("products").select("id, image_url, sku").in("id", productIds)
-    : { data: [] };
   const productById = new Map((products ?? []).map((p) => [p.id, p]));
-
-  const filesWithUrls: QuoteFileView[] = await Promise.all(
-    (files ?? []).map(async (file) => {
-      const { data } = await supabase.storage.from("quote-uploads").createSignedUrl(file.storage_path, 3600);
-      return { ...file, url: data?.signedUrl ?? null, when: formatRelative(file.created_at) };
-    }),
-  );
+  const signedRows = signed.data ?? [];
+  const signedByPath = new Map(signedRows.map((row) => [row.path, row.signedUrl]));
+  const filesWithUrls: QuoteFileView[] = (files ?? []).map((file, index) => ({
+    ...file,
+    url: signedByPath.get(file.storage_path) ?? signedRows[index]?.signedUrl ?? null,
+    when: formatRelative(file.created_at),
+  }));
 
   const memberList: QuoteMember[] = (members ?? [])
     .filter((m) => m.user_id)
@@ -274,12 +284,6 @@ export async function loadQuoteDetail(
   const answers = asAnswers(quote.answers);
   const status = (statuses ?? []).find((s) => s.id === quote.status_id);
   const suiviAlive = access && new Date(access.expires_at).getTime() > Date.now();
-  const stepIds = new Set((steps ?? []).map((s) => s.id));
-  const { data: assigneeRows } = await supabase
-    .from("quote_assignees")
-    .select("user_id, created_at")
-    .eq("quote_id", quote.id)
-    .order("created_at", { ascending: true });
   const assigneeIds = (assigneeRows ?? []).map((row) => row.user_id);
   if (quote.assigned_to && !assigneeIds.includes(quote.assigned_to)) assigneeIds.unshift(quote.assigned_to);
   const assignees: QuoteMember[] = assigneeIds.map((userId) => ({
@@ -297,7 +301,7 @@ export async function loadQuoteDetail(
     assignees,
     answers: labelAnswers(
       answers,
-      (questions ?? []).filter((q) => stepIds.has(q.step_id)).map(optionMeta),
+      (questions ?? []).map(optionMeta),
     ),
     scoreReasons: scoreReasons(answers),
     items: (items ?? []).map((item) => {
