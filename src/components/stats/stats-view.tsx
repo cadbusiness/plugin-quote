@@ -4,6 +4,7 @@ import { ClickableRow } from "@/components/ui/clickable-row";
 import { DataTable } from "@/components/ui/list-panel";
 import { Chip } from "@/components/ui/chip";
 import { GaugeBar, RingGauge, type GaugeTone } from "@/components/ui/gauge";
+import { HelpTip, LabelHelp } from "@/components/ui/help-tip";
 import { MonthChart } from "@/components/stats/month-chart";
 import { formatEur, formatEurExact, formatPercent } from "@/lib/format";
 import type {
@@ -46,6 +47,7 @@ function FlowCell({
   fill,
   tone,
   label,
+  help,
   aria,
   last,
 }: {
@@ -54,32 +56,38 @@ function FlowCell({
   fill: number;
   tone: GaugeTone;
   label: string;
+  help: string;
   aria: string;
   last?: boolean;
 }) {
-  const inner = (
+  const body = (
     <>
       <RingGauge value={value} pct={fill} tone={tone} label={aria} />
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
+      <span className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</span>
+    </>
+  );
+  return (
+    <div
+      className={`relative flex items-center gap-3 px-4 py-5 lg:gap-4 lg:px-6 ${
+        last ? "" : "border-b border-slate-200 sm:border-b-0 sm:border-r"
+      }${href ? " hover:bg-orange-50/40" : ""}`}
+    >
+      {href ? (
+        <Link href={href} className="flex min-w-0 flex-1 items-center gap-3 lg:gap-4">
+          {body}
+        </Link>
+      ) : (
+        <div className="flex min-w-0 flex-1 items-center gap-3 lg:gap-4">{body}</div>
+      )}
+      <HelpTip label={label}>{help}</HelpTip>
       {last ? null : (
         <ChevronRight
           className="pointer-events-none absolute top-1/2 right-0 hidden h-5 w-5 -translate-y-1/2 translate-x-1/2 rounded-full bg-white p-0.5 text-slate-300 ring-1 ring-slate-200 sm:block"
           aria-hidden
         />
       )}
-    </>
+    </div>
   );
-  const className = `relative flex items-center gap-3 px-4 py-5 lg:gap-4 lg:px-6 ${
-    last ? "" : "border-b border-slate-200 sm:border-b-0 sm:border-r"
-  }${href ? " hover:bg-orange-50/50" : ""}`;
-  if (href) {
-    return (
-      <Link href={href} className={className}>
-        {inner}
-      </Link>
-    );
-  }
-  return <div className={className}>{inner}</div>;
 }
 
 function ConversionFlow({ pulse }: { pulse: StatsPulse }) {
@@ -91,6 +99,7 @@ function ConversionFlow({ pulse }: { pulse: StatsPulse }) {
         fill={pct(pulse.visitors, base)}
         tone="slate"
         label="Visiteurs"
+        help="Personnes qui ont ouvert le funnel, qu’elles viennent d’une pub, d’un lien ou en direct."
         aria={`${pulse.visitors} visiteurs`}
       />
       <FlowCell
@@ -99,6 +108,7 @@ function ConversionFlow({ pulse }: { pulse: StatsPulse }) {
         fill={pct(pulse.submitted, base)}
         tone="orange"
         label="Devis"
+        help="Demandes envoyées. Un devis, c’est un dossier à rappeler, pas un simple formulaire."
         aria={`${pulse.submitted} devis reçus`}
       />
       <FlowCell
@@ -107,6 +117,7 @@ function ConversionFlow({ pulse }: { pulse: StatsPulse }) {
         fill={pulse.contactRate / 100}
         tone="emerald"
         label="Rappel"
+        help="Part des devis déjà contactés par l’équipe. Plus c’est haut, moins il reste de dossiers en attente."
         aria={`Taux de rappel ${Math.round(pulse.contactRate)}%`}
       />
       <FlowCell
@@ -114,6 +125,7 @@ function ConversionFlow({ pulse }: { pulse: StatsPulse }) {
         fill={pulse.winRate / 100}
         tone="emerald"
         label="Signé"
+        help="Part des devis passés Gagné. C’est le taux de signature, pas le taux de clic."
         aria={`Taux de signature ${Math.round(pulse.winRate)}%`}
         last
       />
@@ -135,9 +147,12 @@ function PipelineStrip({
   const max = Math.max(1, total, ...rows.map((row) => row.value));
   return (
     <section className="border-b border-slate-200">
-      <div className="flex items-baseline justify-between gap-3 border-b border-slate-100 px-4 py-3 lg:px-6">
-        <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Pipeline</p>
-        <p className="text-sm tabular-nums text-slate-900">
+      <div className="flex items-start justify-between gap-3 border-b border-slate-100 px-4 py-3 lg:px-6">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Pipeline</p>
+          <p className="mt-0.5 text-sm text-slate-500">Valeur des devis selon l’étape.</p>
+        </div>
+        <p className="shrink-0 text-sm tabular-nums text-slate-900">
           {formatEur(total)}
           {wonCount ? <span className="text-slate-500"> · {formatEur(wonValue)} signés</span> : null}
         </p>
@@ -174,6 +189,7 @@ function SourceGauges({ rows }: { rows: SourceRow[] }) {
     <section className="border-b border-slate-200">
       <div className="border-b border-slate-100 px-4 py-3 lg:px-6">
         <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Sources</p>
+        <p className="mt-0.5 text-sm text-slate-500">D’où arrivent les visiteurs : pub, recherche, lien direct, réseaux.</p>
       </div>
       {rows.length === 0 ? (
         <p className="px-4 py-8 text-sm text-slate-500 lg:px-6">Aucune source pour l’instant.</p>
@@ -245,7 +261,11 @@ export function StatsView({
             tone="sky"
             label={`${formatEur(pulse.pipeline)} en pipeline`}
           />
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">CA en cours</p>
+          <p className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-wide text-slate-500">
+            <LabelHelp help="Somme des devis encore ouverts, au milieu de leur fourchette de prix. Ce n’est pas du chiffre d’affaires signé.">
+              CA en cours
+            </LabelHelp>
+          </p>
         </div>
         <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-4 sm:border-b-0 sm:border-r lg:px-6">
           <RingGauge
@@ -256,25 +276,31 @@ export function StatsView({
             tone={pulse.delayHours != null && pulse.delayHours > 4 ? "amber" : "slate"}
             label={`Délai de réponse ${pulse.delayLabel}`}
           />
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Délai</p>
+          <p className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-wide text-slate-500">
+            <LabelHelp help="Temps moyen entre la demande et le premier rappel. Au-delà de 4 h, les dossiers refroidissent.">
+              Délai
+            </LabelHelp>
+          </p>
         </div>
-        <Link
-          href="/sessions"
-          className="flex items-center gap-3 px-4 py-4 hover:bg-orange-50/50 lg:px-6"
-        >
-          <RingGauge
-            value={abandons.total}
-            pct={pct(abandons.total, Math.max(pulse.visitors, abandons.total, 1))}
-            tone={abandons.total ? "amber" : "slate"}
-            label={`${abandons.total} abandons`}
-          />
-          <div>
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Abandons</p>
-            {abandons.total > 0 ? (
-              <p className="mt-0.5 text-sm font-medium text-[#E85D04]">Relancer</p>
-            ) : null}
-          </div>
-        </Link>
+        <div className="flex items-center gap-3 px-4 py-4 lg:px-6">
+          <Link href="/sessions" className="-mx-1 flex min-w-0 flex-1 items-center gap-3 rounded-md px-1 hover:bg-orange-50/50">
+            <RingGauge
+              value={abandons.total}
+              pct={pct(abandons.total, Math.max(pulse.visitors, abandons.total, 1))}
+              tone={abandons.total ? "amber" : "slate"}
+              label={`${abandons.total} abandons`}
+            />
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Abandons</p>
+              {abandons.total > 0 ? (
+                <p className="mt-0.5 text-sm font-medium text-[#E85D04]">Relancer</p>
+              ) : null}
+            </div>
+          </Link>
+          <HelpTip label="Abandons">
+            Visiteurs partis sans envoyer la demande. Ceux qui ont laissé un e-mail peuvent être relancés.
+          </HelpTip>
+        </div>
       </div>
 
       {stats.ads.connected || stats.campaigns.some((row) => row.source === "Google Ads") ? (
@@ -300,16 +326,31 @@ function AdsLoopStrip({ stats }: { stats: StatsDashboard }) {
   const costWon = won ? spend / won : null;
   return (
     <section className="grid grid-cols-2 border-b border-slate-200 lg:grid-cols-4">
-      <LoopCell label="Dépense Ads" value={spend ? formatEur(spend) : "—"} hint="période" />
-      <LoopCell label="Devis Ads" value={String(quotes)} hint="attribués Google Ads" />
       <LoopCell
-        label="Coût / devis"
-        value={costQuote != null ? formatEurExact(costQuote) : "—"}
-        hint={quotes ? `${quotes} devis` : "connectez Ads pour le spend"}
+        label="Dépensé"
+        help="Ce que Google Ads vous a facturé sur la période. Visible une fois le compte branché."
+        value={spend ? formatEur(spend) : null}
+        empty="Compte Ads"
+        hint="période choisie"
       />
       <LoopCell
-        label="Coût / client"
-        value={costWon != null ? formatEurExact(costWon) : "—"}
+        label="Devis des pubs"
+        help="Demandes dont le visiteur est arrivé par une pub Google."
+        value={String(quotes)}
+        hint="issus d’une pub"
+      />
+      <LoopCell
+        label="Un devis coûte"
+        help="Budget ads divisé par les devis reçus. C’est le prix d’un dossier à rappeler."
+        value={costQuote != null ? formatEurExact(costQuote) : null}
+        empty={quotes ? "Coût inconnu" : "Dès un devis"}
+        hint={quotes ? `${quotes} devis` : "en attente"}
+      />
+      <LoopCell
+        label="Un client coûte"
+        help="Budget ads divisé par les dossiers Gagné. Le vrai coût d’acquisition."
+        value={costWon != null ? formatEurExact(costWon) : null}
+        empty={won ? "Coût inconnu" : "Quand c’est signé"}
         hint={won ? `${won} gagnés` : "statut Gagné"}
         last
       />
@@ -319,19 +360,29 @@ function AdsLoopStrip({ stats }: { stats: StatsDashboard }) {
 
 function LoopCell({
   label,
+  help,
   value,
+  empty,
   hint,
   last,
 }: {
   label: string;
-  value: string;
+  help: string;
+  value: string | null;
+  empty?: string;
   hint: string;
   last?: boolean;
 }) {
   return (
     <div className={`px-4 py-4 lg:px-6 ${last ? "" : "border-b border-slate-200 lg:border-b-0 lg:border-r"}`}>
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
-      <p className="mt-1 text-2xl font-semibold tabular-nums text-slate-900">{value}</p>
+      <p className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-wide text-slate-500">
+        <LabelHelp help={help}>{label}</LabelHelp>
+      </p>
+      {value ? (
+        <p className="mt-1 text-2xl font-semibold tabular-nums text-slate-900">{value}</p>
+      ) : (
+        <p className="mt-1 text-lg font-medium text-slate-400">{empty ?? "Pas encore"}</p>
+      )}
       <p className="mt-0.5 text-xs text-slate-500">{hint}</p>
     </div>
   );
@@ -343,6 +394,7 @@ function FunnelBreakdown({ rows }: { rows: FunnelStatsRow[] }) {
     <section>
       <div className="border-b border-slate-100 px-4 py-3 lg:px-6">
         <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Par funnel</p>
+        <p className="mt-0.5 text-sm text-slate-500">Chaque funnel a son volume, sa conversion et ses dossiers gagnés.</p>
       </div>
       {rows.length === 0 ? (
         <p className="px-4 py-8 text-sm text-slate-500 lg:px-6">Aucun funnel pour l’instant.</p>
@@ -380,19 +432,24 @@ function CampaignBreakdown({
 }) {
   return (
     <section>
-      <div className="flex items-baseline justify-between gap-3 border-b border-slate-100 px-4 py-3 lg:px-6">
-        <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Campagnes</p>
-        <Link href="/acquisition" className="text-sm font-medium text-[#E85D04] hover:underline">
-          {adsConnected ? "Ads" : "Connecter Google Ads"}
+      <div className="flex items-start justify-between gap-3 border-b border-slate-100 px-4 py-3 lg:px-6">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Campagnes</p>
+          <p className="mt-0.5 text-sm text-slate-500">
+            D’où viennent les devis, et ce qu’ils coûtent si Google Ads est branché.
+          </p>
+        </div>
+        <Link href="/acquisition" className="shrink-0 text-sm font-medium text-[#E85D04] hover:underline">
+          {adsConnected ? "Ouvrir Ads" : "Connecter Google Ads"}
         </Link>
       </div>
       {rows.length === 0 ? (
         <p className="px-4 py-8 text-sm text-slate-500 lg:px-6">
-          Aucune campagne UTM pour l’instant. Utilisez les URL générées dans Ads.
+          Aucune campagne pour l’instant. Dans Ads, copiez l’URL du funnel : dès le premier clic, la ligne apparaît ici.
         </p>
       ) : (
         <DataTable
-          headers={["Campagne", "Source", "Funnel", "Devis", "Gagnés", "Coût / devis", "Coût / client"]}
+          headers={["Campagne", "Source", "Funnel", "Devis", "Gagnés", "Un devis", "Un client"]}
         >
           {rows.map((row) => (
             <tr key={`${row.campaign}-${row.source}-${row.funnelId ?? ""}`} className="border-b border-slate-100">

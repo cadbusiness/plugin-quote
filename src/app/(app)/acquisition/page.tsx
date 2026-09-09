@@ -52,18 +52,35 @@ export default async function AcquisitionPage({
     };
   });
   const pendingCustomers = pendingFromSettings(row?.settings);
+  const configured = googleAdsConfigured();
 
   return (
     <ListPanel>
       <ListToolbar>
         <p className="mr-auto text-sm text-slate-500">
-          Google Ads → funnel → devis → gagné. Pas un gestionnaire de campagnes.
+          Combien coûte un devis venu de Google Ads, et combien coûte un client une fois le dossier signé.
         </p>
+        {admin && configured ? (
+          <a
+            href="/api/ads/google/start"
+            className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#D45203]"
+          >
+            {row ? "Reconnecter Google Ads" : "Connecter Google Ads"}
+          </a>
+        ) : null}
+        {admin && !configured ? (
+          <a
+            href="mailto:hello@quotebuilder.app?subject=Activer%20Google%20Ads"
+            className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#D45203]"
+          >
+            Demander l’activation
+          </a>
+        ) : null}
       </ListToolbar>
       <AcquisitionView
         stats={stats}
         connection={row ? mapAdsConnection(row) : null}
-        configured={googleAdsConfigured()}
+        configured={configured}
         packs={allKeywordPacks()}
         landingUrls={landingUrls}
         pendingCustomers={pendingCustomers}

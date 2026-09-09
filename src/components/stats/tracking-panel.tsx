@@ -24,14 +24,10 @@ export function StatsTrackingPanel({
   return (
     <>
       <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-4 py-3 lg:px-6">
-        <Chip tone={ga ? "emerald" : "slate"}>{ga ? `GA4 ${ga}` : "GA4 off"}</Chip>
-        <Chip tone={gtm ? "violet" : "slate"}>{gtm ? `GTM ${gtm}` : "GTM off"}</Chip>
+        <Chip tone={ga ? "emerald" : "slate"}>{ga ? "Analytics branché" : "Analytics non branché"}</Chip>
+        <Chip tone={gtm ? "violet" : "slate"}>{gtm ? "Tag Manager branché" : "Tag Manager non branché"}</Chip>
         <p className="text-sm text-slate-500">
-          Les jauges QuoteBuilder marchent sans Google.{" "}
-          <a href="/acquisition" className="font-medium text-[#E85D04] hover:underline">
-            Ads
-          </a>{" "}
-          pour le coût par devis. GA4 / GTM ici pour le remarketing.
+          Les chiffres QuoteBuilder marchent tout seuls. Analytics et Tag Manager servent au remarketing Google, pas au tableau de bord.
         </p>
       </div>
 
