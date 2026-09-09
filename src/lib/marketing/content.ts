@@ -307,18 +307,40 @@ export const PRICING_MATRIX: PricingMatrixSection[] = [
   },
 ];
 
-/** @deprecated Prefer PRICING_MATRIX. */
-export const PRICING_COMPARE_ROWS = PRICING_MATRIX.flatMap((section) =>
-  section.rows.map((row) => ({
-    label: row.label,
-    values: Object.fromEntries(
-      Object.entries(row.values).map(([k, v]) => [
-        k,
-        typeof v === "boolean" ? (v ? "Oui" : "Non") : v,
-      ]),
-    ) as Record<PlanId, string>,
-  })),
-);
+/** Tableau compact sous les cartes (Starter / Pro / Agency). */
+export const PRICING_COMPARE_ROWS: {
+  label: string;
+  values: Record<PlanId, string>;
+}[] = [
+  {
+    label: "Funnels",
+    values: { free: "1", starter: "3", pro: "Illimités", agency: "Illimités" },
+  },
+  {
+    label: "Soumissions",
+    values: { free: "10 total", starter: "Illimitées", pro: "Illimitées", agency: "Illimitées" },
+  },
+  {
+    label: "Chat IA",
+    values: { free: "Non", starter: "Oui", pro: "Oui", agency: "Oui" },
+  },
+  {
+    label: "Catalogue",
+    values: { free: "Non", starter: "50", pro: "Illimité", agency: "Illimité" },
+  },
+  {
+    label: "Autopilote",
+    values: { free: "Non", starter: "T+3j", pro: "J+30", agency: "J+30" },
+  },
+  {
+    label: "Équipe",
+    values: { free: "1", starter: "1", pro: "5", agency: "Illimitée" },
+  },
+  {
+    label: "Intégrations",
+    values: { free: "Widget", starter: "Woo", pro: "Woo + Shopify", agency: "Stack + white-label" },
+  },
+];
 
 export const FREE_TRIAL = {
   href: "/signup?plan=free",

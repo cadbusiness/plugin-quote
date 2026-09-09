@@ -6,27 +6,26 @@ import { FAQ } from "@/lib/marketing/content";
 export const metadata: Metadata = {
   title: "Tarifs · QuoteBuilder",
   description:
-    "Comparez Free, Starter, Pro et Agency. Matrice complète, mensuel ou annuel, inscription directe.",
+    "Starter 49 €, Pro 99 €, Agency 199 €. Free en option sans carte. Annuel avec 2 mois offerts.",
 };
 
 export default function TarifsPage() {
   return (
     <>
-      <section className="px-6 pb-6 pt-10 sm:pb-8 sm:pt-12">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C45C26]">
-            Tarifs
-          </p>
-          <h1 className="mt-2 text-[1.65rem] font-semibold tracking-tight sm:text-[2.2rem] sm:leading-tight">
-            Starter, Pro, Agency.
+      <section className="px-6 pb-4 pt-10 sm:pt-14">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#C45C26]">Tarifs</p>
+          <h1 className="mt-2 text-[1.7rem] font-semibold tracking-tight sm:text-[2.35rem] sm:leading-tight">
+            Des plans clairs.
+            <span className="block text-[#1A1510]/45">Free en option, en bas.</span>
           </h1>
-          <p className="mx-auto mt-3 max-w-xl text-[15px] leading-6 text-[#1A1510]/55">
-            Comparez les plans payants. Free reste disponible en dessous, sans carte.
+          <p className="mx-auto mt-3 max-w-lg text-[15px] leading-6 text-[#1A1510]/60">
+            Starter, Pro, Agency. Comparez. Le gratuit reste dispo sans prendre toute la page.
           </p>
         </div>
       </section>
 
-      <section className="px-4 pb-14 sm:px-6 sm:pb-20">
+      <section className="px-6 pb-12 sm:pb-16">
         <PricingPlans />
       </section>
 
@@ -49,8 +48,8 @@ export default function TarifsPage() {
       </section>
 
       <MarketingCta
-        title="Commencez free. Upgrade quand c’est le moment."
-        text="Sans carte. Starter, Pro ou Agency en un clic."
+        title="Choisissez votre plan."
+        text="Starter, Pro ou Agency. Free sans carte si vous voulez juste voir."
       />
     </>
   );
