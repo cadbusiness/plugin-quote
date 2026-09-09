@@ -367,7 +367,8 @@ export type FeatureSlug =
   | "espace-prospect"
   | "stats"
   | "equipe"
-  | "integrations";
+  | "integrations"
+  | "ads";
 
 export type Feature = {
   slug: FeatureSlug;
@@ -555,11 +556,11 @@ export const FEATURES: Feature[] = [
     menuBlurb: "Volume, conversion, délai, CA potentiel, UTM.",
     eyebrow: "Organisation",
     headline: "Les chiffres qui font agir.",
-    lead: "Tunnel visiteurs → gagné, sources UTM, pipeline financier, abandons à un clic. Pas un dashboard vanity.",
+    lead: "Tunnel visiteurs → gagné, **par funnel**, campagnes UTM, coût par devis et par client. Pas un dashboard vanity.",
     outcomes: [
-      "Voir où ça fuit",
+      "Voir où ça fuit, funnel par funnel",
       "Relancer les abandons utiles",
-      "Piloter le CA potentiel",
+      "Piloter le CA potentiel et le ROI Ads",
     ],
     capabilities: [
       {
@@ -567,19 +568,52 @@ export const FEATURES: Feature[] = [
         text: "Visiteurs, démarrages, soumissions, gagnés. KPI flush.",
       },
       {
+        title: "Par funnel",
+        text: "Chaque configurateur a son tunnel, sa conversion, ses campagnes.",
+      },
+      {
         title: "Attribution",
-        text: "UTM Google Ads, organique, etc. Captés session + widget.",
+        text: "UTM Google Ads, organique, etc. Captés session + widget. gclid conservé.",
       },
       {
         title: "Pipeline €",
         text: "CA potentiel, délais, courbe 6 mois, export PDF agence.",
       },
-      {
-        title: "Abandons",
-        text: "Depuis les stats, CTA direct vers les sessions relançables.",
-      },
     ],
     proof: "La stats sert à traiter. Pas à décorer.",
+  },
+  {
+    slug: "ads",
+    title: "Google Ads",
+    menuLabel: "Google Ads",
+    menuBlurb: "Connecter Ads, mesurer le ROI devis → gagné.",
+    eyebrow: "Acquisition",
+    headline: "La boucle fermée. Pas un gestionnaire de campagnes.",
+    lead: "Connectez Google Ads. QuoteBuilder envoie la conversion à chaque devis, puis au gagné. Vous voyez le coût par devis et par client. Les campagnes, vous les créez dans Google Ads, avec nos mots-clés.",
+    outcomes: [
+      "Savoir quelle campagne ramène des devis",
+      "Coût par devis et coût par client",
+      "Mots-clés prêts à coller, par secteur",
+    ],
+    capabilities: [
+      {
+        title: "Connexion OAuth",
+        text: "Un compte Google Ads. Conversions devis et affaire gagnée créées automatiquement.",
+      },
+      {
+        title: "ROI",
+        text: "Campagne X : Y devis, Z gagnés, coût par devis, coût par client.",
+      },
+      {
+        title: "Templates",
+        text: "Mots-clés rayonnage, cuisine, menuiserie… à coller dans Google Ads.",
+      },
+      {
+        title: "Guide",
+        text: "URL UTM du funnel, six étapes. Pas d’enchères, pas de budgets gérés ici.",
+      },
+    ],
+    proof: "On mesure le ROI complet. On ne reconstruit pas Google Ads.",
   },
   {
     slug: "equipe",
@@ -664,7 +698,7 @@ const MENU_GROUP_DEFS: {
     id: "acquisition",
     label: "Acquisition",
     blurb: "Faire entrer un vrai devis, pas un message vague.",
-    slugs: ["funnel", "catalogue"],
+    slugs: ["funnel", "catalogue", "ads"],
   },
   {
     id: "pilotage",

@@ -27,7 +27,11 @@ export function StatsTrackingPanel({
         <Chip tone={ga ? "emerald" : "slate"}>{ga ? `GA4 ${ga}` : "GA4 off"}</Chip>
         <Chip tone={gtm ? "violet" : "slate"}>{gtm ? `GTM ${gtm}` : "GTM off"}</Chip>
         <p className="text-sm text-slate-500">
-          Les jauges QuoteBuilder marchent sans Google. Branchez Ads / Analytics ici pour le remarketing.
+          Les jauges QuoteBuilder marchent sans Google.{" "}
+          <a href="/acquisition" className="font-medium text-[#E85D04] hover:underline">
+            Ads
+          </a>{" "}
+          pour le coût par devis. GA4 / GTM ici pour le remarketing.
         </p>
       </div>
 

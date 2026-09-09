@@ -16,6 +16,7 @@ const ROWS: { href: string; label: string; hint: string; admin?: boolean }[] = [
   { href: "/templates", label: "Emails", hint: "Templates prospect et commercial", admin: true },
   { href: "/equipe", label: "Équipe", hint: "Membres et rôles", admin: true },
   { href: "/stats?tab=suivi", label: "Suivi Google", hint: "Analytics 4 et Tag Manager", admin: true },
+  { href: "/acquisition", label: "Google Ads", hint: "Conversions, ROI campagnes, mots-clés", admin: true },
 ];
 
 export default async function SettingsPage() {

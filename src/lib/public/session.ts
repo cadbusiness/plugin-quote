@@ -86,6 +86,7 @@ export async function createSession(
       utm_medium: attribution?.utmMedium ?? null,
       utm_campaign: attribution?.utmCampaign ?? null,
       referrer: attribution?.referrer ?? null,
+      gclid: attribution?.gclid ?? null,
     },
   });
   return mapSession(data);
@@ -138,7 +139,7 @@ export async function updateSession(
   if (patch.attribution) {
     const { data: existing } = await supabase
       .from("quote_sessions")
-      .select("utm_source, visitor_id")
+      .select("utm_source, visitor_id, gclid")
       .eq("id", id)
       .eq("token", token)
       .maybeSingle();
@@ -154,6 +155,12 @@ export async function updateSession(
     }
     if (existing && !existing.visitor_id && patch.attribution.visitorId) {
       update.visitor_id = patch.attribution.visitorId;
+    }
+    if (existing && !existing.gclid && patch.attribution.gclid) {
+      const cols = attributionColumns(patch.attribution);
+      update.gclid = cols.gclid;
+      update.gbraid = cols.gbraid;
+      update.wbraid = cols.wbraid;
     }
   }
 
@@ -186,4 +193,7 @@ type DatabaseUpdate = {
   utm_term?: string | null;
   referrer?: string | null;
   landing_path?: string | null;
+  gclid?: string | null;
+  gbraid?: string | null;
+  wbraid?: string | null;
 };

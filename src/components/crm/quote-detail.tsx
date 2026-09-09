@@ -404,6 +404,7 @@ function ClientTab({
           <Fact label="Campagne">{quote.utm_campaign || "-"}</Fact>
           <Fact label="Contenu">{quote.utm_content || "-"}</Fact>
           <Fact label="Terme">{quote.utm_term || "-"}</Fact>
+          <Fact label="gclid">{quote.gclid || quote.gbraid || quote.wbraid || "-"}</Fact>
           <Fact label="Référent">{quote.referrer ? hostOf(quote.referrer) ?? quote.referrer : "-"}</Fact>
         </dl>
       </section>

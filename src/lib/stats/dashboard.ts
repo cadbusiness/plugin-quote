@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/db/database.types";
 import { classifySource } from "@/lib/stats/attribution";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
+import { campaignKey, campaignsMatch, closedLoop, microsToEur } from "@/lib/ads/roi";
 
 export type StatsRange = "day" | "week" | "month";
 
@@ -71,12 +72,60 @@ export type StatsPulse = {
   delayHours: number | null;
 };
 
+export type FunnelStatsRow = {
+  id: string;
+  name: string;
+  slug: string;
+  sector: string;
+  visitors: number;
+  quotes: number;
+  conversion: number | null;
+  contacted: number;
+  won: number;
+  pipeline: number;
+  wonValue: number;
+  costPerQuote: number | null;
+  costPerWon: number | null;
+  spend: number;
+};
+
+export type CampaignStatsRow = {
+  campaign: string;
+  source: string;
+  funnelId: string | null;
+  funnelName: string | null;
+  visitors: number;
+  quotes: number;
+  conversion: number | null;
+  contacted: number;
+  won: number;
+  pipeline: number;
+  wonValue: number;
+  spend: number;
+  costPerQuote: number | null;
+  costPerWon: number | null;
+};
+
+export type AdsSnapshot = {
+  connected: boolean;
+  customerName: string | null;
+  status: string | null;
+  lastSyncAt: string | null;
+  spend: number;
+  clicks: number;
+  impressions: number;
+};
+
 export type StatsDashboard = {
   range: StatsRange;
+  funnelId: string | null;
   story: StatsStory;
   kpis: Kpi[];
   pulse: StatsPulse;
   funnel: FunnelStep[];
+  funnels: FunnelStatsRow[];
+  campaigns: CampaignStatsRow[];
+  ads: AdsSnapshot;
   sources: SourceRow[];
   pipeline: PipelineRow[];
   pipelineTotal: number;
@@ -247,12 +296,14 @@ export async function loadStatsDashboard(
   supabase: SupabaseClient<Database>,
   orgId: string,
   range: StatsRange,
+  funnelId?: string | null,
 ): Promise<StatsDashboard> {
   const days = RANGE_DAYS[range];
   const now = new Date();
   const periodStart = new Date(now.getTime() - days * 86400000);
   const prevStart = new Date(periodStart.getTime() - days * 86400000);
   const sixMonths = startOfDay(new Date(now.getFullYear(), now.getMonth() - 5, 1));
+  const scopedFunnel = funnelId?.trim() || null;
 
   const [
     { data: quotes },
@@ -263,24 +314,27 @@ export async function loadStatsDashboard(
     { data: steps },
     { data: products },
     { data: activities },
+    { data: configurators },
+    { data: adsConnection },
+    { data: adsDays },
   ] = await Promise.all([
     supabase
       .from("quotes")
       .select(
-        "id, status_id, status, score_label, created_at, session_id, utm_source, utm_medium, referrer",
+        "id, status_id, status, score_label, created_at, session_id, configurator_id, utm_source, utm_medium, utm_campaign, utm_term, referrer, gclid, gbraid, wbraid",
       )
       .eq("organization_id", orgId)
       .gte("created_at", sixMonths.toISOString()),
     supabase.from("quote_statuses").select("id, label, slug, position").eq("organization_id", orgId),
     supabase
       .from("analytics_events")
-      .select("event_type, session_id, visitor_id, created_at, payload")
+      .select("event_type, session_id, visitor_id, created_at, payload, configurator_id")
       .eq("organization_id", orgId)
       .gte("created_at", sixMonths.toISOString()),
     supabase
       .from("quote_sessions")
       .select(
-        "id, created_at, current_step, contact_draft, submitted_quote_id, answers, chat_messages, utm_source, utm_medium, referrer, last_activity_at, configurator_id, visitor_id",
+        "id, created_at, current_step, contact_draft, submitted_quote_id, answers, chat_messages, utm_source, utm_medium, utm_campaign, referrer, last_activity_at, configurator_id, visitor_id, gclid, gbraid, wbraid",
       )
       .eq("organization_id", orgId)
       .gte("created_at", sixMonths.toISOString()),
@@ -290,7 +344,7 @@ export async function loadStatsDashboard(
       .eq("organization_id", orgId),
     supabase
       .from("wizard_steps")
-      .select("configurator_id, screen_type, sort_order")
+      .select("configurator_id, screen_type, sort_order, title")
       .eq("organization_id", orgId),
     supabase
       .from("products")
@@ -303,6 +357,22 @@ export async function loadStatsDashboard(
       .eq("organization_id", orgId)
       .eq("type", "status_changed")
       .gte("created_at", sixMonths.toISOString()),
+    supabase
+      .from("configurators")
+      .select("id, name, slug, sector")
+      .eq("organization_id", orgId)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("ads_connections")
+      .select("id, status, customer_name, last_sync_at")
+      .eq("organization_id", orgId)
+      .eq("provider", "google_ads")
+      .maybeSingle(),
+    supabase
+      .from("ads_campaign_stats")
+      .select("campaign_id, campaign_name, date, impressions, clicks, cost_micros")
+      .eq("organization_id", orgId)
+      .gte("date", periodStart.toISOString().slice(0, 10)),
   ]);
 
   const statusById = new Map((statuses ?? []).map((s) => [s.id, s]));
@@ -347,9 +417,15 @@ export async function loadStatsDashboard(
   };
 
   function funnelCounts(from: Date, to: Date) {
-    const periodEvents = (events ?? []).filter((e) => inWindow(e.created_at, from, to));
-    const periodSessions = (sessions ?? []).filter((s) => inWindow(s.created_at, from, to));
-    const periodQuotes = (quotes ?? []).filter((q) => inWindow(q.created_at, from, to));
+    const periodEvents = (events ?? []).filter(
+      (e) => inWindow(e.created_at, from, to) && (!scopedFunnel || e.configurator_id === scopedFunnel),
+    );
+    const periodSessions = (sessions ?? []).filter(
+      (s) => inWindow(s.created_at, from, to) && (!scopedFunnel || s.configurator_id === scopedFunnel),
+    );
+    const periodQuotes = (quotes ?? []).filter(
+      (q) => inWindow(q.created_at, from, to) && (!scopedFunnel || q.configurator_id === scopedFunnel),
+    );
 
     const eventVisitors = new Set(
       periodEvents
@@ -584,7 +660,9 @@ export async function loadStatsDashboard(
     .sort((a, b) => b.pipeline - a.pipeline || b.quotes - a.quotes);
 
   const pipelineOrder = ["new", "contacted", "in_progress", "waiting"];
-  const openQuotes = (quotes ?? []).filter((q) => OPEN_SLUGS.has(slugOf(q)));
+  const openQuotes = (quotes ?? []).filter(
+    (q) => OPEN_SLUGS.has(slugOf(q)) && (!scopedFunnel || q.configurator_id === scopedFunnel),
+  );
   const pipeline: PipelineRow[] = pipelineOrder
     .filter((slug) => statusBySlug.has(slug) || openQuotes.some((q) => slugOf(q) === slug))
     .map((slug) => {
@@ -601,6 +679,7 @@ export async function loadStatsDashboard(
 
   const wonThisMonth = (quotes ?? []).filter((q) => {
     if (slugOf(q) !== "won") return false;
+    if (scopedFunnel && q.configurator_id !== scopedFunnel) return false;
     const d = new Date(q.created_at);
     return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
   });
@@ -612,10 +691,20 @@ export async function loadStatsDashboard(
     months.push({
       key,
       label: monthLabel(key),
-      quotes: (quotes ?? []).filter((q) => monthKey(q.created_at) === key).length,
-      won: (quotes ?? []).filter((q) => monthKey(q.created_at) === key && slugOf(q) === "won").length,
+      quotes: (quotes ?? []).filter(
+        (q) => monthKey(q.created_at) === key && (!scopedFunnel || q.configurator_id === scopedFunnel),
+      ).length,
+      won: (quotes ?? []).filter(
+        (q) =>
+          monthKey(q.created_at) === key &&
+          slugOf(q) === "won" &&
+          (!scopedFunnel || q.configurator_id === scopedFunnel),
+      ).length,
       abandons: (sessions ?? []).filter(
-        (s) => monthKey(s.created_at) === key && !s.submitted_quote_id,
+        (s) =>
+          monthKey(s.created_at) === key &&
+          !s.submitted_quote_id &&
+          (!scopedFunnel || s.configurator_id === scopedFunnel),
       ).length,
     });
   }
@@ -624,8 +713,186 @@ export async function loadStatsDashboard(
   const wonValue = wonThisMonth.reduce((sum, q) => sum + valueOf(q.id), 0);
   const recoverable = abandonedEmail.length * (avgDeal || 0);
 
+  const adsSpendByKey = new Map<string, { spend: number; clicks: number; impressions: number; name: string; id: string }>();
+  for (const row of adsDays ?? []) {
+    const key = campaignKey(row.campaign_name) || campaignKey(row.campaign_id);
+    const currentRow = adsSpendByKey.get(key) ?? {
+      spend: 0,
+      clicks: 0,
+      impressions: 0,
+      name: row.campaign_name,
+      id: row.campaign_id,
+    };
+    currentRow.spend += microsToEur(row.cost_micros);
+    currentRow.clicks += row.clicks;
+    currentRow.impressions += row.impressions;
+    adsSpendByKey.set(key, currentRow);
+  }
+  const adsList = [...adsSpendByKey.values()];
+  function spendForCampaign(name: string | null | undefined) {
+    if (!name) return 0;
+    const hit = adsList.find((row) => campaignsMatch(name, row.name, row.id));
+    return hit?.spend ?? 0;
+  }
+
+  const funnelNameById = new Map((configurators ?? []).map((row) => [row.id, row]));
+  const funnelRows: FunnelStatsRow[] = (configurators ?? []).map((cfg) => {
+      const funnelQuotes = current.quotes.filter((q) => q.configurator_id === cfg.id);
+      const funnelSessions = current.sessions.filter((s) => s.configurator_id === cfg.id);
+      const funnelEvents = current.events.filter((e) => e.configurator_id === cfg.id);
+      const visitors = (() => {
+        const ids = new Set(
+          funnelEvents
+            .filter((e) => e.event_type === ANALYTICS_EVENTS.pageView && e.visitor_id)
+            .map((e) => e.visitor_id as string),
+        );
+        const extra = funnelSessions.filter((s) => !s.visitor_id || !ids.has(s.visitor_id)).length;
+        return Math.max(ids.size + extra, funnelSessions.length, funnelQuotes.length);
+      })();
+      const contacted = funnelQuotes.filter((q) => CONTACTED_SLUGS.has(slugOf(q))).length;
+      const won = funnelQuotes.filter((q) => slugOf(q) === "won").length;
+      const pipeline = funnelQuotes.reduce((sum, q) => sum + valueOf(q.id), 0);
+      const wonValue = funnelQuotes.filter((q) => slugOf(q) === "won").reduce((sum, q) => sum + valueOf(q.id), 0);
+      const spend = funnelQuotes.reduce((sum, q) => {
+        if (classifySource({ utmSource: q.utm_source, utmMedium: q.utm_medium, referrer: q.referrer, gclid: q.gclid }) !== "Google Ads") {
+          return sum;
+        }
+        return sum + spendForCampaign(q.utm_campaign) / Math.max(1, current.quotes.filter((other) => other.utm_campaign === q.utm_campaign).length);
+      }, 0);
+      const loop = closedLoop({
+        visitors,
+        quotes: funnelQuotes.length,
+        contacted,
+        won,
+        pipeline,
+        wonValue,
+        spend,
+      });
+      return {
+        id: cfg.id,
+        name: cfg.name,
+        slug: cfg.slug,
+        sector: cfg.sector,
+        visitors: loop.visitors,
+        quotes: loop.quotes,
+        conversion: loop.conversion,
+        contacted: loop.contacted,
+        won: loop.won,
+        pipeline: loop.pipeline,
+        wonValue: loop.wonValue,
+        costPerQuote: loop.costPerQuote,
+        costPerWon: loop.costPerWon,
+        spend: loop.spend,
+      };
+    })
+    .sort((a, b) => b.quotes - a.quotes || b.visitors - a.visitors);
+
+  type CampaignBucket = {
+    campaign: string;
+    source: string;
+    funnelId: string | null;
+    visitors: Set<string>;
+    quotes: typeof current.quotes;
+  };
+  const campaignMap = new Map<string, CampaignBucket>();
+  function campaignBucket(campaign: string, source: string, funnelId: string | null) {
+    const key = `${campaignKey(campaign) || "(none)"}|${source}`;
+    const row =
+      campaignMap.get(key) ??
+      { campaign: campaign || "Sans nom", source, funnelId, visitors: new Set<string>(), quotes: [] };
+    if (!row.funnelId && funnelId) row.funnelId = funnelId;
+    campaignMap.set(key, row);
+    return row;
+  }
+  for (const quote of current.quotes) {
+    const session = quote.session_id ? current.sessions.find((s) => s.id === quote.session_id) : undefined;
+    const source = classifySource({
+      utmSource: quote.utm_source ?? session?.utm_source,
+      utmMedium: quote.utm_medium ?? session?.utm_medium,
+      referrer: quote.referrer ?? session?.referrer,
+      gclid: quote.gclid ?? session?.gclid,
+    });
+    const campaign = quote.utm_campaign ?? session?.utm_campaign ?? "";
+    const row = campaignBucket(campaign, source, quote.configurator_id);
+    row.quotes.push(quote);
+  }
+  for (const event of current.events) {
+    if (event.event_type !== ANALYTICS_EVENTS.pageView) continue;
+    const payload = (event.payload ?? {}) as {
+      utm_source?: string;
+      utm_medium?: string;
+      utm_campaign?: string;
+      referrer?: string;
+      gclid?: string;
+    };
+    const source = classifySource({
+      utmSource: payload.utm_source,
+      utmMedium: payload.utm_medium,
+      referrer: payload.referrer,
+      gclid: payload.gclid,
+    });
+    const row = campaignBucket(payload.utm_campaign ?? "", source, event.configurator_id);
+    row.visitors.add(event.visitor_id || event.session_id || event.created_at);
+  }
+  for (const session of current.sessions) {
+    const source = classifySource({
+      utmSource: session.utm_source,
+      utmMedium: session.utm_medium,
+      referrer: session.referrer,
+      gclid: session.gclid,
+    });
+    const row = campaignBucket(session.utm_campaign ?? "", source, session.configurator_id);
+    if (row.visitors.size === 0) row.visitors.add(session.id);
+  }
+  const campaignRows: CampaignStatsRow[] = [...campaignMap.values()]
+    .map((bucket) => {
+      const contacted = bucket.quotes.filter((q) => CONTACTED_SLUGS.has(slugOf(q))).length;
+      const won = bucket.quotes.filter((q) => slugOf(q) === "won").length;
+      const pipeline = bucket.quotes.reduce((sum, q) => sum + valueOf(q.id), 0);
+      const wonValue = bucket.quotes.filter((q) => slugOf(q) === "won").reduce((sum, q) => sum + valueOf(q.id), 0);
+      const spend = bucket.source === "Google Ads" ? spendForCampaign(bucket.campaign) : 0;
+      const visitors = Math.max(bucket.visitors.size, bucket.quotes.length);
+      const loop = closedLoop({
+        visitors,
+        quotes: bucket.quotes.length,
+        contacted,
+        won,
+        pipeline,
+        wonValue,
+        spend,
+      });
+      return {
+        campaign: bucket.campaign || "Sans nom",
+        source: bucket.source,
+        funnelId: bucket.funnelId,
+        funnelName: bucket.funnelId ? (funnelNameById.get(bucket.funnelId)?.name ?? null) : null,
+        visitors: loop.visitors,
+        quotes: loop.quotes,
+        conversion: loop.conversion,
+        contacted: loop.contacted,
+        won: loop.won,
+        pipeline: loop.pipeline,
+        wonValue: loop.wonValue,
+        spend: loop.spend,
+        costPerQuote: loop.costPerQuote,
+        costPerWon: loop.costPerWon,
+      };
+    })
+    .sort((a, b) => b.quotes - a.quotes || b.spend - a.spend);
+
+  const ads: AdsSnapshot = {
+    connected: Boolean(adsConnection && (adsConnection.status === "active" || adsConnection.customer_name)),
+    customerName: adsConnection?.customer_name ?? null,
+    status: adsConnection?.status ?? null,
+    lastSyncAt: adsConnection?.last_sync_at ?? null,
+    spend: adsList.reduce((sum, row) => sum + row.spend, 0),
+    clicks: adsList.reduce((sum, row) => sum + row.clicks, 0),
+    impressions: adsList.reduce((sum, row) => sum + row.impressions, 0),
+  };
+
   return {
     range,
+    funnelId: scopedFunnel,
     story: buildStory({
       submitted: current.submitted,
       contacted: current.contacted,
@@ -651,6 +918,9 @@ export async function loadStatsDashboard(
       delayHours: avgDelay,
     },
     funnel,
+    funnels: funnelRows,
+    campaigns: campaignRows,
+    ads,
     sources,
     pipeline,
     pipelineTotal,

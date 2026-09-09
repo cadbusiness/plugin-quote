@@ -24,6 +24,7 @@ const FLOW = [
   { label: "Demandes", href: "/fonctionnalites/demandes" },
   { label: "Autopilote", href: "/fonctionnalites/autopilote" },
   { label: "Stats", href: "/fonctionnalites/stats" },
+  { label: "Google Ads", href: "/fonctionnalites/ads" },
 ] as const;
 
 export default function FonctionnalitesIndexPage() {

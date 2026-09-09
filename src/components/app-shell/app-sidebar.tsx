@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   LogOut,
   Mail,
+  Megaphone,
   Package,
   PanelLeftClose,
   PanelLeftOpen,
@@ -43,6 +44,7 @@ const GROUPS: { label: string; items: Item[] }[] = [
     items: [
       { href: "/funnels", label: "Funnels", icon: PanelsTopLeft, admin: true },
       { href: "/produits", label: "Catalogue", icon: Package, admin: true },
+      { href: "/acquisition", label: "Ads", icon: Megaphone, admin: true },
       { href: "/integrations", label: "Boutiques", icon: Store, admin: true },
     ],
   },

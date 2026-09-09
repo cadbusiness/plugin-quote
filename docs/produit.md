@@ -69,11 +69,21 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 
 ### Statistiques
 - **KPI + tunnel visiteurs → gagné**, Livré. `/stats`, événements `analytics_events`.
+- **Stats par funnel**, Livré. Onglet Funnels, filtre par funnel, onglet Stats sur `/funnels/[id]`.
+- **Campagnes UTM (visiteurs, devis, gagnés, coût/devis, coût/client)**, Livré. Onglet Campagnes.
 - **Sources UTM (Google Ads, organique, etc.)**, Livré. Capture sur session + widget.
 - **Pipeline financier et CA potentiel**, Livré.
 - **Abandons relançables depuis les stats**, Livré. CTA vers `/sessions`.
-- **Courbe 6 mois + export PDF agence**, Livré.
+- **Courbe 6 mois + export PDF agence**, Livré. Funnels et campagnes dans le PDF.
 - **Connexion GA4 + GTM**, Livré. Onglet Suivi Google sur `/stats` ; le funnel public charge GTM ou gtag.
+
+### Ads (pont Google Ads)
+- **Connexion Google Ads OAuth**, Livré. `/acquisition`. Compte Ads, pas un gestionnaire de campagnes.
+- **Tracking UTM + gclid**, Livré. Session, devis, widget. Conversion upload au devis et au statut Gagné.
+- **ROI campagne → devis → gagné**, Livré. Dépense Ads sync, coût par devis, coût par client.
+- **Templates de mots-clés par secteur**, Livré. Rayonnage, cuisine, menuiserie, paysagiste, location, aménagement.
+- **Guide première campagne + URL UTM du funnel**, Livré. Copier/coller dans Google Ads.
+- **Création de campagnes / enchères / budgets dans QuoteBuilder**, Hors scope. On ne construit pas Adzooma.
 
 ### Équipe
 - **Invitation par email**, Livré.

@@ -1,5 +1,6 @@
 export const FUNNEL_TABS = [
   { id: "parcours", label: "Parcours" },
+  { id: "stats", label: "Stats" },
   { id: "automations", label: "Automatisations" },
   { id: "lien", label: "Lien & embed" },
   { id: "suivi", label: "Suivi" },

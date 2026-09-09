@@ -23,7 +23,7 @@ export async function changeQuoteStatus(quoteId: string, statusId: string) {
   if (!status) return;
   const { data: current } = await supabase
     .from("quotes")
-    .select("status_id, status")
+    .select("status_id, status, gclid, gbraid, wbraid, created_at")
     .eq("id", quoteId)
     .eq("organization_id", ctx.organization.id)
     .maybeSingle();
@@ -59,6 +59,23 @@ export async function changeQuoteStatus(quoteId: string, statusId: string) {
     });
   } catch (error) {
     console.error("Workflow status trigger failed", error);
+  }
+  if (status.slug === "won") {
+    try {
+      const { reportAdsConversion } = await import("@/lib/ads/sync");
+      await reportAdsConversion({
+        supabase,
+        organizationId: ctx.organization.id,
+        quoteId,
+        kind: "won",
+        gclid: current.gclid,
+        gbraid: current.gbraid,
+        wbraid: current.wbraid,
+        occurredAt: new Date().toISOString(),
+      });
+    } catch (error) {
+      console.error("Ads won conversion failed", error);
+    }
   }
   revalidatePath("/devis");
   revalidatePath(`/devis/${quoteId}`);

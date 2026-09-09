@@ -12,6 +12,164 @@ export type Database = {
   }
   public: {
     Tables: {
+      ads_campaign_stats: {
+        Row: {
+          campaign_id: string
+          campaign_name: string
+          clicks: number
+          connection_id: string
+          cost_micros: number
+          date: string
+          id: string
+          impressions: number
+          organization_id: string
+        }
+        Insert: {
+          campaign_id: string
+          campaign_name: string
+          clicks?: number
+          connection_id: string
+          cost_micros?: number
+          date: string
+          id?: string
+          impressions?: number
+          organization_id: string
+        }
+        Update: {
+          campaign_id?: string
+          campaign_name?: string
+          clicks?: number
+          connection_id?: string
+          cost_micros?: number
+          date?: string
+          id?: string
+          impressions?: number
+          organization_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ads_campaign_stats_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "ads_connections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ads_campaign_stats_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ads_connections: {
+        Row: {
+          created_at: string
+          credentials: Json
+          credentials_hint: string | null
+          customer_id: string | null
+          customer_name: string | null
+          id: string
+          last_error: string | null
+          last_sync_at: string | null
+          organization_id: string
+          provider: string
+          settings: Json
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          credentials?: Json
+          credentials_hint?: string | null
+          customer_id?: string | null
+          customer_name?: string | null
+          id?: string
+          last_error?: string | null
+          last_sync_at?: string | null
+          organization_id: string
+          provider?: string
+          settings?: Json
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          credentials?: Json
+          credentials_hint?: string | null
+          customer_id?: string | null
+          customer_name?: string | null
+          id?: string
+          last_error?: string | null
+          last_sync_at?: string | null
+          organization_id?: string
+          provider?: string
+          settings?: Json
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ads_connections_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: true
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ads_conversion_uploads: {
+        Row: {
+          created_at: string
+          error: string | null
+          gclid: string | null
+          id: string
+          kind: string
+          organization_id: string
+          quote_id: string
+          status: string
+          uploaded_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          error?: string | null
+          gclid?: string | null
+          id?: string
+          kind: string
+          organization_id: string
+          quote_id: string
+          status?: string
+          uploaded_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          error?: string | null
+          gclid?: string | null
+          id?: string
+          kind?: string
+          organization_id?: string
+          quote_id?: string
+          status?: string
+          uploaded_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ads_conversion_uploads_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ads_conversion_uploads_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       catalog_connections: {
         Row: {
           configurator_id: string | null
@@ -1176,12 +1334,15 @@ export type Database = {
           current_step: number
           customization: Json
           extracted_params: Json
+          gbraid: string | null
+          gclid: string | null
           id: string
           landing_path: string | null
           last_activity_at: string
           mode: string
           organization_id: string
           referrer: string | null
+          wbraid: string | null
           selected_suggestion_id: string | null
           submitted_quote_id: string | null
           token: string
@@ -1202,12 +1363,15 @@ export type Database = {
           current_step?: number
           customization?: Json
           extracted_params?: Json
+          gbraid?: string | null
+          gclid?: string | null
           id?: string
           landing_path?: string | null
           last_activity_at?: string
           mode?: string
           organization_id: string
           referrer?: string | null
+          wbraid?: string | null
           selected_suggestion_id?: string | null
           submitted_quote_id?: string | null
           token: string
@@ -1228,12 +1392,15 @@ export type Database = {
           current_step?: number
           customization?: Json
           extracted_params?: Json
+          gbraid?: string | null
+          gclid?: string | null
           id?: string
           landing_path?: string | null
           last_activity_at?: string
           mode?: string
           organization_id?: string
           referrer?: string | null
+          wbraid?: string | null
           selected_suggestion_id?: string | null
           submitted_quote_id?: string | null
           token?: string
@@ -1281,6 +1448,8 @@ export type Database = {
           contact_phone: string | null
           created_at: string
           extracted_params: Json
+          gbraid: string | null
+          gclid: string | null
           id: string
           notes: string | null
           organization_id: string
@@ -1291,6 +1460,7 @@ export type Database = {
           status: string
           status_id: string | null
           utm_campaign: string | null
+          wbraid: string | null
           utm_content: string | null
           utm_medium: string | null
           utm_source: string | null
@@ -1306,6 +1476,8 @@ export type Database = {
           contact_phone?: string | null
           created_at?: string
           extracted_params?: Json
+          gbraid?: string | null
+          gclid?: string | null
           id?: string
           notes?: string | null
           organization_id: string
@@ -1316,6 +1488,7 @@ export type Database = {
           status?: string
           status_id?: string | null
           utm_campaign?: string | null
+          wbraid?: string | null
           utm_content?: string | null
           utm_medium?: string | null
           utm_source?: string | null
@@ -1331,6 +1504,8 @@ export type Database = {
           contact_phone?: string | null
           created_at?: string
           extracted_params?: Json
+          gbraid?: string | null
+          gclid?: string | null
           id?: string
           notes?: string | null
           organization_id?: string
@@ -1341,6 +1516,7 @@ export type Database = {
           status?: string
           status_id?: string | null
           utm_campaign?: string | null
+          wbraid?: string | null
           utm_content?: string | null
           utm_medium?: string | null
           utm_source?: string | null
