@@ -3,10 +3,45 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { markNotificationsRead } from "@/app/(app)/crm-actions";
+import {
+  Bell,
+  Inbox,
+  Package,
+  PanelsTopLeft,
+  Plus,
+  Sparkles,
+  UserPlus,
+  type LucideIcon,
+} from "lucide-react";
+import {
+  NotificationsDrawer,
+  type HeaderNotification,
+} from "@/components/app-shell/notifications-drawer";
 
-type Alert = { id: string; body: string; quote_id: string | null };
 type Menu = "action" | "alerts" | "plan" | null;
+
+function ActionLink({
+  href,
+  icon: Icon,
+  children,
+  onClick,
+}: {
+  href: string;
+  icon: LucideIcon;
+  children: React.ReactNode;
+  onClick: () => void;
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className="flex items-center gap-2.5 px-3 py-2 text-left hover:bg-orange-50"
+    >
+      <Icon className="h-4 w-4 text-[#E85D04]" strokeWidth={2} />
+      {children}
+    </Link>
+  );
+}
 
 export function HeaderActions({
   isAdmin,
@@ -15,17 +50,18 @@ export function HeaderActions({
 }: {
   isAdmin: boolean;
   plan: string;
-  notifications: Alert[];
+  notifications: HeaderNotification[];
 }) {
   const pathname = usePathname();
   const router = useRouter();
   const [menu, setMenu] = useState<Menu>(null);
   const root = useRef<HTMLDivElement>(null);
-  const unread = notifications.length;
+  const unread = notifications.filter((item) => !item.read_at).length;
   const planLabel = plan.trim() || "pro";
 
   useEffect(() => {
     function onDoc(event: MouseEvent) {
+      if (menu === "alerts") return;
       if (!root.current?.contains(event.target as Node)) setMenu(null);
     }
     function onKey(event: KeyboardEvent) {
@@ -37,7 +73,7 @@ export function HeaderActions({
       document.removeEventListener("mousedown", onDoc);
       document.removeEventListener("keydown", onKey);
     };
-  }, []);
+  }, [menu]);
 
   function toggle(next: Menu) {
     setMenu((current) => (current === next ? null : next));
@@ -58,95 +94,84 @@ export function HeaderActions({
         <button
           type="button"
           onClick={() => toggle("action")}
-          className="rounded-md bg-[#E85D04] px-2.5 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]"
+          aria-expanded={menu === "action"}
+          aria-haspopup="menu"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-[#E85D04] px-2.5 py-1.5 text-sm font-medium text-white shadow-sm shadow-orange-900/20 hover:bg-[#d35400]"
         >
+          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
+            <Plus className="h-3.5 w-3.5" strokeWidth={2.5} />
+          </span>
           Action
         </button>
         {menu === "action" ? (
-          <div className="absolute right-0 z-40 mt-2 w-56 overflow-hidden rounded-lg border border-slate-200 bg-white py-1 text-sm shadow-sm">
+          <div
+            role="menu"
+            className="absolute right-0 z-40 mt-2 w-56 overflow-hidden rounded-lg border border-slate-200 bg-white py-1 text-sm shadow-md"
+          >
             {isAdmin ? (
               <button
                 type="button"
                 onClick={createFunnel}
-                className="block w-full px-3 py-2 text-left hover:bg-orange-50"
+                className="flex w-full items-center gap-2.5 px-3 py-2 text-left hover:bg-orange-50"
               >
+                <PanelsTopLeft className="h-4 w-4 text-[#E85D04]" strokeWidth={2} />
                 Nouveau funnel
               </button>
             ) : null}
             {isAdmin ? (
-              <Link href="/produits" onClick={() => setMenu(null)} className="block px-3 py-2 hover:bg-orange-50">
+              <ActionLink href="/produits" icon={Package} onClick={() => setMenu(null)}>
                 Catalogue
-              </Link>
+              </ActionLink>
             ) : null}
-            <Link href="/devis" onClick={() => setMenu(null)} className="block px-3 py-2 hover:bg-orange-50">
+            <ActionLink href="/devis" icon={Inbox} onClick={() => setMenu(null)}>
               Demandes
-            </Link>
+            </ActionLink>
             {isAdmin ? (
-              <Link href="/equipe" onClick={() => setMenu(null)} className="block px-3 py-2 hover:bg-orange-50">
+              <ActionLink href="/equipe" icon={UserPlus} onClick={() => setMenu(null)}>
                 Inviter un membre
-              </Link>
+              </ActionLink>
             ) : null}
           </div>
         ) : null}
       </div>
 
-      <div className="relative">
-        <button
-          type="button"
-          onClick={() => toggle("alerts")}
-          className="relative rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
-        >
-          Alertes
+      <button
+        type="button"
+        onClick={() => toggle("alerts")}
+        aria-expanded={menu === "alerts"}
+        aria-haspopup="dialog"
+        className={`relative inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium shadow-sm ${
+          unread
+            ? "bg-rose-50 text-rose-700 ring-1 ring-rose-200 hover:bg-rose-100"
+            : "bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"
+        }`}
+      >
+        <span className="relative flex h-5 w-5 items-center justify-center rounded-full bg-rose-100 text-rose-700">
+          <Bell className="h-3.5 w-3.5" strokeWidth={2.25} />
           {unread ? (
-            <span className="ml-1.5 inline-flex min-w-4 items-center justify-center rounded-full bg-rose-600 px-1 text-[10px] font-medium text-white">
-              {unread}
+            <span className="absolute -right-1 -top-1 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-rose-600 px-0.5 text-[9px] font-semibold leading-none text-white">
+              {unread > 9 ? "9+" : unread}
             </span>
           ) : null}
-        </button>
-        {menu === "alerts" ? (
-          <div className="absolute right-0 z-40 mt-2 w-72 overflow-hidden rounded-lg border border-slate-200 bg-white p-2 text-sm shadow-sm">
-            {unread === 0 ? (
-              <p className="px-2 py-3 text-slate-500">Aucune notification</p>
-            ) : (
-              <>
-                <form action={markNotificationsRead}>
-                  <button type="submit" className="mb-2 px-2 text-xs text-sky-700 underline">
-                    Tout marquer lu
-                  </button>
-                </form>
-                <ul className="max-h-64 space-y-1 overflow-auto">
-                  {notifications.map((n) => (
-                    <li key={n.id}>
-                      {n.quote_id ? (
-                        <Link
-                          href={`/devis/${n.quote_id}`}
-                          onClick={() => setMenu(null)}
-                          className="block rounded px-2 py-1.5 hover:bg-orange-50"
-                        >
-                          {n.body}
-                        </Link>
-                      ) : (
-                        <span className="block px-2 py-1.5">{n.body}</span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-          </div>
-        ) : null}
-      </div>
+        </span>
+        Alertes
+      </button>
 
       <div className="relative">
         <button
           type="button"
           onClick={() => toggle("plan")}
-          className="rounded-md bg-emerald-50 px-2.5 py-1.5 text-sm font-medium capitalize text-emerald-800 ring-1 ring-emerald-200 hover:bg-emerald-100"
+          aria-expanded={menu === "plan"}
+          aria-haspopup="dialog"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1.5 text-sm font-medium capitalize text-emerald-800 shadow-sm ring-1 ring-emerald-200 hover:bg-emerald-100"
         >
+          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-200/80 text-emerald-800">
+            <Sparkles className="h-3.5 w-3.5" strokeWidth={2.25} />
+          </span>
           Plan {planLabel}
         </button>
         {menu === "plan" ? (
-          <div className="absolute right-0 z-40 mt-2 w-64 overflow-hidden rounded-lg border border-slate-200 bg-white p-3 text-sm shadow-sm">
+          <div className="absolute right-0 z-40 mt-2 w-64 overflow-hidden rounded-lg border border-slate-200 bg-white p-3 text-sm shadow-md">
             <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-emerald-700">Abonnement</p>
             <p className="mt-1 font-medium capitalize text-slate-900">Plan {planLabel}</p>
             <p className="mt-1 text-xs leading-5 text-slate-500">
@@ -162,6 +187,14 @@ export function HeaderActions({
           </div>
         ) : null}
       </div>
+
+      {menu === "alerts" ? (
+        <NotificationsDrawer
+          notifications={notifications}
+          unread={unread}
+          onClose={() => setMenu(null)}
+        />
+      ) : null}
     </div>
   );
 }

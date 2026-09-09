@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { HeaderActions } from "@/components/app-shell/header-actions";
+import type { HeaderNotification } from "@/components/app-shell/notifications-drawer";
 
 export function AppHeader({
   orgName,
@@ -10,7 +11,7 @@ export function AppHeader({
   orgName: string;
   plan: string;
   isAdmin: boolean;
-  notifications: { id: string; body: string; quote_id: string | null }[];
+  notifications: HeaderNotification[];
 }) {
   const initial = (orgName.trim()[0] ?? "Q").toUpperCase();
 
