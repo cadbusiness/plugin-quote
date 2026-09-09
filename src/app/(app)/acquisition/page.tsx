@@ -59,14 +59,6 @@ export default async function AcquisitionPage({
 
   return (
     <ListPanel>
-      <div className="border-b border-slate-200 px-4 py-5 lg:px-8">
-        <p className="text-lg font-semibold tracking-tight text-slate-900">
-          Combien coûte un devis venu de Google Ads
-        </p>
-        <p className="mt-1 text-sm leading-relaxed text-slate-500">
-          Et combien coûte un client une fois le dossier signé.
-        </p>
-      </div>
       <AcquisitionView
         stats={stats}
         connection={row ? mapAdsConnection(row) : null}
