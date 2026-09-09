@@ -190,12 +190,25 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
   }, [orgSlug, configuratorSlug, embedded]);
 
   useEffect(() => {
-    const id = definition?.organization.gaMeasurementId;
-    if (!id || document.getElementById("qb-ga4")) return;
+    const gtm = definition?.organization.gtmContainerId?.trim();
+    const ga = definition?.organization.gaMeasurementId?.trim();
+    if (gtm) {
+      if (document.getElementById("qb-gtm")) return;
+      const w = window as Window & { dataLayer?: unknown[] };
+      w.dataLayer = w.dataLayer ?? [];
+      w.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
+      const script = document.createElement("script");
+      script.id = "qb-gtm";
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(gtm)}`;
+      document.head.appendChild(script);
+      return;
+    }
+    if (!ga || document.getElementById("qb-ga4")) return;
     const s = document.createElement("script");
     s.id = "qb-ga4";
     s.async = true;
-    s.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+    s.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(ga)}`;
     document.head.appendChild(s);
     const w = window as Window & { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void };
     w.dataLayer = w.dataLayer ?? [];
@@ -203,8 +216,8 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
       w.dataLayer!.push(args);
     };
     w.gtag("js", new Date());
-    w.gtag("config", id);
-  }, [definition?.organization.gaMeasurementId]);
+    w.gtag("config", ga);
+  }, [definition?.organization.gtmContainerId, definition?.organization.gaMeasurementId]);
 
   useEffect(() => {
     if (!session || done) return;

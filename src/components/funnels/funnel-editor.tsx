@@ -208,8 +208,8 @@ export function FunnelEditor({
         <form action={saveFunnelTracking} className="grid gap-4 px-4 py-6 lg:px-6">
           <input type="hidden" name="id" value={funnel.id} />
           <p className="text-sm text-slate-500">
-            Mesurez ce funnel. Les IDs ici priment sur le suivi d’espace
-            {orgGa ? ` (GA espace : ${orgGa})` : ""}.
+            Mesurez ce funnel. Les IDs ici remplacent le suivi d’espace
+            {orgGa ? ` (GA espace : ${orgGa})` : ""}. GTM charge le conteneur ; sans GTM, GA4 part en direct.
           </p>
           <label className="text-sm">
             <span className="font-medium text-slate-900">Google Analytics 4</span>

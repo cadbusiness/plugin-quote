@@ -73,7 +73,7 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 - **Pipeline financier et CA potentiel** — Livré.
 - **Abandons relançables depuis les stats** — Livré. CTA vers `/sessions`.
 - **Courbe 6 mois + export PDF agence** — Livré.
-- **Connexion GA4** — Partiel. Champ org encore dans la toolbar.
+- **Connexion GA4 + GTM** — Livré. Onglet Suivi Google sur `/stats` ; le funnel public charge GTM ou gtag.
 
 ### Équipe
 - **Invitation par email** — Livré.

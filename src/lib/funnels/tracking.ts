@@ -34,3 +34,33 @@ export function mergeFunnelTracking(theme: Json | null | undefined, tracking: Fu
     },
   } as Json;
 }
+
+export function parseOrgGtm(branding: Json | null | undefined): string {
+  if (!branding || typeof branding !== "object" || Array.isArray(branding)) return "";
+  const gtm = (branding as { gtm?: unknown }).gtm;
+  return typeof gtm === "string" ? gtm.trim() : "";
+}
+
+export function mergeOrgGtm(branding: Json | null | undefined, gtm: string): Json {
+  const base =
+    branding && typeof branding === "object" && !Array.isArray(branding)
+      ? { ...(branding as Record<string, unknown>) }
+      : {};
+  const next = gtm.trim();
+  if (next) return { ...base, gtm: next } as Json;
+  const rest = { ...base };
+  delete rest.gtm;
+  return rest as Json;
+}
+
+export function normalizeGaId(raw: string): string | null {
+  const value = raw.trim().toUpperCase();
+  if (!value) return "";
+  return /^G-[A-Z0-9]+$/.test(value) ? value : null;
+}
+
+export function normalizeGtmId(raw: string): string | null {
+  const value = raw.trim().toUpperCase();
+  if (!value) return "";
+  return /^GTM-[A-Z0-9]+$/.test(value) ? value : null;
+}

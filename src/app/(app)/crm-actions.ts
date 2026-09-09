@@ -8,6 +8,7 @@ import { logActivity, notifyUser } from "@/lib/crm/activity";
 import { sendTemplateEmail } from "@/lib/email/send";
 import { getAppUrl } from "@/lib/supabase/env";
 import { startWorkflows } from "@/lib/workflows/engine";
+import { mergeOrgGtm, normalizeGaId, normalizeGtmId } from "@/lib/funnels/tracking";
 
 export async function changeQuoteStatus(quoteId: string, statusId: string) {
   const ctx = await getOrgContext();
@@ -285,17 +286,25 @@ export async function updateMemberRole(id: string, role: string) {
   revalidatePath("/equipe");
 }
 
-export async function saveGaMeasurementId(formData: FormData) {
+export async function saveOrgTracking(formData: FormData) {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");
   if (!isAdminRole(ctx.role)) redirect("/devis");
+  const ga = normalizeGaId(String(formData.get("ga_measurement_id") ?? ""));
+  const gtm = normalizeGtmId(String(formData.get("gtm_container_id") ?? ""));
+  if (ga == null) redirect("/stats?tab=suivi&error=ga");
+  if (gtm == null) redirect("/stats?tab=suivi&error=gtm");
   const supabase = await createClient();
-  const value = String(formData.get("ga_measurement_id") ?? "").trim();
   await supabase
     .from("organizations")
-    .update({ ga_measurement_id: value || null })
+    .update({
+      ga_measurement_id: ga || null,
+      branding: mergeOrgGtm(ctx.organization.branding, gtm),
+    })
     .eq("id", ctx.organization.id);
   revalidatePath("/stats");
+  revalidatePath("/funnels");
+  redirect("/stats?tab=suivi");
 }
 
 export async function markNotificationsRead() {
