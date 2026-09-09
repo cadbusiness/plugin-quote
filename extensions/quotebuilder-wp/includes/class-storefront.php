@@ -19,7 +19,7 @@ class QuoteBuilder_Storefront {
     }
 
     public static function assets() {
-        if (is_admin()) {
+        if (is_admin() || !QuoteBuilder_Settings::connected()) {
             return;
         }
         wp_enqueue_style(
@@ -50,6 +50,9 @@ class QuoteBuilder_Storefront {
     }
 
     public static function body_class($classes) {
+        if (!QuoteBuilder_Settings::connected()) {
+            return $classes;
+        }
         $settings = QuoteBuilder_Settings::storefront();
         if ($settings['hidePrices']) {
             $classes[] = 'qb-hide-prices';
@@ -68,7 +71,7 @@ class QuoteBuilder_Storefront {
 
     public static function applies($product = null) {
         $settings = QuoteBuilder_Settings::storefront();
-        if ($settings['audience'] === 'logged_in' && !is_user_logged_in()) {
+        if (!QuoteBuilder_Settings::connected() || ($settings['audience'] === 'logged_in' && !is_user_logged_in())) {
             return false;
         }
         if (!$product && function_exists('wc_get_product')) {
@@ -181,7 +184,7 @@ class QuoteBuilder_Storefront {
     }
 
     public static function drawer() {
-        if (is_admin()) {
+        if (is_admin() || !QuoteBuilder_Settings::connected()) {
             return;
         }
         $count = QuoteBuilder_Quote::count();
@@ -221,8 +224,8 @@ class QuoteBuilder_Storefront {
         ], $atts, 'quotebuilder');
 
         $origin = esc_url(QuoteBuilder_Settings::origin());
-        if (!$atts['org'] || !$atts['id']) {
-            return '<p class="qb-empty">Connectez le plugin à QuoteBuilder pour afficher le funnel.</p>';
+        if (!$atts['org'] || !$atts['id'] || !QuoteBuilder_Settings::connected()) {
+            return '<p class="qb-empty">Connectez QuoteBuilder dans WordPress pour afficher le funnel et collecter les demandes.</p>';
         }
         wp_enqueue_script(
             'quotebuilder-widget',

@@ -38,20 +38,17 @@
 }
 
 .qb-logo {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: #e85d04;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
 }
 
 .qb-brand strong {
-  display: block;
   font-size: 14px;
-  line-height: 1.1;
+  line-height: 1;
 }
 
-.qb-brand span {
-  display: block;
+.qb-ver {
   font-size: 11px;
   color: #9a8f84;
 }
@@ -160,6 +157,36 @@
   display: block;
   margin-top: 6px;
   font-size: 16px;
+}
+
+.qb-setup {
+  max-width: 36rem;
+  margin: 48px auto;
+  text-align: center;
+}
+
+.qb-setup-logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+.qb-setup h1 {
+  margin: 16px 0 8px;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+
+.qb-setup p {
+  color: #5c5348;
+  margin: 0 auto 18px;
+}
+
+.qb-setup-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .qb-connect,

@@ -21,7 +21,8 @@ export default async function PluginConnectPage({
       <div className="rounded-xl border border-[#efe7de] bg-white p-6">
         <h1 className="text-xl font-semibold">Connexion plugin</h1>
         <p className="mt-2 text-sm text-slate-500">
-          Ouvrez QuoteBuilder depuis le bouton <strong>Connecter</strong> du plugin WordPress.
+          Ouvrez QuoteBuilder depuis le plugin WordPress : <strong>Créer un compte</strong> ou
+          J’ai déjà un compte.
         </p>
         <Link href="/integrations" className="mt-4 inline-block text-sm font-medium text-[#C2410C]">
           Aller aux boutiques
@@ -35,18 +36,7 @@ export default async function PluginConnectPage({
 
   const ctx = await getOrgContext();
   if (!ctx) {
-    return (
-      <div className="rounded-xl border border-[#efe7de] bg-white p-6">
-        <h1 className="text-xl font-semibold">Créez d’abord un espace</h1>
-        <p className="mt-2 text-sm text-slate-500">
-          Le plugin WordPress se branche sur un espace QuoteBuilder. Terminez l’onboarding, puis
-          cliquez à nouveau sur Connecter dans WordPress.
-        </p>
-        <Link href="/onboarding" className="mt-4 inline-block text-sm font-medium text-[#C2410C]">
-          Créer un espace
-        </Link>
-      </div>
-    );
+    redirect(`/onboarding?next=${encodeURIComponent(`/integrations/plugin/connect?${params}`)}`);
   }
 
   if (!isAdminRole(ctx.role)) {

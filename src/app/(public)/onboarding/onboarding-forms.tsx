@@ -17,10 +17,11 @@ function Submit({ label }: { label: string }) {
   );
 }
 
-export function CreateSpaceForm() {
+export function CreateSpaceForm({ next = "" }: { next?: string }) {
   const [state, action] = useActionState(createSpace, { error: "" });
   return (
     <form action={action} className="border-t border-slate-200 pt-6">
+      {next ? <input type="hidden" name="next" value={next} /> : null}
       <h2 className="text-sm font-medium text-slate-900">Créer mon espace</h2>
       <label className="mt-3 block text-sm text-slate-600">
         Nom de l’entreprise
@@ -38,10 +39,11 @@ export function CreateSpaceForm() {
   );
 }
 
-export function JoinSpaceForm() {
+export function JoinSpaceForm({ next = "" }: { next?: string }) {
   const [state, action] = useActionState(joinSpace, { error: "" });
   return (
     <form action={action} className="border-t border-slate-200 pt-6">
+      {next ? <input type="hidden" name="next" value={next} /> : null}
       <h2 className="text-sm font-medium text-slate-900">Rejoindre un espace</h2>
       <p className="mt-1 text-xs text-slate-500">
         Uniquement si personne n’y est encore. Sinon, demandez une invitation.

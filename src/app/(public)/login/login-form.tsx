@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { DEMO_ACCOUNTS } from "@/lib/auth/demo";
 import { postLoginPath } from "@/lib/auth/platform";
@@ -11,6 +12,8 @@ const fieldClass =
   "mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-900/10";
 
 export function LoginForm({ configured }: { configured: boolean }) {
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(
@@ -112,7 +115,10 @@ export function LoginForm({ configured }: { configured: boolean }) {
 
       <p className="mt-8 text-sm text-slate-500">
         Pas de compte ?{" "}
-        <Link href="/signup" className="font-medium text-slate-900 underline-offset-2 hover:underline">
+        <Link
+          href={next ? `/signup?next=${encodeURIComponent(next)}` : "/signup"}
+          className="font-medium text-slate-900 underline-offset-2 hover:underline"
+        >
           Créer un accès
         </Link>
       </p>

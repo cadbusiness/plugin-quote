@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "Vinci Liberta LTD",
-      changelog: `<h4>${version}</h4><ul><li>Connexion en un clic vers QuoteBuilder (WooCommerce + funnel).</li><li>Header plugin, plus de bandeau noir, réglages boutique / bouton / liste.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>Logo QuoteBuilder.</li><li>Compte obligatoire : sans espace connecté, aucune collecte.</li></ul>`,
     },
     null,
     2,

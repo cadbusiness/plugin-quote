@@ -1,16 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { AuthSplit } from "@/components/marketing/auth-split";
+import { safeNextPath } from "@/lib/auth/next-path";
 
 const fieldClass =
   "mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-900/10";
 
 export default function SignupPage() {
+  return (
+    <Suspense>
+      <SignupForm />
+    </Suspense>
+  );
+}
+
+function SignupForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = safeNextPath(searchParams.get("next"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +38,7 @@ export default function SignupPage() {
       setError(authError.message);
       return;
     }
-    router.push("/onboarding");
+    router.push(next ? `/onboarding?next=${encodeURIComponent(next)}` : "/onboarding");
     router.refresh();
   }
 
@@ -35,7 +46,7 @@ export default function SignupPage() {
     <AuthSplit>
       <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Créer un accès</h1>
       <p className="mt-1.5 text-sm text-slate-500">
-        Ensuite vous créez ou rejoignez un espace client.
+        Sans compte QuoteBuilder, WordPress ne peut pas collecter les demandes.
       </p>
 
       <form onSubmit={onSubmit} className="mt-8">
@@ -74,7 +85,10 @@ export default function SignupPage() {
 
       <p className="mt-8 text-sm text-slate-500">
         Déjà inscrit ?{" "}
-        <Link href="/login" className="font-medium text-slate-900 underline-offset-2 hover:underline">
+        <Link
+          href={next ? `/login?next=${encodeURIComponent(next)}` : "/login"}
+          className="font-medium text-slate-900 underline-offset-2 hover:underline"
+        >
           Connexion
         </Link>
       </p>

@@ -11,6 +11,7 @@ class QuoteBuilder_Admin {
         add_action('admin_notices', [self::class, 'plugins_notice']);
         add_action('admin_bar_menu', [self::class, 'admin_bar'], 80);
         add_action('admin_enqueue_scripts', [self::class, 'assets']);
+        add_action('admin_head', [self::class, 'menu_icon']);
         add_action('admin_head', [self::class, 'hide_notices']);
         add_filter('plugin_action_links_' . plugin_basename(QUOTEBUILDER_FILE), [self::class, 'action_links']);
     }
@@ -23,7 +24,7 @@ class QuoteBuilder_Admin {
             $cap,
             'quotebuilder',
             [self::class, 'render'],
-            'dashicons-clipboard',
+            QUOTEBUILDER_URL . 'assets/quotebuilder-mark.png',
             3
         );
         add_submenu_page(
@@ -80,10 +81,10 @@ class QuoteBuilder_Admin {
 
     public static function plugins_notice() {
         $screen = function_exists('get_current_screen') ? get_current_screen() : null;
-        if (!$screen || $screen->id !== 'plugins' || !quotebuilder_user_can()) {
+        if (QuoteBuilder_Settings::connected() || !$screen || $screen->id !== 'plugins' || !quotebuilder_user_can()) {
             return;
         }
-        echo '<div class="notice notice-info"><p><strong>QuoteBuilder</strong> v' . esc_html(QUOTEBUILDER_VERSION) . ' est actif. <a href="' . esc_url(admin_url('admin.php?page=quotebuilder')) . '">Ouvrir l’interface</a>.</p></div>';
+        echo '<div class="notice notice-info"><p><strong>QuoteBuilder</strong> v' . esc_html(QUOTEBUILDER_VERSION) . ' est actif. <a href="' . esc_url(admin_url('admin.php?page=quotebuilder')) . '">Créez un compte pour collecter les demandes</a>.</p></div>';
     }
 
     public static function admin_bar($bar) {
@@ -116,6 +117,10 @@ class QuoteBuilder_Admin {
         ]);
     }
 
+    public static function menu_icon() {
+        echo '<style>#adminmenu #toplevel_page_quotebuilder .wp-menu-image img{width:20px;height:20px;padding:6px 0;object-fit:contain}</style>';
+    }
+
     public static function hide_notices() {
         $screen = get_current_screen();
         if (!$screen || $screen->id !== 'toplevel_page_quotebuilder') {
@@ -144,19 +149,21 @@ class QuoteBuilder_Admin {
         $connected = QuoteBuilder_Settings::connected();
         $funnel = QuoteBuilder_Settings::funnel();
         $settings = QuoteBuilder_Settings::storefront();
-        $quotes = $tab === 'accueil' ? QuoteBuilder_Pairing::quotes() : [];
+        $quotes = ($connected && $tab === 'accueil') ? QuoteBuilder_Pairing::quotes() : [];
         $woo = QuoteBuilder_Pairing::woocommerce_ready();
         $flash = QuoteBuilder_Pairing::flash();
+        $logo = QUOTEBUILDER_URL . 'assets/quotebuilder-mark.png';
         ?>
         <div class="qb-wrap">
             <header class="qb-header">
                 <div class="qb-brand">
-                    <span class="qb-logo" aria-hidden="true"></span>
-                    <div>
-                        <strong>QuoteBuilder</strong>
-                        <span>v<?php echo esc_html(QUOTEBUILDER_VERSION); ?></span>
-                    </div>
+                    <img class="qb-logo" src="<?php echo esc_url($logo); ?>" alt="QuoteBuilder" width="32" height="32">
+                    <strong>QuoteBuilder</strong>
+                    <?php if ($connected) : ?>
+                        <span class="qb-ver">v<?php echo esc_html(QUOTEBUILDER_VERSION); ?></span>
+                    <?php endif; ?>
                 </div>
+                <?php if ($connected) : ?>
                 <nav class="qb-tabs">
                     <?php foreach ($tabs as $key => $label) : ?>
                         <a class="<?php echo $tab === $key ? 'is-active' : ''; ?>" href="<?php echo esc_url(admin_url('admin.php?page=quotebuilder&tab=' . $key)); ?>">
@@ -164,12 +171,13 @@ class QuoteBuilder_Admin {
                         </a>
                     <?php endforeach; ?>
                 </nav>
+                <?php endif; ?>
                 <div class="qb-header-actions">
                     <?php if ($connected) : ?>
                         <span class="qb-pill is-on">Connecté</span>
                         <a class="qb-ghost" href="<?php echo esc_url(QuoteBuilder_Settings::origin() . '/devis'); ?>" target="_blank" rel="noopener">Ouvrir QuoteBuilder</a>
                     <?php else : ?>
-                        <a class="qb-primary" href="<?php echo esc_url(QuoteBuilder_Pairing::start_url()); ?>">Connecter</a>
+                        <a class="qb-primary" href="<?php echo esc_url(QuoteBuilder_Pairing::start_url('signup')); ?>">Créer un compte</a>
                     <?php endif; ?>
                 </div>
             </header>
@@ -178,7 +186,9 @@ class QuoteBuilder_Admin {
                     <p class="qb-banner"><?php echo esc_html($flash); ?></p>
                 <?php endif; ?>
                 <?php
-                if ($tab === 'accueil') {
+                if (!$connected) {
+                    self::view_setup($woo);
+                } elseif ($tab === 'accueil') {
                     self::view_home($connected, $woo, $funnel, $quotes, $settings);
                 } elseif ($tab === 'boutique') {
                     self::view_catalog($settings);
@@ -192,6 +202,23 @@ class QuoteBuilder_Admin {
                     self::view_account($connected, $funnel, $woo);
                 }
                 ?>
+            </div>
+        </div>
+        <?php
+    }
+
+    private static function view_setup($woo) {
+        ?>
+        <div class="qb-setup">
+            <img class="qb-setup-logo" src="<?php echo esc_url(QUOTEBUILDER_URL . 'assets/quotebuilder-mark.png'); ?>" alt="QuoteBuilder" width="72" height="72">
+            <h1>Un compte QuoteBuilder est obligatoire</h1>
+            <p>Sans espace connecté, WordPress ne peut pas collecter les demandes. Le plugin n’active la vitrine devis qu’après connexion : prix, liste et funnel restent dans QuoteBuilder.</p>
+            <?php if (!$woo) : ?>
+                <p class="qb-banner is-warn">Activez WooCommerce, puis créez votre compte.</p>
+            <?php endif; ?>
+            <div class="qb-setup-actions">
+                <a class="qb-primary qb-primary-lg" href="<?php echo esc_url(QuoteBuilder_Pairing::start_url('signup')); ?>">Créer un compte</a>
+                <a class="qb-ghost qb-primary-lg" href="<?php echo esc_url(QuoteBuilder_Pairing::start_url('connect')); ?>">J’ai déjà un compte</a>
             </div>
         </div>
         <?php
@@ -223,19 +250,6 @@ class QuoteBuilder_Admin {
                 <strong><?php echo $woo ? 'Actif' : 'Absent'; ?></strong>
             </div>
         </section>
-        <?php if (!$connected) : ?>
-            <section class="qb-connect">
-                <div>
-                    <h2>Connecter WooCommerce</h2>
-                    <p>Un clic ouvre QuoteBuilder. Vous choisissez l’espace, le plugin crée la clé catalogue et importe les produits.</p>
-                </div>
-                <?php if ($woo) : ?>
-                    <a class="qb-primary qb-primary-lg" href="<?php echo esc_url(QuoteBuilder_Pairing::start_url()); ?>">Connecter QuoteBuilder</a>
-                <?php else : ?>
-                    <p class="qb-banner is-warn">Activez WooCommerce pour brancher le catalogue.</p>
-                <?php endif; ?>
-            </section>
-        <?php else : ?>
             <section class="qb-grid">
                 <article>
                     <p class="qb-kicker">Vitrine</p>
@@ -250,7 +264,6 @@ class QuoteBuilder_Admin {
                     <button type="button" class="qb-ghost" id="qb-sync">Synchroniser les produits</button>
                 </article>
             </section>
-        <?php endif; ?>
         <section class="qb-panel">
             <div class="qb-row">
                 <div>
@@ -259,9 +272,7 @@ class QuoteBuilder_Admin {
                 </div>
                 <button type="button" class="qb-ghost" id="qb-refresh">Actualiser</button>
             </div>
-            <?php if (!$connected) : ?>
-                <p class="qb-empty">Connectez le plugin pour voir les demandes ici.</p>
-            <?php elseif (!$quotes) : ?>
+            <?php if (!$quotes) : ?>
                 <p class="qb-empty">Aucune demande pour l’instant.</p>
             <?php else : ?>
                 <table class="qb-table">

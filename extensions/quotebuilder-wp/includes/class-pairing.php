@@ -41,8 +41,12 @@ class QuoteBuilder_Pairing {
         return QuoteBuilder_Settings::origin() . '/integrations/plugin/connect?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986);
     }
 
-    public static function start_url() {
-        return wp_nonce_url(admin_url('admin.php?page=quotebuilder&qb_connect=start'), 'quotebuilder_connect');
+    public static function start_url($intent = 'connect') {
+        $intent = $intent === 'signup' ? 'signup' : 'connect';
+        return wp_nonce_url(
+            admin_url('admin.php?page=quotebuilder&qb_connect=start&intent=' . $intent),
+            'quotebuilder_connect'
+        );
     }
 
     public static function handle_connect() {
@@ -60,7 +64,18 @@ class QuoteBuilder_Pairing {
                 wp_safe_redirect(admin_url('admin.php?page=quotebuilder'));
                 exit;
             }
-            wp_redirect(self::authorize_url());
+            $connect = self::authorize_url();
+            $intent = sanitize_key($_GET['intent'] ?? 'connect');
+            if ($intent === 'signup') {
+                $parts = wp_parse_url($connect);
+                $path = ($parts['path'] ?? '/integrations/plugin/connect');
+                if (!empty($parts['query'])) {
+                    $path .= '?' . $parts['query'];
+                }
+                wp_redirect(QuoteBuilder_Settings::origin() . '/signup?next=' . rawurlencode($path));
+                exit;
+            }
+            wp_redirect($connect);
             exit;
         }
         if ($action !== 'done') {

@@ -154,6 +154,9 @@ class QuoteBuilder_Quote {
     }
 
     public static function render_page() {
+        if (!QuoteBuilder_Settings::connected()) {
+            return '<p class="qb-empty">Connectez QuoteBuilder dans WordPress pour collecter les demandes.</p>';
+        }
         $settings = QuoteBuilder_Settings::storefront();
         $funnel = QuoteBuilder_Settings::funnel();
         $items = self::items();

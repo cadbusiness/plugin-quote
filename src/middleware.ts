@@ -94,6 +94,10 @@ export async function middleware(request: NextRequest) {
   }
 
   if (path === "/onboarding" && user && (await hasOrg())) {
+    const dest = request.nextUrl.searchParams.get("next");
+    if (dest?.startsWith("/") && !dest.startsWith("//") && !dest.includes("://")) {
+      return NextResponse.redirect(new URL(dest, request.nextUrl.origin));
+    }
     const app = request.nextUrl.clone();
     app.pathname = "/devis";
     return NextResponse.redirect(app);

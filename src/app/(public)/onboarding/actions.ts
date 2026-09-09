@@ -3,6 +3,11 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createOrganizationForUser, joinOrganizationForUser } from "@/lib/org/onboarding";
+import { safeNextPath } from "@/lib/auth/next-path";
+
+function afterOnboarding(formData: FormData) {
+  return safeNextPath(String(formData.get("next") ?? "")) || "/devis";
+}
 
 export async function createSpace(
   _prev: { error: string },
@@ -19,7 +24,7 @@ export async function createSpace(
   } catch (error) {
     return { error: error instanceof Error ? error.message : "Création impossible" };
   }
-  redirect("/devis");
+  redirect(afterOnboarding(formData));
 }
 
 export async function joinSpace(
@@ -37,5 +42,5 @@ export async function joinSpace(
   } catch (error) {
     return { error: error instanceof Error ? error.message : "Impossible de rejoindre" };
   }
-  redirect("/devis");
+  redirect(afterOnboarding(formData));
 }
