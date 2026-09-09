@@ -17,10 +17,10 @@ export function PairingCard({ configuratorId }: { configuratorId: string | null 
   return (
     <div className="flex flex-wrap items-center gap-3 border-b border-slate-100 bg-slate-50/60 px-4 py-3 lg:px-6">
       <div className="mr-auto min-w-0">
-        <p className="text-sm font-medium text-slate-900">Site WordPress : appairage en un code</p>
+        <p className="text-sm font-medium text-slate-900">Plugin boutique : appairage en un code</p>
         <p className="text-xs text-slate-500">
-          Le plugin QuoteBuilder crée lui-même la clé WooCommerce en lecture seule et les webhooks
-          produits. Aucune clé à copier à la main.
+          Le plugin QuoteBuilder masque les prix, remplace le panier par une liste de devis
+          et envoie la demande dans votre funnel. Aucune clé à copier à la main.
         </p>
       </div>
       <a
@@ -44,7 +44,7 @@ export function PairingCard({ configuratorId }: { configuratorId: string | null 
       </button>
       {code ? (
         <p className="w-full text-xs text-slate-500">
-          Collez ce code dans WordPress → Réglages → QuoteBuilder. Valable 30 minutes, un seul usage.
+          Collez ce code dans WordPress → QuoteBuilder → Funnel. Valable 30 minutes, un seul usage.
         </p>
       ) : null}
     </div>

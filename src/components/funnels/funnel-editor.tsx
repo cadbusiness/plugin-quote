@@ -194,7 +194,7 @@ export function FunnelEditor({
           <div className="border-b border-slate-100 px-4 py-3 lg:px-6">
             <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Diffusion</p>
             <p className="mt-0.5 text-sm text-slate-500">
-              Page publique, widget sur votre site, ou shortcode WordPress — le même funnel.
+              Page publique, widget, plugin WordPress (liste de devis + funnel) — le même parcours.
             </p>
           </div>
           <CopyBlock label="Lien public" value={publicUrl} />

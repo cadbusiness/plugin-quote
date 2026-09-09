@@ -1,0 +1,160 @@
+.qb-hide-prices .price,
+.qb-hide-prices .woocommerce-Price-amount {
+  display: none !important;
+}
+
+.qb-hide-cart .single_add_to_cart_button,
+.qb-hide-cart .add_to_cart_button,
+.qb-hide-cart form.cart .quantity {
+  display: none !important;
+}
+
+.qb-atq {
+  --qb-btn-bg: #e85d04;
+  --qb-btn-color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px 0;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--qb-btn-bg);
+  color: var(--qb-btn-color);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.qb-atq-link {
+  background: transparent;
+  color: var(--qb-btn-bg);
+  padding: 0;
+  text-decoration: underline;
+}
+
+.qb-fab {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 9999;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: #16110d;
+  color: #fff;
+  padding: 10px 14px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(22, 17, 13, 0.18);
+}
+
+.qb-fab span {
+  min-width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #e85d04;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.qb-drawer {
+  position: fixed;
+  right: 18px;
+  bottom: 72px;
+  z-index: 9999;
+  width: min(360px, calc(100vw - 32px));
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 18px 50px rgba(22, 17, 13, 0.16);
+}
+
+.qb-drawer[hidden] {
+  display: none;
+}
+
+.qb-drawer-close {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  border: 0;
+  background: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.qb-kicker {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #e85d04;
+}
+
+.qb-drawer h2,
+.qb-quote-list h2 {
+  margin: 6px 0 14px;
+}
+
+.qb-drawer-items,
+.qb-quote-items {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+}
+
+.qb-drawer-items li,
+.qb-quote-items li {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #efe7de;
+}
+
+.qb-quote-items img,
+.qb-drawer-items img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.qb-remove {
+  border: 0;
+  background: none;
+  color: #9a8f84;
+  cursor: pointer;
+}
+
+.qb-quote-page {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.qb-quote-list {
+  background: #f8f5f1;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.qb-empty {
+  color: #5c5348;
+}
+
+.qb-qty {
+  width: 64px;
+}
+
+@media (max-width: 860px) {
+  .qb-quote-page {
+    grid-template-columns: 1fr;
+  }
+}

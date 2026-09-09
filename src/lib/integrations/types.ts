@@ -1,4 +1,5 @@
 import type { ProductOption } from "@/lib/wizard/types";
+import { DEFAULT_STOREFRONT, parseStorefront, type StorefrontSettings } from "@/lib/integrations/storefront";
 
 export type CatalogProvider = "woocommerce" | "shopify";
 
@@ -69,6 +70,8 @@ export type ConnectionSettings = {
   markupPercent: number;
   /** Ne garder que ces catégories / types de produit (vide = tout) */
   categories: string[];
+  /** Vitrine boutique : masquer prix / panier, bouton devis. Partagé WP + Shopify. */
+  storefront: StorefrontSettings;
 };
 
 export const DEFAULT_SETTINGS: ConnectionSettings = {
@@ -77,16 +80,20 @@ export const DEFAULT_SETTINGS: ConnectionSettings = {
   archiveMissing: true,
   markupPercent: 0,
   categories: [],
+  storefront: DEFAULT_STOREFRONT,
 };
 
 export function parseSettings(value: unknown): ConnectionSettings {
-  const raw = (value && typeof value === "object" ? value : {}) as Partial<ConnectionSettings>;
+  const raw = (value && typeof value === "object" ? value : {}) as Partial<ConnectionSettings> & {
+    storefront?: unknown;
+  };
   return {
     importDrafts: Boolean(raw.importDrafts ?? DEFAULT_SETTINGS.importDrafts),
     skipOutOfStock: Boolean(raw.skipOutOfStock ?? DEFAULT_SETTINGS.skipOutOfStock),
     archiveMissing: Boolean(raw.archiveMissing ?? DEFAULT_SETTINGS.archiveMissing),
     markupPercent: Number(raw.markupPercent ?? 0) || 0,
     categories: Array.isArray(raw.categories) ? raw.categories.map(String).filter(Boolean) : [],
+    storefront: parseStorefront(raw.storefront),
   };
 }
 

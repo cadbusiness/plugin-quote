@@ -21,7 +21,7 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 - **Collecte progressive d’identité (prénom, email, téléphone intercalés)** — Partiel. Capture anticipée prénom + email, puis écran contact (téléphone / société).
 - **Sauvegarde de session dès l’email saisi** — Partiel. Sauvegarde au moment où l’email est soumis dans le bloc de capture, pas à la frappe. Reprise `/reprendre`.
 - **URL publique standalone** — Livré. `/c/[org]/[slug]`.
-- **Embed widget JS + plugin WordPress + bloc Gutenberg** — Livré.
+- **Embed widget JS + plugin WordPress + bloc Gutenberg** — Livré. Plugin vitrine devis (prix, panier, liste) + funnel.
 
 ### Catalogue
 - **Saisie manuelle (nom, SKU, description, prix min/max, tags, catégorie)** — Partiel. Image non exposée dans l’UI.
@@ -83,9 +83,9 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 
 ### Intégrations cœur
 - **Widget JS universel** — Livré.
-- **Plugin WordPress + bloc Gutenberg** — Livré.
+- **Plugin WordPress + bloc Gutenberg** — Livré. Vitrine devis Woo (prix, panier, liste, funnel) branchée sur QuoteBuilder.
 - **Webhook sortant / export JSON** — Livré.
-- **WooCommerce (catalogue + commandes + statuts)** — Partiel. Catalogue livré (import, sync, webhooks, appairage plugin) ; commandes et statuts à faire.
+- **WooCommerce (catalogue + commandes + statuts)** — Partiel. Catalogue livré (import, sync, webhooks, appairage plugin). Plugin vitrine : masquer prix / panier, liste de devis, funnel prérempli. Commandes et statuts Woo à faire.
 
 ### Paramètres cœur
 - **Templates email personnalisables** — Livré.

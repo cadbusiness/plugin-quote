@@ -19,6 +19,7 @@ import {
   type ProviderCredentials,
   type ResolvedConnection,
 } from "@/lib/integrations/types";
+import { parseStorefront } from "@/lib/integrations/storefront";
 import { normalizeSiteUrl } from "@/lib/integrations/woocommerce";
 import type { Json } from "@/lib/db/database.types";
 import { createClient } from "@/lib/supabase/server";
@@ -80,7 +81,7 @@ export async function connectStore(
     return { error: error instanceof Error ? error.message : "Boutique invalide." };
   }
 
-  const settings = readSettings(formData);
+  const catalogSettings = readSettings(formData);
   const configuratorId = String(formData.get("configurator_id") ?? "") || null;
   const webhookSecret = String(formData.get("webhook_secret") ?? "").trim() || randomToken(24);
 
@@ -92,7 +93,7 @@ export async function connectStore(
     label: storeDomain,
     storeDomain,
     credentials,
-    settings,
+    settings: catalogSettings,
     webhookSecret,
     currency: "EUR",
   };
@@ -102,6 +103,17 @@ export async function connectStore(
   if (!test.ok) return { error: test.error };
 
   const supabase = await createClient();
+  const { data: existing } = await supabase
+    .from("catalog_connections")
+    .select("settings")
+    .eq("organization_id", ctx.organization.id)
+    .eq("provider", provider)
+    .eq("store_domain", storeDomain)
+    .maybeSingle();
+  const settings: ConnectionSettings = {
+    ...catalogSettings,
+    storefront: parseSettings(existing?.settings).storefront,
+  };
   const label = String(formData.get("label") ?? "").trim() || test.shopName || storeDomain;
 
   const { data: connection, error } = await supabase
@@ -161,12 +173,67 @@ export async function updateConnection(formData: FormData) {
   const id = String(formData.get("id") ?? "");
   if (!id) return;
   const supabase = await createClient();
+  const { data: existing } = await supabase
+    .from("catalog_connections")
+    .select("settings")
+    .eq("id", id)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  const settings: ConnectionSettings = {
+    ...readSettings(formData),
+    storefront: parseSettings(existing?.settings).storefront,
+  };
   await supabase
     .from("catalog_connections")
     .update({
       label: String(formData.get("label") ?? "").trim() || "Boutique",
       configurator_id: String(formData.get("configurator_id") ?? "") || null,
-      settings: readSettings(formData) as unknown as Json,
+      settings: settings as unknown as Json,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .eq("organization_id", ctx.organization.id);
+  revalidatePath(`/integrations/${id}`);
+  revalidatePath("/integrations");
+}
+
+export async function updateStorefront(formData: FormData) {
+  const ctx = await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+  const supabase = await createClient();
+  const { data: existing } = await supabase
+    .from("catalog_connections")
+    .select("settings")
+    .eq("id", id)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  if (!existing) return;
+  const current = parseSettings(existing.settings);
+  const settings: ConnectionSettings = {
+    ...current,
+    storefront: parseStorefront({
+      hidePrices: formData.get("hidePrices") === "on",
+      hideAddToCart: formData.get("hideAddToCart") === "on",
+      buttonLabel: String(formData.get("buttonLabel") ?? ""),
+      buttonStyle: String(formData.get("buttonStyle") ?? "button"),
+      buttonBg: String(formData.get("buttonBg") ?? ""),
+      buttonColor: String(formData.get("buttonColor") ?? ""),
+      showOnShop: formData.get("showOnShop") === "on",
+      showOnProduct: formData.get("showOnProduct") === "on",
+      showOnCart: formData.get("showOnCart") === "on",
+      showOnCheckout: formData.get("showOnCheckout") === "on",
+      audience: String(formData.get("audience") ?? "all"),
+      outOfStockOnly: formData.get("outOfStockOnly") === "on",
+      scope: String(formData.get("scope") ?? "all"),
+      productIds: current.storefront.productIds,
+      categoryIds: current.storefront.categoryIds,
+    }),
+  };
+  await supabase
+    .from("catalog_connections")
+    .update({
+      settings: settings as unknown as Json,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)

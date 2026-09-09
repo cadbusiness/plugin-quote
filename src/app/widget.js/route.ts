@@ -38,10 +38,12 @@ export function GET() {
       fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: payload, keepalive: true }).catch(function () {});
     }
   }
-  function iframeSrc(org, id, vid) {
+  function iframeSrc(el, org, id, vid) {
     var params = new URLSearchParams(window.location.search);
     params.set("qb_vid", vid);
     if (document.referrer && !params.get("qb_ref")) params.set("qb_ref", document.referrer);
+    var cart = el.getAttribute("data-cart");
+    if (cart && !params.get("qb_cart")) params.set("qb_cart", cart);
     return ${JSON.stringify(origin)} + "/embed/" + encodeURIComponent(org) + "/" + encodeURIComponent(id) + "?" + params.toString();
   }
   function mount(el) {
@@ -51,7 +53,7 @@ export function GET() {
     var vid = visitorId();
     track(org, id, vid);
     var iframe = document.createElement("iframe");
-    iframe.src = iframeSrc(org, id, vid);
+    iframe.src = iframeSrc(el, org, id, vid);
     iframe.style.width = "100%";
     iframe.style.border = "0";
     iframe.style.minHeight = el.getAttribute("data-height") || "720px";

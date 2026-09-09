@@ -21,7 +21,7 @@ npm run dev
 <script src="https://VOTRE_DOMAINE/widget.js"></script>
 ```
 
-WordPress : shortcode `[quotebuilder org="quickly" id="rayonnage"]` — zip dans `extensions/quotebuilder-wp.zip`, servi aussi sur `/quotebuilder-wp.zip`.
+WordPress : plugin dans `extensions/quotebuilder-wp/` (zip `/quotebuilder-wp.zip`). Il masque les prix WooCommerce, remplace le panier par une liste de devis, et envoie la demande dans le funnel QuoteBuilder. Shortcode `[quotebuilder]` / `[quotebuilder_quote]`.
 
 ## Catalogue connecté (WooCommerce / Shopify)
 

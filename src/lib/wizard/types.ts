@@ -69,6 +69,8 @@ export type Product = {
   tags: string[];
   options: ProductOption[];
   stockStatus: string | null;
+  /** Identifiant boutique (Woo / Shopify) pour préremplir depuis la vitrine. */
+  externalId: string | null;
 };
 
 export type Suggestion = {
@@ -108,10 +110,21 @@ export type ConfiguratorDefinition = {
 
 export type Answers = Record<string, Json>;
 
+export type StorefrontLine = {
+  externalId: string;
+  name: string;
+  quantity: number;
+  sku?: string | null;
+  variation?: string;
+  options?: Record<string, string>;
+};
+
 export type Customization = {
   quantities: Record<string, number>;
   options: Record<string, Record<string, string>>;
   notes?: string;
+  /** Produits ajoutés depuis la boutique, y compris ceux pas encore sync. */
+  storefrontLines?: StorefrontLine[];
 };
 
 export type ChatMessage = {

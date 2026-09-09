@@ -35,6 +35,7 @@ function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Produ
     tags: row.tags ?? [],
     options,
     stockStatus: row.stock_status ?? null,
+    externalId: row.external_id,
   };
 }
 

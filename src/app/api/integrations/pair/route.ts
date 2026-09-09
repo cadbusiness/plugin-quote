@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { encryptCredentials, maskHint, randomToken } from "@/lib/integrations/secrets";
 import { runCatalogSync } from "@/lib/integrations/sync";
-import { DEFAULT_SETTINGS } from "@/lib/integrations/types";
+import { DEFAULT_SETTINGS, parseSettings } from "@/lib/integrations/types";
+import { pluginPayload } from "@/lib/integrations/plugin";
 import { normalizeSiteUrl } from "@/lib/integrations/woocommerce";
 import type { Json } from "@/lib/db/database.types";
 import { createServiceClient } from "@/lib/supabase/service";
@@ -57,6 +58,17 @@ export async function POST(req: Request) {
   }
 
   const webhookSecret = randomToken(24);
+  const { data: existing } = await supabase
+    .from("catalog_connections")
+    .select("settings")
+    .eq("organization_id", pairing.organization_id)
+    .eq("provider", "woocommerce")
+    .eq("store_domain", siteUrl)
+    .maybeSingle();
+  const settings = {
+    ...DEFAULT_SETTINGS,
+    storefront: parseSettings(existing?.settings).storefront,
+  };
   const { data: connection, error } = await supabase
     .from("catalog_connections")
     .upsert(
@@ -71,7 +83,7 @@ export async function POST(req: Request) {
           consumer_secret: body.consumer_secret,
         }) as unknown as Json,
         credentials_hint: maskHint(body.consumer_key),
-        settings: DEFAULT_SETTINGS as unknown as Json,
+        settings: settings as unknown as Json,
         webhook_secret: webhookSecret,
         status: "active",
         last_error: null,
@@ -79,7 +91,7 @@ export async function POST(req: Request) {
       },
       { onConflict: "organization_id,provider,store_domain" },
     )
-    .select("id, webhook_secret")
+    .select("*")
     .single();
 
   if (error || !connection) {
@@ -97,13 +109,10 @@ export async function POST(req: Request) {
     .eq("id", pairing.id);
 
   const result = await runCatalogSync({ connectionId: connection.id, trigger: "pairing" });
+  const payload = await pluginPayload(connection);
 
-  const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "").replace(/\/$/, "");
   return NextResponse.json({
-    ok: !result.error,
-    connection_id: connection.id,
-    webhook_url: `${appUrl}/api/integrations/${connection.id}/webhook`,
-    webhook_secret: connection.webhook_secret,
+    ...payload,
     imported: result.created + result.updated,
     error: result.error,
   });
