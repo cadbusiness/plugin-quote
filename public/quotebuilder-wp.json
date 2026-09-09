@@ -1,10 +1,10 @@
 {
   "slug": "quotebuilder-wp",
   "name": "QuoteBuilder",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "requires": "6.0",
   "requires_php": "7.4",
   "tested": "6.8",
   "author": "QuoteBuilder",
-  "changelog": "<h4>2.3.1</h4><ul><li>Écran de connexion centré dans WordPress.</li></ul>"
+  "changelog": "<h4>2.3.2</h4><ul><li>Le plugin remplit toute la page WordPress, avec un pied de page copyright QuoteBuilder.</li></ul>"
 }

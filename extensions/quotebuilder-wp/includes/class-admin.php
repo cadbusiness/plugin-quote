@@ -202,6 +202,10 @@ class QuoteBuilder_Admin {
                 }
                 ?>
             </div>
+            <footer class="qb-footer">
+                <img src="<?php echo esc_url($logo); ?>" alt="" width="18" height="18">
+                <span>© <?php echo esc_html(gmdate('Y')); ?> QuoteBuilder. Tous droits réservés.</span>
+            </footer>
         </div>
         <?php
     }

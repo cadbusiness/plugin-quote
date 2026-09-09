@@ -1,17 +1,27 @@
-.toplevel_page_quotebuilder #wpcontent {
-  padding-left: 0;
+body.toplevel_page_quotebuilder,
+body.toplevel_page_quotebuilder #wpwrap,
+body.toplevel_page_quotebuilder #wpcontent,
+body.toplevel_page_quotebuilder #wpbody,
+body.toplevel_page_quotebuilder #wpbody-content {
+  background: #f8f5f1;
 }
 
-.toplevel_page_quotebuilder #wpbody,
-.toplevel_page_quotebuilder #wpbody-content {
+body.toplevel_page_quotebuilder #wpcontent {
+  padding-left: 0;
+  padding-bottom: 0;
+}
+
+body.toplevel_page_quotebuilder #wpbody,
+body.toplevel_page_quotebuilder #wpbody-content {
   padding: 0;
+  padding-bottom: 0;
   float: none;
   min-height: calc(100vh - 32px);
 }
 
-.toplevel_page_quotebuilder #wpbody-content > .notice,
-.toplevel_page_quotebuilder #wpfooter,
-.toplevel_page_quotebuilder .update-nag {
+body.toplevel_page_quotebuilder #wpbody-content > .notice,
+body.toplevel_page_quotebuilder #wpfooter,
+body.toplevel_page_quotebuilder .update-nag {
   display: none !important;
 }
 
@@ -93,8 +103,10 @@
 }
 
 .qb-body {
-  padding: 20px 20px 72px;
+  flex: 1;
+  padding: 20px 20px 32px;
   max-width: 920px;
+  width: 100%;
 }
 
 .qb-wrap.is-setup .qb-body {
@@ -105,6 +117,26 @@
   max-width: none;
   width: 100%;
   padding: 32px 24px;
+}
+
+.qb-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 20px;
+  background: #fff;
+  border-top: 1px solid #efe7de;
+  color: #9a8f84;
+  font-size: 12px;
+}
+
+.qb-footer img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
 
 .qb-kicker {
