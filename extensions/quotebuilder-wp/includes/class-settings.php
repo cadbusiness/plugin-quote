@@ -105,7 +105,7 @@ class QuoteBuilder_Settings {
 
     public static function ajax_save_storefront() {
         check_ajax_referer('quotebuilder_admin');
-        if (!current_user_can('manage_options')) {
+        if (!quotebuilder_user_can()) {
             wp_send_json_error(['message' => 'Droits insuffisants.'], 403);
         }
         $body = json_decode(wp_unslash($_POST['payload'] ?? '{}'), true);
@@ -115,7 +115,7 @@ class QuoteBuilder_Settings {
 
     public static function ajax_refresh() {
         check_ajax_referer('quotebuilder_admin');
-        if (!current_user_can('manage_options')) {
+        if (!quotebuilder_user_can()) {
             wp_send_json_error(['message' => 'Droits insuffisants.'], 403);
         }
         $payload = QuoteBuilder_Pairing::refresh();
@@ -127,7 +127,7 @@ class QuoteBuilder_Settings {
 
     public static function ajax_search_products() {
         check_ajax_referer('quotebuilder_admin');
-        if (!current_user_can('manage_options')) {
+        if (!quotebuilder_user_can()) {
             wp_send_json_error(['message' => 'Droits insuffisants.'], 403);
         }
         $term = sanitize_text_field(wp_unslash($_GET['q'] ?? ''));
@@ -146,7 +146,7 @@ class QuoteBuilder_Settings {
 
     public static function ajax_search_categories() {
         check_ajax_referer('quotebuilder_admin');
-        if (!current_user_can('manage_options')) {
+        if (!quotebuilder_user_can()) {
             wp_send_json_error(['message' => 'Droits insuffisants.'], 403);
         }
         $term = sanitize_text_field(wp_unslash($_GET['q'] ?? ''));

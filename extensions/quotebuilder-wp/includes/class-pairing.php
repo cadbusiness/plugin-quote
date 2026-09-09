@@ -217,7 +217,7 @@ class QuoteBuilder_Pairing {
 
     public static function ajax_pair() {
         check_ajax_referer('quotebuilder_admin');
-        if (!current_user_can('manage_options')) {
+        if (!quotebuilder_user_can()) {
             wp_send_json_error(['message' => 'Droits insuffisants.'], 403);
         }
         $result = self::pair(sanitize_text_field(wp_unslash($_POST['code'] ?? '')));
@@ -229,7 +229,7 @@ class QuoteBuilder_Pairing {
 
     public static function ajax_unpair() {
         check_ajax_referer('quotebuilder_admin');
-        if (!current_user_can('manage_options')) {
+        if (!quotebuilder_user_can()) {
             wp_send_json_error(['message' => 'Droits insuffisants.'], 403);
         }
         self::unpair();
@@ -238,7 +238,7 @@ class QuoteBuilder_Pairing {
 
     public static function ajax_save_origin() {
         check_ajax_referer('quotebuilder_admin');
-        if (!current_user_can('manage_options')) {
+        if (!quotebuilder_user_can()) {
             wp_send_json_error(['message' => 'Droits insuffisants.'], 403);
         }
         update_option('quotebuilder_origin', esc_url_raw(wp_unslash($_POST['origin'] ?? '')));

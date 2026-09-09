@@ -6,21 +6,95 @@ if (!defined('ABSPATH')) {
 
 class QuoteBuilder_Admin {
     public static function init() {
-        add_action('admin_menu', [self::class, 'menu']);
+        add_action('admin_menu', [self::class, 'menu'], 9);
+        add_action('admin_init', [self::class, 'activation_redirect']);
+        add_action('admin_notices', [self::class, 'plugins_notice']);
+        add_action('admin_bar_menu', [self::class, 'admin_bar'], 80);
         add_action('admin_enqueue_scripts', [self::class, 'assets']);
         add_action('admin_head', [self::class, 'hide_notices']);
+        add_filter('plugin_action_links_' . plugin_basename(QUOTEBUILDER_FILE), [self::class, 'action_links']);
     }
 
     public static function menu() {
+        $cap = quotebuilder_capability();
         add_menu_page(
             'QuoteBuilder',
             'QuoteBuilder',
-            'manage_options',
+            $cap,
             'quotebuilder',
             [self::class, 'render'],
             'dashicons-clipboard',
-            56
+            3
         );
+        add_submenu_page(
+            'quotebuilder',
+            'QuoteBuilder',
+            'Tableau de bord',
+            $cap,
+            'quotebuilder',
+            [self::class, 'render']
+        );
+        add_options_page(
+            'QuoteBuilder',
+            'QuoteBuilder',
+            $cap,
+            'quotebuilder-settings',
+            [self::class, 'redirect_from_settings']
+        );
+        if (class_exists('WooCommerce')) {
+            add_submenu_page(
+                'woocommerce',
+                'QuoteBuilder',
+                'QuoteBuilder',
+                $cap,
+                'quotebuilder-woo',
+                [self::class, 'redirect_from_settings']
+            );
+        }
+    }
+
+    public static function redirect_from_settings() {
+        wp_safe_redirect(admin_url('admin.php?page=quotebuilder'));
+        exit;
+    }
+
+    public static function activation_redirect() {
+        if (!get_transient('quotebuilder_activation_redirect')) {
+            return;
+        }
+        delete_transient('quotebuilder_activation_redirect');
+        if (isset($_GET['activate-multi']) || wp_doing_ajax() || !quotebuilder_user_can()) {
+            return;
+        }
+        wp_safe_redirect(admin_url('admin.php?page=quotebuilder'));
+        exit;
+    }
+
+    public static function action_links($links) {
+        array_unshift(
+            $links,
+            '<a href="' . esc_url(admin_url('admin.php?page=quotebuilder')) . '"><strong>Ouvrir QuoteBuilder</strong></a>'
+        );
+        return $links;
+    }
+
+    public static function plugins_notice() {
+        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+        if (!$screen || $screen->id !== 'plugins' || !quotebuilder_user_can()) {
+            return;
+        }
+        echo '<div class="notice notice-info"><p><strong>QuoteBuilder</strong> est actif. Ouvrez <a href="' . esc_url(admin_url('admin.php?page=quotebuilder')) . '">l’interface QuoteBuilder</a> — aussi dans le menu de gauche, sous Réglages, et sous WooCommerce.</p></div>';
+    }
+
+    public static function admin_bar($bar) {
+        if (!quotebuilder_user_can() || !is_admin_bar_showing()) {
+            return;
+        }
+        $bar->add_node([
+            'id' => 'quotebuilder',
+            'title' => 'QuoteBuilder',
+            'href' => admin_url('admin.php?page=quotebuilder'),
+        ]);
     }
 
     public static function assets($hook) {
@@ -52,8 +126,8 @@ class QuoteBuilder_Admin {
     }
 
     public static function render() {
-        if (!current_user_can('manage_options')) {
-            return;
+        if (!quotebuilder_user_can()) {
+            wp_die('Vous n’avez pas les droits pour ouvrir QuoteBuilder.');
         }
         $tab = sanitize_key($_GET['tab'] ?? 'accueil');
         $tabs = [
