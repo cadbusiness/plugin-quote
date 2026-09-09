@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   Bell,
   Inbox,
+  Mail,
   Package,
   PanelsTopLeft,
   Plus,
@@ -125,6 +126,9 @@ export function HeaderActions({
             ) : null}
             <ActionLink href="/devis" icon={Inbox} onClick={() => setMenu(null)}>
               Demandes
+            </ActionLink>
+            <ActionLink href="/emails#nouveau" icon={Mail} onClick={() => setMenu(null)}>
+              Campagne email
             </ActionLink>
             {isAdmin ? (
               <ActionLink href="/equipe" icon={UserPlus} onClick={() => setMenu(null)}>

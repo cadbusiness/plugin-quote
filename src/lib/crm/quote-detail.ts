@@ -143,6 +143,8 @@ export function activityLabel(type: string) {
       return "Email au prospect";
     case "call_logged":
       return "Appel";
+    case "campaign_sent":
+      return "Campagne email";
     default:
       return type;
   }
@@ -163,6 +165,7 @@ function activityDetail(type: string, payload: Json, memberLabel: Map<string, st
     return id ? (memberLabel.get(id) ?? "Commercial") : "Non assigné";
   }
   if (type === "call_logged" && typeof data.note === "string" && data.note) return data.note;
+  if (type === "campaign_sent" && typeof data.subject === "string") return data.subject;
   if (type === "email_sent" && typeof data.template_kind === "string") {
     if (data.template_kind === "prospect_confirm") return "Confirmation prospect";
     if (data.template_kind === "sales_brief") return "Brief commercial";

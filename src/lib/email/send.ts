@@ -2,10 +2,7 @@ import { Resend } from "resend";
 import { createServiceClient } from "@/lib/supabase/service";
 import type { Tables } from "@/lib/db/database.types";
 import type { Answers } from "@/lib/wizard/types";
-
-function fill(template: string, vars: Record<string, string>) {
-  return template.replace(/\{\{(\w+)\}\}/g, (_, key: string) => vars[key] ?? "");
-}
+import { fill } from "@/lib/email/fill";
 
 function formatAnswers(answers: Answers) {
   return Object.entries(answers)
@@ -124,6 +121,33 @@ export async function sendTemplateEmail(input: {
     text: input.body,
     attachments: input.attachments,
   });
+}
+
+export async function sendHtmlEmail(input: {
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
+  from?: string;
+  replyTo?: string;
+}) {
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  if (!apiKey) {
+    console.warn("RESEND_API_KEY manquante — email non envoyé");
+    return { skipped: true as const };
+  }
+  const resend = new Resend(apiKey);
+  const from = input.from || process.env.RESEND_FROM || "QuoteBuilder <devis@localhost>";
+  const { error } = await resend.emails.send({
+    from,
+    to: input.to,
+    subject: input.subject,
+    html: input.html,
+    text: input.text,
+    replyTo: input.replyTo,
+  });
+  if (error) throw new Error(error.message);
+  return { skipped: false as const };
 }
 
 export { fill };

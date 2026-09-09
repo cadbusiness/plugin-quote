@@ -178,6 +178,158 @@ export type Database = {
           },
         ]
       }
+      comm_channels: {
+        Row: {
+          address: string
+          created_at: string
+          credentials: Json
+          credentials_hint: string | null
+          id: string
+          inbound_token: string
+          label: string
+          last_error: string | null
+          last_sync_at: string | null
+          organization_id: string
+          provider: string
+          scope: string
+          settings: Json
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          address: string
+          created_at?: string
+          credentials?: Json
+          credentials_hint?: string | null
+          id?: string
+          inbound_token?: string
+          label: string
+          last_error?: string | null
+          last_sync_at?: string | null
+          organization_id: string
+          provider: string
+          scope?: string
+          settings?: Json
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          credentials?: Json
+          credentials_hint?: string | null
+          id?: string
+          inbound_token?: string
+          label?: string
+          last_error?: string | null
+          last_sync_at?: string | null
+          organization_id?: string
+          provider?: string
+          scope?: string
+          settings?: Json
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comm_channels_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      comm_messages: {
+        Row: {
+          body_html: string | null
+          body_text: string | null
+          channel_id: string
+          created_at: string
+          direction: string
+          external_id: string | null
+          from_address: string
+          from_name: string | null
+          id: string
+          organization_id: string
+          quote_id: string | null
+          read_at: string | null
+          received_at: string
+          subject: string | null
+          to_address: string | null
+        }
+        Insert: {
+          body_html?: string | null
+          body_text?: string | null
+          channel_id: string
+          created_at?: string
+          direction: string
+          external_id?: string | null
+          from_address: string
+          from_name?: string | null
+          id?: string
+          organization_id: string
+          quote_id?: string | null
+          read_at?: string | null
+          received_at?: string
+          subject?: string | null
+          to_address?: string | null
+        }
+        Update: {
+          body_html?: string | null
+          body_text?: string | null
+          channel_id?: string
+          created_at?: string
+          direction?: string
+          external_id?: string | null
+          from_address?: string
+          from_name?: string | null
+          id?: string
+          organization_id?: string
+          quote_id?: string | null
+          read_at?: string | null
+          received_at?: string
+          subject?: string | null
+          to_address?: string | null
+        }
+        Relationships: []
+      }
+      contact_segments: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          name: string
+          organization_id: string
+          rules: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          organization_id: string
+          rules?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          organization_id?: string
+          rules?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       configurators: {
         Row: {
           chat_enabled: boolean
@@ -224,6 +376,111 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      email_campaigns: {
+        Row: {
+          channel_id: string | null
+          created_at: string
+          created_by: string | null
+          design: Json
+          html: string | null
+          id: string
+          name: string
+          organization_id: string
+          preview_text: string | null
+          scheduled_at: string | null
+          segment_id: string | null
+          send_mode: string
+          sent_at: string | null
+          sent_count: number
+          skip_recent_days: number
+          status: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          channel_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          design?: Json
+          html?: string | null
+          id?: string
+          name: string
+          organization_id: string
+          preview_text?: string | null
+          scheduled_at?: string | null
+          segment_id?: string | null
+          send_mode?: string
+          sent_at?: string | null
+          sent_count?: number
+          skip_recent_days?: number
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Update: {
+          channel_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          design?: Json
+          html?: string | null
+          id?: string
+          name?: string
+          organization_id?: string
+          preview_text?: string | null
+          scheduled_at?: string | null
+          segment_id?: string | null
+          send_mode?: string
+          sent_at?: string | null
+          sent_count?: number
+          skip_recent_days?: number
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      email_campaign_sends: {
+        Row: {
+          campaign_id: string
+          contact_email: string
+          contact_name: string | null
+          created_at: string
+          id: string
+          opened_at: string | null
+          organization_id: string
+          quote_id: string | null
+          sent_at: string | null
+          skip_reason: string | null
+          status: string
+        }
+        Insert: {
+          campaign_id: string
+          contact_email: string
+          contact_name?: string | null
+          created_at?: string
+          id?: string
+          opened_at?: string | null
+          organization_id: string
+          quote_id?: string | null
+          sent_at?: string | null
+          skip_reason?: string | null
+          status?: string
+        }
+        Update: {
+          campaign_id?: string
+          contact_email?: string
+          contact_name?: string | null
+          created_at?: string
+          id?: string
+          opened_at?: string | null
+          organization_id?: string
+          quote_id?: string | null
+          sent_at?: string | null
+          skip_reason?: string | null
+          status?: string
+        }
+        Relationships: []
       }
       email_templates: {
         Row: {
