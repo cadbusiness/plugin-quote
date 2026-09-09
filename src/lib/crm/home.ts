@@ -26,17 +26,18 @@ export type HomeModuleDef = {
   hint: string;
   admin?: boolean;
   defaultOn: boolean;
+  span: "full" | "half";
 };
 
 export const HOME_MODULES: HomeModuleDef[] = [
-  { id: "quotes", label: "Demandes", hint: "Dossiers à ouvrir, puis les plus récents.", defaultOn: true },
-  { id: "abandons", label: "Abandons", hint: "Jauge visites → email → relance.", defaultOn: true },
-  { id: "stats", label: "Statistiques", hint: "Tunnel, pipeline et conversion du mois.", defaultOn: true },
-  { id: "automations", label: "Automatisations", hint: "Parcours actifs et exécutions en cours.", defaultOn: true, admin: true },
-  { id: "emails", label: "Emails", hint: "Campagnes envoyées, planifiées, brouillons.", defaultOn: true },
-  { id: "segments", label: "Segmentation", hint: "Listes B2B / B2C, score, funnel.", defaultOn: true },
-  { id: "team", label: "Équipe", hint: "Membres et dossiers non assignés.", defaultOn: false, admin: true },
-  { id: "funnels", label: "Funnels", hint: "Configurateurs actifs à partager.", defaultOn: false, admin: true },
+  { id: "quotes", label: "Demandes", hint: "Les 4 derniers dossiers, pleine largeur.", defaultOn: true, span: "full" },
+  { id: "abandons", label: "Abandons", hint: "Jauges visites → email → relance.", defaultOn: true, span: "half" },
+  { id: "stats", label: "Statistiques", hint: "Devis, rappelés, signés, ce mois.", defaultOn: true, span: "half" },
+  { id: "automations", label: "Automatisations", hint: "Parcours actifs, 4 lignes.", defaultOn: true, admin: true, span: "half" },
+  { id: "emails", label: "Emails", hint: "Campagnes récentes, 4 lignes.", defaultOn: true, span: "half" },
+  { id: "segments", label: "Segmentation", hint: "Listes et volume de contacts.", defaultOn: true, span: "half" },
+  { id: "team", label: "Équipe", hint: "Membres et rôles.", defaultOn: false, admin: true, span: "half" },
+  { id: "funnels", label: "Funnels", hint: "Configurateurs à partager.", defaultOn: false, admin: true, span: "half" },
 ];
 
 export function defaultHomeModules(isAdmin: boolean): HomeModuleId[] {
@@ -75,6 +76,10 @@ export function resolveHomeModules(input: {
 
 export function homeModulesCookieValue(ids: HomeModuleId[]) {
   return ids.length ? ids.join(",") : "-";
+}
+
+export function moduleSpan(id: HomeModuleId) {
+  return HOME_MODULES.find((item) => item.id === id)?.span ?? "half";
 }
 
 export type HomeQuote = Awaited<ReturnType<typeof listQuotes>>[number];
@@ -159,7 +164,7 @@ export async function loadHomeDashboard(
 
   const [quotes, statusesRes, abandons, stats, campaignsRes, workflowsRes, runsRes, segmentsRes, membersRes, assigneesRes, funnelsRes] =
     await Promise.all([
-      need.has("quotes") ? listQuotes(supabase, orgId, { limit: 6 }) : Promise.resolve([]),
+      need.has("quotes") ? listQuotes(supabase, orgId, { limit: 4 }) : Promise.resolve([]),
       need.has("quotes")
         ? supabase.from("quote_statuses").select("id, label, slug").eq("organization_id", orgId)
         : Promise.resolve({ data: [] as { id: string; label: string; slug: string }[] }),
@@ -171,7 +176,7 @@ export async function loadHomeDashboard(
             .select("id, name, status, sent_count, send_mode")
             .eq("organization_id", orgId)
             .order("created_at", { ascending: false })
-            .limit(5)
+            .limit(4)
         : Promise.resolve({ data: [] as HomeCampaign[] }),
       need.has("automations")
         ? supabase
@@ -180,7 +185,7 @@ export async function loadHomeDashboard(
             .eq("organization_id", orgId)
             .neq("status", "archived")
             .order("created_at", { ascending: false })
-            .limit(6)
+            .limit(4)
         : Promise.resolve({ data: [] as { id: string; name: string; status: string; trigger_type: string }[] }),
       need.has("automations")
         ? supabase.from("workflow_runs").select("workflow_id, status").eq("organization_id", orgId)
@@ -191,7 +196,7 @@ export async function loadHomeDashboard(
             .select("id, name, rules")
             .eq("organization_id", orgId)
             .order("created_at", { ascending: false })
-            .limit(6)
+            .limit(4)
         : Promise.resolve({ data: [] as { id: string; name: string; rules: Json }[] }),
       need.has("team")
         ? supabase.from("memberships").select("id, invited_email, role, status").eq("organization_id", orgId)
@@ -205,7 +210,7 @@ export async function loadHomeDashboard(
             .select("id, name, slug, is_active")
             .eq("organization_id", orgId)
             .order("created_at", { ascending: false })
-            .limit(6)
+            .limit(4)
         : Promise.resolve({ data: [] as HomeFunnel[] }),
     ]);
 
