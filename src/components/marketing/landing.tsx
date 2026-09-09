@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand/brand-logo";
+import { AutopilotStage } from "@/components/marketing/autopilot-stage";
 import { LandingSectors } from "@/components/marketing/landing-sectors";
 import { SystemCinema } from "@/components/marketing/system-cinema";
 
@@ -292,32 +293,7 @@ export function Landing() {
 
       <section id="autopilote" className="scroll-mt-24 bg-[#1A1510] px-6 py-14 text-[#F6F0E8] sm:py-20">
         <div className="mx-auto max-w-6xl">
-          <p className="text-sm font-medium text-[#F3B184]">Après la soumission</p>
-          <h2 className="mt-2 max-w-xl text-2xl font-semibold tracking-tight sm:text-3xl">
-            Les devis avancent tout seuls.
-          </h2>
-          <p className="mt-4 max-w-xl text-[16px] leading-7 text-[#F6F0E8]/75 sm:text-[17px] sm:leading-8">
-            C’est là que les formulaires s’arrêtent. QuoteBuilder enchaîne les relances que 92 %
-            des équipes abandonnent avant la 4ᵉ, sans que vous traquiez chaque fil.
-          </p>
-          <div className="mt-10 grid gap-5 sm:grid-cols-2">
-            <CrmCard
-              title="Pipeline + score"
-              text="Nouveau → Contacté → En cours → Gagné / Perdu. Hot, warm, cold. Vous priorisez d’un coup d’œil."
-            />
-            <CrmCard
-              title="Assignation"
-              text="Une demande, un commercial. Notification, notes, historique."
-            />
-            <CrmCard
-              title="Workflows"
-              text="Confirmation T+0, relance abandon, rappel si non traité, branches score / statut."
-            />
-            <CrmCard
-              title="Stats utiles"
-              text="Volume, conversion, délai, CA potentiel. Abandons relançables à un clic."
-            />
-          </div>
+          <AutopilotStage />
         </div>
       </section>
 
@@ -477,15 +453,6 @@ function ModeCard({ title, text }: { title: string; text: string }) {
     <article className="rounded-2xl bg-white p-5 ring-1 ring-black/6 sm:p-6">
       <h3 className="text-base font-semibold sm:text-lg">{title}</h3>
       <p className="mt-3 text-[15px] leading-7 text-[#1A1510]/70">{text}</p>
-    </article>
-  );
-}
-
-function CrmCard({ title, text }: { title: string; text: string }) {
-  return (
-    <article className="rounded-2xl bg-white/6 p-5 ring-1 ring-white/10">
-      <h3 className="text-base font-semibold sm:text-lg">{title}</h3>
-      <p className="mt-2 text-[15px] leading-7 text-[#F6F0E8]/70">{text}</p>
     </article>
   );
 }
