@@ -69,7 +69,7 @@ export function LandingSectors() {
         })}
       </div>
       <p className="mx-auto mt-6 max-w-2xl text-center text-[15px] leading-7 text-[#1A1510]/60">
-        Templates sectoriels prêts — parcours + automations de base en moins d’une heure.
+        Templates sectoriels : parcours + relances de base, prêts en moins d’une heure.
       </p>
       <p className="mx-auto mt-10 max-w-2xl text-center text-[17px] leading-8 text-[#1A1510]/75">
         {selected.blurb}
