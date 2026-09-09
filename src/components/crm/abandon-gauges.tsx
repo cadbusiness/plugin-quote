@@ -1,69 +1,7 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { GaugeRing } from "@/components/ui/gauge-ring";
 import type { AbandonSnapshot, AbandonView } from "@/lib/crm/abandons";
-
-const TONES = {
-  slate: "#0f172a",
-  orange: "#E85D04",
-  amber: "#d97706",
-} as const;
-
-function Ring({
-  value,
-  max,
-  tone,
-  label,
-}: {
-  value: number;
-  max: number;
-  tone: keyof typeof TONES;
-  label: string;
-}) {
-  const pct = max <= 0 ? 0 : Math.min(1, value / max);
-  const r = 34;
-  const c = 2 * Math.PI * r;
-  const track = c * 0.75;
-  const fill = track * pct;
-  return (
-    <svg viewBox="0 0 92 92" className="h-20 w-20 shrink-0" role="img" aria-label={label}>
-      <g transform="rotate(135 46 46)">
-        <circle
-          cx="46"
-          cy="46"
-          r={r}
-          fill="none"
-          stroke="#e2e8f0"
-          strokeWidth="9"
-          strokeLinecap="round"
-          strokeDasharray={`${track} ${c}`}
-        />
-        {pct > 0 ? (
-          <circle
-            cx="46"
-            cy="46"
-            r={r}
-            fill="none"
-            stroke={TONES[tone]}
-            strokeWidth="9"
-            strokeLinecap="round"
-            strokeDasharray={`${fill} ${c}`}
-          />
-        ) : null}
-      </g>
-      <text
-        x="46"
-        y="50"
-        textAnchor="middle"
-        fill={TONES[tone]}
-        fontSize={value > 99 ? 18 : 24}
-        fontWeight={600}
-        fontFamily="ui-sans-serif, system-ui, sans-serif"
-      >
-        {value}
-      </text>
-    </svg>
-  );
-}
 
 function GaugeLink({
   href,
@@ -105,7 +43,7 @@ export function AbandonGauges({
   return (
     <div className="grid grid-cols-1 border-b border-slate-200 sm:grid-cols-3">
       <GaugeLink href="/sessions" active={view === "tous"}>
-        <Ring
+        <GaugeRing
           value={snapshot.started}
           max={base}
           tone="slate"
@@ -114,7 +52,7 @@ export function AbandonGauges({
         <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Visites</p>
       </GaugeLink>
       <GaugeLink href="/sessions?vue=email" active={view === "email"}>
-        <Ring
+        <GaugeRing
           value={snapshot.baskets}
           max={base}
           tone="orange"
@@ -123,7 +61,7 @@ export function AbandonGauges({
         <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Email</p>
       </GaugeLink>
       <GaugeLink href="/sessions?vue=relance" active={view === "relance"} last>
-        <Ring
+        <GaugeRing
           value={snapshot.stale}
           max={base}
           tone="amber"
