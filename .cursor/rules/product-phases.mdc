@@ -6,15 +6,16 @@ alwaysApply: true
 # Phases produit
 
 QuoteBuilder = funnel de devis B2B, pas un formulaire.  
+Vertical **commerce agent** Anthropic pour le B2B sur devis PME (Claude = intelligence ; catalogue / devis chez le commerçant).  
 Carte officielle : `docs/produit.md`.
 
 ## Cœur (maintenant)
 
-Funnel (création guidée, steps, 3 modes, embed widget/WP, URL publique, session + identité progressive), catalogue + Si/Alors + Woo à fiabiliser, demandes **en liste** (fiche, score, assignation, notes, abandons, CSV), espace prospect, workflows canvas (emails, wait, branches devis, assignation, statut, exécutions), équipe, stats volume/conversion/délai/score **par funnel et par campagne**, pont Google Ads (OAuth, conversions devis/gagné, ROI, mots-clés secteur), webhooks, templates email/PDF, **canaux** (boîtes mail org + staff), **emails marketing** (builder + envoi perso/groupe), **segmentation** (funnel, B2B/B2C).
+Funnel (création guidée, steps, 3 modes, **agent chat B2B devis** branché catalogue + gates, embed widget/WP, URL publique, session + identité progressive), catalogue + Si/Alors + Woo/Shopify, demandes **en liste** (fiche, score, assignation, notes, abandons, CSV), espace prospect, workflows canvas (emails, wait, branches devis, assignation, statut, exécutions), équipe, stats volume/conversion/délai/score **par funnel et par campagne**, pont Google Ads (OAuth, conversions devis/gagné, ROI, mots-clés secteur), webhooks, templates email/PDF, **canaux** (boîtes mail org + staff), **emails marketing** (builder + envoi perso/groupe), **segmentation** (funnel, B2B/B2C).
 
 ## Phase 2 (pas avant le cœur)
 
-Branches Si/Alors **entre steps**, preview live mobile/desktop, duplication, domaine custom, branding org (logo, couleurs), Kanban, nurturing T+7 j / réactivation T+30 j, Shopify, Zapier, Stripe, API keys, drop-off par étape, perf par commercial, GTM.
+Branches Si/Alors **entre steps**, preview live mobile/desktop, duplication, domaine custom, branding org (logo, couleurs), Kanban, nurturing T+7 j / réactivation T+30 j, Zapier, Stripe, API keys, drop-off par étape, perf par commercial, GTM, **merchant agent** dashboard (NL + approval gates).
 
 ## Phase 3 (vision)
 

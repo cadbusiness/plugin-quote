@@ -209,7 +209,7 @@ export const PRICING_MATRIX: PricingMatrixSection[] = [
       },
       {
         label: "Chat IA",
-        tip: "Conversation IA branchée sur votre catalogue.",
+        tip: "Agent commerce Claude branché sur votre catalogue (brief devis, pas de paiement).",
         values: { free: false, starter: true, pro: true, agency: true },
       },
       {

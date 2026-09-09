@@ -1,6 +1,8 @@
 # QuoteBuilder
 
-SaaS de génération de devis intelligent (wizard + chat IA). Pilote : Quickly International.
+SaaS de génération de devis intelligent (wizard + **agent commerce B2B**). Pilote : Quickly International.
+
+Le chat prospect suit les patterns du blueprint Anthropic [`commerce-agents`](https://github.com/anthropics/commerce-agents) (boucle outils, catalogue, gates) adapté au devis PME — pas un fork du repo Python.
 
 ## Démarrage
 
@@ -36,4 +38,4 @@ App Flutter (iOS / Android) : dossier [`mobile/`](mobile/), `cd mobile && flutte
 
 ## Stack
 
-Next.js 16, Supabase (`spgskgtycqxjziwjpjol`), Claude, Resend, React-PDF.
+Next.js 16, Supabase (`spgskgtycqxjziwjpjol`), Claude (agent devis `src/lib/commerce-agent/`), Resend, React-PDF.
