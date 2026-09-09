@@ -83,7 +83,7 @@ class QuoteBuilder_Admin {
         if (!$screen || $screen->id !== 'plugins' || !quotebuilder_user_can()) {
             return;
         }
-        echo '<div class="notice notice-info"><p><strong>QuoteBuilder</strong> est actif. Ouvrez <a href="' . esc_url(admin_url('admin.php?page=quotebuilder')) . '">l’interface QuoteBuilder</a> — aussi dans le menu de gauche, sous Réglages, et sous WooCommerce.</p></div>';
+        echo '<div class="notice notice-info"><p><strong>QuoteBuilder</strong> v' . esc_html(QUOTEBUILDER_VERSION) . ' est actif. <a href="' . esc_url(admin_url('admin.php?page=quotebuilder')) . '">Ouvrir l’interface</a>. Les mises à jour arrivent dans Extensions comme WooCommerce.</p></div>';
     }
 
     public static function admin_bar($bar) {
@@ -389,7 +389,7 @@ class QuoteBuilder_Admin {
         <header class="qb-hero">
             <p class="qb-kicker">Funnel</p>
             <h1>Le plugin n’est pas un second logiciel. C’est la vitrine du vôtre.</h1>
-            <p>Le shortcode, le bloc Gutenberg et la page devis chargent le même configurateur que l’URL publique.</p>
+            <p>Version <code><?php echo esc_html(QUOTEBUILDER_VERSION); ?></code> — les prochaines versions apparaissent dans <strong>Extensions → Mises à jour</strong>, comme WooCommerce.</p>
         </header>
         <section class="qb-card">
             <label>Adresse de l’espace QuoteBuilder

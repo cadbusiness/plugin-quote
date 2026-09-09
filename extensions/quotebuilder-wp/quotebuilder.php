@@ -2,10 +2,11 @@
 /**
  * Plugin Name: QuoteBuilder
  * Description: Transforme WooCommerce en boutique devis : masquer les prix, liste de devis, funnel QuoteBuilder.
- * Version: 2.0.1
+ * Version: 2.1.0
  * Author: Vinci Liberta LTD
  * Requires at least: 6.0
  * Requires PHP: 7.4
+ * Update URI: https://quotebuilder-weld.vercel.app
  * Text Domain: quotebuilder
  */
 
@@ -13,7 +14,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('QUOTEBUILDER_VERSION', '2.0.1');
+define('QUOTEBUILDER_VERSION', '2.1.0');
 define('QUOTEBUILDER_FILE', __FILE__);
 define('QUOTEBUILDER_DIR', plugin_dir_path(__FILE__));
 define('QUOTEBUILDER_URL', plugin_dir_url(__FILE__));
@@ -25,6 +26,7 @@ $quotebuilder_required = [
     'includes/class-quote.php',
     'includes/class-storefront.php',
     'includes/class-admin.php',
+    'includes/class-updater.php',
 ];
 foreach ($quotebuilder_required as $quotebuilder_file) {
     $quotebuilder_path = QUOTEBUILDER_DIR . $quotebuilder_file;
@@ -53,6 +55,7 @@ function quotebuilder_boot() {
 }
 add_action('plugins_loaded', 'quotebuilder_boot');
 QuoteBuilder_Admin::init();
+QuoteBuilder_Updater::init();
 
 function quotebuilder_activate() {
     if (class_exists('QuoteBuilder_Quote')) {

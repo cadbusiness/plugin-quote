@@ -21,7 +21,7 @@ npm run dev
 <script src="https://VOTRE_DOMAINE/widget.js"></script>
 ```
 
-WordPress : plugin dans `extensions/quotebuilder-wp/` (zip `/quotebuilder-wp.zip`). Il masque les prix WooCommerce, remplace le panier par une liste de devis, et envoie la demande dans le funnel QuoteBuilder. Shortcode `[quotebuilder]` / `[quotebuilder_quote]`.
+WordPress : plugin dans `extensions/quotebuilder-wp/`. Le zip et la version sont générés au build (`/quotebuilder-wp.zip`, `/api/public/plugin/wordpress`). Les sites qui ont le plugin 2.1+ voient les mises à jour dans Extensions, comme un plugin commercial.
 
 ## Catalogue connecté (WooCommerce / Shopify)
 
