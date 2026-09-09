@@ -56,10 +56,26 @@ export type StatsStory = {
   actionLabel?: string;
 };
 
+export type StatsPulse = {
+  visitors: number;
+  emails: number;
+  submitted: number;
+  contacted: number;
+  won: number;
+  waiting: number;
+  contactRate: number;
+  winRate: number;
+  conversion: number;
+  pipeline: number;
+  delayLabel: string;
+  delayHours: number | null;
+};
+
 export type StatsDashboard = {
   range: StatsRange;
   story: StatsStory;
   kpis: Kpi[];
+  pulse: StatsPulse;
   funnel: FunnelStep[];
   sources: SourceRow[];
   pipeline: PipelineRow[];
@@ -620,6 +636,20 @@ export async function loadStatsDashboard(
       pipelineTotal,
     }),
     kpis,
+    pulse: {
+      visitors: current.visitors,
+      emails: current.emails,
+      submitted: current.submitted,
+      contacted: current.contacted,
+      won: current.won,
+      waiting: Math.max(0, current.submitted - current.contacted),
+      contactRate,
+      winRate: rate(current.won, current.submitted) ?? 0,
+      conversion: rate(current.submitted, current.visitors) ?? 0,
+      pipeline: pipelineTotal,
+      delayLabel: formatKpiHours(avgDelay),
+      delayHours: avgDelay,
+    },
     funnel,
     sources,
     pipeline,
