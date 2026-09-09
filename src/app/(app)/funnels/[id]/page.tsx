@@ -4,6 +4,7 @@ import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { FunnelEditor } from "@/components/funnels/funnel-editor";
 import { parseFunnelTab } from "@/lib/funnels/tabs";
 import { parseFunnelTracking } from "@/lib/funnels/tracking";
+import { parseFunnelKind } from "@/lib/funnels/kind";
 import { getAppUrl } from "@/lib/supabase/env";
 import { nodeTitle } from "@/lib/workflows/labels";
 import { parseDefinition, parseTriggerConfig } from "@/lib/workflows/types";
@@ -51,7 +52,7 @@ export default async function FunnelEditorPage({
         .order("created_at", { ascending: false }),
       supabase
         .from("products")
-        .select("id, name, description, image_url, price_min, price_max, configurator_id")
+        .select("id, name, description, image_url, price_min, price_max, category, configurator_id")
         .eq("organization_id", ctx.organization.id)
         .eq("is_active", true)
         .order("name")
@@ -73,6 +74,7 @@ export default async function FunnelEditorPage({
         slug: funnel.slug,
         wizardEnabled: funnel.wizard_enabled,
         chatEnabled: funnel.chat_enabled,
+        kind: parseFunnelKind(funnel.theme, funnel.wizard_enabled, funnel.chat_enabled),
         isActive: funnel.is_active,
       }}
       orgName={ctx.organization.name}
@@ -88,6 +90,7 @@ export default async function FunnelEditorPage({
           imageUrl: product.image_url,
           priceMin: product.price_min,
           priceMax: product.price_max,
+          category: product.category,
         }));
       })()}
       workflows={(workflows ?? []).map((workflow) => {

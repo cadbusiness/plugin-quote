@@ -22,7 +22,7 @@ import {
   updateFunnelStep,
 } from "@/app/(app)/funnels/actions";
 import { ChatStepBody, FormScreenBody, type PreviewProduct, type PreviewStep } from "@/components/funnels/parcours-preview";
-import { QUESTION_ADD, QUESTION_LABEL, SCREEN_ADD, SCREEN_LABEL, type FunnelKind } from "@/lib/funnels/builder";
+import { QUESTION_ADD, QUESTION_LABEL, SCREEN_ADD, screenLabel, type FunnelKind } from "@/lib/funnels/builder";
 import type { QuestionOptions, QuestionType, ScreenType } from "@/lib/wizard/types";
 import type { Tables } from "@/lib/db/database.types";
 
@@ -170,7 +170,11 @@ export function ParcoursBuilder({
           <p className="text-[10px] uppercase tracking-[0.16em] text-amber-400">{orgName}</p>
           <p className="text-sm font-medium">{funnelName}</p>
           <p className="mt-1 text-[11px] text-slate-300">
-            {kind === "chat" ? "Chat IA · glissez les blocs dans la conversation" : "Formulaire · glissez les écrans du parcours"}
+            {kind === "chat"
+              ? "Chat IA · glissez les blocs dans la conversation"
+              : kind === "catalog"
+                ? "Catalogue · rayons, produits, devis global"
+                : "Formulaire · glissez les écrans du parcours"}
           </p>
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 lg:px-8">
@@ -191,6 +195,7 @@ export function ParcoursBuilder({
       {selectedRow ? (
         <StepInspector
           funnelId={funnelId}
+          kind={kind}
           step={selectedRow}
           questions={byStep.get(selectedRow.id) ?? []}
           canDelete={ordered.length > 1}
@@ -322,7 +327,7 @@ function ScreenCard({
         )}
         <button type="button" onClick={onSelect} className="min-w-0 flex-1 text-left">
           <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
-            {SCREEN_LABEL[step.screen_type as ScreenType] ?? step.screen_type}
+            {screenLabel(step.screen_type as ScreenType, kind)}
           </p>
           <p className="truncate text-sm font-semibold text-slate-900">{step.title}</p>
         </button>
@@ -342,7 +347,7 @@ function ScreenCard({
         {kind === "chat" ? (
           <ChatStepBody step={preview} products={products} />
         ) : (
-          <FormScreenBody step={preview} products={products} />
+          <FormScreenBody step={preview} products={products} kind={kind} />
         )}
       </div>
     </div>
@@ -351,6 +356,7 @@ function ScreenCard({
 
 function StepInspector({
   funnelId,
+  kind,
   step,
   questions,
   canDelete,
@@ -360,6 +366,7 @@ function StepInspector({
   onRun,
 }: {
   funnelId: string;
+  kind: FunnelKind;
   step: Tables<"wizard_steps">;
   questions: Tables<"wizard_questions">[];
   canDelete: boolean;
@@ -373,7 +380,7 @@ function StepInspector({
     <aside className="flex w-80 shrink-0 flex-col overflow-y-auto border-l border-slate-200 bg-white px-4 py-4">
       <div className="mb-3 flex items-center gap-2">
         <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
-          {SCREEN_LABEL[step.screen_type as ScreenType] ?? step.screen_type}
+            {screenLabel(step.screen_type as ScreenType, kind)}
         </p>
         {canDelete ? (
           <button
@@ -446,9 +453,13 @@ function StepInspector({
       ) : (
         <p className="mt-3 text-sm text-slate-500">
           {step.screen_type === "suggestions"
-            ? "Le catalogue affiche les produits de ce funnel. Modifiez-les dans Catalogue."
+            ? kind === "catalog"
+              ? "Le prospect parcourt les catégories, ouvre une fiche, puis ajoute au devis."
+              : "Le catalogue affiche les produits de ce funnel. Modifiez-les dans Catalogue."
             : step.screen_type === "customize"
-              ? "Le prospect règle quantités et options sur les produits choisis."
+              ? kind === "catalog"
+                ? "Le devis global : quantités et options des produits ajoutés."
+                : "Le prospect règle quantités et options sur les produits choisis."
               : "Le prospect laisse nom, email, téléphone et société."}
         </p>
       )}

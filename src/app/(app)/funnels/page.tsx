@@ -6,6 +6,7 @@ import { Chip } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
 import { CreateFunnelDialog } from "@/components/dashboard/create-funnel-dialog";
 import { getFunnelTemplate } from "@/lib/funnels/templates";
+import { funnelKindLabel, funnelKindTone, parseFunnelKind } from "@/lib/funnels/kind";
 
 export default async function FunnelsPage() {
   const ctx = await getOrgContext();
@@ -14,7 +15,7 @@ export default async function FunnelsPage() {
   const supabase = await createClient();
   const { data: funnels } = await supabase
     .from("configurators")
-    .select("id, name, slug, sector, wizard_enabled, chat_enabled, is_active")
+    .select("id, name, slug, sector, wizard_enabled, chat_enabled, is_active, theme")
     .eq("organization_id", ctx.organization.id)
     .order("created_at", { ascending: false });
 
@@ -26,6 +27,7 @@ export default async function FunnelsPage() {
         {list.map((funnel) => {
           const template = getFunnelTemplate(funnel.sector);
           const href = `/c/${ctx.organization.slug}/${funnel.slug}`;
+          const kind = parseFunnelKind(funnel.theme, funnel.wizard_enabled, funnel.chat_enabled);
           return (
             <ClickableRow key={funnel.id} href={`/funnels/${funnel.id}`}>
               <td className="px-4 py-3 lg:px-6">
@@ -40,9 +42,7 @@ export default async function FunnelsPage() {
                 </span>
               </td>
               <td className="px-4 py-3 lg:px-6">
-                <Chip tone={funnel.chat_enabled && !funnel.wizard_enabled ? "violet" : "orange"}>
-                  {funnel.chat_enabled && !funnel.wizard_enabled ? "Chat IA" : "Formulaire"}
-                </Chip>
+                <Chip tone={funnelKindTone(kind)}>{funnelKindLabel(kind)}</Chip>
               </td>
               <td className="px-4 py-3 lg:px-6">
                 <a

@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/db/database.types";
 import { normalizeAttributes, toProspectOptions } from "@/lib/catalog/attributes";
 import { parseFunnelTracking, parseOrgGtm } from "@/lib/funnels/tracking";
+import { parseFunnelKind } from "@/lib/funnels/kind";
 import type {
   ConfiguratorDefinition,
   Product,
@@ -33,6 +34,7 @@ function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Produ
     priceMax: row.price_max,
     currency: row.currency,
     tags: row.tags ?? [],
+    category: row.category ?? null,
     options,
     stockStatus: row.stock_status ?? null,
     externalId: row.external_id,
@@ -116,6 +118,7 @@ export async function loadDefinition(
       sector: configurator.sector,
       wizardEnabled: configurator.wizard_enabled,
       chatEnabled: configurator.chat_enabled,
+      kind: parseFunnelKind(configurator.theme, configurator.wizard_enabled, configurator.chat_enabled),
       theme: asRecord(configurator.theme),
     },
     steps: (steps ?? []).map((s) => ({

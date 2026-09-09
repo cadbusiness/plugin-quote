@@ -4,6 +4,8 @@ import { useEffect, useState, useTransition } from "react";
 import { createFunnel } from "@/app/(app)/actions";
 import { ListAddRow } from "@/components/ui/list-panel";
 import { FUNNEL_TEMPLATES, getFunnelTemplate } from "@/lib/funnels/templates";
+import { catalogDefaultName, FUNNEL_KIND_OPTIONS } from "@/lib/funnels/kind";
+import type { FunnelKind } from "@/lib/funnels/builder";
 import type { ScreenType } from "@/lib/wizard/types";
 
 type ExistingFunnel = { id: string; name: string };
@@ -15,12 +17,18 @@ const SCREENS: { id: ScreenType; label: string; hint: string }[] = [
   { id: "contact", label: "Formulaire de contact", hint: "Nom, email, téléphone, société" },
 ];
 
+const CATALOG_SCREENS = [
+  { label: "Rayons et produits", hint: "Catégories, fiches, ajout au devis" },
+  { label: "Votre devis", hint: "Quantités, options, précisions" },
+  { label: "Demande globale", hint: "Une seule demande pour tout le panier" },
+];
+
 export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: ExistingFunnel[] }) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
   const [sector, setSector] = useState("kitchen");
   const [name, setName] = useState(getFunnelTemplate("kitchen").defaultName);
-  const [kind, setKind] = useState<"form" | "chat">("form");
+  const [kind, setKind] = useState<FunnelKind>("form");
   const [screens, setScreens] = useState<ScreenType[]>(["questions", "suggestions", "customize", "contact"]);
   const [catalogFrom, setCatalogFrom] = useState("");
   const [pending, startTransition] = useTransition();
@@ -45,10 +53,19 @@ export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: Exist
     };
   }, []);
 
+  function applyName(nextSector: string, nextKind: FunnelKind) {
+    const template = getFunnelTemplate(nextSector);
+    setName(nextKind === "catalog" ? catalogDefaultName(template.defaultName) : template.defaultName);
+  }
+
   function pickSector(id: string) {
     setSector(id);
-    const template = getFunnelTemplate(id);
-    setName(template.defaultName);
+    applyName(id, kind);
+  }
+
+  function pickKind(next: FunnelKind) {
+    setKind(next);
+    applyName(sector, next);
   }
 
   function toggleScreen(id: ScreenType) {
@@ -137,50 +154,88 @@ export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: Exist
                   </label>
                   <div>
                     <p className="text-sm font-medium text-slate-900">Type</p>
-                    <p className="mt-0.5 text-xs text-slate-500">Un funnel est un formulaire ou un chat, pas les deux.</p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      <ToggleChip on={kind === "form"} tone="orange" label="Formulaire" onClick={() => setKind("form")} />
-                      <ToggleChip on={kind === "chat"} tone="violet" label="Chat IA" onClick={() => setKind("chat")} />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-slate-900">Écrans</p>
-                    <p className="mt-0.5 text-xs text-slate-500">Le contact reste obligatoire pour recevoir un dossier.</p>
+                    <p className="mt-0.5 text-xs text-slate-500">
+                      Formulaire, chat, ou catalogue à parcourir. Un funnel, un parcours.
+                    </p>
                     <div className="mt-2 grid gap-2">
-                      {SCREENS.map((screen) => {
-                        const on = screens.includes(screen.id);
-                        const locked = screen.id === "contact";
+                      {FUNNEL_KIND_OPTIONS.map((item) => {
+                        const on = kind === item.id;
                         return (
                           <button
-                            key={screen.id}
+                            key={item.id}
                             type="button"
-                            disabled={locked}
-                            onClick={() => toggleScreen(screen.id)}
-                            className={`flex items-start justify-between rounded-lg px-3 py-2.5 text-left ring-1 ${
-                              on
-                                ? "bg-orange-50 text-slate-900 ring-orange-200"
-                                : "bg-white text-slate-600 ring-slate-200"
+                            onClick={() => pickKind(item.id)}
+                            className={`rounded-lg px-3 py-2.5 text-left ring-1 ${
+                              on ? "bg-orange-50 text-slate-900 ring-orange-200" : "bg-white text-slate-600 ring-slate-200"
                             }`}
                           >
-                            <span>
-                              <span className="block text-sm font-medium">{screen.label}</span>
-                              <span className="block text-xs text-slate-500">{screen.hint}</span>
-                            </span>
-                            <span className={`mt-0.5 text-xs font-medium ${on ? "text-[#E85D04]" : "text-slate-400"}`}>
-                              {on ? "Inclus" : "Off"}
-                            </span>
+                            <span className="block text-sm font-medium">{item.label}</span>
+                            <span className="block text-xs text-slate-500">{item.hint}</span>
                           </button>
                         );
                       })}
                     </div>
                   </div>
+                  {kind === "catalog" ? (
+                    <div>
+                      <p className="text-sm font-medium text-slate-900">Parcours</p>
+                      <p className="mt-0.5 text-xs text-slate-500">
+                        Le prospect parcourt vos gammes, ajoute au devis, puis envoie une demande unique.
+                      </p>
+                      <div className="mt-2 grid gap-2">
+                        {CATALOG_SCREENS.map((screen) => (
+                          <div key={screen.label} className="flex items-start justify-between rounded-lg bg-orange-50 px-3 py-2.5 ring-1 ring-orange-200">
+                            <span>
+                              <span className="block text-sm font-medium text-slate-900">{screen.label}</span>
+                              <span className="block text-xs text-slate-500">{screen.hint}</span>
+                            </span>
+                            <span className="mt-0.5 text-xs font-medium text-[#E85D04]">Inclus</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <p className="text-sm font-medium text-slate-900">Écrans</p>
+                      <p className="mt-0.5 text-xs text-slate-500">Le contact reste obligatoire pour recevoir un dossier.</p>
+                      <div className="mt-2 grid gap-2">
+                        {SCREENS.map((screen) => {
+                          const on = screens.includes(screen.id);
+                          const locked = screen.id === "contact";
+                          return (
+                            <button
+                              key={screen.id}
+                              type="button"
+                              disabled={locked}
+                              onClick={() => toggleScreen(screen.id)}
+                              className={`flex items-start justify-between rounded-lg px-3 py-2.5 text-left ring-1 ${
+                                on
+                                  ? "bg-orange-50 text-slate-900 ring-orange-200"
+                                  : "bg-white text-slate-600 ring-slate-200"
+                              }`}
+                            >
+                              <span>
+                                <span className="block text-sm font-medium">{screen.label}</span>
+                                <span className="block text-xs text-slate-500">{screen.hint}</span>
+                              </span>
+                              <span className={`mt-0.5 text-xs font-medium ${on ? "text-[#E85D04]" : "text-slate-400"}`}>
+                                {on ? "Inclus" : "Off"}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : null}
 
               {step === 2 ? (
                 <div className="space-y-3">
                   <p className="text-sm text-slate-600">
-                    Le catalogue est branché sur ce funnel. Vous pourrez l’importer en CSV ou via WooCommerce ensuite.
+                    {kind === "catalog"
+                      ? "Ce funnel affiche vos produits par catégorie. Vous pourrez les importer en CSV ou via WooCommerce ensuite."
+                      : "Le catalogue est branché sur ce funnel. Vous pourrez l’importer en CSV ou via WooCommerce ensuite."}
                   </p>
                   <label className="flex cursor-pointer items-start gap-3 rounded-lg px-3 py-3 ring-1 ring-slate-200 has-checked:bg-orange-50 has-checked:ring-orange-200">
                     <input
@@ -267,31 +322,5 @@ export function CreateFunnelDialog({ existingFunnels }: { existingFunnels: Exist
         </div>
       ) : null}
     </>
-  );
-}
-
-function ToggleChip({
-  on,
-  tone,
-  label,
-  onClick,
-}: {
-  on: boolean;
-  tone: "orange" | "violet";
-  label: string;
-  onClick: () => void;
-}) {
-  const active =
-    tone === "orange"
-      ? "bg-orange-50 text-orange-800 ring-orange-200"
-      : "bg-violet-50 text-violet-800 ring-violet-200";
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`rounded-full px-3 py-1.5 text-sm ring-1 ${on ? active : "bg-white text-slate-500 ring-slate-200"}`}
-    >
-      {label}
-    </button>
   );
 }

@@ -45,6 +45,20 @@ const customizeStep: TemplateStep = {
   screen_type: "customize",
 };
 
+export const CATALOG_FUNNEL_STEPS: TemplateStep[] = [
+  {
+    title: "Catalogue",
+    subtitle: "Parcourez les gammes et ajoutez les produits au devis",
+    screen_type: "suggestions",
+  },
+  {
+    title: "Votre devis",
+    subtitle: "Quantités, options et précisions",
+    screen_type: "customize",
+  },
+  contactStep,
+];
+
 function choices(items: { value: string; label: string; description?: string }[]): Json {
   return { choices: items };
 }

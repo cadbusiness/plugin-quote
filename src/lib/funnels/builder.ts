@@ -1,6 +1,6 @@
 import type { QuestionOptions, QuestionType, ScreenType } from "@/lib/wizard/types";
 
-export type FunnelKind = "form" | "chat";
+export type FunnelKind = "form" | "chat" | "catalog";
 
 export const SCREEN_LABEL: Record<ScreenType, string> = {
   questions: "Questions",
@@ -38,7 +38,21 @@ export function newKey(prefix: string) {
   return `${prefix}_${Math.random().toString(36).slice(2, 8)}`;
 }
 
-export function defaultStepCopy(type: ScreenType) {
+export function screenLabel(type: ScreenType, kind: FunnelKind = "form") {
+  if (kind === "catalog") {
+    if (type === "suggestions") return "Rayons";
+    if (type === "customize") return "Devis";
+  }
+  return SCREEN_LABEL[type];
+}
+
+export function defaultStepCopy(type: ScreenType, kind: FunnelKind = "form") {
+  if (kind === "catalog" && type === "suggestions") {
+    return { title: "Catalogue", subtitle: "Parcourez les gammes et ajoutez les produits au devis" };
+  }
+  if (kind === "catalog" && type === "customize") {
+    return { title: "Votre devis", subtitle: "Quantités, options et précisions" };
+  }
   if (type === "suggestions") {
     return { title: "Solutions recommandées", subtitle: "Configurations adaptées à votre brief" };
   }
