@@ -27,86 +27,179 @@ export const FAQ = [
   },
   {
     q: "Puis-je tester sans payer ?",
-    a: "Oui. Essai Pro 14 jours, sans carte bancaire. Assez pour voir l’interface ; les plans payants débloquent le volume et l’autopilote.",
+    a: "Oui. Le plan Free est illimité dans le temps : 1 funnel, wizard, 10 soumissions au total, sans carte. Assez pour voir l’interface avant de passer Starter ou Pro.",
   },
   {
     q: "Mensuel ou annuel ?",
-    a: "Les deux. L’annuel revient à 39 €/mois (Starter) ou 79 €/mois (Pro), soit deux mois offerts.",
+    a: "Les deux. L’annuel revient à 39 €/mois (Starter), 79 €/mois (Pro) ou 159 €/mois (Agency), soit deux mois offerts.",
   },
   {
-    q: "Vous travaillez avec des agences ?",
-    a: "Oui, sur devis. Agency n’est pas affiché ici : contactez-nous pour du multi-compte et du white-label.",
+    q: "C’est quoi Agency ?",
+    a: "Multi-compte, white-label, sièges illimités, support prioritaire. Pour les agences et réseaux multi-marques. Inscription directe, pas de devis obligatoire.",
   },
 ] as const;
 
-/** Plans visibles sur /tarifs — Free et Agency restent hors grille. */
-export const PUBLIC_PLANS = [
+export type PlanId = "free" | "starter" | "pro" | "agency";
+
+export type PublicPlan = {
+  id: PlanId;
+  name: string;
+  audience: string;
+  monthlyPrice: number | null;
+  annualMonthly: number | null;
+  annualTotal: number | null;
+  href: string;
+  cta: string;
+  featured: boolean;
+  badge: string | null;
+  highlight: "free" | "default" | "featured" | "agency";
+  features: string[];
+};
+
+/** Grille publique : Free → Agency, toujours visibles. */
+export const PUBLIC_PLANS: PublicPlan[] = [
+  {
+    id: "free",
+    name: "Free",
+    audience: "Voir l’interface, sans carte",
+    monthlyPrice: 0,
+    annualMonthly: 0,
+    annualTotal: 0,
+    href: "/signup?plan=free",
+    cta: "Commencer gratuitement",
+    featured: false,
+    badge: "Gratuit",
+    highlight: "free",
+    features: [
+      "1 funnel",
+      "Wizard uniquement",
+      "10 soumissions au total",
+      "Pas de chat IA",
+      "Pas de flux auto",
+      "Pas d’espace prospect",
+      "Pas de catalogue",
+    ],
+  },
   {
     id: "starter",
     name: "Starter",
-    audience: "Artisan solo ou très petite PME",
+    audience: "Solo & très petite PME",
     monthlyPrice: 49,
     annualMonthly: 39,
     annualTotal: 390,
     href: "/signup?plan=starter",
-    cta: "Commencer",
+    cta: "Choisir Starter",
     featured: false,
-    badge: null as string | null,
+    badge: null,
+    highlight: "default",
     features: [
       "Soumissions illimitées",
       "3 funnels",
       "Wizard + Chat IA",
-      "Catalogue produits (50 max)",
+      "Catalogue (50 produits)",
       "Espace prospect basique",
-      "Flux automatisé (T+0, T+24h, T+3j)",
-      "CRM basique (statuts, notes)",
-      "1 membre d’équipe",
-      "Intégration WooCommerce",
+      "Flux T+0, T+24h, T+3j",
+      "CRM basique",
+      "1 membre · WooCommerce",
     ],
   },
   {
     id: "pro",
     name: "Pro",
-    audience: "PME avec équipe commerciale",
+    audience: "PME & équipe commerciale",
     monthlyPrice: 99,
     annualMonthly: 79,
     annualTotal: 790,
     href: "/signup?plan=pro",
-    cta: "Commencer",
+    cta: "Choisir Pro",
     featured: true,
-    badge: "Recommandé",
+    badge: "Populaire",
+    highlight: "featured",
     features: [
-      "Soumissions illimitées",
-      "Funnels illimités",
-      "Wizard + Chat IA",
-      "Catalogue illimité",
-      "Espace prospect complet + messagerie",
-      "Flux automatisé complet (jusqu’à J+30)",
+      "Funnels & catalogue illimités",
+      "Espace prospect + messagerie",
+      "Flux jusqu’à J+30",
       "Panier abandonné",
       "Newsletter segmentée",
-      "CRM complet + pipeline Kanban",
+      "CRM + pipeline Kanban",
       "Stats avancées + GA4",
-      "5 membres d’équipe",
-      "WooCommerce + Shopify",
-      "Webhook / export JSON",
+      "5 membres · Woo + Shopify · Webhooks",
     ],
   },
-] as const;
+  {
+    id: "agency",
+    name: "Agency",
+    audience: "Agences & multi-marques",
+    monthlyPrice: 199,
+    annualMonthly: 159,
+    annualTotal: 1590,
+    href: "/signup?plan=agency",
+    cta: "Choisir Agency",
+    featured: false,
+    badge: null,
+    highlight: "agency",
+    features: [
+      "Tout Pro, multi-comptes",
+      "White-label",
+      "Sièges illimités",
+      "Templates & onboarding",
+      "Support prioritaire",
+      "Export / API étendue",
+      "Facturation centralisée",
+      "Inscription directe",
+    ],
+  },
+];
+
+export const PRICING_COMPARE_ROWS: {
+  label: string;
+  values: Record<PlanId, string>;
+}[] = [
+  {
+    label: "Funnels",
+    values: { free: "1", starter: "3", pro: "Illimités", agency: "Illimités" },
+  },
+  {
+    label: "Soumissions",
+    values: { free: "10 total", starter: "Illimitées", pro: "Illimitées", agency: "Illimitées" },
+  },
+  {
+    label: "Chat IA",
+    values: { free: "Non", starter: "Oui", pro: "Oui", agency: "Oui" },
+  },
+  {
+    label: "Catalogue",
+    values: { free: "Non", starter: "50", pro: "Illimité", agency: "Illimité" },
+  },
+  {
+    label: "Autopilote",
+    values: { free: "Non", starter: "T+3j", pro: "J+30", agency: "J+30" },
+  },
+  {
+    label: "Équipe",
+    values: { free: "1", starter: "1", pro: "5", agency: "Illimitée" },
+  },
+  {
+    label: "Intégrations",
+    values: { free: "Widget", starter: "Woo", pro: "Woo + Shopify", agency: "Stack + white-label" },
+  },
+];
 
 export const FREE_TRIAL = {
-  href: "/signup?trial=14",
-  label: "Essayer gratuitement - 14 jours sans carte bancaire",
-  hint: "1 funnel · Wizard · 10 soumissions au total. Sans chat IA, flux auto, espace prospect ni catalogue.",
+  href: "/signup?plan=free",
+  label: "Commencer gratuitement",
+  hint: "Free : 1 funnel, wizard, 10 soumissions. Sans carte.",
 } as const;
 
+/** @deprecated Prefer PUBLIC_PLANS agency entry. */
 export const AGENCY_PLAN = {
   name: "Agency",
   monthlyPrice: 199,
-  href: "mailto:hello@quotebuilder.app?subject=Agency",
-  blurb: "Multi-compte, white-label, accompagnement. Sur demande uniquement.",
+  href: "/signup?plan=agency",
+  blurb: "Multi-compte, white-label, sièges illimités. Inscription directe.",
 } as const;
 
-/** @deprecated Prefer PUBLIC_PLANS — kept for imports that still expect PLANS. */
+/** @deprecated Prefer PUBLIC_PLANS. */
 export const PLANS = PUBLIC_PLANS;
 
 export type FeatureSlug =
