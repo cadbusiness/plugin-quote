@@ -29,12 +29,16 @@ body.toplevel_page_quotebuilder .update-nag {
 .qb-wrap {
   background: #f8f5f1;
   color: #1a1510;
-  min-height: calc(100vh - 32px);
-  width: 100%;
+  width: auto;
+  max-width: none;
   display: flex;
   flex-direction: column;
   font-family: "Inter", "Helvetica Neue", sans-serif;
   box-sizing: border-box;
+}
+
+.qb-wrap.is-setup {
+  min-height: calc(100vh - 32px);
 }
 
 .qb-header {
@@ -106,9 +110,9 @@ body.toplevel_page_quotebuilder .update-nag {
 }
 
 .qb-body {
-  flex: 1 0 auto;
-  padding: 16px 20px 24px;
-  width: 100%;
+  flex: 0 0 auto;
+  padding: 0;
+  width: auto;
   max-width: none;
   box-sizing: border-box;
 }
@@ -137,7 +141,7 @@ body.toplevel_page_quotebuilder .update-nag {
 }
 
 .qb-footer {
-  margin-top: auto;
+  margin-top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -182,8 +186,9 @@ body.toplevel_page_quotebuilder .update-nag {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   background: #fff;
-  border: 1px solid #efe7de;
-  margin: 0 0 16px;
+  border: 0;
+  border-bottom: 1px solid #efe7de;
+  margin: 0;
 }
 
 .qb-kpis div {
@@ -242,10 +247,11 @@ body.toplevel_page_quotebuilder .update-nag {
 .qb-panel,
 .qb-advanced {
   background: #fff;
-  border: 1px solid #efe7de;
-  border-radius: 12px;
-  padding: 16px 18px;
-  margin: 0 0 14px;
+  border: 0;
+  border-bottom: 1px solid #efe7de;
+  border-radius: 0;
+  padding: 16px 20px;
+  margin: 0;
 }
 
 .qb-panel h2 {
@@ -372,11 +378,12 @@ body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-ghost:active,
 .qb-subnav {
   display: flex;
   gap: 4px;
-  margin: 0 0 14px;
-  padding: 4px;
+  margin: 0;
+  padding: 8px 16px;
   background: #fff;
-  border: 1px solid #efe7de;
-  border-radius: 10px;
+  border: 0;
+  border-bottom: 1px solid #efe7de;
+  border-radius: 0;
   position: sticky;
   top: 32px;
   z-index: 8;
@@ -399,9 +406,10 @@ body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-ghost:active,
 
 .qb-card {
   background: #fff;
-  border: 1px solid #efe7de;
-  border-radius: 12px;
-  margin: 0 0 12px;
+  border: 0;
+  border-bottom: 1px solid #efe7de;
+  border-radius: 0;
+  margin: 0;
   overflow: hidden;
 }
 
@@ -597,8 +605,9 @@ body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-ghost:active,
   bottom: 0;
   display: flex;
   justify-content: flex-end;
-  padding: 10px 0 0;
-  background: linear-gradient(transparent, #f8f5f1 30%);
+  padding: 10px 20px;
+  background: #fff;
+  border-top: 1px solid #efe7de;
 }
 
 .qb-table {

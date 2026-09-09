@@ -12,6 +12,7 @@ class QuoteBuilder_Admin {
         add_action('admin_bar_menu', [self::class, 'admin_bar'], 80);
         add_action('admin_enqueue_scripts', [self::class, 'assets']);
         add_action('admin_head', [self::class, 'menu_icon']);
+        add_action('admin_head', [self::class, 'layout_css'], 100);
         add_action('admin_head', [self::class, 'hide_notices']);
         add_filter('plugin_action_links_' . plugin_basename(QUOTEBUILDER_FILE), [self::class, 'action_links']);
     }
@@ -135,6 +136,30 @@ background:#c2410c!important;color:#fff!important}
 #adminmenu li#toplevel_page_quotebuilder.current .wp-menu-name,
 #adminmenu li#toplevel_page_quotebuilder.wp-has-current-submenu .wp-menu-name{
 color:#fff!important}
+</style>';
+    }
+
+    public static function layout_css() {
+        $screen = get_current_screen();
+        if (!$screen || $screen->id !== 'toplevel_page_quotebuilder') {
+            return;
+        }
+        echo '<style id="quotebuilder-layout">
+body.toplevel_page_quotebuilder #wpcontent{padding:0!important}
+body.toplevel_page_quotebuilder #wpbody,
+body.toplevel_page_quotebuilder #wpbody-content{float:none!important;width:auto!important;max-width:none!important;margin:0!important;padding:0!important;min-height:0!important}
+body.toplevel_page_quotebuilder .qb-wrap{display:flex!important;flex-direction:column!important;width:auto!important;max-width:none!important;margin:0!important;box-sizing:border-box!important}
+body.toplevel_page_quotebuilder .qb-wrap.is-setup{min-height:calc(100vh - 32px)!important}
+body.toplevel_page_quotebuilder .qb-body,
+body.toplevel_page_quotebuilder .qb-header,
+body.toplevel_page_quotebuilder .qb-footer,
+body.toplevel_page_quotebuilder .qb-flash-bar,
+body.toplevel_page_quotebuilder .qb-kpis,
+body.toplevel_page_quotebuilder .qb-subnav,
+body.toplevel_page_quotebuilder .qb-card,
+body.toplevel_page_quotebuilder .qb-panel,
+body.toplevel_page_quotebuilder .qb-advanced,
+body.toplevel_page_quotebuilder .qb-settings{width:auto!important;max-width:none!important;margin-left:0!important;margin-right:0!important;box-sizing:border-box!important}
 </style>';
     }
 

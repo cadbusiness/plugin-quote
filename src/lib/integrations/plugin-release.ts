@@ -20,7 +20,7 @@ export const WP_PLUGIN_SLUG = "quotebuilder-wp";
 const FALLBACK: WpPluginRelease = {
   slug: WP_PLUGIN_SLUG,
   name: "QuoteBuilder",
-  version: "2.3.4",
+  version: "2.3.5",
   requires: "6.0",
   requires_php: "7.4",
   tested: "6.8",

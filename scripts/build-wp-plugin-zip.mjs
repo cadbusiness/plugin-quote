@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>Admin WordPress en pleine largeur (plus de colonne vide à droite).</li><li>Notification en bandeau, plus collée à gauche du setup.</li><li>Connexion boutique sans attendre l’import catalogue.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>Admin WordPress bord à bord : plus de colonne vide à droite ni de pied de page au milieu.</li><li>Notification en bandeau sous le header.</li></ul>`,
     },
     null,
     2,

@@ -70,7 +70,7 @@ class QuoteBuilder_Updater {
             if (!is_array($body) || empty($body['version'])) {
                 continue;
             }
-            set_transient('quotebuilder_update_payload', $body, HOUR_IN_SECONDS);
+            set_transient('quotebuilder_update_payload', $body, 5 * MINUTE_IN_SECONDS);
             return $body;
         }
         return null;
