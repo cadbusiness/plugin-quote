@@ -25,6 +25,19 @@ npm run dev
 
 WordPress : plugin dans `extensions/quotebuilder-wp/`. Shortcode `[quotebuilder org="quickly" id="rayonnage"]`. Dans WordPress, **Connecter** ouvre QuoteBuilder (login + choix du funnel) puis importe le catalogue WooCommerce. Le zip et la version sont générés au build (`/quotebuilder-wp.zip`, `/api/public/plugin/wordpress`). Les sites en 2.1+ voient les mises à jour dans Extensions.
 
+### Plugin WP — auto-update (pattern BeautyHub)
+
+Le plugin vérifie le manifeste public Supabase (`bucket wp-plugin` → `info.json`) et propose la mise à jour dans **Extensions**, sans passer par wordpress.org.
+
+```bash
+# 1. Appliquer la migration 0014_wp_plugin_bucket.sql
+# 2. Bumper Version dans extensions/quotebuilder-wp/quotebuilder.php
+# 3. Publier zip + manifeste
+SUPABASE_SERVICE_ROLE_KEY=… npm run publish:wp-plugin
+```
+
+Secours : `GET /api/public/wp-plugin` (Vercel) si le bucket n’est pas encore peuplé.
+
 ## Catalogue connecté (WooCommerce / Shopify)
 
 `Boutiques` (`/integrations`) branche le catalogue d’une boutique sur un funnel : produits, descriptions, photos, prix, déclinaisons.

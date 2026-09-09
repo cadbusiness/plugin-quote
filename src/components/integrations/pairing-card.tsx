@@ -26,7 +26,7 @@ export function PairingCard({
         <p className="text-sm font-medium text-slate-900">Plugin boutique · v{pluginVersion}</p>
         <p className="text-xs text-slate-500">
           Dans WordPress, QuoteBuilder → J’ai déjà un compte. Le catalogue WooCommerce est importé
-          automatiquement ; le parcours devis s’ouvre après « Demander un devis ».
+          automatiquement ; les mises à jour du plugin arrivent depuis le cloud.
         </p>
       </div>
       <a
