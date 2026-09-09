@@ -273,10 +273,9 @@ export function AppSidebar({
               <button
                 type="submit"
                 title="Sortir"
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-rose-700 hover:bg-rose-50"
+                className="rounded-lg px-2 py-1 text-xs font-medium text-rose-700 hover:bg-rose-50"
               >
-                <LogOut className="h-3.5 w-3.5" aria-hidden />
-                <span className="sr-only">Sortir</span>
+                Sortir
               </button>
             </form>
           </div>
