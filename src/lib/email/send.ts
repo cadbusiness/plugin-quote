@@ -6,7 +6,7 @@ import { fill } from "@/lib/email/fill";
 
 function formatAnswers(answers: Answers) {
   return Object.entries(answers)
-    .map(([key, value]) => `- ${key}: ${Array.isArray(value) ? value.join(", ") : String(value ?? "—")}`)
+    .map(([key, value]) => `- ${key}: ${Array.isArray(value) ? value.join(", ") : String(value ?? "-")}`)
     .join("\n");
 }
 
@@ -31,7 +31,7 @@ export async function sendQuoteEmails(input: {
 }) {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
-    console.warn("RESEND_API_KEY manquante — emails non envoyés");
+    console.warn("RESEND_API_KEY manquante, emails non envoyés");
     return;
   }
 
@@ -109,7 +109,7 @@ export async function sendTemplateEmail(input: {
 }) {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
-    console.warn("RESEND_API_KEY manquante — email non envoyé");
+    console.warn("RESEND_API_KEY manquante, email non envoyé");
     return;
   }
   const resend = new Resend(apiKey);
@@ -133,7 +133,7 @@ export async function sendHtmlEmail(input: {
 }) {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
-    console.warn("RESEND_API_KEY manquante — email non envoyé");
+    console.warn("RESEND_API_KEY manquante, email non envoyé");
     return { skipped: true as const };
   }
   const resend = new Resend(apiKey);

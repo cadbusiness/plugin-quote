@@ -21,7 +21,7 @@ npm run dev
 <script src="https://VOTRE_DOMAINE/widget.js"></script>
 ```
 
-WordPress : shortcode `[quotebuilder org="quickly" id="rayonnage"]` — zip dans `extensions/quotebuilder-wp.zip`, servi aussi sur `/quotebuilder-wp.zip`.
+WordPress : shortcode `[quotebuilder org="quickly" id="rayonnage"]`, zip dans `extensions/quotebuilder-wp.zip`, servi aussi sur `/quotebuilder-wp.zip`.
 
 ## Catalogue connecté (WooCommerce / Shopify)
 
@@ -32,7 +32,7 @@ WordPress : shortcode `[quotebuilder org="quickly" id="rayonnage"]` — zip dans
 - Sync manuelle, planifiée (`/api/cron/catalog-sync`, 4h30) et temps réel par webhook signé (`/api/integrations/<id>/webhook`).
 - Les accès boutique sont chiffrés en AES-256-GCM avec `INTEGRATIONS_SECRET_KEY` (à défaut `SUPABASE_SERVICE_ROLE_KEY`).
 
-App Flutter (iOS / Android) : dossier [`mobile/`](mobile/) — `cd mobile && flutter run`.
+App Flutter (iOS / Android) : dossier [`mobile/`](mobile/), `cd mobile && flutter run`.
 
 ## Stack
 

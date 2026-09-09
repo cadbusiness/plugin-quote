@@ -19,7 +19,7 @@ const ENTITIES: Record<string, string> = {
   raquo: "»",
   rsquo: "’",
   ndash: "–",
-  mdash: "—",
+  mdash: "-",
   deg: "°",
 };
 

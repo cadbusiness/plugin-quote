@@ -25,7 +25,7 @@ function formatPrice(min: number | null, max: number | null) {
 
 function answerLabel(value: unknown): string {
   if (Array.isArray(value)) return value.map(String).join(", ");
-  if (value == null) return "—";
+  if (value == null) return "-";
   return String(value);
 }
 

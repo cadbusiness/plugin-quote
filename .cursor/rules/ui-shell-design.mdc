@@ -1,13 +1,13 @@
 ---
-description: Design system du shell QuoteBuilder — largeur, densité, composants obligatoires
+description: Design system du shell QuoteBuilder, largeur, densité, composants obligatoires
 alwaysApply: true
 ---
 
-# Shell QuoteBuilder — design system
+# Shell QuoteBuilder, design system
 
 ## Contenu bord à bord (obligatoire)
 
-Le contenu principal colle aux bords du panneau — **pas de padding externe** autour d’une carte inset.
+Le contenu principal colle aux bords du panneau, **pas de padding externe** autour d’une carte inset.
 
 - Listes, grilles, tableaux : flush dans `ListPanel` (`ListToolbar` + `DataTable`).
 - **Interdit** : wrapper `p-4` / `px-4 py-4` autour d’un bloc `rounded-lg/xl border` ou `Card`.
@@ -22,7 +22,7 @@ Le contenu principal colle aux bords du panneau — **pas de padding externe** a
 - Section / liste : `ListPanel` + `ListToolbar` + `DataTable`
 - Création : dialog guidé (secteur / options), jamais un champ nom + bouton
 - Édition : dialog ou formulaire inline ; la ligne de liste ouvre l’édition
-- Stats : bandeau KPI flush (gros chiffres, séparateurs) + tunnel + tableaux — pas de cartes inset empilées
+- Stats : bandeau KPI flush (gros chiffres, séparateurs) + tunnel + tableaux, pas de cartes inset empilées
 
 ## Interdit dans le shell
 

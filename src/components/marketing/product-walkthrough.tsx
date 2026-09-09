@@ -279,7 +279,7 @@ export function ProductWalkthrough() {
               {received ? (
                 <div className="space-y-2">
                   <p>
-                    La ligne jaune : le devis vient d’arriver — produit du catalogue, pas un texte libre.
+                    La ligne jaune : le devis vient d’arriver, produit du catalogue, pas un texte libre.
                   </p>
                   <p className="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900">
                     Autopilote : confirmation envoyée · commercial notifié · rappel si non traité sous 4 h.

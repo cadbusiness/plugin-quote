@@ -53,7 +53,7 @@ export const FUNNEL_TEMPLATES: FunnelTemplate[] = [
   {
     id: "racking",
     label: "Rayonnage & stockage",
-    blurb: "Type d’espace, surface, charge — puis les gammes adaptées.",
+    blurb: "Type d’espace, surface, charge, puis les gammes adaptées.",
     defaultName: "Funnel rayonnage",
     accent: "#D97706",
     tint: "bg-amber-50 text-amber-800 ring-amber-200",
@@ -121,7 +121,7 @@ export const FUNNEL_TEMPLATES: FunnelTemplate[] = [
   {
     id: "kitchen",
     label: "Cuisiniste",
-    blurb: "Pièce, style, budget — le prospect compose avant l’appel.",
+    blurb: "Pièce, style, budget, le prospect compose avant l’appel.",
     defaultName: "Funnel cuisine",
     accent: "#E11D48",
     tint: "bg-rose-50 text-rose-800 ring-rose-200",
@@ -179,7 +179,7 @@ export const FUNNEL_TEMPLATES: FunnelTemplate[] = [
   {
     id: "wood",
     label: "Menuisier",
-    blurb: "Usage, essence, dimensions — uniquement ce que vous fabriquez.",
+    blurb: "Usage, essence, dimensions, uniquement ce que vous fabriquez.",
     defaultName: "Funnel menuiserie",
     accent: "#B45309",
     tint: "bg-orange-50 text-orange-800 ring-orange-200",
@@ -234,7 +234,7 @@ export const FUNNEL_TEMPLATES: FunnelTemplate[] = [
   {
     id: "garden",
     label: "Paysagiste",
-    blurb: "Surface, usage, entretien — le projet se compose avant le RDV.",
+    blurb: "Surface, usage, entretien, le projet se compose avant le RDV.",
     defaultName: "Funnel jardin",
     accent: "#059669",
     tint: "bg-emerald-50 text-emerald-800 ring-emerald-200",
@@ -287,7 +287,7 @@ export const FUNNEL_TEMPLATES: FunnelTemplate[] = [
   {
     id: "rental",
     label: "Location matériel",
-    blurb: "Durée, capacité, options — une demande complète, pas un appel à vide.",
+    blurb: "Durée, capacité, options, une demande complète, pas un appel à vide.",
     defaultName: "Funnel location",
     accent: "#0284C7",
     tint: "bg-sky-50 text-sky-800 ring-sky-200",
@@ -340,7 +340,7 @@ export const FUNNEL_TEMPLATES: FunnelTemplate[] = [
   {
     id: "fitout",
     label: "Aménagement industriel",
-    blurb: "Site, contraintes, gammes — vous rappelez pour proposer, pas pour découvrir.",
+    blurb: "Site, contraintes, gammes, vous rappelez pour proposer, pas pour découvrir.",
     defaultName: "Funnel aménagement",
     accent: "#4F46E5",
     tint: "bg-indigo-50 text-indigo-800 ring-indigo-200",

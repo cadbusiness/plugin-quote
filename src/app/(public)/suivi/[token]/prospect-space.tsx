@@ -76,7 +76,7 @@ export function ProspectSpace({ token, bundle }: { token: string; bundle: Bundle
                 {item.name} × {item.quantity}
               </span>
               <span className="text-slate-500">
-                {item.price_min ?? "—"} – {item.price_max ?? "—"} €
+                {item.price_min ?? "-"} – {item.price_max ?? "-"} €
               </span>
             </li>
           ))}

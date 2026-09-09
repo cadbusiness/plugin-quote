@@ -103,7 +103,7 @@ export default async function QuotesPage({
               <QuoteProjectCell extras={extra} />
               <td className="px-4 py-2.5 lg:px-6">
                 <Chip tone={scoreTone(quote.score_label)}>
-                  {(quote.score_label ?? "—").toUpperCase()}
+                  {(quote.score_label ?? "-").toUpperCase()}
                   {quote.score != null ? ` ${quote.score}` : ""}
                 </Chip>
               </td>
@@ -117,7 +117,7 @@ export default async function QuotesPage({
                 </span>
               </td>
               <td className="px-4 py-2.5 text-slate-500 lg:px-6">
-                {(assigneesByQuote.get(quote.id) ?? (quote.assigned_to ? [memberLabel.get(quote.assigned_to) ?? "—"] : [])).join(", ") || "—"}
+                {(assigneesByQuote.get(quote.id) ?? (quote.assigned_to ? [memberLabel.get(quote.assigned_to) ?? "-"] : [])).join(", ") || "-"}
               </td>
               <QuoteReceivedCell createdAt={quote.created_at} extras={extra} />
             </ClickableRow>

@@ -181,7 +181,7 @@ export default async function ConnectionPage({
           <div className="flex flex-wrap items-baseline gap-2">
             <dt className="w-24 shrink-0 text-slate-500">Secret</dt>
             <dd className="break-all font-mono text-xs text-slate-900">
-              {connection.webhook_secret ?? "—"}
+              {connection.webhook_secret ?? "-"}
             </dd>
             <form action={rotate}>
               <button className="text-xs text-slate-500 underline hover:text-slate-900">
@@ -191,7 +191,7 @@ export default async function ConnectionPage({
           </div>
           <div className="flex flex-wrap items-baseline gap-2">
             <dt className="w-24 shrink-0 text-slate-500">Accès</dt>
-            <dd className="font-mono text-xs text-slate-500">{connection.credentials_hint ?? "—"}</dd>
+            <dd className="font-mono text-xs text-slate-500">{connection.credentials_hint ?? "-"}</dd>
           </div>
         </dl>
       </section>

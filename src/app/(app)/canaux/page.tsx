@@ -73,7 +73,7 @@ export default async function CanauxPage() {
                   {unreadCount ? (
                     <Chip tone="amber">{unreadCount} non lu{unreadCount > 1 ? "s" : ""}</Chip>
                   ) : (
-                    <span className="text-slate-400">—</span>
+                    <span className="text-slate-400">-</span>
                   )}
                 </td>
                 <td className="px-4 py-3 lg:px-6">

@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "QuoteBuilder — Arrêtez de perdre vos devis",
+  title: "QuoteBuilder · Arrêtez de perdre vos devis",
   description:
-    "Parcours de devis pour le prospect, autopilote de relances pour vous. Dossiers complets, score, suivi — plus de devis morts dans la boîte mail.",
+    "Parcours de devis pour le prospect, autopilote de relances pour vous. Dossiers complets, score, suivi. Plus de devis morts dans la boîte mail.",
 };
 
 export default function RootLayout({

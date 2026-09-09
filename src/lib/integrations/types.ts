@@ -25,7 +25,7 @@ export type ProductVariant = {
 };
 
 /**
- * Produit normalisé — dénominateur commun entre WooCommerce et Shopify.
+ * Produit normalisé, dénominateur commun entre WooCommerce et Shopify.
  * C'est la seule forme que le moteur de synchronisation manipule.
  */
 export type NormalizedProduct = {

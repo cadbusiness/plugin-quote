@@ -139,7 +139,7 @@ export default async function AccueilPage() {
                   <QuoteProjectCell extras={extra} />
                   <td className="px-4 py-2.5 lg:px-6">
                     <Chip tone={scoreTone(quote.score_label)}>
-                      {(quote.score_label ?? "—").toUpperCase()}
+                      {(quote.score_label ?? "-").toUpperCase()}
                       {quote.score != null ? ` ${quote.score}` : ""}
                     </Chip>
                   </td>

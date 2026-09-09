@@ -136,11 +136,11 @@ function humanize(raw: string) {
 }
 
 function formatOne(value: unknown, meta?: QuestionMeta): string {
-  if (value == null || value === "") return "—";
+  if (value == null || value === "") return "-";
   const options = asOptions(meta?.options);
   if (Array.isArray(value)) {
-    const parts = value.map((item) => formatOne(item, meta)).filter((part) => part !== "—");
-    return parts.length ? parts.join(", ") : "—";
+    const parts = value.map((item) => formatOne(item, meta)).filter((part) => part !== "-");
+    return parts.length ? parts.join(", ") : "-";
   }
   if (typeof value === "number" && Number.isFinite(value)) {
     const unit = options.unit || (meta?.key ? KEY_UNITS[meta.key] : undefined);
@@ -168,7 +168,7 @@ export function labelAnswers(answers: Answers, questions: QuestionMeta[] = []): 
         value: formatOne(value, meta),
       };
     })
-    .filter((row) => row.value !== "—")
+    .filter((row) => row.value !== "-")
     .sort((a, b) => {
       const ai = KEY_ORDER.indexOf(a.key);
       const bi = KEY_ORDER.indexOf(b.key);

@@ -31,7 +31,7 @@ export function formatRelative(iso: string) {
 }
 
 export function formatEur(value: number | null | undefined) {
-  if (value == null || Number.isNaN(value)) return "—";
+  if (value == null || Number.isNaN(value)) return "-";
   return new Intl.NumberFormat("fr-FR", {
     style: "currency",
     currency: "EUR",
@@ -57,7 +57,7 @@ export function formatWhen(iso: string) {
 }
 
 export function formatHours(hours: number | null | undefined) {
-  if (hours == null || Number.isNaN(hours)) return "—";
+  if (hours == null || Number.isNaN(hours)) return "-";
   if (hours < 1) return `${Math.max(1, Math.round(hours * 60))} min`;
   const h = Math.floor(hours);
   const m = Math.round((hours - h) * 60);
@@ -66,6 +66,6 @@ export function formatHours(hours: number | null | undefined) {
 }
 
 export function formatPercent(value: number | null | undefined) {
-  if (value == null || Number.isNaN(value)) return "—";
+  if (value == null || Number.isNaN(value)) return "-";
   return `${Math.round(value)}%`;
 }

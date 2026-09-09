@@ -96,7 +96,7 @@ export function starterDesign(kind: CampaignKind, orgName: string): EmailDesign 
         {
           id: newBlockId(),
           type: "text",
-          text: "Vous aviez commencé une configuration. On a gardé vos réponses — dites-nous si le projet est toujours d’actualité.",
+          text: "Vous aviez commencé une configuration. On a gardé vos réponses, dites-nous si le projet est toujours d’actualité.",
         },
         { id: newBlockId(), type: "button", label: "Reprendre", href: "{{suivi_url}}" },
         { id: newBlockId(), type: "footer", text: `${orgName}` },
