@@ -355,7 +355,12 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
     if (!session || !chatInput.trim()) return;
     setBusy(true);
     try {
-      const data = await api<{ session: QuoteSession; message: string }>(
+      const data = await api<{
+        session: QuoteSession;
+        message: string;
+        goSuggestions?: boolean;
+        goContact?: boolean;
+      }>(
         `/api/public/sessions/${session.id}/chat`,
         {
           method: "POST",
@@ -365,7 +370,16 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
       );
       setChatInput("");
       setSession(data.session);
-      if (data.session.currentStep !== session.currentStep) {
+      if (data.session.contactDraft?.name || data.session.contactDraft?.email) {
+        setContact((c) => ({
+          ...c,
+          name: data.session.contactDraft.name || c.name,
+          email: data.session.contactDraft.email || c.email,
+          phone: data.session.contactDraft.phone || c.phone,
+          company: data.session.contactDraft.company || c.company,
+        }));
+      }
+      if (data.session.currentStep !== session.currentStep || data.goSuggestions) {
         await loadSuggestions(data.session);
       }
     } catch (error) {
@@ -426,10 +440,21 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
 
   const accent = String(definition.configurator.theme.accent ?? "#d97706");
   const isCatalog = definition.configurator.kind === "catalog";
-  const showChat = session.mode === "chat" && definition.configurator.chatEnabled && !isCatalog;
-  const showWizard = session.mode === "wizard" && definition.configurator.wizardEnabled;
+  const chatOnly =
+    definition.configurator.chatEnabled && !definition.configurator.wizardEnabled && !isCatalog;
+  const showChat =
+    definition.configurator.chatEnabled &&
+    !isCatalog &&
+    (session.mode === "chat" || chatOnly);
+  const showWizard =
+    session.mode === "wizard" && definition.configurator.wizardEnabled && !chatOnly;
   const canSwitch =
     !isCatalog && definition.configurator.wizardEnabled && definition.configurator.chatEnabled && !done;
+  const showChatSuggestions =
+    showChat &&
+    suggestions.length > 0 &&
+    (session.currentStep === definition.steps.findIndex((s) => s.screenType === "suggestions") ||
+      Boolean(session.selectedSuggestionId));
   const catalogBrowse = isCatalog && step?.screenType === "suggestions";
 
   if (done) {
@@ -520,14 +545,25 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
           />
         ) : null}
         {showChat ? (
-          <ChatPanel
-            messages={session.chatMessages}
-            value={chatInput}
-            onChange={setChatInput}
-            onSend={sendChat}
-            busy={busy}
-            error={errors.chat}
-          />
+          <div className="space-y-6">
+            <ChatPanel
+              messages={session.chatMessages}
+              value={chatInput}
+              onChange={setChatInput}
+              onSend={sendChat}
+              busy={busy}
+              error={errors.chat}
+              orgName={definition.organization.name}
+            />
+            {showChatSuggestions ? (
+              <SuggestionsPanel
+                suggestions={suggestions}
+                selectedId={session.selectedSuggestionId}
+                onSelect={(id) => persist({ selectedSuggestionId: id })}
+                onNeedLoad={() => loadSuggestions()}
+              />
+            ) : null}
+          </div>
         ) : null}
 
         {showWizard && step ? (
@@ -1009,6 +1045,7 @@ function ChatPanel({
   onSend,
   busy,
   error,
+  orgName,
 }: {
   messages: { role: "user" | "assistant"; content: string }[];
   value: string;
@@ -1016,14 +1053,21 @@ function ChatPanel({
   onSend: () => void;
   busy: boolean;
   error?: string;
+  orgName: string;
 }) {
   return (
     <section className="mx-auto max-w-2xl">
       <div className="min-h-[22rem] space-y-3 rounded-2xl border border-slate-200 bg-white p-5">
         {messages.length === 0 ? (
-          <p className="text-slate-500">
-            Décrivez votre projet en une phrase, par exemple « j’ai un entrepôt de 600 m², palettes jusqu’à 800 kg ».
-          </p>
+          <div className="space-y-2 text-slate-600">
+            <p className="font-medium text-slate-900">
+              Bonjour, décrivez-moi votre projet{orgName ? ` pour ${orgName}` : ""}.
+            </p>
+            <p className="text-sm text-slate-500">
+              Une phrase suffit — surface, charges, hauteur, budget, délai. L’agent consulte le
+              catalogue et prépare votre brief devis.
+            </p>
+          </div>
         ) : (
           messages.map((m, i) => (
             <div
@@ -1047,13 +1091,13 @@ function ChatPanel({
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="Votre besoin…"
+          placeholder="Décrivez votre besoin…"
           className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2"
         />
         <button
           type="submit"
           disabled={busy}
-          className="rounded-lg bg-slate-950 px-4 py-2 text-sm text-white disabled:opacity-50"
+          className="rounded-lg bg-[#E85D04] px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
         >
           {busy ? "…" : "Envoyer"}
         </button>

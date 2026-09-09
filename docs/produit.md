@@ -1,7 +1,9 @@
 # QuoteBuilder, carte produit
 
 Funnel de devis B2B. Vinci Liberta LTD (Dublin).  
-Inventaire officiel croisé avec le code, 3 septembre 2026, pas la liste marketing.
+Inventaire officiel croisé avec le code, 9 septembre 2026, pas la liste marketing.
+
+**Positionnement (sept. 2026)** — Anthropic a publié le blueprint open source `anthropics/commerce-agents` (shopping + merchant agents, retail / voyage / télécom / ticketing). QuoteBuilder est le **vertical B2B sur devis PME** sur ce pattern : Claude = couche d’intelligence ; catalogue, session et soumission restent chez le commerçant (Supabase / QuoteBuilder). Pas un storefront ni un checkout. Les verticals Anthropic ne couvrent pas le devis sur mesure (cuisiniste, rayonnagiste, labo…).
 
 **Cœur** = on le livre et on le soigne maintenant.  
 **Phase 2** = après le cœur. Hors menu tant que funnel et catalogue ne sont pas au niveau.  
@@ -18,7 +20,8 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 - **Éditeur de steps (réordonner en drag-and-drop)**, Livré. Réordonner les écrans, pas un builder visuel type Typeform.
 - **Steps : choix multiple, texte, fichier, produits, identité, chat IA, soumission**, Partiel. Slider dédié et écran récap explicite absents ; le nombre couvre le dimensionnement.
 - **3 types : formulaire / chat IA / catalogue**, Livré. Le catalogue est une vitrine : catégories, fiches produits, ajout au devis, demande globale.
-- **Collecte progressive d’identité (prénom, email, téléphone intercalés)**, Partiel. Capture anticipée prénom + email, puis écran contact (téléphone / société).
+- **Agent commerce prospect (chat B2B devis)**, Partiel. Boucle Messages API + outils catalogue (`search_catalog`, `match_configurations` Si/Alors), extraction brief, gates provenance / email, handoff devis sans paiement. Inspiré du blueprint Anthropic ; pas un fork Python dans le repo Next. Suite : streaming, evals, UI composants typés.
+- **Collecte progressive d’identité (prénom, email, téléphone intercalés)**, Partiel. Capture anticipée prénom + email (UI + outil `collect_contact`), puis écran contact (téléphone / société).
 - **Sauvegarde de session dès l’email saisi**, Partiel. Sauvegarde au moment où l’email est soumis dans le bloc de capture, pas à la frappe. Reprise `/reprendre`.
 - **URL publique standalone**, Livré. `/c/[org]/[slug]`.
 - **Embed widget JS + plugin WordPress + bloc Gutenberg**, Livré. Plugin vitrine devis (prix, panier, liste) + funnel.
@@ -32,6 +35,9 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 - **Page suggestions visuelles côté prospect**, Livré.
 - **Sync WooCommerce (import + sync)**, Livré. `/integrations` : produits, descriptions, photos, prix, déclinaisons ; sync manuelle, planifiée et webhook.
 - **Sync Shopify (import + sync)**, Livré. Admin GraphQL, app personnalisée `read_products`, mêmes réglages que Woo.
+
+### Agent commerçant (dashboard)
+- **Merchant agent NL (prospects chauds, ROI Ads, brouillons email avec approval)**, Ensuite. Même famille que le merchant agent Anthropic ; pas avant que l’agent prospect catalogue + gates soit solide en prod.
 
 ### Demandes
 - **Vue liste tableau**, Livré. `/devis`, ligne entière cliquable.

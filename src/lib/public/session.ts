@@ -62,6 +62,15 @@ export async function createSession(
   if (!resolved) return null;
   const supabase = createServiceClient();
 
+  const { data: cfgFlags } = await supabase
+    .from("configurators")
+    .select("wizard_enabled, chat_enabled")
+    .eq("id", resolved.configuratorId)
+    .maybeSingle();
+  /** Chat-only funnels start in chat mode (commerce agent), not an empty wizard shell. */
+  const initialMode =
+    cfgFlags?.chat_enabled && !cfgFlags?.wizard_enabled ? "chat" : "wizard";
+
   const token = randomBytes(24).toString("hex");
   const { data, error } = await supabase
     .from("quote_sessions")
@@ -69,6 +78,7 @@ export async function createSession(
       organization_id: resolved.organizationId,
       configurator_id: resolved.configuratorId,
       token,
+      mode: initialMode,
       ...(attribution ? attributionColumns(attribution) : {}),
     })
     .select("*")

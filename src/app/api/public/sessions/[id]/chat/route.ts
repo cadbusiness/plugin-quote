@@ -44,13 +44,22 @@ export async function POST(
     return NextResponse.json({ error: "Chat désactivé" }, { status: 403 });
   }
 
+  const { data: rules } = await supabase
+    .from("suggestion_rules")
+    .select("*")
+    .eq("configurator_id", row!.configurator_id)
+    .eq("is_active", true)
+    .order("priority", { ascending: false });
+
   const currentAnswers = mergeAnswers(session.answers, session.extractedParams);
   try {
     const turn = await runChatTurn({
       definition,
+      rules: rules ?? [],
       history: session.chatMessages,
       userMessage: parsed.data.message,
       currentAnswers,
+      contactDraft: session.contactDraft,
     });
 
     const chatMessages = [
@@ -70,6 +79,10 @@ export async function POST(
       extractedParams: turn.extracted,
       chatMessages,
       currentStep,
+      contactDraft: {
+        ...session.contactDraft,
+        ...turn.contactDraft,
+      },
     });
 
     return NextResponse.json({
@@ -77,6 +90,7 @@ export async function POST(
       message: turn.assistantText,
       goSuggestions: turn.goSuggestions,
       goContact: turn.goContact,
+      toolTrace: turn.toolTrace,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Chat indisponible";
