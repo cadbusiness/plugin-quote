@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>Le plugin remplit toute la page WordPress, avec un pied de page copyright QuoteBuilder.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>Survol orange QuoteBuilder (plus le bleu WordPress) sur les boutons et le menu.</li></ul>`,
     },
     null,
     2,

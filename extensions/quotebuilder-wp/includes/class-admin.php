@@ -118,7 +118,24 @@ class QuoteBuilder_Admin {
     }
 
     public static function menu_icon() {
-        echo '<style>#adminmenu #toplevel_page_quotebuilder .wp-menu-image img{width:20px;height:20px;padding:6px 0;object-fit:contain}</style>';
+        echo '<style>
+#adminmenu #toplevel_page_quotebuilder .wp-menu-image img{width:20px;height:20px;padding:6px 0;object-fit:contain}
+#adminmenu li#toplevel_page_quotebuilder:hover,
+#adminmenu li#toplevel_page_quotebuilder:hover>a.menu-top,
+#adminmenu li#toplevel_page_quotebuilder.opensub>a.menu-top,
+#adminmenu li#toplevel_page_quotebuilder>a.menu-top:focus,
+#adminmenu li#toplevel_page_quotebuilder.current>a.menu-top,
+#adminmenu li#toplevel_page_quotebuilder.current:hover>a.menu-top,
+#adminmenu li#toplevel_page_quotebuilder.wp-has-current-submenu>a.wp-has-current-submenu,
+#adminmenu li#toplevel_page_quotebuilder.wp-has-current-submenu>a.menu-top,
+#adminmenu li#toplevel_page_quotebuilder.wp-has-current-submenu:hover>a.menu-top{
+background:#c2410c!important;color:#fff!important}
+#adminmenu li#toplevel_page_quotebuilder:hover .wp-menu-name,
+#adminmenu li#toplevel_page_quotebuilder>a.menu-top:focus .wp-menu-name,
+#adminmenu li#toplevel_page_quotebuilder.current .wp-menu-name,
+#adminmenu li#toplevel_page_quotebuilder.wp-has-current-submenu .wp-menu-name{
+color:#fff!important}
+</style>';
     }
 
     public static function hide_notices() {

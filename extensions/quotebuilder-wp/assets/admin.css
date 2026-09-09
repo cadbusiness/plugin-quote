@@ -85,7 +85,7 @@ body.toplevel_page_quotebuilder .update-nag {
 
 .qb-tabs a:hover,
 .qb-tabs a.is-active {
-  color: #1a1510;
+  color: #c2410c;
   background: #fff7ed;
 }
 
@@ -261,12 +261,43 @@ body.toplevel_page_quotebuilder .update-nag {
   text-decoration: none;
   display: inline-flex;
   align-items: center;
+  box-shadow: none;
+  outline: none;
+}
+
+.qb-wrap a:focus,
+.qb-wrap a:focus-visible,
+.qb-primary:focus,
+.qb-ghost:focus,
+.qb-danger:focus {
+  box-shadow: none;
+  outline: 2px solid #fdba74;
+  outline-offset: 2px;
+}
+
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a:hover,
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a:active,
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a:focus {
+  box-shadow: none;
 }
 
 .qb-primary,
-.qb-atq {
+.qb-atq,
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-primary,
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-primary:visited {
   background: #e85d04;
-  color: #fff;
+  color: #fff !important;
+}
+
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-primary:hover,
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-primary:focus,
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-primary:focus-visible,
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-primary:active,
+.qb-primary:hover,
+.qb-primary:focus,
+.qb-atq:hover {
+  background: #c2410c;
+  color: #fff !important;
 }
 
 .qb-primary-lg {
@@ -275,15 +306,34 @@ body.toplevel_page_quotebuilder .update-nag {
   white-space: nowrap;
 }
 
-.qb-ghost {
+.qb-ghost,
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-ghost,
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-ghost:visited {
   background: #fff;
   color: #1a1510;
   box-shadow: inset 0 0 0 1px #efe7de;
 }
 
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-ghost:hover,
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-ghost:focus,
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-ghost:focus-visible,
+body.toplevel_page_quotebuilder #wpbody-content .qb-wrap a.qb-ghost:active,
+.qb-ghost:hover,
+.qb-ghost:focus {
+  background: #fff7ed;
+  color: #c2410c !important;
+  box-shadow: inset 0 0 0 1px #fed7aa;
+}
+
 .qb-danger {
   background: #fff1f2;
   color: #be123c;
+}
+
+.qb-danger:hover,
+.qb-danger:focus {
+  background: #ffe4e6;
+  color: #9f1239;
 }
 
 .qb-pill {
