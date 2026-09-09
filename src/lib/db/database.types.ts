@@ -940,6 +940,59 @@ export type Database = {
         }
         Relationships: []
       }
+      quote_collaborators: {
+        Row: {
+          id: string
+          organization_id: string
+          quote_id: string
+          email: string
+          name: string
+          role: string
+          token: string
+          status: string
+          budget_max: number | null
+          comment: string | null
+          invited_by: string
+          invited_by_user_id: string | null
+          decided_at: string | null
+          last_accessed: string | null
+          expires_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          organization_id: string
+          quote_id: string
+          email: string
+          name: string
+          role?: string
+          token: string
+          status?: string
+          budget_max?: number | null
+          comment?: string | null
+          invited_by?: string
+          invited_by_user_id?: string | null
+          decided_at?: string | null
+          last_accessed?: string | null
+          expires_at: string
+          created_at?: string
+        }
+        Update: {
+          email?: string
+          name?: string
+          role?: string
+          token?: string
+          status?: string
+          budget_max?: number | null
+          comment?: string | null
+          invited_by?: string
+          invited_by_user_id?: string | null
+          decided_at?: string | null
+          last_accessed?: string | null
+          expires_at?: string
+        }
+        Relationships: []
+      }
       quote_activities: {
         Row: {
           actor_id: string | null
@@ -1463,6 +1516,9 @@ export type Database = {
           status: string
           status_id: string | null
           utm_campaign: string | null
+          validation_approved_count: number
+          validation_status: string
+          validation_total_count: number
           wbraid: string | null
           utm_content: string | null
           utm_medium: string | null
@@ -1491,6 +1547,9 @@ export type Database = {
           status?: string
           status_id?: string | null
           utm_campaign?: string | null
+          validation_approved_count?: number
+          validation_status?: string
+          validation_total_count?: number
           wbraid?: string | null
           utm_content?: string | null
           utm_medium?: string | null
@@ -1519,6 +1578,9 @@ export type Database = {
           status?: string
           status_id?: string | null
           utm_campaign?: string | null
+          validation_approved_count?: number
+          validation_status?: string
+          validation_total_count?: number
           wbraid?: string | null
           utm_content?: string | null
           utm_medium?: string | null

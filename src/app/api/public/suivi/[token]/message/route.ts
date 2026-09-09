@@ -6,6 +6,9 @@ export async function POST(req: Request, { params }: { params: Promise<{ token: 
   const { token } = await params;
   const bundle = await loadProspectByToken(token);
   if (!bundle) return NextResponse.json({ error: "Introuvable" }, { status: 404 });
+  if (bundle.viewer.kind !== "primary") {
+    return NextResponse.json({ error: "Réservé au contact principal" }, { status: 403 });
+  }
   const body = await req.json().catch(() => ({}));
   const content = String(body.content ?? "").trim();
   if (!content) return NextResponse.json({ error: "Message vide" }, { status: 400 });

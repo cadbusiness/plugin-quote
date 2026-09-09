@@ -58,6 +58,7 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 - **Zone de complétion (photos, mesures, notes)**, Partiel. Upload + notes ; pas de mesures structurées.
 - **Messagerie légère prospect ↔ commercial**, Partiel. Prospect → équipe oui ; réponse commercial → prospect à durcir.
 - **Historique des échanges**, Livré.
+- **Devis collaboratif (multi-décideurs)**, Livré. Invitation DF / technique / acheteur depuis l’espace prospect ou la fiche ; contrainte budgétaire ; valider / demander des modifications ; notif commercial « validé par N décideurs ».
 
 ### Automatisations
 - **Canvas de parcours (emails, wait, branches devis, assignation, statut)**, Livré. `/automations`, éditeur `/automations/[id]`.

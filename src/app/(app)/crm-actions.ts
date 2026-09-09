@@ -265,6 +265,66 @@ export async function replyToProspectForm(quoteId: string, formData: FormData) {
   await replyToProspect(quoteId, String(formData.get("content") ?? ""));
 }
 
+export async function inviteQuoteCollaborator(
+  quoteId: string,
+  input: { name: string; email: string; role: string },
+) {
+  const ctx = await getOrgContext();
+  if (!ctx) redirect("/onboarding");
+  const supabase = await createClient();
+  const { data: quote } = await supabase
+    .from("quotes")
+    .select("id, contact_name, contact_company, organization_id")
+    .eq("id", quoteId)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  if (!quote) return { error: "Demande introuvable" };
+  const role = ["finance", "technical", "buyer", "other"].includes(input.role)
+    ? (input.role as "finance" | "technical" | "buyer" | "other")
+    : "finance";
+  try {
+    const { inviteCollaborator } = await import("@/lib/prospect/collaborators");
+    await inviteCollaborator({
+      organizationId: ctx.organization.id,
+      quoteId,
+      email: input.email,
+      name: input.name,
+      role,
+      invitedBy: "sales",
+      invitedByUserId: ctx.userId,
+      contactName: quote.contact_name,
+      contactCompany: quote.contact_company,
+      notifyAssignees: false,
+    });
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : "Invitation impossible" };
+  }
+  revalidatePath("/devis");
+  revalidatePath(`/devis/${quoteId}`);
+  return { ok: true as const };
+}
+
+export async function revokeQuoteCollaborator(quoteId: string, collaboratorId: string) {
+  const ctx = await getOrgContext();
+  if (!ctx) redirect("/onboarding");
+  const supabase = await createClient();
+  const { data: quote } = await supabase
+    .from("quotes")
+    .select("id")
+    .eq("id", quoteId)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  if (!quote) return;
+  const { revokeCollaborator } = await import("@/lib/prospect/collaborators");
+  await revokeCollaborator({
+    organizationId: ctx.organization.id,
+    quoteId,
+    collaboratorId,
+  });
+  revalidatePath("/devis");
+  revalidatePath(`/devis/${quoteId}`);
+}
+
 export async function inviteMember(formData: FormData) {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");

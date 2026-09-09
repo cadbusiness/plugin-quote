@@ -13,6 +13,7 @@ import {
 } from "@/app/(app)/crm-actions";
 import { AutoSubmitSelect } from "@/components/crm/quote-controls";
 import { QuoteTabs, quoteTabHref, type QuoteCompose, type QuoteTab } from "@/components/crm/quote-tabs";
+import { QuoteValidationSection } from "@/components/crm/quote-validation";
 import { Chip, scoreTone, statusTone, type ChipTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
@@ -157,7 +158,19 @@ function DossierTab({
     detail.automations.find((flow) => flow.state === "running");
   const statusLog = detail.activities.filter((act) => act.type === "status_changed").slice(0, 5);
   const journal = detail.activities
-    .filter((act) => ["status_changed", "assigned", "call_logged", "message_sent", "email_sent"].includes(act.type))
+    .filter((act) =>
+      [
+        "status_changed",
+        "assigned",
+        "call_logged",
+        "message_sent",
+        "email_sent",
+        "collaborator_invited",
+        "collaborator_approved",
+        "collaborator_changes_requested",
+        "validation_complete",
+      ].includes(act.type),
+    )
     .slice(0, 6);
   const assignedIds = new Set(detail.assignees.map((row) => row.userId));
 
@@ -183,6 +196,8 @@ function DossierTab({
           hint={detail.assignedLabel ? `Assigné à ${detail.assignedLabel}` : "Non assigné"}
         />
       </div>
+
+      <QuoteValidationSection quoteId={quote.id} collaborators={detail.collaborators} />
 
       <section className="grid gap-6 border-b border-slate-100 px-4 py-5 lg:grid-cols-[minmax(0,1fr)_20rem] lg:px-6">
         <div>
