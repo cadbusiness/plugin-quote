@@ -6,44 +6,38 @@ const SECTORS = [
   {
     id: "racking",
     label: "Rayonnage & stockage",
-    icon: "🏭",
     blurb:
-      "Le prospect explore les gammes, indique surface et charge, compose les travées. Vous recevez un brief chiffrable.",
+      "Le prospect compose les travées, charge et surface. Vous recevez un brief chiffrable — puis l’autopilote relance et assigne.",
   },
   {
     id: "kitchen",
     label: "Cuisiniste",
-    icon: "🍳",
     blurb:
-      "Il parcourt les modules, pose les contraintes de pièce, estime un budget. La demande arrive déjà cadré.",
+      "Modules, contraintes de pièce, budget. La demande arrive cadrée ; le suivi (confirmation, J+1, J+3) part sans vous.",
   },
   {
     id: "wood",
     label: "Menuisier",
-    icon: "🪵",
     blurb:
-      "Essence, dimensions, usage. Il configure ce que vous fabriquez vraiment — pas un souhait impossible.",
+      "Essence, dimensions, usage. Il configure ce que vous fabriquez vraiment — le dossier entre dans le pipeline, score inclus.",
   },
   {
     id: "garden",
     label: "Paysagiste",
-    icon: "🌿",
     blurb:
-      "Surface, usage, niveau d’entretien. Le projet se compose avant l’appel, pas pendant.",
+      "Surface, usage, entretien. Le projet se compose avant l’appel ; les abandons sont relancés automatiquement.",
   },
   {
     id: "rental",
     label: "Location matériel",
-    icon: "🚚",
     blurb:
-      "Durée, capacité, options. Le prospect voit ce qui est dispo et envoie une demande complète.",
+      "Durée, capacité, options. Demande complète → assignation commercial → rappel si non traité sous 4 h.",
   },
   {
     id: "fitout",
     label: "Aménagement industriel",
-    icon: "🏗️",
     blurb:
-      "Usage, contraintes de site, gammes possibles. Vous rappelez pour proposer, pas pour découvrir le besoin.",
+      "Usage, site, gammes. Vous rappelez pour proposer, pas pour découvrir — le workflow a déjà préparé le terrain.",
   },
 ] as const;
 
@@ -69,14 +63,13 @@ export function LandingSectors() {
                   : "bg-white text-[#1A1510]/70 ring-1 ring-black/10 hover:bg-[#FFF8F1]"
               }`}
             >
-              <span aria-hidden>{sector.icon}</span> {sector.label}
+              {sector.label}
             </button>
           );
         })}
       </div>
       <p className="mx-auto mt-6 max-w-2xl text-center text-[15px] leading-7 text-[#1A1510]/60">
-        Pas un outil générique. Des templates sectoriels prêts à l’emploi — le parcours d’achat est
-        configuré en moins d’une heure.
+        Templates sectoriels : parcours + relances de base, prêts en moins d’une heure.
       </p>
       <p className="mx-auto mt-10 max-w-2xl text-center text-[17px] leading-8 text-[#1A1510]/75">
         {selected.blurb}

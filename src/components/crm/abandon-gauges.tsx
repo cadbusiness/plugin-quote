@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { GaugeRing } from "@/components/ui/gauge-ring";
+import { RingGauge } from "@/components/ui/gauge";
 import type { AbandonSnapshot, AbandonView } from "@/lib/crm/abandons";
 
 function GaugeLink({
@@ -43,27 +43,27 @@ export function AbandonGauges({
   return (
     <div className="grid grid-cols-1 border-b border-slate-200 sm:grid-cols-3">
       <GaugeLink href="/sessions" active={view === "tous"}>
-        <GaugeRing
+        <RingGauge
           value={snapshot.started}
-          max={base}
+          pct={snapshot.started / base}
           tone="slate"
           label={`${snapshot.started} visites commencées`}
         />
         <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Visites</p>
       </GaugeLink>
       <GaugeLink href="/sessions?vue=email" active={view === "email"}>
-        <GaugeRing
+        <RingGauge
           value={snapshot.baskets}
-          max={base}
+          pct={snapshot.baskets / base}
           tone="orange"
           label={`${snapshot.baskets} emails sauvés sur ${snapshot.started}`}
         />
         <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Email</p>
       </GaugeLink>
       <GaugeLink href="/sessions?vue=relance" active={view === "relance"} last>
-        <GaugeRing
+        <RingGauge
           value={snapshot.stale}
-          max={base}
+          pct={snapshot.stale / base}
           tone="amber"
           label={`${snapshot.stale} paniers à relancer`}
         />

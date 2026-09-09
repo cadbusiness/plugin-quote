@@ -1,35 +1,50 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { LandingSectors } from "@/components/marketing/landing-sectors";
-import { CatalogShot, PipelineShot, WizardShot } from "@/components/marketing/landing-shots";
+import { AutopilotShot, CatalogShot, PipelineShot, WizardShot } from "@/components/marketing/landing-shots";
 import { ProductWalkthrough } from "@/components/marketing/product-walkthrough";
 
 const DEMO_HREF = "#demo";
 
+const STATS = [
+  {
+    value: "80 %",
+    label: "des ventes demandent 5 relances ou plus",
+  },
+  {
+    value: "44 %",
+    label: "des vendeurs s’arrêtent après un seul suivi",
+  },
+  {
+    value: "24 %",
+    label: "des sites n’ont aucun moyen de demander un devis",
+  },
+];
+
 const FAQ = [
   {
-    q: "C’est quoi la différence avec un site vitrine et un formulaire ?",
-    a: "Un site montre. Un formulaire recueille du texte. QuoteBuilder est le parcours d’achat : le prospect explore votre catalogue, configure son projet, dialogue si besoin, et soumet une demande complète. Vous recevez un dossier, pas un email à interpréter.",
+    q: "C’est quoi la différence avec un formulaire de contact ?",
+    a: "Un formulaire recueille un message vague. QuoteBuilder fait configurer le projet (produits, contraintes, budget), livre un dossier scoré, puis relance tout seul. Vous ne redistribuez plus des emails — vous traitez des devis.",
   },
   {
-    q: "Est-ce que je dois avoir une boutique WooCommerce ?",
-    a: "Non. Vous importez votre catalogue directement dans QuoteBuilder (saisie manuelle ou CSV). Si vous avez WooCommerce, une sync automatique est disponible en plan Pro.",
+    q: "C’est quoi la différence avec un catalogue ou une boutique ?",
+    a: "Un catalogue stocke des produits. Une boutique encaisse. QuoteBuilder pose votre offre dans un parcours de devis, puis pilote chaque demande : score, assignation, relances. Le catalogue est l’entrée — l’autopilote, c’est le produit.",
   },
   {
-    q: "Comment s’intègre QuoteBuilder sur mon site ?",
-    a: "Deux lignes de code JavaScript, ou un plugin WordPress à installer en un clic. Le funnel apparaît sur votre site sans toucher à votre design.",
+    q: "Est-ce que je dois avoir WooCommerce ?",
+    a: "Non. Saisie manuelle ou CSV. WooCommerce et Shopify en sync sur le plan Pro.",
   },
   {
-    q: "Que se passe-t-il quand j’atteins la limite de 10 devis en Free ?",
-    a: "Les demandes suivantes sont visibles dans votre pipeline mais grisées. Vous voyez qu’il y a un prospect — vous ne pouvez pas ouvrir le dossier sans passer au plan Starter.",
+    q: "Comment ça s’installe sur mon site ?",
+    a: "Deux lignes de JavaScript, ou le plugin WordPress. Sans toucher à votre design.",
   },
   {
-    q: "Je n’ai pas d’équipe commerciale. C’est fait pour moi ?",
-    a: "Oui. Beaucoup de clients utilisent QuoteBuilder seuls. Le pipeline et les relances automatiques fonctionnent pour un solo comme pour une équipe de 10.",
+    q: "Je suis seul, sans équipe. Ça sert ?",
+    a: "Oui. L’autopilote (confirmation, relances, rappels) travaille pour un solo comme pour une équipe.",
   },
   {
-    q: "Est-ce que je peux le tester sur mon secteur avant de payer ?",
-    a: "Oui. Le plan Free est illimité dans le temps. Vous pouvez configurer votre catalogue, tester le funnel, recevoir vos 10 premiers dossiers — sans carte bancaire.",
+    q: "Puis-je tester sans payer ?",
+    a: "Oui. Free illimité dans le temps, 10 devis / mois, pas de carte bancaire.",
   },
 ];
 
@@ -91,21 +106,27 @@ const PLANS = [
 const HOW_STEPS = [
   {
     n: "①",
-    title: "Ils explorent votre catalogue",
-    text: "Vos produits, vos options, vos gammes. Le visiteur voit ce qui est possible — et uniquement ce que vous savez livrer. Pas de promesses impossibles.",
+    title: "Posez l’offre",
+    text: "Produits, gammes, prix — saisie, CSV, ou Woo / Shopify. Le socle. Pas le différenciateur.",
     shot: <CatalogShot />,
   },
   {
     n: "②",
-    title: "Ils configurent leur projet",
-    text: "Funnel guidé ou chat IA — selon ce qui convient à votre secteur. Ils répondent à vos questions, choisissent vos produits, précisent les contraintes, voient un budget indicatif.",
+    title: "Ils configurent",
+    text: "Funnel ou chat IA. Le prospect cadre le projet dans votre catalogue et envoie un dossier — pas un mail flou.",
     shot: <WizardShot />,
   },
   {
     n: "③",
-    title: "Vous recevez un dossier",
-    text: "Produits, quantités, contraintes, budget, coordonnées, score. Votre commercial rappelle pour conclure, pas pour découvrir le besoin.",
+    title: "Vous avez un dossier",
+    text: "Produits, quantités, budget, score hot / warm / cold. Vous rappelez pour conclure, pas pour découvrir le besoin.",
     shot: <PipelineShot />,
+  },
+  {
+    n: "④",
+    title: "L’autopilote suit",
+    text: "Confirmation, relances d’abandon, rappel si non traité, branches selon le score. Les 5 relances que 92 % des équipes n’enchaînent jamais.",
+    shot: <AutopilotShot />,
   },
 ];
 
@@ -116,8 +137,11 @@ export function Landing() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <BrandLogo variant="wordmark" href="/" priority />
           <nav className="hidden items-center gap-7 text-sm font-medium text-[#1A1510]/70 md:flex">
-            <a href="#comment-ca-marche" className="hover:text-[#1A1510]">
-              Comment ça marche
+            <a href="#probleme" className="hover:text-[#1A1510]">
+              Le problème
+            </a>
+            <a href="#solution" className="hover:text-[#1A1510]">
+              La solution
             </a>
             <a href="#tarifs" className="hover:text-[#1A1510]">
               Tarifs
@@ -134,208 +158,252 @@ export function Landing() {
               href="/signup"
               className="rounded-full bg-[#E85D04] px-4 py-2 text-sm font-semibold text-white hover:bg-[#d35400]"
             >
-              Commencer gratuitement →
+              Essayer gratuitement
             </Link>
           </div>
         </div>
         <nav className="mx-auto flex max-w-6xl gap-5 overflow-x-auto px-6 pb-3 text-sm font-medium text-[#1A1510]/65 md:hidden">
-          <a href="#comment-ca-marche">Comment ça marche</a>
+          <a href="#probleme">Problème</a>
+          <a href="#solution">Solution</a>
           <a href="#tarifs">Tarifs</a>
           <a href={DEMO_HREF}>Démo</a>
         </nav>
       </header>
 
-      <section className="relative overflow-hidden px-6 pb-8 pt-12 sm:pt-16">
+      {/* Hero — titres courts pour mobile (≤ 2 lignes) */}
+      <section className="relative overflow-hidden px-6 pb-10 pt-10 sm:pb-12 sm:pt-16">
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-8 h-72 w-72 -translate-x-1/2 rounded-full bg-[#F3B184]/45 blur-3xl sm:h-[26rem] sm:w-[26rem]"
+          className="pointer-events-none absolute left-1/2 top-8 h-64 w-64 -translate-x-1/2 rounded-full bg-[#F3B184]/45 blur-3xl sm:h-[26rem] sm:w-[26rem]"
         />
-        <div className="relative mx-auto max-w-3xl text-center">
+        <div className="relative mx-auto max-w-2xl text-center">
           <p className="text-sm font-medium text-[#C45C26]">Funnel de devis B2B</p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-[3.35rem] sm:leading-[1.08]">
-            Vos visiteurs ne savent pas comment acheter vos produits.
-            <br />
-            QuoteBuilder leur montre.
+          <h1 className="mt-3 text-[1.85rem] font-semibold leading-[1.15] tracking-tight sm:text-5xl sm:leading-[1.08]">
+            Arrêtez de perdre vos devis.
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-[#1A1510]/70">
-            Catalogue interactif, funnel guidé, chat IA — vos prospects explorent votre offre,
-            composent leur projet, et vous soumettent une demande complète. Vous recevez un dossier.
-            Pas un email.
+          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-[#1A1510]/70 sm:mt-5 sm:text-lg">
+            Le prospect n’a pas de parcours. Vous n’avez pas de suivi. QuoteBuilder règle les
+            deux : dossier complet à l’entrée, autopilote de relances ensuite.
           </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:mt-8 sm:flex-row">
             <Link
               href="/signup"
               className="rounded-full bg-[#E85D04] px-6 py-3 text-sm font-semibold text-white hover:bg-[#d35400]"
             >
-              Commencer gratuitement
+              Mettre en place gratuitement
             </Link>
-            <a href={DEMO_HREF} className="text-sm font-medium text-[#1A1510]/70 underline-offset-4 hover:underline">
-              Voir la démo
+            <a href="#solution" className="text-sm font-medium text-[#1A1510]/70 underline-offset-4 hover:underline">
+              Voir ce qu’il faut installer
             </a>
           </div>
-          <p className="mt-3 text-xs text-[#1A1510]/45">10 devis offerts · pas de carte bancaire</p>
-          <p className="mx-auto mt-8 max-w-xl text-[15px] font-medium leading-7 text-[#1A1510]/70">
-            Vos prospects explorent, configurent, demandent. Vous recevez des dossiers.
-          </p>
+          <p className="mt-3 text-xs text-[#1A1510]/45">10 devis offerts · pas de carte</p>
         </div>
       </section>
 
-      <section className="border-y border-[#1A1510]/8 bg-white/50 px-6 py-8">
+      {/* Preuves chiffrées */}
+      <section className="border-y border-[#1A1510]/8 bg-white/60 px-6 py-8 sm:py-10">
         <p className="text-center text-xs font-medium uppercase tracking-[0.16em] text-[#1A1510]/40">
-          Un funnel builder branché sur vos vrais produits — pour les PME B2B sur mesure
+          Un trou dans le pipeline — documenté, des deux côtés
         </p>
-        <div className="mx-auto mt-5 flex max-w-3xl flex-wrap items-center justify-center gap-2">
-          {["Rayonnage", "Cuisine", "Menuiserie", "Paysage", "Location", "Aménagement"].map((label) => (
-            <span key={label} className="rounded-full bg-white px-3.5 py-1.5 text-sm text-[#1A1510]/60 ring-1 ring-black/8">
-              {label}
-            </span>
+        <div className="mx-auto mt-6 grid max-w-4xl gap-6 sm:grid-cols-3 sm:gap-4">
+          {STATS.map((stat) => (
+            <div key={stat.value} className="text-center">
+              <p className="text-3xl font-semibold tracking-tight text-[#E85D04] sm:text-4xl">{stat.value}</p>
+              <p className="mx-auto mt-2 max-w-[14rem] text-sm leading-5 text-[#1A1510]/60">{stat.label}</p>
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl scroll-mt-24 px-6 py-16 sm:py-20">
-        <h2 className="mx-auto max-w-2xl text-center text-2xl font-semibold tracking-tight sm:text-3xl">
-          Sur votre site, l’expérience d’achat n’existe pas.
+      {/* Problème */}
+      <section id="probleme" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-14 sm:py-20">
+        <h2 className="mx-auto max-w-xl text-center text-2xl font-semibold tracking-tight sm:text-3xl">
+          Les deux côtés souffrent.
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-center text-[17px] leading-8 text-[#1A1510]/65">
-          Le visiteur arrive. Il ne peut ni s’auto-qualifier, ni voir ce qui est possible, ni estimer
-          un budget. Pour un achat complexe, il n’y a tout simplement pas de parcours.
+        <p className="mx-auto mt-3 max-w-xl text-center text-[16px] leading-7 text-[#1A1510]/65 sm:text-[17px] sm:leading-8">
+          Ce n’est pas un détail de site. C’est un trou dans votre pipeline : le prospect part,
+          l’équipe perd du temps, personne ne relance assez.
         </p>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          <ProblemCard
-            title="L’offre est opaque"
-            text="Pas de catalogue à explorer. Le visiteur ne sait pas ce que vous livrez, ni si son projet est dans votre périmètre."
-          />
-          <ProblemCard
-            title="Impossible de composer"
-            text="Pas de dimensions, d’options, de contraintes. Il ne peut pas construire son projet — donc il n’estime rien et il n’ose pas demander."
-          />
-          <ProblemCard
-            title="La demande n’existe pas"
-            text="Au mieux un email vague. Souvent il part. Votre commercial n’a rien à traiter, parce que le prospect n’avait nulle part où avancer."
-          />
-        </div>
-      </section>
-
-      <section id="comment-ca-marche" className="scroll-mt-24 bg-white/70 px-6 py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mx-auto max-w-2xl text-center text-2xl font-semibold tracking-tight sm:text-3xl">
-            Vos prospects explorent, configurent, demandent. Vous recevez des dossiers.
-          </h2>
-          <div className="mt-14 space-y-16">
-            {HOW_STEPS.map((step, i) => (
-              <article
-                key={step.title}
-                className={`grid items-center gap-8 lg:grid-cols-2 lg:gap-12 ${i % 2 === 1 ? "lg:[&>div:first-child]:order-2" : ""}`}
-              >
-                <div>
-                  <p className="text-sm font-medium text-[#C45C26]">{step.n}</p>
-                  <h3 className="mt-2 text-xl font-semibold tracking-tight sm:text-2xl">{step.title}</h3>
-                  <p className="mt-3 text-[17px] leading-8 text-[#1A1510]/70">{step.text}</p>
-                </div>
-                <div>{step.shot}</div>
-              </article>
-            ))}
-          </div>
-          <div id="demo" className="mt-16 scroll-mt-24">
-            <p className="mb-3 text-center text-sm text-[#1A1510]/50">
-              Simulation — catalogue, funnel, puis le dossier dans votre pipeline.
-            </p>
-            <ProductWalkthrough />
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-        <h2 className="text-center text-2xl font-semibold tracking-tight sm:text-3xl">
-          Une expérience d’achat, trois façons d’entrer.
-        </h2>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
-          <ModeCard
-            title="Catalogue interactif"
-            text="Une URL publique ou un embed. Le prospect parcourt vos produits, compose, voit ce qui est possible. Idéal quand il sait déjà ce qu’il cherche."
+          <ProblemCard
+            title="Le prospect n’a nulle part où avancer"
+            text="24 % des sites n’offrent même pas de demande. Sinon : formulaire vague, pas de parcours, pas de budget. Il passe au suivant."
           />
-          <ModeCard
-            title="Funnel guidé"
-            text="Une séquence de steps que vous construisez. Il cadre le projet avant de parler produits. Idéal pour les achats complexes ou techniques."
+          <ProblemCard
+            title="Vous préparez dans le vide"
+            text="Des heures sur un devis, zéro retour. Ou un mail flou à décrypter. Le commercial découvre le besoin au téléphone au lieu de proposer."
           />
-          <ModeCard
-            title="Chat IA"
-            text="Il décrit son besoin en langage naturel. L’IA pose les questions, propose vos produits, génère le dossier. Idéal quand il ne sait pas encore par où commencer."
+          <ProblemCard
+            title="Le suivi n’existe pas"
+            text="80 % des ventes demandent 5+ relances. 44 % s’arrêtent après une. Les bons dossiers meurent dans la boîte mail."
           />
         </div>
-        <p className="mx-auto mt-8 max-w-2xl text-center text-sm leading-6 text-[#1A1510]/55">
-          Les trois modes sont le même parcours d’achat. Le même catalogue. Le même pipeline.
-        </p>
       </section>
 
-      <section className="bg-[#1A1510] px-6 py-16 text-[#F6F0E8] sm:py-20">
+      {/* Solution = ce qu’il faut mettre en place */}
+      <section id="solution" className="scroll-mt-24 bg-white/70 px-6 py-14 sm:py-20">
         <div className="mx-auto max-w-6xl">
-          <h2 className="max-w-2xl text-2xl font-semibold tracking-tight sm:text-3xl">
-            La demande est reçue. Et après ?
+          <h2 className="mx-auto max-w-xl text-center text-2xl font-semibold tracking-tight sm:text-3xl">
+            Ce qu’il faut mettre en place.
           </h2>
-          <p className="mt-5 max-w-2xl text-[17px] leading-8 text-[#F6F0E8]/75">
-            QuoteBuilder ne s’arrête pas à la soumission. Chaque demande entre dans votre pipeline :
-            statut, assignation, notes, historique des échanges, relances automatiques.
+          <p className="mx-auto mt-3 max-w-xl text-center text-[16px] leading-7 text-[#1A1510]/65 sm:text-[17px] sm:leading-8">
+            Pas un catalogue de plus. Un système en deux temps : faire entrer un vrai devis,
+            puis le faire avancer jusqu’à la vente.
+          </p>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            <SolutionCard
+              n="1"
+              title="Un parcours de devis"
+              text="Funnel, catalogue interactif ou chat IA — le prospect configure sur votre offre. Il envoie un dossier, pas un « bonjour »."
+            />
+            <SolutionCard
+              n="2"
+              title="Un dossier exploitable"
+              text="Produits, contraintes, budget, score. Votre équipe rappelle pour conclure — pas pour reconstruire le besoin."
+            />
+            <SolutionCard
+              n="3"
+              title="Un autopilote de suivi"
+              text="Confirmation, relances, rappel si non traité, assignation. Les 5 touches que personne n’a le temps de faire à la main."
+            />
+          </div>
+          <div className="mt-10 text-center">
+            <Link
+              href="/signup"
+              className="inline-flex rounded-full bg-[#E85D04] px-6 py-3 text-sm font-semibold text-white hover:bg-[#d35400]"
+            >
+              Installer QuoteBuilder
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section id="comment-ca-marche" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-14 sm:py-20">
+        <h2 className="mx-auto max-w-xl text-center text-2xl font-semibold tracking-tight sm:text-3xl">
+          Comment ça marche.
+        </h2>
+        <p className="mx-auto mt-3 max-w-xl text-center text-[16px] leading-7 text-[#1A1510]/65 sm:text-[17px] sm:leading-8">
+          Quatre temps. Les deux premiers, d’autres outils les touchent. Les deux derniers changent
+          la façon de vendre au devis.
+        </p>
+        <div className="mt-12 space-y-14 sm:mt-14 sm:space-y-16">
+          {HOW_STEPS.map((step, i) => (
+            <article
+              key={step.title}
+              className={`grid items-center gap-8 lg:grid-cols-2 lg:gap-12 ${i % 2 === 1 ? "lg:[&>div:first-child]:order-2" : ""}`}
+            >
+              <div>
+                <p className="text-sm font-medium text-[#C45C26]">{step.n}</p>
+                <h3 className="mt-2 text-xl font-semibold tracking-tight sm:text-2xl">{step.title}</h3>
+                <p className="mt-3 text-[16px] leading-7 text-[#1A1510]/70 sm:text-[17px] sm:leading-8">
+                  {step.text}
+                </p>
+              </div>
+              <div>{step.shot}</div>
+            </article>
+          ))}
+        </div>
+        <div id="demo" className="mt-14 scroll-mt-24 sm:mt-16">
+          <p className="mb-3 text-center text-sm text-[#1A1510]/50">
+            Simulation — offre, funnel, dossier, autopilote.
+          </p>
+          <ProductWalkthrough />
+        </div>
+      </section>
+
+      <section className="bg-white/70 px-6 py-14 sm:py-20">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-center text-2xl font-semibold tracking-tight sm:text-3xl">
+            Trois portes d’entrée.
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-center text-[16px] leading-7 text-[#1A1510]/65">
+            Même catalogue. Même pipeline. Seule l’expérience prospect change.
+          </p>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            <ModeCard
+              title="Catalogue"
+              text="URL ou embed. Il parcourt, compose, demande — quand il sait déjà ce qu’il cherche."
+            />
+            <ModeCard
+              title="Funnel guidé"
+              text="Vos steps. Il cadre le projet avant les produits — pour l’achat technique."
+            />
+            <ModeCard
+              title="Chat IA"
+              text="Il décrit le besoin. L’IA pose les questions, propose vos produits, génère le dossier."
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="autopilote" className="scroll-mt-24 bg-[#1A1510] px-6 py-14 text-[#F6F0E8] sm:py-20">
+        <div className="mx-auto max-w-6xl">
+          <p className="text-sm font-medium text-[#F3B184]">Après la soumission</p>
+          <h2 className="mt-2 max-w-xl text-2xl font-semibold tracking-tight sm:text-3xl">
+            Les devis avancent tout seuls.
+          </h2>
+          <p className="mt-4 max-w-xl text-[16px] leading-7 text-[#F6F0E8]/75 sm:text-[17px] sm:leading-8">
+            C’est là que les formulaires s’arrêtent. QuoteBuilder enchaîne les relances que 92 %
+            des équipes abandonnent avant la 4ᵉ — sans que vous traquiez chaque fil.
           </p>
           <div className="mt-10 grid gap-5 sm:grid-cols-2">
             <CrmCard
-              title="Pipeline visuel"
-              text="Nouveau → Contacté → En cours → Gagné → Perdu. Vous voyez d’un coup d’œil où en est chaque dossier."
+              title="Pipeline + score"
+              text="Nouveau → Contacté → En cours → Gagné / Perdu. Hot, warm, cold. Vous priorisez d’un coup d’œil."
             />
             <CrmCard
-              title="Gestion d’équipe"
-              text="Assignez une demande à un commercial. Il reçoit une notification. Tout le monde sait qui fait quoi."
+              title="Assignation"
+              text="Une demande, un commercial. Notification, notes, historique."
             />
             <CrmCard
-              title="Relances automatiques"
-              text="Confirmation immédiate au prospect. Rappel si personne n’a traité. Suivi à J+1, J+3, J+7. Tout configurable."
+              title="Workflows"
+              text="Confirmation T+0, relance abandon, rappel si non traité, branches score / statut."
             />
             <CrmCard
-              title="Statistiques"
-              text="Combien de demandes reçues, quel taux de conversion, quel commercial performe. Connecté à Google Analytics en 30 secondes."
+              title="Stats utiles"
+              text="Volume, conversion, délai, CA potentiel. Abandons relançables à un clic."
             />
           </div>
         </div>
       </section>
 
-      <section id="secteurs" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-16 sm:py-20">
+      <section id="secteurs" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-14 sm:py-20">
         <h2 className="text-center text-2xl font-semibold tracking-tight sm:text-3xl">
-          Fait pour ceux qui vendent sur mesure.
+          Pour le sur-mesure.
         </h2>
         <div className="mt-8">
           <LandingSectors />
         </div>
       </section>
 
-      <section id="tarifs" className="scroll-mt-24 bg-white/70 px-6 py-16 sm:py-20">
+      <section id="tarifs" className="scroll-mt-24 bg-white/70 px-6 py-14 sm:py-20">
         <div className="mx-auto max-w-6xl">
           <h2 className="text-center text-2xl font-semibold tracking-tight sm:text-3xl">
-            Simple. Sans surprise.
+            Tarifs simples.
           </h2>
           <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {PLANS.map((plan) => (
               <article
                 key={plan.name}
                 className={`flex flex-col rounded-2xl p-6 ${
-                  plan.featured
-                    ? "bg-[#1A1510] text-white shadow-xl"
-                    : "bg-white ring-1 ring-black/8"
+                  plan.featured ? "bg-[#1A1510] text-white shadow-xl" : "bg-white ring-1 ring-black/8"
                 }`}
               >
                 <p className="text-sm font-medium">{plan.name}</p>
-                {plan.featured ? (
-                  <p className="mt-1 text-xs text-[#F3B184]">Le plus choisi</p>
-                ) : null}
+                {plan.featured ? <p className="mt-1 text-xs text-[#F3B184]">Le plus choisi</p> : null}
                 <p className="mt-4 text-3xl font-semibold tracking-tight">
                   {plan.price}
                   {plan.period ? (
-                    <span className={`text-sm font-normal ${plan.featured ? "text-white/55" : "text-[#1A1510]/45"}`}>
+                    <span
+                      className={`text-sm font-normal ${plan.featured ? "text-white/55" : "text-[#1A1510]/45"}`}
+                    >
                       {plan.period}
                     </span>
                   ) : null}
                 </p>
-                <ul className={`mt-6 space-y-2.5 text-sm ${plan.featured ? "text-white/75" : "text-[#1A1510]/70"}`}>
+                <ul
+                  className={`mt-6 space-y-2.5 text-sm ${plan.featured ? "text-white/75" : "text-[#1A1510]/70"}`}
+                >
                   <li>{plan.quotes}</li>
                   <li>{plan.modes}</li>
                   <li>CRM {plan.crm}</li>
@@ -356,37 +424,38 @@ export function Landing() {
             ))}
           </div>
           <p className="mt-8 text-center text-sm text-[#1A1510]/50">
-            Les 10 premiers devis sont toujours gratuits. Pas de carte bancaire requise.
+            10 premiers devis gratuits. Pas de carte bancaire.
           </p>
         </div>
       </section>
 
-      <section className="mx-auto max-w-3xl scroll-mt-24 px-6 py-16 sm:py-20" id="faq">
-        <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Questions fréquentes.</h2>
+      <section className="mx-auto max-w-3xl scroll-mt-24 px-6 py-14 sm:py-20" id="faq">
+        <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">FAQ</h2>
         <div className="mt-8 divide-y divide-[#1A1510]/10 border-y border-[#1A1510]/10">
           {FAQ.map((item) => (
             <details key={item.q} className="group py-4">
-              <summary className="cursor-pointer list-none text-lg font-semibold [&::-webkit-details-marker]:hidden">
+              <summary className="cursor-pointer list-none text-base font-semibold sm:text-lg [&::-webkit-details-marker]:hidden">
                 <span className="flex items-start justify-between gap-4">
                   {item.q}
                   <span className="mt-1 text-[#1A1510]/35 group-open:hidden">+</span>
                   <span className="mt-1 hidden text-[#1A1510]/35 group-open:inline">–</span>
                 </span>
               </summary>
-              <p className="mt-3 text-[17px] leading-8 text-[#1A1510]/70">{item.a}</p>
+              <p className="mt-3 text-[16px] leading-7 text-[#1A1510]/70 sm:text-[17px] sm:leading-8">
+                {item.a}
+              </p>
             </details>
           ))}
         </div>
       </section>
 
       <section id="cta" className="px-6 pb-16">
-        <div className="mx-auto max-w-4xl rounded-[28px] bg-[#1A1510] px-8 py-14 text-center text-[#F6F0E8] sm:px-16">
-          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            Donnez à vos visiteurs un moyen d’acheter vos produits.
+        <div className="mx-auto max-w-4xl rounded-[28px] bg-[#1A1510] px-8 py-12 text-center text-[#F6F0E8] sm:px-16 sm:py-14">
+          <h2 className="text-2xl font-semibold tracking-tight sm:text-4xl">
+            Bouchez le trou. Maintenant.
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-[17px] leading-7 text-[#F6F0E8]/70">
-            Vos prospects explorent, configurent, demandent. Vous recevez des dossiers. Compte
-            gratuit, 3 produits, pas de carte bancaire.
+          <p className="mx-auto mt-4 max-w-xl text-[16px] leading-7 text-[#F6F0E8]/70">
+            Parcours pour le prospect. Autopilote pour vous. Compte gratuit, pas de carte.
           </p>
           <Link
             href="/signup"
@@ -400,7 +469,7 @@ export function Landing() {
       <footer className="border-t border-[#1A1510]/10 px-6 py-10 text-sm text-[#1A1510]/50">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 sm:flex-row sm:justify-between">
           <div>
-            <p className="font-medium text-[#1A1510]/70">QuoteBuilder · Funnel de devis B2B</p>
+            <p className="font-medium text-[#1A1510]/70">QuoteBuilder · Devis qui aboutissent</p>
             <p className="mt-1">© {new Date().getFullYear()} Vinci Liberta LTD · Dublin, Irlande</p>
           </div>
           <div className="flex flex-col gap-2 sm:items-end">
@@ -431,9 +500,19 @@ export function Landing() {
 
 function ProblemCard({ title, text }: { title: string; text: string }) {
   return (
-    <article className="rounded-2xl bg-white p-6 ring-1 ring-black/6">
+    <article className="rounded-2xl bg-white p-5 ring-1 ring-black/6 sm:p-6">
       <p className="text-sm font-medium text-[#C45C26]">✕</p>
-      <h3 className="mt-3 text-lg font-semibold">{title}</h3>
+      <h3 className="mt-3 text-base font-semibold sm:text-lg">{title}</h3>
+      <p className="mt-2 text-[15px] leading-7 text-[#1A1510]/70">{text}</p>
+    </article>
+  );
+}
+
+function SolutionCard({ n, title, text }: { n: string; title: string; text: string }) {
+  return (
+    <article className="rounded-2xl bg-white p-5 ring-1 ring-black/6 sm:p-6">
+      <p className="text-sm font-medium text-[#C45C26]">{n}</p>
+      <h3 className="mt-3 text-base font-semibold sm:text-lg">{title}</h3>
       <p className="mt-2 text-[15px] leading-7 text-[#1A1510]/70">{text}</p>
     </article>
   );
@@ -441,8 +520,8 @@ function ProblemCard({ title, text }: { title: string; text: string }) {
 
 function ModeCard({ title, text }: { title: string; text: string }) {
   return (
-    <article className="rounded-2xl bg-white p-6 ring-1 ring-black/6">
-      <h3 className="text-lg font-semibold">{title}</h3>
+    <article className="rounded-2xl bg-white p-5 ring-1 ring-black/6 sm:p-6">
+      <h3 className="text-base font-semibold sm:text-lg">{title}</h3>
       <p className="mt-3 text-[15px] leading-7 text-[#1A1510]/70">{text}</p>
     </article>
   );
@@ -451,7 +530,7 @@ function ModeCard({ title, text }: { title: string; text: string }) {
 function CrmCard({ title, text }: { title: string; text: string }) {
   return (
     <article className="rounded-2xl bg-white/6 p-5 ring-1 ring-white/10">
-      <h3 className="text-lg font-semibold">{title}</h3>
+      <h3 className="text-base font-semibold sm:text-lg">{title}</h3>
       <p className="mt-2 text-[15px] leading-7 text-[#F6F0E8]/70">{text}</p>
     </article>
   );

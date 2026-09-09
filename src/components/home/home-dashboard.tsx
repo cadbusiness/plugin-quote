@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Chip, scoreTone, statusTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
 import { DataTable } from "@/components/ui/list-panel";
-import { GaugeRing, type GaugeTone } from "@/components/ui/gauge-ring";
+import { RingGauge, type GaugeTone } from "@/components/ui/gauge";
 import { AbandonGauges, AbandonProgress } from "@/components/crm/abandon-gauges";
 import { QuoteProjectCell, QuoteReceivedCell } from "@/components/crm/quote-list-cells";
 import { formatEur, formatPercent, formatRelative } from "@/lib/format";
@@ -82,7 +82,7 @@ function StatGauge({
         last ? "" : "border-b border-slate-200 sm:border-b-0 sm:border-r"
       }`}
     >
-      <GaugeRing value={value} max={max} tone={tone} label={`${label}: ${value}`} />
+      <RingGauge value={value} pct={max <= 0 ? 0 : value / max} tone={tone} label={`${label}: ${value}`} />
       <div>
         <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
         <p className="mt-0.5 text-sm text-slate-500">{hint}</p>

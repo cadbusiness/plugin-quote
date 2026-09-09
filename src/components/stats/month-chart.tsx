@@ -1,24 +1,24 @@
 import type { MonthPoint } from "@/lib/stats/dashboard";
 
 const SERIES = [
-  { key: "quotes" as const, label: "Devis", color: "#0f172a" },
-  { key: "won" as const, label: "Signés", color: "#16a34a" },
+  { key: "quotes" as const, label: "Devis", color: "#E85D04" },
+  { key: "won" as const, label: "Signés", color: "#059669" },
   { key: "abandons" as const, label: "Abandons", color: "#d97706" },
 ];
 
 export function MonthChart({ months }: { months: MonthPoint[] }) {
   const width = 720;
-  const height = 200;
-  const pad = { top: 12, right: 8, bottom: 28, left: 8 };
+  const height = 168;
+  const pad = { top: 8, right: 4, bottom: 24, left: 4 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
   const max = Math.max(1, ...months.flatMap((m) => [m.quotes, m.won, m.abandons]));
   const group = innerW / months.length;
-  const barW = Math.min(10, group / 6);
+  const barW = Math.min(14, group / 5);
 
   return (
     <div className="px-4 py-4 lg:px-6">
-      <svg viewBox={`0 0 ${width} ${height}`} className="h-48 w-full" role="img" aria-label="Évolution sur 6 mois">
+      <svg viewBox={`0 0 ${width} ${height}`} className="h-40 w-full" role="img" aria-label="Évolution sur 6 mois">
         {months.map((m, i) => {
           const cx = pad.left + i * group + group / 2;
           return (
@@ -31,12 +31,12 @@ export function MonthChart({ months }: { months: MonthPoint[] }) {
                   <rect
                     key={s.key}
                     x={x}
-                    y={y}
+                    y={m[s.key] ? y : pad.top + innerH - 4}
                     width={barW}
-                    height={Math.max(h, m[s.key] ? 4 : 0)}
+                    height={m[s.key] ? Math.max(h, 8) : 4}
                     rx={2}
                     fill={s.color}
-                    opacity={m[s.key] ? 0.9 : 0.12}
+                    opacity={m[s.key] ? 0.95 : 0.18}
                   />
                 );
               })}
