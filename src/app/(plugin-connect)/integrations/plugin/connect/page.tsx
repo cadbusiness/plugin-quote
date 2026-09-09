@@ -51,23 +51,24 @@ export default async function PluginConnectPage({
   }
 
   const supabase = await createClient();
-  const { data: funnels } = await supabase
+  const { data: funnel } = await supabase
     .from("configurators")
-    .select("id, name")
+    .select("id")
     .eq("organization_id", ctx.organization.id)
-    .order("created_at", { ascending: true });
+    .order("created_at", { ascending: true })
+    .limit(1)
+    .maybeSingle();
 
-  if (!funnels?.length) {
+  if (!funnel) {
     return (
       <div className="rounded-xl border border-[#efe7de] bg-white p-6">
-        <h1 className="text-xl font-semibold">Créez d’abord un funnel</h1>
+        <h1 className="text-xl font-semibold">Créez d’abord un parcours devis</h1>
         <p className="mt-2 text-sm text-slate-500">
-          Le funnel, c’est le parcours que le prospect remplit après « Demander un devis » (questions,
-          contact, envoi). WooCommerce fournit les produits ; QuoteBuilder collecte la demande dans
-          ce funnel. Créez-en un, puis reconnectez le plugin depuis WordPress.
+          WordPress envoie le catalogue ; QuoteBuilder a besoin d’un parcours (« Demander un devis »)
+          pour recevoir les demandes. Créez-en un, puis reconnectez le plugin.
         </p>
         <Link href="/funnels" className="mt-4 inline-block text-sm font-medium text-[#C2410C]">
-          Créer un funnel
+          Créer un parcours
         </Link>
       </div>
     );
@@ -80,7 +81,6 @@ export default async function PluginConnectPage({
       returnUrl={request.returnUrl}
       state={request.state}
       orgName={ctx.organization.name}
-      funnels={funnels}
     />
   );
 }

@@ -336,18 +336,22 @@ export async function createPairingCode(configuratorId: string | null) {
   return { code };
 }
 
-/** Le plugin WordPress ouvre cette action après login : on choisit le funnel, WP reçoit le code. */
+/** Le plugin WordPress ouvre cette action après login : on rattache le funnel tout seul. */
 export async function authorizePluginConnect(formData: FormData) {
   const ctx = await requireAdmin();
   const siteUrl = String(formData.get("site_url") ?? "").trim();
   const returnUrl = String(formData.get("return") ?? "").trim();
   const state = String(formData.get("state") ?? "").trim();
-  const configuratorId = String(formData.get("configurator_id") ?? "").trim() || null;
   if (!siteUrl || !returnUrl || !state) {
     throw new Error("Requête de connexion incomplète.");
   }
 
   const supabase = await createClient();
+  const configuratorId = await resolvePluginFunnelId(ctx.organization.id, siteUrl);
+  if (!configuratorId) {
+    redirect("/funnels");
+  }
+
   const code = randomPairingCode();
   const callback = pluginConnectCallback(siteUrl, returnUrl, code, state);
   const { error } = await supabase.from("catalog_pairings").insert({
@@ -361,4 +365,32 @@ export async function authorizePluginConnect(formData: FormData) {
     throw new Error("Impossible de créer la connexion. Réessayez.");
   }
   redirect(callback);
+}
+
+async function resolvePluginFunnelId(organizationId: string, siteUrl: string) {
+  const supabase = await createClient();
+  let storeDomain: string | null = null;
+  try {
+    storeDomain = normalizeSiteUrl(siteUrl);
+  } catch {
+    storeDomain = null;
+  }
+  if (storeDomain) {
+    const { data: existing } = await supabase
+      .from("catalog_connections")
+      .select("configurator_id")
+      .eq("organization_id", organizationId)
+      .eq("provider", "woocommerce")
+      .eq("store_domain", storeDomain)
+      .maybeSingle();
+    if (existing?.configurator_id) return existing.configurator_id;
+  }
+  const { data: funnel } = await supabase
+    .from("configurators")
+    .select("id")
+    .eq("organization_id", organizationId)
+    .order("created_at", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+  return funnel?.id ?? null;
 }
