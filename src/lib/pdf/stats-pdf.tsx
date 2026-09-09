@@ -60,6 +60,43 @@ export function StatsPdf({
         </View>
 
         <View style={styles.section}>
+          <Text style={styles.heading}>Par funnel</Text>
+          {stats.funnels.length === 0 ? (
+            <Text style={styles.label}>Aucun funnel.</Text>
+          ) : (
+            stats.funnels.map((row) => (
+              <View key={row.id} style={styles.row}>
+                <Text>{row.name}</Text>
+                <Text>
+                  {row.quotes} devis · {row.conversion != null ? `${Math.round(row.conversion)}%` : "-"} ·{" "}
+                  {row.won} gagnés
+                </Text>
+              </View>
+            ))
+          )}
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.heading}>Campagnes</Text>
+          {stats.campaigns.length === 0 ? (
+            <Text style={styles.label}>Pas encore de campagne UTM.</Text>
+          ) : (
+            stats.campaigns.map((row) => (
+              <View key={`${row.campaign}-${row.source}`} style={styles.row}>
+                <Text>
+                  {row.campaign} · {row.source}
+                </Text>
+                <Text>
+                  {row.quotes} devis · {row.won} gagnés
+                  {row.costPerQuote != null
+                    ? ` · ${new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(row.costPerQuote)} / devis`
+                    : ""}
+                </Text>
+              </View>
+            ))
+          )}
+        </View>
+        <View style={styles.section}>
           <Text style={styles.heading}>Sources de trafic</Text>
           {stats.sources.length === 0 ? (
             <Text style={styles.label}>Pas encore de source UTM.</Text>

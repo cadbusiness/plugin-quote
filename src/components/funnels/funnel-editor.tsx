@@ -6,6 +6,7 @@ import { ChevronLeft } from "lucide-react";
 import { ListPanel } from "@/components/ui/list-panel";
 import { CopyBlock } from "@/components/funnels/copy-block";
 import { FunnelAutomations, type FunnelWorkflowRow } from "@/components/funnels/funnel-automations";
+import { FunnelStatsPanel } from "@/components/funnels/funnel-stats-panel";
 import { ParcoursBuilder } from "@/components/funnels/parcours-builder";
 import type { PreviewProduct } from "@/components/funnels/parcours-preview";
 import { renameFunnel, saveFunnelTracking, setFunnelActive, setFunnelKind } from "@/app/(app)/funnels/actions";
@@ -13,6 +14,7 @@ import type { FunnelKind } from "@/lib/funnels/builder";
 import type { Tables } from "@/lib/db/database.types";
 import { FUNNEL_TABS, type FunnelTab } from "@/lib/funnels/tabs";
 import type { FunnelTracking } from "@/lib/funnels/tracking";
+import type { StatsDashboard } from "@/lib/stats/dashboard";
 
 function tabHref(funnelId: string, tab: FunnelTab) {
   return tab === "parcours" ? `/funnels/${funnelId}` : `/funnels/${funnelId}?tab=${tab}`;
@@ -32,6 +34,7 @@ export function FunnelEditor({
   publicUrl,
   orgSlug,
   tab,
+  stats,
 }: {
   funnel: {
     id: string;
@@ -53,6 +56,7 @@ export function FunnelEditor({
   publicUrl: string;
   orgSlug: string;
   tab: FunnelTab;
+  stats: StatsDashboard | null;
 }) {
   const [pending, startTransition] = useTransition();
   const kind: FunnelKind = funnel.chatEnabled && !funnel.wizardEnabled ? "chat" : "form";
@@ -178,6 +182,8 @@ export function FunnelEditor({
           />
         </div>
       ) : null}
+
+      {tab === "stats" && stats ? <FunnelStatsPanel funnelId={funnel.id} stats={stats} /> : null}
 
       {tab === "automations" ? (
         <FunnelAutomations

@@ -10,7 +10,7 @@ Carte officielle : `docs/produit.md`.
 
 ## Cœur (maintenant)
 
-Funnel (création guidée, steps, 3 modes, embed widget/WP, URL publique, session + identité progressive), catalogue + Si/Alors + Woo à fiabiliser, demandes **en liste** (fiche, score, assignation, notes, abandons, CSV), espace prospect, workflows canvas (emails, wait, branches devis, assignation, statut, exécutions), équipe, stats volume/conversion/délai/score, webhooks, templates email/PDF, **canaux** (boîtes mail org + staff), **emails marketing** (builder + envoi perso/groupe), **segmentation** (funnel, B2B/B2C).
+Funnel (création guidée, steps, 3 modes, embed widget/WP, URL publique, session + identité progressive), catalogue + Si/Alors + Woo à fiabiliser, demandes **en liste** (fiche, score, assignation, notes, abandons, CSV), espace prospect, workflows canvas (emails, wait, branches devis, assignation, statut, exécutions), équipe, stats volume/conversion/délai/score **par funnel et par campagne**, pont Google Ads (OAuth, conversions devis/gagné, ROI, mots-clés secteur), webhooks, templates email/PDF, **canaux** (boîtes mail org + staff), **emails marketing** (builder + envoi perso/groupe), **segmentation** (funnel, B2B/B2C).
 
 ## Phase 2 (pas avant le cœur)
 

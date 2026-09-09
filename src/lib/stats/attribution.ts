@@ -7,6 +7,9 @@ export type Attribution = {
   utmTerm?: string | null;
   referrer?: string | null;
   landingPath?: string | null;
+  gclid?: string | null;
+  gbraid?: string | null;
+  wbraid?: string | null;
 };
 
 const SOCIAL = new Set([
@@ -41,10 +44,12 @@ export function parseAttribution(input: {
       ? new URLSearchParams(input.search.startsWith("?") ? input.search : `?${input.search}`)
       : (input.search ?? new URLSearchParams());
 
+  const gclid = clean(params.get("gclid"));
+  const gbraid = clean(params.get("gbraid"));
+  const wbraid = clean(params.get("wbraid"));
   let utmSource = clean(params.get("utm_source"));
   let utmMedium = clean(params.get("utm_medium"));
-  const gclid = clean(params.get("gclid") ?? params.get("wbraid") ?? params.get("gbraid"));
-  if (gclid && !utmSource) {
+  if ((gclid || gbraid || wbraid) && !utmSource) {
     utmSource = "google";
     utmMedium = utmMedium ?? "cpc";
   }
@@ -62,6 +67,9 @@ export function parseAttribution(input: {
     utmTerm: clean(params.get("utm_term")),
     referrer: clean(input.referrer),
     landingPath: clean(input.landingPath),
+    gclid,
+    gbraid,
+    wbraid,
   };
 }
 
@@ -75,6 +83,9 @@ export function attributionColumns(attr: Attribution) {
     utm_term: attr.utmTerm ?? null,
     referrer: attr.referrer ?? null,
     landing_path: attr.landingPath ?? null,
+    gclid: attr.gclid ?? null,
+    gbraid: attr.gbraid ?? null,
+    wbraid: attr.wbraid ?? null,
   };
 }
 
@@ -84,6 +95,7 @@ export function attributionPayload(attr: Attribution) {
     utm_medium: attr.utmMedium ?? null,
     utm_campaign: attr.utmCampaign ?? null,
     referrer: attr.referrer ?? null,
+    gclid: attr.gclid ?? null,
   };
 }
 
@@ -100,11 +112,15 @@ export function classifySource(input: {
   utmSource?: string | null;
   utmMedium?: string | null;
   referrer?: string | null;
+  gclid?: string | null;
+  gbraid?: string | null;
+  wbraid?: string | null;
 }) {
   const source = (input.utmSource ?? "").trim().toLowerCase();
   const medium = (input.utmMedium ?? "").trim().toLowerCase();
   const host = hostFromReferrer(input.referrer);
 
+  if (input.gclid || input.gbraid || input.wbraid) return "Google Ads";
   if (source.includes("google") && (PAID.has(medium) || source.includes("ads") || medium.includes("ad"))) {
     return "Google Ads";
   }
@@ -131,4 +147,14 @@ export function classifySource(input: {
   }
 
   return "Direct";
+}
+
+export function isGoogleAdsSource(input: {
+  utmSource?: string | null;
+  utmMedium?: string | null;
+  gclid?: string | null;
+  gbraid?: string | null;
+  wbraid?: string | null;
+}) {
+  return classifySource(input) === "Google Ads";
 }

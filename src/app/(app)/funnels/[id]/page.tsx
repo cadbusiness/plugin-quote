@@ -4,6 +4,7 @@ import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { FunnelEditor } from "@/components/funnels/funnel-editor";
 import { parseFunnelTab } from "@/lib/funnels/tabs";
 import { parseFunnelTracking } from "@/lib/funnels/tracking";
+import { loadStatsDashboard } from "@/lib/stats/dashboard";
 import { getAppUrl } from "@/lib/supabase/env";
 import { nodeTitle } from "@/lib/workflows/labels";
 import { parseDefinition, parseTriggerConfig } from "@/lib/workflows/types";
@@ -30,7 +31,7 @@ export default async function FunnelEditorPage({
     .maybeSingle();
   if (!funnel) notFound();
 
-  const [{ data: steps }, { data: questions }, { data: workflows }, { data: products }, { data: funnels }, { data: statuses }] =
+  const [{ data: steps }, { data: questions }, { data: workflows }, { data: products }, { data: funnels }, { data: statuses }, stats] =
     await Promise.all([
       supabase
         .from("wizard_steps")
@@ -58,6 +59,7 @@ export default async function FunnelEditorPage({
         .limit(40),
       supabase.from("configurators").select("id, name").eq("organization_id", ctx.organization.id).order("name"),
       supabase.from("quote_statuses").select("slug, label").eq("organization_id", ctx.organization.id).order("position"),
+      loadStatsDashboard(supabase, ctx.organization.id, "month", funnel.id),
     ]);
 
   const stepIds = new Set((steps ?? []).map((step) => step.id));
@@ -111,6 +113,7 @@ export default async function FunnelEditorPage({
       publicUrl={publicUrl}
       orgSlug={ctx.organization.slug}
       tab={parseFunnelTab(tabParam)}
+      stats={stats}
     />
   );
 }

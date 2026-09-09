@@ -93,6 +93,9 @@ export async function submitQuote(input: {
       utm_content: session.utm_content,
       utm_term: session.utm_term,
       referrer: session.referrer,
+      gclid: session.gclid,
+      gbraid: session.gbraid,
+      wbraid: session.wbraid,
     })
     .select("*")
     .single();
@@ -112,6 +115,22 @@ export async function submitQuote(input: {
     session_id: session.id,
     event_type: "quotebuilder_submitted",
   });
+
+  try {
+    const { reportAdsConversion } = await import("@/lib/ads/sync");
+    await reportAdsConversion({
+      supabase,
+      organizationId: session.organization_id,
+      quoteId: quote.id,
+      kind: "quote",
+      gclid: session.gclid,
+      gbraid: session.gbraid,
+      wbraid: session.wbraid,
+      occurredAt: quote.created_at,
+    });
+  } catch (error) {
+    console.error("Ads conversion upload failed", error);
+  }
 
   const fromQuantities = products.filter((product) => (customization.quantities[product.id] ?? 0) > 0);
   const fromSuggestion = selected?.products ?? [];

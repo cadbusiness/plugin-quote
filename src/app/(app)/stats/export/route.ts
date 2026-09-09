@@ -10,8 +10,9 @@ export async function GET(req: Request) {
   const ctx = await getOrgContext();
   if (!ctx) return NextResponse.redirect(new URL("/onboarding", req.url));
   const range = resolveRange(new URL(req.url).searchParams.get("range") ?? undefined);
+  const funnelId = new URL(req.url).searchParams.get("funnel") ?? undefined;
   const supabase = await createClient();
-  const stats = await loadStatsDashboard(supabase, ctx.organization.id, range);
+  const stats = await loadStatsDashboard(supabase, ctx.organization.id, range, funnelId);
   const buffer = await renderToBuffer(
     createElement(StatsPdf, {
       organizationName: ctx.organization.name,

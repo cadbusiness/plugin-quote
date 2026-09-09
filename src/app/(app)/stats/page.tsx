@@ -19,7 +19,7 @@ const RANGES: { id: StatsRange; label: string }[] = [
 export default async function StatsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ range?: string; tab?: string; error?: string }>;
+  searchParams: Promise<{ range?: string; tab?: string; error?: string; funnel?: string }>;
 }) {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");
@@ -29,7 +29,8 @@ export default async function StatsPage({
   let tab = parseStatsTab(query.tab);
   if (tab === "suivi" && !admin) tab = "vue";
   const supabase = await createClient();
-  const stats = await loadStatsDashboard(supabase, ctx.organization.id, range);
+  const funnelId = query.funnel?.trim() || null;
+  const stats = await loadStatsDashboard(supabase, ctx.organization.id, range, funnelId);
   const action =
     stats.pulse.waiting > 0
       ? { href: "/devis", label: `À rappeler ${stats.pulse.waiting}` }
@@ -37,6 +38,7 @@ export default async function StatsPage({
         ? { href: "/sessions", label: `Relancer ${stats.abandons.withEmail}` }
         : null;
   const tabs = STATS_TABS.filter((item) => !item.admin || admin);
+  const funnelFilter = stats.funnels.length > 1 || funnelId;
 
   return (
     <ListPanel>
@@ -47,7 +49,7 @@ export default async function StatsPage({
             return (
               <Link
                 key={item.id}
-                href={statsHref(tab, item.id)}
+                href={statsHref(tab, item.id, funnelId)}
                 className={`inline-flex items-center rounded-full px-2.5 py-1 text-sm ${
                   active
                     ? "bg-orange-50 font-medium text-[#C2410C]"
@@ -65,7 +67,7 @@ export default async function StatsPage({
           </Link>
         ) : null}
         <a
-          href={`/stats/export?range=${range}`}
+          href={`/stats/export?range=${range}${funnelId ? `&funnel=${funnelId}` : ""}`}
           className="inline-flex items-center gap-1.5 rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#D45203]"
         >
           <FileDown className="h-4 w-4" strokeWidth={2} />
@@ -79,7 +81,7 @@ export default async function StatsPage({
           return (
             <Link
               key={item.id}
-              href={statsHref(item.id, range)}
+              href={statsHref(item.id, range, funnelId)}
               aria-current={on ? "page" : undefined}
               className={`relative shrink-0 py-2.5 text-sm ${
                 on ? "font-medium text-slate-900" : "text-slate-500 hover:text-slate-900"
@@ -94,6 +96,32 @@ export default async function StatsPage({
           );
         })}
       </nav>
+
+      {funnelFilter && tab !== "suivi" ? (
+        <div className="flex flex-wrap items-center gap-1.5 border-b border-slate-100 px-4 py-2 lg:px-6">
+          <Link
+            href={statsHref(tab, range)}
+            className={`rounded-full px-2.5 py-1 text-sm ${
+              !funnelId ? "bg-orange-50 font-medium text-[#C2410C]" : "text-slate-600 hover:bg-slate-50"
+            }`}
+          >
+            Tous les funnels
+          </Link>
+          {stats.funnels.map((funnel) => (
+            <Link
+              key={funnel.id}
+              href={statsHref(tab, range, funnel.id)}
+              className={`rounded-full px-2.5 py-1 text-sm ${
+                funnelId === funnel.id
+                  ? "bg-orange-50 font-medium text-[#C2410C]"
+                  : "text-slate-600 hover:bg-slate-50"
+              }`}
+            >
+              {funnel.name}
+            </Link>
+          ))}
+        </div>
+      ) : null}
 
       {tab === "suivi" ? (
         <StatsTrackingPanel

@@ -1,11 +1,19 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { ClickableRow } from "@/components/ui/clickable-row";
 import { DataTable } from "@/components/ui/list-panel";
 import { Chip } from "@/components/ui/chip";
 import { GaugeBar, RingGauge, type GaugeTone } from "@/components/ui/gauge";
 import { MonthChart } from "@/components/stats/month-chart";
-import { formatEur, formatPercent } from "@/lib/format";
-import type { PipelineRow, SourceRow, StatsDashboard, StatsPulse } from "@/lib/stats/dashboard";
+import { formatEur, formatEurExact, formatPercent } from "@/lib/format";
+import type {
+  CampaignStatsRow,
+  FunnelStatsRow,
+  PipelineRow,
+  SourceRow,
+  StatsDashboard,
+  StatsPulse,
+} from "@/lib/stats/dashboard";
 
 const SOURCE_CHIP: Record<string, "orange" | "emerald" | "sky" | "violet" | "slate"> = {
   "Google Ads": "orange",
@@ -198,7 +206,13 @@ function SourceGauges({ rows }: { rows: SourceRow[] }) {
   );
 }
 
-export function StatsView({ stats, tab }: { stats: StatsDashboard; tab: "vue" | "pipeline" | "sources" }) {
+export function StatsView({
+  stats,
+  tab,
+}: {
+  stats: StatsDashboard;
+  tab: "vue" | "pipeline" | "sources" | "funnels" | "campagnes";
+}) {
   const { pulse, abandons } = stats;
   if (tab === "pipeline") {
     return (
@@ -212,6 +226,12 @@ export function StatsView({ stats, tab }: { stats: StatsDashboard; tab: "vue" | 
   }
   if (tab === "sources") {
     return <SourceGauges rows={stats.sources} />;
+  }
+  if (tab === "funnels") {
+    return <FunnelBreakdown rows={stats.funnels} />;
+  }
+  if (tab === "campagnes") {
+    return <CampaignBreakdown rows={stats.campaigns} adsConnected={stats.ads.connected} />;
   }
   return (
     <>
@@ -257,6 +277,10 @@ export function StatsView({ stats, tab }: { stats: StatsDashboard; tab: "vue" | 
         </Link>
       </div>
 
+      {stats.ads.connected || stats.campaigns.some((row) => row.source === "Google Ads") ? (
+        <AdsLoopStrip stats={stats} />
+      ) : null}
+
       <section>
         <div className="border-b border-slate-100 px-4 py-3 lg:px-6">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">6 mois</p>
@@ -264,5 +288,139 @@ export function StatsView({ stats, tab }: { stats: StatsDashboard; tab: "vue" | 
         <MonthChart months={stats.months} />
       </section>
     </>
+  );
+}
+
+function AdsLoopStrip({ stats }: { stats: StatsDashboard }) {
+  const adsQuotes = stats.campaigns.filter((row) => row.source === "Google Ads");
+  const quotes = adsQuotes.reduce((sum, row) => sum + row.quotes, 0);
+  const won = adsQuotes.reduce((sum, row) => sum + row.won, 0);
+  const spend = stats.ads.spend || adsQuotes.reduce((sum, row) => sum + row.spend, 0);
+  const costQuote = quotes ? spend / quotes : null;
+  const costWon = won ? spend / won : null;
+  return (
+    <section className="grid grid-cols-2 border-b border-slate-200 lg:grid-cols-4">
+      <LoopCell label="Dépense Ads" value={spend ? formatEur(spend) : "—"} hint="période" />
+      <LoopCell label="Devis Ads" value={String(quotes)} hint="attribués Google Ads" />
+      <LoopCell
+        label="Coût / devis"
+        value={costQuote != null ? formatEurExact(costQuote) : "—"}
+        hint={quotes ? `${quotes} devis` : "connectez Ads pour le spend"}
+      />
+      <LoopCell
+        label="Coût / client"
+        value={costWon != null ? formatEurExact(costWon) : "—"}
+        hint={won ? `${won} gagnés` : "statut Gagné"}
+        last
+      />
+    </section>
+  );
+}
+
+function LoopCell({
+  label,
+  value,
+  hint,
+  last,
+}: {
+  label: string;
+  value: string;
+  hint: string;
+  last?: boolean;
+}) {
+  return (
+    <div className={`px-4 py-4 lg:px-6 ${last ? "" : "border-b border-slate-200 lg:border-b-0 lg:border-r"}`}>
+      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
+      <p className="mt-1 text-2xl font-semibold tabular-nums text-slate-900">{value}</p>
+      <p className="mt-0.5 text-xs text-slate-500">{hint}</p>
+    </div>
+  );
+}
+
+function FunnelBreakdown({ rows }: { rows: FunnelStatsRow[] }) {
+  const maxQuotes = Math.max(1, ...rows.map((row) => row.quotes));
+  return (
+    <section>
+      <div className="border-b border-slate-100 px-4 py-3 lg:px-6">
+        <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Par funnel</p>
+      </div>
+      {rows.length === 0 ? (
+        <p className="px-4 py-8 text-sm text-slate-500 lg:px-6">Aucun funnel pour l’instant.</p>
+      ) : (
+        <DataTable headers={["Funnel", "Visiteurs", "Devis", "Conversion", "Gagnés", "CA"]}>
+          {rows.map((row) => (
+            <ClickableRow key={row.id} href={`/funnels/${row.id}?tab=stats`}>
+              <td className="px-4 py-2.5 lg:px-6">
+                <div className="font-medium text-slate-900">{row.name}</div>
+                <div className="mt-1 min-w-[6.5rem]">
+                  <GaugeBar pct={pct(row.quotes, maxQuotes)} tone="orange" />
+                </div>
+              </td>
+              <td className="px-4 py-2.5 tabular-nums lg:px-6">{row.visitors || "-"}</td>
+              <td className="px-4 py-2.5 tabular-nums lg:px-6">{row.quotes}</td>
+              <td className="px-4 py-2.5 tabular-nums lg:px-6">{formatPercent(row.conversion)}</td>
+              <td className="px-4 py-2.5 lg:px-6">
+                <Chip tone={row.won ? "emerald" : "slate"}>{row.won}</Chip>
+              </td>
+              <td className="px-4 py-2.5 tabular-nums lg:px-6">{formatEur(row.pipeline)}</td>
+            </ClickableRow>
+          ))}
+        </DataTable>
+      )}
+    </section>
+  );
+}
+
+function CampaignBreakdown({
+  rows,
+  adsConnected,
+}: {
+  rows: CampaignStatsRow[];
+  adsConnected: boolean;
+}) {
+  return (
+    <section>
+      <div className="flex items-baseline justify-between gap-3 border-b border-slate-100 px-4 py-3 lg:px-6">
+        <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Campagnes</p>
+        <Link href="/acquisition" className="text-sm font-medium text-[#E85D04] hover:underline">
+          {adsConnected ? "Ads" : "Connecter Google Ads"}
+        </Link>
+      </div>
+      {rows.length === 0 ? (
+        <p className="px-4 py-8 text-sm text-slate-500 lg:px-6">
+          Aucune campagne UTM pour l’instant. Utilisez les URL générées dans Ads.
+        </p>
+      ) : (
+        <DataTable
+          headers={["Campagne", "Source", "Funnel", "Devis", "Gagnés", "Coût / devis", "Coût / client"]}
+        >
+          {rows.map((row) => (
+            <tr key={`${row.campaign}-${row.source}-${row.funnelId ?? ""}`} className="border-b border-slate-100">
+              <td className="px-4 py-2.5 font-medium text-slate-900 lg:px-6">{row.campaign}</td>
+              <td className="px-4 py-2.5 lg:px-6">
+                <Chip tone={SOURCE_CHIP[row.source] ?? "sky"}>{row.source}</Chip>
+              </td>
+              <td className="px-4 py-2.5 text-slate-600 lg:px-6">
+                {row.funnelId ? (
+                  <Link href={`/funnels/${row.funnelId}?tab=stats`} className="hover:text-[#C2410C]">
+                    {row.funnelName ?? "Funnel"}
+                  </Link>
+                ) : (
+                  "-"
+                )}
+              </td>
+              <td className="px-4 py-2.5 tabular-nums lg:px-6">{row.quotes}</td>
+              <td className="px-4 py-2.5 tabular-nums lg:px-6">{row.won}</td>
+              <td className="px-4 py-2.5 tabular-nums lg:px-6">
+                {row.costPerQuote != null ? formatEurExact(row.costPerQuote) : adsConnected ? "—" : "—"}
+              </td>
+              <td className="px-4 py-2.5 tabular-nums lg:px-6">
+                {row.costPerWon != null ? formatEurExact(row.costPerWon) : "—"}
+              </td>
+            </tr>
+          ))}
+        </DataTable>
+      )}
+    </section>
   );
 }

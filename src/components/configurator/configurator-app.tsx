@@ -87,6 +87,9 @@ function attributionBody(attr: Attribution) {
     utmTerm: attr.utmTerm ?? undefined,
     referrer: attr.referrer ?? undefined,
     landingPath: attr.landingPath ?? undefined,
+    gclid: attr.gclid ?? undefined,
+    gbraid: attr.gbraid ?? undefined,
+    wbraid: attr.wbraid ?? undefined,
   };
 }
 

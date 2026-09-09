@@ -39,6 +39,15 @@ export function formatEur(value: number | null | undefined) {
   }).format(value);
 }
 
+export function formatEurExact(value: number | null | undefined) {
+  if (value == null || Number.isNaN(value)) return "-";
+  return new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
 export function formatWhen(iso: string) {
   const target = new Date(iso).getTime();
   const diff = target - Date.now();
