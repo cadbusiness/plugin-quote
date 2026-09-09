@@ -12,6 +12,7 @@ export function SupportMenu({
   isAdmin: boolean;
 }) {
   const [open, setOpen] = useState(false);
+  const [pos, setPos] = useState<{ bottom: number; left: number } | null>(null);
   const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,11 +30,21 @@ export function SupportMenu({
     };
   }, []);
 
+  function toggle() {
+    if (open) {
+      setOpen(false);
+      return;
+    }
+    const rect = root.current?.getBoundingClientRect();
+    if (rect) setPos({ bottom: window.innerHeight - rect.top + 6, left: rect.left });
+    setOpen(true);
+  }
+
   return (
     <div ref={root} className="relative">
       <button
         type="button"
-        onClick={() => setOpen((current) => !current)}
+        onClick={toggle}
         title="Support"
         aria-expanded={open}
         className={`flex w-full items-center rounded-lg py-1.5 text-sm ${
@@ -48,7 +59,10 @@ export function SupportMenu({
         {collapsed ? <span className="sr-only">Support</span> : "Support"}
       </button>
       {open ? (
-        <div className="absolute bottom-full left-0 z-40 mb-1 w-56 overflow-hidden rounded-lg border border-slate-200 bg-white py-1 text-sm shadow-sm">
+        <div
+          className="fixed z-50 w-56 overflow-hidden rounded-lg border border-slate-200 bg-white py-1 text-sm shadow-sm"
+          style={{ bottom: pos?.bottom ?? 72, left: pos?.left ?? 8 }}
+        >
           <a
             href="mailto:hello@quotebuilder.app?subject=Aide%20QuoteBuilder"
             className="flex items-center gap-2.5 px-3 py-2 text-slate-700 hover:bg-orange-50"

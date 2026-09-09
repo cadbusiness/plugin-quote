@@ -189,7 +189,7 @@ export function AppSidebar({
           </Link>
         ) : null}
 
-        <div className={collapsed ? "mb-1.5" : "mb-3"}>
+        <div className={collapsed ? "mb-1" : "mb-2.5"}>
           <NavLink item={HOME} pathname={pathname} collapsed={collapsed} />
         </div>
 
@@ -197,7 +197,7 @@ export function AppSidebar({
           const items = group.items.filter((item) => !item.admin || isAdmin);
           if (!items.length) return null;
           return (
-            <div key={group.label} className={collapsed ? "mb-1" : "mb-3"}>
+            <div key={group.label} className={collapsed ? "mb-1" : "mb-2.5"}>
               {collapsed ? (
                 <div className="mx-3 my-1 border-t border-slate-100" aria-hidden />
               ) : (
