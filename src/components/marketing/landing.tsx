@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { LandingSectors } from "@/components/marketing/landing-sectors";
-import { AutopilotShot, CatalogShot, PipelineShot, WizardShot } from "@/components/marketing/landing-shots";
-import { ProductWalkthrough } from "@/components/marketing/product-walkthrough";
+import { SystemCinema } from "@/components/marketing/system-cinema";
 
 const DEMO_HREF = "#demo";
 
@@ -100,33 +99,6 @@ const PLANS = [
     cta: "Nous contacter",
     href: "mailto:hello@quotebuilder.app",
     featured: false,
-  },
-];
-
-const HOW_STEPS = [
-  {
-    n: "①",
-    title: "Posez l’offre",
-    text: "Produits, gammes, prix : saisie, CSV, ou Woo / Shopify. Le socle. Pas le différenciateur.",
-    shot: <CatalogShot />,
-  },
-  {
-    n: "②",
-    title: "Ils configurent",
-    text: "Funnel ou chat IA. Le prospect cadre le projet dans votre catalogue et envoie un dossier, pas un mail flou.",
-    shot: <WizardShot />,
-  },
-  {
-    n: "③",
-    title: "Vous avez un dossier",
-    text: "Produits, quantités, budget, score hot / warm / cold. Vous rappelez pour conclure, pas pour découvrir le besoin.",
-    shot: <PipelineShot />,
-  },
-  {
-    n: "④",
-    title: "L’autopilote suit",
-    text: "Confirmation, relances d’abandon, rappel si non traité, branches selon le score. Les 5 relances que 92 % des équipes n’enchaînent jamais.",
-    shot: <AutopilotShot />,
   },
 ];
 
@@ -278,36 +250,18 @@ export function Landing() {
         </div>
       </section>
 
-      <section id="comment-ca-marche" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-14 sm:py-20">
-        <h2 className="mx-auto max-w-xl text-center text-2xl font-semibold tracking-tight sm:text-3xl">
-          Comment ça marche.
-        </h2>
-        <p className="mx-auto mt-3 max-w-xl text-center text-[16px] leading-7 text-[#1A1510]/65 sm:text-[17px] sm:leading-8">
-          Quatre temps. Les deux premiers, d’autres outils les touchent. Les deux derniers changent
-          la façon de vendre au devis.
-        </p>
-        <div className="mt-12 space-y-14 sm:mt-14 sm:space-y-16">
-          {HOW_STEPS.map((step, i) => (
-            <article
-              key={step.title}
-              className={`grid items-center gap-8 lg:grid-cols-2 lg:gap-12 ${i % 2 === 1 ? "lg:[&>div:first-child]:order-2" : ""}`}
-            >
-              <div>
-                <p className="text-sm font-medium text-[#C45C26]">{step.n}</p>
-                <h3 className="mt-2 text-xl font-semibold tracking-tight sm:text-2xl">{step.title}</h3>
-                <p className="mt-3 text-[16px] leading-7 text-[#1A1510]/70 sm:text-[17px] sm:leading-8">
-                  {step.text}
-                </p>
-              </div>
-              <div>{step.shot}</div>
-            </article>
-          ))}
-        </div>
-        <div id="demo" className="mt-14 scroll-mt-24 sm:mt-16">
-          <p className="mb-3 text-center text-sm text-[#1A1510]/50">
-            Simulation : offre, funnel, dossier, autopilote.
+      <section id="comment-ca-marche" className="scroll-mt-24 px-6 py-14 sm:py-20">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="mx-auto max-w-xl text-center text-2xl font-semibold tracking-tight sm:text-3xl">
+            Comment ça marche.
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-center text-[16px] leading-7 text-[#1A1510]/65 sm:text-[17px] sm:leading-8">
+            Offre, funnel, dossier, autopilote. La même chaîne que dans le produit, en quelques
+            secondes.
           </p>
-          <ProductWalkthrough />
+          <div id="demo" className="mt-10 scroll-mt-24 sm:mt-12">
+            <SystemCinema />
+          </div>
         </div>
       </section>
 

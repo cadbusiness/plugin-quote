@@ -61,3 +61,75 @@ body {
 .qb-overlay-in {
   animation: qb-overlay-in 180ms ease-out;
 }
+
+@keyframes qb-cinema-row {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes qb-cinema-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes qb-cinema-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(225, 29, 72, 0);
+  }
+}
+
+@keyframes qb-cinema-bar {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+.qb-cinema-row {
+  animation: qb-cinema-row 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.qb-cinema-pop {
+  animation: qb-cinema-pop 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.qb-cinema-pulse {
+  animation: qb-cinema-pulse 1.6s ease-out infinite;
+}
+
+.qb-cinema-bar {
+  animation: qb-cinema-bar linear both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qb-cinema-row,
+  .qb-cinema-pop,
+  .qb-cinema-pulse,
+  .qb-cinema-bar {
+    animation: none !important;
+  }
+}
