@@ -24,16 +24,16 @@ export default function HomePage() {
               href="/signup"
               className="rounded-full bg-[#E85D04] px-6 py-3 text-sm font-semibold text-white hover:bg-[#d35400]"
             >
-              Mettre en place gratuitement
+              Commencer gratuitement
             </Link>
             <Link
-              href="/fonctionnalites"
+              href="/tarifs"
               className="text-sm font-medium text-[#1A1510]/70 underline-offset-4 hover:underline"
             >
-              Voir les fonctionnalités
+              Voir les tarifs
             </Link>
           </div>
-          <p className="mt-3 text-xs text-[#1A1510]/45">Essai 14 jours · pas de carte</p>
+          <p className="mt-3 text-xs text-[#1A1510]/45">Free · sans carte · upgrade quand vous voulez</p>
         </div>
       </section>
 
