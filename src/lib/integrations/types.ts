@@ -72,6 +72,12 @@ export type ConnectionSettings = {
   categories: string[];
   /** Vitrine boutique : masquer prix / panier, bouton devis. Partagé WP + Shopify. */
   storefront: StorefrontSettings;
+  /** Importer les produits depuis la boutique vers QuoteBuilder. */
+  pullFromStore: boolean;
+  /** Renvoyer vers WordPress les fiches modifiées ici (WooCommerce). */
+  pushToStore: boolean;
+  /** Ne pas écraser une fiche déjà retouchée dans QuoteBuilder. */
+  protectLocalEdits: boolean;
 };
 
 export const DEFAULT_SETTINGS: ConnectionSettings = {
@@ -81,6 +87,9 @@ export const DEFAULT_SETTINGS: ConnectionSettings = {
   markupPercent: 0,
   categories: [],
   storefront: DEFAULT_STOREFRONT,
+  pullFromStore: true,
+  pushToStore: false,
+  protectLocalEdits: true,
 };
 
 export function parseSettings(value: unknown): ConnectionSettings {
@@ -94,6 +103,10 @@ export function parseSettings(value: unknown): ConnectionSettings {
     markupPercent: Number(raw.markupPercent ?? 0) || 0,
     categories: Array.isArray(raw.categories) ? raw.categories.map(String).filter(Boolean) : [],
     storefront: parseStorefront(raw.storefront),
+    pullFromStore: raw.pullFromStore == null ? DEFAULT_SETTINGS.pullFromStore : Boolean(raw.pullFromStore),
+    pushToStore: Boolean(raw.pushToStore ?? DEFAULT_SETTINGS.pushToStore),
+    protectLocalEdits:
+      raw.protectLocalEdits == null ? DEFAULT_SETTINGS.protectLocalEdits : Boolean(raw.protectLocalEdits),
   };
 }
 
@@ -130,6 +143,16 @@ export type CatalogAdapter = {
   verifyWebhook(connection: ResolvedConnection, rawBody: string, headers: Headers): boolean;
   /** Extrait l'identifiant produit et le type d'évènement d'un webhook. */
   readWebhook(rawBody: string, headers: Headers): { externalId: string; deleted: boolean } | null;
+  pushProduct?(connection: ResolvedConnection, product: PushableProduct): Promise<void>;
+};
+
+export type PushableProduct = {
+  externalId: string;
+  name: string;
+  sku: string | null;
+  description: string | null;
+  priceMin: number | null;
+  images: ProductImage[];
 };
 
 export class IntegrationError extends Error {

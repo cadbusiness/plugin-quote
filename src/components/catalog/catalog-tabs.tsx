@@ -3,6 +3,7 @@ import Link from "next/link";
 const TABS = [
   { id: "produits", href: "/produits", label: "Produits" },
   { id: "regles", href: "/produits/regles", label: "Règles" },
+  { id: "import", href: "/produits/import", label: "Importation" },
 ] as const;
 
 export function CatalogTabs({

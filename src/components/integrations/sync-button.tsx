@@ -21,12 +21,12 @@ export function SyncButton({
         setMessage({ tone: "ko", text: result.error });
         return;
       }
-      const r = result as { created: number; updated: number; skipped: number; archived: number };
+      const r = result as { created: number; updated: number; skipped: number; archived: number; pushed?: number };
       setMessage({
         tone: "ok",
         text: `${r.created} ajoutés · ${r.updated} mis à jour · ${r.skipped} inchangés${
           r.archived ? ` · ${r.archived} retirés` : ""
-        }`,
+        }${r.pushed ? ` · ${r.pushed} renvoyés vers la boutique` : ""}`,
       });
     });
   }

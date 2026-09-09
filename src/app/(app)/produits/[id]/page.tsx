@@ -1,15 +1,20 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { deleteProduct, toggleProduct, updateProduct } from "@/app/(app)/produits/actions";
+import { CurrencyFields } from "@/components/catalog/currency-fields";
+import { ProductEditorFields } from "@/components/catalog/product-editor-fields";
+import { ProductGallery } from "@/components/catalog/product-gallery";
+import { RichTextEditor } from "@/components/catalog/rich-text-editor";
 import { Chip, type ChipTone } from "@/components/ui/chip";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
-import { priceModeOf } from "@/lib/catalog/product-form";
-import { formatDate } from "@/lib/format";
-import type { Json } from "@/lib/db/database.types";
-import { createClient } from "@/lib/supabase/server";
-import { ProductEditorFields } from "@/components/catalog/product-editor-fields";
 import { normalizeAttributes } from "@/lib/catalog/attributes";
+import { parseGallery } from "@/lib/catalog/media";
+import { priceModeOf } from "@/lib/catalog/product-form";
+import type { Json } from "@/lib/db/database.types";
+import { formatDate } from "@/lib/format";
+import { parseSettings } from "@/lib/integrations/types";
+import { createClient } from "@/lib/supabase/server";
 
 const SOURCES: Record<string, { label: string; tone: ChipTone }> = {
   manual: { label: "Ajouté à la main", tone: "slate" },
@@ -39,7 +44,9 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const supabase = await createClient();
   const { data: product } = await supabase
     .from("products")
-    .select("*")
+    .select(
+      "id, name, sku, category, tags, description, price_min, price_max, currency, is_active, source, connection_id, external_url, archived_by_sync, synced_at, sync_lock, image_url, images, options, variants",
+    )
     .eq("id", id)
     .eq("organization_id", ctx.organization.id)
     .maybeSingle();
@@ -49,7 +56,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     ? (
         await supabase
           .from("catalog_connections")
-          .select("id, label, provider")
+          .select("id, label, provider, settings")
           .eq("id", product.connection_id)
           .maybeSingle()
       ).data
@@ -60,6 +67,8 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const variants = asArray<StoredVariant>(product.variants);
   const attributes = normalizeAttributes(product.options);
   const priceMode = priceModeOf(product.price_min, product.price_max);
+  const gallery = parseGallery(product.images, product.image_url);
+  const policy = connection ? parseSettings(connection.settings) : null;
 
   const toggle = toggleProduct.bind(null, product.id, !product.is_active);
   const remove = deleteProduct.bind(null, product.id);
@@ -91,114 +100,103 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 
       {synced ? (
         <p className="border-b border-violet-100 bg-violet-50/60 px-4 py-2 text-sm text-violet-900 lg:px-6">
-          Produit synchronisé depuis {connection?.label ?? source.label}. Vos modifications ici seront
-          écrasées à la prochaine synchronisation.{" "}
+          {policy?.protectLocalEdits || product.sync_lock
+            ? `Fiche reliée à ${connection?.label ?? source.label}. Vos modifications ici sont conservées à la prochaine synchro.`
+            : `Produit synchronisé depuis ${connection?.label ?? source.label}. Sans verrou, la boutique peut écraser cette fiche.`}
+          {policy?.pushToStore ? " Enregistrer peut aussi mettre à jour WordPress." : ""}{" "}
           {product.external_url ? (
             <a href={product.external_url} target="_blank" rel="noreferrer" className="underline">
-              Ouvrir la fiche boutique
+              Fiche boutique
             </a>
           ) : null}
           {connection ? (
             <>
               {" · "}
-              <Link href={`/integrations/${connection.id}`} className="underline">
-                Réglages de la boutique
+              <Link href="/produits/import" className="underline">
+                Réglages d’importation
               </Link>
             </>
           ) : null}
         </p>
       ) : null}
 
-      <form action={updateProduct} className="grid gap-4 border-b border-slate-100 px-4 py-6 lg:px-6">
+      <form action={updateProduct} className="border-b border-slate-100">
         <input type="hidden" name="id" value={product.id} />
         <input type="hidden" name="price_mode" value={priceMode === "quote" ? "range" : priceMode} />
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Nom</span>
-            <input
-              name="name"
-              defaultValue={product.name}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Référence / SKU</span>
-            <input
-              name="sku"
-              defaultValue={product.sku ?? ""}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Catégorie</span>
-            <input
-              name="category"
-              defaultValue={product.category ?? ""}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Tags</span>
-            <input
-              name="tags"
-              defaultValue={product.tags.join(", ")}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            />
-          </label>
-        </div>
+        <div className="grid gap-6 px-4 py-5 lg:grid-cols-[16rem_minmax(0,32rem)] lg:px-6">
+          <ProductGallery productId={product.id} images={gallery} />
 
-        <label className="text-sm">
-          <span className="font-medium text-slate-900">Description</span>
-          <textarea
-            name="description"
-            rows={6}
-            defaultValue={product.description ?? ""}
-            className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-          />
-        </label>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="text-sm sm:col-span-2">
+              <span className="font-medium text-slate-900">Nom</span>
+              <input
+                name="name"
+                defaultValue={product.name}
+                className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+              />
+            </label>
+            <label className="text-sm">
+              <span className="font-medium text-slate-900">Référence / SKU</span>
+              <input
+                name="sku"
+                defaultValue={product.sku ?? ""}
+                className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+              />
+            </label>
+            <label className="text-sm">
+              <span className="font-medium text-slate-900">Catégorie</span>
+              <input
+                name="category"
+                defaultValue={product.category ?? ""}
+                className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+              />
+            </label>
+            <label className="text-sm sm:col-span-2">
+              <span className="font-medium text-slate-900">Tags</span>
+              <input
+                name="tags"
+                defaultValue={product.tags.join(", ")}
+                className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+              />
+            </label>
 
-        <div className="grid gap-4 sm:grid-cols-4">
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Prix min</span>
-            <input
-              name="price_min"
-              type="number"
-              step="0.01"
-              defaultValue={product.price_min ?? ""}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Prix max</span>
-            <input
-              name="price_max"
-              type="number"
-              step="0.01"
-              defaultValue={product.price_max ?? ""}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="text-sm">
-            <span className="font-medium text-slate-900">Devise</span>
-            <input
-              name="currency"
-              defaultValue={product.currency}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="flex items-end gap-2 text-sm">
-            <span className="flex w-full items-center gap-2 rounded-md px-3 py-2 ring-1 ring-slate-200 has-checked:bg-orange-50 has-checked:ring-orange-200">
+            <div className="sm:col-span-2">
+              <CurrencyFields
+                currency={product.currency}
+                priceMin={product.price_min}
+                priceMax={product.price_max}
+              />
+            </div>
+
+            <label className="flex items-center gap-2 rounded-md px-3 py-2 text-sm ring-1 ring-slate-200 has-checked:bg-orange-50 has-checked:ring-orange-200">
               <input type="checkbox" name="is_active" defaultChecked={product.is_active} />
               Proposé aux prospects
-            </span>
-          </label>
+            </label>
+            {synced ? (
+              <label className="flex items-center gap-2 rounded-md px-3 py-2 text-sm ring-1 ring-slate-200 has-checked:bg-orange-50 has-checked:ring-orange-200">
+                <input type="checkbox" name="sync_lock" defaultChecked={product.sync_lock} />
+                Ne pas écraser à la synchro
+              </label>
+            ) : (
+              <input type="hidden" name="sync_lock" value={product.sync_lock ? "on" : ""} />
+            )}
+          </div>
         </div>
 
-        <ProductEditorFields imageUrl={product.image_url} attributes={attributes} />
+        <div className="max-w-3xl px-4 py-4 lg:px-6">
+          <span className="text-sm font-medium text-slate-900">Description</span>
+          <div className="mt-1">
+            <RichTextEditor name="description" defaultValue={product.description} productId={product.id} />
+          </div>
+        </div>
 
-        <div className="text-right">
-          <button className="rounded-md bg-slate-950 px-3 py-1.5 text-sm text-white">
+        <div className="px-4 py-4 lg:px-6">
+          <ProductEditorFields attributes={attributes} />
+        </div>
+
+        <div className="px-4 py-4 text-right lg:px-6">
+          <button className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]">
             Enregistrer le produit
           </button>
         </div>
@@ -238,7 +236,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         </form>
         <span className="text-xs text-slate-400">
           {synced
-            ? "Un produit supprimé revient à la prochaine synchronisation : préférez le désactiver."
+            ? "Un produit verrouillé reste même s’il disparaît de la boutique."
             : "Suppression définitive."}
           {product.synced_at ? ` Dernière synchro : ${formatDate(product.synced_at)}.` : ""}
         </span>

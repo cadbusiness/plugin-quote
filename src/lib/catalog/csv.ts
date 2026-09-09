@@ -8,6 +8,24 @@ export type CsvProductRow = {
   category: string | null;
 };
 
+export const CSV_TEMPLATE = `name,sku,category,price_min,price_max,tags,description
+Rayonnage mi-lourd,RAY-ML-2010,Rayonnage,189,420,"entrepot,lourd","Echelles et lisses pour charges moyennes"
+Bac gerbable,BAC-600,Bacs de rangement,18.42,18.42,"plastique,alimentaire","Bac blanc gerbable"
+`;
+
+export type CsvIssue = { line: number; message: string };
+
+export type CsvInspection = {
+  ok: boolean;
+  headers: string[];
+  mapped: Partial<Record<keyof CsvProductRow, string>>;
+  unknownHeaders: string[];
+  missingNameColumn: boolean;
+  rows: CsvProductRow[];
+  skipped: number;
+  issues: CsvIssue[];
+};
+
 function parseNumber(value: string | undefined) {
   if (!value?.trim()) return null;
   const n = Number(value.replace(",", ".").replace(/[^\d.-]/g, ""));
@@ -68,32 +86,91 @@ const ALIASES: Record<string, keyof CsvProductRow | "skip"> = {
   categories: "category",
 };
 
-export function parseProductCsv(text: string): CsvProductRow[] {
+export function inspectProductCsv(text: string): CsvInspection {
   const lines = text.split(/\r?\n/).filter((l) => l.trim());
-  if (lines.length < 2) return [];
-  const headers = splitCsvLine(lines[0]).map(norm);
-  const mapped = headers.map((h) => ALIASES[h] ?? null);
+  if (!lines.length) {
+    return {
+      ok: false,
+      headers: [],
+      mapped: {},
+      unknownHeaders: [],
+      missingNameColumn: true,
+      rows: [],
+      skipped: 0,
+      issues: [{ line: 1, message: "Fichier vide." }],
+    };
+  }
+  const rawHeaders = splitCsvLine(lines[0]);
+  const headers = rawHeaders.map(norm);
+  const mappedKeys = headers.map((h) => ALIASES[h] ?? null);
+  const mapped: CsvInspection["mapped"] = {};
+  const unknownHeaders: string[] = [];
+  headers.forEach((header, index) => {
+    const key = mappedKeys[index];
+    if (key && key !== "skip") mapped[key] = rawHeaders[index]?.trim() || header;
+    else if (header) unknownHeaders.push(rawHeaders[index]?.trim() || header);
+  });
+  const missingNameColumn = !mapped.name;
+  const issues: CsvIssue[] = [];
+  if (missingNameColumn) {
+    issues.push({
+      line: 1,
+      message: "Colonne nom introuvable. Attendu : name, nom ou product_name.",
+    });
+  }
+  if (lines.length < 2) {
+    issues.push({ line: 1, message: "Aucune ligne produit sous l’en-tête." });
+  }
+
   const rows: CsvProductRow[] = [];
-  for (const line of lines.slice(1)) {
+  let skipped = 0;
+  lines.slice(1).forEach((line, index) => {
+    const lineNo = index + 2;
     const cells = splitCsvLine(line);
     const get = (key: keyof CsvProductRow) => {
-      const idx = mapped.findIndex((m) => m === key);
+      const idx = mappedKeys.findIndex((m) => m === key);
       return idx >= 0 ? cells[idx] ?? "" : "";
     };
     const name = get("name");
-    if (!name) continue;
+    if (!name) {
+      skipped += 1;
+      issues.push({ line: lineNo, message: "Ligne ignorée : nom manquant." });
+      return;
+    }
+    const priceMinRaw = get("price_min");
+    const priceMaxRaw = get("price_max");
+    if (priceMinRaw && parseNumber(priceMinRaw) === null) {
+      issues.push({ line: lineNo, message: `Prix min illisible (${priceMinRaw}).` });
+    }
+    if (priceMaxRaw && parseNumber(priceMaxRaw) === null) {
+      issues.push({ line: lineNo, message: `Prix max illisible (${priceMaxRaw}).` });
+    }
     rows.push({
       name,
       sku: get("sku") || null,
       description: get("description") || null,
-      price_min: parseNumber(get("price_min")),
-      price_max: parseNumber(get("price_max")),
+      price_min: parseNumber(priceMinRaw),
+      price_max: parseNumber(priceMaxRaw),
       tags: get("tags")
         .split(/[|,;]/)
         .map((t) => t.trim())
         .filter(Boolean),
       category: get("category") || null,
     });
-  }
-  return rows;
+  });
+
+  return {
+    ok: !missingNameColumn && rows.length > 0,
+    headers: rawHeaders.map((header) => header.trim()).filter(Boolean),
+    mapped,
+    unknownHeaders,
+    missingNameColumn,
+    rows,
+    skipped,
+    issues,
+  };
+}
+
+export function parseProductCsv(text: string): CsvProductRow[] {
+  return inspectProductCsv(text).rows;
 }

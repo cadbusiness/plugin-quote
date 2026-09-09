@@ -7,6 +7,7 @@ import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 import { parseStorefrontCart } from "@/lib/integrations/storefront";
 import { applyStorefrontCart, suggestionFromProducts } from "@/lib/wizard/storefront-cart";
 import { CatalogBrowse } from "@/components/configurator/catalog-browse";
+import { ProductHtml } from "@/components/catalog/product-html";
 import { quoteLineCount } from "@/lib/funnels/kind";
 import type {
   Answers,
@@ -890,7 +891,7 @@ function CustomizePanel({
                 <p className="font-medium">{product.name}</p>
                 <p className="text-sm text-slate-500">{formatPrice(product.priceMin, product.priceMax)}</p>
                 {product.description ? (
-                  <p className="mt-1 line-clamp-3 text-sm text-slate-500">{product.description}</p>
+                  <ProductHtml html={product.description} className="mt-1 text-slate-500" clamp />
                 ) : null}
               </div>
             </div>

@@ -1131,6 +1131,7 @@ export type Database = {
           source: string
           stock_status: string | null
           synced_at: string | null
+          sync_lock: boolean
           tags: string[]
           updated_at: string
           variants: Json
@@ -1161,6 +1162,7 @@ export type Database = {
           source?: string
           stock_status?: string | null
           synced_at?: string | null
+          sync_lock?: boolean
           tags?: string[]
           updated_at?: string
           variants?: Json
@@ -1191,6 +1193,7 @@ export type Database = {
           source?: string
           stock_status?: string | null
           synced_at?: string | null
+          sync_lock?: boolean
           tags?: string[]
           updated_at?: string
           variants?: Json

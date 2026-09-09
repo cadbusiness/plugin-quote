@@ -1,11 +1,21 @@
-export function formatPrice(min: number | null | undefined, max: number | null | undefined) {
+export function formatPrice(
+  min: number | null | undefined,
+  max: number | null | undefined,
+  currency = "EUR",
+) {
   if (min == null && max == null) return "Sur devis";
-  const fmt = (n: number) =>
-    new Intl.NumberFormat("fr-FR", {
-      style: "currency",
-      currency: "EUR",
-      maximumFractionDigits: 0,
-    }).format(n);
+  const code = currency.trim() || "EUR";
+  const fmt = (n: number) => {
+    try {
+      return new Intl.NumberFormat("fr-FR", {
+        style: "currency",
+        currency: code,
+        maximumFractionDigits: 0,
+      }).format(n);
+    } catch {
+      return `${Math.round(n)} ${code}`;
+    }
+  };
   if (min != null && max != null) return `${fmt(min)} – ${fmt(max)}`;
   return fmt((min ?? max) as number);
 }

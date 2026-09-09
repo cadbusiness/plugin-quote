@@ -1,14 +1,20 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { importProductsCsv } from "@/app/(app)/produits/actions";
 import { CatalogTabs } from "@/components/catalog/catalog-tabs";
 import { CreateProductDialog } from "@/components/catalog/create-product-dialog";
+import { ImportProductsDialog } from "@/components/catalog/import-products-dialog";
 import { Chip, type ChipTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
-import { DataTable, ListPanel, ListPanelFooter, ListToolbar } from "@/components/ui/list-panel";
+import {
+  DataTable,
+  ListPagination,
+  ListPanel,
+  ListPanelFooter,
+  ListToolbar,
+} from "@/components/ui/list-panel";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
+import { CATALOG_PAGE_SIZE, catalogListHref, pageWindow } from "@/lib/catalog/pagination";
 import { formatPrice } from "@/lib/format";
-import type { Json } from "@/lib/db/database.types";
 import { createClient } from "@/lib/supabase/server";
 
 const SOURCES: Record<string, { label: string; tone: ChipTone }> = {
@@ -25,14 +31,10 @@ const FILTERS = [
   { value: "shopify", label: "Shopify" },
 ];
 
-function countOf(value: Json) {
-  return Array.isArray(value) ? value.length : 0;
-}
-
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; source?: string; statut?: string }>;
+  searchParams: Promise<{ q?: string; source?: string; statut?: string; page?: string }>;
 }) {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");
@@ -44,38 +46,65 @@ export default async function ProductsPage({
   const statut = filters.statut ?? "";
 
   const supabase = await createClient();
+  const searchFilter = search
+    ? (`name.ilike.%${search}%,sku.ilike.%${search}%,category.ilike.%${search}%` as const)
+    : null;
 
-  let query = supabase
-    .from("products")
-    .select("*")
-    .eq("organization_id", ctx.organization.id)
-    .order("name");
-  if (search) query = query.or(`name.ilike.%${search}%,sku.ilike.%${search}%,category.ilike.%${search}%`);
-  if (source === "manual") query = query.in("source", ["manual", "csv"]);
-  else if (source) query = query.eq("source", source);
-  if (statut === "actifs") query = query.eq("is_active", true);
-  else if (statut === "inactifs") query = query.eq("is_active", false);
-
-  const [{ data: products }, { data: funnels }, { count: totalCount }, { data: connections }] =
+  const [{ count: filteredCount }, { count: totalCount }, { count: syncedCount }, { data: funnels }, { data: connections }] =
     await Promise.all([
-      query,
+      (() => {
+        let query = supabase
+          .from("products")
+          .select("id", { count: "exact", head: true })
+          .eq("organization_id", ctx.organization.id);
+        if (searchFilter) query = query.or(searchFilter);
+        if (source === "manual") query = query.in("source", ["manual", "csv"]);
+        else if (source) query = query.eq("source", source);
+        if (statut === "actifs") query = query.eq("is_active", true);
+        else if (statut === "inactifs") query = query.eq("is_active", false);
+        return query;
+      })(),
+      supabase
+        .from("products")
+        .select("id", { count: "exact", head: true })
+        .eq("organization_id", ctx.organization.id),
+      supabase
+        .from("products")
+        .select("id", { count: "exact", head: true })
+        .eq("organization_id", ctx.organization.id)
+        .in("source", ["woocommerce", "shopify"]),
       supabase
         .from("configurators")
         .select("id, name")
         .eq("organization_id", ctx.organization.id)
         .order("created_at", { ascending: true }),
       supabase
-        .from("products")
-        .select("id", { count: "exact", head: true })
-        .eq("organization_id", ctx.organization.id),
-      supabase
         .from("catalog_connections")
         .select("id, label, provider")
         .eq("organization_id", ctx.organization.id),
     ]);
 
+  const total = filteredCount ?? 0;
+  const window = pageWindow(Number.parseInt(filters.page ?? "1", 10) || 1, CATALOG_PAGE_SIZE, total);
+  const from = Math.max(0, window.from - 1);
+  const to = Math.max(from, window.to - 1);
+
+  let listQuery = supabase
+    .from("products")
+    .select("id, name, sku, category, source, price_min, price_max, currency, is_active, archived_by_sync, image_url")
+    .eq("organization_id", ctx.organization.id)
+    .order("name")
+    .range(from, to);
+  if (searchFilter) listQuery = listQuery.or(searchFilter);
+  if (source === "manual") listQuery = listQuery.in("source", ["manual", "csv"]);
+  else if (source) listQuery = listQuery.eq("source", source);
+  if (statut === "actifs") listQuery = listQuery.eq("is_active", true);
+  else if (statut === "inactifs") listQuery = listQuery.eq("is_active", false);
+
+  const { data: products } = await listQuery;
+
   const rows = products ?? [];
-  const synced = rows.filter((product) => product.source !== "manual" && product.source !== "csv").length;
+  const hrefForPage = (page: number) => catalogListHref({ q: search, source, statut, page });
 
   return (
     <ListPanel>
@@ -111,12 +140,7 @@ export default async function ProductsPage({
           <button className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">Filtrer</button>
         </form>
 
-        <form action={importProductsCsv} className="flex items-center gap-2">
-          <input type="hidden" name="configurator_id" value={funnels?.[0]?.id ?? ""} />
-          <input type="file" name="file" accept=".csv,text/csv" className="w-44 text-xs" />
-          <button className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">CSV</button>
-        </form>
-
+        <ImportProductsDialog funnels={funnels ?? []} />
         <CreateProductDialog funnels={funnels ?? []} />
       </ListToolbar>
 
@@ -124,7 +148,6 @@ export default async function ProductsPage({
         <DataTable headers={["", "Produit", "Origine", "Catégorie", "Prix", "Statut"]}>
           {rows.map((product) => {
             const origin = SOURCES[product.source ?? "manual"] ?? SOURCES.manual;
-            const variants = countOf(product.variants);
             return (
               <ClickableRow key={product.id} href={`/produits/${product.id}`}>
                 <td className="py-2 pl-4 pr-0 lg:pl-6">
@@ -145,7 +168,6 @@ export default async function ProductsPage({
                   <span className="block font-medium text-slate-900">{product.name}</span>
                   <span className="block text-xs text-slate-500">
                     {product.sku ? `SKU ${product.sku}` : "Sans SKU"}
-                    {variants ? ` · ${variants} déclinaisons` : ""}
                   </span>
                 </td>
                 <td className="px-4 py-2 lg:px-6">
@@ -153,7 +175,7 @@ export default async function ProductsPage({
                 </td>
                 <td className="px-4 py-2 text-slate-600 lg:px-6">{product.category ?? "-"}</td>
                 <td className="px-4 py-2 tabular-nums text-slate-900 lg:px-6">
-                  {formatPrice(product.price_min, product.price_max)}
+                  {formatPrice(product.price_min, product.price_max, product.currency)}
                 </td>
                 <td className="px-4 py-2 lg:px-6">
                   {product.is_active ? (
@@ -192,9 +214,15 @@ export default async function ProductsPage({
       )}
 
       <ListPanelFooter>
-        {rows.length} produit{rows.length > 1 ? "s" : ""} affiché{rows.length > 1 ? "s" : ""} sur{" "}
-        {totalCount ?? 0} · {synced} synchronisé{synced > 1 ? "s" : ""} depuis{" "}
-        {connections?.length ?? 0} boutique{(connections?.length ?? 0) > 1 ? "s" : ""}
+        <span>
+          {total
+            ? `${window.from}–${window.to} sur ${total} produit${total > 1 ? "s" : ""}`
+            : `0 produit · ${totalCount ?? 0} au catalogue`}
+          {" · "}
+          {syncedCount ?? 0} synchronisé{(syncedCount ?? 0) > 1 ? "s" : ""} depuis{" "}
+          {connections?.length ?? 0} boutique{(connections?.length ?? 0) > 1 ? "s" : ""}
+        </span>
+        <ListPagination page={window.current} totalPages={window.totalPages} hrefForPage={hrefForPage} />
       </ListPanelFooter>
     </ListPanel>
   );
