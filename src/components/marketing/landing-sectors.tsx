@@ -7,7 +7,7 @@ const SECTORS = [
     id: "racking",
     label: "Rayonnage & stockage",
     blurb:
-      "Le prospect compose les travées, charge et surface. Vous recevez un brief chiffrable — puis l’autopilote relance et assigne.",
+      "Le prospect compose les travées, charge et surface. Vous recevez un brief chiffrable, puis l’autopilote relance et assigne.",
   },
   {
     id: "kitchen",
@@ -19,7 +19,7 @@ const SECTORS = [
     id: "wood",
     label: "Menuisier",
     blurb:
-      "Essence, dimensions, usage. Il configure ce que vous fabriquez vraiment — le dossier entre dans le pipeline, score inclus.",
+      "Essence, dimensions, usage. Il configure ce que vous fabriquez vraiment, le dossier entre dans le pipeline, score inclus.",
   },
   {
     id: "garden",
@@ -37,7 +37,7 @@ const SECTORS = [
     id: "fitout",
     label: "Aménagement industriel",
     blurb:
-      "Usage, site, gammes. Vous rappelez pour proposer, pas pour découvrir — le workflow a déjà préparé le terrain.",
+      "Usage, site, gammes. Vous rappelez pour proposer, pas pour découvrir, le workflow a déjà préparé le terrain.",
   },
 ] as const;
 

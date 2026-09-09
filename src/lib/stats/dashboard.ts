@@ -134,7 +134,7 @@ function buildStory(input: {
   }
   if (input.abandonsWithEmail > 0) {
     return {
-      headline: `${people(input.abandonsWithEmail, "personne à rappeler", "personnes à rappeler")} — elles ont laissé leur email.`,
+      headline: `${people(input.abandonsWithEmail, "personne à rappeler", "personnes à rappeler")}, elles ont laissé leur email.`,
       detail:
         input.recoverable > 0
           ? `${formatKpiEur(input.recoverable)} récupérables.`
@@ -230,7 +230,7 @@ function formatKpiEur(n: number) {
 }
 
 function formatKpiHours(hours: number | null) {
-  if (hours == null) return "—";
+  if (hours == null) return "-";
   if (hours < 1) return `${Math.max(1, Math.round(hours * 60))} min`;
   const h = Math.floor(hours);
   const m = Math.round((hours - h) * 60);
@@ -481,7 +481,7 @@ export async function loadStatsDashboard(
     {
       label: "Taux de rappel",
       value: `${Math.round(contactRate)}%`,
-      hint: current.submitted ? `${current.contacted} sur ${current.submitted}` : "—",
+      hint: current.submitted ? `${current.contacted} sur ${current.submitted}` : "-",
       tone: "emerald",
       ...deltaMeta(contactRate, prevContactRate),
     },
@@ -493,7 +493,7 @@ export async function loadStatsDashboard(
           ? `${current.submitted} × ${formatKpiEur(currentValue / current.submitted)}`
           : current.submitted
             ? "ajoutez des prix au catalogue"
-            : "—",
+            : "-",
       tone: "sky",
       ...deltaMeta(currentValue, previousValue),
     },
@@ -504,7 +504,7 @@ export async function loadStatsDashboard(
       tone: avgDelay != null && avgDelay > 4 ? "amber" : "slate",
       ...(avgDelay != null && prevDelay != null
         ? deltaMeta(avgDelay, prevDelay, true)
-        : { deltaLabel: "—", deltaTone: "muted" as const }),
+        : { deltaLabel: "-", deltaTone: "muted" as const }),
     },
     {
       label: "Abandons",

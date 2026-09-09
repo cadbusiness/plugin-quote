@@ -14,7 +14,7 @@ const STATUSES = [
 const EXTRA_TEMPLATES = [
   {
     kind: "sales_unprocessed",
-    subject: "Rappel — demande non traitée",
+    subject: "Rappel, demande non traitée",
     body: "Demande de {{contact_name}} ({{contact_company}}) encore au statut Nouveau.",
   },
   {

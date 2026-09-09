@@ -64,7 +64,7 @@ export default async function SegmentDetailPage({ params }: { params: Promise<{ 
                 </Chip>
               </td>
               <td className="px-4 py-3 lg:px-6">
-                <Chip tone={scoreTone(member.scoreLabel)}>{(member.scoreLabel ?? "—").toUpperCase()}</Chip>
+                <Chip tone={scoreTone(member.scoreLabel)}>{(member.scoreLabel ?? "-").toUpperCase()}</Chip>
               </td>
               <td className="px-4 py-3 text-slate-500 lg:px-6">
                 {member.lastCampaignAt ? "Déjà relancé" : "Jamais"}

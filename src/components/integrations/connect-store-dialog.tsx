@@ -111,7 +111,7 @@ export function ConnectStoreDialog({ funnels }: { funnels: Funnel[] }) {
                 <div hidden={step !== 1} className="space-y-4">
                   {provider === "woocommerce" ? (
                     <>
-                      <Field label="URL de la boutique" hint="https://ma-boutique.fr — HTTPS obligatoire">
+                      <Field label="URL de la boutique" hint="https://ma-boutique.fr, HTTPS obligatoire">
                         <input
                           name="store"
                           placeholder="https://ma-boutique.fr"

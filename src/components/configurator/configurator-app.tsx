@@ -443,7 +443,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
               ))}
             </div>
             <p className="mt-2 text-xs text-slate-300">
-              Étape {(session.currentStep ?? 0) + 1} / {definition.steps.length} — {step?.title}
+              Étape {(session.currentStep ?? 0) + 1} / {definition.steps.length}, {step?.title}
             </p>
           </div>
         ) : null}
@@ -917,7 +917,7 @@ function ChatPanel({
       <div className="min-h-[22rem] space-y-3 rounded-2xl border border-slate-200 bg-white p-5">
         {messages.length === 0 ? (
           <p className="text-slate-500">
-            Décrivez votre projet en une phrase — par exemple « j’ai un entrepôt de 600 m², palettes jusqu’à 800 kg ».
+            Décrivez votre projet en une phrase, par exemple « j’ai un entrepôt de 600 m², palettes jusqu’à 800 kg ».
           </p>
         ) : (
           messages.map((m, i) => (

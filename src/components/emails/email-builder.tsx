@@ -429,7 +429,7 @@ function SortableBlock({
       <button type="button" onClick={onSelect} className="min-w-0 flex-1 text-left">
         <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">{BLOCK_LABELS[block.type]}</p>
         <p className="mt-0.5 truncate text-sm text-slate-800">
-          {block.heading || block.text || block.label || block.src || (block.type === "recap" ? "Récap des réponses" : "—")}
+          {block.heading || block.text || block.label || block.src || (block.type === "recap" ? "Récap des réponses" : "-")}
         </p>
       </button>
     </div>

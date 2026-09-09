@@ -116,7 +116,7 @@ export async function toggleQuoteAssignee(quoteId: string, userId: string, on: b
     if (member?.invited_email) {
       await sendTemplateEmail({
         to: member.invited_email,
-        subject: `Demande assignée — ${quote.contact_name ?? "prospect"}`,
+        subject: `Demande assignée, ${quote.contact_name ?? "prospect"}`,
         body: `Une demande vous a été assignée : ${quote.contact_name ?? "prospect"}.\n${getAppUrl()}/devis/${quoteId}`,
       });
     }
@@ -221,7 +221,7 @@ export async function replyToProspect(quoteId: string, content: string) {
     const suivi = access ? `${getAppUrl()}/suivi/${access.token}` : "";
     await sendTemplateEmail({
       to: quote.contact_email,
-      subject: `Message — ${ctx.organization.name}`,
+      subject: `Message, ${ctx.organization.name}`,
       body: suivi ? `${trimmed}\n\nRépondre : ${suivi}` : trimmed,
     });
   }

@@ -167,7 +167,7 @@ function QuotesModule({ data }: { data: HomeDashboard }) {
                 <QuoteProjectCell extras={extra} />
                 <td className="px-4 py-2.5 lg:px-6">
                   <Chip tone={scoreTone(quote.score_label)}>
-                    {(quote.score_label ?? "—").toUpperCase()}
+                    {(quote.score_label ?? "-").toUpperCase()}
                     {quote.score != null ? ` ${quote.score}` : ""}
                   </Chip>
                 </td>
@@ -347,7 +347,7 @@ function SegmentsModule({ data }: { data: HomeDashboard }) {
   return (
     <ModuleFrame
       title="Segmentation"
-      hint="B2B, hot, un funnel, jamais relancés — les campagnes s’appuient dessus."
+      hint="B2B, hot, un funnel, jamais relancés, les campagnes s’appuient dessus."
       href="/segments"
       hrefLabel="Segments"
     >

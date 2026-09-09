@@ -86,7 +86,7 @@ export function NodeInspector({
                   <span className="block font-medium text-slate-900">Joindre le récapitulatif</span>
                   <span className="mt-0.5 block text-xs leading-relaxed text-slate-500">
                     Le client reçoit un PDF de sa demande : produits, fourchette de prix, réponses. Utile à la
-                    confirmation. Inutile sur une relance d’abandon — il n’y a pas encore de devis.
+                    confirmation. Inutile sur une relance d’abandon, il n’y a pas encore de devis.
                   </span>
                 </span>
               </span>

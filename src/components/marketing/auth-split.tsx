@@ -37,7 +37,7 @@ export function AuthSplit({ children }: { children: React.ReactNode }) {
                 Dossier complet. Relances auto.
               </p>
               <p className="mt-4 max-w-md text-sm leading-relaxed text-white/70">
-                Le prospect configure. Vous suivez en autopilote — les 5 relances que
+                Le prospect configure. Vous suivez en autopilote : les 5 relances que
                 personne n’a le temps de faire.
               </p>
             </div>

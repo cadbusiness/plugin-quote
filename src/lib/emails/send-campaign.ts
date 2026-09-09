@@ -32,7 +32,7 @@ export async function sendCampaign(
   if (campaign.status === "sending") throw new Error("Envoi déjà en cours");
 
   const design = parseDesign(campaign.design);
-  if (!design.blocks.length) throw new Error("L’email est vide — ajoutez des blocs.");
+  if (!design.blocks.length) throw new Error("L’email est vide, ajoutez des blocs.");
   if (!campaign.subject.trim()) throw new Error("Ajoutez un objet.");
 
   const rules = campaign.segment_id

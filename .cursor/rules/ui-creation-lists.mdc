@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Création, listes, couleur
 
-QuoteBuilder n’est pas un formulaire gris. Chaque objet métier (funnel, produit, règle…) se **crée dans un dialog qui pose les bonnes questions** — jamais un champ nom + bouton dans la toolbar.
+QuoteBuilder n’est pas un formulaire gris. Chaque objet métier (funnel, produit, règle…) se **crée dans un dialog qui pose les bonnes questions**, jamais un champ nom + bouton dans la toolbar.
 
 ## Création
 

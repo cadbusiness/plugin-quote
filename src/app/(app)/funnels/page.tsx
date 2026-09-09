@@ -61,7 +61,7 @@ export default async function FunnelsPage() {
       </DataTable>
       {list.length === 0 ? (
         <p className="px-4 py-10 text-sm text-slate-500 lg:px-6">
-          Créez un premier funnel — un template de secteur, vos écrans, puis le catalogue.
+          Créez un premier funnel, un template de secteur, vos écrans, puis le catalogue.
         </p>
       ) : null}
       <CreateFunnelDialog existingFunnels={list.map((f) => ({ id: f.id, name: f.name }))} />

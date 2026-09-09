@@ -172,7 +172,7 @@ function activityDetail(type: string, payload: Json, memberLabel: Map<string, st
     return String(data.template_kind);
   }
   if (type === "submitted" && typeof data.label === "string") {
-    return `Score ${data.score ?? "—"} ${String(data.label).toUpperCase()}`;
+    return `Score ${data.score ?? "-"} ${String(data.label).toUpperCase()}`;
   }
   return null;
 }
@@ -356,7 +356,7 @@ export async function loadQuoteDetail(
         hint: run.error
           ? run.error
           : currentNode
-            ? `${nodeTitle(currentNode)}${lastStep?.status === "waiting" ? " — en attente" : ""}`
+            ? `${nodeTitle(currentNode)}${lastStep?.status === "waiting" ? ", en attente" : ""}`
             : "Démarré",
         steps: (stepsByRun.get(run.id) ?? []).map((step) => ({
           id: step.id,

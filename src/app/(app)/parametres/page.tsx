@@ -7,7 +7,7 @@ const ROWS: { href: string; label: string; hint: string; admin?: boolean }[] = [
   {
     href: "/integrations",
     label: "Boutiques connectées",
-    hint: "WooCommerce, Shopify — sync du catalogue",
+    hint: "WooCommerce, Shopify, sync du catalogue",
     admin: true,
   },
   { href: "/webhooks", label: "API & webhooks", hint: "Notifications vers vos outils", admin: true },

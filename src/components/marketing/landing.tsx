@@ -24,11 +24,11 @@ const STATS = [
 const FAQ = [
   {
     q: "C’est quoi la différence avec un formulaire de contact ?",
-    a: "Un formulaire recueille un message vague. QuoteBuilder fait configurer le projet (produits, contraintes, budget), livre un dossier scoré, puis relance tout seul. Vous ne redistribuez plus des emails — vous traitez des devis.",
+    a: "Un formulaire recueille un message vague. QuoteBuilder fait configurer le projet (produits, contraintes, budget), livre un dossier scoré, puis relance tout seul. Vous ne redistribuez plus des emails : vous traitez des devis.",
   },
   {
     q: "C’est quoi la différence avec un catalogue ou une boutique ?",
-    a: "Un catalogue stocke des produits. Une boutique encaisse. QuoteBuilder pose votre offre dans un parcours de devis, puis pilote chaque demande : score, assignation, relances. Le catalogue est l’entrée — l’autopilote, c’est le produit.",
+    a: "Un catalogue stocke des produits. Une boutique encaisse. QuoteBuilder pose votre offre dans un parcours de devis, puis pilote chaque demande : score, assignation, relances. Le catalogue est l’entrée. L’autopilote, c’est le produit.",
   },
   {
     q: "Est-ce que je dois avoir WooCommerce ?",
@@ -107,13 +107,13 @@ const HOW_STEPS = [
   {
     n: "①",
     title: "Posez l’offre",
-    text: "Produits, gammes, prix — saisie, CSV, ou Woo / Shopify. Le socle. Pas le différenciateur.",
+    text: "Produits, gammes, prix : saisie, CSV, ou Woo / Shopify. Le socle. Pas le différenciateur.",
     shot: <CatalogShot />,
   },
   {
     n: "②",
     title: "Ils configurent",
-    text: "Funnel ou chat IA. Le prospect cadre le projet dans votre catalogue et envoie un dossier — pas un mail flou.",
+    text: "Funnel ou chat IA. Le prospect cadre le projet dans votre catalogue et envoie un dossier, pas un mail flou.",
     shot: <WizardShot />,
   },
   {
@@ -170,7 +170,7 @@ export function Landing() {
         </nav>
       </header>
 
-      {/* Hero — titres courts pour mobile (≤ 2 lignes) */}
+      {/* Hero: titres courts pour mobile (≤ 2 lignes) */}
       <section className="relative overflow-hidden px-6 pb-10 pt-10 sm:pb-12 sm:pt-16">
         <div
           aria-hidden
@@ -203,7 +203,7 @@ export function Landing() {
       {/* Preuves chiffrées */}
       <section className="border-y border-[#1A1510]/8 bg-white/60 px-6 py-8 sm:py-10">
         <p className="text-center text-xs font-medium uppercase tracking-[0.16em] text-[#1A1510]/40">
-          Un trou dans le pipeline — documenté, des deux côtés
+          Un trou dans le pipeline, documenté des deux côtés
         </p>
         <div className="mx-auto mt-6 grid max-w-4xl gap-6 sm:grid-cols-3 sm:gap-4">
           {STATS.map((stat) => (
@@ -254,12 +254,12 @@ export function Landing() {
             <SolutionCard
               n="1"
               title="Un parcours de devis"
-              text="Funnel, catalogue interactif ou chat IA — le prospect configure sur votre offre. Il envoie un dossier, pas un « bonjour »."
+              text="Funnel, catalogue interactif ou chat IA, le prospect configure sur votre offre. Il envoie un dossier, pas un « bonjour »."
             />
             <SolutionCard
               n="2"
               title="Un dossier exploitable"
-              text="Produits, contraintes, budget, score. Votre équipe rappelle pour conclure — pas pour reconstruire le besoin."
+              text="Produits, contraintes, budget, score. Votre équipe rappelle pour conclure, pas pour reconstruire le besoin."
             />
             <SolutionCard
               n="3"
@@ -305,7 +305,7 @@ export function Landing() {
         </div>
         <div id="demo" className="mt-14 scroll-mt-24 sm:mt-16">
           <p className="mb-3 text-center text-sm text-[#1A1510]/50">
-            Simulation — offre, funnel, dossier, autopilote.
+            Simulation : offre, funnel, dossier, autopilote.
           </p>
           <ProductWalkthrough />
         </div>
@@ -322,11 +322,11 @@ export function Landing() {
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             <ModeCard
               title="Catalogue"
-              text="URL ou embed. Il parcourt, compose, demande — quand il sait déjà ce qu’il cherche."
+              text="URL ou embed. Il parcourt, compose, demande, quand il sait déjà ce qu’il cherche."
             />
             <ModeCard
               title="Funnel guidé"
-              text="Vos steps. Il cadre le projet avant les produits — pour l’achat technique."
+              text="Vos steps. Il cadre le projet avant les produits, pour l’achat technique."
             />
             <ModeCard
               title="Chat IA"
@@ -344,7 +344,7 @@ export function Landing() {
           </h2>
           <p className="mt-4 max-w-xl text-[16px] leading-7 text-[#F6F0E8]/75 sm:text-[17px] sm:leading-8">
             C’est là que les formulaires s’arrêtent. QuoteBuilder enchaîne les relances que 92 %
-            des équipes abandonnent avant la 4ᵉ — sans que vous traquiez chaque fil.
+            des équipes abandonnent avant la 4ᵉ, sans que vous traquiez chaque fil.
           </p>
           <div className="mt-10 grid gap-5 sm:grid-cols-2">
             <CrmCard

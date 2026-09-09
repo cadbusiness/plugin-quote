@@ -66,7 +66,7 @@ export default async function WebhooksPage() {
           <tr key={d.id} className="border-b border-slate-100">
             <td className="px-4 py-2.5 lg:px-6">{formatDate(d.created_at)}</td>
             <td className="px-4 py-2.5 lg:px-6">{d.status}</td>
-            <td className="px-4 py-2.5 lg:px-6">{d.status_code ?? "—"}</td>
+            <td className="px-4 py-2.5 lg:px-6">{d.status_code ?? "-"}</td>
             <td className="px-4 py-2.5 text-slate-500 lg:px-6">{d.last_error ?? ""}</td>
           </tr>
         ))}

@@ -176,7 +176,7 @@ function SourceGauges({ rows }: { rows: SourceRow[] }) {
               <td className="px-4 py-2.5 lg:px-6">
                 <Chip tone={SOURCE_CHIP[row.source] ?? "sky"}>{row.source}</Chip>
               </td>
-              <td className="px-4 py-2.5 tabular-nums lg:px-6">{row.visitors || "—"}</td>
+              <td className="px-4 py-2.5 tabular-nums lg:px-6">{row.visitors || "-"}</td>
               <td className="px-4 py-2.5 tabular-nums lg:px-6">{row.quotes}</td>
               <td className="px-4 py-2.5 lg:px-6">
                 <div className="min-w-[6.5rem]">
