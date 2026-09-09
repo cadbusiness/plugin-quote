@@ -5,7 +5,7 @@ import { MarketingCta } from "@/components/marketing/marketing-shell";
 
 export const metadata: Metadata = {
   title: "Secteurs · QuoteBuilder",
-  description: "Rayonnage, cuisine, menuiserie, paysage, location, aménagement. Templates sur mesure.",
+  description: "Familles de métiers et templates de parcours. Rayonnage, habitat, événementiel, industrie, services.",
 };
 
 export default function SecteursPage() {
@@ -18,7 +18,7 @@ export default function SecteursPage() {
             Fait pour le sur-mesure.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base text-[#1A1510]/70 sm:text-lg">
-            Templates sectoriels : parcours + relances de base, prêts en moins d’une heure.
+            Une famille, quelques templates : questionnaire, catalogue ou brief. Prêts en moins d’une heure.
           </p>
         </div>
       </section>

@@ -9,7 +9,9 @@ import {
   defaultStepCopy,
   isQuestionType,
   isScreenType,
+  type FunnelKind,
 } from "@/lib/funnels/builder";
+import { funnelKindFlags, themeWithKind } from "@/lib/funnels/kind";
 import { mergeFunnelTracking } from "@/lib/funnels/tracking";
 import type { QuestionOptions, QuestionType, ScreenType } from "@/lib/wizard/types";
 import { parseTriggerConfig } from "@/lib/workflows/types";
@@ -48,17 +50,29 @@ export async function setFunnelActive(funnelId: string, active: boolean) {
   revalidatePath(`/funnels/${funnelId}`);
 }
 
-export async function setFunnelKind(funnelId: string, kind: "form" | "chat") {
+export async function setFunnelKind(funnelId: string, kind: FunnelKind) {
   const ctx = await requireAdmin();
   const supabase = await createClient();
+  const { data: current } = await supabase
+    .from("configurators")
+    .select("theme")
+    .eq("id", funnelId)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  if (!current) return;
+  const flags = funnelKindFlags(kind);
   await supabase
     .from("configurators")
     .update({
-      wizard_enabled: kind === "form",
-      chat_enabled: kind === "chat",
+      wizard_enabled: flags.wizardEnabled,
+      chat_enabled: flags.chatEnabled,
+      theme: themeWithKind(current.theme, kind),
     })
     .eq("id", funnelId)
     .eq("organization_id", ctx.organization.id);
+  if (kind === "catalog") {
+    await ensureCatalogSteps(funnelId);
+  }
   revalidatePath("/funnels");
   revalidatePath(`/funnels/${funnelId}`);
 }

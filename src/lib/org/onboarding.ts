@@ -2,11 +2,14 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/db/database.types";
 import { uniqueSlug } from "@/lib/org/slug";
 import { seedOrgCrm } from "@/lib/crm/seed";
+import { isFunnelFamilyId, mergeOrgFamily, type FunnelFamilyId } from "@/lib/funnels/families";
+import { defaultTemplateForFamily } from "@/lib/funnels/templates";
 
 export async function createOrganizationForUser(
   supabase: SupabaseClient<Database>,
   userId: string,
   name: string,
+  familyInput?: string | null,
 ) {
   const trimmed = name.trim();
   if (trimmed.length < 2) {
@@ -22,9 +25,13 @@ export async function createOrganizationForUser(
     return Boolean(data);
   }, trimmed);
 
+  const rawFamily = familyInput ?? "";
+  const family: FunnelFamilyId = isFunnelFamilyId(rawFamily) ? rawFamily : "custom";
+  const firstTemplate = defaultTemplateForFamily(family);
+
   const { data: org, error: orgError } = await supabase
     .from("organizations")
-    .insert({ name: trimmed, slug, plan: "pro" })
+    .insert({ name: trimmed, slug, plan: "pro", branding: mergeOrgFamily(null, family) })
     .select("*")
     .single();
   if (orgError || !org) {
@@ -44,7 +51,7 @@ export async function createOrganizationForUser(
     organization_id: org.id,
     name: "Funnel principal",
     slug: "principal",
-    sector: "general",
+    sector: firstTemplate.id,
     wizard_enabled: true,
     chat_enabled: true,
   });

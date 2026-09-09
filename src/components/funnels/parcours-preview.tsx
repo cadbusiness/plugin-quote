@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { formatPrice } from "@/lib/format";
+import { CatalogBrowsePreview } from "@/components/configurator/catalog-browse";
+import type { FunnelKind } from "@/lib/funnels/builder";
 import type { QuestionOptions, QuestionType, ScreenType } from "@/lib/wizard/types";
 
 export type PreviewQuestion = {
@@ -27,9 +29,18 @@ export type PreviewProduct = {
   imageUrl: string | null;
   priceMin: number | null;
   priceMax: number | null;
+  category?: string | null;
 };
 
-export function FormScreenBody({ step, products }: { step: PreviewStep; products: PreviewProduct[] }) {
+export function FormScreenBody({
+  step,
+  products,
+  kind = "form",
+}: {
+  step: PreviewStep;
+  products: PreviewProduct[];
+  kind?: FunnelKind;
+}) {
   return (
     <div>
       <h2 className="text-xl font-semibold tracking-tight text-slate-900">{step.title}</h2>
@@ -41,13 +52,23 @@ export function FormScreenBody({ step, products }: { step: PreviewStep; products
           ))}
         </div>
       ) : null}
-      {step.screenType === "suggestions" ? <div className="mt-5"><CatalogPreview products={products} /></div> : null}
+      {step.screenType === "suggestions" ? (
+        <div className="mt-5">
+          {kind === "catalog" ? <CatalogBrowsePreview products={products} /> : <CatalogPreview products={products} />}
+        </div>
+      ) : null}
       {step.screenType === "customize" ? <CustomizePreview products={products} /> : null}
       {step.screenType === "contact" ? <ContactPreview /> : null}
       <div className="mt-8 flex items-center justify-between">
         <span className="text-sm text-slate-400">Retour</span>
         <span className="rounded-lg bg-slate-950 px-4 py-2 text-sm font-medium text-white">
-          {step.screenType === "contact" ? "Envoyer ma demande" : "Continuer"}
+          {step.screenType === "contact"
+            ? kind === "catalog"
+              ? "Envoyer ma demande de devis"
+              : "Envoyer ma demande"
+            : kind === "catalog" && step.screenType === "suggestions"
+              ? "Voir le devis"
+              : "Continuer"}
         </span>
       </div>
     </div>

@@ -2,11 +2,14 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/db/database.types";
 import type { ScreenType } from "@/lib/wizard/types";
 import { uniqueSlug } from "@/lib/org/slug";
-import { getFunnelTemplate, type TemplateStep } from "@/lib/funnels/templates";
+import { CATALOG_FUNNEL_STEPS, getFunnelTemplate, type TemplateStep } from "@/lib/funnels/templates";
+import type { FunnelKind } from "@/lib/funnels/builder";
+import { funnelKindFlags, isFunnelKind, themeWithKind } from "@/lib/funnels/kind";
 
 export type CreateFunnelInput = {
   name: string;
   sector: string;
+  kind: FunnelKind;
   wizardEnabled: boolean;
   chatEnabled: boolean;
   screens: ScreenType[];
@@ -19,20 +22,24 @@ export function parseCreateFunnelForm(formData: FormData): CreateFunnelInput | n
   const name = String(formData.get("name") ?? "").trim();
   if (name.length < 2) return null;
   const sector = String(formData.get("sector") ?? "general");
-  const kind = String(formData.get("kind") ?? "form") === "chat" ? "chat" : "form";
-  const wizardEnabled = kind === "form";
-  const chatEnabled = kind === "chat";
+  const rawKind = String(formData.get("kind") ?? "form");
+  const kind: FunnelKind = isFunnelKind(rawKind) ? rawKind : "form";
+  const flags = funnelKindFlags(kind);
   const picked = formData.getAll("screens").map(String);
   const screens = (picked.length ? picked : ["questions", "contact"]).filter((s): s is ScreenType =>
     (ALL_SCREENS as readonly string[]).includes(s),
   );
   if (!screens.includes("contact")) screens.push("contact");
+  if (kind === "catalog") {
+    screens.splice(0, screens.length, "suggestions", "customize", "contact");
+  }
   const catalogFrom = String(formData.get("catalog_from") ?? "").trim();
   return {
     name,
     sector,
-    wizardEnabled,
-    chatEnabled,
+    kind,
+    wizardEnabled: flags.wizardEnabled,
+    chatEnabled: flags.chatEnabled,
     screens,
     catalogFromId: catalogFrom || null,
   };
@@ -63,12 +70,13 @@ export async function insertFunnelFromTemplate(
       sector: template.id,
       wizard_enabled: input.wizardEnabled,
       chat_enabled: input.chatEnabled,
+      theme: themeWithKind({}, input.kind),
     })
     .select("id")
     .single();
   if (error || !funnel) return null;
 
-  const planned = pickSteps(template.steps, input.screens);
+  const planned = input.kind === "catalog" ? CATALOG_FUNNEL_STEPS : pickSteps(template.steps, input.screens);
   const { data: steps } = await supabase
     .from("wizard_steps")
     .insert(

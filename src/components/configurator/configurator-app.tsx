@@ -6,6 +6,8 @@ import { parseAttribution, type Attribution } from "@/lib/stats/attribution";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 import { parseStorefrontCart } from "@/lib/integrations/storefront";
 import { applyStorefrontCart, suggestionFromProducts } from "@/lib/wizard/storefront-cart";
+import { CatalogBrowse } from "@/components/configurator/catalog-browse";
+import { quoteLineCount } from "@/lib/funnels/kind";
 import type {
   Answers,
   ConfiguratorDefinition,
@@ -304,6 +306,14 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
       return;
     }
     if (step.screenType === "suggestions") {
+      if (definition.configurator.kind === "catalog") {
+        if (quoteLineCount(session.customization) < 1) {
+          setErrors({ catalog: "Ajoutez au moins un produit au devis." });
+          return;
+        }
+        await persist({ currentStep: Math.min(session.currentStep + 1, definition.steps.length - 1) });
+        return;
+      }
       if (!session.selectedSuggestionId && suggestions[0]) {
         await persist({
           selectedSuggestionId: suggestions[0].id,
@@ -398,10 +408,12 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
   }
 
   const accent = String(definition.configurator.theme.accent ?? "#d97706");
-  const showChat = session.mode === "chat" && definition.configurator.chatEnabled;
+  const isCatalog = definition.configurator.kind === "catalog";
+  const showChat = session.mode === "chat" && definition.configurator.chatEnabled && !isCatalog;
   const showWizard = session.mode === "wizard" && definition.configurator.wizardEnabled;
   const canSwitch =
-    definition.configurator.wizardEnabled && definition.configurator.chatEnabled && !done;
+    !isCatalog && definition.configurator.wizardEnabled && definition.configurator.chatEnabled && !done;
+  const catalogBrowse = isCatalog && step?.screenType === "suggestions";
 
   if (done) {
     return (
@@ -428,6 +440,11 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
             </p>
             <p className="text-lg font-medium">{definition.configurator.name}</p>
           </div>
+          {isCatalog && !done ? (
+            <p className="rounded-full bg-white/10 px-3 py-1 text-sm">
+              {quoteLineCount(session.customization)} au devis
+            </p>
+          ) : null}
           {canSwitch ? (
             <div className="flex rounded-full bg-white/10 p-1 text-sm">
               <button
@@ -519,7 +536,18 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
               </div>
             ) : null}
 
-            {step.screenType === "suggestions" ? (
+            {step.screenType === "suggestions" && isCatalog ? (
+              <CatalogBrowse
+                products={definition.products}
+                customization={session.customization}
+                accent={accent}
+                error={errors.catalog}
+                onChange={(customization) => persist({ customization })}
+                onContinue={() => void goNext()}
+              />
+            ) : null}
+
+            {step.screenType === "suggestions" && !isCatalog ? (
               <SuggestionsPanel
                 suggestions={suggestions}
                 selectedId={session.selectedSuggestionId}
@@ -534,6 +562,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
                 catalog={definition.products}
                 selectedId={session.selectedSuggestionId}
                 customization={session.customization}
+                canRemove={isCatalog}
                 onChange={(customization) => persist({ customization })}
                 onUpload={uploadPlan}
                 fileError={errors.file}
@@ -550,6 +579,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
               </div>
             ) : null}
 
+            {catalogBrowse ? null : (
             <div className="mt-10 flex items-center justify-between">
               <button
                 type="button"
@@ -566,7 +596,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
                   disabled={busy}
                   className="rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
                 >
-                  {busy ? "Envoi…" : "Envoyer ma demande"}
+                  {busy ? "Envoi…" : isCatalog ? "Envoyer ma demande de devis" : "Envoyer ma demande"}
                 </button>
               ) : (
                 <button
@@ -574,10 +604,11 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
                   onClick={goNext}
                   className="rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-medium text-white hover:bg-slate-800"
                 >
-                  Continuer
+                  {isCatalog && step.screenType === "customize" ? "Demander un devis" : "Continuer"}
                 </button>
               )}
             </div>
+            )}
           </section>
         ) : null}
       </main>
@@ -801,6 +832,7 @@ function CustomizePanel({
   catalog,
   selectedId,
   customization,
+  canRemove,
   onChange,
   onUpload,
   fileError,
@@ -809,6 +841,7 @@ function CustomizePanel({
   catalog: Product[];
   selectedId: string | null;
   customization: Customization;
+  canRemove?: boolean;
   onChange: (c: Customization) => void;
   onUpload: (file: File) => void;
   fileError?: string;
@@ -844,6 +877,7 @@ function CustomizePanel({
                 ) : null}
               </div>
             </div>
+            <div className="flex shrink-0 items-center gap-2">
             <label className="text-sm">
               Qté
               <input
@@ -862,6 +896,22 @@ function CustomizePanel({
                 }
               />
             </label>
+            {canRemove ? (
+              <button
+                type="button"
+                onClick={() => {
+                  const quantities = { ...customization.quantities };
+                  delete quantities[product.id];
+                  const options = { ...customization.options };
+                  delete options[product.id];
+                  onChange({ ...customization, quantities, options });
+                }}
+                className="text-xs text-slate-400 hover:text-rose-700"
+              >
+                Retirer
+              </button>
+            ) : null}
+            </div>
           </div>
           {product.images.length > 1 ? (
             <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
