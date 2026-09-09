@@ -98,7 +98,10 @@ function QuotesModule({ data }: { data: HomeDashboard }) {
       return aOpen ? 1 : -1;
     })
     .slice(0, 4);
-  const newCount = ranked.filter((quote) => quote.status === "new").length;
+  const newCount = ranked.filter((quote) => {
+    const slug = quote.status_id ? statusById.get(quote.status_id)?.slug : quote.status;
+    return slug === "new";
+  }).length;
   return (
     <ModuleFrame
       title="Demandes"
