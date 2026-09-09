@@ -25,8 +25,8 @@ export function PairingCard({
       <div className="mr-auto min-w-0">
         <p className="text-sm font-medium text-slate-900">Plugin boutique · v{pluginVersion}</p>
         <p className="text-xs text-slate-500">
-          Dans WordPress, QuoteBuilder → Connecter. Le site s’ouvre ici, vous choisissez le funnel,
-          WooCommerce envoie le catalogue.
+          Dans WordPress, QuoteBuilder → J’ai déjà un compte. Vous choisissez le funnel qui s’ouvre
+          après « Demander un devis » ; le catalogue WooCommerce est importé dans ce funnel.
         </p>
       </div>
       <a

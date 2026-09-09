@@ -60,11 +60,13 @@ export default async function PluginConnectPage({
   if (!funnels?.length) {
     return (
       <div className="rounded-xl border border-[#efe7de] bg-white p-6">
-        <h1 className="text-xl font-semibold">Créez un funnel</h1>
+        <h1 className="text-xl font-semibold">Créez d’abord un funnel</h1>
         <p className="mt-2 text-sm text-slate-500">
-          Les produits WooCommerce arrivent dans un funnel. Créez-en un, puis reconnectez le plugin.
+          Le funnel, c’est le parcours que le prospect remplit après « Demander un devis » (questions,
+          contact, envoi). WooCommerce fournit les produits ; QuoteBuilder collecte la demande dans
+          ce funnel. Créez-en un, puis reconnectez le plugin depuis WordPress.
         </p>
-        <Link href="/wizard" className="mt-4 inline-block text-sm font-medium text-[#C2410C]">
+        <Link href="/funnels" className="mt-4 inline-block text-sm font-medium text-[#C2410C]">
           Créer un funnel
         </Link>
       </div>
