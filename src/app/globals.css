@@ -157,3 +157,8 @@ body {
 .shop-puck-drawer [class*="Drawer-draggable"] {
   position: relative;
 }
+
+.shop-puck-drawer [class*="LayerTree"],
+.shop-puck-drawer [class*="Outline"] {
+  font-size: 13px;
+}

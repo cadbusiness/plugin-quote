@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useMemo, useState, useTransition, type ReactNode } from "react";
+import { ChevronLeft, Settings } from "lucide-react";
 import { deleteShop, publishShop, saveShop } from "@/app/(app)/integrations/shop-actions";
 import { ShopChat, type EditorPage, type ShopChatDraft, type ShopChatResult } from "@/components/shops/shop-chat";
 import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
@@ -57,7 +58,8 @@ export function ShopEditor({
   const [pages, setPages] = useState(initialPages);
   const [nav, setNav] = useState(initialNav);
   const [pageId, setPageId] = useState(initialPages[0]?.id ?? "");
-  const [tab, setTab] = useState<"page" | "seo" | "legal" | "nav">("page");
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsTab, setSettingsTab] = useState<"shop" | "seo" | "legal" | "nav">("shop");
   const [layoutEpoch, setLayoutEpoch] = useState(0);
   const [pending, startTransition] = useTransition();
 
@@ -109,116 +111,183 @@ export function ShopEditor({
     setLayoutEpoch((value) => value + 1);
   }
 
-  const inspector =
-    tab === "seo" ? (
-      <div className="space-y-3 px-4 py-4">
-        <Field label="Titre du site">
-          <input value={seo.title} onChange={(event) => setSeo({ ...seo, title: event.target.value })} className="input" />
-        </Field>
-        <Field label="Meta description">
-          <textarea
-            value={seo.description}
-            onChange={(event) => setSeo({ ...seo, description: event.target.value })}
-            rows={3}
-            className="input"
-          />
-        </Field>
-        <Field label="Ville (GEO)">
-          <input
-            value={seo.geo.locality}
-            onChange={(event) => setSeo({ ...seo, geo: { ...seo.geo, locality: event.target.value } })}
-            className="input"
-          />
-        </Field>
-        <Field label="Région">
-          <input
-            value={seo.geo.region}
-            onChange={(event) => setSeo({ ...seo, geo: { ...seo.geo, region: event.target.value } })}
-            className="input"
-          />
-        </Field>
-        <Field label="Accent">
-          <input value={theme.accent} onChange={(event) => setTheme({ ...theme, accent: event.target.value })} className="input" />
-        </Field>
-      </div>
-    ) : tab === "legal" ? (
-      <div className="space-y-3 px-4 py-4">
+  const settings = (
+    <div className="mx-auto max-w-2xl px-4 py-6 lg:px-6">
+      <div className="mb-5 flex gap-1 rounded-lg bg-slate-100 p-0.5 text-sm">
         {(
           [
-            ["company", "Raison sociale"],
-            ["siret", "SIRET"],
-            ["address", "Adresse"],
-            ["postalCode", "Code postal"],
-            ["city", "Ville"],
-            ["email", "Email"],
-            ["phone", "Téléphone"],
-            ["director", "Directeur de publication"],
+            ["shop", "Boutique"],
+            ["seo", "SEO / GEO"],
+            ["legal", "Légal"],
+            ["nav", "Menus"],
           ] as const
-        ).map(([key, label]) => (
-          <Field key={key} label={label}>
-            <input value={legal[key]} onChange={(event) => setLegal({ ...legal, [key]: event.target.value })} className="input" />
-          </Field>
-        ))}
-        <form action={deleteShop}>
-          <input type="hidden" name="id" value={shop.id} />
-          <button type="submit" className="text-sm text-rose-600">
-            Supprimer la boutique
+        ).map(([id, label]) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => setSettingsTab(id)}
+            className={`flex-1 rounded-md px-3 py-1.5 ${
+              settingsTab === id ? "bg-white font-medium text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-800"
+            }`}
+          >
+            {label}
           </button>
-        </form>
-      </div>
-    ) : tab === "nav" ? (
-      <div className="space-y-4 px-4 py-4">
-        {(["header", "footer"] as const).map((location) => (
-          <div key={location}>
-            <p className="text-sm font-medium text-slate-900">{location === "header" ? "Menu haut" : "Menu pied"}</p>
-            {nav
-              .filter((item) => item.location === location)
-              .map((item, index) => (
-                <div key={`${location}-${index}`} className="mt-2 grid grid-cols-2 gap-2">
-                  <input
-                    value={item.label}
-                    onChange={(event) =>
-                      setNav((current) =>
-                        current.map((row) =>
-                          row.location === location && row.sortOrder === item.sortOrder
-                            ? { ...row, label: event.target.value }
-                            : row,
-                        ),
-                      )
-                    }
-                    className="input"
-                  />
-                  <input
-                    value={item.href}
-                    onChange={(event) =>
-                      setNav((current) =>
-                        current.map((row) =>
-                          row.location === location && row.sortOrder === item.sortOrder
-                            ? { ...row, href: event.target.value }
-                            : row,
-                        ),
-                      )
-                    }
-                    className="input"
-                  />
-                </div>
-              ))}
-          </div>
         ))}
       </div>
-    ) : null;
+
+      {settingsTab === "shop" ? (
+        <div className="space-y-3">
+          <Field label="Nom de la boutique">
+            <input value={name} onChange={(event) => setName(event.target.value)} className="input" />
+          </Field>
+          <Field label="Accent">
+            <input value={theme.accent} onChange={(event) => setTheme({ ...theme, accent: event.target.value })} className="input" />
+          </Field>
+          {funnelName ? <p className="text-sm text-slate-500">Devis : {funnelName}</p> : null}
+          <p className="text-sm text-slate-500">{orgName} reste l’éditeur légal.</p>
+        </div>
+      ) : null}
+
+      {settingsTab === "seo" ? (
+        <div className="space-y-3">
+          <Field label="Titre du site">
+            <input value={seo.title} onChange={(event) => setSeo({ ...seo, title: event.target.value })} className="input" />
+          </Field>
+          <Field label="Meta description">
+            <textarea
+              value={seo.description}
+              onChange={(event) => setSeo({ ...seo, description: event.target.value })}
+              rows={3}
+              className="input"
+            />
+          </Field>
+          <Field label="Ville (GEO)">
+            <input
+              value={seo.geo.locality}
+              onChange={(event) => setSeo({ ...seo, geo: { ...seo.geo, locality: event.target.value } })}
+              className="input"
+            />
+          </Field>
+          <Field label="Région">
+            <input
+              value={seo.geo.region}
+              onChange={(event) => setSeo({ ...seo, geo: { ...seo.geo, region: event.target.value } })}
+              className="input"
+            />
+          </Field>
+        </div>
+      ) : null}
+
+      {settingsTab === "legal" ? (
+        <div className="space-y-3">
+          {(
+            [
+              ["company", "Raison sociale"],
+              ["siret", "SIRET"],
+              ["address", "Adresse"],
+              ["postalCode", "Code postal"],
+              ["city", "Ville"],
+              ["email", "Email"],
+              ["phone", "Téléphone"],
+              ["director", "Directeur de publication"],
+            ] as const
+          ).map(([key, label]) => (
+            <Field key={key} label={label}>
+              <input value={legal[key]} onChange={(event) => setLegal({ ...legal, [key]: event.target.value })} className="input" />
+            </Field>
+          ))}
+          <form action={deleteShop}>
+            <input type="hidden" name="id" value={shop.id} />
+            <button type="submit" className="text-sm text-rose-600">
+              Supprimer la boutique
+            </button>
+          </form>
+        </div>
+      ) : null}
+
+      {settingsTab === "nav" ? (
+        <div className="space-y-4">
+          {(["header", "footer"] as const).map((location) => (
+            <div key={location}>
+              <p className="text-sm font-medium text-slate-900">{location === "header" ? "Menu haut" : "Menu pied"}</p>
+              {nav
+                .filter((item) => item.location === location)
+                .map((item, index) => (
+                  <div key={`${location}-${index}`} className="mt-2 grid grid-cols-2 gap-2">
+                    <input
+                      value={item.label}
+                      onChange={(event) =>
+                        setNav((current) =>
+                          current.map((row) =>
+                            row.location === location && row.sortOrder === item.sortOrder
+                              ? { ...row, label: event.target.value }
+                              : row,
+                          ),
+                        )
+                      }
+                      className="input"
+                    />
+                    <input
+                      value={item.href}
+                      onChange={(event) =>
+                        setNav((current) =>
+                          current.map((row) =>
+                            row.location === location && row.sortOrder === item.sortOrder
+                              ? { ...row, href: event.target.value }
+                              : row,
+                          ),
+                        )
+                      }
+                      className="input"
+                    />
+                  </div>
+                ))}
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
 
   return (
     <ListPanel className="min-h-0 overflow-hidden">
       <ListToolbar>
-        <Link href="/integrations" className="mr-auto text-sm text-slate-500 hover:text-slate-900">
-          Boutiques
-        </Link>
-        <input
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          className="w-56 rounded-md border border-slate-200 px-2 py-1 text-sm"
-        />
+        <div className="mr-auto flex min-w-0 items-center gap-1.5">
+          <Link
+            href="/integrations"
+            aria-label="Retour aux boutiques"
+            className="inline-flex h-8 shrink-0 items-center gap-1 rounded-md px-1.5 text-sm text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+          >
+            <ChevronLeft className="h-4 w-4" aria-hidden />
+            Retour
+          </Link>
+          <select
+            value={pageId}
+            onChange={(event) => {
+              setPageId(event.target.value);
+              setSettingsOpen(false);
+            }}
+            aria-label="Page à éditer"
+            className="h-8 min-w-0 max-w-56 rounded-md border border-slate-200 bg-white px-2 text-sm"
+          >
+            {pages.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.title}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            onClick={() => setSettingsOpen((open) => !open)}
+            aria-pressed={settingsOpen}
+            className={`inline-flex h-8 items-center gap-1.5 rounded-md px-2.5 text-sm ${
+              settingsOpen ? "bg-orange-50 font-medium text-[#C2410C]" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+            }`}
+          >
+            <Settings className="h-3.5 w-3.5" aria-hidden />
+            Réglages
+          </button>
+        </div>
         <a href={publicUrl} target="_blank" rel="noreferrer" className="text-sm text-[#C2410C] underline">
           {status === "published" ? "Voir la boutique" : "Aperçu URL"}
         </a>
@@ -247,47 +316,8 @@ export function ShopEditor({
           layout={page.blocks}
           model={model}
           onChange={(blocks) => patchPage(page.id, { blocks })}
-          settings={tab === "page" ? null : inspector}
-          pagesNav={
-            <>
-              <p className="px-4 py-2 text-[11px] font-medium uppercase tracking-wide text-slate-400">Pages</p>
-              {pages.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => {
-                    setPageId(item.id);
-                    setTab("page");
-                  }}
-                  className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm ${
-                    item.id === page.id && tab === "page" ? "bg-orange-50 text-[#C2410C]" : "text-slate-700 hover:bg-slate-50"
-                  }`}
-                >
-                  <span>{item.title}</span>
-                  {item.kind === "legal" ? (
-                    <span className="rounded-full bg-amber-50 px-1.5 py-0.5 text-[10px] font-medium text-amber-800">Légal</span>
-                  ) : null}
-                </button>
-              ))}
-              <p className="mt-4 px-4 py-2 text-[11px] font-medium uppercase tracking-wide text-slate-400">Réglages</p>
-              {(["seo", "legal", "nav"] as const).map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => setTab(item)}
-                  className={`block w-full px-4 py-2 text-left text-sm ${
-                    tab === item ? "bg-orange-50 text-[#C2410C]" : "text-slate-700 hover:bg-slate-50"
-                  }`}
-                >
-                  {item === "seo" && "SEO / GEO"}
-                  {item === "legal" && "Identité légale"}
-                  {item === "nav" && "Menus"}
-                </button>
-              ))}
-              {funnelName ? <p className="px-4 py-3 text-xs text-slate-400">Devis : {funnelName}</p> : null}
-              <p className="px-4 pb-3 text-xs text-slate-400">{orgName} reste l’éditeur légal.</p>
-            </>
-          }
+          settingsOpen={settingsOpen}
+          settings={settings}
           chat={<ShopChat shopId={shop.id} seedPrompt={shop.seedPrompt} getDraft={draft} onApplied={applyChat} />}
         />
       ) : null}

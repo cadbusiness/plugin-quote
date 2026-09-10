@@ -147,9 +147,12 @@ export function AppSidebar({
 }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(initialCollapsed);
+  const builderLocked = pathname.startsWith("/integrations/shop/");
+  const collapsedUi = builderLocked || collapsed;
   const display = email?.split("@")[0] ?? "Compte";
 
   function toggle() {
+    if (builderLocked) return;
     const next = !collapsed;
     setCollapsed(next);
     persistCollapsed(next);
@@ -158,12 +161,12 @@ export function AppSidebar({
   return (
     <aside
       className={`flex shrink-0 flex-col overflow-x-hidden border-r border-slate-200 bg-white transition-[width] duration-200 ${
-        collapsed ? "w-16" : "w-56 lg:w-60"
+        collapsedUi ? "w-16" : "w-56 lg:w-60"
       }`}
     >
-      <div className={`flex h-14 shrink-0 items-center border-b border-slate-200 ${collapsed ? "justify-center" : "justify-between px-3"}`}>
-        <BrandLogo href="/accueil" variant={collapsed ? "mark" : "wordmark"} priority />
-        {collapsed ? null : (
+      <div className={`flex h-14 shrink-0 items-center border-b border-slate-200 ${collapsedUi ? "justify-center" : "justify-between px-3"}`}>
+        <BrandLogo href="/accueil" variant={collapsedUi ? "mark" : "wordmark"} priority />
+        {collapsedUi ? null : (
           <button
             type="button"
             onClick={toggle}
@@ -183,24 +186,24 @@ export function AppSidebar({
             href="/admin"
             title="Super admin"
             className={`mb-1 flex items-center rounded-lg py-1.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 ${
-              collapsed ? "justify-center px-0" : "gap-2.5 px-2.5"
+              collapsedUi ? "justify-center px-0" : "gap-2.5 px-2.5"
             }`}
           >
             <Shield className="h-4 w-4 shrink-0 text-slate-500" aria-hidden />
-            {collapsed ? <span className="sr-only">Super admin</span> : "Super admin"}
+            {collapsedUi ? <span className="sr-only">Super admin</span> : "Super admin"}
           </Link>
         ) : null}
 
-        <div className={collapsed ? "mb-1" : "mb-2.5"}>
-          <NavLink item={HOME} pathname={pathname} collapsed={collapsed} />
+        <div className={collapsedUi ? "mb-1" : "mb-2.5"}>
+          <NavLink item={HOME} pathname={pathname} collapsed={collapsedUi} />
         </div>
 
         {GROUPS.map((group) => {
           const items = group.items.filter((item) => !item.admin || isAdmin);
           if (!items.length) return null;
           return (
-            <div key={group.label} className={collapsed ? "mb-1" : "mb-2.5"}>
-              {collapsed ? (
+            <div key={group.label} className={collapsedUi ? "mb-1" : "mb-2.5"}>
+              {collapsedUi ? (
                 <div className="mx-3 my-1 border-t border-slate-100" aria-hidden />
               ) : (
                 <p className="px-2.5 pb-1 text-[10px] font-medium uppercase tracking-[0.14em] text-slate-400">
@@ -213,7 +216,7 @@ export function AppSidebar({
                     key={item.href}
                     item={item}
                     pathname={pathname}
-                    collapsed={collapsed}
+                    collapsed={collapsedUi}
                     badge={item.href === "/devis" ? snapshot.newQuotes : item.href === "/sessions" ? snapshot.abandons : 0}
                   />
                 ))}
@@ -223,19 +226,21 @@ export function AppSidebar({
         })}
       </nav>
 
-      <div className={`shrink-0 border-t border-slate-200 ${collapsed ? "px-1.5 py-2" : "px-2 py-2"}`}>
-        {collapsed ? (
+      <div className={`shrink-0 border-t border-slate-200 ${collapsedUi ? "px-1.5 py-2" : "px-2 py-2"}`}>
+        {collapsedUi ? (
           <div className="flex flex-col items-center gap-0.5">
-            <button
-              type="button"
-              onClick={toggle}
-              aria-expanded={false}
-              aria-label="Ouvrir le menu"
-              title="Ouvrir le menu"
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-orange-50 hover:text-[#E85D04]"
-            >
-              <PanelLeftOpen className="h-4 w-4" />
-            </button>
+            {builderLocked ? null : (
+              <button
+                type="button"
+                onClick={toggle}
+                aria-expanded={false}
+                aria-label="Ouvrir le menu"
+                title="Ouvrir le menu"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-orange-50 hover:text-[#E85D04]"
+              >
+                <PanelLeftOpen className="h-4 w-4" />
+              </button>
+            )}
             <SupportMenu collapsed isAdmin={isAdmin} />
             <span
               title={display}
