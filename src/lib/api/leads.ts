@@ -4,7 +4,7 @@ import { listQuotes, loadQuoteListExtras } from "@/lib/crm/quotes";
 import { loadQuoteDetail } from "@/lib/crm/quote-detail";
 import { logActivity } from "@/lib/crm/activity";
 import { scoreQuote } from "@/lib/quotes/score";
-import { startWorkflows } from "@/lib/workflows/engine";
+import { exitActiveQuoteRuns, startWorkflows } from "@/lib/workflows/engine";
 import type { Answers } from "@/lib/wizard/types";
 
 export type LeadStatusSlug = "new" | "contacted" | "in_progress" | "won" | "lost" | "waiting";
@@ -44,7 +44,7 @@ async function resolveStatusId(organizationId: string, slug: string) {
   const supabase = createServiceClient();
   const { data } = await supabase
     .from("quote_statuses")
-    .select("id, slug, label")
+    .select("id, slug, label, is_closed")
     .eq("organization_id", organizationId)
     .eq("slug", slug)
     .maybeSingle();
@@ -170,6 +170,9 @@ export async function apiUpdateLeadStatus(organizationId: string, input: UpdateL
     });
 
     try {
+      if (status.is_closed) {
+        await exitActiveQuoteRuns(organizationId, input.lead_id);
+      }
       await startWorkflows({
         triggerType: "quote.status_changed",
         organizationId,
