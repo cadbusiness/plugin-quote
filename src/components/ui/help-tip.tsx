@@ -1,13 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
+
+const BUBBLE =
+  "pointer-events-none absolute top-full z-40 mt-1.5 w-52 rounded-md bg-slate-900 px-2.5 py-2 text-left text-xs font-normal normal-case leading-relaxed tracking-normal text-white shadow-lg";
+
+function alignClass(align: "left" | "center" | "right") {
+  if (align === "left") return "left-0";
+  if (align === "right") return "right-0";
+  return "left-1/2 -translate-x-1/2";
+}
+
+function bubbleClass(open: boolean, align: "left" | "center" | "right") {
+  return `${BUBBLE} ${alignClass(align)} ${
+    open ? "block" : "hidden peer-hover:block peer-focus-visible:block"
+  }`;
+}
 
 export function HelpTip({
   label,
   children,
+  align = "center",
 }: {
   label: string;
-  children: React.ReactNode;
+  children: ReactNode;
+  align?: "left" | "center" | "right";
 }) {
   const [open, setOpen] = useState(false);
 
@@ -27,13 +44,53 @@ export function HelpTip({
       >
         ?
       </button>
-      <span
-        role="tooltip"
-        className={`absolute left-1/2 top-full z-40 mt-1.5 w-56 -translate-x-1/2 rounded-md bg-slate-900 px-2.5 py-2 text-left text-xs font-normal normal-case leading-relaxed tracking-normal text-white shadow-lg ${
-          open ? "block" : "hidden peer-hover:block peer-focus-visible:block"
-        }`}
-      >
+      <span role="tooltip" className={bubbleClass(open, align)}>
         {children}
+      </span>
+    </span>
+  );
+}
+
+export function IconHint({
+  label,
+  help,
+  pending,
+  align = "right",
+  onClick,
+  children,
+}: {
+  label: string;
+  help: string;
+  pending?: boolean;
+  align?: "left" | "center" | "right";
+  onClick?: () => void;
+  children: ReactNode;
+}) {
+  const look =
+    "peer inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500";
+  return (
+    <span className="relative inline-flex">
+      {onClick ? (
+        <button
+          type="button"
+          aria-label={label}
+          disabled={pending}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            onClick();
+          }}
+          className={`${look} hover:bg-slate-100 hover:text-slate-900 disabled:opacity-40`}
+        >
+          {children}
+        </button>
+      ) : (
+        <span tabIndex={0} aria-label={label} className={`${look} outline-none`}>
+          {children}
+        </span>
+      )}
+      <span role="tooltip" className={bubbleClass(false, align)}>
+        {help}
       </span>
     </span>
   );
@@ -43,7 +100,7 @@ export function LabelHelp({
   children,
   help,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   help: string;
 }) {
   const label = typeof children === "string" ? children : "Aide";

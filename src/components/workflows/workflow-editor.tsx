@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { ChevronLeft } from "lucide-react";
 import { renameWorkflow, setWorkflowStatus } from "@/app/(app)/workflow-actions";
 import { Chip, type ChipTone } from "@/components/ui/chip";
+import { HelpTip } from "@/components/ui/help-tip";
 import { DataTable, ListPanel } from "@/components/ui/list-panel";
 import { ClickableRow } from "@/components/ui/clickable-row";
 import { RUN_STATUS_LABELS } from "@/lib/workflows/labels";
@@ -129,7 +130,7 @@ export function WorkflowEditor({
             aria-checked={workflow.status === "active"}
             disabled={pending}
             onClick={activate}
-            className={`inline-flex items-center gap-2.5 rounded-lg border px-2.5 py-1.5 disabled:opacity-50 ${
+            className={`inline-flex items-center gap-2 rounded-lg border px-2.5 py-1.5 disabled:opacity-50 ${
               workflow.status === "active"
                 ? "border-emerald-200 bg-emerald-50"
                 : "border-slate-200 bg-slate-50"
@@ -142,9 +143,6 @@ export function WorkflowEditor({
                 }`}
               >
                 {workflow.status === "active" ? "Actif" : "Inactif"}
-              </span>
-              <span className="mt-0.5 block text-[11px] leading-none text-slate-500">
-                {workflow.status === "active" ? "Les emails partent" : "Aucun envoi"}
               </span>
             </span>
             <span
@@ -160,6 +158,9 @@ export function WorkflowEditor({
               />
             </span>
           </button>
+          <HelpTip label="Actif" align="right">
+            {workflow.status === "active" ? "Les emails partent." : "Aucun envoi tant que c’est inactif."}
+          </HelpTip>
         </div>
         <nav className="flex items-end gap-6 border-b border-slate-200 px-4 lg:px-6">
           {(

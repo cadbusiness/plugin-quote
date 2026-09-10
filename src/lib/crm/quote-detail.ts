@@ -3,7 +3,7 @@ import type { Database, Json, Tables } from "@/lib/db/database.types";
 import { classifySource } from "@/lib/stats/attribution";
 import { formatDate, formatPrice, formatRelative } from "@/lib/format";
 import { nodeTitle, RUN_STATUS_LABELS, TRIGGER_LABELS } from "@/lib/workflows/labels";
-import { parseDefinition, type WorkflowRunStatus, type WorkflowTriggerType } from "@/lib/workflows/types";
+import { parseDefinition, type WorkflowNodeType, type WorkflowRunStatus, type WorkflowTriggerType } from "@/lib/workflows/types";
 import { scoreReasons } from "@/lib/quotes/score";
 import { formatItemOptions, labelAnswers, type LabeledAnswer } from "@/lib/crm/answers";
 import { appUrl } from "@/lib/prospect/access";
@@ -45,6 +45,7 @@ export type QuoteAutomation = {
   id: string;
   workflowId: string;
   title: string;
+  triggerType: WorkflowTriggerType;
   triggerLabel: string;
   state: WorkflowRunStatus;
   stateLabel: string;
@@ -56,6 +57,7 @@ export type QuoteAutomation = {
 export type QuoteAutomationStep = {
   id: string;
   label: string;
+  nodeType: WorkflowNodeType;
   status: string;
   statusLabel: string;
   when: string;
@@ -383,6 +385,7 @@ export async function loadQuoteDetail(
         id: run.id,
         workflowId: run.workflow_id,
         title: workflow?.name ?? "Parcours",
+        triggerType: (workflow?.trigger_type ?? "quote.submitted") as WorkflowTriggerType,
         triggerLabel: TRIGGER_LABELS[(workflow?.trigger_type ?? "quote.submitted") as WorkflowTriggerType] ?? workflow?.trigger_type ?? "",
         state,
         stateLabel: RUN_STATUS_LABELS[state] ?? run.status,
@@ -395,6 +398,7 @@ export async function loadQuoteDetail(
         steps: (stepsByRun.get(run.id) ?? []).map((step) => ({
           id: step.id,
           label: nodes.get(step.node_id) ? nodeTitle(nodes.get(step.node_id)!) : step.node_id,
+          nodeType: (nodes.get(step.node_id)?.type ?? "send_email") as WorkflowNodeType,
           status: step.status,
           statusLabel:
             step.status === "ok"

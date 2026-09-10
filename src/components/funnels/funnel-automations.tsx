@@ -1,12 +1,16 @@
 "use client";
 
-import { useTransition } from "react";
+import { useTransition, type ReactNode } from "react";
 import Link from "next/link";
+import { Globe, Minus, Pin, Plus } from "lucide-react";
 import { setWorkflowOnFunnel } from "@/app/(app)/funnels/actions";
-import { Chip, type ChipTone } from "@/components/ui/chip";
+import { Chip } from "@/components/ui/chip";
+import { HelpTip, IconHint } from "@/components/ui/help-tip";
 import { CreateWorkflowDialog } from "@/components/workflows/create-workflow-dialog";
-import { TRIGGER_LABELS, WORKFLOW_STATUS_LABELS } from "@/lib/workflows/labels";
-import type { WorkflowStatus, WorkflowTriggerType } from "@/lib/workflows/types";
+import { StepStrip } from "@/components/workflows/step-strip";
+import { TriggerGlyph } from "@/components/workflows/trigger-icon";
+import { TRIGGER_HELP, TRIGGER_ORDER, TRIGGER_WHEN, WORKFLOW_STATUS_LABELS } from "@/lib/workflows/labels";
+import type { WorkflowNodeType, WorkflowStatus, WorkflowTriggerType } from "@/lib/workflows/types";
 
 export type FunnelWorkflowRow = {
   id: string;
@@ -14,176 +18,196 @@ export type FunnelWorkflowRow = {
   status: WorkflowStatus;
   triggerType: WorkflowTriggerType;
   scope: "all" | "this" | "other";
-  steps: string[];
-};
-
-const TRIGGER_TONE: Record<WorkflowTriggerType, ChipTone> = {
-  "quote.submitted": "emerald",
-  "session.abandoned": "amber",
-  "quote.status_changed": "violet",
+  steps: { type: WorkflowNodeType; label: string }[];
 };
 
 export function FunnelAutomations({
   funnelId,
-  funnelName,
   workflows,
   funnels,
   statuses,
 }: {
   funnelId: string;
-  funnelName: string;
   workflows: FunnelWorkflowRow[];
   funnels: { id: string; name: string }[];
   statuses: { slug: string; label: string }[];
 }) {
-  const assigned = workflows.filter((workflow) => workflow.scope !== "other");
-  const available = workflows.filter((workflow) => workflow.scope === "other");
+  const groups = TRIGGER_ORDER.map((type) => ({
+    type,
+    assigned: workflows.filter((workflow) => workflow.triggerType === type && workflow.scope !== "other"),
+    available: workflows.filter((workflow) => workflow.triggerType === type && workflow.scope === "other"),
+  })).filter((group) => group.assigned.length || group.available.length);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <p className="border-b border-slate-100 px-4 py-3 text-sm text-slate-500 lg:px-6">
-        Ce qui part quand ce funnel reçoit une demande ou un abandon. Assignez, limitez ou retirez, le canvas
-        reste dans Automatisations.
-      </p>
-      <Section
-        title="Sur ce funnel"
-        empty="Aucune automatisation ne tourne encore sur ce funnel."
-        items={assigned.map((workflow) => (
-          <AutomationRow
-            key={workflow.id}
-            workflow={workflow}
-            actions={
-              workflow.scope === "all" ? (
-                <>
-                  <Action
-                    label="Limiter ici"
-                    onClick={(start) => start(() => void setWorkflowOnFunnel(workflow.id, funnelId, "only"))}
-                  />
-                  <Action
-                    label="Retirer"
-                    muted
-                    onClick={(start) => start(() => void setWorkflowOnFunnel(workflow.id, funnelId, "remove"))}
-                  />
-                </>
-              ) : (
-                <>
-                  <Action
-                    label="Tous les funnels"
-                    muted
-                    onClick={(start) => start(() => void setWorkflowOnFunnel(workflow.id, funnelId, "all"))}
-                  />
-                  <Action
-                    label="Retirer"
-                    muted
-                    onClick={(start) => start(() => void setWorkflowOnFunnel(workflow.id, funnelId, "remove"))}
-                  />
-                </>
-              )
-            }
-          />
-        ))}
-      />
-      <Section
-        title="Disponibles"
-        empty="Tous vos parcours sont déjà liés à ce funnel."
-        items={available.map((workflow) => (
-          <AutomationRow
-            key={workflow.id}
-            workflow={workflow}
-            actions={
-              <Action
-                label="Assigner"
-                onClick={(start) => start(() => void setWorkflowOnFunnel(workflow.id, funnelId, "add"))}
+      {groups.map((group) => {
+        const live = group.assigned.filter((workflow) => workflow.status === "active").length;
+        return (
+          <section key={group.type}>
+            <div className="flex items-center gap-1.5 border-b border-slate-100 px-4 py-2 lg:px-6">
+              <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">{TRIGGER_WHEN[group.type]}</p>
+              <HelpTip label={TRIGGER_WHEN[group.type]}>{TRIGGER_HELP[group.type]}</HelpTip>
+              {live > 1 ? (
+                <span className="ml-auto inline-flex items-center gap-1">
+                  <Chip tone="amber">{live}</Chip>
+                  <HelpTip label="Plusieurs parcours" align="right">
+                    {live} parcours partent pour le même événement. Gardez-en un.
+                  </HelpTip>
+                </span>
+              ) : null}
+            </div>
+            {group.assigned.map((workflow) => (
+              <AutomationRow
+                key={workflow.id}
+                workflow={workflow}
+                actions={
+                  workflow.scope === "all" ? (
+                    <>
+                      <FunnelAction
+                        label="Limiter à ce funnel"
+                        help="Ne tourne plus que sur ce funnel."
+                        workflowId={workflow.id}
+                        funnelId={funnelId}
+                        mode="only"
+                      >
+                        <Pin className="h-4 w-4" strokeWidth={1.75} />
+                      </FunnelAction>
+                      <FunnelAction
+                        label="Retirer"
+                        help="Ne lance plus ce parcours sur ce funnel."
+                        workflowId={workflow.id}
+                        funnelId={funnelId}
+                        mode="remove"
+                      >
+                        <Minus className="h-4 w-4" strokeWidth={1.75} />
+                      </FunnelAction>
+                    </>
+                  ) : (
+                    <>
+                      <FunnelAction
+                        label="Tous les funnels"
+                        help="Étend ce parcours à tous les funnels."
+                        workflowId={workflow.id}
+                        funnelId={funnelId}
+                        mode="all"
+                      >
+                        <Globe className="h-4 w-4" strokeWidth={1.75} />
+                      </FunnelAction>
+                      <FunnelAction
+                        label="Retirer"
+                        help="Ne lance plus ce parcours sur ce funnel."
+                        workflowId={workflow.id}
+                        funnelId={funnelId}
+                        mode="remove"
+                      >
+                        <Minus className="h-4 w-4" strokeWidth={1.75} />
+                      </FunnelAction>
+                    </>
+                  )
+                }
               />
-            }
-          />
-        ))}
-      />
-      <CreateWorkflowDialog
-        funnels={funnels}
-        statuses={statuses}
-        presetFunnelId={funnelId}
-        addLabel={`Ajouter une automatisation pour ${funnelName}`}
-      />
+            ))}
+            {group.available.map((workflow) => (
+              <AutomationRow
+                key={workflow.id}
+                workflow={workflow}
+                muted
+                actions={
+                  <FunnelAction
+                    label="Ajouter"
+                    help="Lance aussi ce parcours sur ce funnel."
+                    workflowId={workflow.id}
+                    funnelId={funnelId}
+                    mode="add"
+                  >
+                    <Plus className="h-4 w-4" strokeWidth={1.75} />
+                  </FunnelAction>
+                }
+              />
+            ))}
+          </section>
+        );
+      })}
+      <CreateWorkflowDialog funnels={funnels} statuses={statuses} presetFunnelId={funnelId} addLabel="Ajouter un parcours" />
     </div>
-  );
-}
-
-function Section({
-  title,
-  empty,
-  items,
-}: {
-  title: string;
-  empty: string;
-  items: React.ReactNode[];
-}) {
-  return (
-    <section>
-      <p className="border-b border-slate-100 px-4 py-2 text-[11px] font-medium uppercase tracking-wide text-slate-400 lg:px-6">
-        {title}
-      </p>
-      {items.length ? items : <p className="border-b border-slate-100 px-4 py-6 text-sm text-slate-500 lg:px-6">{empty}</p>}
-    </section>
   );
 }
 
 function AutomationRow({
   workflow,
   actions,
+  muted,
 }: {
   workflow: FunnelWorkflowRow;
   actions: React.ReactNode;
+  muted?: boolean;
 }) {
+  const emails = workflow.steps.filter((step) => step.type === "send_email").length;
   return (
-    <div className="flex flex-wrap items-start gap-3 border-b border-slate-100 px-4 py-4 lg:px-6">
-      <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-center gap-2">
-          <Link href={`/automations/${workflow.id}`} className="font-medium text-slate-900 hover:text-[#C2410C]">
-            {workflow.name}
-          </Link>
-          <Chip tone={workflow.status === "active" ? "emerald" : "amber"}>
-            {WORKFLOW_STATUS_LABELS[workflow.status]}
-          </Chip>
-          <Chip tone={TRIGGER_TONE[workflow.triggerType]}>{TRIGGER_LABELS[workflow.triggerType]}</Chip>
-          <Chip tone={workflow.scope === "all" ? "slate" : "orange"}>
-            {workflow.scope === "all" ? "Tous les funnels" : workflow.scope === "this" ? "Ce funnel" : "Autres"}
-          </Chip>
+    <div className={`flex items-center gap-3 border-b border-slate-100 px-4 py-3 lg:px-6 ${muted ? "opacity-60" : ""}`}>
+      <Link href={`/automations/${workflow.id}`} className="flex min-w-0 flex-1 items-center gap-3 hover:opacity-80">
+        <TriggerGlyph type={workflow.triggerType} size="sm" />
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="truncate font-medium text-slate-900">{workflow.name}</span>
+            {workflow.status === "active" ? (
+              <Chip tone="emerald">{WORKFLOW_STATUS_LABELS.active}</Chip>
+            ) : (
+              <Chip tone="amber">{WORKFLOW_STATUS_LABELS[workflow.status]}</Chip>
+            )}
+          </div>
+          <StepStrip steps={workflow.steps} />
+          {emails ? (
+            <p className="sr-only">
+              {emails} email{emails > 1 ? "s" : ""}
+            </p>
+          ) : null}
         </div>
-        {workflow.steps.length ? (
-          <p className="mt-1.5 text-sm text-slate-500">{workflow.steps.join(" → ")}</p>
-        ) : (
-          <p className="mt-1.5 text-sm text-slate-400">Canvas encore vide</p>
+      </Link>
+      <div className="flex shrink-0 items-center">
+        {muted ? null : (
+          <IconHint
+            label={workflow.scope === "all" ? "Tous les funnels" : "Ce funnel"}
+            help={workflow.scope === "all" ? "Tourne sur tous les funnels." : "Seulement ce funnel."}
+            align="right"
+          >
+            {workflow.scope === "all" ? (
+              <Globe className="h-4 w-4" strokeWidth={1.75} />
+            ) : (
+              <Pin className="h-4 w-4" strokeWidth={1.75} />
+            )}
+          </IconHint>
         )}
-      </div>
-      <div className="flex flex-wrap items-center gap-3">
         {actions}
-        <Link href={`/automations/${workflow.id}`} className="text-sm text-slate-500 hover:text-slate-900">
-          Canvas
-        </Link>
       </div>
     </div>
   );
 }
 
-function Action({
+function FunnelAction({
   label,
-  muted,
-  onClick,
+  help,
+  workflowId,
+  funnelId,
+  mode,
+  children,
 }: {
   label: string;
-  muted?: boolean;
-  onClick: (start: ReturnType<typeof useTransition>[1]) => void;
+  help: string;
+  workflowId: string;
+  funnelId: string;
+  mode: "all" | "only" | "add" | "remove";
+  children: ReactNode;
 }) {
-  const [pending, startTransition] = useTransition();
+  const [pending, start] = useTransition();
   return (
-    <button
-      type="button"
-      disabled={pending}
-      onClick={() => onClick(startTransition)}
-      className={`text-sm font-medium disabled:opacity-50 ${muted ? "text-slate-500 hover:text-slate-900" : "text-[#C2410C]"}`}
+    <IconHint
+      label={label}
+      help={help}
+      pending={pending}
+      onClick={() => start(() => void setWorkflowOnFunnel(workflowId, funnelId, mode))}
     >
-      {pending ? "…" : label}
-    </button>
+      {children}
+    </IconHint>
   );
 }

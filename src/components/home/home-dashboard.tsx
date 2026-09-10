@@ -7,7 +7,8 @@ import { AbandonGauges } from "@/components/crm/abandon-gauges";
 import { MonthChart } from "@/components/stats/month-chart";
 import { KpiStrip } from "@/components/stats/kpi-strip";
 import { WORKFLOW_STATUS_LABELS } from "@/lib/workflows/labels";
-import type { WorkflowStatus } from "@/lib/workflows/types";
+import type { WorkflowStatus, WorkflowTriggerType } from "@/lib/workflows/types";
+import { TriggerGlyph } from "@/components/workflows/trigger-icon";
 import { HOME_PULSE_IDS } from "@/lib/stats/dashboard";
 import { moduleSpan, type HomeDashboard, type HomeModuleId } from "@/lib/crm/home";
 
@@ -150,18 +151,20 @@ function AutomationsModule({ data }: { data: HomeDashboard }) {
       {rows.length === 0 ? (
         <Empty>Aucun parcours actif.</Empty>
       ) : (
-        <DataTable headers={["Parcours", "État"]}>
+        <DataTable headers={["Parcours", ""]}>
           {rows.map((workflow) => {
             const status = workflow.status as WorkflowStatus;
+            const trigger = workflow.trigger_type as WorkflowTriggerType;
             return (
               <ClickableRow key={workflow.id} href={`/automations/${workflow.id}`}>
                 <td className="px-4 py-2 lg:px-5">
-                  <div className="font-medium text-slate-900">{workflow.name}</div>
-                  {workflow.failed ? (
-                    <span className="text-xs text-rose-700">
-                      {workflow.failed} échec{workflow.failed > 1 ? "s" : ""}
-                    </span>
-                  ) : null}
+                  <div className="flex items-center gap-2.5">
+                    <TriggerGlyph type={trigger} size="sm" />
+                    <div className="min-w-0">
+                      <div className="truncate font-medium text-slate-900">{workflow.name}</div>
+                      {workflow.failed ? <Chip tone="rose">{workflow.failed}</Chip> : null}
+                    </div>
+                  </div>
                 </td>
                 <td className="px-4 py-2 lg:px-5">
                   <Chip tone={WORKFLOW_TONE[status] ?? "slate"}>{WORKFLOW_STATUS_LABELS[status] ?? workflow.status}</Chip>

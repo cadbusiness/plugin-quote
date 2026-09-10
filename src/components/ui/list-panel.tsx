@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { paginationItems } from "@/lib/catalog/pagination";
 
@@ -27,7 +28,7 @@ export function DataTable({
   headers,
   children,
 }: {
-  headers: string[];
+  headers: ReactNode[];
   children: React.ReactNode;
 }) {
   return (
@@ -35,8 +36,8 @@ export function DataTable({
       <table className="w-full text-left text-sm">
         <thead className="border-b border-slate-200 text-xs font-medium uppercase tracking-wide text-slate-500">
           <tr>
-            {headers.map((h) => (
-              <th key={h} className="px-4 py-2 font-medium lg:px-6">
+            {headers.map((h, i) => (
+              <th key={i} className="px-4 py-2 font-medium lg:px-6">
                 {h}
               </th>
             ))}
