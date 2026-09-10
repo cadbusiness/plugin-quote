@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { StorefrontBlocks, StorefrontShell, type StorefrontModel } from "@/components/storefront/storefront-view";
+import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { loadPublicShop, type PublicShop } from "@/lib/shops/public";
+import { collectFaq } from "@/lib/shops/layout";
 import { faqJsonLd, shopMetadata, websiteJsonLd } from "@/lib/shops/seo";
 import { getAppUrl } from "@/lib/supabase/env";
 
@@ -41,15 +43,20 @@ export function seoCtx(
 }
 
 export async function loadOr404(orgSlug: string, shopSlug: string) {
-  const shop = await loadPublicShop(orgSlug, shopSlug);
+  let shop = await loadPublicShop(orgSlug, shopSlug);
+  if (!shop) {
+    const ctx = await getOrgContext();
+    if (ctx && isAdminRole(ctx.role) && ctx.organization.slug === orgSlug) {
+      shop = await loadPublicShop(orgSlug, shopSlug, { allowDraft: true });
+    }
+  }
   if (!shop) notFound();
   return shop;
 }
 
 export function homeFaq(shop: PublicShop) {
   const home = shop.pages.find((page) => page.kind === "home") ?? shop.pages[0];
-  const block = home?.blocks.find((item) => item.type === "faq");
-  return block?.faq ?? [];
+  return home ? collectFaq(home.blocks) : [];
 }
 
 export { shopMetadata, websiteJsonLd, faqJsonLd, StorefrontBlocks, StorefrontShell };

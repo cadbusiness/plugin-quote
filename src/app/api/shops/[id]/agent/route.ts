@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { runShopAgentTurn } from "@/lib/shops/agent/loop";
+import { applyEditorDraft, serializeEditorDraft, type ShopEditorDraft } from "@/lib/shops/draft";
 import { loadShopDocument, persistShopDocument } from "@/lib/shops/document";
 import { createClient } from "@/lib/supabase/server";
 
@@ -18,6 +19,7 @@ const schema = z.object({
     )
     .max(24)
     .optional(),
+  draft: z.unknown().optional(),
 });
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -33,6 +35,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const doc = await loadShopDocument(supabase, ctx.organization.id, id);
   if (!doc) return NextResponse.json({ error: "Boutique introuvable" }, { status: 404 });
 
+  if (parsed.data.draft && typeof parsed.data.draft === "object") {
+    applyEditorDraft(doc, parsed.data.draft as ShopEditorDraft);
+  }
+
   try {
     const turn = await runShopAgentTurn({
       doc,
@@ -41,7 +47,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       userMessage: parsed.data.message,
     });
     await persistShopDocument(supabase, ctx.organization.id, doc);
-    return NextResponse.json({ text: turn.assistantText, trace: turn.toolTrace });
+    return NextResponse.json({ text: turn.assistantText, trace: turn.toolTrace, ...serializeEditorDraft(doc) });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Erreur agent";
     return NextResponse.json({ error: message }, { status: 500 });

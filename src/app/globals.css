@@ -133,3 +133,27 @@ body {
     animation: none !important;
   }
 }
+
+.shop-puck {
+  min-height: 0;
+  height: 100%;
+}
+
+.shop-puck [class*="Puck"] {
+  min-height: 0;
+}
+
+.shop-puck [data-puck-preview] {
+  min-height: 24rem;
+}
+
+.shop-puck-drawer [class*="Drawer-draggableBg"] {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.shop-puck-drawer [class*="Drawer-draggable"] {
+  position: relative;
+}

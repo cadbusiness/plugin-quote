@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/db/database.types";
 import { asJson, type ShopDocument, type ShopProduct } from "@/lib/shops/types";
-import { parseBlocks } from "@/lib/shops/blocks";
+import { parseLayout } from "@/lib/shops/layout";
 import { navFromRow, pageFromRow, parseLegal, parseNavLocation, parsePageKind, parsePageSeo, parseSeo, parseStatus, parseTheme } from "@/lib/shops/parse";
 
 export async function loadShopDocument(
@@ -59,7 +59,7 @@ export async function persistShopDocument(
       slug: page.slug,
       title: page.title,
       seo: asJson(parsePageSeo(page.seo, page.title)),
-      blocks: asJson(parseBlocks(page.blocks)),
+      blocks: asJson(parseLayout(page.blocks)),
       is_published: page.is_published,
       sort_order: page.sort_order,
       updated_at: new Date().toISOString(),

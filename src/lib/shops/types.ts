@@ -77,12 +77,37 @@ export type ShopPageSeo = {
   noindex: boolean;
 };
 
+export type ShopNodeTypeName =
+  | "Section"
+  | "Columns"
+  | "Heading"
+  | "Text"
+  | "Image"
+  | "Button"
+  | "Hero"
+  | "Catalog"
+  | "Categories"
+  | "QuoteCta"
+  | "Faq"
+  | "Features"
+  | "Legal";
+
+export type ShopNode = {
+  type: ShopNodeTypeName;
+  props: Record<string, unknown> & { id: string };
+};
+
+export type ShopLayout = {
+  root: { props: Record<string, unknown> };
+  content: ShopNode[];
+};
+
 export type ShopPageDraft = {
   kind: ShopPageKind;
   slug: string;
   title: string;
   seo: ShopPageSeo;
-  blocks: ShopBlock[];
+  blocks: ShopLayout;
   isPublished: boolean;
   sortOrder: number;
 };
@@ -124,6 +149,18 @@ export type ShopProduct = {
   currency: string;
   category: string | null;
   sku: string | null;
+};
+
+export type StorefrontModel = {
+  orgSlug: string;
+  shopSlug: string;
+  shopName: string;
+  funnelSlug: string | null;
+  theme: ShopTheme;
+  legal: ShopLegal;
+  nav: ShopNavDraft[];
+  products: ShopProduct[];
+  jsonLd?: unknown[];
 };
 
 export function asJson<T>(value: T): Json {

@@ -1,68 +1,23 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition, type ReactNode } from "react";
-import {
-  DndContext,
-  PointerSensor,
-  closestCenter,
-  useSensor,
-  useSensors,
-  type DragEndEvent,
-} from "@dnd-kit/core";
-import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { GripVertical } from "lucide-react";
 import { deleteShop, publishShop, saveShop } from "@/app/(app)/integrations/shop-actions";
-import { ShopChat } from "@/components/shops/shop-chat";
+import { ShopChat, type EditorPage, type ShopChatDraft, type ShopChatResult } from "@/components/shops/shop-chat";
 import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
-import { BLOCK_LABELS, BLOCK_PALETTE, emptyBlock } from "@/lib/shops/blocks";
-import type { ShopBlock, ShopLegal, ShopNavDraft, ShopPageSeo, ShopProduct, ShopSeo, ShopTheme } from "@/lib/shops/types";
+import { parseLayout } from "@/lib/shops/layout";
+import type { ShopLegal, ShopNavDraft, ShopProduct, ShopSeo, ShopTheme } from "@/lib/shops/types";
 
-type EditorPage = {
-  id: string;
-  slug: string;
-  title: string;
-  kind: string;
-  seo: ShopPageSeo;
-  blocks: ShopBlock[];
-  isPublished: boolean;
-  sortOrder: number;
-};
-
-function SortableBlock({
-  block,
-  selected,
-  onSelect,
-  children,
-}: {
-  block: ShopBlock;
-  selected: boolean;
-  onSelect: () => void;
-  children: ReactNode;
-}) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: block.id });
-  return (
-    <div
-      ref={setNodeRef}
-      style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={`rounded-lg ring-1 ${selected ? "ring-[#E85D04]" : "ring-slate-200"}`}
-    >
-      <div className="flex items-center gap-2 border-b border-slate-100 px-2 py-1.5">
-        <button type="button" className="cursor-grab text-slate-400" {...attributes} {...listeners}>
-          <GripVertical className="h-4 w-4" />
-        </button>
-        <button type="button" onClick={onSelect} className="text-left text-xs font-medium text-slate-600">
-          {BLOCK_LABELS[block.type]}
-        </button>
-      </div>
-      <button type="button" onClick={onSelect} className="block w-full px-3 py-3 text-left">
-        {children}
-      </button>
-    </div>
-  );
-}
+const ShopBuilderCanvas = dynamic(
+  () => import("@/components/shops/shop-builder-canvas").then((mod) => mod.ShopBuilderCanvas),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex min-h-0 flex-1 items-center justify-center text-sm text-slate-400">Chargement du builder…</div>
+    ),
+  },
+);
 
 export function ShopEditor({
   shop,
@@ -71,8 +26,9 @@ export function ShopEditor({
   products,
   publicUrl,
   funnelName,
+  funnelSlug,
   orgName,
-  openChat,
+  orgSlug,
 }: {
   shop: {
     id: string;
@@ -89,10 +45,10 @@ export function ShopEditor({
   products: ShopProduct[];
   publicUrl: string;
   funnelName: string | null;
+  funnelSlug: string | null;
   orgName: string;
-  openChat: boolean;
+  orgSlug: string;
 }) {
-  const router = useRouter();
   const [name, setName] = useState(shop.name);
   const [status, setStatus] = useState(shop.status);
   const [theme, setTheme] = useState(shop.theme);
@@ -101,33 +57,28 @@ export function ShopEditor({
   const [pages, setPages] = useState(initialPages);
   const [nav, setNav] = useState(initialNav);
   const [pageId, setPageId] = useState(initialPages[0]?.id ?? "");
-  const [blockId, setBlockId] = useState<string | null>(initialPages[0]?.blocks[0]?.id ?? null);
-  const [tab, setTab] = useState<"page" | "seo" | "legal" | "nav" | "chat">(openChat ? "chat" : "page");
+  const [tab, setTab] = useState<"page" | "seo" | "legal" | "nav">("page");
+  const [layoutEpoch, setLayoutEpoch] = useState(0);
   const [pending, startTransition] = useTransition();
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
 
   const page = pages.find((item) => item.id === pageId) ?? pages[0] ?? null;
-  const selected = page?.blocks.find((block) => block.id === blockId) ?? null;
+
+  const model = useMemo(
+    () => ({
+      orgSlug,
+      shopSlug: shop.slug,
+      shopName: name,
+      funnelSlug,
+      theme,
+      legal,
+      nav,
+      products,
+    }),
+    [orgSlug, shop.slug, name, funnelSlug, theme, legal, nav, products],
+  );
 
   function patchPage(id: string, patch: Partial<EditorPage>) {
     setPages((current) => current.map((item) => (item.id === id ? { ...item, ...patch } : item)));
-  }
-
-  function patchBlock(id: string, patch: Partial<ShopBlock>) {
-    if (!page) return;
-    patchPage(page.id, {
-      blocks: page.blocks.map((block) => (block.id === id ? { ...block, ...patch } : block)),
-    });
-  }
-
-  function onDragEnd(event: DragEndEvent) {
-    if (!page) return;
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
-    const from = page.blocks.findIndex((block) => block.id === active.id);
-    const to = page.blocks.findIndex((block) => block.id === over.id);
-    if (from < 0 || to < 0) return;
-    patchPage(page.id, { blocks: arrayMove(page.blocks, from, to) });
   }
 
   function payload() {
@@ -143,10 +94,122 @@ export function ShopEditor({
     return data;
   }
 
-  const previewBlocks = useMemo(() => page?.blocks ?? [], [page]);
+  function draft(): ShopChatDraft {
+    return { name, status, theme, seo, legal, pages, nav };
+  }
+
+  function applyChat(result: ShopChatResult) {
+    setName(result.name);
+    setStatus(result.status);
+    setTheme(result.theme);
+    setSeo(result.seo);
+    setLegal(result.legal);
+    setPages(result.pages.map((item) => ({ ...item, blocks: parseLayout(item.blocks) })));
+    setNav(result.nav);
+    setLayoutEpoch((value) => value + 1);
+  }
+
+  const inspector =
+    tab === "seo" ? (
+      <div className="space-y-3 px-4 py-4">
+        <Field label="Titre du site">
+          <input value={seo.title} onChange={(event) => setSeo({ ...seo, title: event.target.value })} className="input" />
+        </Field>
+        <Field label="Meta description">
+          <textarea
+            value={seo.description}
+            onChange={(event) => setSeo({ ...seo, description: event.target.value })}
+            rows={3}
+            className="input"
+          />
+        </Field>
+        <Field label="Ville (GEO)">
+          <input
+            value={seo.geo.locality}
+            onChange={(event) => setSeo({ ...seo, geo: { ...seo.geo, locality: event.target.value } })}
+            className="input"
+          />
+        </Field>
+        <Field label="Région">
+          <input
+            value={seo.geo.region}
+            onChange={(event) => setSeo({ ...seo, geo: { ...seo.geo, region: event.target.value } })}
+            className="input"
+          />
+        </Field>
+        <Field label="Accent">
+          <input value={theme.accent} onChange={(event) => setTheme({ ...theme, accent: event.target.value })} className="input" />
+        </Field>
+      </div>
+    ) : tab === "legal" ? (
+      <div className="space-y-3 px-4 py-4">
+        {(
+          [
+            ["company", "Raison sociale"],
+            ["siret", "SIRET"],
+            ["address", "Adresse"],
+            ["postalCode", "Code postal"],
+            ["city", "Ville"],
+            ["email", "Email"],
+            ["phone", "Téléphone"],
+            ["director", "Directeur de publication"],
+          ] as const
+        ).map(([key, label]) => (
+          <Field key={key} label={label}>
+            <input value={legal[key]} onChange={(event) => setLegal({ ...legal, [key]: event.target.value })} className="input" />
+          </Field>
+        ))}
+        <form action={deleteShop}>
+          <input type="hidden" name="id" value={shop.id} />
+          <button type="submit" className="text-sm text-rose-600">
+            Supprimer la boutique
+          </button>
+        </form>
+      </div>
+    ) : tab === "nav" ? (
+      <div className="space-y-4 px-4 py-4">
+        {(["header", "footer"] as const).map((location) => (
+          <div key={location}>
+            <p className="text-sm font-medium text-slate-900">{location === "header" ? "Menu haut" : "Menu pied"}</p>
+            {nav
+              .filter((item) => item.location === location)
+              .map((item, index) => (
+                <div key={`${location}-${index}`} className="mt-2 grid grid-cols-2 gap-2">
+                  <input
+                    value={item.label}
+                    onChange={(event) =>
+                      setNav((current) =>
+                        current.map((row) =>
+                          row.location === location && row.sortOrder === item.sortOrder
+                            ? { ...row, label: event.target.value }
+                            : row,
+                        ),
+                      )
+                    }
+                    className="input"
+                  />
+                  <input
+                    value={item.href}
+                    onChange={(event) =>
+                      setNav((current) =>
+                        current.map((row) =>
+                          row.location === location && row.sortOrder === item.sortOrder
+                            ? { ...row, href: event.target.value }
+                            : row,
+                        ),
+                      )
+                    }
+                    className="input"
+                  />
+                </div>
+              ))}
+          </div>
+        ))}
+      </div>
+    ) : null;
 
   return (
-    <ListPanel className="min-h-0">
+    <ListPanel className="min-h-0 overflow-hidden">
       <ListToolbar>
         <Link href="/integrations" className="mr-auto text-sm text-slate-500 hover:text-slate-900">
           Boutiques
@@ -178,290 +241,56 @@ export function ShopEditor({
         </form>
       </ListToolbar>
 
-      <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[14rem_minmax(0,1fr)_20rem]">
-        <aside className="border-b border-slate-100 lg:border-r lg:border-b-0">
-          <p className="px-4 py-2 text-[11px] font-medium uppercase tracking-wide text-slate-400">Pages</p>
-          {pages.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => {
-                setPageId(item.id);
-                setBlockId(item.blocks[0]?.id ?? null);
-                setTab("page");
-              }}
-              className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm ${
-                item.id === page?.id ? "bg-orange-50 text-[#C2410C]" : "text-slate-700 hover:bg-slate-50"
-              }`}
-            >
-              <span>{item.title}</span>
-              {item.kind === "legal" ? (
-                <span className="rounded-full bg-amber-50 px-1.5 py-0.5 text-[10px] font-medium text-amber-800">Légal</span>
-              ) : null}
-            </button>
-          ))}
-          <p className="mt-4 px-4 py-2 text-[11px] font-medium uppercase tracking-wide text-slate-400">Réglages</p>
-          {(["seo", "legal", "nav", "chat"] as const).map((item) => (
-            <button
-              key={item}
-              type="button"
-              onClick={() => setTab(item)}
-              className={`block w-full px-4 py-2 text-left text-sm ${
-                tab === item ? "bg-orange-50 text-[#C2410C]" : "text-slate-700 hover:bg-slate-50"
-              }`}
-            >
-              {item === "seo" && "SEO / GEO"}
-              {item === "legal" && "Identité légale"}
-              {item === "nav" && "Menus"}
-              {item === "chat" && "Chat IA"}
-            </button>
-          ))}
-          {funnelName ? <p className="px-4 py-3 text-xs text-slate-400">Devis : {funnelName}</p> : null}
-        </aside>
-
-        <section className="min-h-0 overflow-y-auto border-b border-slate-100 bg-slate-50/60 p-4 lg:border-b-0">
-          {tab === "page" && page ? (
-            <div className="mx-auto max-w-3xl space-y-3">
-              <div className="rounded-lg bg-white px-4 py-3 ring-1 ring-slate-200">
-                <label className="block text-xs font-medium text-slate-500">Titre de page (H1 / SEO)</label>
-                <input
-                  value={page.title}
-                  onChange={(event) =>
-                    patchPage(page.id, {
-                      title: event.target.value,
-                      seo: { ...page.seo, title: event.target.value },
-                    })
-                  }
-                  className="mt-1 w-full text-lg font-semibold text-slate-900 outline-none"
-                />
-                <input
-                  value={page.seo.description}
-                  onChange={(event) => patchPage(page.id, { seo: { ...page.seo, description: event.target.value } })}
-                  placeholder="Meta description"
-                  className="mt-2 w-full text-sm text-slate-500 outline-none"
-                />
-              </div>
-              <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-                <SortableContext items={previewBlocks.map((block) => block.id)} strategy={verticalListSortingStrategy}>
-                  <div className="space-y-3">
-                    {previewBlocks.map((block) => (
-                      <SortableBlock
-                        key={block.id}
-                        block={block}
-                        selected={block.id === blockId}
-                        onSelect={() => {
-                          setBlockId(block.id);
-                          setTab("page");
-                        }}
-                      >
-                        <p className="font-medium text-slate-900">{block.heading || BLOCK_LABELS[block.type]}</p>
-                        {block.sub || block.text ? (
-                          <p className="mt-1 line-clamp-2 text-sm text-slate-500">{block.sub || block.text}</p>
-                        ) : null}
-                        {block.type === "catalog" ? (
-                          <p className="mt-1 text-xs text-slate-400">{products.length} produit{products.length > 1 ? "s" : ""} du catalogue lié</p>
-                        ) : null}
-                      </SortableBlock>
-                    ))}
-                  </div>
-                </SortableContext>
-              </DndContext>
-              <div className="flex flex-wrap gap-2">
-                {BLOCK_PALETTE.map((type) => (
-                  <button
-                    key={type}
-                    type="button"
-                    onClick={() => {
-                      const block = emptyBlock(type);
-                      patchPage(page.id, { blocks: [...page.blocks, block] });
-                      setBlockId(block.id);
-                    }}
-                    className="rounded-md border border-dashed border-slate-300 px-2 py-1 text-xs text-slate-600 hover:border-[#E85D04] hover:text-[#C2410C]"
-                  >
-                    + {BLOCK_LABELS[type]}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : null}
-
-          {tab === "seo" ? (
-            <div className="mx-auto max-w-xl space-y-3 rounded-lg bg-white p-4 ring-1 ring-slate-200">
-              <Field label="Titre du site">
-                <input value={seo.title} onChange={(event) => setSeo({ ...seo, title: event.target.value })} className="input" />
-              </Field>
-              <Field label="Meta description">
-                <textarea
-                  value={seo.description}
-                  onChange={(event) => setSeo({ ...seo, description: event.target.value })}
-                  rows={3}
-                  className="input"
-                />
-              </Field>
-              <div className="grid gap-3 sm:grid-cols-2">
-                <Field label="Ville (GEO)">
-                  <input
-                    value={seo.geo.locality}
-                    onChange={(event) => setSeo({ ...seo, geo: { ...seo.geo, locality: event.target.value } })}
-                    className="input"
-                  />
-                </Field>
-                <Field label="Région">
-                  <input
-                    value={seo.geo.region}
-                    onChange={(event) => setSeo({ ...seo, geo: { ...seo.geo, region: event.target.value } })}
-                    className="input"
-                  />
-                </Field>
-              </div>
-              <Field label="Accent">
-                <input value={theme.accent} onChange={(event) => setTheme({ ...theme, accent: event.target.value })} className="input" />
-              </Field>
-            </div>
-          ) : null}
-
-          {tab === "legal" ? (
-            <div className="mx-auto max-w-xl space-y-3 rounded-lg bg-white p-4 ring-1 ring-slate-200">
-              {(
-                [
-                  ["company", "Raison sociale"],
-                  ["siret", "SIRET"],
-                  ["address", "Adresse"],
-                  ["postalCode", "Code postal"],
-                  ["city", "Ville"],
-                  ["email", "Email"],
-                  ["phone", "Téléphone"],
-                  ["director", "Directeur de publication"],
-                ] as const
-              ).map(([key, label]) => (
-                <Field key={key} label={label}>
-                  <input
-                    value={legal[key]}
-                    onChange={(event) => setLegal({ ...legal, [key]: event.target.value })}
-                    className="input"
-                  />
-                </Field>
+      {page ? (
+        <ShopBuilderCanvas
+          key={`${page.id}-${layoutEpoch}`}
+          layout={page.blocks}
+          model={model}
+          onChange={(blocks) => patchPage(page.id, { blocks })}
+          settings={tab === "page" ? null : inspector}
+          pagesNav={
+            <>
+              <p className="px-4 py-2 text-[11px] font-medium uppercase tracking-wide text-slate-400">Pages</p>
+              {pages.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => {
+                    setPageId(item.id);
+                    setTab("page");
+                  }}
+                  className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm ${
+                    item.id === page.id && tab === "page" ? "bg-orange-50 text-[#C2410C]" : "text-slate-700 hover:bg-slate-50"
+                  }`}
+                >
+                  <span>{item.title}</span>
+                  {item.kind === "legal" ? (
+                    <span className="rounded-full bg-amber-50 px-1.5 py-0.5 text-[10px] font-medium text-amber-800">Légal</span>
+                  ) : null}
+                </button>
               ))}
-              <p className="text-xs text-slate-500">
-                Les pages mentions, CGV, confidentialité et cookies se régénèrent via le chat IA (« mets à jour le légal ») ou en enregistrant puis en demandant un refresh.
-              </p>
-            </div>
-          ) : null}
-
-          {tab === "nav" ? (
-            <div className="mx-auto max-w-xl space-y-4">
-              {(["header", "footer"] as const).map((location) => (
-                <div key={location} className="rounded-lg bg-white p-4 ring-1 ring-slate-200">
-                  <p className="text-sm font-medium text-slate-900">{location === "header" ? "Menu haut" : "Menu pied"}</p>
-                  {nav
-                    .filter((item) => item.location === location)
-                    .map((item, index) => (
-                      <div key={`${location}-${index}`} className="mt-2 grid grid-cols-2 gap-2">
-                        <input
-                          value={item.label}
-                          onChange={(event) =>
-                            setNav((current) =>
-                              current.map((row) =>
-                                row.location === location && row.sortOrder === item.sortOrder
-                                  ? { ...row, label: event.target.value }
-                                  : row,
-                              ),
-                            )
-                          }
-                          className="input"
-                        />
-                        <input
-                          value={item.href}
-                          onChange={(event) =>
-                            setNav((current) =>
-                              current.map((row) =>
-                                row.location === location && row.sortOrder === item.sortOrder
-                                  ? { ...row, href: event.target.value }
-                                  : row,
-                              ),
-                            )
-                          }
-                          className="input"
-                        />
-                      </div>
-                    ))}
-                </div>
+              <p className="mt-4 px-4 py-2 text-[11px] font-medium uppercase tracking-wide text-slate-400">Réglages</p>
+              {(["seo", "legal", "nav"] as const).map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setTab(item)}
+                  className={`block w-full px-4 py-2 text-left text-sm ${
+                    tab === item ? "bg-orange-50 text-[#C2410C]" : "text-slate-700 hover:bg-slate-50"
+                  }`}
+                >
+                  {item === "seo" && "SEO / GEO"}
+                  {item === "legal" && "Identité légale"}
+                  {item === "nav" && "Menus"}
+                </button>
               ))}
-            </div>
-          ) : null}
-
-          {tab === "chat" ? (
-            <div className="mx-auto flex h-[32rem] max-w-xl flex-col overflow-hidden rounded-lg bg-white ring-1 ring-slate-200">
-              <ShopChat
-                shopId={shop.id}
-                seedPrompt={shop.seedPrompt}
-                onApplied={() => {
-                  setStatus((current) => current);
-                  router.refresh();
-                }}
-              />
-            </div>
-          ) : null}
-        </section>
-
-        <aside className="min-h-0 overflow-y-auto">
-          {tab === "page" && selected ? (
-            <div className="space-y-3 px-4 py-4">
-              <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">{BLOCK_LABELS[selected.type]}</p>
-              <Field label="Titre">
-                <input value={selected.heading ?? ""} onChange={(event) => patchBlock(selected.id, { heading: event.target.value })} className="input" />
-              </Field>
-              <Field label="Chapô / texte">
-                <textarea
-                  value={selected.sub || selected.text || ""}
-                  onChange={(event) =>
-                    patchBlock(selected.id, selected.type === "hero" ? { sub: event.target.value } : { text: event.target.value })
-                  }
-                  rows={5}
-                  className="input"
-                />
-              </Field>
-              {selected.type === "hero" || selected.type === "image" ? (
-                <>
-                  <Field label="Image (URL)">
-                    <input value={selected.image ?? ""} onChange={(event) => patchBlock(selected.id, { image: event.target.value })} className="input" />
-                  </Field>
-                  <Field label="Texte alternatif (SEO)">
-                    <input value={selected.imageAlt ?? ""} onChange={(event) => patchBlock(selected.id, { imageAlt: event.target.value })} className="input" />
-                  </Field>
-                </>
-              ) : null}
-              {selected.type === "quote_cta" || selected.type === "hero" ? (
-                <Field label="Libellé du bouton">
-                  <input value={selected.ctaLabel ?? ""} onChange={(event) => patchBlock(selected.id, { ctaLabel: event.target.value })} className="input" />
-                </Field>
-              ) : null}
-              <button
-                type="button"
-                onClick={() => {
-                  if (!page) return;
-                  patchPage(page.id, { blocks: page.blocks.filter((block) => block.id !== selected.id) });
-                  setBlockId(page.blocks.find((block) => block.id !== selected.id)?.id ?? null);
-                }}
-                className="text-sm text-rose-600"
-              >
-                Retirer le bloc
-              </button>
-            </div>
-          ) : tab === "chat" ? (
-            <p className="px-4 py-4 text-sm text-slate-500">
-              L’IA édite les pages, le SEO et les menus. {orgName} reste l’éditeur légal.
-            </p>
-          ) : (
-            <form action={deleteShop} className="px-4 py-4">
-              <input type="hidden" name="id" value={shop.id} />
-              <button type="submit" className="text-sm text-rose-600">
-                Supprimer la boutique
-              </button>
-            </form>
-          )}
-        </aside>
-      </div>
+              {funnelName ? <p className="px-4 py-3 text-xs text-slate-400">Devis : {funnelName}</p> : null}
+              <p className="px-4 pb-3 text-xs text-slate-400">{orgName} reste l’éditeur légal.</p>
+            </>
+          }
+          chat={<ShopChat shopId={shop.id} seedPrompt={shop.seedPrompt} getDraft={draft} onApplied={applyChat} />}
+        />
+      ) : null}
     </ListPanel>
   );
 }

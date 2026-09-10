@@ -11,16 +11,13 @@ export const maxDuration = 60;
 
 export default async function ShopEditorPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ chat?: string }>;
 }) {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");
   if (!isAdminRole(ctx.role)) redirect("/devis");
   const { id } = await params;
-  const { chat } = await searchParams;
   const supabase = await createClient();
   const doc = await loadShopDocument(supabase, ctx.organization.id, id);
   if (!doc) notFound();
@@ -64,8 +61,9 @@ export default async function ShopEditorPage({
       products={products}
       publicUrl={publicUrl}
       funnelName={funnel?.name ?? null}
+      funnelSlug={funnel?.slug ?? null}
       orgName={ctx.organization.name}
-      openChat={chat === "1" || Boolean(theme.seedPrompt)}
+      orgSlug={ctx.organization.slug}
     />
   );
 }

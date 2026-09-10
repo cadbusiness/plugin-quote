@@ -1,17 +1,43 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { ShopLayout, ShopLegal, ShopNavDraft, ShopPageSeo, ShopSeo, ShopTheme } from "@/lib/shops/types";
+
+export type EditorPage = {
+  id: string;
+  slug: string;
+  title: string;
+  kind: string;
+  seo: ShopPageSeo;
+  blocks: ShopLayout;
+  isPublished: boolean;
+  sortOrder: number;
+};
+
+export type ShopChatDraft = {
+  name: string;
+  status: string;
+  theme: ShopTheme;
+  seo: ShopSeo;
+  legal: ShopLegal;
+  pages: EditorPage[];
+  nav: ShopNavDraft[];
+};
+
+export type ShopChatResult = ShopChatDraft & { text: string };
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
 export function ShopChat({
   shopId,
   seedPrompt,
+  getDraft,
   onApplied,
 }: {
   shopId: string;
   seedPrompt?: string;
-  onApplied: () => void;
+  getDraft: () => ShopChatDraft;
+  onApplied: (result: ShopChatResult) => void;
 }) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
@@ -30,17 +56,18 @@ export function ShopChat({
     try {
       const response = await fetch(`/api/shops/${shopId}/agent`, {
         method: "POST",
+        credentials: "same-origin",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ message: content, history }),
+        body: JSON.stringify({ message: content, history, draft: getDraft() }),
       });
-      const payload = (await response.json()) as { text?: string; error?: string };
+      const payload = (await response.json()) as ShopChatResult & { error?: string };
       if (!response.ok) {
         setError(payload.error || "Le chat n’a pas pu modifier la boutique.");
         setPending(false);
         return;
       }
       setMessages([...history, { role: "user", content }, { role: "assistant", content: payload.text || "C’est mis à jour." }]);
-      onApplied();
+      onApplied(payload);
     } catch {
       setError("Réseau indisponible.");
     } finally {
@@ -59,7 +86,7 @@ export function ShopChat({
       <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-3 py-3">
         {!messages.length && !pending ? (
           <p className="text-sm text-slate-500">
-            « Rajoute un bandeau sur les délais », « mets cette image en hero », « change la FAQ »…
+            « Rajoute un bandeau sur les délais », « mets une image dans la colonne de droite », « change la FAQ »…
           </p>
         ) : null}
         {messages.map((message, index) => (

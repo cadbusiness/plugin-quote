@@ -6,7 +6,7 @@ import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { insertShopFromTemplate, parseCreateShopForm } from "@/lib/shops/create";
 import { loadShopDocument, persistShopDocument } from "@/lib/shops/document";
 import { asJson } from "@/lib/shops/types";
-import { parseBlocks } from "@/lib/shops/blocks";
+import { parseLayout } from "@/lib/shops/layout";
 import { parseLegal, parsePageSeo, parseSeo, parseStatus, parseTheme } from "@/lib/shops/parse";
 import { createClient } from "@/lib/supabase/server";
 
@@ -62,7 +62,7 @@ export async function saveShop(formData: FormData) {
           title: String(item.title ?? existing?.title ?? "Page"),
           kind: String(item.kind ?? existing?.kind ?? "custom"),
           seo: asJson(parsePageSeo(item.seo, String(item.title ?? ""))),
-          blocks: asJson(parseBlocks(item.blocks)),
+          blocks: asJson(parseLayout(item.blocks)),
           is_published: item.isPublished !== false && item.is_published !== false,
           sort_order: typeof item.sortOrder === "number" ? item.sortOrder : index,
         };

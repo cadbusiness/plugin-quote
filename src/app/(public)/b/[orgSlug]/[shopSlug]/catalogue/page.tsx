@@ -37,7 +37,7 @@ export default async function ShopCatalogPage({ params }: Props) {
           { name: "Catalogue", path: "/catalogue" },
         ]}
       />
-      <StorefrontBlocks model={model} blocks={page?.blocks ?? []} />
+      <StorefrontBlocks model={model} layout={page?.blocks} />
     </StorefrontShell>
   );
 }

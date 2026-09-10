@@ -22,7 +22,7 @@ export default async function ShopHomePage({ params }: Props) {
   );
   return (
     <StorefrontShell model={toModel(shop, jsonLd)}>
-      <StorefrontBlocks model={toModel(shop)} blocks={home.blocks} />
+      <StorefrontBlocks model={toModel(shop)} layout={home.blocks} />
     </StorefrontShell>
   );
 }

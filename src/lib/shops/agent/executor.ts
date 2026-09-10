@@ -1,9 +1,19 @@
 import { slugify } from "@/lib/org/slug";
-import { emptyBlock, isShopBlockType, newBlockId, parseBlock } from "@/lib/shops/blocks";
+import { newBlockId } from "@/lib/shops/blocks";
+import {
+  emptyNode,
+  insertNode,
+  layoutJson,
+  moveNode,
+  parseLayout,
+  replaceLegalText,
+  summarizeLayout,
+  updateNode,
+  deleteNode,
+} from "@/lib/shops/layout";
 import { cgvBody, cookiesBody, LEGAL_SLUGS, mentionsLegalesBody, privacyBody } from "@/lib/shops/legal";
 import { parseLegal, parseNavLocation, parsePageKind, parseSeo, parseTheme } from "@/lib/shops/parse";
-import { asJson, type ShopBlock, type ShopDocument, type ShopFaqItem, type ShopFeatureItem } from "@/lib/shops/types";
-import { blocksJson } from "@/lib/shops/blocks";
+import { asJson, type ShopDocument, type ShopLayout } from "@/lib/shops/types";
 
 export type ShopOpResult = { ok: true; summary: string } | { ok: false; error: string };
 
@@ -11,39 +21,44 @@ function pageBySlug(doc: ShopDocument, slug: string) {
   return doc.pages.find((page) => page.slug === slug) ?? null;
 }
 
-function parseFaq(value: unknown): ShopFaqItem[] | undefined {
-  if (!Array.isArray(value)) return undefined;
-  return value
-    .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === "object"))
-    .map((item) => ({ q: String(item.q ?? ""), a: String(item.a ?? "") }));
+function pageLayout(doc: ShopDocument, slug: string): ShopLayout | null {
+  const page = pageBySlug(doc, slug);
+  if (!page) return null;
+  return parseLayout(page.blocks);
 }
 
-function parseFeatures(value: unknown): ShopFeatureItem[] | undefined {
-  if (!Array.isArray(value)) return undefined;
-  return value
-    .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === "object"))
-    .map((item) => ({ title: String(item.title ?? ""), text: String(item.text ?? "") }));
-}
-
-function patchBlock(block: ShopBlock, fields: Record<string, unknown>): ShopBlock {
-  const next = { ...block };
-  for (const key of ["heading", "sub", "text", "image", "imageAlt", "ctaLabel", "category"] as const) {
-    if (typeof fields[key] === "string") next[key] = fields[key] as string;
-  }
-  if (typeof fields.limit === "number") next.limit = fields.limit;
-  const faq = parseFaq(fields.faq);
-  if (faq) next.faq = faq;
-  const features = parseFeatures(fields.features);
-  if (features) next.features = features;
-  return next;
-}
-
-function setPageBlocks(doc: ShopDocument, slug: string, blocks: ShopBlock[]) {
+function setPageLayout(doc: ShopDocument, slug: string, layout: ShopLayout) {
   const page = pageBySlug(doc, slug);
   if (!page) return false;
-  page.blocks = blocksJson(blocks);
+  page.blocks = layoutJson(layout);
   page.updated_at = new Date().toISOString();
   return true;
+}
+
+function nodeProps(input: Record<string, unknown>) {
+  const props: Record<string, unknown> = {};
+  for (const key of [
+    "heading",
+    "sub",
+    "text",
+    "label",
+    "href",
+    "image",
+    "imageAlt",
+    "ctaLabel",
+    "category",
+    "level",
+    "count",
+    "padding",
+    "background",
+    "color",
+  ]) {
+    if (typeof input[key] === "string") props[key] = input[key];
+  }
+  if (typeof input.limit === "number") props.limit = input.limit;
+  if (Array.isArray(input.faq)) props.faq = input.faq;
+  if (Array.isArray(input.features)) props.features = input.features;
+  return props;
 }
 
 function refreshLegalPages(doc: ShopDocument) {
@@ -58,15 +73,7 @@ function refreshLegalPages(doc: ShopDocument) {
   for (const page of doc.pages) {
     const body = bodies[page.slug];
     if (!body) continue;
-    const current = Array.isArray(page.blocks) ? page.blocks : [];
-    const parsed = current
-      .map((item) => parseBlock(item))
-      .filter((item): item is ShopBlock => Boolean(item));
-    const legalBlock = parsed.find((block) => block.type === "legal") ?? emptyBlock("legal");
-    legalBlock.heading = page.title;
-    legalBlock.text = body;
-    const others = parsed.filter((block) => block.type !== "legal");
-    setPageBlocks(doc, page.slug, [...others, legalBlock]);
+    setPageLayout(doc, page.slug, replaceLegalText(parseLayout(page.blocks), page.title, body));
   }
 }
 
@@ -87,7 +94,7 @@ export function shopSnapshot(doc: ShopDocument) {
       title: page.title,
       kind: page.kind,
       seo: page.seo,
-      blocks: Array.isArray(page.blocks) ? page.blocks : [],
+      tree: summarizeLayout(parseLayout(page.blocks)),
     })),
     nav: doc.nav.map((item) => ({
       location: item.location,
@@ -98,71 +105,84 @@ export function shopSnapshot(doc: ShopDocument) {
   };
 }
 
+const LEGACY_TYPE: Record<string, string> = {
+  hero: "Hero",
+  text: "Text",
+  image: "Image",
+  categories: "Categories",
+  catalog: "Catalog",
+  quote_cta: "QuoteCta",
+  faq: "Faq",
+  features: "Features",
+  legal: "Legal",
+};
+
 export function executeShopTool(doc: ShopDocument, name: string, input: Record<string, unknown>): ShopOpResult {
-  if (name === "get_shop") {
+  if (name === "get_tree" || name === "get_shop") {
+    const slug = typeof input.slug === "string" ? input.slug : "";
+    if (slug) {
+      const layout = pageLayout(doc, slug);
+      if (!layout) return { ok: false, error: `Page ${slug} introuvable` };
+      return { ok: true, summary: summarizeLayout(layout) };
+    }
     return { ok: true, summary: JSON.stringify(shopSnapshot(doc)) };
   }
 
-  if (name === "update_block") {
-    const slug = String(input.slug ?? "");
-    const id = String(input.id ?? "");
-    const page = pageBySlug(doc, slug);
-    if (!page) return { ok: false, error: `Page ${slug} introuvable` };
-    const blocks = (Array.isArray(page.blocks) ? page.blocks : [])
-      .map((item) => parseBlock(item))
-      .filter((item): item is ShopBlock => Boolean(item));
-    const index = blocks.findIndex((block) => block.id === id);
-    if (index < 0) return { ok: false, error: `Bloc ${id} introuvable` };
-    blocks[index] = patchBlock(blocks[index]!, input);
-    setPageBlocks(doc, slug, blocks);
-    return { ok: true, summary: `Bloc ${id} mis à jour sur ${slug}` };
-  }
-
-  if (name === "add_block") {
+  if (name === "insert_node" || name === "add_block") {
     const slug = String(input.slug ?? "");
     const type = String(input.type ?? "");
-    if (!isShopBlockType(type)) return { ok: false, error: `Type de bloc inconnu: ${type}` };
-    const page = pageBySlug(doc, slug);
-    if (!page) return { ok: false, error: `Page ${slug} introuvable` };
-    const block = patchBlock(emptyBlock(type), input);
-    const blocks = (Array.isArray(page.blocks) ? page.blocks : [])
-      .map((item) => parseBlock(item))
-      .filter((item): item is ShopBlock => Boolean(item));
-    const afterId = typeof input.afterId === "string" ? input.afterId : "";
-    const at = afterId ? blocks.findIndex((item) => item.id === afterId) : -1;
-    if (at >= 0) blocks.splice(at + 1, 0, block);
-    else blocks.push(block);
-    setPageBlocks(doc, slug, blocks);
-    return { ok: true, summary: `Bloc ${type} ajouté sur ${slug} (${block.id})` };
+    const layout = pageLayout(doc, slug);
+    if (!layout) return { ok: false, error: `Page ${slug} introuvable` };
+    const mappedType = LEGACY_TYPE[type] ?? type;
+    const result = insertNode(layout, {
+      type: mappedType,
+      parentId: typeof input.parentId === "string" ? input.parentId : undefined,
+      slot: typeof input.slot === "string" ? input.slot : undefined,
+      index: typeof input.index === "number" ? input.index : undefined,
+      afterId: typeof input.afterId === "string" ? input.afterId : undefined,
+      props: nodeProps(input),
+    });
+    if (!result.ok) return result;
+    setPageLayout(doc, slug, result.layout);
+    return { ok: true, summary: `Nœud ${mappedType} ajouté sur ${slug} (${result.id})` };
   }
 
-  if (name === "remove_block") {
+  if (name === "update_node" || name === "update_block") {
     const slug = String(input.slug ?? "");
     const id = String(input.id ?? "");
-    const page = pageBySlug(doc, slug);
-    if (!page) return { ok: false, error: `Page ${slug} introuvable` };
-    const blocks = (Array.isArray(page.blocks) ? page.blocks : [])
-      .map((item) => parseBlock(item))
-      .filter((item): item is ShopBlock => item != null && item.id !== id);
-    setPageBlocks(doc, slug, blocks);
-    return { ok: true, summary: `Bloc ${id} retiré de ${slug}` };
+    const layout = pageLayout(doc, slug);
+    if (!layout) return { ok: false, error: `Page ${slug} introuvable` };
+    const result = updateNode(layout, id, nodeProps(input));
+    if (!result.ok) return result;
+    setPageLayout(doc, slug, result.layout);
+    return { ok: true, summary: `Nœud ${id} mis à jour sur ${slug}` };
   }
 
-  if (name === "reorder_blocks") {
+  if (name === "delete_node" || name === "remove_block") {
     const slug = String(input.slug ?? "");
-    const ids = Array.isArray(input.ids) ? input.ids.map(String) : [];
-    const page = pageBySlug(doc, slug);
-    if (!page) return { ok: false, error: `Page ${slug} introuvable` };
-    const current = (Array.isArray(page.blocks) ? page.blocks : [])
-      .map((item) => parseBlock(item))
-      .filter((item): item is ShopBlock => Boolean(item));
-    const map = new Map(current.map((block) => [block.id, block]));
-    const next = ids.map((id) => map.get(id)).filter((block): block is ShopBlock => Boolean(block));
-    for (const block of current) {
-      if (!next.some((item) => item.id === block.id)) next.push(block);
-    }
-    setPageBlocks(doc, slug, next);
-    return { ok: true, summary: `Blocs réordonnés sur ${slug}` };
+    const id = String(input.id ?? "");
+    const layout = pageLayout(doc, slug);
+    if (!layout) return { ok: false, error: `Page ${slug} introuvable` };
+    const result = deleteNode(layout, id);
+    if (!result.ok) return result;
+    setPageLayout(doc, slug, result.layout);
+    return { ok: true, summary: `Nœud ${id} retiré de ${slug}` };
+  }
+
+  if (name === "move_node" || name === "reorder_blocks") {
+    const slug = String(input.slug ?? "");
+    const id = String(input.id ?? "");
+    const layout = pageLayout(doc, slug);
+    if (!layout) return { ok: false, error: `Page ${slug} introuvable` };
+    const result = moveNode(layout, {
+      id,
+      parentId: typeof input.parentId === "string" ? input.parentId : undefined,
+      slot: typeof input.slot === "string" ? input.slot : undefined,
+      index: typeof input.index === "number" ? input.index : undefined,
+    });
+    if (!result.ok) return result;
+    setPageLayout(doc, slug, result.layout);
+    return { ok: true, summary: `Nœud ${id} déplacé sur ${slug}` };
   }
 
   if (name === "set_page_seo") {
@@ -216,9 +236,7 @@ export function executeShopTool(doc: ShopDocument, name: string, input: Record<s
     if (pageBySlug(doc, rawSlug)) return { ok: false, error: `La page ${rawSlug} existe déjà` };
     const kind = parsePageKind(input.kind ?? "custom");
     const text = typeof input.text === "string" ? input.text : "";
-    const block = emptyBlock(kind === "legal" ? "legal" : "text");
-    block.heading = title;
-    block.text = text;
+    const node = emptyNode(kind === "legal" ? "Legal" : "Text", { heading: title, text });
     doc.pages.push({
       id: newBlockId(),
       organization_id: doc.shop.organization_id,
@@ -227,7 +245,7 @@ export function executeShopTool(doc: ShopDocument, name: string, input: Record<s
       slug: rawSlug,
       title,
       seo: asJson({ title, description: "", noindex: false }),
-      blocks: blocksJson([block]),
+      blocks: layoutJson({ root: { props: {} }, content: [node] }),
       is_published: true,
       sort_order: doc.pages.length + 20,
       created_at: new Date().toISOString(),

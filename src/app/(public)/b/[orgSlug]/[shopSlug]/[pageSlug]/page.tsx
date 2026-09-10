@@ -35,7 +35,7 @@ export default async function ShopCustomPage({ params }: Props) {
   const model = toModel(shop, jsonLd);
   return (
     <StorefrontShell model={model}>
-      <StorefrontBlocks model={model} blocks={page.blocks} />
+      <StorefrontBlocks model={model} layout={page.blocks} />
     </StorefrontShell>
   );
 }

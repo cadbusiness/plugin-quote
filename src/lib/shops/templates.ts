@@ -1,7 +1,7 @@
-import { emptyBlock, newBlockId } from "@/lib/shops/blocks";
+import { emptyNode } from "@/lib/shops/layout";
 import { cgvBody, cookiesBody, LEGAL_SLUGS, mentionsLegalesBody, privacyBody } from "@/lib/shops/legal";
 import { DEFAULT_THEME } from "@/lib/shops/parse";
-import type { ShopBlueprint, ShopLegal, ShopNavDraft, ShopPageDraft, ShopSeo } from "@/lib/shops/types";
+import type { ShopBlueprint, ShopLayout, ShopLegal, ShopNavDraft, ShopPageDraft, ShopSeo } from "@/lib/shops/types";
 import { getFunnelFamily } from "@/lib/funnels/families";
 import { defaultTemplateForFamily } from "@/lib/funnels/templates";
 
@@ -11,6 +11,10 @@ const LEGAL_TITLES: Record<string, string> = {
   [LEGAL_SLUGS.privacy]: "Politique de confidentialité",
   [LEGAL_SLUGS.cookies]: "Cookies",
 };
+
+function asLayout(content: ShopLayout["content"]): ShopLayout {
+  return { root: { props: {} }, content };
+}
 
 function legalPage(slug: string, title: string, body: string, sortOrder: number): ShopPageDraft {
   return {
@@ -22,7 +26,7 @@ function legalPage(slug: string, title: string, body: string, sortOrder: number)
       description: `${title} de la boutique. Informations obligatoires.`,
       noindex: false,
     },
-    blocks: [{ id: newBlockId(), type: "legal", heading: title, text: body }],
+    blocks: asLayout([emptyNode("Legal", { heading: title, text: body })]),
     isPublished: true,
     sortOrder,
   };
@@ -88,33 +92,35 @@ export function buildShopBlueprint(input: {
       description: seo.description,
       noindex: false,
     },
-    blocks: [
-      {
-        ...emptyBlock("hero"),
+    blocks: asLayout([
+      emptyNode("Hero", {
         heading: input.name,
         sub: `${family.pitch} Catalogue, catégories, demande de devis.`,
         ctaLabel: "Demander un devis",
-      },
-      {
-        ...emptyBlock("features"),
+      }),
+      emptyNode("Features", {
         heading: "Une vitrine de devis, pas une caisse",
         features: [
           { title: "Catalogue", text: "Fiches, photos, fourchettes de prix, catégories." },
           { title: "Devis", text: "Le prospect ajoute des produits et envoie une demande globale." },
           { title: "Référencement", text: "Pages indexables, données structurées, mentions légales." },
         ],
-      },
-      { ...emptyBlock("categories"), heading: "Rayons" },
-      { ...emptyBlock("catalog"), heading: "Produits", limit: 8 },
-      { ...emptyBlock("text"), heading: family.label, text: `${template.blurb} ${family.pitch}` },
-      { ...emptyBlock("faq"), heading: "Questions fréquentes", faq },
-      {
-        ...emptyBlock("quote_cta"),
+      }),
+      emptyNode("Categories", { heading: "Rayons" }),
+      emptyNode("Catalog", { heading: "Produits", limit: 8 }),
+      emptyNode("Section", {
+        children: [
+          emptyNode("Heading", { text: family.label, level: "h2" }),
+          emptyNode("Text", { text: `${template.blurb} ${family.pitch}` }),
+        ],
+      }),
+      emptyNode("Faq", { heading: "Questions fréquentes", faq }),
+      emptyNode("QuoteCta", {
         heading: "Chiffrer un projet",
         text: "Décrivez le besoin ou partez du catalogue. Nous revenons avec un devis.",
         ctaLabel: "Ouvrir le devis",
-      },
-    ],
+      }),
+    ]),
     isPublished: true,
     sortOrder: 0,
   };
@@ -128,16 +134,15 @@ export function buildShopBlueprint(input: {
       description: `Catalogue ${family.label.toLowerCase()} — ${input.name}. Fiches produits et demande de devis.`,
       noindex: false,
     },
-    blocks: [
-      {
-        ...emptyBlock("hero"),
+    blocks: asLayout([
+      emptyNode("Hero", {
         heading: "Catalogue",
         sub: "Parcourez les rayons, ouvrez une fiche, ajoutez au devis.",
         ctaLabel: "Demander un devis",
-      },
-      { ...emptyBlock("categories"), heading: "Catégories" },
-      { ...emptyBlock("catalog"), heading: "Tous les produits", limit: 24 },
-    ],
+      }),
+      emptyNode("Categories", { heading: "Catégories" }),
+      emptyNode("Catalog", { heading: "Tous les produits", limit: 24 }),
+    ]),
     isPublished: true,
     sortOrder: 1,
   };

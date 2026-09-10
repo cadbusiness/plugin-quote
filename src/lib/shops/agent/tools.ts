@@ -2,13 +2,62 @@ import type Anthropic from "@anthropic-ai/sdk";
 
 export const SHOP_AGENT_TOOLS: Anthropic.Tool[] = [
   {
-    name: "get_shop",
-    description: "Lit l’état de la boutique : pages, blocs, menus, SEO, thème, mentions légales.",
-    input_schema: { type: "object", properties: {} },
+    name: "get_tree",
+    description:
+      "Lit l’arbre visuel d’une page (ids, types, slots). slug = accueil, catalogue, mentions-legales… Sans slug : aperçu de toutes les pages.",
+    input_schema: {
+      type: "object",
+      properties: { slug: { type: "string" } },
+    },
   },
   {
-    name: "update_block",
-    description: "Modifie un bloc existant (titre, texte, image, FAQ, CTA…). slug = page (accueil, catalogue, mentions-legales…).",
+    name: "insert_node",
+    description:
+      "Ajoute un nœud. Types : Section, Columns, Heading, Text, Image, Button, Hero, Catalog, Categories, QuoteCta, Faq, Features, Legal. parentId vide = racine. Pour une Section, slot=children. Pour Columns, slot=col1|col2|col3|col4. afterId place le nœud juste après un autre.",
+    input_schema: {
+      type: "object",
+      properties: {
+        slug: { type: "string" },
+        type: { type: "string" },
+        parentId: { type: "string" },
+        slot: { type: "string" },
+        index: { type: "number" },
+        afterId: { type: "string" },
+        heading: { type: "string" },
+        sub: { type: "string" },
+        text: { type: "string" },
+        label: { type: "string" },
+        href: { type: "string" },
+        image: { type: "string" },
+        imageAlt: { type: "string" },
+        ctaLabel: { type: "string" },
+        category: { type: "string" },
+        limit: { type: "number" },
+        level: { type: "string" },
+        count: { type: "string" },
+        faq: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: { q: { type: "string" }, a: { type: "string" } },
+            required: ["q", "a"],
+          },
+        },
+        features: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: { title: { type: "string" }, text: { type: "string" } },
+            required: ["title", "text"],
+          },
+        },
+      },
+      required: ["slug", "type"],
+    },
+  },
+  {
+    name: "update_node",
+    description: "Modifie les props d’un nœud existant (titre, texte, image, styles, FAQ…).",
     input_schema: {
       type: "object",
       properties: {
@@ -17,11 +66,18 @@ export const SHOP_AGENT_TOOLS: Anthropic.Tool[] = [
         heading: { type: "string" },
         sub: { type: "string" },
         text: { type: "string" },
+        label: { type: "string" },
+        href: { type: "string" },
         image: { type: "string" },
         imageAlt: { type: "string" },
         ctaLabel: { type: "string" },
         category: { type: "string" },
         limit: { type: "number" },
+        level: { type: "string" },
+        count: { type: "string" },
+        padding: { type: "string" },
+        background: { type: "string" },
+        color: { type: "string" },
         faq: {
           type: "array",
           items: {
@@ -43,28 +99,8 @@ export const SHOP_AGENT_TOOLS: Anthropic.Tool[] = [
     },
   },
   {
-    name: "add_block",
-    description:
-      "Ajoute un bloc à une page. Types : hero, text, image, categories, catalog, quote_cta, faq, features, legal.",
-    input_schema: {
-      type: "object",
-      properties: {
-        slug: { type: "string" },
-        type: { type: "string" },
-        afterId: { type: "string" },
-        heading: { type: "string" },
-        sub: { type: "string" },
-        text: { type: "string" },
-        image: { type: "string" },
-        imageAlt: { type: "string" },
-        ctaLabel: { type: "string" },
-      },
-      required: ["slug", "type"],
-    },
-  },
-  {
-    name: "remove_block",
-    description: "Retire un bloc d’une page.",
+    name: "delete_node",
+    description: "Supprime un nœud (et ses enfants).",
     input_schema: {
       type: "object",
       properties: { slug: { type: "string" }, id: { type: "string" } },
@@ -72,15 +108,18 @@ export const SHOP_AGENT_TOOLS: Anthropic.Tool[] = [
     },
   },
   {
-    name: "reorder_blocks",
-    description: "Réordonne les blocs d’une page. ids = ordre complet des identifiants.",
+    name: "move_node",
+    description: "Déplace un nœud. parentId vide = racine. slot = children | col1 | col2 | col3 | col4.",
     input_schema: {
       type: "object",
       properties: {
         slug: { type: "string" },
-        ids: { type: "array", items: { type: "string" } },
+        id: { type: "string" },
+        parentId: { type: "string" },
+        slot: { type: "string" },
+        index: { type: "number" },
       },
-      required: ["slug", "ids"],
+      required: ["slug", "id"],
     },
   },
   {

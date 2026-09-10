@@ -1,5 +1,5 @@
 import type { Json } from "@/lib/db/database.types";
-import { parseBlocks } from "@/lib/shops/blocks";
+import { parseLayout } from "@/lib/shops/layout";
 import type {
   ShopGeo,
   ShopLegal,
@@ -115,7 +115,7 @@ export function pageFromRow(row: {
     slug: row.slug,
     title: row.title,
     seo: parsePageSeo(row.seo, row.title),
-    blocks: parseBlocks(row.blocks),
+    blocks: parseLayout(row.blocks),
     isPublished: row.is_published,
     sortOrder: row.sort_order,
   };

@@ -5,7 +5,7 @@ import { catalogDefaultName } from "@/lib/funnels/kind";
 import { getFunnelFamily, isFunnelFamilyId } from "@/lib/funnels/families";
 import { defaultTemplateForFamily } from "@/lib/funnels/templates";
 import { uniqueSlug } from "@/lib/org/slug";
-import { blocksJson } from "@/lib/shops/blocks";
+import { layoutJson } from "@/lib/shops/layout";
 import { asJson, type ShopBlueprint, type ShopLegal } from "@/lib/shops/types";
 import { buildShopBlueprint } from "@/lib/shops/templates";
 import { parseLegal } from "@/lib/shops/parse";
@@ -112,7 +112,7 @@ export async function insertShopFromTemplate(
       slug: page.slug,
       title: page.title,
       seo: asJson(page.seo),
-      blocks: blocksJson(page.blocks),
+      blocks: layoutJson(page.blocks),
       is_published: page.isPublished,
       sort_order: page.sortOrder,
     })),
