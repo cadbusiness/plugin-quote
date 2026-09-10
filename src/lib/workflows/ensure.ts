@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/db/database.types";
+import { ensureDefaultEmailTemplates } from "@/lib/crm/email-templates";
 import { defaultDefinition, defaultWorkflowName } from "@/lib/workflows/defaults";
 import type { WorkflowTriggerType } from "@/lib/workflows/types";
 
@@ -9,6 +10,8 @@ export async function ensureDefaultWorkflows(
   supabase: SupabaseClient<Database>,
   organizationId: string,
 ) {
+  await ensureDefaultEmailTemplates(supabase, organizationId);
+
   const { count } = await supabase
     .from("workflows")
     .select("id", { count: "exact", head: true })
