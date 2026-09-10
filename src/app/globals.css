@@ -147,6 +147,10 @@ body {
   min-height: 24rem;
 }
 
+.shop-puck-drawer [class*="Drawer-draggable_"] {
+  position: relative;
+}
+
 .shop-puck-drawer [class*="Drawer-draggableBg"] {
   position: absolute;
   inset: 0;
@@ -154,13 +158,64 @@ body {
   pointer-events: none;
 }
 
-.shop-puck-drawer [class*="Drawer-draggable"] {
-  position: relative;
+.shop-puck-drawer [class*="ComponentList-title"] {
+  padding: 8px 2px 4px;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.shop-puck-drawer [class*="ComponentList--isExpanded"] + [class*="ComponentList"] {
+  margin-top: 8px;
+}
+
+.shop-puck-drawer [class*="ComponentList-content"] [class*="Drawer_"]:not([class*="Drawer-"]) {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.shop-puck-drawer [class*="DrawerItem-draggable"] {
+  min-height: 52px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  padding: 8px 6px;
+  border-radius: 4px;
+  background: #f8fafc;
+}
+
+.shop-puck-drawer [class*="DrawerItem-name"] {
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.shop-puck-drawer [class*="DrawerItem-draggable"] svg {
+  display: none;
+}
+
+.shop-puck-drawer [class*="OutlineHeader"] {
+  display: none;
 }
 
 .shop-puck-drawer [class*="LayerTree"],
 .shop-puck-drawer [class*="Outline"] {
-  font-size: 13px;
+  font-size: 12px;
+}
+
+.shop-puck-drawer [class*="Layer-inner"] {
+  min-height: 28px;
+}
+
+.shop-puck-drawer [class*="Layer-title"] {
+  margin: 0;
+}
+
+.shop-puck-drawer [class*="Layer-content"] {
+  gap: 6px;
 }
 
 .shop-inspector {

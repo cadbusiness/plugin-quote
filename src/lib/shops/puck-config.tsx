@@ -103,7 +103,7 @@ function ShopLink({
 
 export const shopPuckConfig = {
   categories: {
-    layout: { title: "Structure", defaultExpanded: true, components: ["Section", "Columns"] },
+    layout: { title: "Disposition", defaultExpanded: true, components: ["Section", "Columns"] },
     content: { title: "Contenu", defaultExpanded: true, components: ["Heading", "Text", "Image", "Button", "Hero"] },
     shop: {
       title: "Boutique",

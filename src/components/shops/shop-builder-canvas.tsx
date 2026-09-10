@@ -193,6 +193,7 @@ function ShopPuckDock({ tab, chat }: { tab: DockTab; chat: ReactNode }) {
   if (tab === "structure") {
     return (
       <div className="shop-puck-drawer min-h-0 flex-1 overflow-y-auto px-2 py-2">
+        <p className="px-1 pb-2 text-[11px] leading-4 text-slate-400">Calques de la page</p>
         <Puck.Outline />
       </div>
     );
@@ -221,6 +222,7 @@ function ShopPuckDock({ tab, chat }: { tab: DockTab; chat: ReactNode }) {
 
   return (
     <div className="shop-puck-drawer min-h-0 flex-1 overflow-y-auto px-2 py-2">
+      <p className="px-1 pb-2 text-[11px] leading-4 text-slate-400">Glisser un bloc sur la page</p>
       <Puck.Components />
     </div>
   );
@@ -262,7 +264,7 @@ function ShopPuckLayout({
           title="Glisser pour élargir ou rétrécir"
           onPointerDown={dock.onPointerDown}
           onDoubleClick={dock.onDoubleClick}
-          className="relative z-10 hidden w-1 shrink-0 cursor-col-resize bg-slate-200 hover:bg-[#E85D04] lg:block before:absolute before:inset-y-0 before:-left-1.5 before:-right-1.5 before:content-['']"
+          className="relative z-10 hidden w-px shrink-0 cursor-col-resize bg-transparent hover:bg-[#E85D04] lg:block before:absolute before:inset-y-0 before:-left-1.5 before:-right-1.5 before:content-['']"
         />
         <section className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-stone-100">
           {settingsOpen ? (
