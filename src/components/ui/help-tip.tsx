@@ -11,6 +11,12 @@ function alignClass(align: "left" | "center" | "right") {
   return "left-1/2 -translate-x-1/2";
 }
 
+function bubbleClass(open: boolean, align: "left" | "center" | "right") {
+  return `${BUBBLE} ${alignClass(align)} ${
+    open ? "block" : "hidden peer-hover:block peer-focus-visible:block"
+  }`;
+}
+
 export function HelpTip({
   label,
   children,
@@ -23,7 +29,7 @@ export function HelpTip({
   const [open, setOpen] = useState(false);
 
   return (
-    <span className="group/help relative inline-flex align-middle">
+    <span className="relative inline-flex align-middle">
       <button
         type="button"
         aria-label={`Aide : ${label}`}
@@ -34,16 +40,11 @@ export function HelpTip({
           setOpen((value) => !value);
         }}
         onBlur={() => setOpen(false)}
-        className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-slate-100 text-[10px] font-semibold leading-none text-slate-500 hover:bg-orange-50 hover:text-[#C2410C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E85D04]"
+        className="peer inline-flex h-4 w-4 items-center justify-center rounded-full bg-slate-100 text-[10px] font-semibold leading-none text-slate-500 hover:bg-orange-50 hover:text-[#C2410C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E85D04]"
       >
         ?
       </button>
-      <span
-        role="tooltip"
-        className={`${BUBBLE} ${alignClass(align)} ${
-          open ? "block" : "hidden group-hover/help:block group-focus-within/help:block"
-        }`}
-      >
+      <span role="tooltip" className={bubbleClass(open, align)}>
         {children}
       </span>
     </span>
@@ -65,14 +66,10 @@ export function IconHint({
   onClick?: () => void;
   children: ReactNode;
 }) {
-  const bubble = (
-    <span role="tooltip" className={`${BUBBLE} ${alignClass(align)} hidden group-hover/hint:block group-focus-within/hint:block`}>
-      {help}
-    </span>
-  );
-  const look = "inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500";
+  const look =
+    "peer inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500";
   return (
-    <span className="group/hint relative inline-flex">
+    <span className="relative inline-flex">
       {onClick ? (
         <button
           type="button"
@@ -88,11 +85,13 @@ export function IconHint({
           {children}
         </button>
       ) : (
-        <span aria-label={label} className={look}>
+        <span tabIndex={0} aria-label={label} className={`${look} outline-none`}>
           {children}
         </span>
       )}
-      {bubble}
+      <span role="tooltip" className={bubbleClass(false, align)}>
+        {help}
+      </span>
     </span>
   );
 }
