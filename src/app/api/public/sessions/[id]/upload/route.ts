@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { getSession } from "@/lib/public/session";
+import { clientIp, rateLimit, rateLimitResponse } from "@/lib/security/rate-limit";
 
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const limited = rateLimit(`sessions:upload:${clientIp(req)}`, 20, 60000);
+  if (!limited.ok) return rateLimitResponse(limited.retryAfterSec);
+
   const { id } = await params;
   const token = req.headers.get("x-session-token")?.trim() ?? "";
   const session = await getSession(id, token);
