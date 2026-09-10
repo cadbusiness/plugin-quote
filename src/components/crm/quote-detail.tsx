@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
-import { Mail, Phone } from "lucide-react";
+import { ChevronLeft, Mail, Phone } from "lucide-react";
 import { replaceClientUrl } from "@/components/ui/local-tabs";
 import {
   addQuoteNoteForm,
@@ -11,12 +11,11 @@ import {
   replyToProspectForm,
   toggleQuoteAssigneeForm,
 } from "@/app/(app)/crm-actions";
-import { AutoSubmitSelect } from "@/components/crm/quote-controls";
+import { DossierTab } from "@/components/crm/quote-dossier";
 import { QuoteTabs, quoteTabHref, type QuoteCompose, type QuoteTab } from "@/components/crm/quote-tabs";
-import { QuoteValidationSection } from "@/components/crm/quote-validation";
 import { Chip, scoreTone, statusTone, type ChipTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
-import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
+import { DataTable, ListPanel } from "@/components/ui/list-panel";
 import { formatPrice } from "@/lib/format";
 import type { QuoteAutomation, QuoteDetail } from "@/lib/crm/quote-detail";
 
@@ -54,59 +53,57 @@ export function QuoteDetailView({
     replaceClientUrl(quoteTabHref(quote.id, next, nextCompose));
   }
 
+  const contactLine = [quote.contact_company, quote.contact_email, quote.contact_phone].filter(Boolean).join(" · ");
+
   return (
     <ListPanel>
       <div className="sticky top-0 z-20 bg-white">
-        <ListToolbar>
+        <div className="flex flex-wrap items-center gap-3 border-b border-slate-200 px-4 py-3 lg:px-6">
           <Link
             href="/devis"
-            className="shrink-0 rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+            className="inline-flex shrink-0 items-center gap-0.5 rounded-full border border-slate-200 px-2.5 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
           >
+            <ChevronLeft className="h-4 w-4" aria-hidden />
             Demandes
           </Link>
           <div className="mr-auto min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="truncate text-sm font-medium text-slate-900">{quote.contact_name}</span>
+              <span className="truncate text-base font-semibold tracking-tight text-slate-900">{quote.contact_name}</span>
               <Chip tone={scoreTone(quote.score_label)}>
                 {(quote.score_label ?? "-").toUpperCase()}
                 {quote.score != null ? ` ${quote.score}` : ""}
               </Chip>
               <Chip tone={statusTone(status?.slug ?? quote.status)}>{status?.label ?? quote.status}</Chip>
             </div>
-            <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
-              {quote.contact_company ? <span className="truncate">{quote.contact_company}</span> : null}
-              <span className="inline-flex items-center gap-1">
-                <span className="truncate">{quote.contact_email}</span>
-                <button type="button" onClick={() => openTab("echanges", "mail")} aria-label="Écrire un email" className="rounded p-0.5 text-slate-400 hover:bg-orange-50 hover:text-[#E85D04]">
-                  <Mail className="h-3.5 w-3.5" />
-                </button>
-              </span>
-              {quote.contact_phone ? (
-                <span className="inline-flex items-center gap-1">
-                  <span>{quote.contact_phone}</span>
-                  <button type="button" onClick={() => openTab("echanges", "call")} aria-label="Appeler" className="rounded p-0.5 text-slate-400 hover:bg-orange-50 hover:text-[#E85D04]">
-                    <Phone className="h-3.5 w-3.5" />
-                  </button>
-                </span>
-              ) : null}
-            </div>
+            {contactLine ? <p className="mt-0.5 truncate text-sm text-slate-500">{contactLine}</p> : null}
           </div>
-          <button type="button" onClick={() => openTab("echanges", "mail")} className="inline-flex items-center gap-1.5 rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]">
-            <Mail className="h-3.5 w-3.5" />
+          <button
+            type="button"
+            onClick={() => openTab("echanges", "mail")}
+            className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]"
+          >
             Écrire
           </button>
           {quote.contact_phone ? (
-            <button type="button" onClick={() => openTab("echanges", "call")} className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-3 py-1.5 text-sm hover:bg-slate-50">
-              <Phone className="h-3.5 w-3.5" />
+            <button
+              type="button"
+              onClick={() => openTab("echanges", "call")}
+              className="rounded-md border border-slate-200 px-3 py-1.5 text-sm hover:bg-slate-50"
+            >
               Appeler
             </button>
           ) : null}
           {detail.suiviUrl ? (
-            <a href={detail.suiviUrl} target="_blank" rel="noreferrer" className="rounded-md border border-slate-200 px-3 py-1.5 text-sm">
+            <a
+              href={detail.suiviUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-md border border-slate-200 px-3 py-1.5 text-sm"
+            >
               Espace prospect
             </a>
           ) : null}
-        </ListToolbar>
+        </div>
 
         <QuoteTabs
           quoteId={quote.id}
@@ -135,165 +132,6 @@ export function QuoteDetailView({
       {tab === "echanges" ? <EchangesTab detail={detail} compose={compose} addNote={addNote} reply={reply} logCall={logCall} /> : null}
       {tab === "automations" ? <AutomationsTab detail={detail} /> : null}
     </ListPanel>
-  );
-}
-
-function DossierTab({
-  detail,
-  changeStatus,
-  toggleAssignee,
-  onTab,
-}: {
-  detail: QuoteDetail;
-  changeStatus: (formData: FormData) => Promise<void>;
-  toggleAssignee: (formData: FormData) => Promise<void>;
-  onTab: (tab: QuoteTab, compose?: QuoteCompose | null) => void;
-}) {
-  const { quote, funnel, totals } = detail;
-  const lastNote = detail.notes[0];
-  const lastMessage = detail.messages[detail.messages.length - 1];
-  const lastCall = detail.activities.find((act) => act.type === "call_logged");
-  const nextFlow =
-    detail.automations.find((flow) => flow.state === "waiting") ??
-    detail.automations.find((flow) => flow.state === "running");
-  const statusLog = detail.activities.filter((act) => act.type === "status_changed").slice(0, 5);
-  const journal = detail.activities
-    .filter((act) =>
-      [
-        "status_changed",
-        "assigned",
-        "call_logged",
-        "message_sent",
-        "email_sent",
-        "collaborator_invited",
-        "collaborator_approved",
-        "collaborator_changes_requested",
-        "validation_complete",
-      ].includes(act.type),
-    )
-    .slice(0, 6);
-  const assignedIds = new Set(detail.assignees.map((row) => row.userId));
-
-  return (
-    <>
-      <div className="flex flex-wrap items-center gap-x-8 gap-y-3 border-b border-slate-200 px-4 py-3.5 lg:px-6">
-        <div className="flex items-center gap-2.5">
-          <span className="text-[1.75rem] font-semibold leading-none tabular-nums tracking-tight text-slate-900">
-            {quote.score != null ? quote.score : "-"}
-          </span>
-          <div>
-            <Chip tone={scoreTone(quote.score_label)}>{(quote.score_label ?? "-").toUpperCase()}</Chip>
-            <p className="mt-0.5 text-xs text-slate-500">{detail.scoreReasons[0] ?? "Qualification automatique"}</p>
-          </div>
-        </div>
-        <span className="hidden h-8 w-px bg-slate-200 sm:block" aria-hidden />
-        <FactMini label="Fourchette" value={totals.label} hint={`${totals.count} produit${totals.count > 1 ? "s" : ""}`} />
-        <FactMini label="Reçue" value={detail.received.relative} hint={detail.received.exact} />
-        <FactMini label="Source" value={detail.source} hint={attributionHint(quote)} />
-        <FactMini
-          label="Funnel"
-          value={funnel?.name ?? "-"}
-          hint={detail.assignedLabel ? `Assigné à ${detail.assignedLabel}` : "Non assigné"}
-        />
-      </div>
-
-      <QuoteValidationSection quoteId={quote.id} collaborators={detail.collaborators} />
-
-      <section className="grid gap-6 border-b border-slate-100 px-4 py-5 lg:grid-cols-[minmax(0,1fr)_20rem] lg:px-6">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Commerciaux</p>
-          <p className="mt-1 text-sm text-slate-500">Plusieurs personnes peuvent suivre la même demande.</p>
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {detail.members.map((member) => {
-              const on = assignedIds.has(member.userId);
-              return (
-                <form key={member.userId} action={toggleAssignee}>
-                  <input type="hidden" name="user_id" value={member.userId} />
-                  <input type="hidden" name="on" value={on ? "0" : "1"} />
-                  <button
-                    type="submit"
-                    className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                      on ? "bg-orange-50 text-[#C2410C] ring-1 ring-orange-200" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                    }`}
-                  >
-                    {member.label}
-                  </button>
-                </form>
-              );
-            })}
-          </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-medium uppercase tracking-wide text-slate-500">Statut</label>
-          <AutoSubmitSelect
-            key={quote.status_id ?? "status"}
-            action={changeStatus}
-            name="status_id"
-            defaultValue={quote.status_id ?? ""}
-            className="w-full rounded-md border border-slate-200 px-2 py-1.5 text-sm"
-          >
-            {detail.statuses.map((row) => (
-              <option key={row.id} value={row.id}>
-                {row.label}
-              </option>
-            ))}
-          </AutoSubmitSelect>
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Historique</p>
-          {statusLog.length || journal.length ? (
-            <ol className="space-y-1.5">
-              {(statusLog.length ? statusLog : journal).map((act) => (
-                <li key={act.id} className="text-xs leading-snug text-slate-600">
-                  <span className="font-medium text-slate-800">{act.detail ?? act.label}</span>
-                  <span className="text-slate-400"> · {act.when}</span>
-                </li>
-              ))}
-            </ol>
-          ) : (
-            <p className="text-xs text-slate-400">Les changements de statut s’afficheront ici.</p>
-          )}
-        </div>
-      </section>
-
-      {detail.scoreReasons.length ? (
-        <div className="flex flex-wrap gap-1.5 border-b border-slate-100 px-4 py-3 lg:px-6">
-          <span className="mr-1 text-xs font-medium uppercase tracking-wide text-slate-500">Pourquoi ce score</span>
-          {detail.scoreReasons.map((reason) => (
-            <Chip key={reason} tone="orange">
-              {reason}
-            </Chip>
-          ))}
-        </div>
-      ) : null}
-
-      <div className="grid border-b border-slate-100 lg:grid-cols-3">
-        <Snapshot
-          label="Projet"
-          onClick={() => onTab("projet")}
-          title={totals.count ? `${totals.count} produits · ${totals.label}` : "Pas encore de configuration"}
-          detail={detail.items[0] ? detail.items.map((item) => `${item.quantity} × ${item.name}`).join(" · ") : "Les réponses et la config sont dans l’onglet Projet."}
-        />
-        <Snapshot
-          label="Dernier échange"
-          onClick={() => onTab("echanges")}
-          title={lastMessage ? lastMessage.content : lastCall ? lastCall.detail ?? "Appel" : lastNote ? lastNote.content : "Aucun échange"}
-          detail={
-            lastMessage
-              ? `${lastMessage.sender === "prospect" ? "Prospect" : "Email"} · ${lastMessage.when}`
-              : lastCall
-                ? `Appel · ${lastCall.when}`
-                : lastNote
-                  ? `Note · ${lastNote.when}`
-                  : "Email ou appel depuis l’en-tête."
-          }
-        />
-        <Snapshot
-          label="Automatisation"
-          onClick={() => onTab("automations")}
-          title={nextFlow ? nextFlow.title : "Aucun flux en cours"}
-          detail={nextFlow ? `${nextFlow.stateLabel} · ${nextFlow.when ?? nextFlow.hint}` : "Voir le parcours email de cette demande."}
-        />
-      </div>
-    </>
   );
 }
 
@@ -680,36 +518,6 @@ function AutomationsTab({ detail }: { detail: QuoteDetail }) {
   );
 }
 
-function Snapshot({
-  label,
-  onClick,
-  title,
-  detail,
-}: {
-  label: string;
-  onClick: () => void;
-  title: string;
-  detail: string;
-}) {
-  return (
-    <button type="button" onClick={onClick} className="block w-full border-b border-slate-100 px-4 py-4 text-left last:border-b-0 hover:bg-orange-50/40 lg:border-b-0 lg:border-r lg:last:border-r-0 lg:px-6">
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
-      <p className="mt-1 line-clamp-2 text-sm font-medium text-slate-900">{title}</p>
-      <p className="mt-1 line-clamp-2 text-sm text-slate-500">{detail}</p>
-    </button>
-  );
-}
-
-function FactMini({ label, value, hint }: { label: string; value: string; hint: string }) {
-  return (
-    <div className="min-w-0">
-      <p className="text-[11px] font-medium uppercase tracking-wide text-slate-500">{label}</p>
-      <p className="mt-0.5 text-sm font-medium text-slate-900">{value}</p>
-      <p className="text-xs text-slate-500">{hint}</p>
-    </div>
-  );
-}
-
 function Fact({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div>
@@ -729,11 +537,6 @@ function SectionTitle({ children }: { children: ReactNode }) {
 
 function Empty({ children }: { children: ReactNode }) {
   return <p className="px-4 py-6 text-sm text-slate-500 lg:px-6">{children}</p>;
-}
-
-function attributionHint(quote: QuoteDetail["quote"]) {
-  const bits = [quote.utm_medium, quote.utm_campaign].filter(Boolean);
-  return bits.length ? bits.join(" · ") : "Attribution de session";
 }
 
 function hostOf(referrer: string) {

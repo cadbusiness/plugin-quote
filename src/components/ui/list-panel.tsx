@@ -27,14 +27,16 @@ export function DataTable({
   headers,
   children,
   headClassName = "",
+  tableClassName = "",
 }: {
   headers: string[];
   children: React.ReactNode;
   headClassName?: string;
+  tableClassName?: string;
 }) {
   return (
     <div className="min-w-0 overflow-x-auto">
-      <table className="w-full text-left text-sm">
+      <table className={`w-full text-left text-sm ${tableClassName}`}>
         <thead className={`border-b border-slate-200 text-xs font-medium uppercase tracking-wide text-slate-500 ${headClassName}`}>
           <tr>
             {headers.map((h) => (

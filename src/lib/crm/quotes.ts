@@ -1,7 +1,12 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/db/database.types";
-import type { QuoteListExtras } from "@/components/crm/quote-list-cells";
+import { emptyQuoteExtras, type QuoteListExtras } from "@/components/crm/quote-list-cells";
+import { labelAnswers } from "@/lib/crm/answers";
+import { dossierWhy, funnelContext, quoteInboxCue } from "@/lib/crm/quote-next-action";
 import { computeValidation } from "@/lib/prospect/collaborators";
+import { scoreReasons } from "@/lib/quotes/score";
+import { classifySource } from "@/lib/stats/attribution";
+import type { Answers } from "@/lib/wizard/types";
 
 export type QuoteFilters = {
   status?: string;
@@ -21,7 +26,7 @@ export async function listQuotes(
   let query = supabase
     .from("quotes")
     .select(
-      "id, contact_name, contact_email, contact_phone, contact_company, score, score_label, status_id, status, assigned_to, created_at",
+      "id, contact_name, contact_email, contact_phone, contact_company, score, score_label, status_id, status, assigned_to, created_at, answers, utm_source, utm_medium, utm_campaign, referrer, gclid, gbraid, wbraid, extracted_params",
     )
     .eq("organization_id", orgId)
     .order("created_at", { ascending: false });
@@ -60,35 +65,69 @@ function viewedAt(value: Json | null | undefined) {
   return typeof raw === "string" ? raw : null;
 }
 
+function asAnswers(value: Json | null | undefined): Answers {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  return value as Answers;
+}
+
+type QuoteListRow = {
+  id: string;
+  status: string;
+  answers?: Json | null;
+  utm_source?: string | null;
+  utm_medium?: string | null;
+  referrer?: string | null;
+  gclid?: string | null;
+  gbraid?: string | null;
+  wbraid?: string | null;
+  created_at?: string;
+};
+
 export async function loadQuoteListExtras(
   supabase: SupabaseClient<Database>,
-  quotes: { id: string; status: string }[],
+  quotes: QuoteListRow[],
 ): Promise<Map<string, QuoteListExtras>> {
   const extras = new Map<string, QuoteListExtras>();
   for (const quote of quotes) {
-    extras.set(quote.id, {
-      itemCount: 0,
-      firstName: null,
-      priceMin: null,
-      priceMax: null,
-      opened: quote.status !== "new",
-      validationStatus: "none",
-      validationApproved: 0,
-      validationTotal: 0,
-    });
+    extras.set(quote.id, emptyQuoteExtras(quote.status !== "new"));
   }
   const ids = quotes.map((quote) => quote.id);
   if (!ids.length) return extras;
 
-  const [{ data: items }, { data: rows }, collabResult] = await Promise.all([
-    supabase.from("quote_items").select("quote_id, name, price_min, price_max").in("quote_id", ids),
+  const [{ data: items }, { data: rows }, collabResult, { data: messages }, { data: calls }] = await Promise.all([
+    supabase.from("quote_items").select("quote_id, name, quantity, price_min, price_max").in("quote_id", ids),
     supabase.from("quotes").select("id, status, extracted_params").in("id", ids),
     supabase
       .from("quote_collaborators")
       .select("quote_id, status")
       .in("quote_id", ids)
       .then((result) => (result.error ? { data: [] as { quote_id: string; status: string }[] } : result)),
+    supabase
+      .from("prospect_messages")
+      .select("quote_id, sender, content, sent_at")
+      .in("quote_id", ids)
+      .order("sent_at", { ascending: false }),
+    supabase
+      .from("quote_activities")
+      .select("quote_id, type, created_at")
+      .in("quote_id", ids)
+      .in("type", ["call_logged", "message_sent"])
+      .order("created_at", { ascending: false }),
   ]);
+
+  const lastProspect = new Map<string, { content: string; sent_at: string }>();
+  const lastTeamAt = new Map<string, string>();
+  for (const row of messages ?? []) {
+    if (row.sender === "prospect") {
+      if (!lastProspect.has(row.quote_id)) lastProspect.set(row.quote_id, { content: row.content, sent_at: row.sent_at });
+    } else if (!lastTeamAt.has(row.quote_id)) {
+      lastTeamAt.set(row.quote_id, row.sent_at);
+    }
+  }
+  for (const row of calls ?? []) {
+    const current = lastTeamAt.get(row.quote_id);
+    if (!current || row.created_at > current) lastTeamAt.set(row.quote_id, row.created_at);
+  }
 
   for (const row of rows ?? []) {
     const current = extras.get(row.id);
@@ -114,12 +153,38 @@ export async function loadQuoteListExtras(
   for (const item of items ?? []) {
     const current = extras.get(item.quote_id);
     if (!current) continue;
+    const qty = item.quantity || 1;
     current.itemCount += 1;
     if (!current.firstName) current.firstName = item.name;
-    if (item.price_min != null) current.priceMin = (current.priceMin ?? 0) + item.price_min;
-    if (item.price_max != null) current.priceMax = (current.priceMax ?? 0) + item.price_max;
-    else if (item.price_min != null) current.priceMax = (current.priceMax ?? 0) + item.price_min;
+    if (item.price_min != null) current.priceMin = (current.priceMin ?? 0) + item.price_min * qty;
+    if (item.price_max != null) current.priceMax = (current.priceMax ?? 0) + item.price_max * qty;
+    else if (item.price_min != null) current.priceMax = (current.priceMax ?? 0) + item.price_min * qty;
   }
+
+  for (const quote of quotes) {
+    const current = extras.get(quote.id);
+    if (!current) continue;
+    const answers = asAnswers(quote.answers);
+    const labeled = labelAnswers(answers);
+    current.source = classifySource({
+      utmSource: quote.utm_source,
+      utmMedium: quote.utm_medium,
+      referrer: quote.referrer,
+      gclid: quote.gclid,
+      gbraid: quote.gbraid,
+      wbraid: quote.wbraid,
+    });
+    current.reasons = dossierWhy(scoreReasons(answers), labeled);
+    current.context = funnelContext(labeled);
+    current.cue = quoteInboxCue({
+      statusSlug: quote.status,
+      createdAt: quote.created_at ?? new Date().toISOString(),
+      firstItem: current.firstName,
+      lastProspect: lastProspect.get(quote.id) ?? null,
+      lastTeamAt: lastTeamAt.get(quote.id) ?? null,
+    });
+  }
+
   return extras;
 }
 

@@ -3,9 +3,14 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getOrgContext } from "@/lib/auth/org";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
-import { Chip, scoreTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
-import { QuoteProjectCell, QuoteReceivedCell } from "@/components/crm/quote-list-cells";
+import {
+  emptyQuoteExtras,
+  QuoteDossierCell,
+  QuoteProjectCell,
+  QuoteReceivedCell,
+  QuoteScoreCell,
+} from "@/components/crm/quote-list-cells";
 import { csvQuery, listQuotes, loadQuoteListExtras } from "@/lib/crm/quotes";
 
 export default async function QuotesPage({
@@ -80,48 +85,32 @@ export default async function QuotesPage({
           Export CSV
         </Link>
       </ListToolbar>
-      <DataTable headers={["Prospect", "Projet", "Score", "Statut", "Assigné à", "Reçue"]}>
+      <DataTable headers={["Dossier", "Projet", "Score", "Reçue"]} tableClassName="table-fixed">
         {quotes.map((quote) => {
           const status = quote.status_id ? statusById.get(quote.status_id) : undefined;
-          const extra = extras.get(quote.id) ?? {
-            itemCount: 0,
-            firstName: null,
-            priceMin: null,
-            priceMax: null,
-            opened: quote.status !== "new",
-            validationStatus: "none",
-            validationApproved: 0,
-            validationTotal: 0,
-          };
+          const extra = extras.get(quote.id) ?? emptyQuoteExtras(quote.status !== "new");
+          const assigned =
+            (assigneesByQuote.get(quote.id) ?? (quote.assigned_to ? [memberLabel.get(quote.assigned_to) ?? "-"] : [])).join(", ") ||
+            "";
           return (
             <ClickableRow
               key={quote.id}
               href={`/devis/${quote.id}`}
               className={extra.opened ? "" : "bg-orange-50/50"}
             >
-              <td className="px-4 py-2.5 lg:px-6">
-                <div className="font-medium text-slate-900">{quote.contact_name}</div>
-                <div className="text-slate-500">{quote.contact_company ?? quote.contact_email}</div>
-              </td>
+              <QuoteDossierCell
+                name={quote.contact_name}
+                company={quote.contact_company}
+                email={quote.contact_email}
+                assigned={assigned}
+                statusLabel={status?.label ?? quote.status}
+                statusSlug={status?.slug ?? quote.status}
+                score={quote.score}
+                scoreLabel={quote.score_label}
+                extras={extra}
+              />
               <QuoteProjectCell extras={extra} />
-              <td className="px-4 py-2.5 lg:px-6">
-                <Chip tone={scoreTone(quote.score_label)}>
-                  {(quote.score_label ?? "-").toUpperCase()}
-                  {quote.score != null ? ` ${quote.score}` : ""}
-                </Chip>
-              </td>
-              <td className="px-4 py-2.5 lg:px-6">
-                <span
-                  className="inline-flex items-center gap-1.5 text-sm"
-                  style={{ color: status?.color ?? "#64748b" }}
-                >
-                  <span className="h-1.5 w-1.5 rounded-full" style={{ background: status?.color ?? "#64748b" }} />
-                  {status?.label ?? quote.status}
-                </span>
-              </td>
-              <td className="px-4 py-2.5 text-slate-500 lg:px-6">
-                {(assigneesByQuote.get(quote.id) ?? (quote.assigned_to ? [memberLabel.get(quote.assigned_to) ?? "-"] : [])).join(", ") || "-"}
-              </td>
+              <QuoteScoreCell score={quote.score} scoreLabel={quote.score_label} />
               <QuoteReceivedCell createdAt={quote.created_at} extras={extra} />
             </ClickableRow>
           );

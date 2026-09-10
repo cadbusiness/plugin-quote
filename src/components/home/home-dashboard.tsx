@@ -92,7 +92,7 @@ function QuotesModule({ data }: { data: HomeDashboard }) {
           </Link>
         </Empty>
       ) : (
-        <DataTable headers={["Prospect", "Score", "Statut"]}>
+        <DataTable headers={["Dossier", "Projet", "Score"]}>
           {ranked.map((quote) => {
             const status = quote.status_id ? statusById.get(quote.status_id) : undefined;
             const extra = data.extras.get(quote.id);
@@ -102,18 +102,39 @@ function QuotesModule({ data }: { data: HomeDashboard }) {
                 href={`/devis/${quote.id}`}
                 className={extra?.opened === false ? "bg-orange-50/50" : ""}
               >
-                <td className="px-4 py-2 lg:px-5">
-                  <div className="font-medium text-slate-900">{quote.contact_name}</div>
+                <td className="px-4 py-2.5 lg:px-5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-medium text-slate-900">{quote.contact_name}</span>
+                    <Chip tone={statusTone(status?.slug ?? quote.status)}>{status?.label ?? quote.status}</Chip>
+                  </div>
                   <div className="text-slate-500">{quote.contact_company ?? quote.contact_email}</div>
+                  {extra?.cue ? (
+                    <p className="mt-1 truncate text-sm text-slate-700">
+                      {extra.cue.quoted ? `« ${extra.cue.title} »` : extra.cue.title}
+                    </p>
+                  ) : extra?.firstName ? (
+                    <p className="mt-1 truncate text-sm text-slate-500">{extra.firstName}</p>
+                  ) : null}
                 </td>
-                <td className="px-4 py-2 lg:px-5">
+                <td className="px-4 py-2.5 lg:px-5">
+                  {extra?.itemCount ? (
+                    <>
+                      <div className="font-medium text-slate-900">
+                        {extra.itemCount} produit{extra.itemCount > 1 ? "s" : ""}
+                      </div>
+                      {extra.reasons[0] ? (
+                        <p className="text-xs text-slate-500">{extra.reasons.slice(0, 2).join(" · ")}</p>
+                      ) : null}
+                    </>
+                  ) : (
+                    <span className="text-slate-400">—</span>
+                  )}
+                </td>
+                <td className="px-4 py-2.5 lg:px-5">
                   <Chip tone={scoreTone(quote.score_label)}>
                     {(quote.score_label ?? "-").toUpperCase()}
                     {quote.score != null ? ` ${quote.score}` : ""}
                   </Chip>
-                </td>
-                <td className="px-4 py-2 lg:px-5">
-                  <Chip tone={statusTone(status?.slug ?? quote.status)}>{status?.label ?? quote.status}</Chip>
                 </td>
               </ClickableRow>
             );
