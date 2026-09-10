@@ -1546,6 +1546,7 @@ export type Database = {
           contact_email: string
           contact_name: string
           contact_phone: string | null
+          consent_marketing: boolean
           created_at: string
           extracted_params: Json
           gbraid: string | null
@@ -1577,6 +1578,7 @@ export type Database = {
           contact_email: string
           contact_name: string
           contact_phone?: string | null
+          consent_marketing?: boolean
           created_at?: string
           extracted_params?: Json
           gbraid?: string | null
@@ -1608,6 +1610,7 @@ export type Database = {
           contact_email?: string
           contact_name?: string
           contact_phone?: string | null
+          consent_marketing?: boolean
           created_at?: string
           extracted_params?: Json
           gbraid?: string | null
@@ -2079,7 +2082,12 @@ export type Database = {
       }
     }
     Views: {}
-    Functions: {}
+    Functions: {
+      accept_org_invite: {
+        Args: { p_token: string }
+        Returns: string
+      }
+    }
     Enums: {}
   }
 }

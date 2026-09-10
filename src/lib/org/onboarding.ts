@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { createServiceClient } from "@/lib/supabase/service";
 import type { Database } from "@/lib/db/database.types";
 import { uniqueSlug } from "@/lib/org/slug";
 import { seedOrgCrm } from "@/lib/crm/seed";
@@ -16,8 +17,9 @@ export async function createOrganizationForUser(
     throw new Error("Nom d’entreprise requis");
   }
 
+  const admin = createServiceClient();
   const slug = await uniqueSlug(async (candidate) => {
-    const { data } = await supabase
+    const { data } = await admin
       .from("organizations")
       .select("id")
       .eq("slug", candidate)
@@ -67,7 +69,8 @@ export async function joinOrganizationForUser(
   slug: string,
 ) {
   const clean = slugifyInput(slug);
-  const { data: org } = await supabase
+  const admin = createServiceClient();
+  const { data: org } = await admin
     .from("organizations")
     .select("*")
     .eq("slug", clean)
@@ -76,7 +79,7 @@ export async function joinOrganizationForUser(
     throw new Error("Espace introuvable");
   }
 
-  const { count } = await supabase
+  const { count } = await admin
     .from("memberships")
     .select("id", { count: "exact", head: true })
     .eq("organization_id", org.id);
