@@ -26,7 +26,7 @@ export async function createShop(formData: FormData): Promise<{ error?: string }
   if (!shop) {
     return {
       error:
-        "Impossible de créer la boutique. Vérifiez que la migration 0019_native_shops est appliquée sur Supabase.",
+        "Impossible de créer la boutique. Vérifiez que la migration 0021_native_shops est appliquée sur Supabase.",
     };
   }
   revalidatePath("/integrations");
