@@ -39,6 +39,14 @@ export function minAbandonHours(configs: WorkflowTriggerConfig[]): number {
  * stay — they may have just been started by the close itself.
  * Submitted nurture waits are always exited.
  */
+export function isClosedQuoteStatus(
+  status: { is_closed: boolean } | null | undefined,
+  fallbackSlug: string,
+): boolean {
+  if (status) return Boolean(status.is_closed);
+  return fallbackSlug === "won" || fallbackSlug === "lost";
+}
+
 export function shouldExitRunOnClosedQuote(
   triggerType: string,
   statusSlugFilter: string | undefined,

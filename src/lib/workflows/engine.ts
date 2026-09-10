@@ -6,6 +6,7 @@ import { loadSubjectContext, matchesFunnel, pickBranchHandle } from "@/lib/workf
 import { ensureDefaultWorkflows } from "@/lib/workflows/ensure";
 import {
   isActiveRunStatus,
+  isClosedQuoteStatus,
   isOneShotTrigger,
   isSessionAbandonedDue,
   minAbandonHours,
@@ -255,8 +256,7 @@ async function exitStaleRunsOnClosedQuotes(supabase: Client) {
     const quote = quoteById.get(run.subject_id);
     if (!quote) continue;
     const status = quote.status_id ? statusById.get(quote.status_id) : undefined;
-    const closed = Boolean(status?.is_closed);
-    if (!closed) continue;
+    if (!isClosedQuoteStatus(status, quote.status)) continue;
     const workflow = workflowById.get(run.workflow_id);
     if (!workflow) continue;
     const config = parseTriggerConfig(workflow.trigger_config);

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import {
   DEFAULT_ABANDON_HOURS,
   isActiveRunStatus,
+  isClosedQuoteStatus,
   isOneShotTrigger,
   isSessionAbandonedDue,
   minAbandonHours,
@@ -38,5 +39,11 @@ assert.equal(shouldExitRunOnClosedQuote("quote.status_changed", "won", "won"), f
 assert.equal(shouldExitRunOnClosedQuote("quote.status_changed", "contacted", "won"), true);
 assert.equal(shouldExitRunOnClosedQuote("quote.status_changed", undefined, "won"), false);
 assert.equal(shouldExitRunOnClosedQuote("session.abandoned", undefined, "won"), false);
+
+assert.equal(isClosedQuoteStatus({ is_closed: true }, "won"), true);
+assert.equal(isClosedQuoteStatus({ is_closed: false }, "won"), false);
+assert.equal(isClosedQuoteStatus(null, "won"), true);
+assert.equal(isClosedQuoteStatus(null, "lost"), true);
+assert.equal(isClosedQuoteStatus(null, "contacted"), false);
 
 console.log("workflows/policy ok");
