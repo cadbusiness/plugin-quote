@@ -367,14 +367,17 @@ function ShopPuckLayout({
           {settingsOpen ? (
             <div className="min-h-0 flex-1 overflow-y-auto bg-white">{settings}</div>
           ) : (
-            <div className={framed ? "min-h-0 flex-1 overflow-auto p-4" : "min-h-0 flex-1 overflow-auto bg-white"}>
+            <div className={framed ? "min-h-0 flex-1 overflow-auto bg-stone-100 p-6" : "min-h-0 flex-1 overflow-auto bg-white"}>
               <div
                 className={
                   framed
-                    ? "mx-auto min-h-full overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-slate-200"
+                    ? "mx-auto min-h-full overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-slate-200"
                     : "min-h-full bg-white"
                 }
-                style={themeStyle(model.theme)}
+                style={{
+                  ...themeStyle(model.theme),
+                  ...(framed && typeof viewportWidth === "number" ? { width: viewportWidth, maxWidth: "100%" } : {}),
+                }}
               >
                 <header className="border-b border-black/10">
                   <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-4">
