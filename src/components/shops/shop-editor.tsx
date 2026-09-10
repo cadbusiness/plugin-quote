@@ -3,10 +3,10 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useMemo, useState, useTransition, type ReactNode } from "react";
-import { ChevronLeft, Settings } from "lucide-react";
+import { ChevronLeft, Eye, Settings } from "lucide-react";
 import { deleteShop, publishShop, saveShop } from "@/app/(app)/integrations/shop-actions";
 import { ShopChat, type EditorPage, type ShopChatDraft, type ShopChatResult } from "@/components/shops/shop-chat";
-import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
+import { ListPanel } from "@/components/ui/list-panel";
 import { parseLayout } from "@/lib/shops/layout";
 import type { ShopLegal, ShopNavDraft, ShopProduct, ShopSeo, ShopTheme } from "@/lib/shops/types";
 
@@ -251,65 +251,6 @@ export function ShopEditor({
 
   return (
     <ListPanel className="min-h-0 overflow-hidden">
-      <ListToolbar>
-        <div className="mr-auto flex min-w-0 items-center gap-1.5">
-          <Link
-            href="/integrations"
-            aria-label="Retour aux boutiques"
-            className="inline-flex h-8 shrink-0 items-center gap-1 rounded-md px-1.5 text-sm text-slate-500 hover:bg-slate-100 hover:text-slate-900"
-          >
-            <ChevronLeft className="h-4 w-4" aria-hidden />
-            Retour
-          </Link>
-          <select
-            value={pageId}
-            onChange={(event) => {
-              setPageId(event.target.value);
-              setSettingsOpen(false);
-            }}
-            aria-label="Page à éditer"
-            className="h-8 min-w-0 max-w-56 rounded-md border border-slate-200 bg-white px-2 text-sm"
-          >
-            {pages.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.title}
-              </option>
-            ))}
-          </select>
-          <button
-            type="button"
-            onClick={() => setSettingsOpen((open) => !open)}
-            aria-pressed={settingsOpen}
-            className={`inline-flex h-8 items-center gap-1.5 rounded-md px-2.5 text-sm ${
-              settingsOpen ? "bg-orange-50 font-medium text-[#C2410C]" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-            }`}
-          >
-            <Settings className="h-3.5 w-3.5" aria-hidden />
-            Réglages
-          </button>
-        </div>
-        <a href={publicUrl} target="_blank" rel="noreferrer" className="text-sm text-[#C2410C] underline">
-          {status === "published" ? "Voir la boutique" : "Aperçu URL"}
-        </a>
-        <button
-          type="button"
-          onClick={() => startTransition(() => { void saveShop(payload()); })}
-          className="rounded-md border border-slate-200 px-3 py-1.5 text-sm"
-        >
-          {pending ? "Enregistrement…" : "Enregistrer"}
-        </button>
-        <form action={publishShop}>
-          <input type="hidden" name="id" value={shop.id} />
-          <input type="hidden" name="status" value={status === "published" ? "draft" : "published"} />
-          <button
-            type="submit"
-            className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]"
-          >
-            {status === "published" ? "Dépublier" : "Publier"}
-          </button>
-        </form>
-      </ListToolbar>
-
       {page ? (
         <ShopBuilderCanvas
           key={`${page.id}-${layoutEpoch}`}
@@ -319,6 +260,76 @@ export function ShopEditor({
           settingsOpen={settingsOpen}
           settings={settings}
           chat={<ShopChat shopId={shop.id} seedPrompt={shop.seedPrompt} getDraft={draft} onApplied={applyChat} />}
+          leading={
+            <>
+              <Link
+                href="/integrations"
+                aria-label="Retour aux boutiques"
+                className="-ml-1 inline-flex h-8 shrink-0 items-center gap-0.5 rounded-md px-1.5 text-sm text-white/80 hover:bg-white/10 hover:text-white"
+              >
+                <ChevronLeft className="h-4 w-4" aria-hidden />
+                Retour
+              </Link>
+              <select
+                value={pageId}
+                onChange={(event) => {
+                  setPageId(event.target.value);
+                  setSettingsOpen(false);
+                }}
+                aria-label="Page à éditer"
+                className="h-8 min-w-0 max-w-44 rounded-md border border-white/15 bg-white/10 px-2 text-sm text-white"
+              >
+                {pages.map((item) => (
+                  <option key={item.id} value={item.id} className="text-slate-900">
+                    {item.title}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={() => setSettingsOpen((open) => !open)}
+                aria-label="Réglages"
+                title="Réglages"
+                aria-pressed={settingsOpen}
+                className={`flex h-8 w-8 items-center justify-center rounded-md ${
+                  settingsOpen ? "bg-white/15 text-white" : "text-white/70 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                <Settings className="h-4 w-4" aria-hidden />
+              </button>
+            </>
+          }
+          trailing={
+            <>
+              <a
+                href={publicUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={status === "published" ? "Prévisualiser la boutique" : "Prévisualiser l’URL"}
+                title="Prévisualiser"
+                className="flex h-8 w-8 items-center justify-center rounded-md text-white/70 hover:bg-white/10 hover:text-white"
+              >
+                <Eye className="h-4 w-4" aria-hidden />
+              </a>
+              <button
+                type="button"
+                onClick={() => startTransition(() => { void saveShop(payload()); })}
+                className="h-8 rounded-md border border-white/15 bg-white/10 px-3 text-sm text-white hover:bg-white/15"
+              >
+                {pending ? "Mise à jour…" : "Mettre à jour"}
+              </button>
+              <form action={publishShop}>
+                <input type="hidden" name="id" value={shop.id} />
+                <input type="hidden" name="status" value={status === "published" ? "draft" : "published"} />
+                <button
+                  type="submit"
+                  className="h-8 rounded-md bg-[#E85D04] px-3 text-sm font-medium text-white hover:bg-[#d35400]"
+                >
+                  {status === "published" ? "Dépublier" : "Publier"}
+                </button>
+              </form>
+            </>
+          }
         />
       ) : null}
     </ListPanel>

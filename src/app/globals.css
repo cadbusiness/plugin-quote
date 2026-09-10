@@ -162,3 +162,20 @@ body {
 .shop-puck-drawer [class*="Outline"] {
   font-size: 13px;
 }
+
+body:has(.shop-puck) [data-app-header] {
+  border-color: #292524;
+  background-color: #1c1917;
+}
+
+body:has(.shop-puck) [data-app-header] .text-slate-900 {
+  color: #fafaf9;
+}
+
+body:has(.shop-puck) [data-app-header] .text-slate-500 {
+  color: #a8a29e;
+}
+
+body:has(.shop-puck) [data-app-header] a:hover {
+  background-color: rgb(255 255 255 / 0.08);
+}
