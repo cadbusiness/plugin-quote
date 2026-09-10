@@ -4,6 +4,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { ProductCard } from "@/components/storefront/product-card";
 import type { StorefrontModel } from "@/lib/shops/types";
 import { groupProductsByCategory } from "@/lib/catalog/group";
+import { ColorField, CompactTextField, SpacingField } from "@/lib/shops/inspector-fields";
 import { boxStyle, type BoxStyleInput } from "@/lib/shops/layout";
 import { resolveShopHref } from "@/lib/shops/href";
 import { categoryPath } from "@/lib/shops/urls";
@@ -25,12 +26,12 @@ const MAX_WIDTH: Record<string, string> = {
 };
 
 const boxFields = {
-  padding: { type: "text" as const, label: "Padding" },
-  margin: { type: "text" as const, label: "Marge" },
-  background: { type: "text" as const, label: "Fond" },
-  color: { type: "text" as const, label: "Couleur" },
-  fontSize: { type: "text" as const, label: "Taille du texte" },
-  fontWeight: { type: "text" as const, label: "Graisse" },
+  padding: { type: "custom" as const, label: "Padding", render: SpacingField },
+  margin: { type: "custom" as const, label: "Marge", render: SpacingField },
+  background: { type: "custom" as const, label: "Fond", render: ColorField },
+  color: { type: "custom" as const, label: "Couleur", render: ColorField },
+  fontSize: { type: "custom" as const, label: "Taille du texte", placeholder: "16px", render: CompactTextField },
+  fontWeight: { type: "custom" as const, label: "Graisse", placeholder: "600", render: CompactTextField },
   textAlign: {
     type: "select" as const,
     label: "Alignement",
@@ -49,11 +50,11 @@ const boxFields = {
       { label: "Absolute", value: "absolute" },
     ],
   },
-  top: { type: "text" as const, label: "Top" },
-  left: { type: "text" as const, label: "Left" },
-  zIndex: { type: "text" as const, label: "Z-index" },
-  borderRadius: { type: "text" as const, label: "Arrondi" },
-  minHeight: { type: "text" as const, label: "Hauteur min" },
+  top: { type: "custom" as const, label: "Top", placeholder: "0", render: CompactTextField },
+  left: { type: "custom" as const, label: "Left", placeholder: "0", render: CompactTextField },
+  zIndex: { type: "custom" as const, label: "Z-index", placeholder: "1", render: CompactTextField },
+  borderRadius: { type: "custom" as const, label: "Arrondi", placeholder: "8px", render: CompactTextField },
+  minHeight: { type: "custom" as const, label: "Hauteur min", placeholder: "auto", render: CompactTextField },
 };
 
 function styleOf(props: BoxStyleInput, extra?: CSSProperties): CSSProperties {
@@ -486,6 +487,7 @@ export const shopPuckConfig = {
           type: "array",
           label: "Questions",
           getItemSummary: (item: { q?: string }) => item.q || "Question",
+          defaultItemProps: { q: "Nouvelle question", a: "" },
           arrayFields: {
             q: { type: "text", label: "Question" },
             a: { type: "textarea", label: "Réponse" },
@@ -520,6 +522,7 @@ export const shopPuckConfig = {
           type: "array",
           label: "Points",
           getItemSummary: (item: { title?: string }) => item.title || "Point",
+          defaultItemProps: { title: "Point fort", text: "" },
           arrayFields: {
             title: { type: "text", label: "Titre" },
             text: { type: "textarea", label: "Texte" },

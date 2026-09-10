@@ -163,19 +163,54 @@ body {
   font-size: 13px;
 }
 
-body:has(.shop-puck) [data-app-header] {
-  border-color: #292524;
-  background-color: #1c1917;
+.shop-inspector {
+  --puck-space-3: 8px;
+  --puck-space-4: 10px;
+  --puck-field-space-y: 6px;
+  --puck-field-space-x: 8px;
+  --puck-field-label-space-y: 4px;
+  --puck-field-radius: 4px;
+  --puck-color-interactive: #c2410c;
+  --puck-color-interactive-hover: #9a3412;
+  --puck-color-interactive-soft: #fff7ed;
+  --puck-color-interactive-soft-hover: #ffedd5;
+  --puck-color-focus-ring: #e85d04;
 }
 
-body:has(.shop-puck) [data-app-header] .text-slate-900 {
-  color: #fafaf9;
+.shop-inspector [class*="Input-input"] {
+  min-height: 32px;
 }
 
-body:has(.shop-puck) [data-app-header] .text-slate-500 {
-  color: #a8a29e;
+.shop-inspector textarea[class*="Input-input"] {
+  min-height: 4.5rem;
 }
 
-body:has(.shop-puck) [data-app-header] a:hover {
-  background-color: rgb(255 255 255 / 0.08);
+.shop-inspector [class*="Input-labelIcon"] {
+  display: none;
+}
+
+.shop-inspector [class*="ArrayField_"] {
+  background: #fff;
+}
+
+.shop-inspector [class*="ArrayFieldItem-summary"] {
+  display: block;
+  position: relative;
+  min-height: 32px;
+  overflow: hidden;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 52px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shop-inspector [class*="ArrayFieldItem-rhs"] {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  z-index: 1;
+  flex-shrink: 0;
+  background: #fff;
+  transform: translateY(-50%);
 }

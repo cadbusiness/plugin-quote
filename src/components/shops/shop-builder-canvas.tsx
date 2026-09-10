@@ -4,7 +4,7 @@ import { Puck, createUsePuck } from "@puckeditor/core";
 import "@puckeditor/core/puck.css";
 import type { Data } from "@puckeditor/core";
 import { Boxes, ChevronLeft, Layers, MessageSquare, Monitor, Smartphone, Tablet } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import { parseLayout } from "@/lib/shops/layout";
 import { shopPuckConfig } from "@/lib/shops/puck-config";
 import { footerNav, headerNav, themeStyle } from "@/lib/shops/seo";
@@ -41,6 +41,56 @@ const NODE_LABEL: Record<string, string> = {
   Features: "Points forts",
   Legal: "Texte légal",
 };
+
+const DOCK_MIN = 240;
+const DOCK_MAX = 560;
+const DOCK_DEFAULT = 300;
+
+function clampDock(width: number) {
+  return Math.min(DOCK_MAX, Math.max(DOCK_MIN, Math.round(width)));
+}
+
+function useDockWidth() {
+  const [width, setWidth] = useState(DOCK_DEFAULT);
+  const drag = useRef<{ startX: number; startW: number } | null>(null);
+
+  useEffect(() => {
+    const stored = Number(window.localStorage.getItem("qb-shop-dock"));
+    if (Number.isFinite(stored)) setWidth(clampDock(stored));
+  }, []);
+
+  useEffect(() => {
+    function onMove(event: PointerEvent) {
+      if (!drag.current) return;
+      setWidth(clampDock(drag.current.startW + event.clientX - drag.current.startX));
+    }
+    function onUp(event: PointerEvent) {
+      if (!drag.current) return;
+      const next = clampDock(drag.current.startW + event.clientX - drag.current.startX);
+      drag.current = null;
+      setWidth(next);
+      window.localStorage.setItem("qb-shop-dock", String(next));
+    }
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+    };
+  }, []);
+
+  function onPointerDown(event: ReactPointerEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    drag.current = { startX: event.clientX, startW: width };
+  }
+
+  function onDoubleClick() {
+    setWidth(DOCK_DEFAULT);
+    window.localStorage.setItem("qb-shop-dock", String(DOCK_DEFAULT));
+  }
+
+  return { width, onPointerDown, onDoubleClick };
+}
 
 type DockTab = "blocks" | "structure" | "chat";
 
@@ -162,7 +212,7 @@ function ShopPuckDock({ tab, chat }: { tab: DockTab; chat: ReactNode }) {
           </button>
           <p className="truncate text-sm font-medium text-slate-900">{NODE_LABEL[selected.type] ?? selected.type}</p>
         </div>
-        <div className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
+        <div className="shop-inspector min-h-0 flex-1 overflow-y-auto px-3 py-3">
           <Puck.Fields />
         </div>
       </div>
@@ -192,17 +242,29 @@ function ShopPuckLayout({
   model: StorefrontModel;
 }) {
   const [tab, setTab] = useState<DockTab>("blocks");
+  const dock = useDockWidth();
   const header = headerNav(model.nav);
   const footer = footerNav(model.nav);
 
   return (
     <div className="flex h-full min-h-0 flex-1 flex-col">
       <ShopChrome leading={leading} trailing={trailing} tab={tab} onTab={setTab} />
-      <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[18rem_minmax(0,1fr)]">
-        <aside className="flex min-h-0 flex-col overflow-hidden border-b border-slate-100 bg-white lg:border-r lg:border-b-0">
+      <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+        <aside
+          className="flex min-h-0 w-full flex-col overflow-hidden border-b border-slate-100 bg-white max-lg:!w-full lg:h-full lg:shrink-0 lg:border-b-0"
+          style={{ width: dock.width }}
+        >
           <ShopPuckDock tab={tab} chat={chat} />
         </aside>
-        <section className="flex min-h-0 flex-col overflow-hidden bg-stone-100">
+        <button
+          type="button"
+          aria-label="Redimensionner le panneau"
+          title="Glisser pour élargir ou rétrécir"
+          onPointerDown={dock.onPointerDown}
+          onDoubleClick={dock.onDoubleClick}
+          className="relative z-10 hidden w-1 shrink-0 cursor-col-resize bg-slate-200 hover:bg-[#E85D04] lg:block before:absolute before:inset-y-0 before:-left-1.5 before:-right-1.5 before:content-['']"
+        />
+        <section className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-stone-100">
           {settingsOpen ? (
             <div className="min-h-0 flex-1 overflow-y-auto bg-white">{settings}</div>
           ) : (

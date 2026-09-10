@@ -16,10 +16,7 @@ export function AppHeader({
   const initial = (orgName.trim()[0] ?? "Q").toUpperCase();
 
   return (
-    <header
-      data-app-header
-      className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-end gap-3 border-b border-slate-200 bg-white px-4 lg:px-6"
-    >
+    <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-end gap-3 border-b border-slate-200 bg-white px-4 lg:px-6">
       <HeaderActions isAdmin={isAdmin} plan={plan} notifications={notifications} />
       <Link
         href="/parametres"
