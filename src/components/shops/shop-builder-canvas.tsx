@@ -12,17 +12,19 @@ import type { ShopLayout, StorefrontModel } from "@/lib/shops/types";
 
 const usePuckUi = createUsePuck();
 
-const VIEWPORTS = [
-  { width: 1280, height: "auto" as const, label: "Desktop", icon: "Monitor" as const },
-  { width: 768, height: "auto" as const, label: "Tablette", icon: "Tablet" as const },
-  { width: 390, height: "auto" as const, label: "Mobile", icon: "Smartphone" as const },
+type ViewportWidth = 1280 | 768 | 390;
+
+const VIEWPORTS: { width: ViewportWidth; height: "auto"; label: string; icon: "Monitor" | "Tablet" | "Smartphone" }[] = [
+  { width: 1280, height: "auto", label: "Desktop", icon: "Monitor" },
+  { width: 768, height: "auto", label: "Tablette", icon: "Tablet" },
+  { width: 390, height: "auto", label: "Mobile", icon: "Smartphone" },
 ];
 
-const VIEWPORT_ICON = {
+const VIEWPORT_ICON: Record<ViewportWidth, typeof Monitor> = {
   1280: Monitor,
   768: Tablet,
   390: Smartphone,
-} as const;
+};
 
 const NODE_LABEL: Record<string, string> = {
   Section: "Section",
