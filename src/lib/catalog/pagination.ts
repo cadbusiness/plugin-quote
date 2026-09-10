@@ -4,12 +4,16 @@ export function catalogListHref(filters: {
   q?: string;
   source?: string;
   statut?: string;
+  category?: string;
+  prix?: string;
   page?: number;
 }) {
   const params = new URLSearchParams();
   if (filters.q) params.set("q", filters.q);
   if (filters.source) params.set("source", filters.source);
   if (filters.statut) params.set("statut", filters.statut);
+  if (filters.category) params.set("category", filters.category);
+  if (filters.prix) params.set("prix", filters.prix);
   if (filters.page && filters.page > 1) params.set("page", String(filters.page));
   const qs = params.toString();
   return qs ? `/produits?${qs}` : "/produits";

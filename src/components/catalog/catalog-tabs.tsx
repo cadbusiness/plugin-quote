@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 const TABS = [
   { id: "produits", href: "/produits", label: "Produits" },
@@ -9,9 +10,11 @@ const TABS = [
 export function CatalogTabs({
   active,
   counts = {},
+  summary,
 }: {
   active: (typeof TABS)[number]["id"];
   counts?: Partial<Record<(typeof TABS)[number]["id"], number>>;
+  summary?: ReactNode;
 }) {
   return (
     <nav className="flex items-end gap-6 overflow-x-auto border-b border-slate-200 px-4 lg:px-6">
@@ -29,7 +32,7 @@ export function CatalogTabs({
             }`}
           >
             {tab.label}
-            {count !== undefined ? (
+            {count ? (
               <span
                 className={`rounded-full px-1.5 py-0.5 text-[11px] tabular-nums ${
                   on ? "bg-orange-50 text-[#C2410C]" : "bg-slate-100 text-slate-500"
@@ -45,6 +48,11 @@ export function CatalogTabs({
           </Link>
         );
       })}
+      {summary ? (
+        <p className="ml-auto hidden pb-2.5 text-[11px] font-medium uppercase tracking-wide text-slate-400 lg:block">
+          {summary}
+        </p>
+      ) : null}
     </nav>
   );
 }

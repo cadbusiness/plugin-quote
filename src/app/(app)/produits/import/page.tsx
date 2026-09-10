@@ -7,6 +7,7 @@ import { Chip } from "@/components/ui/chip";
 import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { SyncButton } from "@/components/integrations/sync-button";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
+import { loadCatalogChrome } from "@/lib/catalog/chrome";
 import { formatDate } from "@/lib/format";
 import { parseSettings, PROVIDER_LABELS, type CatalogProvider } from "@/lib/integrations/types";
 import { createClient } from "@/lib/supabase/server";
@@ -17,7 +18,7 @@ export default async function CatalogImportPage() {
   if (!isAdminRole(ctx.role)) redirect("/devis");
 
   const supabase = await createClient();
-  const [{ data: connections }, { data: funnels }] = await Promise.all([
+  const [{ data: connections }, { data: funnels }, chrome] = await Promise.all([
     supabase
       .from("catalog_connections")
       .select("id, label, provider, status, last_sync_at, last_error, product_count, settings, store_domain")
@@ -28,11 +29,12 @@ export default async function CatalogImportPage() {
       .select("id, name")
       .eq("organization_id", ctx.organization.id)
       .order("created_at", { ascending: true }),
+    loadCatalogChrome(supabase, ctx.organization.id),
   ]);
 
   return (
     <ListPanel>
-      <CatalogTabs active="import" />
+      <CatalogTabs active="import" counts={{ regles: chrome.rules }} summary={chrome.summary} />
       <ListToolbar>
         <p className="mr-auto text-sm text-slate-500">
           CSV, WooCommerce ou Shopify : vous choisissez ce qui entre, ce qui sort, et ce qui ne s’écrase pas.

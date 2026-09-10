@@ -17,7 +17,7 @@ export function ListPanel({
 
 export function ListToolbar({ children }: { children?: React.ReactNode }) {
   return (
-    <div className="flex items-center justify-end gap-2 border-b border-slate-200 px-4 py-2 lg:px-6">
+    <div className="flex flex-wrap items-center justify-end gap-2 border-b border-slate-200 px-4 py-2.5 lg:px-6">
       {children}
     </div>
   );
@@ -28,19 +28,21 @@ export function DataTable({
   children,
   headClassName = "",
   tableClassName = "",
+  columnClassNames = [],
 }: {
   headers: string[];
   children: React.ReactNode;
   headClassName?: string;
   tableClassName?: string;
+  columnClassNames?: string[];
 }) {
   return (
     <div className="min-w-0 overflow-x-auto">
       <table className={`w-full text-left text-sm ${tableClassName}`}>
         <thead className={`border-b border-slate-200 text-xs font-medium uppercase tracking-wide text-slate-500 ${headClassName}`}>
           <tr>
-            {headers.map((h) => (
-              <th key={h || "actions"} className="px-4 py-2 font-medium lg:px-6">
+            {headers.map((h, index) => (
+              <th key={h || `col-${index}`} className={`px-4 py-2 font-medium lg:px-6 ${columnClassNames[index] ?? ""}`}>
                 {h}
               </th>
             ))}

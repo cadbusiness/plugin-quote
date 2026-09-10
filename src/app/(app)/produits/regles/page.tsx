@@ -4,6 +4,7 @@ import { saveRule } from "@/app/(app)/produits/actions";
 import { CatalogTabs } from "@/components/catalog/catalog-tabs";
 import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
+import { loadCatalogChrome } from "@/lib/catalog/chrome";
 import { createClient } from "@/lib/supabase/server";
 import type { RuleConditions } from "@/lib/wizard/types";
 
@@ -13,7 +14,7 @@ export default async function RulesPage() {
   if (!isAdminRole(ctx.role)) redirect("/devis");
 
   const supabase = await createClient();
-  const [{ data: rules }, { data: products }] = await Promise.all([
+  const [{ data: rules }, { data: products }, chrome] = await Promise.all([
     supabase
       .from("suggestion_rules")
       .select("*")
@@ -24,11 +25,12 @@ export default async function RulesPage() {
       .select("id, name, is_active")
       .eq("organization_id", ctx.organization.id)
       .order("name"),
+    loadCatalogChrome(supabase, ctx.organization.id),
   ]);
 
   return (
     <ListPanel>
-      <CatalogTabs active="regles" />
+      <CatalogTabs active="regles" counts={{ regles: chrome.rules }} summary={chrome.summary} />
       <ListToolbar>
         <p className="mr-auto text-sm text-slate-500">
           Quand le prospect répond, proposer ces produits.
