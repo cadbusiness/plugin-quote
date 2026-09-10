@@ -85,14 +85,17 @@ export default async function IntegrationsPage() {
     .sort()
     .at(-1);
 
+  const showConnectCard = rows.length === 0;
+  const showCreateCard = native.length === 0;
+
   return (
-    <ListPanel>
-      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-200 px-4 py-5 lg:px-6">
+    <ListPanel className="overflow-auto">
+      <div className="flex shrink-0 flex-wrap items-start justify-between gap-4 border-b border-slate-200 px-4 py-5 lg:px-6">
         <div className="min-w-0 max-w-xl">
           <p className="text-2xl font-semibold tracking-tight text-slate-900">Boutiques</p>
           <p className="mt-1 text-sm leading-6 text-slate-500">
-            D’où viennent les produits que vos clients configurent. Branchez votre e-commerce, ou ouvrez une boutique
-            QuoteBuilder si vous n’en avez pas.
+            D’où viennent les produits que vos clients configurent. Branchez Woo ou Shopify, ou ouvrez une boutique
+            QuoteBuilder.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -101,7 +104,7 @@ export default async function IntegrationsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 divide-y divide-slate-200 border-b border-slate-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+      <div className="grid shrink-0 grid-cols-1 divide-y divide-slate-200 border-b border-slate-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
         <Kpi label="Produits configurables" value={String(productTotal ?? 0)} />
         <Kpi
           label="Sources"
@@ -112,7 +115,7 @@ export default async function IntegrationsPage() {
       </div>
 
       {sourceCount ? (
-        <>
+        <div className="shrink-0">
           <p className="px-4 py-2.5 text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400 lg:px-6">
             Vos sources de catalogue
           </p>
@@ -207,38 +210,48 @@ export default async function IntegrationsPage() {
               );
             })}
           </DataTable>
-        </>
+        </div>
       ) : null}
 
-      <div className="mt-auto grid gap-4 border-t border-slate-100 px-4 py-6 lg:grid-cols-2 lg:px-6">
-        <div className="rounded-xl border border-slate-200 bg-white px-5 py-6">
-          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400">Vous avez déjà un e-commerce</p>
-          <p className="mt-2 text-lg font-semibold tracking-tight text-slate-900">Branchez-le, il reste la source de vérité</p>
-          <p className="mt-2 max-w-md text-sm leading-6 text-slate-500">
-            Produits, variations, images et prix sont importés par l’API, puis resynchronisés. Vous choisissez le funnel
-            qui reçoit le catalogue, une marge et des catégories.
-          </p>
-          <div className="mt-5 flex flex-wrap items-center gap-2">
-            <ConnectStoreButton provider="woocommerce" />
-            <ConnectStoreButton provider="shopify" />
-          </div>
-          <div className="mt-4">
-            <PairingActions configuratorId={funnels?.[0]?.id ?? null} pluginVersion={pluginVersion} />
-          </div>
+      {showConnectCard || showCreateCard ? (
+        <div
+          className={`grid shrink-0 gap-4 border-t border-slate-100 px-4 py-6 lg:px-6 ${
+            showConnectCard && showCreateCard ? "lg:grid-cols-2" : ""
+          }`}
+        >
+          {showConnectCard ? (
+            <div className="rounded-xl border border-slate-200 bg-white px-5 py-6">
+              <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400">Vous avez déjà un e-commerce</p>
+              <p className="mt-2 text-lg font-semibold tracking-tight text-slate-900">Branchez-le, il reste la source de vérité</p>
+              <p className="mt-2 max-w-md text-sm leading-6 text-slate-500">
+                Produits, variations, images et prix sont importés par l’API, puis resynchronisés. Vous choisissez le
+                funnel qui reçoit le catalogue, une marge et des catégories.
+              </p>
+              <div className="mt-5 flex flex-wrap items-center gap-2">
+                <ConnectStoreButton provider="woocommerce" />
+                <ConnectStoreButton provider="shopify" />
+              </div>
+              <div className="mt-4">
+                <PairingActions configuratorId={funnels?.[0]?.id ?? null} pluginVersion={pluginVersion} />
+              </div>
+            </div>
+          ) : null}
+          {showCreateCard ? (
+            <div className="rounded-xl bg-stone-950 px-5 py-6 text-white">
+              <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-white/45">Pas de site vitrine</p>
+              <p className="mt-2 text-lg font-semibold tracking-tight">Ouvrez une boutique en quinze minutes</p>
+              <p className="mt-2 max-w-md text-sm leading-6 text-white/65">
+                Un mini-site de devis hébergé et indexable : pages, catalogue, parcours et SEO. Pas de site à construire,
+                pas de paiement à encaisser.
+              </p>
+              <div className="mt-5 flex flex-wrap items-center gap-3">
+                <CreateShopButton />
+                <span className="text-sm text-white/50">Incluse dans votre plan</span>
+              </div>
+            </div>
+          ) : null}
         </div>
-        <div className="rounded-xl bg-stone-950 px-5 py-6 text-white">
-          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-white/45">Vous n’en avez pas</p>
-          <p className="mt-2 text-lg font-semibold tracking-tight">Ouvrez une boutique en quinze minutes</p>
-          <p className="mt-2 max-w-md text-sm leading-6 text-white/65">
-            Un mini-site de devis hébergé et indexable : pages, catalogue, parcours et SEO. Pas de site à construire, pas
-            de paiement à encaisser.
-          </p>
-          <div className="mt-5 flex flex-wrap items-center gap-3">
-            <CreateShopButton />
-            <span className="text-sm text-white/50">Incluse dans votre plan</span>
-          </div>
-        </div>
-      </div>
+      ) : null}
 
       <ConnectStoreDialog funnels={funnels ?? []} />
       <CreateShopDialog funnels={funnels ?? []} defaultFamily={family} orgName={ctx.organization.name} />
