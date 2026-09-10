@@ -31,6 +31,7 @@ export type SegmentContact = {
   configuratorId: string;
   answers: Answers;
   lastCampaignAt: string | null;
+  consentMarketing: boolean;
 };
 
 export const FIELD_LABELS: Record<SegmentField, string> = {

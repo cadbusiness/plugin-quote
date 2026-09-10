@@ -128,7 +128,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState<{ score?: number; label?: string } | null>(null);
   const [chatInput, setChatInput] = useState("");
-  const [contact, setContact] = useState({ name: "", email: "", phone: "", company: "" });
+  const [contact, setContact] = useState({ name: "", email: "", phone: "", company: "", consentMarketing: false });
 
   const step = definition?.steps[session?.currentStep ?? 0];
   const answers = useMemo(
@@ -199,6 +199,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
             email: sessionNext.contactDraft.email || c.email,
             phone: sessionNext.contactDraft.phone || c.phone,
             company: sessionNext.contactDraft.company || c.company,
+            consentMarketing: c.consentMarketing,
           }));
         }
         if (sessionNext.submittedQuoteId) setDone({});
@@ -404,6 +405,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
             email: contact.email || session.contactDraft.email || "",
             phone: contact.phone || session.contactDraft.phone || "",
             company: contact.company || session.contactDraft.company || "",
+            consentMarketing: Boolean(contact.consentMarketing),
           }),
         },
       );
@@ -629,6 +631,18 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
                 <Field label="Email" type="email" value={contact.email} onChange={(v) => setContact({ ...contact, email: v })} />
                 <Field label="Téléphone" value={contact.phone} onChange={(v) => setContact({ ...contact, phone: v })} />
                 <Field label="Société" value={contact.company} onChange={(v) => setContact({ ...contact, company: v })} />
+                <label className="sm:col-span-2 flex items-start gap-2 text-sm text-slate-600">
+                  <input
+                    type="checkbox"
+                    className="mt-1"
+                    checked={Boolean(contact.consentMarketing)}
+                    onChange={(e) => setContact({ ...contact, consentMarketing: e.target.checked })}
+                  />
+                  <span>
+                    J’accepte d’être recontacté par email pour des offres liées à ma demande (consentement marketing,
+                    facultatif). Vos données sont traitées pour établir ce devis.
+                  </span>
+                </label>
                 {errors.submit ? <p className="sm:col-span-2 text-sm text-red-600">{errors.submit}</p> : null}
               </div>
             ) : null}

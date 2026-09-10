@@ -52,4 +52,5 @@ export const contactSchema = z.object({
   email: z.string().email("Email invalide"),
   phone: z.string().optional(),
   company: z.string().optional(),
+  consentMarketing: z.boolean().optional().default(false),
 });

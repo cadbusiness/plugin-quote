@@ -20,7 +20,7 @@ export async function loadSegmentContacts(
     supabase
       .from("quotes")
       .select(
-        "id, contact_name, contact_email, contact_company, score_label, status_id, status, configurator_id, answers",
+        "id, contact_name, contact_email, contact_company, score_label, status_id, status, configurator_id, answers, consent_marketing",
       )
       .eq("organization_id", orgId)
       .order("created_at", { ascending: false })
@@ -53,6 +53,7 @@ export async function loadSegmentContacts(
     configuratorId: quote.configurator_id,
     answers: asAnswers(quote.answers),
     lastCampaignAt: lastByEmail.get(quote.contact_email.toLowerCase()) ?? null,
+    consentMarketing: Boolean(quote.consent_marketing),
   }));
 }
 
