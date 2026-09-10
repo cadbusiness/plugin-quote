@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { createShop } from "@/app/(app)/integrations/shop-actions";
-import { ListAddRow } from "@/components/ui/list-panel";
 import { FUNNEL_FAMILIES, type FunnelFamilyId } from "@/lib/funnels/families";
 
 type Funnel = { id: string; name: string };
@@ -103,8 +102,6 @@ export function CreateShopDialog({
 
   return (
     <>
-      <ListAddRow onClick={openDialog}>Créer une boutique QuoteBuilder</ListAddRow>
-
       {open ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <button type="button" aria-label="Fermer" className="absolute inset-0 bg-slate-950/40" onClick={close} />

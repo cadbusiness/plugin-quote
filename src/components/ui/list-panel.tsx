@@ -26,17 +26,19 @@ export function ListToolbar({ children }: { children?: React.ReactNode }) {
 export function DataTable({
   headers,
   children,
+  headClassName = "",
 }: {
   headers: string[];
   children: React.ReactNode;
+  headClassName?: string;
 }) {
   return (
     <div className="min-w-0 overflow-x-auto">
       <table className="w-full text-left text-sm">
-        <thead className="border-b border-slate-200 text-xs font-medium uppercase tracking-wide text-slate-500">
+        <thead className={`border-b border-slate-200 text-xs font-medium uppercase tracking-wide text-slate-500 ${headClassName}`}>
           <tr>
             {headers.map((h) => (
-              <th key={h} className="px-4 py-2 font-medium lg:px-6">
+              <th key={h || "actions"} className="px-4 py-2 font-medium lg:px-6">
                 {h}
               </th>
             ))}

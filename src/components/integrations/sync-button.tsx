@@ -6,9 +6,11 @@ import { syncConnection } from "@/app/(app)/integrations/actions";
 export function SyncButton({
   connectionId,
   label = "Synchroniser",
+  variant = "solid",
 }: {
   connectionId: string;
   label?: string;
+  variant?: "solid" | "outline";
 }) {
   const [pending, startTransition] = useTransition();
   const [message, setMessage] = useState<{ tone: "ok" | "ko"; text: string } | null>(null);
@@ -42,7 +44,11 @@ export function SyncButton({
         type="button"
         onClick={run}
         disabled={pending}
-        className="rounded-md bg-slate-950 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+        className={
+          variant === "outline"
+            ? "rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+            : "rounded-md bg-slate-950 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+        }
       >
         {pending ? "Synchronisation…" : label}
       </button>

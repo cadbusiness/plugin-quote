@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { createPairingCode } from "@/app/(app)/integrations/actions";
 
-export function PairingCard({
+export function PairingActions({
   configuratorId,
   pluginVersion,
 }: {
@@ -21,37 +21,23 @@ export function PairingCard({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-3 border-b border-slate-100 bg-slate-50/60 px-4 py-3 lg:px-6">
-      <div className="mr-auto min-w-0">
-        <p className="text-sm font-medium text-slate-900">Plugin boutique · v{pluginVersion}</p>
-        <p className="text-xs text-slate-500">
-          Dans WordPress, QuoteBuilder → J’ai déjà un compte. Le catalogue WooCommerce est importé
-          automatiquement ; les mises à jour du plugin arrivent depuis le cloud.
-        </p>
-      </div>
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
       <a
         href={`/api/public/plugin/wordpress/download?v=${encodeURIComponent(pluginVersion)}`}
-        className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+        className="text-sm font-medium text-[#C2410C] hover:underline"
       >
-        Télécharger v{pluginVersion}
+        Plugin WordPress v{pluginVersion}
       </a>
       {code ? (
-        <span className="rounded-md bg-white px-3 py-1.5 font-mono text-sm font-semibold tracking-widest text-[#C2410C] ring-1 ring-orange-200">
+        <span className="rounded-md bg-white px-2.5 py-1 font-mono text-sm font-semibold tracking-widest text-[#C2410C] ring-1 ring-orange-200">
           {code}
         </span>
       ) : null}
-      <button
-        type="button"
-        onClick={generate}
-        disabled={pending}
-        className="rounded-md bg-slate-950 px-3 py-1.5 text-sm text-white disabled:opacity-50"
-      >
+      <button type="button" onClick={generate} disabled={pending} className="text-sm text-slate-500 hover:text-slate-900 disabled:opacity-50">
         {pending ? "Génération…" : code ? "Nouveau code" : "Code manuel"}
       </button>
       {code ? (
-        <p className="w-full text-xs text-slate-500">
-          Collez ce code uniquement si la connexion en un clic n’est pas possible. Valable 30 minutes.
-        </p>
+        <p className="w-full text-xs text-slate-500">Valable 30 minutes. Uniquement si la connexion en un clic n’est pas possible.</p>
       ) : null}
     </div>
   );

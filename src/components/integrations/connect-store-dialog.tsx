@@ -27,6 +27,28 @@ const PROVIDERS: {
   },
 ];
 
+const CONNECT_EVENT = "qb:connect-store";
+
+export function openConnectStore(provider?: CatalogProvider) {
+  window.dispatchEvent(new CustomEvent(CONNECT_EVENT, { detail: { provider } }));
+}
+
+export function ConnectStoreButton({
+  provider,
+  children,
+  className = "rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50",
+}: {
+  provider?: CatalogProvider;
+  children?: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <button type="button" onClick={() => openConnectStore(provider)} className={className}>
+      {children ?? (provider === "woocommerce" ? "WooCommerce" : provider === "shopify" ? "Shopify" : "Connecter Woo / Shopify")}
+    </button>
+  );
+}
+
 export function ConnectStoreDialog({ funnels }: { funnels: Funnel[] }) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
@@ -34,32 +56,25 @@ export function ConnectStoreDialog({ funnels }: { funnels: Funnel[] }) {
   const [state, formAction] = useActionState<ConnectState, FormData>(connectStore, {});
 
   useEffect(() => {
-    function openFromHash() {
-      if (window.location.hash === "#nouveau") {
-        setOpen(true);
-        history.replaceState(null, "", window.location.pathname + window.location.search);
+    function openFromEvent(event: Event) {
+      const next = (event as CustomEvent<{ provider?: CatalogProvider }>).detail?.provider;
+      if (next === "woocommerce" || next === "shopify") {
+        setProvider(next);
+        setStep(1);
+      } else {
+        setProvider("woocommerce");
+        setStep(0);
       }
+      setOpen(true);
     }
-    openFromHash();
-    window.addEventListener("hashchange", openFromHash);
-    return () => window.removeEventListener("hashchange", openFromHash);
+    window.addEventListener(CONNECT_EVENT, openFromEvent);
+    return () => window.removeEventListener(CONNECT_EVENT, openFromEvent);
   }, []);
 
   const current = PROVIDERS.find((p) => p.id === provider)!;
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => {
-          setOpen(true);
-          setStep(0);
-        }}
-        className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
-      >
-        Connecter Woo / Shopify
-      </button>
-
       {open ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <button
