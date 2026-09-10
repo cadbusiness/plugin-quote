@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { assertCronAuth } from "@/lib/cron/auth";
 import { runCatalogSync } from "@/lib/integrations/sync";
 import { createServiceClient } from "@/lib/supabase/service";
 
@@ -9,11 +10,8 @@ export const maxDuration = 300;
 const MAX_CONNECTIONS = 25;
 
 export async function GET(req: Request) {
-  const secret = process.env.CRON_SECRET;
-  const header = req.headers.get("authorization");
-  if (secret && header !== `Bearer ${secret}`) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const denied = assertCronAuth(req);
+  if (denied) return denied;
 
   const supabase = createServiceClient();
   const { data: connections } = await supabase

@@ -4,6 +4,7 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { resolvePublicConfigurator } from "@/lib/public/session";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 import { attributionPayload, parseAttribution } from "@/lib/stats/attribution";
+import { clientIp, rateLimit, rateLimitResponse } from "@/lib/security/rate-limit";
 
 const ALLOWED = new Set<string>(Object.values(ANALYTICS_EVENTS));
 
@@ -31,6 +32,9 @@ export function OPTIONS() {
 }
 
 export async function POST(req: Request) {
+  const limited = rateLimit(`track:${clientIp(req)}`, 120, 60000);
+  if (!limited.ok) return rateLimitResponse(limited.retryAfterSec);
+
   const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return cors(NextResponse.json({ error: "Payload invalide" }, { status: 400 }));

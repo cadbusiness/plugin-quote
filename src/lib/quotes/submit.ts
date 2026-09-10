@@ -81,6 +81,7 @@ export async function submitQuote(input: {
       contact_email: input.contact.email,
       contact_phone: input.contact.phone ?? null,
       contact_company: input.contact.company ?? null,
+      consent_marketing: Boolean(input.contact.consentMarketing),
       answers,
       extracted_params: session.extracted_params,
       score,

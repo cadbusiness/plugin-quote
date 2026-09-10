@@ -42,6 +42,11 @@ const EXTRA_TEMPLATES = [
     subject: "Une photo aiderait à affiner votre devis",
     body: "Bonjour {{contact_name}}, ajoutez une photo ici : {{suivi_url}}",
   },
+  {
+    kind: "prospect_reactivation",
+    subject: "On reprend votre projet ?",
+    body: "Bonjour {{contact_name}}, cela fait un moment. Votre projet est-il toujours d’actualité ? Répondez ou reprenez ici : {{suivi_url}}",
+  },
 ] as const;
 
 export async function seedOrgCrm(supabase: SupabaseClient<Database>, orgId: string) {

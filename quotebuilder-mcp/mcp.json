@@ -1,0 +1,29 @@
+{
+  "name": "quotebuilder",
+  "version": "1.0.0",
+  "description": "QuoteBuilder MCP — CRM devis B2B pour Claude Desktop",
+  "runtime": "node",
+  "entry": "dist/index.js",
+  "env": {
+    "QB_API_KEY": {
+      "description": "Clé API QuoteBuilder (qb_live_…), créée dans Paramètres → API & webhooks",
+      "required": true
+    },
+    "QB_API_URL": {
+      "description": "URL de base de l’app QuoteBuilder",
+      "required": false,
+      "default": "https://app.quotebuilder.io"
+    }
+  },
+  "tools": [
+    "get_leads",
+    "get_lead_detail",
+    "update_lead_status",
+    "create_lead",
+    "get_stats",
+    "list_funnels",
+    "get_funnel_performance",
+    "trigger_followup",
+    "get_pending_followups"
+  ]
+}

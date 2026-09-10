@@ -161,6 +161,7 @@ export type ContactPayload = {
   email: string;
   phone?: string;
   company?: string;
+  consentMarketing?: boolean;
 };
 
 export type Condition = {
