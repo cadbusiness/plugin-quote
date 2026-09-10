@@ -185,7 +185,6 @@ export function FunnelEditor({
       {tab === "automations" ? (
         <FunnelAutomations
           funnelId={funnel.id}
-          funnelName={funnel.name}
           workflows={workflows}
           funnels={funnels}
           statuses={statuses}

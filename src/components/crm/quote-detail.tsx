@@ -16,7 +16,10 @@ import { QuoteTabs, quoteTabHref, type QuoteCompose, type QuoteTab } from "@/com
 import { QuoteValidationSection } from "@/components/crm/quote-validation";
 import { Chip, scoreTone, statusTone, type ChipTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
+import { HelpTip } from "@/components/ui/help-tip";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
+import { StepStrip } from "@/components/workflows/step-strip";
+import { TriggerGlyph } from "@/components/workflows/trigger-icon";
 import { formatPrice } from "@/lib/format";
 import type { QuoteAutomation, QuoteDetail } from "@/lib/crm/quote-detail";
 
@@ -638,43 +641,29 @@ function EchangesTab({
 function AutomationsTab({ detail }: { detail: QuoteDetail }) {
   return (
     <section>
-      <SectionTitle>Parcours de cette demande</SectionTitle>
+      <div className="flex items-center gap-1.5 border-b border-slate-100 px-4 py-2 lg:px-6">
+        <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">Parcours</p>
+        <HelpTip label="Parcours">Ce qui a déjà été envoyé, ou qui attend, pour cette demande.</HelpTip>
+      </div>
       {detail.automations.length ? (
         <ul>
           {detail.automations.map((flow) => (
-            <li key={flow.id} className="border-b border-slate-100">
-              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 px-4 py-3 lg:px-6">
-                <div>
-                  <div className="font-medium text-slate-900">{flow.title}</div>
-                  <div className="mt-0.5 text-xs text-slate-500">
-                    {flow.triggerLabel} · {flow.hint}
-                  </div>
-                </div>
-                <div className="text-right">
-                  <Chip tone={AUTOMATION_TONE[flow.state]}>{flow.stateLabel}</Chip>
-                  {flow.when ? <div className="mt-1 text-xs text-slate-400">{flow.when}</div> : null}
-                </div>
+            <li key={flow.id} className="flex items-center gap-3 border-b border-slate-100 px-4 py-3 lg:px-6">
+              <TriggerGlyph type={flow.triggerType} size="sm" />
+              <div className="min-w-0 flex-1">
+                <Link href={`/automations/${flow.workflowId}`} className="font-medium text-slate-900 hover:text-[#C2410C]">
+                  {flow.title}
+                </Link>
+                <StepStrip
+                  steps={flow.steps.map((step) => ({ type: step.nodeType, label: step.label }))}
+                />
               </div>
-              {flow.steps.length ? (
-                <ol className="border-t border-slate-50 px-4 py-2 lg:px-6">
-                  {flow.steps.map((step) => (
-                    <li key={step.id} className="flex items-center justify-between gap-3 py-1 text-sm">
-                      <span>
-                        {step.label}
-                        {step.error ? <span className="text-rose-600">, {step.error}</span> : null}
-                      </span>
-                      <span className="shrink-0 text-xs text-slate-400">
-                        {step.statusLabel} · {step.when}
-                      </span>
-                    </li>
-                  ))}
-                </ol>
-              ) : null}
+              <Chip tone={AUTOMATION_TONE[flow.state]}>{flow.stateLabel}</Chip>
             </li>
           ))}
         </ul>
       ) : (
-        <Empty>Aucun parcours n’a encore démarré pour cette demande.</Empty>
+        <Empty>Pas encore lancé.</Empty>
       )}
     </section>
   );

@@ -1,10 +1,28 @@
 import type { WorkflowNode, WorkflowNodeType, WorkflowRunStatus, WorkflowStatus, WorkflowTriggerType } from "@/lib/workflows/types";
 
 export const TRIGGER_LABELS: Record<WorkflowTriggerType, string> = {
-  "quote.submitted": "Soumission",
+  "quote.submitted": "Demande",
   "session.abandoned": "Abandon",
-  "quote.status_changed": "Changement de statut",
+  "quote.status_changed": "Statut",
 };
+
+export const TRIGGER_WHEN: Record<WorkflowTriggerType, string> = {
+  "quote.submitted": "Demande envoyée",
+  "session.abandoned": "Prospect parti",
+  "quote.status_changed": "Statut changé",
+};
+
+export const TRIGGER_HELP: Record<WorkflowTriggerType, string> = {
+  "quote.submitted": "Les emails partent dès qu’un prospect envoie son devis.",
+  "session.abandoned": "Relance si le prospect quitte le funnel en cours de route.",
+  "quote.status_changed": "Se lance quand vous changez le statut d’une demande.",
+};
+
+export const TRIGGER_ORDER: WorkflowTriggerType[] = [
+  "quote.submitted",
+  "session.abandoned",
+  "quote.status_changed",
+];
 
 export const NODE_TYPE_LABELS: Record<WorkflowNodeType, string> = {
   trigger: "Déclencheur",
@@ -56,4 +74,10 @@ export function nodeTitle(node: WorkflowNode): string {
 
 export function templateLabel(kind: string): string {
   return TEMPLATE_LABELS[kind] ?? kind;
+}
+
+export function workflowActionSteps(nodes: WorkflowNode[]): { type: WorkflowNodeType; label: string }[] {
+  return nodes
+    .filter((node) => node.type !== "trigger" && node.type !== "exit")
+    .map((node) => ({ type: node.type, label: nodeTitle(node) }));
 }

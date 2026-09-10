@@ -4,21 +4,18 @@ import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { Chip, type ChipTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
+import { HelpTip } from "@/components/ui/help-tip";
 import { CreateWorkflowDialog } from "@/components/workflows/create-workflow-dialog";
+import { StepStrip } from "@/components/workflows/step-strip";
+import { TriggerGlyph } from "@/components/workflows/trigger-icon";
 import { ensureDefaultWorkflows } from "@/lib/workflows/ensure";
-import { TRIGGER_LABELS, WORKFLOW_STATUS_LABELS } from "@/lib/workflows/labels";
-import { parseTriggerConfig, type WorkflowStatus, type WorkflowTriggerType } from "@/lib/workflows/types";
+import { TRIGGER_WHEN, WORKFLOW_STATUS_LABELS, workflowActionSteps } from "@/lib/workflows/labels";
+import { parseDefinition, parseTriggerConfig, type WorkflowStatus, type WorkflowTriggerType } from "@/lib/workflows/types";
 
 const STATUS_TONE: Record<WorkflowStatus, ChipTone> = {
   draft: "amber",
   active: "emerald",
   archived: "slate",
-};
-
-const TRIGGER_TONE: Record<WorkflowTriggerType, ChipTone> = {
-  "quote.submitted": "emerald",
-  "session.abandoned": "amber",
-  "quote.status_changed": "violet",
 };
 
 export default async function AutomationsPage() {
@@ -45,13 +42,10 @@ export default async function AutomationsPage() {
   ]);
 
   const funnelName = new Map((funnels ?? []).map((funnel) => [funnel.id, funnel.name]));
-  const counts = new Map<string, { running: number; waiting: number; failed: number }>();
+  const failed = new Map<string, number>();
   for (const run of runs ?? []) {
-    const current = counts.get(run.workflow_id) ?? { running: 0, waiting: 0, failed: 0 };
-    if (run.status === "running") current.running += 1;
-    if (run.status === "waiting") current.waiting += 1;
-    if (run.status === "failed") current.failed += 1;
-    counts.set(run.workflow_id, current);
+    if (run.status !== "failed") continue;
+    failed.set(run.workflow_id, (failed.get(run.workflow_id) ?? 0) + 1);
   }
 
   const list = workflows ?? [];
@@ -59,40 +53,48 @@ export default async function AutomationsPage() {
   return (
     <ListPanel>
       <ListToolbar>
-        <p className="mr-auto text-sm text-slate-500">
-          {list.length} parcours
-        </p>
+        <span className="mr-auto inline-flex items-center gap-1.5 text-sm text-slate-500">
+          Parcours
+          <HelpTip label="Parcours">
+            Un parcours envoie les emails tout seul. Quand = le déclencheur. Portée = tous les funnels ou seulement certains.
+          </HelpTip>
+        </span>
       </ListToolbar>
-      <DataTable headers={["Parcours", "Déclencheur", "Funnels", "En cours", "En attente", "Échecs"]}>
+      <DataTable headers={["Parcours", "Quand", "Portée"]}>
         {list.map((workflow) => {
           const trigger = workflow.trigger_type as WorkflowTriggerType;
           const status = workflow.status as WorkflowStatus;
           const config = parseTriggerConfig(workflow.trigger_config);
           const scope = !config.configuratorIds?.length
             ? "Tous"
-            : config.configuratorIds.map((id) => funnelName.get(id) ?? "Funnel").join(", ");
-          const tally = counts.get(workflow.id) ?? { running: 0, waiting: 0, failed: 0 };
+            : config.configuratorIds.length === 1
+              ? (funnelName.get(config.configuratorIds[0]) ?? "1 funnel")
+              : `${config.configuratorIds.length} funnels`;
+          const steps = workflowActionSteps(parseDefinition(workflow.definition).nodes);
+          const errors = failed.get(workflow.id) ?? 0;
           return (
             <ClickableRow key={workflow.id} href={`/automations/${workflow.id}`}>
               <td className="px-4 py-3 lg:px-6">
-                <div className="font-medium text-slate-900">{workflow.name}</div>
-                <Chip tone={STATUS_TONE[status]}>{WORKFLOW_STATUS_LABELS[status]}</Chip>
+                <div className="flex items-center gap-3">
+                  <TriggerGlyph type={trigger} size="sm" />
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-medium text-slate-900">{workflow.name}</span>
+                      <Chip tone={STATUS_TONE[status]}>{WORKFLOW_STATUS_LABELS[status]}</Chip>
+                      {errors ? <Chip tone="rose">{errors}</Chip> : null}
+                    </div>
+                    <StepStrip steps={steps} />
+                  </div>
+                </div>
               </td>
-              <td className="px-4 py-3 lg:px-6">
-                <Chip tone={TRIGGER_TONE[trigger] ?? "slate"}>{TRIGGER_LABELS[trigger] ?? workflow.trigger_type}</Chip>
-              </td>
+              <td className="px-4 py-3 text-slate-600 lg:px-6">{TRIGGER_WHEN[trigger] ?? workflow.trigger_type}</td>
               <td className="px-4 py-3 text-slate-600 lg:px-6">{scope}</td>
-              <td className="px-4 py-3 tabular-nums lg:px-6">{tally.running}</td>
-              <td className="px-4 py-3 tabular-nums lg:px-6">{tally.waiting}</td>
-              <td className="px-4 py-3 tabular-nums lg:px-6">{tally.failed}</td>
             </ClickableRow>
           );
         })}
       </DataTable>
       {list.length === 0 ? (
-        <p className="px-4 py-10 text-sm text-slate-500 lg:px-6">
-          Créez un parcours : un déclencheur, puis les emails, délais et branches sur le canvas.
-        </p>
+        <p className="px-4 py-10 text-sm text-slate-500 lg:px-6">Pas encore de parcours.</p>
       ) : null}
       <CreateWorkflowDialog funnels={funnels ?? []} statuses={statuses ?? []} />
     </ListPanel>

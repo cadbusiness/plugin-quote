@@ -7,7 +7,7 @@ import { parseFunnelTracking } from "@/lib/funnels/tracking";
 import { parseFunnelKind } from "@/lib/funnels/kind";
 import { loadStatsDashboard } from "@/lib/stats/dashboard";
 import { getAppUrl } from "@/lib/supabase/env";
-import { nodeTitle } from "@/lib/workflows/labels";
+import { workflowActionSteps } from "@/lib/workflows/labels";
 import { parseDefinition, parseTriggerConfig } from "@/lib/workflows/types";
 import type { WorkflowStatus, WorkflowTriggerType } from "@/lib/workflows/types";
 
@@ -104,9 +104,7 @@ export default async function FunnelEditorPage({
           status: workflow.status as WorkflowStatus,
           triggerType: workflow.trigger_type as WorkflowTriggerType,
           scope: !ids.length ? "all" : ids.includes(funnel.id) ? "this" : "other",
-          steps: definition.nodes
-            .filter((node) => node.type !== "trigger" && node.type !== "exit")
-            .map((node) => nodeTitle(node)),
+          steps: workflowActionSteps(definition.nodes),
         };
       })}
       funnels={funnels ?? []}

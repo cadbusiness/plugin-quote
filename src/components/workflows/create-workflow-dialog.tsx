@@ -3,15 +3,11 @@
 import { useEffect, useState, useTransition } from "react";
 import { createWorkflow } from "@/app/(app)/workflow-actions";
 import { ListAddRow } from "@/components/ui/list-panel";
-import type { WorkflowTriggerType } from "@/lib/workflows/types";
+import { HelpTip } from "@/components/ui/help-tip";
+import { TRIGGER_HELP, TRIGGER_ORDER, TRIGGER_WHEN } from "@/lib/workflows/labels";
+import { TriggerGlyph } from "@/components/workflows/trigger-icon";
 import { defaultWorkflowName } from "@/lib/workflows/defaults";
-import { TRIGGER_LABELS } from "@/lib/workflows/labels";
-
-const TRIGGERS: { id: WorkflowTriggerType; hint: string }[] = [
-  { id: "quote.submitted", hint: "Dès qu’un prospect envoie sa demande" },
-  { id: "session.abandoned", hint: "Quand une session avec email reste inactive" },
-  { id: "quote.status_changed", hint: "Quand le statut d’une demande change" },
-];
+import type { WorkflowTriggerType } from "@/lib/workflows/types";
 
 export function CreateWorkflowDialog({
   funnels,
@@ -89,29 +85,36 @@ export function CreateWorkflowDialog({
                 Nouveau parcours · {step + 1} / 3
               </p>
               <h2 id="create-workflow-title" className="mt-1 text-lg font-semibold text-slate-900">
-                {step === 0 && "Quel déclencheur ?"}
-                {step === 1 && "Sur quels funnels ?"}
-                {step === 2 && "Nommer le parcours"}
+                {step === 0 && "Quand ?"}
+                {step === 1 && "Où ?"}
+                {step === 2 && "Nom"}
               </h2>
             </div>
 
             <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
               {step === 0 ? (
                 <div className="grid gap-2">
-                  {TRIGGERS.map((item) => {
-                    const on = trigger === item.id;
+                  {TRIGGER_ORDER.map((id) => {
+                    const on = trigger === id;
                     return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => pickTrigger(item.id)}
-                        className={`rounded-lg border px-4 py-3 text-left ${
+                      <div
+                        key={id}
+                        className={`flex items-center gap-2 rounded-lg border px-3 py-2.5 ${
                           on ? "border-[#E85D04] bg-orange-50" : "border-slate-200 hover:border-slate-300"
                         }`}
                       >
-                        <div className="font-medium text-slate-900">{TRIGGER_LABELS[item.id]}</div>
-                        <div className="mt-0.5 text-sm text-slate-500">{item.hint}</div>
-                      </button>
+                        <button
+                          type="button"
+                          onClick={() => pickTrigger(id)}
+                          className="flex min-w-0 flex-1 items-center gap-3 text-left"
+                        >
+                          <TriggerGlyph type={id} size="sm" />
+                          <span className="font-medium text-slate-900">{TRIGGER_WHEN[id]}</span>
+                        </button>
+                        <HelpTip label={TRIGGER_WHEN[id]} align="right">
+                          {TRIGGER_HELP[id]}
+                        </HelpTip>
+                      </div>
                     );
                   })}
                 </div>
