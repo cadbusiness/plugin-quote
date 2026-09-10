@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/service";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { logActivity, notifyUser } from "@/lib/crm/activity";
 import { sendTemplateEmail } from "@/lib/email/send";
@@ -334,13 +335,17 @@ export async function inviteMember(formData: FormData) {
   if (!email || !["admin", "sales"].includes(role)) return;
   const supabase = await createClient();
   const token = crypto.randomUUID();
-  await supabase.from("memberships").insert({
+  const { error } = await supabase.from("memberships").insert({
     organization_id: ctx.organization.id,
     role,
     status: "pending",
     invited_email: email,
     invite_token: token,
   });
+  if (error) {
+    console.error("inviteMember", error.message);
+    redirect("/equipe?error=invite");
+  }
   await sendTemplateEmail({
     to: email,
     subject: `Invitation ${ctx.organization.name}`,
@@ -394,4 +399,28 @@ export async function markNotificationsRead() {
     .eq("user_id", ctx.userId)
     .is("read_at", null);
   revalidatePath("/", "layout");
+}
+
+
+export async function eraseContactData(formData: FormData) {
+  const ctx = await getOrgContext();
+  if (!ctx) redirect("/onboarding");
+  if (!isAdminRole(ctx.role)) redirect("/devis");
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  if (!email.includes("@")) redirect("/parametres?privacy=invalid");
+  const { eraseContactByEmail } = await import("@/lib/privacy/erase-contact");
+  const supabase = createServiceClient();
+  try {
+    const result = await eraseContactByEmail(supabase, {
+      organizationId: ctx.organization.id,
+      email,
+      actorId: ctx.userId,
+    });
+    revalidatePath("/devis");
+    revalidatePath("/parametres");
+    redirect(`/parametres?privacy=ok&quotes=${result.quotes}`);
+  } catch (error) {
+    console.error("eraseContactData", error);
+    redirect("/parametres?privacy=error");
+  }
 }

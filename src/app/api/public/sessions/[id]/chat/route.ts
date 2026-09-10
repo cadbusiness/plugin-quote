@@ -5,6 +5,7 @@ import { getSession, updateSession } from "@/lib/public/session";
 import { loadDefinition } from "@/lib/wizard/definition";
 import { runChatTurn } from "@/lib/chat/claude";
 import { mergeAnswers } from "@/lib/wizard/suggestions";
+import { clientIp, rateLimit, rateLimitResponse } from "@/lib/security/rate-limit";
 
 const schema = z.object({ message: z.string().min(1).max(4000) });
 
@@ -12,6 +13,9 @@ export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const limited = rateLimit(`sessions:chat:${clientIp(req)}`, 20, 60000);
+  if (!limited.ok) return rateLimitResponse(limited.retryAfterSec);
+
   const { id } = await params;
   const token = req.headers.get("x-session-token")?.trim() ?? "";
   const session = await getSession(id, token);

@@ -68,6 +68,19 @@ export async function sendCampaign(
   let failed = 0;
 
   for (const contact of unique.values()) {
+    if (!contact.consentMarketing) {
+      await supabase.from("email_campaign_sends").insert({
+        organization_id: input.organizationId,
+        campaign_id: campaign.id,
+        quote_id: contact.id,
+        contact_email: contact.contactEmail,
+        contact_name: contact.contactName,
+        status: "skipped",
+        skip_reason: "no_marketing_consent",
+      });
+      skipped += 1;
+      continue;
+    }
     const skip = recentlyContacted(contact.lastCampaignAt, campaign.skip_recent_days);
     if (skip) {
       await supabase.from("email_campaign_sends").insert({

@@ -12,6 +12,7 @@ const contact: SegmentContact = {
   configuratorId: "funnel-1",
   answers: { usage: "pro", surface: 40 },
   lastCampaignAt: null,
+  consentMarketing: false,
 };
 
 assert.equal(matchSegment({ all: [{ field: "audience", op: "eq", value: "b2b" }] }, contact), true);

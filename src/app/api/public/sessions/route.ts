@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createSession } from "@/lib/public/session";
+import { clientIp, rateLimit, rateLimitResponse } from "@/lib/security/rate-limit";
 
 const schema = z.object({
   orgSlug: z.string().min(1),
@@ -16,6 +17,9 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
+  const limited = rateLimit(`sessions:create:${clientIp(req)}`, 30, 60000);
+  if (!limited.ok) return rateLimitResponse(limited.retryAfterSec);
+
   const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json({ error: "Payload invalide" }, { status: 400 });
