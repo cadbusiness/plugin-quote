@@ -17,13 +17,18 @@ async function requireAdmin() {
   return ctx;
 }
 
-export async function createShop(formData: FormData) {
+export async function createShop(formData: FormData): Promise<{ error?: string } | void> {
   const ctx = await requireAdmin();
   const input = parseCreateShopForm(formData);
-  if (!input) return;
+  if (!input) return { error: "Donnez un nom d’au moins 2 caractères." };
   const supabase = await createClient();
   const shop = await insertShopFromTemplate(supabase, ctx.organization.id, ctx.organization.name, input);
-  if (!shop) return;
+  if (!shop) {
+    return {
+      error:
+        "Impossible de créer la boutique. Vérifiez que la migration 0019_native_shops est appliquée sur Supabase.",
+    };
+  }
   revalidatePath("/integrations");
   const chat = input.seedPrompt ? "?chat=1" : "";
   redirect(`/integrations/shop/${shop.id}${chat}`);

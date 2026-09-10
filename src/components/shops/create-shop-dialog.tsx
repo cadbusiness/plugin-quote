@@ -41,6 +41,7 @@ export function CreateShopDialog({
   const [createFunnel, setCreateFunnel] = useState(!funnels.length);
   const [city, setCity] = useState("");
   const [prompt, setPrompt] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
   function openDialog() {
@@ -52,6 +53,7 @@ export function CreateShopDialog({
     setCreateFunnel(!funnels.length);
     setCity("");
     setPrompt("");
+    setError(null);
     setOpen(true);
   }
 
@@ -88,8 +90,12 @@ export function CreateShopDialog({
     data.set("company", orgName);
     data.set("city", city);
     if (mode === "chat" && prompt.trim()) data.set("seed_prompt", prompt.trim());
+    setError(null);
     startTransition(() => {
-      void createShop(data);
+      void (async () => {
+        const result = await createShop(data);
+        if (result?.error) setError(result.error);
+      })();
     });
   }
 
@@ -236,6 +242,10 @@ export function CreateShopDialog({
                 </label>
               ) : null}
             </div>
+
+            {error ? (
+              <p className="border-t border-rose-100 bg-rose-50 px-5 py-2 text-sm text-rose-700">{error}</p>
+            ) : null}
 
             <div className="flex items-center justify-between gap-2 border-t border-slate-100 px-5 py-3">
               <button type="button" onClick={close} className="text-sm text-slate-500 hover:text-slate-900">
