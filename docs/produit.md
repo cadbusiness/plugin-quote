@@ -3,7 +3,7 @@
 Funnel de devis B2B. Vinci Liberta LTD (Dublin).  
 Inventaire officiel croisé avec le code, 9 septembre 2026, pas la liste marketing.
 
-**Positionnement (sept. 2026)** — Anthropic a publié le blueprint open source `anthropics/commerce-agents` (shopping + merchant agents, retail / voyage / télécom / ticketing). QuoteBuilder est le **vertical B2B sur devis PME** sur ce pattern : Claude = couche d’intelligence ; catalogue, session et soumission restent chez le commerçant (Supabase / QuoteBuilder). Pas un storefront ni un checkout. Les verticals Anthropic ne couvrent pas le devis sur mesure (cuisiniste, rayonnagiste, labo…).
+**Positionnement (sept. 2026)** — Anthropic a publié le blueprint open source `anthropics/commerce-agents` (shopping + merchant agents, retail / voyage / télécom / ticketing). QuoteBuilder est le **vertical B2B sur devis PME** sur ce pattern : Claude = couche d’intelligence ; catalogue, session et soumission restent chez le commerçant (Supabase / QuoteBuilder). Pas un checkout : la boutique native et les funnels préparent un devis, ils n’encaissent pas. Les verticals Anthropic ne couvrent pas le devis sur mesure (cuisiniste, rayonnagiste, labo…).
 
 **Cœur** = on le livre et on le soigne maintenant.  
 **Phase 2** = après le cœur. Hors menu tant que funnel et catalogue ne sont pas au niveau.  
@@ -35,6 +35,7 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 - **Page suggestions visuelles côté prospect**, Livré.
 - **Sync WooCommerce (import + sync)**, Livré. `/integrations` : produits, descriptions, photos, prix, déclinaisons ; sync manuelle, planifiée et webhook.
 - **Sync Shopify (import + sync)**, Livré. Admin GraphQL, app personnalisée `read_products`, mêmes réglages que Woo.
+- **Boutique native QuoteBuilder (mini-site devis)**, Partiel. `/integrations` : création par template ou chat IA, pages (accueil, catalogue, légales), menus, builder drag-and-drop, URL `/b/[org]/[slug]`, SEO / GEO (JSON-LD, sitemap, robots, llms.txt). Pas de paiement. Woo / Shopify restent des catalogues branchés.
 
 ### Agent commerçant (dashboard)
 - **Merchant agent NL (prospects chauds, ROI Ads, brouillons email avec approval)**, Ensuite. Même famille que le merchant agent Anthropic ; pas avant que l’agent prospect catalogue + gates soit solide en prod.
@@ -184,6 +185,7 @@ Les clients et agences publient des funnels configurés. D’autres les installe
 
 ## Ce qu’on ne fait pas
 
-QuoteBuilder n’est pas un formulaire de contact, ni un thème de site.  
+QuoteBuilder n’est pas un formulaire de contact, ni une caisse e-commerce.  
+La boutique native est une vitrine de devis (catalogue + pages + SEO), pas un checkout.  
 On ne met pas Quickly en avant sur la landing.  
 On ne pose pas Kanban ou marketplace dans le menu tant que le funnel et le catalogue ne sont pas au niveau.

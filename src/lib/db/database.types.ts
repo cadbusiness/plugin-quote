@@ -1611,6 +1611,177 @@ export type Database = {
           },
         ]
       }
+      shops: {
+        Row: {
+          configurator_id: string | null
+          created_at: string
+          id: string
+          legal: Json
+          name: string
+          organization_id: string
+          published_at: string | null
+          sector: string
+          seo: Json
+          slug: string
+          status: string
+          theme: Json
+          updated_at: string
+        }
+        Insert: {
+          configurator_id?: string | null
+          created_at?: string
+          id?: string
+          legal?: Json
+          name: string
+          organization_id: string
+          published_at?: string | null
+          sector?: string
+          seo?: Json
+          slug: string
+          status?: string
+          theme?: Json
+          updated_at?: string
+        }
+        Update: {
+          configurator_id?: string | null
+          created_at?: string
+          id?: string
+          legal?: Json
+          name?: string
+          organization_id?: string
+          published_at?: string | null
+          sector?: string
+          seo?: Json
+          slug?: string
+          status?: string
+          theme?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shops_configurator_id_fkey"
+            columns: ["configurator_id"]
+            isOneToOne: false
+            referencedRelation: "configurators"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "shops_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shop_pages: {
+        Row: {
+          blocks: Json
+          created_at: string
+          id: string
+          is_published: boolean
+          kind: string
+          organization_id: string
+          seo: Json
+          shop_id: string
+          slug: string
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          blocks?: Json
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          kind: string
+          organization_id: string
+          seo?: Json
+          shop_id: string
+          slug: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          blocks?: Json
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          kind?: string
+          organization_id?: string
+          seo?: Json
+          shop_id?: string
+          slug?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shop_pages_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "shop_pages_shop_id_fkey"
+            columns: ["shop_id"]
+            isOneToOne: false
+            referencedRelation: "shops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shop_nav_items: {
+        Row: {
+          created_at: string
+          href: string
+          id: string
+          label: string
+          location: string
+          organization_id: string
+          shop_id: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          href: string
+          id?: string
+          label: string
+          location: string
+          organization_id: string
+          shop_id: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          href?: string
+          id?: string
+          label?: string
+          location?: string
+          organization_id?: string
+          shop_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shop_nav_items_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "shop_nav_items_shop_id_fkey"
+            columns: ["shop_id"]
+            isOneToOne: false
+            referencedRelation: "shops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       suggestion_rules: {
         Row: {
           conditions: Json

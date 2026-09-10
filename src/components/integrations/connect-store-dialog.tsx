@@ -55,9 +55,9 @@ export function ConnectStoreDialog({ funnels }: { funnels: Funnel[] }) {
           setOpen(true);
           setStep(0);
         }}
-        className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]"
+        className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
       >
-        Connecter une boutique
+        Connecter Woo / Shopify
       </button>
 
       {open ? (

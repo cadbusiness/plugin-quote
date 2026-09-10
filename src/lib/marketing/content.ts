@@ -672,7 +672,7 @@ export const FEATURES: Feature[] = [
       },
       {
         title: "Boutiques",
-        text: "WooCommerce et Shopify : produits, photos, prix, déclinaisons.",
+        text: "Mini-site devis QuoteBuilder, ou sync WooCommerce / Shopify.",
       },
       {
         title: "Webhooks & templates",

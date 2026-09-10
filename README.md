@@ -38,14 +38,15 @@ SUPABASE_SERVICE_ROLE_KEY=… npm run publish:wp-plugin
 
 Secours : `GET /api/public/wp-plugin` (Vercel) si le bucket n’est pas encore peuplé.
 
-## Catalogue connecté (WooCommerce / Shopify)
+## Boutique QuoteBuilder + catalogues connectés
 
-`Boutiques` (`/integrations`) branche le catalogue d’une boutique sur un funnel : produits, descriptions, photos, prix, déclinaisons.
+`Boutiques` (`/integrations`) gère deux choses : une **boutique native** (mini-site devis, URL `/b/[org]/[slug]`) et les **catalogues Woo / Shopify**.
 
+- Boutique native : template sectoriel ou chat IA, pages (accueil, catalogue, mentions, CGV, confidentialité, cookies), menus, builder drag-and-drop, SEO / GEO. CTA = demander un devis, pas de paiement.
 - **WooCommerce** : URL du site + clé API REST en lecture seule (`/wp-json/wc/v3`). Le plugin WordPress se connecte en un clic : il ouvre QuoteBuilder, crée la clé et les webhooks produits, puis importe le catalogue.
 - **Shopify** : domaine `*.myshopify.com` + jeton d’une app personnalisée avec la portée `read_products` (Admin GraphQL, version pilotée par `SHOPIFY_API_VERSION`).
 - Sync manuelle, planifiée (`/api/cron/catalog-sync`, 4h30) et temps réel par webhook signé (`/api/integrations/<id>/webhook`).
-- Les accès boutique sont chiffrés en AES-256-GCM avec `INTEGRATIONS_SECRET_KEY` (à défaut `SUPABASE_SERVICE_ROLE_KEY`).
+- Les accès boutique connectée sont chiffrés en AES-256-GCM avec `INTEGRATIONS_SECRET_KEY` (à défaut `SUPABASE_SERVICE_ROLE_KEY`).
 
 App Flutter (iOS / Android) : dossier [`mobile/`](mobile/), `cd mobile && flutter run`.
 

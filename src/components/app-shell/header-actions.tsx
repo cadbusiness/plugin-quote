@@ -11,6 +11,7 @@ import {
   PanelsTopLeft,
   Plus,
   Sparkles,
+  Store,
   UserPlus,
   type LucideIcon,
 } from "lucide-react";
@@ -120,8 +121,8 @@ export function HeaderActions({
               </button>
             ) : null}
             {isAdmin ? (
-              <ActionLink href="/produits" icon={Package} onClick={() => setMenu(null)}>
-                Catalogue
+              <ActionLink href="/integrations#nouveau" icon={Store} onClick={() => setMenu(null)}>
+                Boutique
               </ActionLink>
             ) : null}
             <ActionLink href="/devis" icon={Inbox} onClick={() => setMenu(null)}>

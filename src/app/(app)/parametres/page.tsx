@@ -8,8 +8,8 @@ import { parseOrgFamily } from "@/lib/funnels/families";
 const ROWS: { href: string; label: string; hint: string; admin?: boolean }[] = [
   {
     href: "/integrations",
-    label: "Boutiques connectées",
-    hint: "WooCommerce, Shopify, sync du catalogue",
+    label: "Boutiques",
+    hint: "Boutique QuoteBuilder, WooCommerce, Shopify",
     admin: true,
   },
   { href: "/webhooks", label: "API & webhooks", hint: "Notifications vers vos outils", admin: true },
