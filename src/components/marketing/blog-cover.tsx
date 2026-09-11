@@ -57,25 +57,32 @@ export function BlogCover({
   sizes,
   priority = false,
   compact = false,
+  hero = false,
 }: {
   post: BlogPost;
   sizes: string;
   priority?: boolean;
   compact?: boolean;
+  hero?: boolean;
 }) {
   const cover = post.cover ? normalizeCoverPath(post.cover) : undefined;
   if (!cover) {
     return <BlogCoverPlaceholder post={post} compact={compact} />;
   }
+  const frame = compact
+    ? "aspect-[16/10] min-h-[9.5rem]"
+    : hero
+      ? "aspect-[16/9] min-h-[18rem] sm:min-h-[24rem] lg:min-h-[28rem]"
+      : "aspect-[16/10]";
   return (
-    <div className={`relative overflow-hidden bg-mk-dark ${compact ? "aspect-[16/10] min-h-[9.5rem]" : "aspect-[16/10]"}`}>
+    <div className={`relative overflow-hidden bg-mk-band ${frame}`}>
       <Image
         src={cover}
         alt=""
         fill
         sizes={sizes}
         priority={priority}
-        className="object-cover"
+        className="object-cover object-top object-left"
       />
     </div>
   );

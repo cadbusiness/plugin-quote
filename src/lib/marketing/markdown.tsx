@@ -187,8 +187,8 @@ function FigureFrame({
   children: ReactNode;
 }) {
   return (
-    <figure className="mt-8">
-      <div className="overflow-hidden rounded-xl bg-mk-surface p-3 ring-1 ring-mk-border sm:p-4">
+    <figure className="mt-10 w-full max-w-[52rem] sm:w-[min(52rem,calc(100%+4rem))] sm:-ml-2 lg:w-[min(52rem,calc(100%+6rem))]">
+      <div className="overflow-hidden rounded-xl bg-mk-surface p-2 ring-1 ring-mk-border sm:p-3">
         {children}
       </div>
       {label ? (
@@ -274,13 +274,13 @@ export function Markdown({
           {schematic ? (
             <SchematicFigure kind={schematic} label={label} />
           ) : src.startsWith("/") ? (
-            <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-mk-band">
+            <div className="relative aspect-[16/9] min-h-[14rem] overflow-hidden rounded-lg bg-mk-band sm:min-h-[18rem]">
               <Image
                 src={src}
                 alt={image.alt}
                 fill
-                sizes="(max-width: 768px) 100vw, 720px"
-                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 960px"
+                className="object-cover object-top object-left"
               />
             </div>
           ) : (

@@ -46,6 +46,9 @@ Le [funnel](/fonctionnalites/funnel) QuoteBuilder existe pour ça : le prospect 
 
 Sans ce dossier, l’autopilote n’a rien de très utile à dire. Avec ce dossier, chaque touche peut citer le projet réel. Le prospect reconnaît sa demande. Il répond plus souvent.
 
+![Générateur de séquence de relances](/images/blog/automations.png)
+*T+0 à T+30 j, sujets et corps prêts à copier. Données d’exemple Atelier Nord.*
+
 ## Ce que l’autopilote change concrètement
 
 Un canvas n’est pas un gadget. C’est surtout une façon de tenir cinq touches quand l’équipe est à un, trois ou dix.

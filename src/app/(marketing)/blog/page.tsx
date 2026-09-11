@@ -25,7 +25,7 @@ export default async function BlogIndexPage({
     <>
       <section className="relative overflow-hidden px-6 pb-8 pt-14 sm:pt-20">
         <div aria-hidden className="marketing-grid pointer-events-none absolute inset-0" />
-        <div className="relative mx-auto max-w-6xl">
+        <div className="relative mx-auto max-w-7xl">
           <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-mk-accent">
             {BLOG_UI.eyebrow}
           </p>

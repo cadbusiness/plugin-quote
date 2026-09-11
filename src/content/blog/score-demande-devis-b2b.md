@@ -10,6 +10,9 @@ Ce guide propose une méthode simple pour **scorer une demande de devis B2B** (p
 
 Public : fondateurs solo, responsables commerciaux, PME industrielles ou services configurables, agences qui gèrent plusieurs catalogues.
 
+![Outil de score brief devis](/images/blog/devis-detail.png)
+*Grille 0 à 100 : cinq questions, score live, reco avant de chiffrer.*
+
 ## Pourquoi le scoring devis n’est pas du lead scoring marketing
 
 Le lead scoring classique note souvent l’intérêt (pages vues, webinars, score firmographique). Utile en inbound volume. Moins utile quand la « lead » est déjà une **demande de devis**.

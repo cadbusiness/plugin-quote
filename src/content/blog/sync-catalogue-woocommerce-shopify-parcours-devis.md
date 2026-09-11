@@ -10,6 +10,9 @@ WooCommerce est disponible dès Starter. Shopify à partir de Pro. Agency repren
 
 La sync **n’est pas** un checkout. QuoteBuilder ne remplace pas le paiement Woo / Shopify. La boutique native QuoteBuilder, si vous l’utilisez, est un mini-site de devis : pages, SEO, catalogue, pas d’encaissement. Anthropic décrit des agents commerce retail ; ici le vertical est le **devis PME**. Claude aide à cadrer. Le commerçant garde le catalogue et la soumission.
 
+![Catalogue de la boutique démo](/images/blog/produits.png)
+*Le catalogue réel, posé dans un parcours de devis. Espace démo.*
+
 ## Pourquoi le parcours a besoin du catalogue réel
 
 Sans catalogue, le funnel pose des questions abstraites. Avec catalogue, chaque réponse peut **suggérer**. C’est le Si/Alors : « réserve sèche + allée étroite » n’affiche pas la même gamme qu’« picking + forte rotation ». Le prospect voit ce que vous livrez. Vous recevez des lignes, pas un roman.

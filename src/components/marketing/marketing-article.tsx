@@ -40,67 +40,65 @@ export function MarketingArticle({
     <>
       <BlogProgress />
       <article className="px-4 pb-6 pt-8 sm:px-6 sm:pt-12 lg:px-8">
-        <div className="mx-auto max-w-6xl overflow-hidden rounded-2xl bg-mk-surface shadow-[0_1px_0_rgba(11,13,18,0.04)] ring-1 ring-mk-border">
-          <header className="px-6 pt-8 sm:px-10 sm:pt-10">
-            <div className="max-w-[45rem]">
-              <nav className="flex flex-wrap items-center gap-2 text-xs font-medium text-mk-faint" aria-label="Fil d’Ariane">
-                <Link href="/blog" className="hover:text-mk-ink">
-                  Blog
-                </Link>
-                <span>/</span>
-                <Link
-                  href={`/blog?tag=${primaryTag(post)}`}
-                  className="text-mk-accent hover:text-mk-accent-hover"
-                >
-                  {primaryTagLabel(post)}
-                </Link>
-              </nav>
-              <h1 className="mt-5 text-[2rem] font-semibold leading-[1.12] tracking-tight sm:text-[2.75rem] sm:leading-[1.08]">
-                {post.title}
-              </h1>
-              <p className="mt-5 text-[15px] leading-6 text-mk-muted">
-                {BLOG_UI.byline}
-                <span className="mx-2 text-mk-faint">·</span>
-                {date}
-                <span className="mx-2 text-mk-faint">·</span>
-                {post.readingMinutes} {BLOG_UI.reading}
-              </p>
-            </div>
+        <div className="mx-auto max-w-7xl">
+          <header className="max-w-5xl">
+            <nav className="flex flex-wrap items-center gap-2 text-xs font-medium text-mk-faint" aria-label="Fil d’Ariane">
+              <Link href="/blog" className="hover:text-mk-ink">
+                Blog
+              </Link>
+              <span>/</span>
+              <Link
+                href={`/blog?tag=${primaryTag(post)}`}
+                className="text-mk-accent hover:text-mk-accent-hover"
+              >
+                {primaryTagLabel(post)}
+              </Link>
+            </nav>
+            <h1 className="mt-5 text-[2.15rem] font-semibold leading-[1.1] tracking-tight sm:text-[3.25rem] sm:leading-[1.06] lg:text-[3.5rem]">
+              {post.title}
+            </h1>
+            <p className="mt-5 text-[15px] leading-6 text-mk-muted">
+              {BLOG_UI.byline}
+              <span className="mx-2 text-mk-faint">·</span>
+              {date}
+              <span className="mx-2 text-mk-faint">·</span>
+              {post.readingMinutes} {BLOG_UI.reading}
+            </p>
           </header>
 
-          <div className="px-6 pt-6 sm:px-10">
-            <div className="overflow-hidden rounded-xl ring-1 ring-mk-border">
-              <BlogCover post={resolved} sizes="(max-width: 768px) 100vw, 960px" priority />
-            </div>
+          <div className="mt-8 overflow-hidden rounded-2xl bg-mk-band ring-1 ring-mk-border">
+            <BlogCover post={resolved} sizes="(max-width: 768px) 100vw, 1280px" priority hero />
           </div>
 
-          <div className="px-6 pb-12 pt-8 sm:px-10">
-            <div className="lg:grid lg:grid-cols-[minmax(0,45rem)_minmax(13rem,1fr)] lg:gap-16">
-              <div id="article-body" className="max-w-[45rem]">
-                <BlogToc headings={headings} variant="mobile" />
-                <Markdown
-                  source={body}
-                  midAfterHeading={midAfter}
-                  midSlot={<BlogMidCta href={post.ctaHref} />}
-                />
+          <div className="mt-10 overflow-hidden rounded-2xl bg-mk-surface shadow-[0_1px_0_rgba(11,13,18,0.04)] ring-1 ring-mk-border">
+            <div className="px-6 py-10 sm:px-10 lg:px-12">
+              <div className="lg:grid lg:grid-cols-[minmax(0,45rem)_minmax(14rem,1fr)] lg:justify-between lg:gap-x-16">
+                <div id="article-body" className="max-w-[45rem]">
+                  <BlogToc headings={headings} variant="mobile" />
+                  <Markdown
+                    source={body}
+                    midAfterHeading={midAfter}
+                    midSlot={<BlogMidCta href={post.ctaHref} />}
+                  />
+                </div>
+                <aside className="hidden lg:block">
+                  <BlogToc headings={headings} variant="desktop" />
+                </aside>
               </div>
-              <aside className="hidden lg:block">
-                <BlogToc headings={headings} variant="desktop" />
-              </aside>
             </div>
-          </div>
 
-          {hasInlineFaq || faq.length === 0 ? null : (
-            <div className="border-t border-mk-border">
-              <MarketingFaq items={faq} />
-            </div>
-          )}
+            {hasInlineFaq || faq.length === 0 ? null : (
+              <div className="border-t border-mk-border">
+                <MarketingFaq items={faq} />
+              </div>
+            )}
+          </div>
         </div>
       </article>
 
       {related.length > 0 || tools.length > 0 ? (
         <section id="related" className="border-y border-mk-border bg-mk-band px-6 py-14">
-          <div className="mx-auto max-w-6xl space-y-10">
+          <div className="mx-auto max-w-7xl space-y-10">
             {related.length > 0 ? (
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mk-accent">
