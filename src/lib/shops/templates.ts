@@ -1,3 +1,4 @@
+import { buildCatalogLayout, buildHomeLayout, shopCopyForFamily } from "@/lib/shops/composition";
 import { emptyNode } from "@/lib/shops/layout";
 import { cgvBody, cookiesBody, LEGAL_SLUGS, mentionsLegalesBody, privacyBody } from "@/lib/shops/legal";
 import { DEFAULT_THEME } from "@/lib/shops/parse";
@@ -45,30 +46,13 @@ function defaultLegal(): ShopLegal {
   };
 }
 
-function defaultSeo(shopName: string, family: ReturnType<typeof getFunnelFamily>, city: string): ShopSeo {
+function defaultSeo(shopName: string, description: string, city: string): ShopSeo {
   return {
     title: shopName,
-    description: `${shopName} — ${family.blurb} Catalogue, catégories et demande de devis B2B. Pas de paiement en ligne.`,
+    description,
     language: "fr-FR",
     geo: { locality: city, region: "", country: "FR", postalCode: "" },
   };
-}
-
-function homeFaq(familyLabel: string): { q: string; a: string }[] {
-  return [
-    {
-      q: "Puis-je commander en ligne ?",
-      a: "Non. Cette boutique prépare un devis. Vous ajoutez des produits ou décrivez le projet, puis l’équipe commerciale chiffre.",
-    },
-    {
-      q: `Quels projets ${familyLabel.toLowerCase()} acceptez-vous ?`,
-      a: "Les fiches du catalogue et le funnel de devis cadrent le besoin (usage, dimensionnement, options).",
-    },
-    {
-      q: "Les prix affichés sont-ils fermes ?",
-      a: "Ce sont des fourchettes catalogue. Le tarif contractuel figure sur le devis écrit.",
-    },
-  ];
 }
 
 export function buildShopBlueprint(input: {
@@ -80,8 +64,9 @@ export function buildShopBlueprint(input: {
   const family = getFunnelFamily(input.sector);
   const template = defaultTemplateForFamily(family.id);
   const legal: ShopLegal = { ...defaultLegal(), ...input.legal, company: input.legal?.company || input.orgName };
-  const seo = defaultSeo(input.name, family, legal.city);
-  const faq = homeFaq(family.label);
+  const copy = shopCopyForFamily({ name: input.name, sector: family.id, city: legal.city });
+  const seo = defaultSeo(input.name, copy.seoDescription, legal.city);
+  const homeInput = { name: input.name, sector: family.id, city: legal.city };
 
   const home: ShopPageDraft = {
     kind: "home",
@@ -92,35 +77,7 @@ export function buildShopBlueprint(input: {
       description: seo.description,
       noindex: false,
     },
-    blocks: asLayout([
-      emptyNode("Hero", {
-        heading: input.name,
-        sub: `${family.pitch} Catalogue, catégories, demande de devis.`,
-        ctaLabel: "Demander un devis",
-      }),
-      emptyNode("Features", {
-        heading: "Une vitrine de devis, pas une caisse",
-        features: [
-          { title: "Catalogue", text: "Fiches, photos, fourchettes de prix, catégories." },
-          { title: "Devis", text: "Le prospect ajoute des produits et envoie une demande globale." },
-          { title: "Référencement", text: "Pages indexables, données structurées, mentions légales." },
-        ],
-      }),
-      emptyNode("Categories", { heading: "Rayons" }),
-      emptyNode("Catalog", { heading: "Produits", limit: 8 }),
-      emptyNode("Section", {
-        children: [
-          emptyNode("Heading", { text: family.label, level: "h2" }),
-          emptyNode("Text", { text: `${template.blurb} ${family.pitch}` }),
-        ],
-      }),
-      emptyNode("Faq", { heading: "Questions fréquentes", faq }),
-      emptyNode("QuoteCta", {
-        heading: "Chiffrer un projet",
-        text: "Décrivez le besoin ou partez du catalogue. Nous revenons avec un devis.",
-        ctaLabel: "Ouvrir le devis",
-      }),
-    ]),
+    blocks: buildHomeLayout(homeInput),
     isPublished: true,
     sortOrder: 0,
   };
@@ -134,15 +91,7 @@ export function buildShopBlueprint(input: {
       description: `Catalogue ${family.label.toLowerCase()} — ${input.name}. Fiches produits et demande de devis.`,
       noindex: false,
     },
-    blocks: asLayout([
-      emptyNode("Hero", {
-        heading: "Catalogue",
-        sub: "Parcourez les rayons, ouvrez une fiche, ajoutez au devis.",
-        ctaLabel: "Demander un devis",
-      }),
-      emptyNode("Categories", { heading: "Catégories" }),
-      emptyNode("Catalog", { heading: "Tous les produits", limit: 24 }),
-    ]),
+    blocks: buildCatalogLayout(homeInput),
     isPublished: true,
     sortOrder: 1,
   };
