@@ -99,7 +99,7 @@ export function MarketingArticle({
       </article>
 
       {related.length > 0 || tools.length > 0 ? (
-        <section className="border-y border-mk-border bg-mk-band px-6 py-14">
+        <section id="related" className="border-y border-mk-border bg-mk-band px-6 py-14">
           <div className="mx-auto max-w-6xl space-y-10">
             {related.length > 0 ? (
               <div>
