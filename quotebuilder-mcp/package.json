@@ -1,7 +1,7 @@
 {
   "name": "quotebuilder-mcp",
-  "version": "1.0.0",
-  "description": "MCP Server QuoteBuilder — gérez leads, stats et relances depuis Claude Desktop",
+  "version": "1.1.0",
+  "description": "MCP Server QuoteBuilder — gérez devis, stats et relances depuis Claude Desktop",
   "type": "module",
   "main": "dist/index.js",
   "bin": {

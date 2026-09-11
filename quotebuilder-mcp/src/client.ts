@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-export type LeadStatus = "new" | "contacted" | "in_progress" | "won" | "lost";
+import { leadFromDetailPayload, sliceQuoteStatus, type QuoteStatusSlice } from "./quote-status.js";
+
+export type LeadStatus = "new" | "contacted" | "in_progress" | "won" | "lost" | "waiting";
 export type LeadScore = "hot" | "warm" | "cold";
 export type StatsPeriod = "today" | "week" | "month" | "custom";
 export type FollowupTemplate = "reminder_24h" | "nudge_3d" | "reactivation_30d";
@@ -71,10 +73,23 @@ export class QuoteBuilderClient {
     name: string;
     email: string;
     phone?: string;
+    company?: string;
     funnel_id: string;
     data?: Record<string, unknown>;
+    run_autopilot?: boolean;
   }) {
     return this.request<{ lead: unknown }>("POST", "/api/leads", args);
+  }
+
+  async getQuoteStatus(quoteId: string): Promise<QuoteStatusSlice> {
+    const raw = await this.request<unknown>(
+      "GET",
+      `/api/leads/${encodeURIComponent(quoteId)}?view=status`,
+    );
+    if (raw && typeof raw === "object" && raw !== null && "quote" in raw) {
+      return sliceQuoteStatus((raw as { quote: unknown }).quote);
+    }
+    return sliceQuoteStatus(leadFromDetailPayload(raw));
   }
 
   getStats(args: { period: StatsPeriod; from?: string; to?: string }) {
@@ -104,7 +119,7 @@ export class QuoteBuilderClient {
   }
 }
 
-export const leadStatusSchema = z.enum(["new", "contacted", "in_progress", "won", "lost"]);
+export const leadStatusSchema = z.enum(["new", "contacted", "in_progress", "won", "lost", "waiting"]);
 export const leadScoreSchema = z.enum(["hot", "warm", "cold"]);
 export const statsPeriodSchema = z.enum(["today", "week", "month", "custom"]);
 export const followupTemplateSchema = z.enum(["reminder_24h", "nudge_3d", "reactivation_30d"]);

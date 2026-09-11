@@ -6,6 +6,7 @@ import { logActivity } from "@/lib/crm/activity";
 import { scoreQuote } from "@/lib/quotes/score";
 import { exitActiveQuoteRuns, startWorkflows } from "@/lib/workflows/engine";
 import type { Answers } from "@/lib/wizard/types";
+import { shouldRunQuoteAutopilot, sliceQuoteStatus } from "@/lib/api/quote-status";
 
 export type LeadStatusSlug = "new" | "contacted" | "in_progress" | "won" | "lost" | "waiting";
 export type LeadScore = "hot" | "warm" | "cold";
@@ -24,6 +25,8 @@ export type CreateLeadInput = {
   company?: string;
   funnel_id: string;
   data?: Record<string, unknown>;
+  /** When true, fire quote.submitted workflows / emails. Default false (no spam). */
+  run_autopilot?: boolean;
 };
 
 export type UpdateLeadStatusInput = {
@@ -126,10 +129,19 @@ export async function apiGetLeadDetail(organizationId: string, leadId: string) {
       created_at: activity.created_at,
     })),
     assignees: detail.assignees,
+    assigned_to: detail.assignees.length
+      ? detail.assignees.map((row) => ({ id: row.userId, label: row.label }))
+      : null,
     suivi_url: detail.suiviUrl,
     totals: detail.totals,
     created_at: detail.quote.created_at,
   };
+}
+
+export async function apiGetQuoteStatus(organizationId: string, leadId: string) {
+  const lead = await apiGetLeadDetail(organizationId, leadId);
+  if (!lead) return null;
+  return sliceQuoteStatus(lead);
 }
 
 export async function apiUpdateLeadStatus(organizationId: string, input: UpdateLeadStatusInput) {
@@ -273,22 +285,26 @@ export async function apiCreateLead(organizationId: string, input: CreateLeadInp
 
   if (error || !quote) throw new Error(error?.message ?? "Création impossible");
 
+  const runAutopilot = shouldRunQuoteAutopilot(input.run_autopilot);
+
   await logActivity(supabase, {
     organizationId,
     quoteId: quote.id,
     type: "submitted",
-    payload: { source: "api" },
+    payload: { source: "api", run_autopilot: runAutopilot },
   });
 
-  try {
-    await startWorkflows({
-      triggerType: "quote.submitted",
-      organizationId,
-      subjectType: "quote",
-      subjectId: quote.id,
-    });
-  } catch (err) {
-    console.error("Workflow submit trigger failed", err);
+  if (runAutopilot) {
+    try {
+      await startWorkflows({
+        triggerType: "quote.submitted",
+        organizationId,
+        subjectType: "quote",
+        subjectId: quote.id,
+      });
+    } catch (err) {
+      console.error("Workflow submit trigger failed", err);
+    }
   }
 
   return {
