@@ -1,7 +1,21 @@
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { BLOG_POSTS } from "./blog";
+import {
+  BLOG_POSTS,
+  BLOG_TAG_DEFS,
+  BLOG_UI,
+  blogArticleJsonLd,
+  blogBreadcrumbJsonLd,
+  blogOgImagePath,
+  extractMarkdownH2s,
+  filterBlogPosts,
+  getFeaturedPost,
+  getRelatedPosts,
+  midArticleHeadingIndex,
+  primaryTagLabel,
+  trimMetaDescription,
+} from "./blog";
 import { BLOG_FAQ } from "./blog-faq";
 import { computeBriefScore } from "./brief-score";
 import { computeLostQuote } from "./lost-quote";
@@ -62,6 +76,60 @@ for (const required of [
 }
 
 assert.equal(BLOG_POSTS.length, 6);
+assert.deepEqual(BLOG_TAG_DEFS.map((tag) => tag.slug), [
+  "scoring",
+  "relances",
+  "funnel",
+  "integrations",
+  "catalogue",
+]);
+assert.ok(
+  BLOG_POSTS.every((post) => post.tags.every((tag) => BLOG_TAG_DEFS.some((def) => def.slug === tag))),
+  "every post needs known tags",
+);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "score-demande-devis-b2b")?.tags, ["scoring", "funnel"]);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "sync-catalogue-woocommerce-shopify-parcours-devis")?.tags, [
+  "catalogue",
+  "integrations",
+]);
+assert.equal(getFeaturedPost()?.slug, "score-demande-devis-b2b");
+const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "formulaire-contact-vs-funnel-devis-b2b")!);
+assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
+assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
+assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 2);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 2);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 1);
+assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
+assert.equal(midArticleHeadingIndex(12), 5);
+assert.ok(trimMetaDescription(BLOG_POSTS[0]!.description).length <= 155);
+assert.equal(BLOG_UI.tryFree, "Essayer gratuitement");
+assert.equal(BLOG_UI.toc, "Sur cette page");
+assert.equal(BLOG_UI.midCtaLink, "Ouvrir la démo");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "score-demande-devis-b2b")?.ctaHref, "/c/demo/rayonnage");
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "installer-widget-devis-wordpress-javascript")?.ctaHref,
+  "/b/demo/vitrine",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance")?.ctaHref,
+  "/outils/generateur-sequence-relances",
+);
+
+const articleLd = blogArticleJsonLd(BLOG_POSTS[0]!);
+assert.equal(articleLd["@type"], "Article");
+assert.match(String(articleLd.image), /opengraph-image/);
+assert.match(String(articleLd.mainEntityOfPage), /www\.quotebuilder\.co\/blog\//);
+
+const crumbs = blogBreadcrumbJsonLd(BLOG_POSTS[0]!);
+assert.equal(crumbs["@type"], "BreadcrumbList");
+assert.equal(crumbs.itemListElement.length, 3);
+assert.equal(crumbs.itemListElement[0]?.name, "Blog");
+assert.equal(crumbs.itemListElement[1]?.name, primaryTagLabel(BLOG_POSTS[0]!));
+
+for (const value of Object.values(BLOG_UI)) {
+  assert.doesNotMatch(value, EM_DASH, `BLOG_UI still contains an em dash: ${value}`);
+}
 
 const blogDir = join(process.cwd(), "src/content/blog");
 const blogFiles = readdirSync(blogDir).filter((name) => name.endsWith(".md"));
@@ -136,6 +204,20 @@ const meta = pageMetadata({
 });
 assert.equal(meta.alternates?.canonical, "https://www.quotebuilder.co/login");
 assert.deepEqual(meta.robots, { index: false, follow: false });
+
+const articleMeta = pageMetadata({
+  title: "Scorer une demande",
+  description: "Grille",
+  path: "/blog/score-demande-devis-b2b",
+  type: "article",
+  publishedTime: "2026-09-11",
+  image: blogOgImagePath(BLOG_POSTS[0]!),
+});
+assert.equal(articleMeta.alternates?.canonical, "https://www.quotebuilder.co/blog/score-demande-devis-b2b");
+const ogImages = articleMeta.openGraph?.images;
+assert.ok(Array.isArray(ogImages));
+assert.match(JSON.stringify(ogImages), /blog\/score-demande-devis-b2b\/opengraph-image/);
+assert.equal(articleMeta.openGraph?.title, "Scorer une demande · QuoteBuilder");
 
 const lost = computeLostQuote({
   quotesPerMonth: 40,
@@ -230,5 +312,17 @@ while (i < scoreLines.length) {
   i += 1;
 }
 assert.ok(tableBlocks >= 5, `expected scoring tables, got ${tableBlocks}`);
+
+const scoreHeadings = extractMarkdownH2s(scoreMd);
+assert.ok(scoreHeadings.length >= 8, "score article should expose H2s for the TOC");
+assert.ok(scoreHeadings.every((heading) => heading.id && !heading.id.includes(" ")));
+assert.ok(scoreHeadings.some((heading) => heading.text === "FAQ"));
+assert.equal(
+  scoreHeadings.filter((heading) => heading.id === "pourquoi-le-scoring-devis-n-est-pas-du-lead-scoring-marketing").length,
+  0,
+);
+assert.ok(
+  scoreHeadings.some((heading) => heading.id === "pourquoi-le-scoring-devis-nest-pas-du-lead-scoring-marketing"),
+);
 
 console.log("marketing seo tests ok");
