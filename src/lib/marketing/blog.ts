@@ -135,6 +135,19 @@ export const BLOG_POSTS: BlogPost[] = [
     pinned: false,
   },
   {
+    slug: "relancer-devis-hot-depuis-dossier",
+    path: "/blog/relancer-devis-hot-depuis-dossier",
+    title: "Relancer un devis Hot depuis le dossier : SLA, owner et automations",
+    description:
+      "Process métier : relancer un devis Hot depuis le dossier QuoteBuilder. Score, owner, SLA, actions Écrire/Appeler/Relancer, automations vs jugement commercial, checklist équipe.",
+    publishedAt: "2026-09-11",
+    readingMinutes: 12,
+    tags: ["relances", "scoring"],
+    ctaHref: BLOG_TOOL_SEQUENCE,
+    cover: "/images/blog/relancer-devis-hot-depuis-dossier/04-devis-detail.png",
+    pinned: false,
+  },
+  {
     slug: "configurateur-devis-vs-excel-pdf",
     path: "/blog/configurateur-devis-vs-excel-pdf",
     title: "Configurateur de devis vs Excel + PDF + email : ce qui change vraiment",

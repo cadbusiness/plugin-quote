@@ -74,6 +74,7 @@ for (const required of [
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/blog/visite-guidee-parcours-devis-b2b",
+  "/blog/relancer-devis-hot-depuis-dossier",
   "/blog/score-demande-devis-b2b",
   "/blog/configurateur-devis-vs-excel-pdf",
   "/legal/cgu",
@@ -83,11 +84,24 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 7);
+assert.equal(BLOG_POSTS.length, 8);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "visite-guidee-parcours-devis-b2b")?.tags, [
   "funnel",
   "scoring",
 ]);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "relancer-devis-hot-depuis-dossier")?.tags, [
+  "relances",
+  "scoring",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "relancer-devis-hot-depuis-dossier")?.ctaHref,
+  "/outils/generateur-sequence-relances",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "relancer-devis-hot-depuis-dossier")?.cover,
+  "/images/blog/relancer-devis-hot-depuis-dossier/04-devis-detail.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "relancer-devis-hot-depuis-dossier")?.pinned, false);
 assert.equal(
   BLOG_POSTS.find((post) => post.slug === "visite-guidee-parcours-devis-b2b")?.ctaHref,
   "/c/demo/rayonnage",
@@ -118,8 +132,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 3);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 3);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 4);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 4);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 1);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
 assert.equal(midArticleHeadingIndex(12), 5);
@@ -215,6 +229,19 @@ const requiredSources = {
     "/b/demo/vitrine",
     "/signup?plan=free",
   ],
+  "relancer-devis-hot-depuis-dossier.md": [
+    "/images/blog/relancer-devis-hot-depuis-dossier/09-public-funnel.png",
+    "/images/blog/relancer-devis-hot-depuis-dossier/02-accueil.png",
+    "/images/blog/relancer-devis-hot-depuis-dossier/03-devis.png",
+    "/images/blog/relancer-devis-hot-depuis-dossier/04-devis-detail.png",
+    "/images/blog/relancer-devis-hot-depuis-dossier/05-automations.png",
+    "/blog/score-demande-devis-b2b",
+    "/blog/visite-guidee-parcours-devis-b2b",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/outils/generateur-sequence-relances",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
 } as const;
 
 for (const file of blogFiles) {
@@ -239,6 +266,17 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(walkthroughBody, /signup\?plan=free/);
+}
+
+{
+  const relanceRaw = readFileSync(join(blogDir, "relancer-devis-hot-depuis-dossier.md"), "utf8");
+  assert.ok(relanceRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const relanceBody = stripFrontmatter(relanceRaw);
+  assert.ok(
+    relanceBody.startsWith("# Relancer un devis Hot depuis le dossier"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(relanceBody, /signup\?plan=free/);
 }
 
 for (const post of BLOG_POSTS) {
@@ -326,6 +364,7 @@ assert.equal(parkingBrief.band, "parking");
 
 const llmsPaths = [
   "/blog/visite-guidee-parcours-devis-b2b",
+  "/blog/relancer-devis-hot-depuis-dossier",
   "/blog/score-demande-devis-b2b",
   "/blog/configurateur-devis-vs-excel-pdf",
   "/outils/score-brief-devis",
@@ -429,6 +468,20 @@ for (const name of walkthroughImages) {
   const hashes = uniqueNames.map((name) => readFileSync(join(walkthroughDir, name)));
   const keys = hashes.map((buf) => buf.toString("binary"));
   assert.equal(new Set(keys).size, uniqueNames.length, "demo walkthrough screenshots must be unique files");
+}
+
+const relanceImages = [
+  "02-accueil.png",
+  "03-devis.png",
+  "04-devis-detail.png",
+  "05-automations.png",
+  "09-public-funnel.png",
+];
+const relanceDir = join(process.cwd(), "public/images/blog/relancer-devis-hot-depuis-dossier");
+for (const name of relanceImages) {
+  const file = join(relanceDir, name);
+  assert.ok(existsSync(file), `missing blog image ${name}`);
+  assert.ok(statSync(file).size > 10_000, `${name} is too small to be a real screenshot`);
 }
 
 assert.equal(BLOG_IMAGE_DIR, "/images/blog");
