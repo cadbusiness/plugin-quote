@@ -15,6 +15,7 @@ export type ShopTheme = {
   background: string;
   text: string;
   seedPrompt?: string;
+  templateId?: string;
 };
 
 export type ShopGeo = {

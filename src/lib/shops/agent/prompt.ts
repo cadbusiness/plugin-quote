@@ -2,6 +2,7 @@ import { getFunnelFamily } from "@/lib/funnels/families";
 import { shopSnapshot } from "@/lib/shops/agent/executor";
 import { SHOP_AGENT_FIRST_TURN_PLAYBOOK, shopCopyForFamily } from "@/lib/shops/composition";
 import { placeholderCatalogForPrompt } from "@/lib/shops/placeholders";
+import { resolveShopSectorTemplate } from "@/lib/shops/sector-templates";
 import type { ShopDocument } from "@/lib/shops/types";
 
 export function buildShopAgentSystemPrompt(
@@ -11,24 +12,28 @@ export function buildShopAgentSystemPrompt(
 ) {
   const snap = shopSnapshot(doc);
   const family = getFunnelFamily(snap.sector);
+  const template = resolveShopSectorTemplate(snap.theme.templateId, family.id);
   const copy = shopCopyForFamily({
     name: snap.name,
     sector: family.id,
     city: snap.seo.geo.locality || snap.legal.city,
+    templateId: template?.id,
   });
   const pages = snap.pages.map((page) => `- ${page.slug} (${page.title})\n${page.tree}`).join("\n");
+  const identity = template ? `${family.label} · template ${template.label}` : family.label;
   const seed = opts?.isSeedTurn
     ? `
 
 ${SHOP_AGENT_FIRST_TURN_PLAYBOOK}
 
 ## Placeholders images (si le brief n’envoie pas de photo)
-${placeholderCatalogForPrompt(family.id)}
+${placeholderCatalogForPrompt(family.id, template?.id)}
 
-## Vocabulaire secteur (${family.label})
+## Vocabulaire secteur (${identity})
 Hero type : « ${copy.heroHeading} »
 Chapô type : « ${copy.heroSub} »
 CTA devis : « ${copy.heroCta} » / « ${copy.quoteCta} »
+Preuves : « ${copy.proofHeading} » · parcours : « ${copy.processHeading} »
 Réécris selon le brief, garde ce niveau de précision métier.`
     : "";
 
@@ -39,7 +44,7 @@ Tu modifies une mini-boutique B2B sur devis (pas un checkout) via un arbre visue
 Objectif : une vitrine qui a l’air conçue (rythme, colonnes, preuves, FAQ, CTA devis), facilement éditable dans Puck — jamais une caisse e-commerce.
 
 ## État actuel
-Statut : ${snap.status}. Secteur : ${family.id} (${family.label}).
+Statut : ${snap.status}. Secteur : ${family.id} (${identity}).
 SEO : ${snap.seo.title} — ${snap.seo.description}
 GEO : ${snap.seo.geo.locality || "ville non renseignée"} / ${snap.seo.geo.region || "région non renseignée"}
 Légal : ${snap.legal.company || orgName}, SIRET ${snap.legal.siret || "manquant"}

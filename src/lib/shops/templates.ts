@@ -2,6 +2,7 @@ import { buildCatalogLayout, buildHomeLayout, shopCopyForFamily } from "@/lib/sh
 import { emptyNode } from "@/lib/shops/layout";
 import { cgvBody, cookiesBody, LEGAL_SLUGS, mentionsLegalesBody, privacyBody } from "@/lib/shops/legal";
 import { DEFAULT_THEME } from "@/lib/shops/parse";
+import { resolveShopSectorTemplate } from "@/lib/shops/sector-templates";
 import type { ShopBlueprint, ShopLayout, ShopLegal, ShopNavDraft, ShopPageDraft, ShopSeo } from "@/lib/shops/types";
 import { getFunnelFamily } from "@/lib/funnels/families";
 import { defaultTemplateForFamily } from "@/lib/funnels/templates";
@@ -60,13 +61,20 @@ export function buildShopBlueprint(input: {
   sector: string;
   orgName: string;
   legal?: Partial<ShopLegal>;
+  templateId?: string | null;
 }): ShopBlueprint {
   const family = getFunnelFamily(input.sector);
-  const template = defaultTemplateForFamily(family.id);
+  const sectorTemplate = resolveShopSectorTemplate(input.templateId, family.id);
+  const funnelTemplate = defaultTemplateForFamily(family.id);
   const legal: ShopLegal = { ...defaultLegal(), ...input.legal, company: input.legal?.company || input.orgName };
-  const copy = shopCopyForFamily({ name: input.name, sector: family.id, city: legal.city });
+  const homeInput = {
+    name: input.name,
+    sector: family.id,
+    city: legal.city,
+    templateId: sectorTemplate?.id ?? input.templateId,
+  };
+  const copy = shopCopyForFamily(homeInput);
   const seo = defaultSeo(input.name, copy.seoDescription, legal.city);
-  const homeInput = { name: input.name, sector: family.id, city: legal.city };
 
   const home: ShopPageDraft = {
     kind: "home",
@@ -85,9 +93,9 @@ export function buildShopBlueprint(input: {
   const catalog: ShopPageDraft = {
     kind: "catalog",
     slug: "catalogue",
-    title: "Catalogue",
+    title: copy.catalogPageTitle || "Catalogue",
     seo: {
-      title: `Catalogue ${input.name}`,
+      title: `${copy.catalogPageTitle || "Catalogue"} ${input.name}`,
       description: `Catalogue ${family.label.toLowerCase()} — ${input.name}. Fiches produits et demande de devis.`,
       noindex: false,
     },
@@ -107,7 +115,7 @@ export function buildShopBlueprint(input: {
 
   const nav: ShopNavDraft[] = [
     { location: "header", label: "Accueil", href: "/", sortOrder: 0 },
-    { location: "header", label: "Catalogue", href: "/catalogue", sortOrder: 1 },
+    { location: "header", label: sectorTemplate?.catalogNavLabel || "Catalogue", href: "/catalogue", sortOrder: 1 },
     { location: "header", label: "Devis", href: "/devis", sortOrder: 2 },
     { location: "footer", label: "Mentions légales", href: `/${LEGAL_SLUGS.mentions}`, sortOrder: 0 },
     { location: "footer", label: "CGV", href: `/${LEGAL_SLUGS.cgv}`, sortOrder: 1 },
@@ -118,7 +126,11 @@ export function buildShopBlueprint(input: {
   return {
     name: input.name,
     sector: family.id,
-    theme: { ...DEFAULT_THEME, accent: template.accent || DEFAULT_THEME.accent },
+    theme: {
+      ...DEFAULT_THEME,
+      ...(sectorTemplate?.theme ?? { accent: funnelTemplate.accent || DEFAULT_THEME.accent }),
+      templateId: sectorTemplate?.id,
+    },
     seo,
     legal,
     pages,

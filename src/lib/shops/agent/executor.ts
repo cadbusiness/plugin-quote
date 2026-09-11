@@ -90,7 +90,7 @@ export function shopSnapshot(doc: ShopDocument) {
     status: doc.shop.status,
     sector: doc.shop.sector,
     family: { id: family.id, label: family.label, blurb: family.blurb },
-    placeholders: shopPlaceholders(family.id),
+    placeholders: shopPlaceholders(family.id, theme.templateId),
     theme,
     seo,
     legal,

@@ -1,5 +1,6 @@
 import type { Json } from "@/lib/db/database.types";
 import { parseLayout } from "@/lib/shops/layout";
+import { isShopTemplateId } from "@/lib/shops/sector-templates";
 import type {
   ShopGeo,
   ShopLegal,
@@ -43,6 +44,7 @@ export function parseTheme(value: unknown): ShopTheme {
     background: str(raw.background, DEFAULT_THEME.background) || DEFAULT_THEME.background,
     text: str(raw.text, DEFAULT_THEME.text) || DEFAULT_THEME.text,
     seedPrompt: str(raw.seedPrompt) || undefined,
+    templateId: isShopTemplateId(str(raw.templateId)) ? str(raw.templateId) : undefined,
   };
 }
 

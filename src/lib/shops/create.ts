@@ -3,7 +3,8 @@ import type { Database } from "@/lib/db/database.types";
 import { insertFunnelFromTemplate } from "@/lib/funnels/create";
 import { catalogDefaultName } from "@/lib/funnels/kind";
 import { getFunnelFamily, isFunnelFamilyId } from "@/lib/funnels/families";
-import { defaultTemplateForFamily } from "@/lib/funnels/templates";
+import { defaultTemplateForFamily, getFunnelTemplate } from "@/lib/funnels/templates";
+import { resolveShopSectorTemplate, type ShopTemplateId } from "@/lib/shops/sector-templates";
 import { uniqueSlug } from "@/lib/org/slug";
 import { layoutJson } from "@/lib/shops/layout";
 import { asJson, type ShopBlueprint, type ShopLegal } from "@/lib/shops/types";
@@ -13,6 +14,7 @@ import { parseLegal } from "@/lib/shops/parse";
 export type CreateShopInput = {
   name: string;
   sector: string;
+  templateId?: ShopTemplateId;
   configuratorId: string | null;
   createCatalogFunnel: boolean;
   legal: Partial<ShopLegal>;
@@ -23,12 +25,15 @@ export function parseCreateShopForm(formData: FormData): CreateShopInput | null 
   const name = String(formData.get("name") ?? "").trim();
   if (name.length < 2) return null;
   const sectorRaw = String(formData.get("sector") ?? "custom");
-  const sector = isFunnelFamilyId(sectorRaw) ? sectorRaw : "custom";
+  const sectorHint = isFunnelFamilyId(sectorRaw) ? sectorRaw : "custom";
+  const template = resolveShopSectorTemplate(String(formData.get("shop_template") ?? ""), sectorHint);
+  const sector = template?.family ?? sectorHint;
   const catalogFrom = String(formData.get("configurator_id") ?? "").trim();
   const createCatalogFunnel = formData.get("create_funnel") === "on" || !catalogFrom;
   return {
     name,
     sector,
+    templateId: template?.id,
     configuratorId: catalogFrom || null,
     createCatalogFunnel: createCatalogFunnel && !catalogFrom,
     legal: parseLegal({
@@ -52,12 +57,16 @@ export async function insertShopFromTemplate(
   input: CreateShopInput,
 ) {
   const family = getFunnelFamily(input.sector);
-  const funnelTemplate = defaultTemplateForFamily(family.id);
+  const sectorTemplate = resolveShopSectorTemplate(input.templateId, family.id);
+  const funnelTemplate = sectorTemplate
+    ? getFunnelTemplate(sectorTemplate.funnelTemplateId)
+    : defaultTemplateForFamily(family.id);
   const blueprint = buildShopBlueprint({
     name: input.name,
     sector: family.id,
     orgName,
     legal: input.legal,
+    templateId: sectorTemplate?.id ?? input.templateId,
   });
   if (input.seedPrompt) {
     blueprint.theme.seedPrompt = input.seedPrompt;
