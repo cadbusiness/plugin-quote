@@ -1,7 +1,19 @@
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { BLOG_POSTS } from "./blog";
+import {
+  BLOG_POSTS,
+  BLOG_TAGS,
+  BLOG_UI,
+  blogArticleJsonLd,
+  blogBreadcrumbJsonLd,
+  blogOgImagePath,
+  extractMarkdownH2s,
+  filterBlogPosts,
+  getFeaturedPost,
+  getRelatedPosts,
+  midArticleHeadingIndex,
+} from "./blog";
 import { BLOG_FAQ } from "./blog-faq";
 import { computeBriefScore } from "./brief-score";
 import { computeLostQuote } from "./lost-quote";
@@ -62,6 +74,30 @@ for (const required of [
 }
 
 assert.equal(BLOG_POSTS.length, 6);
+assert.ok(BLOG_POSTS.every((post) => BLOG_TAGS.includes(post.tag)), "every post needs a known tag");
+assert.equal(getFeaturedPost()?.slug, "score-demande-devis-b2b");
+const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "formulaire-contact-vs-funnel-devis-b2b")!);
+assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
+assert.ok(funnelRelated.every((post) => post.tag === "Funnel"));
+assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 1);
+assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
+assert.equal(midArticleHeadingIndex(12), 5);
+
+const articleLd = blogArticleJsonLd(BLOG_POSTS[0]!);
+assert.equal(articleLd["@type"], "Article");
+assert.match(String(articleLd.image), /opengraph-image/);
+assert.match(String(articleLd.mainEntityOfPage), /www\.quotebuilder\.co\/blog\//);
+
+const crumbs = blogBreadcrumbJsonLd(BLOG_POSTS[0]!);
+assert.equal(crumbs["@type"], "BreadcrumbList");
+assert.equal(crumbs.itemListElement.length, 3);
+assert.equal(crumbs.itemListElement[0]?.name, "Blog");
+assert.equal(crumbs.itemListElement[1]?.name, BLOG_POSTS[0]!.tag);
+
+for (const value of Object.values(BLOG_UI)) {
+  assert.doesNotMatch(value, EM_DASH, `BLOG_UI still contains an em dash: ${value}`);
+}
 
 const blogDir = join(process.cwd(), "src/content/blog");
 const blogFiles = readdirSync(blogDir).filter((name) => name.endsWith(".md"));
@@ -136,6 +172,19 @@ const meta = pageMetadata({
 });
 assert.equal(meta.alternates?.canonical, "https://www.quotebuilder.co/login");
 assert.deepEqual(meta.robots, { index: false, follow: false });
+
+const articleMeta = pageMetadata({
+  title: "Scorer une demande",
+  description: "Grille",
+  path: "/blog/score-demande-devis-b2b",
+  type: "article",
+  publishedTime: "2026-09-11",
+  image: blogOgImagePath(BLOG_POSTS[0]!),
+});
+assert.equal(articleMeta.alternates?.canonical, "https://www.quotebuilder.co/blog/score-demande-devis-b2b");
+const ogImages = articleMeta.openGraph?.images;
+assert.ok(Array.isArray(ogImages));
+assert.match(JSON.stringify(ogImages), /blog\/score-demande-devis-b2b\/opengraph-image/);
 
 const lost = computeLostQuote({
   quotesPerMonth: 40,
@@ -230,5 +279,17 @@ while (i < scoreLines.length) {
   i += 1;
 }
 assert.ok(tableBlocks >= 5, `expected scoring tables, got ${tableBlocks}`);
+
+const scoreHeadings = extractMarkdownH2s(scoreMd);
+assert.ok(scoreHeadings.length >= 8, "score article should expose H2s for the TOC");
+assert.ok(scoreHeadings.every((heading) => heading.id && !heading.id.includes(" ")));
+assert.ok(scoreHeadings.some((heading) => heading.text === "FAQ"));
+assert.equal(
+  scoreHeadings.filter((heading) => heading.id === "pourquoi-le-scoring-devis-n-est-pas-du-lead-scoring-marketing").length,
+  0,
+);
+assert.ok(
+  scoreHeadings.some((heading) => heading.id === "pourquoi-le-scoring-devis-nest-pas-du-lead-scoring-marketing"),
+);
 
 console.log("marketing seo tests ok");

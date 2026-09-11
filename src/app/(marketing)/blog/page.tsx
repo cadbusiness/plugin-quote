@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BlogIndex } from "@/components/marketing/blog-index";
 import { MarketingCta } from "@/components/marketing/marketing-shell";
-import { BLOG_POSTS } from "@/lib/marketing/blog";
+import { BLOG_POSTS, BLOG_UI, isBlogTag } from "@/lib/marketing/blog";
 import { pageMetadata } from "@/lib/marketing/site";
 
 export const metadata: Metadata = pageMetadata({
@@ -11,40 +12,41 @@ export const metadata: Metadata = pageMetadata({
   path: "/blog",
 });
 
-export default function BlogIndexPage() {
+export default async function BlogIndexPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tag?: string }>;
+}) {
+  const { tag } = await searchParams;
+  const activeTag = isBlogTag(tag) ? tag : undefined;
+
   return (
     <>
-      <section className="px-6 pb-8 pt-12 sm:pt-16">
-        <div className="mx-auto max-w-3xl text-center">
+      <section className="relative overflow-hidden px-6 pb-8 pt-12 sm:pt-16">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-24 top-0 h-72 w-72 rounded-full bg-[#F3B184]/35 blur-3xl"
+        />
+        <div className="relative mx-auto max-w-6xl">
           <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#C45C26]">Blog</p>
-          <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl">
+          <h1 className="mt-3 max-w-3xl text-[1.85rem] font-semibold tracking-tight sm:text-5xl sm:leading-[1.08]">
             Ce qui fait aboutir un devis.
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-[#1A1510]/70 sm:text-lg">
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-[#1A1510]/70 sm:text-lg">
             Relances, parcours, catalogue, intégration. Pas des extraits de fiche produit.
           </p>
+          <div className="mt-7">
+            <Link
+              href="/signup?plan=free"
+              className="inline-flex rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#1A1510] ring-1 ring-black/10 hover:bg-[#FFF8F1]"
+            >
+              {BLOG_UI.tryFree}
+            </Link>
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-3xl px-6 pb-16">
-        <ul className="space-y-4">
-          {BLOG_POSTS.map((post) => (
-            <li key={post.slug}>
-              <Link
-                href={post.path}
-                className="block rounded-[22px] bg-white p-5 ring-1 ring-black/6 transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-              >
-                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C45C26]">
-                  {post.eyebrow}
-                </p>
-                <h2 className="mt-2 text-lg font-semibold tracking-tight sm:text-xl">{post.title}</h2>
-                <p className="mt-2 text-[15px] leading-7 text-[#1A1510]/65">{post.description}</p>
-                <p className="mt-3 text-xs text-[#1A1510]/40">{post.readingMinutes} min de lecture</p>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <BlogIndex posts={BLOG_POSTS} tag={activeTag} />
 
       <MarketingCta
         title="Si vous voulez essayer le parcours"

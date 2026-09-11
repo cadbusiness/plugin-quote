@@ -33,6 +33,7 @@ export function pageMetadata({
   index = true,
   type = "website",
   publishedTime,
+  image,
 }: {
   title: string;
   description: string;
@@ -40,9 +41,15 @@ export function pageMetadata({
   index?: boolean;
   type?: "website" | "article";
   publishedTime?: string;
+  image?: string;
 }): Metadata {
   const url = absoluteUrl(path);
   const fullTitle = `${title} · ${COMPANY.product}`;
+  const ogImage = image
+    ? image.startsWith("http")
+      ? image
+      : absoluteUrl(image)
+    : absoluteUrl(OG_IMAGE);
   return {
     title,
     description,
@@ -55,14 +62,14 @@ export function pageMetadata({
       type,
       locale: "fr_FR",
       siteName: COMPANY.product,
-      images: [{ url: absoluteUrl(OG_IMAGE), alt: COMPANY.product }],
+      images: [{ url: ogImage, alt: title }],
       ...(publishedTime ? { publishedTime } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
       description,
-      images: [absoluteUrl(OG_IMAGE)],
+      images: [ogImage],
     },
   };
 }
