@@ -1,12 +1,12 @@
-import Image from "next/image";
 import Link from "next/link";
-import { BlogCoverPlaceholder } from "@/components/marketing/blog-cover";
+import { BlogCover } from "@/components/marketing/blog-cover";
 import { BlogMidCta } from "@/components/marketing/blog-mid-cta";
 import { BlogProgress } from "@/components/marketing/blog-progress";
 import { BlogToc } from "@/components/marketing/blog-toc";
 import { MarketingCta } from "@/components/marketing/marketing-shell";
 import { Markdown } from "@/lib/marketing/markdown";
 import { MarketingFaq, type FaqItem } from "@/components/marketing/marketing-faq";
+import { withResolvedCover } from "@/lib/marketing/blog-assets";
 import {
   BLOG_UI,
   extractMarkdownH2s,
@@ -28,7 +28,8 @@ export function MarketingArticle({
   body: string;
   faq: readonly FaqItem[];
 }) {
-  const related = getRelatedPosts(post);
+  const resolved = withResolvedCover(post);
+  const related = getRelatedPosts(post).map(withResolvedCover);
   const tools = getRelatedTools(post);
   const headings = extractMarkdownH2s(body);
   const midAfter = midArticleHeadingIndex(headings.length);
@@ -38,75 +39,64 @@ export function MarketingArticle({
   return (
     <>
       <BlogProgress />
-      <article>
-        <header className="px-6 pb-6 pt-12 sm:pt-16">
-          <div className="mx-auto max-w-[45rem]">
-            <nav className="flex flex-wrap items-center gap-2 text-xs font-medium text-mk-faint" aria-label="Fil d’Ariane">
-              <Link href="/blog" className="hover:text-mk-ink">
-                Blog
-              </Link>
-              <span>/</span>
-              <Link
-                href={`/blog?tag=${primaryTag(post)}`}
-                className="text-mk-accent hover:text-mk-accent-hover"
-              >
-                {primaryTagLabel(post)}
-              </Link>
-            </nav>
-            <h1 className="mt-5 text-[2rem] font-semibold leading-[1.12] tracking-tight sm:text-[2.75rem] sm:leading-[1.08]">
-              {post.title}
-            </h1>
-            <p className="mt-5 text-[15px] leading-6 text-mk-muted">
-              {BLOG_UI.byline}
-              <span className="mx-2 text-mk-faint">·</span>
-              {date}
-              <span className="mx-2 text-mk-faint">·</span>
-              {post.readingMinutes} {BLOG_UI.reading}
-            </p>
-          </div>
-        </header>
+      <article className="px-4 pb-6 pt-8 sm:px-6 sm:pt-12 lg:px-8">
+        <div className="mx-auto max-w-6xl overflow-hidden rounded-2xl bg-mk-surface shadow-[0_1px_0_rgba(11,13,18,0.04)] ring-1 ring-mk-border">
+          <header className="px-6 pt-8 sm:px-10 sm:pt-10">
+            <div className="max-w-[45rem]">
+              <nav className="flex flex-wrap items-center gap-2 text-xs font-medium text-mk-faint" aria-label="Fil d’Ariane">
+                <Link href="/blog" className="hover:text-mk-ink">
+                  Blog
+                </Link>
+                <span>/</span>
+                <Link
+                  href={`/blog?tag=${primaryTag(post)}`}
+                  className="text-mk-accent hover:text-mk-accent-hover"
+                >
+                  {primaryTagLabel(post)}
+                </Link>
+              </nav>
+              <h1 className="mt-5 text-[2rem] font-semibold leading-[1.12] tracking-tight sm:text-[2.75rem] sm:leading-[1.08]">
+                {post.title}
+              </h1>
+              <p className="mt-5 text-[15px] leading-6 text-mk-muted">
+                {BLOG_UI.byline}
+                <span className="mx-2 text-mk-faint">·</span>
+                {date}
+                <span className="mx-2 text-mk-faint">·</span>
+                {post.readingMinutes} {BLOG_UI.reading}
+              </p>
+            </div>
+          </header>
 
-        <div className="mx-auto max-w-3xl px-6 pb-8">
-          <div className="overflow-hidden rounded-2xl ring-1 ring-mk-border">
-            {post.cover ? (
-              <div className="relative aspect-[16/9] bg-mk-dark">
-                <Image
-                  src={post.cover}
-                  alt=""
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 100vw, 768px"
-                  className="object-cover"
+          <div className="px-6 pt-6 sm:px-10">
+            <div className="overflow-hidden rounded-xl ring-1 ring-mk-border">
+              <BlogCover post={resolved} sizes="(max-width: 768px) 100vw, 960px" priority />
+            </div>
+          </div>
+
+          <div className="px-6 pb-12 pt-8 sm:px-10">
+            <div className="lg:grid lg:grid-cols-[minmax(0,45rem)_minmax(13rem,1fr)] lg:gap-16">
+              <div id="article-body" className="max-w-[45rem]">
+                <BlogToc headings={headings} variant="mobile" />
+                <Markdown
+                  source={body}
+                  midAfterHeading={midAfter}
+                  midSlot={<BlogMidCta href={post.ctaHref} />}
                 />
               </div>
-            ) : (
-              <BlogCoverPlaceholder post={post} />
-            )}
-          </div>
-        </div>
-
-        <div className="mx-auto max-w-6xl px-6 pb-8">
-          <div className="lg:grid lg:grid-cols-[minmax(0,45rem)_minmax(13rem,1fr)] lg:gap-16">
-            <div id="article-body" className="max-w-[45rem]">
-              <BlogToc headings={headings} variant="mobile" />
-              <Markdown
-                source={body}
-                midAfterHeading={midAfter}
-                midSlot={<BlogMidCta href={post.ctaHref} />}
-              />
+              <aside className="hidden lg:block">
+                <BlogToc headings={headings} variant="desktop" />
+              </aside>
             </div>
-            <aside className="hidden lg:block">
-              <BlogToc headings={headings} variant="desktop" />
-            </aside>
           </div>
+
+          {hasInlineFaq || faq.length === 0 ? null : (
+            <div className="border-t border-mk-border">
+              <MarketingFaq items={faq} />
+            </div>
+          )}
         </div>
       </article>
-
-      {hasInlineFaq || faq.length === 0 ? null : (
-        <div className="mx-auto max-w-2xl">
-          <MarketingFaq items={faq} />
-        </div>
-      )}
 
       {related.length > 0 || tools.length > 0 ? (
         <section className="border-y border-mk-border bg-mk-band px-6 py-14">
@@ -123,8 +113,8 @@ export function MarketingArticle({
                         href={item.path}
                         className="block h-full overflow-hidden rounded-2xl bg-mk-surface ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_16px_40px_-28px_rgba(11,13,18,0.2)]"
                       >
-                        <div className="h-28">
-                          <BlogCoverPlaceholder post={item} compact />
+                        <div className="h-28 overflow-hidden">
+                          <BlogCover post={item} sizes="(max-width: 768px) 100vw, 420px" compact />
                         </div>
                         <div className="p-5">
                           <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">

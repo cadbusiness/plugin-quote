@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync, readdirSync, unlinkSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
+  BLOG_IMAGE_DIR,
   BLOG_POSTS,
   BLOG_TAG_DEFS,
   BLOG_UI,
@@ -13,16 +14,18 @@ import {
   getFeaturedPost,
   getRelatedPosts,
   midArticleHeadingIndex,
+  normalizeCoverPath,
   primaryTagLabel,
   trimMetaDescription,
 } from "./blog";
+import { coverCandidatesForSlug, resolveCoverForPost } from "./blog-assets";
 import { BLOG_FAQ } from "./blog-faq";
 import { computeBriefScore } from "./brief-score";
 import { computeLostQuote } from "./lost-quote";
 import { MARKETING_ROUTES } from "./routes";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
 import { CREAM_HEX, TAG_COVER } from "./theme";
-import { calloutKind, paragraphCalloutKind, parseImageLine } from "./markdown-parse";
+import { calloutKind, calloutLabel, paragraphCalloutKind, parseImageLine, stripCalloutPrefix } from "./markdown-parse";
 
 const EM_DASH = /\u2014/;
 
@@ -331,8 +334,46 @@ assert.equal(calloutKind("Note QuoteBuilder. On évite les slogans."), "tip");
 assert.equal(calloutKind("Astuce : une fourchette indicative."), "tip");
 assert.equal(calloutKind("Attention au wizard trop long."), "warning");
 assert.equal(calloutKind("Le formulaire livre un message."), "quote");
+assert.equal(calloutKind("[!TIP] Une fourchette indicative dans le parcours."), "tip");
+assert.equal(calloutKind("[!WARNING] Le wizard trop long fatigue."), "warning");
+assert.equal(calloutKind("[!NOTE] On reste factuel."), "tip");
 assert.equal(paragraphCalloutKind("Astuce : une fourchette indicative dans le parcours."), "tip");
 assert.equal(paragraphCalloutKind("Le comportement post-envoi compte."), null);
+assert.equal(calloutLabel("tip"), "Astuce");
+assert.equal(calloutLabel("warning"), "Attention");
+assert.equal(stripCalloutPrefix("Astuce : une fourchette indicative."), "une fourchette indicative.");
+assert.equal(stripCalloutPrefix("[!WARNING] Le wizard trop long fatigue."), "Le wizard trop long fatigue.");
+assert.equal(
+  stripCalloutPrefix("Note QuoteBuilder. On évite les slogans."),
+  "Note QuoteBuilder. On évite les slogans.",
+);
+
+assert.equal(BLOG_IMAGE_DIR, "/images/blog");
+assert.equal(normalizeCoverPath("visite-guidee-parcours-devis-b2b.jpg"), "/images/blog/visite-guidee-parcours-devis-b2b.jpg");
+assert.equal(normalizeCoverPath("/images/blog/score-demande-devis-b2b.webp"), "/images/blog/score-demande-devis-b2b.webp");
+const upcomingCovers = coverCandidatesForSlug("visite-guidee-parcours-devis-b2b");
+assert.ok(upcomingCovers.includes("/images/blog/visite-guidee-parcours-devis-b2b.webp"));
+assert.ok(upcomingCovers.includes("/images/blog/visite-guidee-parcours-devis-b2b.jpg"));
+assert.equal(resolveCoverForPost({ slug: "visite-guidee-parcours-devis-b2b" }), undefined);
+assert.equal(resolveCoverForPost(BLOG_POSTS[0]!), undefined);
+{
+  const fixture = join(process.cwd(), "public/images/blog/visite-guidee-parcours-devis-b2b.webp");
+  writeFileSync(fixture, "cover");
+  try {
+    assert.equal(
+      resolveCoverForPost({ slug: "visite-guidee-parcours-devis-b2b" }),
+      "/images/blog/visite-guidee-parcours-devis-b2b.webp",
+    );
+  } finally {
+    unlinkSync(fixture);
+  }
+}
+
+const articleSource = readFileSync(new URL("../../../src/components/marketing/marketing-article.tsx", import.meta.url), "utf8");
+assert.match(articleSource, /bg-mk-surface/);
+assert.match(articleSource, /BlogCover/);
+assert.doesNotMatch(articleSource, /#F6F0E8/);
+assert.match(readFileSync(new URL("../../../src/lib/marketing/markdown.tsx", import.meta.url), "utf8"), /bg-mk-accent-soft/);
 
 const figure = parseImageLine("![Grille scorecard 0-100](figure:score-grid)");
 assert.equal(figure?.src, "figure:score-grid");

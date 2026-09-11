@@ -11,6 +11,17 @@ export const BLOG_TAG_DEFS = [
 export type BlogTagSlug = (typeof BLOG_TAG_DEFS)[number]["slug"];
 export type BlogTagLabel = (typeof BLOG_TAG_DEFS)[number]["label"];
 
+/** Captures d’articles : `public/images/blog/{slug}.jpg|jpeg|png|webp`. */
+export const BLOG_IMAGE_DIR = "/images/blog";
+
+export function normalizeCoverPath(cover: string): string {
+  const trimmed = cover.trim();
+  if (!trimmed) return trimmed;
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) return trimmed;
+  if (trimmed.startsWith("/")) return trimmed;
+  return `${BLOG_IMAGE_DIR}/${trimmed.replace(/^\/+/, "")}`;
+}
+
 export type BlogPost = {
   slug: string;
   path: string;
@@ -20,6 +31,11 @@ export type BlogPost = {
   readingMinutes: number;
   tags: readonly BlogTagSlug[];
   ctaHref: string;
+  /**
+   * Visuel optionnel (`/images/blog/…`, nom de fichier, ou URL).
+   * Si absent, on cherche `public/images/blog/{slug}.{webp,jpg,jpeg,png}`.
+   * Placeholder géométrique uniquement si aucun fichier n’existe.
+   */
   cover?: string;
   pinned?: boolean;
 };

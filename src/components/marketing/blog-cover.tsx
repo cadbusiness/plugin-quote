@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { blogTagLabel, primaryTag, type BlogPost } from "@/lib/marketing/blog";
+import { blogTagLabel, normalizeCoverPath, primaryTag, type BlogPost } from "@/lib/marketing/blog";
 import { TAG_COVER } from "@/lib/marketing/theme";
 
 export function BlogCoverPlaceholder({
@@ -63,13 +63,14 @@ export function BlogCover({
   priority?: boolean;
   compact?: boolean;
 }) {
-  if (!post.cover) {
+  const cover = post.cover ? normalizeCoverPath(post.cover) : undefined;
+  if (!cover) {
     return <BlogCoverPlaceholder post={post} compact={compact} />;
   }
   return (
-    <div className="relative aspect-[16/10] overflow-hidden bg-mk-dark">
+    <div className={`relative overflow-hidden bg-mk-dark ${compact ? "aspect-[16/10] min-h-[9.5rem]" : "aspect-[16/10]"}`}>
       <Image
-        src={post.cover}
+        src={cover}
         alt=""
         fill
         sizes={sizes}

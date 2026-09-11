@@ -1,16 +1,26 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { slugifyHeading, stripMarkdownInline } from "@/lib/marketing/blog";
+import { BLOG_IMAGE_DIR, slugifyHeading, stripMarkdownInline } from "@/lib/marketing/blog";
 import {
   IMAGE_RE,
+  type CalloutKind,
   calloutKind,
+  calloutLabel,
   paragraphCalloutKind,
   parseCaption,
   parseImageLine,
+  stripCalloutPrefix,
 } from "@/lib/marketing/markdown-parse";
 
 export { calloutKind, paragraphCalloutKind, parseCaption, parseImageLine };
+
+function resolveMarkdownImageSrc(src: string): string {
+  if (src.startsWith("figure:") || src.startsWith("http://") || src.startsWith("https://") || src.startsWith("/")) {
+    return src;
+  }
+  return `${BLOG_IMAGE_DIR}/${src.replace(/^\/+/, "")}`;
+}
 
 function renderInline(text: string, keyPrefix: string): ReactNode[] {
   const nodes: ReactNode[] = [];
@@ -97,20 +107,24 @@ function Callout({
   id: string;
 }) {
   const tip = kind === "tip";
+  const body = stripCalloutPrefix(text);
   return (
     <aside
-      className={`mt-8 rounded-xl border-l-[3px] bg-mk-surface px-5 py-4 text-[16px] leading-7 text-mk-ink ring-1 ring-mk-border ${
-        tip ? "border-l-mk-accent" : "border-l-amber-500"
+      role="note"
+      className={`mt-8 rounded-xl border-l-[3px] px-5 py-4 text-[16px] leading-7 text-mk-ink ring-1 ${
+        tip
+          ? "border-l-mk-accent bg-mk-accent-soft ring-mk-accent/15"
+          : "border-l-amber-500 bg-amber-50 ring-amber-200/80"
       }`}
     >
       <p
         className={`text-[11px] font-semibold uppercase tracking-[0.12em] ${
-          tip ? "text-mk-accent" : "text-amber-700"
+          tip ? "text-mk-accent" : "text-amber-800"
         }`}
       >
-        {tip ? "Astuce" : "Attention"}
+        {calloutLabel(kind)}
       </p>
-      <p className="mt-2 text-mk-muted">{renderInline(text, id)}</p>
+      <p className="mt-2 text-mk-ink/80">{renderInline(body || text, id)}</p>
     </aside>
   );
 }
@@ -253,15 +267,16 @@ export function Markdown({
       const caption = parseCaption(lines[i]);
       if (caption) i += 1;
       const label = caption ?? image.title ?? image.alt;
-      const schematic = image.src.startsWith("figure:") ? image.src.slice("figure:".length) : null;
+      const src = resolveMarkdownImageSrc(image.src);
+      const schematic = src.startsWith("figure:") ? src.slice("figure:".length) : null;
       blocks.push(
         <FigureFrame key={key++} label={label}>
           {schematic ? (
             <SchematicFigure kind={schematic} label={label} />
-          ) : image.src.startsWith("/") ? (
+          ) : src.startsWith("/") ? (
             <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-mk-band">
               <Image
-                src={image.src}
+                src={src}
                 alt={image.alt}
                 fill
                 sizes="(max-width: 768px) 100vw, 720px"

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BlogIndex } from "@/components/marketing/blog-index";
 import { MarketingCta } from "@/components/marketing/marketing-shell";
+import { withResolvedCover } from "@/lib/marketing/blog-assets";
 import { BLOG_POSTS, BLOG_UI, resolveBlogTag } from "@/lib/marketing/blog";
 import { pageMetadata } from "@/lib/marketing/site";
 
@@ -45,7 +46,7 @@ export default async function BlogIndexPage({
         </div>
       </section>
 
-      <BlogIndex posts={BLOG_POSTS} tag={activeTag} />
+      <BlogIndex posts={BLOG_POSTS.map(withResolvedCover)} tag={activeTag} />
 
       <MarketingCta
         title="Si vous voulez essayer le parcours"
