@@ -1,9 +1,35 @@
 "use client";
 
-import { Puck, createUsePuck } from "@puckeditor/core";
+import { Drawer, Puck, createUsePuck } from "@puckeditor/core";
 import "@puckeditor/core/puck.css";
 import type { Data } from "@puckeditor/core";
-import { Boxes, ChevronLeft, Layers, MessageSquare, Monitor, Smartphone, Tablet } from "lucide-react";
+import {
+  AlignLeft,
+  Boxes,
+  ChevronDown,
+  ChevronLeft,
+  CircleHelp,
+  Columns2,
+  FolderTree,
+  Heading2,
+  Image as ImageIcon,
+  LayoutGrid,
+  LayoutTemplate,
+  Layers,
+  ListChecks,
+  MessageSquare,
+  MessageSquareQuote,
+  Monitor,
+  PanelTop,
+  RectangleHorizontal,
+  ScrollText,
+  Smartphone,
+  SquareDashed,
+  Store,
+  Tablet,
+  Type,
+  type LucideIcon,
+} from "lucide-react";
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import { parseLayout } from "@/lib/shops/layout";
 import { shopPuckConfig } from "@/lib/shops/puck-config";
@@ -42,9 +68,76 @@ const NODE_LABEL: Record<string, string> = {
   Legal: "Texte légal",
 };
 
-const DOCK_MIN = 240;
+const DOCK_MIN = 360;
 const DOCK_MAX = 560;
-const DOCK_DEFAULT = 300;
+const DOCK_DEFAULT = 380;
+
+const BLOCK_ICON: Record<string, LucideIcon> = {
+  Section: SquareDashed,
+  Columns: Columns2,
+  Heading: Heading2,
+  Text: Type,
+  Image: ImageIcon,
+  Button: RectangleHorizontal,
+  Hero: PanelTop,
+  Catalog: LayoutGrid,
+  Categories: FolderTree,
+  QuoteCta: MessageSquareQuote,
+  Faq: CircleHelp,
+  Features: ListChecks,
+  Legal: ScrollText,
+};
+
+const PALETTE: { id: string; title: string; icon: LucideIcon; items: string[] }[] = [
+  { id: "layout", title: "Disposition", icon: LayoutTemplate, items: ["Section", "Columns"] },
+  { id: "content", title: "Contenu", icon: AlignLeft, items: ["Heading", "Text", "Image", "Button", "Hero"] },
+  { id: "shop", title: "Boutique", icon: Store, items: ["Catalog", "Categories", "QuoteCta", "Faq", "Features", "Legal"] },
+];
+
+function ShopDrawerItem({ name, children }: { name: string; children: ReactNode }) {
+  const Icon = BLOCK_ICON[name] ?? Boxes;
+  return (
+    <div className="shop-block-tile">
+      <Icon className="h-5 w-5 text-[#E85D04]" aria-hidden />
+      {children}
+    </div>
+  );
+}
+
+function ShopBlockPalette() {
+  const [open, setOpen] = useState<Record<string, boolean>>({ layout: true, content: true, shop: true });
+  return (
+    <div className="shop-block-palette">
+      {PALETTE.map((category) => {
+        const Icon = category.icon;
+        const expanded = open[category.id] !== false;
+        return (
+          <section key={category.id} className="border-b border-slate-100 py-2">
+            <button
+              type="button"
+              aria-expanded={expanded}
+              onClick={() => setOpen((current) => ({ ...current, [category.id]: !expanded }))}
+              className="flex w-full items-center gap-2 rounded-md px-1 py-1.5 text-left text-[11px] font-semibold tracking-wide text-slate-500 uppercase hover:bg-slate-50 hover:text-slate-800"
+            >
+              <Icon className="h-3.5 w-3.5 text-[#E85D04]" aria-hidden />
+              {category.title}
+              <ChevronDown className={`ml-auto h-3.5 w-3.5 transition-transform ${expanded ? "" : "-rotate-90"}`} aria-hidden />
+            </button>
+            {expanded ? (
+              <Drawer>
+                {category.items.map((name) => (
+                  <Drawer.Item key={name} name={name} label={NODE_LABEL[name] ?? name}>
+                    {ShopDrawerItem}
+                  </Drawer.Item>
+                ))}
+              </Drawer>
+            ) : null}
+          </section>
+        );
+      })}
+    </div>
+  );
+}
 
 function clampDock(width: number) {
   return Math.min(DOCK_MAX, Math.max(DOCK_MIN, Math.round(width)));
@@ -193,7 +286,10 @@ function ShopPuckDock({ tab, chat }: { tab: DockTab; chat: ReactNode }) {
   if (tab === "structure") {
     return (
       <div className="shop-puck-drawer min-h-0 flex-1 overflow-y-auto px-2 py-2">
-        <p className="px-1 pb-2 text-[11px] leading-4 text-slate-400">Calques de la page</p>
+        <p className="flex items-center gap-1.5 px-1 pb-2 text-[11px] leading-4 text-slate-400">
+          <Layers className="h-3.5 w-3.5" aria-hidden />
+          Calques de la page
+        </p>
         <Puck.Outline />
       </div>
     );
@@ -222,8 +318,7 @@ function ShopPuckDock({ tab, chat }: { tab: DockTab; chat: ReactNode }) {
 
   return (
     <div className="shop-puck-drawer min-h-0 flex-1 overflow-y-auto px-2 py-2">
-      <p className="px-1 pb-2 text-[11px] leading-4 text-slate-400">Glisser un bloc sur la page</p>
-      <Puck.Components />
+      <ShopBlockPalette />
     </div>
   );
 }
@@ -245,6 +340,8 @@ function ShopPuckLayout({
 }) {
   const [tab, setTab] = useState<DockTab>("blocks");
   const dock = useDockWidth();
+  const viewportWidth = usePuckUi((s) => s.appState.ui.viewports?.current?.width);
+  const framed = viewportWidth === 768 || viewportWidth === 390;
   const header = headerNav(model.nav);
   const footer = footerNav(model.nav);
 
@@ -253,7 +350,7 @@ function ShopPuckLayout({
       <ShopChrome leading={leading} trailing={trailing} tab={tab} onTab={setTab} />
       <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
         <aside
-          className="flex min-h-0 w-full flex-col overflow-hidden border-b border-slate-100 bg-white max-lg:!w-full lg:h-full lg:shrink-0 lg:border-b-0"
+          className="flex min-h-0 w-full flex-col overflow-hidden border-b border-slate-200 bg-white max-lg:!w-full lg:h-full lg:shrink-0 lg:border-r lg:border-b-0"
           style={{ width: dock.width }}
         >
           <ShopPuckDock tab={tab} chat={chat} />
@@ -270,10 +367,17 @@ function ShopPuckLayout({
           {settingsOpen ? (
             <div className="min-h-0 flex-1 overflow-y-auto bg-white">{settings}</div>
           ) : (
-            <div className="min-h-0 flex-1 overflow-auto p-4">
+            <div className={framed ? "min-h-0 flex-1 overflow-auto bg-stone-100 p-6" : "min-h-0 flex-1 overflow-auto bg-white"}>
               <div
-                className="mx-auto min-h-full overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-slate-200"
-                style={themeStyle(model.theme)}
+                className={
+                  framed
+                    ? "mx-auto min-h-full overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-slate-200"
+                    : "min-h-full bg-white"
+                }
+                style={{
+                  ...themeStyle(model.theme),
+                  ...(framed && typeof viewportWidth === "number" ? { width: viewportWidth, maxWidth: "100%" } : {}),
+                }}
               >
                 <header className="border-b border-black/10">
                   <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-4">
@@ -332,6 +436,7 @@ export function ShopBuilderCanvas({
         metadata={{ model }}
         iframe={{ enabled: false }}
         plugins={[]}
+        overrides={{ drawerItem: ShopDrawerItem }}
         height="100%"
         viewports={VIEWPORTS}
         onChange={(data: Data) => onChange(parseLayout(data))}
