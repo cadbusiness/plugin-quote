@@ -1,18 +1,25 @@
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getOrgContext } from "@/lib/auth/org";
 import { Chip } from "@/components/ui/chip";
 import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { MarkUpdatesSeen } from "@/components/app-shell/mark-updates-seen";
-import { formatReleaseDate, loadProductUpdates } from "@/lib/updates/load";
+import { formatReleaseDate } from "@/lib/updates/load";
+import { resolveProductUpdates } from "@/lib/updates/resolve";
+import { UPDATES_SEEN_COOKIE } from "@/lib/updates/seed";
 import { releaseLabel } from "@/lib/updates/semver";
 import { isUnreadVersion } from "@/lib/updates/unread";
 
 export default async function ProductUpdatesPage() {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");
-  const supabase = await createClient();
-  const snapshot = await loadProductUpdates(supabase, ctx.userId);
+  const [supabase, cookieStore] = await Promise.all([createClient(), cookies()]);
+  const snapshot = await resolveProductUpdates(
+    supabase,
+    ctx.userId,
+    cookieStore.get(UPDATES_SEEN_COOKIE)?.value,
+  );
   const latestLabel = snapshot.latest ? releaseLabel(snapshot.latest) : null;
 
   return (

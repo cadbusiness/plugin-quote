@@ -13,6 +13,8 @@ RLS : lecture des notes pour `authenticated` ; pas d’écriture côté app (ser
 
 Le badge « non lu » du menu Support compte les versions **strictement plus récentes** que `last_seen_version`. Ouvrir `/mises-a-jour` enregistre la plus récente.
 
+Tant que la migration n’est pas appliquée, l’app affiche le seed bundlé (`src/lib/updates/seed.ts`, mêmes notes que 1.7 / 1.8) et mémorise le last-seen dans le cookie `qb-updates-seen`. Dès que les tables existent, elles deviennent la source de vérité.
+
 Migration : `supabase/migrations/0024_product_updates.sql`.
 
 ## Ajouter une version
@@ -32,5 +34,6 @@ values (
 
 3. `version` doit être unique et matcher `^[0-9]+\.[0-9]+\.[0-9]+$`.
 4. L’UI affiche « Mise à jour 1.9 » (patch `0` omis). Un patch (`1.9.1`) s’affiche en entier.
+5. Si vous devez aussi voir la note avant `db push`, ajoutez la même entrée dans `src/lib/updates/seed.ts`.
 
-Pas d’écran d’admin pour rédiger les notes : la table est la source de vérité.
+Pas d’écran d’admin pour rédiger les notes : la table est la source de vérité une fois migrée.

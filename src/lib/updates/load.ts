@@ -16,6 +16,7 @@ export type ProductUpdatesSnapshot = {
   lastSeenVersion: string | null;
   latest: string | null;
   unread: number;
+  source: "db" | "missing";
 };
 
 export const EMPTY_UPDATES_SNAPSHOT: ProductUpdatesSnapshot = {
@@ -23,6 +24,7 @@ export const EMPTY_UPDATES_SNAPSHOT: ProductUpdatesSnapshot = {
   lastSeenVersion: null,
   latest: null,
   unread: 0,
+  source: "missing",
 };
 
 export function parseItems(value: Json | null | undefined): string[] {
@@ -56,7 +58,7 @@ export async function loadProductUpdates(
       .maybeSingle(),
   ]);
 
-  if (rowsError || readError) return EMPTY_UPDATES_SNAPSHOT;
+  if (rowsError) return EMPTY_UPDATES_SNAPSHOT;
 
   const entries = sortByVersionDesc(
     (rows ?? []).map((row) => ({
@@ -68,19 +70,13 @@ export async function loadProductUpdates(
       createdAt: row.created_at,
     })),
   );
-  const lastSeenVersion = read?.last_seen_version ?? null;
+  const lastSeenVersion = readError ? null : (read?.last_seen_version ?? null);
   return {
     entries,
     lastSeenVersion,
     latest: latestVersion(entries),
     unread: unreadCount(entries, lastSeenVersion),
+    source: "db",
   };
 }
 
-export async function countUnreadProductUpdates(
-  supabase: SupabaseClient<Database>,
-  userId: string,
-): Promise<number> {
-  const snapshot = await loadProductUpdates(supabase, userId);
-  return snapshot.unread;
-}

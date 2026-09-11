@@ -75,6 +75,7 @@ async function testLoadSnapshot() {
   };
   const { loadProductUpdates } = await import("./load");
   const snapshot = await loadProductUpdates(client as never, "user-1");
+  assert.equal(snapshot.source, "db");
   assert.equal(snapshot.latest, "1.8.0");
   assert.equal(snapshot.unread, 1);
   assert.equal(snapshot.entries[0]?.title, "Récent");
@@ -94,8 +95,17 @@ async function testLoadSnapshot() {
     },
   };
   const empty = await loadProductUpdates(missing as never, "user-1");
+  assert.equal(empty.source, "missing");
   assert.equal(empty.unread, 0);
   assert.equal(empty.entries.length, 0);
+
+  const { resolveProductUpdates } = await import("./resolve");
+  const { BUNDLED_UPDATES } = await import("./seed");
+  const bundled = await resolveProductUpdates(missing as never, "user-1", "1.7.0");
+  assert.equal(bundled.source, "missing");
+  assert.equal(bundled.unread, 1);
+  assert.equal(bundled.latest, "1.8.0");
+  assert.ok(BUNDLED_UPDATES.some((entry) => entry.version === "1.8.0"));
 }
 
 testLoadSnapshot()
