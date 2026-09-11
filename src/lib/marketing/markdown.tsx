@@ -2,6 +2,15 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { slugifyHeading, stripMarkdownInline } from "@/lib/marketing/blog";
+import {
+  IMAGE_RE,
+  calloutKind,
+  paragraphCalloutKind,
+  parseCaption,
+  parseImageLine,
+} from "@/lib/marketing/markdown-parse";
+
+export { calloutKind, paragraphCalloutKind, parseCaption, parseImageLine };
 
 function renderInline(text: string, keyPrefix: string): ReactNode[] {
   const nodes: ReactNode[] = [];
@@ -25,7 +34,7 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
           <Link
             key={`${keyPrefix}-a-${i}`}
             href={href}
-            className="font-medium text-[#E85D04] underline-offset-2 hover:underline"
+            className="font-medium text-mk-accent underline-offset-2 hover:underline"
           >
             {label}
           </Link>
@@ -33,7 +42,7 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
           <a
             key={`${keyPrefix}-a-${i}`}
             href={href}
-            className="font-medium text-[#E85D04] underline-offset-2 hover:underline"
+            className="font-medium text-mk-accent underline-offset-2 hover:underline"
             rel="noopener noreferrer"
             target={href.startsWith("http") ? "_blank" : undefined}
           >
@@ -74,30 +83,105 @@ function isTableSeparator(line: string) {
   return cells.length > 0 && cells.every((cell) => /^:?-{3,}:?$/.test(cell));
 }
 
-const IMAGE_RE = /^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)$/;
-
-function parseImageLine(line: string) {
-  const match = line.trim().match(IMAGE_RE);
-  if (!match) return null;
-  return { alt: match[1] ?? "", src: match[2] ?? "", title: match[3] };
-}
-
 function isImageLine(line: string) {
   return IMAGE_RE.test(line.trim());
 }
 
-function parseCaption(line: string | undefined) {
-  if (!line) return null;
-  const trimmed = line.trim();
-  const italic = trimmed.match(/^\*(.+)\*$/);
-  if (italic) return italic[1] ?? null;
-  return null;
+function Callout({
+  kind,
+  text,
+  id,
+}: {
+  kind: Exclude<CalloutKind, "quote">;
+  text: string;
+  id: string;
+}) {
+  const tip = kind === "tip";
+  return (
+    <aside
+      className={`mt-8 rounded-xl border-l-[3px] bg-mk-surface px-5 py-4 text-[16px] leading-7 text-mk-ink ring-1 ring-mk-border ${
+        tip ? "border-l-mk-accent" : "border-l-amber-500"
+      }`}
+    >
+      <p
+        className={`text-[11px] font-semibold uppercase tracking-[0.12em] ${
+          tip ? "text-mk-accent" : "text-amber-700"
+        }`}
+      >
+        {tip ? "Astuce" : "Attention"}
+      </p>
+      <p className="mt-2 text-mk-muted">{renderInline(text, id)}</p>
+    </aside>
+  );
 }
 
-function calloutKind(text: string): "tip" | "warning" | null {
-  if (/^(note|astuce|tip)\b/i.test(text)) return "tip";
-  if (/^(attention|warning|avertissement)\b/i.test(text)) return "warning";
-  return null;
+function SchematicFigure({ kind, label }: { kind: string; label: string }) {
+  if (kind === "score-grid") {
+    const rows = [
+      { label: "Hot", range: "80–100", tone: "bg-rose-50 text-rose-800" },
+      { label: "Warm", range: "55–79", tone: "bg-amber-50 text-amber-800" },
+      { label: "Cold", range: "30–54", tone: "bg-slate-100 text-slate-700" },
+      { label: "Parking", range: "0–29", tone: "bg-mk-band text-mk-muted" },
+    ];
+    return (
+      <div className="grid gap-2 sm:grid-cols-4">
+        {rows.map((row) => (
+          <div key={row.label} className={`rounded-lg px-3 py-3 ${row.tone}`}>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em]">{row.label}</p>
+            <p className="mt-1 text-sm font-medium">{row.range}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (kind === "funnel-vs-form") {
+    return (
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div className="rounded-lg bg-mk-band px-4 py-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-faint">
+            Formulaire
+          </p>
+          <p className="mt-2 text-sm font-semibold text-mk-ink">Message vague</p>
+          <p className="mt-1 text-sm leading-6 text-mk-muted">Nom, e-mail, « devis svp ».</p>
+        </div>
+        <div className="rounded-lg bg-mk-dark px-4 py-4 text-mk-on-dark">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
+            Funnel
+          </p>
+          <p className="mt-2 text-sm font-semibold">Dossier chiffrable</p>
+          <p className="mt-1 text-sm leading-6 text-mk-on-dark/65">
+            Produits, contraintes, budget, score.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex min-h-[10rem] items-center justify-center text-sm text-mk-faint">
+      {label}
+    </div>
+  );
+}
+
+function FigureFrame({
+  label,
+  children,
+}: {
+  label?: string | null;
+  children: ReactNode;
+}) {
+  return (
+    <figure className="mt-8">
+      <div className="overflow-hidden rounded-xl bg-mk-surface p-3 ring-1 ring-mk-border sm:p-4">
+        {children}
+      </div>
+      {label ? (
+        <figcaption className="mt-3 text-sm leading-6 text-mk-faint">{label}</figcaption>
+      ) : null}
+    </figure>
+  );
 }
 
 export function Markdown({
@@ -158,7 +242,7 @@ export function Markdown({
     }
 
     if (line.trim() === "---") {
-      blocks.push(<hr key={key++} className="my-10 border-[#1A1510]/10" />);
+      blocks.push(<hr key={key++} className="my-10 border-mk-border" />);
       i += 1;
       continue;
     }
@@ -169,10 +253,13 @@ export function Markdown({
       const caption = parseCaption(lines[i]);
       if (caption) i += 1;
       const label = caption ?? image.title ?? image.alt;
+      const schematic = image.src.startsWith("figure:") ? image.src.slice("figure:".length) : null;
       blocks.push(
-        <figure key={key++} className="mt-8">
-          <div className="relative aspect-[16/10] overflow-hidden rounded-[20px] bg-white ring-1 ring-black/6">
-            {image.src.startsWith("/") ? (
+        <FigureFrame key={key++} label={label}>
+          {schematic ? (
+            <SchematicFigure kind={schematic} label={label} />
+          ) : image.src.startsWith("/") ? (
+            <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-mk-band">
               <Image
                 src={image.src}
                 alt={image.alt}
@@ -180,16 +267,13 @@ export function Markdown({
                 sizes="(max-width: 768px) 100vw, 720px"
                 className="object-cover"
               />
-            ) : (
-              <div className="flex h-full items-center justify-center text-sm text-[#1A1510]/40">
-                {image.alt || "Figure"}
-              </div>
-            )}
-          </div>
-          {label ? (
-            <figcaption className="mt-3 text-sm leading-6 text-[#1A1510]/50">{label}</figcaption>
-          ) : null}
-        </figure>,
+            </div>
+          ) : (
+            <div className="flex min-h-[10rem] items-center justify-center text-sm text-mk-faint">
+              {image.alt || "Figure"}
+            </div>
+          )}
+        </FigureFrame>,
       );
       continue;
     }
@@ -202,31 +286,13 @@ export function Markdown({
       }
       const text = quote.join(" ").trim();
       const kind = calloutKind(text);
-      if (kind === "tip") {
-        blocks.push(
-          <aside
-            key={key++}
-            className="mt-8 rounded-2xl bg-[#FFF4EB] px-5 py-4 text-[16px] leading-7 text-[#1A1510]/80 ring-1 ring-[#E85D04]/15"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C45C26]">Astuce</p>
-            <p className="mt-2">{renderInline(text, `tip-${key}`)}</p>
-          </aside>,
-        );
-      } else if (kind === "warning") {
-        blocks.push(
-          <aside
-            key={key++}
-            className="mt-8 rounded-2xl bg-amber-50 px-5 py-4 text-[16px] leading-7 text-[#1A1510]/80 ring-1 ring-amber-200/80"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-amber-800">Attention</p>
-            <p className="mt-2">{renderInline(text, `warn-${key}`)}</p>
-          </aside>,
-        );
+      if (kind === "tip" || kind === "warning") {
+        blocks.push(<Callout key={key++} kind={kind} text={text} id={`${kind}-${key}`} />);
       } else {
         blocks.push(
           <blockquote
             key={key++}
-            className="mt-10 border-l-2 border-[#E85D04] pl-5 text-[1.15rem] font-medium leading-8 text-[#1A1510]/80 sm:text-xl sm:leading-9"
+            className="mt-10 border-l-2 border-mk-accent pl-5 text-[1.15rem] font-medium leading-8 text-mk-ink sm:text-xl sm:leading-9"
           >
             {renderInline(text, `q-${key}`)}
           </blockquote>,
@@ -244,12 +310,12 @@ export function Markdown({
         i += 1;
       }
       blocks.push(
-        <div key={key++} className="mt-8 overflow-x-auto">
-          <table className="w-full min-w-[28rem] border-collapse text-left text-[14px] leading-6 text-[#1A1510]/80 sm:text-[15px]">
-            <thead>
-              <tr className="border-b border-[#1A1510]/12">
+        <div key={key++} className="mt-8 overflow-x-auto rounded-xl bg-mk-surface ring-1 ring-mk-border">
+          <table className="w-full min-w-[28rem] border-collapse text-left text-[14px] leading-6 text-mk-ink sm:text-[15px]">
+            <thead className="bg-mk-band">
+              <tr className="border-b border-mk-border">
                 {header.map((cell, idx) => (
-                  <th key={idx} className="px-3 py-2 font-semibold first:pl-0 last:pr-0">
+                  <th key={idx} className="px-4 py-2.5 font-semibold first:pl-5 last:pr-5">
                     {renderInline(cell, `th-${key}-${idx}`)}
                   </th>
                 ))}
@@ -257,9 +323,9 @@ export function Markdown({
             </thead>
             <tbody>
               {rows.map((row, ridx) => (
-                <tr key={ridx} className="border-b border-[#1A1510]/8 align-top">
+                <tr key={ridx} className="border-b border-mk-border align-top last:border-0">
                   {row.map((cell, cidx) => (
-                    <td key={cidx} className="px-3 py-2 first:pl-0 last:pr-0">
+                    <td key={cidx} className="px-4 py-2.5 text-mk-muted first:pl-5 last:pr-5">
                       {renderInline(cell, `td-${key}-${ridx}-${cidx}`)}
                     </td>
                   ))}
@@ -283,7 +349,7 @@ export function Markdown({
       blocks.push(
         <List
           key={key++}
-          className={`mt-5 space-y-2 text-[16px] leading-7 text-[#1A1510]/75 sm:text-[17px] sm:leading-8 ${
+          className={`mt-5 space-y-2 text-[16px] leading-7 text-mk-muted sm:text-[17px] sm:leading-8 ${
             ordered ? "list-decimal pl-5" : "list-disc pl-5"
           }`}
         >
@@ -309,11 +375,17 @@ export function Markdown({
       para.push(lines[i] ?? "");
       i += 1;
     }
-    blocks.push(
-      <p key={key++} className="mt-5 text-[16px] leading-7 text-[#1A1510]/75 sm:text-[17px] sm:leading-8">
-        {renderInline(para.join(" "), `p-${key}`)}
-      </p>,
-    );
+    const text = para.join(" ");
+    const kind = paragraphCalloutKind(text);
+    if (kind) {
+      blocks.push(<Callout key={key++} kind={kind} text={text} id={`${kind}-p-${key}`} />);
+    } else {
+      blocks.push(
+        <p key={key++} className="mt-5 text-[16px] leading-7 text-mk-muted sm:text-[17px] sm:leading-8">
+          {renderInline(text, `p-${key}`)}
+        </p>,
+      );
+    }
   }
 
   return <div className="marketing-md">{blocks}</div>;

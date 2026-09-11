@@ -21,7 +21,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#F6F0E8",
+          background: "#F7F8FA",
           padding: "72px 80px",
         }}
       >
@@ -34,7 +34,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
         >
           <div
             style={{
-              color: "#C45C26",
+              color: "#E85D04",
               fontSize: 22,
               letterSpacing: 2,
               textTransform: "uppercase",
@@ -43,7 +43,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
           >
             {tag}
           </div>
-          <div style={{ color: "#1A1510", fontSize: 22, fontWeight: 600 }}>QuoteBuilder</div>
+          <div style={{ color: "#0B0D12", fontSize: 22, fontWeight: 600 }}>QuoteBuilder</div>
         </div>
         <div
           style={{
@@ -58,14 +58,14 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
               fontSize: title.length > 70 ? 46 : 56,
               fontWeight: 600,
               lineHeight: 1.12,
-              color: "#1A1510",
+              color: "#0B0D12",
               letterSpacing: -1,
             }}
           >
             {`${title} · QuoteBuilder`}
           </div>
           {description ? (
-            <div style={{ color: "rgba(26,21,16,0.55)", fontSize: 24, lineHeight: 1.4 }}>
+            <div style={{ color: "#5C6370", fontSize: 24, lineHeight: 1.4 }}>
               {description}
             </div>
           ) : null}
@@ -79,7 +79,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
               background: "#E85D04",
             }}
           />
-          <div style={{ color: "rgba(26,21,16,0.45)", fontSize: 22 }}>quotebuilder.co</div>
+          <div style={{ color: "#8B919C", fontSize: 22 }}>quotebuilder.co</div>
         </div>
       </div>
     ),

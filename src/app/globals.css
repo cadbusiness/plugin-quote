@@ -28,6 +28,20 @@
   --color-ring: var(--ring);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Marketing V2 — Linear / Stripe surfaces. Dashboard tokens stay above. */
+  --color-mk-bg: #f7f8fa;
+  --color-mk-ink: #0b0d12;
+  --color-mk-muted: #5c6370;
+  --color-mk-faint: #8b919c;
+  --color-mk-surface: #ffffff;
+  --color-mk-band: #f1f3f5;
+  --color-mk-border: #e6e8ec;
+  --color-mk-accent: #e85d04;
+  --color-mk-accent-hover: #d35400;
+  --color-mk-accent-soft: #fff1e6;
+  --color-mk-dark: #0b0d12;
+  --color-mk-on-dark: #f7f8fa;
 }
 
 body {
@@ -132,6 +146,19 @@ body {
   .qb-cinema-bar {
     animation: none !important;
   }
+}
+
+.marketing-grid {
+  background-image:
+    linear-gradient(to right, rgba(11, 13, 18, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(11, 13, 18, 0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 10%, transparent 72%);
+}
+
+.marketing-md strong {
+  color: var(--color-mk-ink);
+  font-weight: 600;
 }
 
 .shop-puck {

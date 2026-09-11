@@ -32,14 +32,14 @@ export default function SequencePage() {
     <>
       <section className="px-6 pb-6 pt-12 sm:pt-16">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#C45C26]">Outil</p>
+          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-mk-accent">Outil</p>
           <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl">
             Séquence de relances, prête à copier.
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-[#1A1510]/70 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-mk-muted sm:text-lg">
             T+0 confirmation, T+4 h rappel équipe, puis le fil prospect jusqu’à J+30. Adaptez le
             nom, le projet, le secteur.{" "}
-            <Link href="/fonctionnalites/autopilote" className="font-medium text-[#E85D04] underline-offset-2 hover:underline">
+            <Link href="/fonctionnalites/autopilote" className="font-medium text-mk-accent underline-offset-2 hover:underline">
               Voir l’autopilote
             </Link>
             .
@@ -53,17 +53,17 @@ export default function SequencePage() {
 
       <section className="mx-auto max-w-3xl px-6 pb-4">
         <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">Ensuite</h2>
-        <p className="mt-4 text-[16px] leading-7 text-[#1A1510]/75">
+        <p className="mt-4 text-[16px] leading-7 text-mk-muted">
           Un texte sans dossier reste mou. Le{" "}
-          <Link href="/blog/formulaire-contact-vs-funnel-devis-b2b" className="font-medium text-[#E85D04] underline-offset-2 hover:underline">
+          <Link href="/blog/formulaire-contact-vs-funnel-devis-b2b" className="font-medium text-mk-accent underline-offset-2 hover:underline">
             funnel
           </Link>{" "}
           fournit le brief que ces e-mails citent. Le{" "}
-          <Link href="/outils/cout-devis-non-relance" className="font-medium text-[#E85D04] underline-offset-2 hover:underline">
+          <Link href="/outils/cout-devis-non-relance" className="font-medium text-mk-accent underline-offset-2 hover:underline">
             calculateur
           </Link>{" "}
           dit si l’effort vaut le CA. Les sources et le raisonnement sont dans{" "}
-          <Link href="/blog/pourquoi-les-devis-meurent-sans-relance" className="font-medium text-[#E85D04] underline-offset-2 hover:underline">
+          <Link href="/blog/pourquoi-les-devis-meurent-sans-relance" className="font-medium text-mk-accent underline-offset-2 hover:underline">
             l’article relances
           </Link>
           .

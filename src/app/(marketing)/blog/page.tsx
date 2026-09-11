@@ -22,25 +22,22 @@ export default async function BlogIndexPage({
 
   return (
     <>
-      <section className="relative overflow-hidden px-6 pb-8 pt-12 sm:pt-16">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-24 top-0 h-72 w-72 rounded-full bg-[#F3B184]/35 blur-3xl"
-        />
+      <section className="relative overflow-hidden px-6 pb-8 pt-14 sm:pt-20">
+        <div aria-hidden className="marketing-grid pointer-events-none absolute inset-0" />
         <div className="relative mx-auto max-w-6xl">
-          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#C45C26]">
+          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-mk-accent">
             {BLOG_UI.eyebrow}
           </p>
           <h1 className="mt-3 max-w-3xl text-[1.85rem] font-semibold tracking-tight sm:text-5xl sm:leading-[1.08]">
             {BLOG_UI.heroTitle}
           </h1>
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-[#1A1510]/70 sm:text-lg">
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-mk-muted sm:text-lg">
             {BLOG_UI.heroSubtitle}
           </p>
           <div className="mt-7">
             <Link
               href="/signup?plan=free"
-              className="inline-flex rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#1A1510] ring-1 ring-black/10 hover:bg-[#FFF8F1]"
+              className="inline-flex rounded-full bg-mk-surface px-5 py-2.5 text-sm font-semibold text-mk-ink ring-1 ring-mk-border hover:bg-mk-band"
             >
               {BLOG_UI.tryFree}
             </Link>

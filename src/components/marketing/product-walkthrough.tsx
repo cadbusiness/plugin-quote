@@ -25,7 +25,7 @@ type Phase = (typeof PHASES)[number]["id"];
 
 function Window({ url, children }: { url: string; children: React.ReactNode }) {
   return (
-    <div className="overflow-hidden rounded-2xl bg-white shadow-[0_24px_60px_-28px_rgba(80,40,10,0.4)] ring-1 ring-black/10">
+    <div className="overflow-hidden rounded-2xl bg-white shadow-[0_24px_60px_-28px_rgba(80,40,10,0.4)] ring-1 ring-mk-border">
       <div className="flex items-center gap-2 border-b border-slate-200 bg-slate-50 px-3 py-2">
         <span className="h-2.5 w-2.5 rounded-full bg-[#E8B4A2]" />
         <span className="h-2.5 w-2.5 rounded-full bg-[#F3D09A]" />
@@ -89,7 +89,7 @@ export function ProductWalkthrough() {
             type="button"
             onClick={() => setPhase(item.id)}
             className={`rounded-full px-3 py-1.5 text-sm ${
-              phase === item.id ? "bg-[#1A1510] text-white" : "bg-white text-[#1A1510]/70 ring-1 ring-black/10"
+              phase === item.id ? "bg-mk-dark text-white" : "bg-white text-mk-muted ring-1 ring-mk-border"
             }`}
           >
             {item.label}
@@ -168,7 +168,7 @@ export function ProductWalkthrough() {
                   <button
                     type="button"
                     onClick={() => setPhase("client")}
-                    className="mt-2 w-full text-sm font-medium text-[#E85D04]"
+                    className="mt-2 w-full text-sm font-medium text-mk-accent"
                   >
                     Voir côté client →
                   </button>
@@ -237,7 +237,7 @@ export function ProductWalkthrough() {
               <p className="mt-4 rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-600">
                 Brief : {liveProduct}, {qty} unités, {height}. Contact : Claire Martin, Atelier Nord.
               </p>
-              <button type="submit" className="mt-4 rounded-md bg-[#E85D04] px-4 py-2 text-sm font-medium text-white">
+              <button type="submit" className="mt-4 rounded-md bg-mk-accent px-4 py-2 text-sm font-medium text-white">
                 Envoyer le devis
               </button>
             </form>

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BlogCoverPlaceholder } from "@/components/marketing/blog-cover";
 import { BlogMidCta } from "@/components/marketing/blog-mid-cta";
 import { BlogProgress } from "@/components/marketing/blog-progress";
 import { BlogToc } from "@/components/marketing/blog-toc";
@@ -38,16 +39,16 @@ export function MarketingArticle({
     <>
       <BlogProgress />
       <article>
-        <header className="px-6 pb-6 pt-10 sm:pt-14">
+        <header className="px-6 pb-6 pt-12 sm:pt-16">
           <div className="mx-auto max-w-[45rem]">
-            <nav className="flex flex-wrap items-center gap-2 text-xs font-medium text-[#1A1510]/45" aria-label="Fil d’Ariane">
-              <Link href="/blog" className="hover:text-[#1A1510]">
+            <nav className="flex flex-wrap items-center gap-2 text-xs font-medium text-mk-faint" aria-label="Fil d’Ariane">
+              <Link href="/blog" className="hover:text-mk-ink">
                 Blog
               </Link>
               <span>/</span>
               <Link
                 href={`/blog?tag=${primaryTag(post)}`}
-                className="text-[#C45C26] hover:text-[#E85D04]"
+                className="text-mk-accent hover:text-mk-accent-hover"
               >
                 {primaryTagLabel(post)}
               </Link>
@@ -55,30 +56,34 @@ export function MarketingArticle({
             <h1 className="mt-5 text-[2rem] font-semibold leading-[1.12] tracking-tight sm:text-[2.75rem] sm:leading-[1.08]">
               {post.title}
             </h1>
-            <p className="mt-5 text-[15px] leading-6 text-[#1A1510]/50">
+            <p className="mt-5 text-[15px] leading-6 text-mk-muted">
               {BLOG_UI.byline}
-              <span className="mx-2 text-[#1A1510]/25">·</span>
+              <span className="mx-2 text-mk-faint">·</span>
               {date}
-              <span className="mx-2 text-[#1A1510]/25">·</span>
+              <span className="mx-2 text-mk-faint">·</span>
               {post.readingMinutes} {BLOG_UI.reading}
             </p>
           </div>
         </header>
 
-        {post.cover ? (
-          <div className="mx-auto max-w-3xl px-6 pb-4">
-            <div className="relative aspect-[16/9] overflow-hidden rounded-[24px] bg-[#1A1510]">
-              <Image
-                src={post.cover}
-                alt=""
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 768px"
-                className="object-cover"
-              />
-            </div>
+        <div className="mx-auto max-w-3xl px-6 pb-8">
+          <div className="overflow-hidden rounded-2xl ring-1 ring-mk-border">
+            {post.cover ? (
+              <div className="relative aspect-[16/9] bg-mk-dark">
+                <Image
+                  src={post.cover}
+                  alt=""
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, 768px"
+                  className="object-cover"
+                />
+              </div>
+            ) : (
+              <BlogCoverPlaceholder post={post} />
+            )}
           </div>
-        ) : null}
+        </div>
 
         <div className="mx-auto max-w-6xl px-6 pb-8">
           <div className="lg:grid lg:grid-cols-[minmax(0,45rem)_minmax(13rem,1fr)] lg:gap-16">
@@ -104,27 +109,32 @@ export function MarketingArticle({
       )}
 
       {related.length > 0 || tools.length > 0 ? (
-        <section className="border-y border-[#1A1510]/8 bg-white/55 px-6 py-12">
+        <section className="border-y border-mk-border bg-mk-band px-6 py-14">
           <div className="mx-auto max-w-6xl space-y-10">
             {related.length > 0 ? (
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C45C26]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mk-accent">
                   {BLOG_UI.related}
                 </p>
-                <ul className="mt-4 grid gap-4 md:grid-cols-2">
+                <ul className="mt-5 grid gap-4 md:grid-cols-2">
                   {related.map((item) => (
                     <li key={item.slug}>
                       <Link
                         href={item.path}
-                        className="block h-full rounded-[22px] bg-white p-5 ring-1 ring-black/6 transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)]"
+                        className="block h-full overflow-hidden rounded-2xl bg-mk-surface ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_16px_40px_-28px_rgba(11,13,18,0.2)]"
                       >
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C45C26]">
-                          {primaryTagLabel(item)}
-                        </p>
-                        <p className="mt-1 text-[16px] font-semibold tracking-tight">{item.title}</p>
-                        <p className="mt-2 line-clamp-2 text-[14px] leading-6 text-[#1A1510]/55">
-                          {item.description}
-                        </p>
+                        <div className="h-28">
+                          <BlogCoverPlaceholder post={item} compact />
+                        </div>
+                        <div className="p-5">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
+                            {primaryTagLabel(item)}
+                          </p>
+                          <p className="mt-1 text-[16px] font-semibold tracking-tight">{item.title}</p>
+                          <p className="mt-2 line-clamp-2 text-[14px] leading-6 text-mk-muted">
+                            {item.description}
+                          </p>
+                        </div>
                       </Link>
                     </li>
                   ))}
@@ -134,18 +144,18 @@ export function MarketingArticle({
 
             {tools.length > 0 ? (
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C45C26]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mk-accent">
                   {BLOG_UI.tools}
                 </p>
-                <ul className="mt-4 grid gap-4 md:grid-cols-2">
+                <ul className="mt-5 grid gap-4 md:grid-cols-2">
                   {tools.map((tool) => (
                     <li key={tool.href}>
                       <Link
                         href={tool.href}
-                        className="block h-full rounded-[22px] bg-[#F6F0E8] p-5 ring-1 ring-black/5 transition hover:bg-white hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)]"
+                        className="block h-full rounded-2xl bg-mk-surface p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_16px_40px_-28px_rgba(11,13,18,0.2)]"
                       >
                         <p className="text-[16px] font-semibold tracking-tight">{tool.title}</p>
-                        <p className="mt-2 text-[14px] leading-6 text-[#1A1510]/55">{tool.text}</p>
+                        <p className="mt-2 text-[14px] leading-6 text-mk-muted">{tool.text}</p>
                       </Link>
                     </li>
                   ))}

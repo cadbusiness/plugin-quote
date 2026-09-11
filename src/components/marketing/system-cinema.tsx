@@ -60,7 +60,7 @@ function Frame({
   return (
     <div
       className={`overflow-hidden rounded-2xl shadow-[0_28px_70px_-32px_rgba(60,30,8,0.55)] ring-1 ${
-        dark ? "bg-slate-950 ring-white/10" : "bg-white ring-black/10"
+        dark ? "bg-slate-950 ring-white/10" : "bg-white ring-mk-border"
       }`}
     >
       <div
@@ -158,8 +158,8 @@ export function SystemCinema() {
                 }}
                 className={`rounded-full px-3 py-1.5 text-sm transition ${
                   on
-                    ? "bg-[#1A1510] text-white shadow-sm"
-                    : "bg-white/80 text-[#1A1510]/65 ring-1 ring-black/10 hover:bg-white"
+                    ? "bg-mk-dark text-white shadow-sm"
+                    : "bg-mk-surface/80 text-mk-muted ring-1 ring-mk-border hover:bg-white"
                 }`}
               >
                 {item.label}
@@ -170,31 +170,31 @@ export function SystemCinema() {
         <button
           type="button"
           onClick={() => setPlaying((p) => !p)}
-          className="text-sm font-medium text-[#1A1510]/55 underline-offset-4 hover:text-[#1A1510] hover:underline"
+          className="text-sm font-medium text-mk-muted underline-offset-4 hover:text-mk-ink hover:underline"
         >
           {playing ? "Pause" : "Rejouer"}
         </button>
       </div>
 
-      <div className="relative mt-5 overflow-hidden rounded-[28px] bg-gradient-to-b from-[#1A1510] to-[#2A2218] p-4 sm:p-6">
+      <div className="relative mt-5 overflow-hidden rounded-2xl bg-mk-dark p-4 sm:p-6">
         <div
           aria-hidden
-          className="pointer-events-none absolute -left-10 top-0 h-40 w-40 rounded-full bg-[#E85D04]/25 blur-3xl"
+          className="pointer-events-none absolute -left-10 top-0 h-40 w-40 rounded-full bg-mk-accent/25 blur-3xl"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-8 bottom-0 h-48 w-48 rounded-full bg-[#F3B184]/20 blur-3xl"
+          className="pointer-events-none absolute -right-8 bottom-0 h-48 w-48 rounded-full bg-mk-accent/10 blur-3xl"
         />
 
         <div className="relative mb-4 flex items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.14em] text-[#F3B184]">
+            <p className="text-xs font-medium uppercase tracking-[0.14em] text-mk-accent">
               Dans le produit
             </p>
-            <h3 className="mt-1 text-xl font-semibold text-[#F6F0E8] sm:text-2xl">{current.title}</h3>
-            <p className="mt-1 text-sm text-[#F6F0E8]/65">{current.caption}</p>
+            <h3 className="mt-1 text-xl font-semibold text-mk-on-dark sm:text-2xl">{current.title}</h3>
+            <p className="mt-1 text-sm text-mk-on-dark/65">{current.caption}</p>
           </div>
-          <p className="shrink-0 tabular-nums text-xs text-[#F6F0E8]/40">
+          <p className="shrink-0 tabular-nums text-xs text-mk-on-dark/40">
             {scene + 1}/{SCENES.length}
           </p>
         </div>
@@ -202,7 +202,7 @@ export function SystemCinema() {
         <div className="relative mb-4 h-1 overflow-hidden rounded-full bg-white/10">
           <div
             key={`${scene}-${playing}`}
-            className="h-full w-full origin-left rounded-full bg-[#E85D04] qb-cinema-bar"
+            className="h-full w-full origin-left rounded-full bg-mk-accent qb-cinema-bar"
             style={{
               animationDuration: playing ? `${SCENE_MS}ms` : "0ms",
               animationPlayState: playing ? "running" : "paused",

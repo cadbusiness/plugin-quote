@@ -25,8 +25,8 @@ function TocLinks({
               onClick={onNavigate}
               className={`block text-[13px] leading-5 transition ${
                 active
-                  ? "font-semibold text-[#E85D04]"
-                  : "text-[#1A1510]/50 hover:text-[#1A1510]"
+                  ? "font-semibold text-mk-accent"
+                  : "text-mk-muted hover:text-mk-ink"
               }`}
             >
               {heading.text}
@@ -72,15 +72,15 @@ export function BlogToc({
 
   if (variant === "mobile") {
     return (
-      <details className="group mb-8 rounded-[20px] bg-white px-4 py-3 ring-1 ring-black/6 lg:hidden">
+      <details className="group mb-8 rounded-xl bg-mk-surface px-4 py-3 ring-1 ring-mk-border lg:hidden">
         <summary className="cursor-pointer list-none text-sm font-semibold [&::-webkit-details-marker]:hidden">
           <span className="flex items-center justify-between gap-3">
             {BLOG_UI.toc}
-            <span className="text-[#1A1510]/30 group-open:hidden">+</span>
-            <span className="hidden text-[#1A1510]/30 group-open:inline">–</span>
+            <span className="text-mk-faint group-open:hidden">+</span>
+            <span className="hidden text-mk-faint group-open:inline">–</span>
           </span>
         </summary>
-        <nav className="mt-3 border-t border-[#1A1510]/8 pt-3" aria-label={BLOG_UI.toc}>
+        <nav className="mt-3 border-t border-mk-border pt-3" aria-label={BLOG_UI.toc}>
           <TocLinks headings={headings} activeId={activeId} />
         </nav>
       </details>
@@ -92,7 +92,7 @@ export function BlogToc({
       className="sticky top-28 max-h-[calc(100dvh-8rem)] overflow-y-auto"
       aria-label={BLOG_UI.toc}
     >
-      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C45C26]">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mk-accent">
         {BLOG_UI.toc}
       </p>
       <div className="mt-4">

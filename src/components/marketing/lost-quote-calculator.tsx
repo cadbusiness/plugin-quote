@@ -27,7 +27,7 @@ export function LostQuoteCalculator() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-      <form className="rounded-[22px] bg-white p-5 ring-1 ring-black/6 sm:p-6" onSubmit={(e) => e.preventDefault()}>
+      <form className="rounded-2xl bg-white p-5 ring-1 ring-mk-border sm:p-6" onSubmit={(e) => e.preventDefault()}>
         <Field
           label="Devis envoyés par mois"
           hint="PDF, e-mail ou configurateur : le volume que vous produisez."
@@ -70,14 +70,14 @@ export function LostQuoteCalculator() {
         />
       </form>
 
-      <div className="rounded-[22px] bg-[#1A1510] p-5 text-[#F6F0E8] sm:p-6">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#F3B184]">
+      <div className="rounded-2xl bg-mk-dark p-5 text-mk-on-dark sm:p-6">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mk-accent">
           CA laissé sur la table
         </p>
         <p className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
           {money(result.annualGap)}
         </p>
-        <p className="mt-2 text-sm text-[#F6F0E8]/60">par an, si le taux cible est tenu</p>
+        <p className="mt-2 text-sm text-mk-on-dark/60">par an, si le taux cible est tenu</p>
 
         <dl className="mt-8 space-y-3 border-t border-white/10 pt-6 text-sm">
           <Row label="CA actuel / mois" value={money(result.monthlyCurrent)} />
@@ -90,7 +90,7 @@ export function LostQuoteCalculator() {
         </dl>
 
         <div className="mt-6 flex items-center justify-between gap-3">
-          <p className="text-xs leading-5 text-[#F6F0E8]/45">Hypothèse linéaire, hors saisonnalité.</p>
+          <p className="text-xs leading-5 text-mk-on-dark/45">Hypothèse linéaire, hors saisonnalité.</p>
           <CopyButton text={summary} label="Copier le résultat" />
         </div>
       </div>
@@ -121,11 +121,11 @@ function Field({
     <label className="mt-5 block first:mt-0">
       <span className="flex items-baseline justify-between gap-3">
         <span className="text-sm font-semibold">{label}</span>
-        <span className="text-sm tabular-nums text-[#E85D04]">
+        <span className="text-sm tabular-nums text-mk-accent">
           {suffix === "€" ? `${value.toLocaleString("fr-FR")} €` : `${value} ${suffix}`}
         </span>
       </span>
-      <p className="mt-1 text-[12px] leading-5 text-[#1A1510]/45">{hint}</p>
+      <p className="mt-1 text-[12px] leading-5 text-mk-faint">{hint}</p>
       <input
         type="range"
         min={min}
@@ -142,8 +142,8 @@ function Field({
 function Row({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <dt className="text-[#F6F0E8]/55">{label}</dt>
-      <dd className={accent ? "font-semibold text-[#F3B184]" : "font-medium"}>{value}</dd>
+      <dt className="text-mk-on-dark/55">{label}</dt>
+      <dd className={accent ? "font-semibold text-mk-accent" : "font-medium"}>{value}</dd>
     </div>
   );
 }

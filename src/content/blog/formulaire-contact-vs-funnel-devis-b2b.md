@@ -28,6 +28,9 @@ Le score n’est plus seulement un feeling. Hot / Warm / Cold se calcule sur le 
 
 ## Côté à côté, sans slogan
 
+![Formulaire vs funnel](figure:funnel-vs-form)
+*Le formulaire livre un message. Le funnel livre un dossier.*
+
 Le formulaire vous livre un message. Le funnel vous livre un dossier. Le catalogue est absent du premier, contraint (parfois sync Woo / Shopify) dans le second. Le budget est rarement demandé dans un contact, plus souvent indicatif dans un parcours. La suite, c’est une boîte mail d’un côté, un pipeline avec assignation et autopilote de l’autre. L’abandon est invisible après un formulaire. Après un funnel, session plus e-mail égale relance. Côté Ads, un lead générique n’est pas un coût par devis, puis par gagné.
 
 Le formulaire peut rester pour le support. Ce n’est pas le même job que l’acquisition d’un projet chiffrable.

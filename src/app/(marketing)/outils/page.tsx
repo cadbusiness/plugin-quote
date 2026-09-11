@@ -36,11 +36,11 @@ export default function OutilsIndexPage() {
     <>
       <section className="px-6 pb-8 pt-12 sm:pt-16">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#C45C26]">Outils</p>
+          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-mk-accent">Outils</p>
           <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl">
             Chiffrer le trou. Rédiger les touches.
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-[#1A1510]/70 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-mk-muted sm:text-lg">
             Trois outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
           </p>
         </div>
@@ -52,13 +52,13 @@ export default function OutilsIndexPage() {
             <Link
               key={tool.href}
               href={tool.href}
-              className="rounded-[22px] bg-white p-5 ring-1 ring-black/6 transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
+              className="rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
             >
-              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C45C26]">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
                 {tool.eyebrow}
               </p>
               <h2 className="mt-2 text-lg font-semibold tracking-tight">{tool.title}</h2>
-              <p className="mt-2 text-[15px] leading-7 text-[#1A1510]/65">{tool.text}</p>
+              <p className="mt-2 text-[15px] leading-7 text-mk-muted">{tool.text}</p>
             </Link>
           ))}
         </div>

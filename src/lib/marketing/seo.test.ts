@@ -21,6 +21,8 @@ import { computeBriefScore } from "./brief-score";
 import { computeLostQuote } from "./lost-quote";
 import { MARKETING_ROUTES } from "./routes";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
+import { CREAM_HEX, TAG_COVER } from "./theme";
+import { calloutKind, paragraphCalloutKind, parseImageLine } from "./markdown-parse";
 
 const EM_DASH = /\u2014/;
 
@@ -324,5 +326,45 @@ assert.equal(
 assert.ok(
   scoreHeadings.some((heading) => heading.id === "pourquoi-le-scoring-devis-nest-pas-du-lead-scoring-marketing"),
 );
+
+assert.equal(calloutKind("Note QuoteBuilder. On évite les slogans."), "tip");
+assert.equal(calloutKind("Astuce : une fourchette indicative."), "tip");
+assert.equal(calloutKind("Attention au wizard trop long."), "warning");
+assert.equal(calloutKind("Le formulaire livre un message."), "quote");
+assert.equal(paragraphCalloutKind("Astuce : une fourchette indicative dans le parcours."), "tip");
+assert.equal(paragraphCalloutKind("Le comportement post-envoi compte."), null);
+
+const figure = parseImageLine("![Grille scorecard 0-100](figure:score-grid)");
+assert.equal(figure?.src, "figure:score-grid");
+assert.match(scoreMd, /figure:score-grid/);
+const funnelMd = readFileSync(join(blogDir, "formulaire-contact-vs-funnel-devis-b2b.md"), "utf8");
+assert.match(funnelMd, /figure:funnel-vs-form/);
+
+const globals = readFileSync(new URL("../../../src/app/globals.css", import.meta.url), "utf8");
+assert.match(globals, /--color-mk-bg:\s*#f7f8fa/);
+assert.match(globals, /--color-mk-accent:\s*#e85d04/);
+assert.doesNotMatch(globals, /#F6F0E8/);
+assert.ok(TAG_COVER.scoring.accent === "#E85D04");
+
+const marketingRoots = [
+  join(process.cwd(), "src/components/marketing"),
+  join(process.cwd(), "src/app/(marketing)"),
+  join(process.cwd(), "src/app/blog"),
+];
+function walkTsx(dir: string): string[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) return walkTsx(full);
+    return entry.name.endsWith(".tsx") || entry.name.endsWith(".ts") ? [full] : [];
+  });
+}
+for (const root of marketingRoots) {
+  for (const file of walkTsx(root)) {
+    const body = readFileSync(file, "utf8");
+    assert.doesNotMatch(body, /#F6F0E8/, `${file} still uses the cream wash`);
+    assert.doesNotMatch(body, EM_DASH, `${file} still contains an em dash`);
+  }
+}
+assert.equal(CREAM_HEX, "#F6F0E8");
 
 console.log("marketing seo tests ok");

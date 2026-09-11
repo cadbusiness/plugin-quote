@@ -107,6 +107,9 @@ Le comportement post-envoi compte autant que le brief initial. C’est pour ça 
 
 ## Grille scorecard 0–100 (à coller dans votre process)
 
+![Grille scorecard 0-100](figure:score-grid)
+*Cinq axes, total 100. Hot / Warm / Cold / Parking.*
+
 **Score = Fit + Urgence + Complétude + Budget + Comportement**
 
 | Score | Label | Action type |
