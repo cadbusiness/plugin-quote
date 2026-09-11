@@ -10,7 +10,7 @@ import { shopPuckConfig } from "@/lib/shops/puck-config";
 import { footerNav, headerNav, jsonLdScript, themeStyle } from "@/lib/shops/seo";
 import { cx, SHOP_BODY, SHOP_CONTAINER, SHOP_CTA, SHOP_HEADING } from "@/lib/shops/storefront-style";
 import type { ShopBlock, ShopLayout, ShopProduct, StorefrontModel } from "@/lib/shops/types";
-import { quoteFunnelPath } from "@/lib/shops/urls";
+import { shopQuotePath } from "@/lib/shops/urls";
 
 export type { StorefrontModel };
 
@@ -93,7 +93,7 @@ export function ProductDetail({
   model: StorefrontModel;
   product: ShopProduct;
 }) {
-  const quoteHref = quoteFunnelPath(model.orgSlug, model.funnelSlug);
+  const quoteHref = `${shopQuotePath(model.orgSlug, model.shopSlug)}?product=${encodeURIComponent(product.id)}`;
   return (
     <article className={cx(SHOP_CONTAINER, "grid gap-10 py-12 lg:grid-cols-2 lg:items-start lg:gap-14 lg:py-16")}>
       {product.image_url ? (
@@ -115,11 +115,9 @@ export function ProductDetail({
         <div className={cx("mt-6", SHOP_BODY)}>
           <ProductHtml html={product.description} />
         </div>
-        {quoteHref ? (
-          <Link href={quoteHref} className={cx(SHOP_CTA, "mt-8")} style={{ background: model.theme.accent }}>
-            Ajouter au devis
-          </Link>
-        ) : null}
+        <Link href={quoteHref} className={cx(SHOP_CTA, "mt-8")} style={{ background: model.theme.accent }}>
+          Ajouter au devis
+        </Link>
       </div>
     </article>
   );

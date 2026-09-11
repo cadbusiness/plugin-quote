@@ -52,6 +52,8 @@ assert.equal(boxStyle({ padding: "0", position: "absolute", top: "0" }).position
 
 assert.equal(isShopCta({ label: "Demander un devis", href: "/contact" }), true);
 assert.equal(isShopCta({ label: "Contact", href: "/c/demo/rayonnage" }), true);
+assert.equal(isShopCta({ label: "Devis", href: "/b/demo/vitrine/devis" }), true);
+assert.equal(isShopCta({ label: "Devis", href: "/devis" }), true);
 assert.equal(isShopCta({ label: "Catalogue", href: "/catalogue" }), false);
 
 assert.equal(cx("a", false, undefined, "b"), "a b");

@@ -1,11 +1,11 @@
-import { quoteFunnelPath, shopPagePath } from "@/lib/shops/urls";
+import { shopQuotePath } from "@/lib/shops/urls";
 
 export function resolveShopHref(
   href: string,
   opts: { orgSlug: string; shopSlug: string; funnelSlug: string | null },
 ) {
   if (href === "/devis" || href === "devis") {
-    return quoteFunnelPath(opts.orgSlug, opts.funnelSlug) ?? shopPagePath("catalogue");
+    return shopQuotePath(opts.orgSlug, opts.shopSlug);
   }
   if (href.startsWith("http://") || href.startsWith("https://")) return href;
   if (href.startsWith("/c/")) return href;

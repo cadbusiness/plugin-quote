@@ -4,7 +4,7 @@ import { ProductDetail, StorefrontCrumbs } from "@/components/storefront/storefr
 import { htmlToPlainPreview } from "@/lib/catalog/html";
 import { breadcrumbJsonLd, productJsonLd, shopMetadata, websiteJsonLd } from "@/lib/shops/seo";
 import { loadOr404, seoCtx, StorefrontShell, toModel } from "@/lib/shops/public-page";
-import { categoryPath, findProductBySlug, productPath, quoteFunnelPath } from "@/lib/shops/urls";
+import { categoryPath, findProductBySlug, productPath, shopQuotePath } from "@/lib/shops/urls";
 import { getAppUrl } from "@/lib/supabase/env";
 
 type Props = { params: Promise<{ orgSlug: string; shopSlug: string; productSlug: string }> };
@@ -32,7 +32,7 @@ export default async function ShopProductPage({ params }: Props) {
   if (!product) notFound();
   const path = productPath(product);
   const ctx = seoCtx(shop, path, product.name, htmlToPlainPreview(product.description) || "");
-  const quoteUrl = quoteFunnelPath(shop.orgSlug, shop.funnelSlug);
+  const quoteUrl = `${getAppUrl()}${shopQuotePath(shop.orgSlug, shop.doc.shop.slug)}`;
   const crumbs = [
     { name: shop.doc.shop.name, path: "/" },
     { name: "Catalogue", path: "/catalogue" },
@@ -41,7 +41,7 @@ export default async function ShopProductPage({ params }: Props) {
       : []),
     { name: product.name, path },
   ];
-  const jsonLd = [websiteJsonLd(ctx), breadcrumbJsonLd(ctx, crumbs), productJsonLd(ctx, product, quoteUrl ? `${getAppUrl()}${quoteUrl}` : null)];
+  const jsonLd = [websiteJsonLd(ctx), breadcrumbJsonLd(ctx, crumbs), productJsonLd(ctx, product, quoteUrl)];
   const model = toModel(shop, jsonLd);
   return (
     <StorefrontShell model={model}>

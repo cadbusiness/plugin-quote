@@ -5,7 +5,8 @@ import { boxStyle, cssLength, cssSpacing, migrateBlocksToLayout, parseLayout } f
 import { buildShopBlueprint, requiredShopSlugs } from "./templates";
 import { mentionsLegalesBody } from "./legal";
 import { clipDescription, pageTitle, productJsonLd, shopMetadata, sitemapEntries } from "./seo";
-import { findProductBySlug, productSlug, shopBasePath } from "./urls";
+import { resolveShopHref } from "./href";
+import { findProductBySlug, productSlug, shopBasePath, shopQuotePath } from "./urls";
 import type { ShopDocument } from "./types";
 
 const blueprint = buildShopBlueprint({
@@ -62,6 +63,31 @@ assert.equal(boxStyle({ position: "static" }).position, undefined);
 assert.equal(pageTitle("Catalogue", "Atelier Nord"), "Catalogue · Atelier Nord");
 assert.equal(clipDescription("a".repeat(200)).endsWith("…"), true);
 assert.equal(shopBasePath("demo", "atelier"), "/b/demo/atelier");
+assert.equal(shopQuotePath("demo", "vitrine"), "/b/demo/vitrine/devis");
+assert.equal(
+  resolveShopHref("/devis", { orgSlug: "demo", shopSlug: "vitrine", funnelSlug: "rayonnage" }),
+  "/b/demo/vitrine/devis",
+);
+assert.equal(
+  resolveShopHref("devis", { orgSlug: "demo", shopSlug: "vitrine", funnelSlug: "rayonnage" }),
+  "/b/demo/vitrine/devis",
+);
+assert.equal(
+  resolveShopHref("/devis", { orgSlug: "demo", shopSlug: "vitrine", funnelSlug: null }),
+  "/b/demo/vitrine/devis",
+);
+assert.equal(
+  resolveShopHref("/c/demo/rayonnage", { orgSlug: "demo", shopSlug: "vitrine", funnelSlug: "rayonnage" }),
+  "/c/demo/rayonnage",
+);
+assert.equal(
+  resolveShopHref("/catalogue", { orgSlug: "demo", shopSlug: "vitrine", funnelSlug: "rayonnage" }),
+  "/b/demo/vitrine/catalogue",
+);
+assert.equal(
+  resolveShopHref("https://example.test/c/demo/rayonnage", { orgSlug: "demo", shopSlug: "vitrine", funnelSlug: "rayonnage" }),
+  "https://example.test/c/demo/rayonnage",
+);
 
 const product = {
   id: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
@@ -103,10 +129,11 @@ const jsonLd = productJsonLd(
     description: "",
   },
   product,
-  "/c/demo/devis",
+  "https://app.example/b/demo/atelier/devis",
 );
 assert.equal(jsonLd["@type"], "Product");
-assert.equal((jsonLd.potentialAction as { name: string }).name, "Demander un devis");
+assert.equal((jsonLd.potentialAction as { name: string; target: string }).name, "Demander un devis");
+assert.equal((jsonLd.potentialAction as { name: string; target: string }).target, "https://app.example/b/demo/atelier/devis");
 
 const urls = sitemapEntries({
   origin: "https://app.example",
@@ -118,6 +145,7 @@ const urls = sitemapEntries({
 });
 assert.ok(urls.some((row) => row.loc.endsWith("/b/demo/atelier")));
 assert.ok(urls.some((row) => row.loc.includes("/catalogue")));
+assert.ok(urls.some((row) => row.loc.endsWith("/b/demo/atelier/devis")));
 assert.ok(urls.some((row) => row.loc.includes("/mentions-legales")));
 assert.ok(urls.some((row) => row.loc.includes("/p/")));
 

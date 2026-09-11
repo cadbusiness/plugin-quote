@@ -206,6 +206,7 @@ export function sitemapEntries(input: {
   }
   add("/", "weekly", "1.0");
   add("/catalogue", "weekly", "0.9");
+  add("/devis", "weekly", "0.8");
   for (const page of input.pages) {
     if (!page.isPublished || page.seo.noindex) continue;
     const path = shopPagePath(page.slug);
