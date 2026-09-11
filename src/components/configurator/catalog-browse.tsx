@@ -16,6 +16,7 @@ export function CatalogBrowse({
   products,
   customization,
   accent,
+  themed,
   error,
   onChange,
   onContinue,
@@ -23,6 +24,7 @@ export function CatalogBrowse({
   products: Product[];
   customization: Customization;
   accent: string;
+  themed?: boolean;
   error?: string;
   onChange: (customization: Customization) => void;
   onContinue: () => void;
@@ -128,7 +130,14 @@ export function CatalogBrowse({
                   )}
                   <p className="font-medium text-slate-900">{item.name}</p>
                   <p className="mt-1 text-sm font-medium text-slate-700">{formatPrice(item.priceMin, item.priceMax, item.currency)}</p>
-                  {inQuote ? <p className="mt-2 text-xs font-medium text-amber-700">Dans le devis</p> : null}
+                  {inQuote ? (
+                    <p
+                      className={`mt-2 text-xs font-medium ${themed ? "" : "text-amber-700"}`}
+                      style={themed ? { color: accent } : undefined}
+                    >
+                      Dans le devis
+                    </p>
+                  ) : null}
                 </button>
               );
             })}
@@ -209,7 +218,12 @@ export function CatalogBrowse({
         <button
           type="button"
           onClick={onContinue}
-          className="rounded-lg bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+          className={
+            themed
+              ? "rounded-lg px-4 py-2 text-sm font-medium text-white"
+              : "rounded-lg bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+          }
+          style={themed ? { background: accent } : undefined}
         >
           Voir le devis
         </button>
