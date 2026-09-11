@@ -11,6 +11,7 @@ import type {
 import type { Json } from "@/lib/db/database.types";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 import { attributionColumns, type Attribution } from "@/lib/stats/attribution";
+import { pickPreferredBySlug, publicConfiguratorSlugs } from "@/lib/demo/public-slugs";
 
 export function mapSession(row: Tables<"quote_sessions">): QuoteSession {
   const customization = (row.customization ?? {}) as Partial<Customization>;
@@ -42,13 +43,14 @@ export async function resolvePublicConfigurator(orgSlug: string, configuratorSlu
     .eq("slug", orgSlug)
     .maybeSingle();
   if (!org) return null;
-  const { data: cfg } = await supabase
+  const slugs = publicConfiguratorSlugs(orgSlug, configuratorSlug);
+  const { data: matches } = await supabase
     .from("configurators")
-    .select("id")
+    .select("id, slug")
     .eq("organization_id", org.id)
-    .eq("slug", configuratorSlug)
-    .eq("is_active", true)
-    .maybeSingle();
+    .in("slug", slugs)
+    .eq("is_active", true);
+  const cfg = pickPreferredBySlug(matches, slugs);
   if (!cfg) return null;
   return { organizationId: org.id, configuratorId: cfg.id };
 }

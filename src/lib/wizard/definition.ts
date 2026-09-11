@@ -3,6 +3,7 @@ import type { Database, Json } from "@/lib/db/database.types";
 import { normalizeAttributes, toProspectOptions } from "@/lib/catalog/attributes";
 import { parseFunnelTracking, parseOrgGtm } from "@/lib/funnels/tracking";
 import { parseFunnelKind } from "@/lib/funnels/kind";
+import { pickPreferredBySlug, publicConfiguratorSlugs } from "@/lib/demo/public-slugs";
 import type {
   ConfiguratorDefinition,
   Product,
@@ -53,13 +54,14 @@ export async function loadDefinition(
     .maybeSingle();
   if (!org) return null;
 
-  const { data: configurator } = await supabase
+  const slugs = publicConfiguratorSlugs(org.slug, configuratorSlug);
+  const { data: matches } = await supabase
     .from("configurators")
     .select("*")
     .eq("organization_id", org.id)
-    .eq("slug", configuratorSlug)
-    .eq("is_active", true)
-    .maybeSingle();
+    .in("slug", slugs)
+    .eq("is_active", true);
+  const configurator = pickPreferredBySlug(matches, slugs);
   if (!configurator) return null;
 
   const { data: steps } = await supabase

@@ -1,4 +1,5 @@
 import { DEMO_FUNNEL_ALIASES, DEMO_FUNNEL_SLUG } from "@/lib/demo/constants";
+import { pickDemoFunnel } from "@/lib/demo/public-slugs";
 import { themeWithKind } from "@/lib/funnels/kind";
 import { getFunnelTemplate, type TemplateStep } from "@/lib/funnels/templates";
 import type { DemoClient, DemoFunnel, SeedContext, SeedModule } from "@/lib/demo/types";
@@ -51,14 +52,14 @@ async function ensureSteps(ctx: SeedContext, funnel: DemoFunnel) {
 
 export async function ensureDemoFunnel(ctx: SeedContext): Promise<{ funnel: DemoFunnel; created: boolean }> {
   const template = getFunnelTemplate("racking");
-  for (const slug of DEMO_FUNNEL_ALIASES) {
-    const { data } = await ctx.supabase
-      .from("configurators")
-      .select("*")
-      .eq("organization_id", ctx.org.id)
-      .eq("slug", slug)
-      .maybeSingle();
-    if (!data) continue;
+  const { data: aliases, error: aliasError } = await ctx.supabase
+    .from("configurators")
+    .select("*")
+    .eq("organization_id", ctx.org.id)
+    .in("slug", [...DEMO_FUNNEL_ALIASES]);
+  if (aliasError) throw aliasError;
+  const existing = pickDemoFunnel(aliases);
+  if (existing) {
     const { data: updated, error } = await ctx.supabase
       .from("configurators")
       .update({
@@ -69,11 +70,11 @@ export async function ensureDemoFunnel(ctx: SeedContext): Promise<{ funnel: Demo
         chat_enabled: true,
         is_active: true,
         theme: themeWithKind(
-          data.theme && typeof data.theme === "object" ? data.theme : { accent: "#E85D04" },
+          existing.theme && typeof existing.theme === "object" ? existing.theme : { accent: "#E85D04" },
           "form",
         ),
       })
-      .eq("id", data.id)
+      .eq("id", existing.id)
       .select("*")
       .single();
     if (error || !updated) throw error ?? new Error("Impossible de mettre à jour le funnel démo");

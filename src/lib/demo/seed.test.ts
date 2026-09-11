@@ -1,5 +1,14 @@
 import assert from "node:assert/strict";
-import { DEMO_ACCOUNTS, DEMO_ORG, DEMO_SEED_VERSION, requireDemoPassword } from "./constants";
+import {
+  DEMO_ACCOUNTS,
+  DEMO_FUNNEL_ALIASES,
+  DEMO_FUNNEL_SLUG,
+  DEMO_ORG,
+  DEMO_SEED_VERSION,
+  DEMO_SHOP_ALIASES,
+  DEMO_SHOP_SLUG,
+  requireDemoPassword,
+} from "./constants";
 import { DEMO_PRODUCTS, DEMO_RULES } from "./modules/catalog";
 import { DEMO_QUOTES } from "./modules/quotes";
 import { DEMO_SESSIONS } from "./modules/sessions";
@@ -9,7 +18,16 @@ import { WALKTHROUGH_SCREENS, walkthroughPath } from "./walkthrough";
 import { QUOTE_STATUSES } from "../crm/seed";
 
 assert.equal(DEMO_ORG.slug, "demo");
-assert.equal(DEMO_SEED_VERSION >= 1, true);
+assert.equal(DEMO_SEED_VERSION >= 2, true);
+assert.equal(DEMO_FUNNEL_SLUG, "rayonnage");
+assert.equal(DEMO_SHOP_SLUG, "vitrine");
+assert.ok(DEMO_FUNNEL_ALIASES.includes("principal"));
+assert.ok(DEMO_FUNNEL_ALIASES.includes("funnel-rayonnage"));
+assert.ok(DEMO_SHOP_ALIASES.includes("espace-demo"));
+assert.ok(
+  WALKTHROUGH_SCREENS.some((screen) => screen.path === `/c/${DEMO_ORG.slug}/${DEMO_FUNNEL_SLUG}`),
+);
+assert.ok(WALKTHROUGH_SCREENS.some((screen) => screen.path === `/b/${DEMO_ORG.slug}/${DEMO_SHOP_SLUG}`));
 assert.ok(DEMO_ACCOUNTS.every((account) => account.email.endsWith("@quotebuilder.app")));
 assert.ok(!JSON.stringify(DEMO_ACCOUNTS).includes("password"));
 assert.ok(!JSON.stringify(DEMO_ACCOUNTS).toLowerCase().includes("demo2026"));
