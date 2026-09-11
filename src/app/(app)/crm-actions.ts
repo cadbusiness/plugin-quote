@@ -8,7 +8,7 @@ import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { logActivity, notifyUser } from "@/lib/crm/activity";
 import { sendTemplateEmail } from "@/lib/email/send";
 import { getAppUrl } from "@/lib/supabase/env";
-import { startWorkflows } from "@/lib/workflows/engine";
+import { exitActiveQuoteRuns, startWorkflows } from "@/lib/workflows/engine";
 import { mergeOrgGtm, normalizeGaId, normalizeGtmId } from "@/lib/funnels/tracking";
 
 export async function changeQuoteStatus(quoteId: string, statusId: string) {
@@ -51,6 +51,9 @@ export async function changeQuoteStatus(quoteId: string, statusId: string) {
     payload: { from: fromLabel, status: status.slug, label: status.label },
   });
   try {
+    if (status.is_closed) {
+      await exitActiveQuoteRuns(ctx.organization.id, quoteId);
+    }
     await startWorkflows({
       triggerType: "quote.status_changed",
       organizationId: ctx.organization.id,
