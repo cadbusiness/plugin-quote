@@ -9,7 +9,7 @@ import { ShopChat, type EditorPage, type ShopChatDraft, type ShopChatResult } fr
 import { ListPanel } from "@/components/ui/list-panel";
 import { parseLayout } from "@/lib/shops/layout";
 import type { ShopLegal, ShopNavDraft, ShopProduct, ShopSeo, ShopTheme } from "@/lib/shops/types";
-import { QUOTE_MODE_OPTIONS } from "@/lib/quotes/quote-mode";
+import { QUOTE_MODE_OPTIONS, type QuoteMode } from "@/lib/quotes/quote-mode";
 
 const ShopBuilderCanvas = dynamic(
   () => import("@/components/shops/shop-builder-canvas").then((mod) => mod.ShopBuilderCanvas),
@@ -29,6 +29,7 @@ export function ShopEditor({
   publicUrl,
   funnelName,
   funnelSlug,
+  linkedQuoteMode,
   orgName,
   orgSlug,
 }: {
@@ -48,6 +49,7 @@ export function ShopEditor({
   publicUrl: string;
   funnelName: string | null;
   funnelSlug: string | null;
+  linkedQuoteMode: QuoteMode;
   orgName: string;
   orgSlug: string;
 }) {
@@ -148,22 +150,16 @@ export function ShopEditor({
           <div>
             <p className="text-sm font-medium text-slate-900">Mode devis</p>
             <p className="mt-0.5 text-sm text-slate-500">
-              Demande simple : contact + besoin + lignes catalogue optionnelles. La boutique prime sur le funnel
-              lié.
+              Parcours, catalogue, ou demande simple (contact + besoin). La boutique prime sur le funnel lié.
             </p>
             <div className="mt-2 flex gap-1 rounded-lg bg-slate-100 p-0.5 text-sm">
               {QUOTE_MODE_OPTIONS.map((item) => {
-                const active = (theme.quoteMode ?? "configurator") === item.id;
+                const active = (theme.quoteMode ?? linkedQuoteMode) === item.id;
                 return (
                   <button
                     key={item.id}
                     type="button"
-                    onClick={() =>
-                      setTheme({
-                        ...theme,
-                        quoteMode: item.id === "configurator" ? undefined : item.id,
-                      })
-                    }
+                    onClick={() => setTheme({ ...theme, quoteMode: item.id })}
                     className={`flex-1 rounded-md px-3 py-1.5 ${
                       active ? "bg-white font-medium text-[#C2410C] shadow-sm" : "text-slate-500 hover:text-slate-800"
                     }`}

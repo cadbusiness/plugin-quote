@@ -148,7 +148,9 @@ assert.equal(parsed.quoteMode, undefined);
 assert.equal(parseTheme({ templateId: "nope" }).templateId, undefined);
 assert.equal(parseTheme({ quoteMode: "rfq" }).quoteMode, "rfq");
 assert.equal(parseTheme({ quoteMode: "simple" }).quoteMode, "rfq");
-assert.equal(parseTheme({ quoteMode: "configurator" }).quoteMode, "configurator");
+assert.equal(parseTheme({ quoteMode: "configurator" }).quoteMode, "wizard");
+assert.equal(parseTheme({ quoteMode: "wizard" }).quoteMode, "wizard");
+assert.equal(parseTheme({ quoteMode: "catalog" }).quoteMode, "catalog");
 
 const form = new FormData();
 form.set("name", "Atelier Chêne");

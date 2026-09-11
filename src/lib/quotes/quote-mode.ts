@@ -1,6 +1,6 @@
 import type { Json } from "@/lib/db/database.types";
 
-export const QUOTE_MODES = ["configurator", "rfq"] as const;
+export const QUOTE_MODES = ["wizard", "catalog", "rfq"] as const;
 export type QuoteMode = (typeof QUOTE_MODES)[number];
 
 export const QUOTE_MODE_OPTIONS: {
@@ -9,9 +9,14 @@ export const QUOTE_MODE_OPTIONS: {
   hint: string;
 }[] = [
   {
-    id: "configurator",
-    label: "Configurateur",
-    hint: "Funnel complet : questions, catalogue, règles Si/Alors.",
+    id: "wizard",
+    label: "Parcours",
+    hint: "Funnel multi-étapes : questions, suggestions, règles Si/Alors.",
+  },
+  {
+    id: "catalog",
+    label: "Catalogue",
+    hint: "Rayons d’abord, puis demande de devis.",
   },
   {
     id: "rfq",
@@ -20,20 +25,28 @@ export const QUOTE_MODE_OPTIONS: {
   },
 ];
 
-const RFQ_ALIASES = new Set(["rfq", "light", "simple"]);
+const LEGACY_TO_MODE: Record<string, QuoteMode> = {
+  rfq: "rfq",
+  light: "rfq",
+  simple: "rfq",
+  wizard: "wizard",
+  configurator: "wizard",
+  catalog: "catalog",
+};
 
 function themeRecord(value: unknown): Record<string, unknown> | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   return value as Record<string, unknown>;
 }
 
-/** Parse a stored flag. Unknown values are ignored (default stays configurator). */
+/** Parse stored or form input. Legacy aliases map onto the canonical enum. */
 export function parseQuoteMode(value: unknown): QuoteMode | null {
   if (typeof value !== "string") return null;
-  const normalized = value.trim().toLowerCase();
-  if (normalized === "configurator") return "configurator";
-  if (RFQ_ALIASES.has(normalized)) return "rfq";
-  return null;
+  return LEGACY_TO_MODE[value.trim().toLowerCase()] ?? null;
+}
+
+export function isQuoteMode(value: string): value is QuoteMode {
+  return QUOTE_MODES.includes(value as QuoteMode);
 }
 
 export function quoteModeFromTheme(theme: unknown): QuoteMode | null {
@@ -42,33 +55,45 @@ export function quoteModeFromTheme(theme: unknown): QuoteMode | null {
   return parseQuoteMode(raw.quoteMode);
 }
 
+function catalogKindFromTheme(theme: unknown): boolean {
+  const raw = themeRecord(theme);
+  return raw?.kind === "catalog";
+}
+
 /**
  * Shop theme wins when present (shop-local /b/…/devis).
- * Otherwise the linked configurator theme. Missing / invalid → configurator.
+ * Otherwise the linked configurator theme.
+ * Unset + existing catalog-kind funnel → catalog.
+ * Unset otherwise → wizard.
  */
 export function resolveQuoteMode(input: { shopTheme?: unknown; configuratorTheme?: unknown }): QuoteMode {
-  return quoteModeFromTheme(input.shopTheme) ?? quoteModeFromTheme(input.configuratorTheme) ?? "configurator";
+  return (
+    quoteModeFromTheme(input.shopTheme) ??
+    quoteModeFromTheme(input.configuratorTheme) ??
+    (catalogKindFromTheme(input.configuratorTheme) ? "catalog" : "wizard")
+  );
 }
 
 export function isRfqQuoteMode(mode: QuoteMode | string | null | undefined): boolean {
   return mode === "rfq";
 }
 
-export function quoteModeLabel(mode: QuoteMode): string {
-  return QUOTE_MODE_OPTIONS.find((item) => item.id === mode)?.label ?? "Configurateur";
+export function isCatalogQuoteMode(mode: QuoteMode | string | null | undefined): boolean {
+  return mode === "catalog";
 }
 
+export function quoteModeLabel(mode: QuoteMode): string {
+  return QUOTE_MODE_OPTIONS.find((item) => item.id === mode)?.label ?? "Parcours";
+}
+
+/** Persist only canonical `wizard` | `catalog` | `rfq`. */
 export function themeWithQuoteMode(theme: Json | Record<string, unknown> | null | undefined, mode: QuoteMode): Json {
   const base = themeRecord(theme) ? { ...themeRecord(theme) } : {};
-  if (mode === "configurator") {
-    delete base.quoteMode;
-    return base as Json;
-  }
-  return { ...base, quoteMode: "rfq" } as Json;
+  return { ...base, quoteMode: mode } as Json;
 }
 
 /**
- * RFQ (and shop devis) catalog lines stay bound to the shop’s linked configurator
+ * RFQ / shop devis catalog lines stay bound to the shop’s linked configurator
  * when a shopSlug is present. Public /c/ without shop hint keeps the funnel catalog.
  */
 export function scopeQuoteCatalog<T extends { configuratorId: string }>(

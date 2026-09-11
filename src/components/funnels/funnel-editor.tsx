@@ -206,9 +206,9 @@ export function FunnelEditor({
           <div className="border-b border-slate-100 px-4 py-4 lg:px-6">
             <p className="text-sm font-medium text-slate-900">Mode devis</p>
             <p className="mt-0.5 text-sm text-slate-500">
-              Demande simple ignore les steps du funnel. Une boutique liée peut encore surcharger ce réglage.
+              wizard = parcours, catalog = rayons, rfq = brief. Une boutique liée peut encore surcharger ce réglage.
             </p>
-            <div className="mt-3 flex max-w-md gap-1 rounded-lg bg-slate-100 p-0.5 text-sm">
+            <div className="mt-3 flex max-w-lg gap-1 rounded-lg bg-slate-100 p-0.5 text-sm">
               {QUOTE_MODE_OPTIONS.map((item) => (
                 <button
                   key={item.id}

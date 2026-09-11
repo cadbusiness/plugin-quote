@@ -111,7 +111,9 @@ const VALUE_LABELS: Record<string, string> = {
   power: "Énergie / Groupe",
   other: "Autre",
   rfq: "Demande simple",
-  configurator: "Configurateur",
+  wizard: "Parcours",
+  catalog: "Catalogue",
+  configurator: "Parcours",
 };
 
 export type QuestionMeta = {

@@ -5,6 +5,7 @@ import { loadShopDocument, loadShopProducts } from "@/lib/shops/document";
 import { navFromRow, pageFromRow, parseLegal, parsePageSeo, parseSeo, parseTheme } from "@/lib/shops/parse";
 import { shopAbsoluteUrl } from "@/lib/shops/urls";
 import { getAppUrl } from "@/lib/supabase/env";
+import { resolveQuoteMode } from "@/lib/quotes/quote-mode";
 import { createClient } from "@/lib/supabase/server";
 
 export const maxDuration = 60;
@@ -25,7 +26,7 @@ export default async function ShopEditorPage({
   const { data: funnel } = doc.shop.configurator_id
     ? await supabase
         .from("configurators")
-        .select("name, slug")
+        .select("name, slug, theme")
         .eq("id", doc.shop.configurator_id)
         .maybeSingle()
     : { data: null };
@@ -62,6 +63,7 @@ export default async function ShopEditorPage({
       publicUrl={publicUrl}
       funnelName={funnel?.name ?? null}
       funnelSlug={funnel?.slug ?? null}
+      linkedQuoteMode={resolveQuoteMode({ configuratorTheme: funnel?.theme })}
       orgName={ctx.organization.name}
       orgSlug={ctx.organization.slug}
     />

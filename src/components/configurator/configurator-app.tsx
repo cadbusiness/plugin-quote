@@ -15,7 +15,7 @@ import {
   type ConfiguratorThemeOverride,
 } from "@/lib/configurator/theme";
 import { shopConfiguratorApiPath, shopSuggestionsApiPath } from "@/lib/shops/catalog-scope";
-import { isRfqQuoteMode, matchCatalogPrefill, scopeQuoteCatalog } from "@/lib/quotes/quote-mode";
+import { isCatalogQuoteMode, isRfqQuoteMode, matchCatalogPrefill, scopeQuoteCatalog } from "@/lib/quotes/quote-mode";
 import type {
   Answers,
   ConfiguratorDefinition,
@@ -421,7 +421,7 @@ export function ConfiguratorApp({
       return;
     }
     if (step.screenType === "suggestions") {
-      if (definition.configurator.kind === "catalog") {
+      if (isCatalogQuoteMode(definition.configurator.quoteMode)) {
         if (quoteLineCount(session.customization) < 1) {
           setErrors({ catalog: "Ajoutez au moins un produit au devis." });
           return;
@@ -585,7 +585,7 @@ export function ConfiguratorApp({
     })),
     { shopSlug, shopConfiguratorId: shopConfiguratorId ?? definition.configurator.id },
   );
-  const isCatalog = definition.configurator.kind === "catalog";
+  const isCatalog = isCatalogQuoteMode(definition.configurator.quoteMode);
   const chatOnly =
     definition.configurator.chatEnabled && !definition.configurator.wizardEnabled && !isCatalog;
   const showChat =

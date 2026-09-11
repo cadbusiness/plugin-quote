@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { restrictProductsToShopCatalog } from "@/lib/shops/catalog-scope";
 import {
+  isCatalogQuoteMode,
+  isQuoteMode,
   isRfqQuoteMode,
   parseQuoteMode,
   quoteModeFromTheme,
@@ -14,26 +16,37 @@ import {
 assert.equal(parseQuoteMode(undefined), null);
 assert.equal(parseQuoteMode(""), null);
 assert.equal(parseQuoteMode("nope"), null);
-assert.equal(parseQuoteMode("configurator"), "configurator");
+assert.equal(parseQuoteMode("wizard"), "wizard");
+assert.equal(parseQuoteMode("catalog"), "catalog");
 assert.equal(parseQuoteMode("rfq"), "rfq");
 assert.equal(parseQuoteMode("RFQ"), "rfq");
+assert.equal(parseQuoteMode("configurator"), "wizard");
 assert.equal(parseQuoteMode("light"), "rfq");
 assert.equal(parseQuoteMode("simple"), "rfq");
+assert.equal(isQuoteMode("wizard"), true);
+assert.equal(isQuoteMode("configurator"), false);
 
 assert.equal(quoteModeFromTheme(null), null);
 assert.equal(quoteModeFromTheme({}), null);
 assert.equal(quoteModeFromTheme({ quoteMode: "rfq" }), "rfq");
 assert.equal(quoteModeFromTheme({ quoteMode: "light" }), "rfq");
-assert.equal(quoteModeFromTheme({ quoteMode: "configurator" }), "configurator");
+assert.equal(quoteModeFromTheme({ quoteMode: "configurator" }), "wizard");
+assert.equal(quoteModeFromTheme({ quoteMode: "wizard" }), "wizard");
+assert.equal(quoteModeFromTheme({ quoteMode: "catalog" }), "catalog");
 
-assert.equal(resolveQuoteMode({}), "configurator");
-assert.equal(resolveQuoteMode({ configuratorTheme: { kind: "catalog" } }), "configurator");
+assert.equal(resolveQuoteMode({}), "wizard");
+assert.equal(resolveQuoteMode({ configuratorTheme: { kind: "form" } }), "wizard");
+assert.equal(
+  resolveQuoteMode({ configuratorTheme: { kind: "catalog" } }),
+  "catalog",
+  "existing catalog-kind funnel stays catalog when quoteMode is unset",
+);
 assert.equal(resolveQuoteMode({ configuratorTheme: { quoteMode: "rfq" } }), "rfq");
 assert.equal(resolveQuoteMode({ shopTheme: { quoteMode: "simple" } }), "rfq");
 assert.equal(
   resolveQuoteMode({
     shopTheme: { quoteMode: "rfq" },
-    configuratorTheme: { quoteMode: "configurator" },
+    configuratorTheme: { quoteMode: "wizard", kind: "catalog" },
   }),
   "rfq",
   "shop override wins over linked funnel",
@@ -48,11 +61,18 @@ assert.equal(
 );
 assert.equal(
   resolveQuoteMode({
-    shopTheme: { quoteMode: "configurator" },
+    shopTheme: { quoteMode: "wizard" },
     configuratorTheme: { quoteMode: "rfq" },
   }),
-  "configurator",
-  "shop can pin configurator even if funnel is RFQ",
+  "wizard",
+  "shop can pin wizard even if funnel is RFQ",
+);
+assert.equal(
+  resolveQuoteMode({
+    shopTheme: { quoteMode: "catalog" },
+    configuratorTheme: { quoteMode: "wizard" },
+  }),
+  "catalog",
 );
 assert.equal(
   resolveQuoteMode({
@@ -61,18 +81,30 @@ assert.equal(
   }),
   "rfq",
 );
+assert.equal(
+  resolveQuoteMode({
+    shopTheme: { accent: "#111" },
+    configuratorTheme: { kind: "catalog" },
+  }),
+  "catalog",
+);
 
 assert.equal(isRfqQuoteMode("rfq"), true);
-assert.equal(isRfqQuoteMode("configurator"), false);
+assert.equal(isRfqQuoteMode("wizard"), false);
+assert.equal(isCatalogQuoteMode("catalog"), true);
+assert.equal(isCatalogQuoteMode("wizard"), false);
 assert.equal(quoteModeLabel("rfq"), "Demande simple");
-assert.equal(quoteModeLabel("configurator"), "Configurateur");
+assert.equal(quoteModeLabel("wizard"), "Parcours");
+assert.equal(quoteModeLabel("catalog"), "Catalogue");
 
 const withKind = themeWithQuoteMode({ kind: "catalog", tracking: { ga: "G-1" } }, "rfq");
 assert.equal((withKind as { quoteMode?: string }).quoteMode, "rfq");
 assert.equal((withKind as { kind?: string }).kind, "catalog");
-const cleared = themeWithQuoteMode(withKind, "configurator");
-assert.equal((cleared as { quoteMode?: string }).quoteMode, undefined);
-assert.equal((cleared as { kind?: string }).kind, "catalog");
+const persistedWizard = themeWithQuoteMode(withKind, "wizard");
+assert.equal((persistedWizard as { quoteMode?: string }).quoteMode, "wizard");
+assert.equal((persistedWizard as { kind?: string }).kind, "catalog");
+const persistedCatalog = themeWithQuoteMode({}, "catalog");
+assert.equal((persistedCatalog as { quoteMode?: string }).quoteMode, "catalog");
 
 const catalog = [
   { id: "p1", name: "Travée A", configuratorId: "catalog-a" },

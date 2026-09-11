@@ -1,4 +1,5 @@
 import type { Json } from "@/lib/db/database.types";
+import type { QuoteMode } from "@/lib/quotes/quote-mode";
 
 export type ScreenType = "questions" | "suggestions" | "customize" | "contact";
 export type QuestionType =
@@ -107,7 +108,7 @@ export type ConfiguratorDefinition = {
     wizardEnabled: boolean;
     chatEnabled: boolean;
     kind: "form" | "chat" | "catalog";
-    quoteMode: "configurator" | "rfq";
+    quoteMode: QuoteMode;
     theme: Record<string, unknown>;
   };
   steps: WizardStep[];
