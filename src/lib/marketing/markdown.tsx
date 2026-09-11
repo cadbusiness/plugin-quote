@@ -54,10 +54,6 @@ function isTableLine(line: string) {
   return /^\s*\|.+\|\s*$/.test(line);
 }
 
-function isTableSeparator(line: string) {
-  return /^\s*\|?(?:\s*:?-{3,}:?\s*\|)+\s*:?-{3,}:?\s*\|?\s*$/.test(line);
-}
-
 function splitTableRow(line: string) {
   return line
     .trim()
@@ -65,6 +61,12 @@ function splitTableRow(line: string) {
     .replace(/\|$/, "")
     .split("|")
     .map((cell) => cell.trim());
+}
+
+function isTableSeparator(line: string) {
+  if (!isTableLine(line)) return false;
+  const cells = splitTableRow(line);
+  return cells.length > 0 && cells.every((cell) => /^:?-{3,}:?$/.test(cell));
 }
 
 export function Markdown({ source }: { source: string }) {

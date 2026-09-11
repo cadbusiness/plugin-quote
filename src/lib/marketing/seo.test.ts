@@ -200,14 +200,34 @@ for (const path of llmsPaths) {
 function isTableLine(line: string) {
   return /^\s*\|.+\|\s*$/.test(line);
 }
-function isTableSeparator(line: string) {
-  return /^\s*\|?(?:\s*:?-{3,}:?\s*\|)+\s*:?-{3,}:?\s*\|?\s*$/.test(line);
+function splitTableRow(line: string) {
+  return line.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((cell) => cell.trim());
 }
+function isTableSeparator(line: string) {
+  if (!isTableLine(line)) return false;
+  const cells = splitTableRow(line);
+  return cells.length > 0 && cells.every((cell) => /^:?-{3,}:?$/.test(cell));
+}
+assert.ok(isTableSeparator("|--------|--------------------|"), "two-column separator should parse");
+assert.ok(isTableSeparator("|-------|-------|-------------|"), "three-column separator should parse");
 const scoreMd = readFileSync(join(blogDir, "score-demande-devis-b2b.md"), "utf8");
 const scoreLines = scoreMd.split("\n");
 let tableBlocks = 0;
-for (let i = 0; i < scoreLines.length - 1; i += 1) {
-  if (isTableLine(scoreLines[i] ?? "") && isTableSeparator(scoreLines[i + 1] ?? "")) tableBlocks += 1;
+let i = 0;
+let steps = 0;
+while (i < scoreLines.length) {
+  steps += 1;
+  assert.ok(steps < scoreLines.length + 5, "markdown walk must terminate");
+  const line = scoreLines[i] ?? "";
+  if (isTableLine(line) && isTableSeparator(scoreLines[i + 1] ?? "")) {
+    tableBlocks += 1;
+    i += 2;
+    while (i < scoreLines.length && isTableLine(scoreLines[i] ?? "") && !isTableSeparator(scoreLines[i] ?? "")) {
+      i += 1;
+    }
+    continue;
+  }
+  i += 1;
 }
 assert.ok(tableBlocks >= 5, `expected scoring tables, got ${tableBlocks}`);
 
