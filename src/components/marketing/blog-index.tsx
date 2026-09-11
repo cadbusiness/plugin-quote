@@ -4,11 +4,14 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { BlogCover } from "@/components/marketing/blog-cover";
 import {
-  BLOG_TAGS,
+  BLOG_TAG_DEFS,
   BLOG_UI,
+  blogTagLabel,
   filterBlogPosts,
   formatBlogDate,
   getFeaturedPost,
+  primaryTag,
+  primaryTagLabel,
   type BlogPost,
 } from "@/lib/marketing/blog";
 
@@ -43,6 +46,22 @@ function PostMeta({ post }: { post: BlogPost }) {
   );
 }
 
+function PostTags({ post }: { post: BlogPost }) {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {post.tags.map((slug) => (
+        <Link
+          key={slug}
+          href={`/blog?tag=${slug}`}
+          className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C45C26] hover:text-[#E85D04]"
+        >
+          {blogTagLabel(slug)}
+        </Link>
+      ))}
+    </div>
+  );
+}
+
 export function BlogIndex({ posts, tag }: { posts: BlogPost[]; tag?: string }) {
   const [q, setQ] = useState("");
   const filtered = useMemo(() => filterBlogPosts(posts, { tag, q }), [posts, tag, q]);
@@ -54,13 +73,13 @@ export function BlogIndex({ posts, tag }: { posts: BlogPost[]; tag?: string }) {
     <section className="mx-auto max-w-6xl px-6 pb-16">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap gap-2">
-          <TagChip href="/blog" label={BLOG_UI.allTags} active={!tag} />
-          {BLOG_TAGS.map((item) => (
+          <TagChip href="/blog" label="Tous" active={!tag} />
+          {BLOG_TAG_DEFS.map((item) => (
             <TagChip
-              key={item}
-              href={`/blog?tag=${encodeURIComponent(item)}`}
-              label={item}
-              active={tag === item}
+              key={item.slug}
+              href={`/blog?tag=${item.slug}`}
+              label={item.label}
+              active={tag === item.slug}
             />
           ))}
         </div>
@@ -84,10 +103,10 @@ export function BlogIndex({ posts, tag }: { posts: BlogPost[]; tag?: string }) {
                 {BLOG_UI.featured}
               </p>
               <Link
-                href={`/blog?tag=${encodeURIComponent(featured.tag)}`}
+                href={`/blog?tag=${primaryTag(featured)}`}
                 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C45C26] hover:text-[#E85D04]"
               >
-                {featured.tag}
+                {primaryTagLabel(featured)}
               </Link>
             </div>
             <Link href={featured.path} className="mt-3 block">
@@ -113,34 +132,34 @@ export function BlogIndex({ posts, tag }: { posts: BlogPost[]; tag?: string }) {
         </article>
       ) : null}
 
-      {grid.length === 0 ? (
-        <p className="mt-10 text-center text-sm text-[#1A1510]/50">{BLOG_UI.empty}</p>
-      ) : (
-        <ul className="mt-8 grid gap-4 md:grid-cols-2">
-          {grid.map((post) => (
-            <li
-              key={post.slug}
-              className="flex h-full flex-col rounded-[22px] bg-white p-5 ring-1 ring-black/6 transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-            >
-              <Link
-                href={`/blog?tag=${encodeURIComponent(post.tag)}`}
-                className="w-fit text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C45C26] hover:text-[#E85D04]"
+      <div className={featured ? "mt-10" : "mt-8"}>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C45C26]">
+          {BLOG_UI.grid}
+        </p>
+        {grid.length === 0 ? (
+          <p className="mt-6 text-sm text-[#1A1510]/50">{BLOG_UI.empty}</p>
+        ) : (
+          <ul className="mt-4 grid gap-4 md:grid-cols-2">
+            {grid.map((post) => (
+              <li
+                key={post.slug}
+                className="flex h-full flex-col rounded-[22px] bg-white p-5 ring-1 ring-black/6 transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
               >
-                {post.tag}
-              </Link>
-              <Link href={post.path} className="flex flex-1 flex-col">
-                <h2 className="mt-2 text-lg font-semibold tracking-tight sm:text-xl">{post.title}</h2>
-                <p className="mt-2 line-clamp-2 text-[15px] leading-7 text-[#1A1510]/65">
-                  {post.description}
-                </p>
-                <div className="mt-auto pt-4">
-                  <PostMeta post={post} />
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+                <PostTags post={post} />
+                <Link href={post.path} className="flex flex-1 flex-col">
+                  <h2 className="mt-2 text-lg font-semibold tracking-tight sm:text-xl">{post.title}</h2>
+                  <p className="mt-2 line-clamp-2 text-[15px] leading-7 text-[#1A1510]/65">
+                    {post.description}
+                  </p>
+                  <div className="mt-auto pt-4">
+                    <PostMeta post={post} />
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </section>
   );
 }

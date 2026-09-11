@@ -8,6 +8,7 @@ import {
   blogBreadcrumbJsonLd,
   blogOgImagePath,
   getBlogPost,
+  trimMetaDescription,
 } from "@/lib/marketing/blog";
 import { loadPostBody } from "@/lib/marketing/load-post";
 import { pageMetadata } from "@/lib/marketing/site";
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return { title: "Article" };
   return pageMetadata({
     title: post.title,
-    description: post.description,
+    description: trimMetaDescription(post.description),
     path: post.path,
     type: "article",
     publishedTime: post.publishedAt,

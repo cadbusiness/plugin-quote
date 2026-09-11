@@ -13,6 +13,8 @@ import {
   getRelatedPosts,
   getRelatedTools,
   midArticleHeadingIndex,
+  primaryTag,
+  primaryTagLabel,
   type BlogPost,
 } from "@/lib/marketing/blog";
 
@@ -26,7 +28,7 @@ export function MarketingArticle({
   faq: readonly FaqItem[];
 }) {
   const related = getRelatedPosts(post);
-  const tools = getRelatedTools(post.tag);
+  const tools = getRelatedTools(post);
   const headings = extractMarkdownH2s(body);
   const midAfter = midArticleHeadingIndex(headings.length);
   const date = formatBlogDate(post.publishedAt);
@@ -44,10 +46,10 @@ export function MarketingArticle({
               </Link>
               <span>/</span>
               <Link
-                href={`/blog?tag=${encodeURIComponent(post.tag)}`}
+                href={`/blog?tag=${primaryTag(post)}`}
                 className="text-[#C45C26] hover:text-[#E85D04]"
               >
-                {post.tag}
+                {primaryTagLabel(post)}
               </Link>
             </nav>
             <h1 className="mt-5 text-[2rem] font-semibold leading-[1.12] tracking-tight sm:text-[2.75rem] sm:leading-[1.08]">
@@ -82,7 +84,11 @@ export function MarketingArticle({
           <div className="lg:grid lg:grid-cols-[minmax(0,45rem)_minmax(13rem,1fr)] lg:gap-16">
             <div id="article-body" className="max-w-[45rem]">
               <BlogToc headings={headings} variant="mobile" />
-              <Markdown source={body} midAfterHeading={midAfter} midSlot={<BlogMidCta />} />
+              <Markdown
+                source={body}
+                midAfterHeading={midAfter}
+                midSlot={<BlogMidCta href={post.ctaHref} />}
+              />
             </div>
             <aside className="hidden lg:block">
               <BlogToc headings={headings} variant="desktop" />
@@ -113,7 +119,7 @@ export function MarketingArticle({
                         className="block h-full rounded-[22px] bg-white p-5 ring-1 ring-black/6 transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)]"
                       >
                         <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C45C26]">
-                          {item.tag}
+                          {primaryTagLabel(item)}
                         </p>
                         <p className="mt-1 text-[16px] font-semibold tracking-tight">{item.title}</p>
                         <p className="mt-2 line-clamp-2 text-[14px] leading-6 text-[#1A1510]/55">
