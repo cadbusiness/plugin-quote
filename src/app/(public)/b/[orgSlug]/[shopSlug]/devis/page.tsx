@@ -70,8 +70,6 @@ function ShopEmbeddedQuote({
   productPrefill?: string;
   themeOverride: ConfiguratorThemeOverride;
 }) {
-  // TODO Unify: seed ConfiguratorApp from ?product= (catalog id or SKU) once the funnel accepts a product prefill.
-  void productPrefill;
   return (
     <div className="min-h-[60vh]">
       <ConfiguratorApp
@@ -79,6 +77,7 @@ function ShopEmbeddedQuote({
         shopSlug={shopSlug}
         shopConfiguratorId={shopConfiguratorId ?? undefined}
         configuratorSlug={configuratorSlug}
+        productPrefill={productPrefill}
         embedded
         themeOverride={themeOverride}
       />

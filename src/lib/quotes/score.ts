@@ -24,6 +24,10 @@ export function scoreQuote(answers: Answers): { score: number; label: "hot" | "w
     score += 5;
   }
 
+  const need = String(answers.need ?? answers.besoin ?? "").trim();
+  if (need.length >= 80) score += 15;
+  else if (need.length >= 20) score += 8;
+
   score = Math.max(0, Math.min(100, score));
   const label = score >= 70 ? "hot" : score >= 45 ? "warm" : "cold";
   return { score, label };
@@ -54,6 +58,10 @@ export function scoreReasons(answers: Answers): string[] {
   if (Array.isArray(constraints) && constraints.length > 0 && !constraints.includes("aucune")) {
     reasons.push("Contraintes techniques");
   }
+
+  const need = String(answers.need ?? answers.besoin ?? "").trim();
+  if (need.length >= 80) reasons.push("Brief détaillé");
+  else if (need.length >= 20) reasons.push("Besoin renseigné");
 
   return reasons;
 }

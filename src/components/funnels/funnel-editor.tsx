@@ -10,9 +10,10 @@ import { FunnelAutomations, type FunnelWorkflowRow } from "@/components/funnels/
 import { FunnelStatsPanel } from "@/components/funnels/funnel-stats-panel";
 import { ParcoursBuilder } from "@/components/funnels/parcours-builder";
 import type { PreviewProduct } from "@/components/funnels/parcours-preview";
-import { renameFunnel, saveFunnelTracking, setFunnelActive, setFunnelKind } from "@/app/(app)/funnels/actions";
+import { renameFunnel, saveFunnelTracking, setFunnelActive, setFunnelKind, setFunnelQuoteMode } from "@/app/(app)/funnels/actions";
 import type { FunnelKind } from "@/lib/funnels/builder";
 import { FUNNEL_KIND_OPTIONS } from "@/lib/funnels/kind";
+import { QUOTE_MODE_OPTIONS, type QuoteMode } from "@/lib/quotes/quote-mode";
 import type { Tables } from "@/lib/db/database.types";
 import { FUNNEL_TABS, type FunnelTab } from "@/lib/funnels/tabs";
 import type { FunnelTracking } from "@/lib/funnels/tracking";
@@ -45,6 +46,7 @@ export function FunnelEditor({
     wizardEnabled: boolean;
     chatEnabled: boolean;
     kind: FunnelKind;
+    quoteMode: QuoteMode;
     isActive: boolean;
   };
   orgName: string;
@@ -64,6 +66,7 @@ export function FunnelEditor({
   const [pending, startTransition] = useTransition();
   const [tab, setTab] = useState(initialTab);
   const kind = funnel.kind;
+  const quoteMode = funnel.quoteMode;
   const embedUrl = publicUrl.replace("/c/", "/embed/");
   const widget = `<div data-quotebuilder data-org="${orgSlug}" data-id="${funnel.slug}"></div>\n<script src="${new URL("/widget.js", publicUrl).origin}/widget.js" async></script>`;
   const iframe = `<iframe src="${embedUrl}" title="${funnel.name}" style="width:100%;min-height:720px;border:0"></iframe>`;
@@ -199,6 +202,29 @@ export function FunnelEditor({
             <p className="mt-0.5 text-sm text-slate-500">
               Page publique, widget, plugin WordPress (liste de devis + funnel) — le même parcours.
             </p>
+          </div>
+          <div className="border-b border-slate-100 px-4 py-4 lg:px-6">
+            <p className="text-sm font-medium text-slate-900">Mode devis</p>
+            <p className="mt-0.5 text-sm text-slate-500">
+              wizard = parcours, catalog = rayons, rfq = brief. Une boutique liée peut encore surcharger ce réglage.
+            </p>
+            <div className="mt-3 flex max-w-lg gap-1 rounded-lg bg-slate-100 p-0.5 text-sm">
+              {QUOTE_MODE_OPTIONS.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  disabled={pending || quoteMode === item.id}
+                  onClick={() => startTransition(() => void setFunnelQuoteMode(funnel.id, item.id))}
+                  className={`flex-1 rounded-md px-3 py-1.5 ${
+                    quoteMode === item.id
+                      ? "bg-white font-medium text-[#C2410C] shadow-sm"
+                      : "text-slate-500"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
           </div>
           <CopyBlock label="Lien public" value={publicUrl} />
           <CopyBlock label="Widget JS" value={widget} />

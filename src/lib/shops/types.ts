@@ -1,5 +1,6 @@
 import type { Json, Tables } from "@/lib/db/database.types";
 import type { FunnelFamilyId } from "@/lib/funnels/families";
+import type { QuoteMode } from "@/lib/quotes/quote-mode";
 
 export const SHOP_STATUSES = ["draft", "published", "archived"] as const;
 export type ShopStatus = (typeof SHOP_STATUSES)[number];
@@ -16,6 +17,8 @@ export type ShopTheme = {
   text: string;
   seedPrompt?: string;
   templateId?: string;
+  /** Shop-local devis path. When set, overrides the linked configurator. */
+  quoteMode?: QuoteMode;
 };
 
 export type ShopGeo = {

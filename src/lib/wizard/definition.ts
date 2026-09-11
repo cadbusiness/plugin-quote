@@ -3,6 +3,7 @@ import type { Database, Json } from "@/lib/db/database.types";
 import { normalizeAttributes, toProspectOptions } from "@/lib/catalog/attributes";
 import { parseFunnelTracking, parseOrgGtm } from "@/lib/funnels/tracking";
 import { parseFunnelKind } from "@/lib/funnels/kind";
+import { resolveQuoteMode } from "@/lib/quotes/quote-mode";
 import { pickPreferredBySlug, publicConfiguratorSlugs } from "@/lib/demo/public-slugs";
 import type { ShopCatalogScope } from "@/lib/shops/catalog-scope";
 import type {
@@ -40,6 +41,8 @@ function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Produ
     options,
     stockStatus: row.stock_status ?? null,
     externalId: row.external_id,
+    sku: row.sku,
+    configuratorId: row.configurator_id,
   };
 }
 
@@ -122,6 +125,10 @@ async function assembleDefinition(
       wizardEnabled: configurator.wizard_enabled,
       chatEnabled: configurator.chat_enabled,
       kind: parseFunnelKind(configurator.theme, configurator.wizard_enabled, configurator.chat_enabled),
+      quoteMode: resolveQuoteMode({
+        shopTheme: shopScope?.shopTheme,
+        configuratorTheme: configurator.theme,
+      }),
       theme: asRecord(configurator.theme),
     },
     steps: (steps ?? []).map((s) => ({
