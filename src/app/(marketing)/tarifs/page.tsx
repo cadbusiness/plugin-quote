@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { MarketingCta } from "@/components/marketing/marketing-shell";
 import { PricingPlans } from "@/components/marketing/pricing-plans";
 import { FAQ } from "@/lib/marketing/content";
+import { pageMetadata } from "@/lib/marketing/site";
 
-export const metadata: Metadata = {
-  title: "Tarifs · QuoteBuilder",
+export const metadata: Metadata = pageMetadata({
+  title: "Tarifs",
   description:
-    "Starter 49 €, Pro 99 €, Agency 199 €. Free en option sans carte. Annuel avec 2 mois offerts.",
-};
+    "Annuel : Starter 39 €/mois, Pro 79 €/mois, Agency 159 €/mois (2 mois offerts). Mensuel 49 / 99 / 199 €. Free sans carte.",
+  path: "/tarifs",
+});
 
 export default function TarifsPage() {
   return (

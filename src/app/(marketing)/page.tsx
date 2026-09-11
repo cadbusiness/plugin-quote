@@ -1,9 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { AutopilotStage } from "@/components/marketing/autopilot-stage";
 import { LandingSectors } from "@/components/marketing/landing-sectors";
 import { MarketingCta } from "@/components/marketing/marketing-shell";
 import { SystemCinema } from "@/components/marketing/system-cinema";
 import { FEATURE_MENU_GROUPS, STATS } from "@/lib/marketing/content";
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, pageMetadata } from "@/lib/marketing/site";
+
+export const metadata: Metadata = pageMetadata({
+  title: DEFAULT_TITLE,
+  description: DEFAULT_DESCRIPTION,
+  path: "/",
+});
 
 export default function HomePage() {
   return (

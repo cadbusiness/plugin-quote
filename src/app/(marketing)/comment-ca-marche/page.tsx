@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { AutopilotStage } from "@/components/marketing/autopilot-stage";
 import { MarketingCta } from "@/components/marketing/marketing-shell";
 import { SystemCinema } from "@/components/marketing/system-cinema";
+import { pageMetadata } from "@/lib/marketing/site";
 
-export const metadata: Metadata = {
-  title: "Comment ça marche · QuoteBuilder",
-  description:
-    "Offre, funnel, dossier, autopilote. La chaîne QuoteBuilder en démo produit.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Comment ça marche",
+  description: "Offre, funnel, dossier, autopilote. La chaîne QuoteBuilder en démo produit.",
+  path: "/comment-ca-marche",
+});
 
 export default function CommentCaMarchePage() {
   return (

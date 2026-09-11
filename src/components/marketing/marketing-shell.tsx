@@ -9,6 +9,7 @@ import { FEATURE_MENU_GROUPS } from "@/lib/marketing/content";
 const STATIC_LINKS = [
   { href: "/comment-ca-marche", label: "Comment ça marche" },
   { href: "/secteurs", label: "Secteurs" },
+  { href: "/blog", label: "Blog" },
   { href: "/tarifs", label: "Tarifs" },
 ] as const;
 
@@ -416,21 +417,33 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
           </div>
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1A1510]/35">
-              Compte
+              Ressources
             </p>
             <ul className="mt-3 space-y-2">
               <li>
-                <Link href="/login" className="hover:text-[#1A1510]">
-                  Connexion
+                <Link href="/blog" className="hover:text-[#1A1510]">
+                  Blog
                 </Link>
               </li>
               <li>
-                <Link href="/signup" className="hover:text-[#1A1510]">
-                  Créer un compte
+                <Link href="/outils" className="hover:text-[#1A1510]">
+                  Outils
                 </Link>
               </li>
               <li>
-                <span className="text-[#1A1510]/35">CGU · Confidentialité</span>
+                <Link href="/a-propos" className="hover:text-[#1A1510]">
+                  À propos
+                </Link>
+              </li>
+              <li>
+                <Link href="/legal/cgu" className="hover:text-[#1A1510]">
+                  Conditions d&apos;utilisation
+                </Link>
+              </li>
+              <li>
+                <Link href="/legal/confidentialite" className="hover:text-[#1A1510]">
+                  Confidentialité
+                </Link>
               </li>
             </ul>
           </div>

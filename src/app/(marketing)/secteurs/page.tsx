@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LandingSectors } from "@/components/marketing/landing-sectors";
 import { MarketingCta } from "@/components/marketing/marketing-shell";
+import { pageMetadata } from "@/lib/marketing/site";
 
-export const metadata: Metadata = {
-  title: "Secteurs · QuoteBuilder",
-  description: "Familles de métiers et templates de parcours. Rayonnage, habitat, événementiel, industrie, services.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Secteurs",
+  description:
+    "Familles de métiers et templates de parcours. Rayonnage, habitat, événementiel, industrie, services.",
+  path: "/secteurs",
+});
 
 export default function SecteursPage() {
   return (
@@ -25,6 +28,23 @@ export default function SecteursPage() {
 
       <section className="mx-auto max-w-6xl px-6 py-8 sm:py-12">
         <LandingSectors />
+        <div className="mx-auto mt-10 max-w-3xl">
+          <Link
+            href="/secteurs/funnel-devis-rayonnage-stockage"
+            className="block rounded-[22px] bg-white p-5 ring-1 ring-black/6 transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C45C26]">
+              Landing secteur
+            </p>
+            <p className="mt-2 text-lg font-semibold tracking-tight">
+              Funnel de devis rayonnage & stockage
+            </p>
+            <p className="mt-2 text-[15px] leading-7 text-[#1A1510]/65">
+              Charge, travées, surface, dossier, relances. Le template le plus détaillé pour
+              l’instant.
+            </p>
+          </Link>
+        </div>
       </section>
 
       <section className="border-y border-[#1A1510]/8 bg-white/60 px-6 py-10">

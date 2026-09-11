@@ -1,0 +1,55 @@
+# QuoteBuilder
+
+> Funnel de devis B2B pour PME. Le prospect configure le projet ; l’équipe reçoit un dossier scoré, puis un autopilote relance. Pas un checkout : QuoteBuilder prépare le devis, il n’encaisse pas.
+
+QuoteBuilder est édité par Vinci Liberta LTD, Dublin, Irlande. Site canonique : https://quotebuilder.co
+
+## Produit
+
+QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de couche d’intelligence (chat catalogue, brief) ; le catalogue, la session et la soumission restent chez le commerçant. Trois modes d’entrée (wizard, chat IA, les deux), catalogue avec règles Si/Alors, pipeline de demandes, espace prospect, workflows de relance, stats par funnel et pont Google Ads.
+
+## Pages
+
+- Accueil : https://quotebuilder.co
+- Comment ça marche : https://quotebuilder.co/comment-ca-marche
+- Fonctionnalités : https://quotebuilder.co/fonctionnalites
+- Funnel de devis : https://quotebuilder.co/fonctionnalites/funnel
+- Catalogue & règles : https://quotebuilder.co/fonctionnalites/catalogue
+- Demandes & pipeline : https://quotebuilder.co/fonctionnalites/demandes
+- Autopilote : https://quotebuilder.co/fonctionnalites/autopilote
+- Espace prospect : https://quotebuilder.co/fonctionnalites/espace-prospect
+- Statistiques : https://quotebuilder.co/fonctionnalites/stats
+- Google Ads : https://quotebuilder.co/fonctionnalites/ads
+- Équipe : https://quotebuilder.co/fonctionnalites/equipe
+- Intégrations : https://quotebuilder.co/fonctionnalites/integrations
+- Secteurs : https://quotebuilder.co/secteurs
+- Funnel devis rayonnage & stockage : https://quotebuilder.co/secteurs/funnel-devis-rayonnage-stockage
+- Tarifs : https://quotebuilder.co/tarifs
+- À propos : https://quotebuilder.co/a-propos
+- Blog : https://quotebuilder.co/blog
+- Pourquoi les devis meurent sans relance : https://quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance
+- Formulaire de contact vs funnel de devis : https://quotebuilder.co/blog/formulaire-contact-vs-funnel-devis-b2b
+- Installer le widget devis : https://quotebuilder.co/blog/installer-widget-devis-wordpress-javascript
+- Sync WooCommerce / Shopify : https://quotebuilder.co/blog/sync-catalogue-woocommerce-shopify-parcours-devis
+- Outils : https://quotebuilder.co/outils
+- Calculateur coût d’un devis non relancé : https://quotebuilder.co/outils/cout-devis-non-relance
+- Générateur de séquence de relances : https://quotebuilder.co/outils/generateur-sequence-relances
+- Conditions d’utilisation : https://quotebuilder.co/legal/cgu
+- Politique de confidentialité : https://quotebuilder.co/legal/confidentialite
+
+## Tarifs
+
+Free 0 € (1 funnel, wizard, 10 soumissions, sans carte). Facturation annuelle par défaut : Starter 39 €/mois (390 €/an), Pro 79 €/mois (790 €/an), Agency 159 €/mois (1 590 €/an). Mensuel : 49 / 99 / 199 €.
+
+## Éditeur
+
+- Produit : QuoteBuilder
+- Société : Vinci Liberta LTD
+- Siège : Dublin, Irlande
+- Contact : hello@quotebuilder.app
+- Langue : français
+- Public : PME B2B qui vendent sur devis (rayonnage, habitat, industrie, services, événementiel)
+
+## Hors périmètre
+
+Les pages /login et /signup sont des écrans d’authentification, non indexées. Le dashboard client (demandes, funnels, catalogue) n’est pas public.
