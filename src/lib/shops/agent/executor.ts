@@ -1,3 +1,4 @@
+import { getFunnelFamily } from "@/lib/funnels/families";
 import { slugify } from "@/lib/org/slug";
 import { newBlockId } from "@/lib/shops/blocks";
 import {
@@ -13,6 +14,7 @@ import {
 } from "@/lib/shops/layout";
 import { cgvBody, cookiesBody, LEGAL_SLUGS, mentionsLegalesBody, privacyBody } from "@/lib/shops/legal";
 import { parseLegal, parseNavLocation, parsePageKind, parseSeo, parseTheme } from "@/lib/shops/parse";
+import { shopPlaceholders } from "@/lib/shops/placeholders";
 import { asJson, type ShopDocument, type ShopLayout } from "@/lib/shops/types";
 
 export type ShopOpResult = { ok: true; summary: string } | { ok: false; error: string };
@@ -81,11 +83,14 @@ export function shopSnapshot(doc: ShopDocument) {
   const theme = parseTheme(doc.shop.theme);
   const seo = parseSeo(doc.shop.seo, doc.shop.name);
   const legal = parseLegal(doc.shop.legal);
+  const family = getFunnelFamily(doc.shop.sector);
   return {
     name: doc.shop.name,
     slug: doc.shop.slug,
     status: doc.shop.status,
     sector: doc.shop.sector,
+    family: { id: family.id, label: family.label, blurb: family.blurb },
+    placeholders: shopPlaceholders(family.id),
     theme,
     seo,
     legal,

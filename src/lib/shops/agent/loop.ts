@@ -24,7 +24,8 @@ export async function runShopAgentTurn(input: {
   }
 
   const client = new Anthropic({ apiKey });
-  const system = buildShopAgentSystemPrompt(input.doc, input.orgName);
+  const isSeedTurn = input.history.length === 0;
+  const system = buildShopAgentSystemPrompt(input.doc, input.orgName, { isSeedTurn });
   const messages: Anthropic.MessageParam[] = [
     ...input.history.map((message) => ({ role: message.role, content: message.content })),
     { role: "user", content: input.userMessage },
@@ -32,12 +33,14 @@ export async function runShopAgentTurn(input: {
 
   const toolTrace: ShopAgentTurnResult["toolTrace"] = [];
   let assistantText = "";
+  const maxRounds = isSeedTurn ? COMMERCE_AGENT_CONFIG.maxToolIterations + 2 : COMMERCE_AGENT_CONFIG.maxToolIterations;
+  const maxTokens = isSeedTurn ? 2400 : 1800;
 
-  for (let round = 0; round < COMMERCE_AGENT_CONFIG.maxToolIterations; round++) {
-    const forceText = round === COMMERCE_AGENT_CONFIG.maxToolIterations - 1;
+  for (let round = 0; round < maxRounds; round++) {
+    const forceText = round === maxRounds - 1;
     const response = await client.messages.create({
       model: COMMERCE_AGENT_CONFIG.model,
-      max_tokens: 1800,
+      max_tokens: maxTokens,
       system,
       tools: SHOP_AGENT_TOOLS,
       tool_choice: forceText ? { type: "none" } : { type: "auto" },

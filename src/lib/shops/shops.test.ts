@@ -18,6 +18,10 @@ const blueprint = buildShopBlueprint({
 assert.deepEqual(requiredShopSlugs().sort(), blueprint.pages.map((page) => page.slug).sort());
 assert.ok(blueprint.pages.every((page) => page.blocks.content.length > 0));
 assert.equal(blueprint.pages[0]!.blocks.content[0]!.type, "Hero");
+assert.ok(String(blueprint.pages[0]!.blocks.content[0]!.props.image).startsWith("https://"));
+assert.ok(blueprint.pages[0]!.blocks.content.some((node) => node.type === "Features"));
+assert.ok(blueprint.pages[0]!.blocks.content.some((node) => node.type === "QuoteCta"));
+assert.equal(blueprint.pages[1]!.blocks.content.at(-1)?.type, "QuoteCta");
 assert.ok(blueprint.nav.some((item) => item.location === "header" && item.href === "/catalogue"));
 assert.ok(blueprint.nav.some((item) => item.href.includes("mentions-legales")));
 assert.match(mentionsLegalesBody(blueprint.legal, blueprint.name), /Atelier Nord/);
