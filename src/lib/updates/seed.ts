@@ -2,8 +2,21 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.12.0",
+    version: "1.12.0",
+    title: "Funnel devis aux couleurs de la boutique",
+    items: [
+      "Sur /b/…/devis, le parcours de devis reprend l’accent, le fond et le texte de la vitrine.",
+      "Boutons (Continuer, Envoyer, Chat, Sauvegarder, Voir le devis) et chrome d’étapes suivent le thème boutique.",
+      "Le catalogue intégré utilise aussi les accents de la boutique.",
+      "Les parcours /c/, embed et CRM restent inchangés (thème funnel classique).",
+    ],
+    releasedAt: "2026-09-11",
+    createdAt: "2026-09-11T00:00:00.000Z",
+  },
   {
     id: "seed-1.11.0",
     version: "1.11.0",
