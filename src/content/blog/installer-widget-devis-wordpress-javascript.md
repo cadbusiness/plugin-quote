@@ -1,3 +1,7 @@
+---
+cover: /images/blog/installer-widget-devis-wordpress-javascript/08-integrations.png
+---
+
 Vous n’avez pas besoin d’un nouveau site pour arrêter de collecter des « bonjour, on voudrait un devis ». Vous avez besoin d’un parcours sur une page qui existe déjà. QuoteBuilder s’installe de deux façons : un **widget JavaScript** universel, ou le **plugin WordPress** (bloc Gutenberg + shortcode). Dans les deux cas, le design de votre thème reste le vôtre.
 
 L’installation n’est pas le sujet difficile. Le sujet un peu plus délicat, c’est de savoir **quoi** embarquer : un funnel publié, un catalogue à jour, une identité progressive, puis un autopilote. Ce texte détaille le branchement. La chaîne métier est celle de [comment ça marche](/comment-ca-marche).
@@ -10,8 +14,8 @@ Décidez de la page d’entrée. Trois patterns tiennent à peu près la route.
 
 Une page /devis dédiée : le funnel occupe le contenu, moins de distractions, idéal Ads (l’URL UTM pointe ici). Un bouton sur une fiche produit : le widget s’ouvre au clic, utile si le catalogue boutique reste la vitrine et que le devis est l’action. Un bloc en milieu d’article : pour un secteur ([rayonnage](/secteurs/funnel-devis-rayonnage-stockage), habitat…), le contenu qualifie, le funnel convertit.
 
-![Boutique devis de l’espace démo](/images/blog/integrations.png)
-*Mini-site devis, pas une caisse. Catalogue et demande de devis sur la même vitrine.*
+![Boutiques démo : vitrine QuoteBuilder et WooCommerce](/images/blog/installer-widget-devis-wordpress-javascript/08-integrations.png)
+*Espace démo : WooCommerce connecté et boutique hébergée, prêts pour le widget.*
 
 Évitez de remplacer brutalement le formulaire de contact du footer. Gardez-le pour le SAV. Le devis a sa page.
 

@@ -14,6 +14,7 @@ keywords:
 author: QuoteBuilder
 date: 2026-09-11
 updated: 2026-09-11
+cover: /images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png
 ---
 
 # De la demande au dossier devis : visite guidée d’un parcours B2B
@@ -93,7 +94,7 @@ Le bloc Abandons (visites, e-mail, relance) complète le tableau : ce qui n’a 
 La vue Demandes est la file de travail quotidienne. Filtres par statut, assigné, score, dates. Export CSV si besoin. Chaque ligne montre le dossier, le projet (fourchette estimée, tags de qualification), le score, et l’âge de la demande.
 
 ![Liste des demandes devis avec scores et fourchettes](/images/blog/visite-guidee-parcours-devis-b2b/03-devis.png)
-*Liste `/devis` : dossiers, projets chiffrables, scores, source, alertes de suivi.*
+*Liste `/devis` : Léa Moreau HOT 91, Claire Martin, Thomas Berger, fourchettes et alertes.*
 
 Exemple lu sur l’écran : Léa Moreau, Google Ads, ligne de cuisson pro estimée 22 580 € – 29 600 €, tags « Grande surface », « Charge lourde », « Accès difficile », score 91, alerte « sans réponse depuis 8 jours ». Claire Martin arrive des réseaux sociaux avec un rayonnage mi-lourd. Thomas Berger, organique, picking 2,50 m, Warm 64.
 
@@ -106,7 +107,7 @@ Pour tester la qualité d’un brief avant même d’ouvrir un outil lourd, vous
 Le cœur du parcours vendeur, c’est la fiche dossier. Identité du prospect, score, statut, source, funnel d’origine, onglets (Dossier, Projet, Client, Échanges, Automatisations), et une colonne de suivi (owner, validation multi-décideurs, historique).
 
 ![Dossier devis détail Léa Moreau, score 91 et actions](/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png)
-*Détail demande : score expliqué, alerte « à faire maintenant », actions Écrire / Appeler / Relancer.*
+*Détail demande : score 91, alerte « à faire maintenant », actions Écrire / Appeler / Relancer.*
 
 Dans la démo, le bandeau noir ne laisse pas d’ambiguïté : Léa a demandé une visite sur site, pas seulement un PDF. « Sans réponse depuis 8 jours. Aucun flux automatique ne couvre ce cas. » Boutons : répondre par e-mail, appeler et noter, lancer une relance. Le score 91 est justifié par des raisons visibles (grande surface, charge lourde, accès difficile, projet pro, contraintes techniques). Source : Google Ads. Funnel : Configurateur principal.
 

@@ -1,3 +1,7 @@
+---
+cover: /images/blog/configurateur-devis-vs-excel-pdf/09-public-funnel.png
+---
+
 # Configurateur de devis vs Excel + PDF + email : ce qui change vraiment
 
 Beaucoup d’équipes B2B chiffrent encore comme en 2012 : un Excel maison, un export PDF, un mail « ci-joint notre proposition », puis une relance quand on y pense.
@@ -8,7 +12,7 @@ Ce guide compare sans drama un **configurateur / parcours de devis** (wizard, r�
 
 Public : PME industrielles, menuiserie, rayonnage, agencement, services configurables, agences qui gèrent des catalogues pour leurs clients.
 
-![Parcours public de configuration](/images/blog/funnel-public.png)
+![Funnel public rayonnage, type de projet](/images/blog/configurateur-devis-vs-excel-pdf/09-public-funnel.png)
 *Le prospect choisit le type d’espace. Pas un Excel en pièce jointe. Espace démo.*
 
 ## Définitions rapides

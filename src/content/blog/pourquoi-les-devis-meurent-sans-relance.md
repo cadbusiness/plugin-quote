@@ -1,3 +1,7 @@
+---
+cover: /images/blog/pourquoi-les-devis-meurent-sans-relance/05-automations.png
+---
+
 Un devis part, souvent en PDF, et ensuite plus grand-chose. Le commercial passe au dossier suivant. Trois mois plus tard le même prospect signe ailleurs, parfois pour un montant que vous aviez déjà chiffré.
 
 Ce n’est pas forcément un problème de talent. Relancer cinq fois à la main, en plus des poses, du SAV et des urgences, ça ne tient pas longtemps. Les chiffres publics sur le suivi commercial le disent depuis des années. Ils sont rarement appliqués.
@@ -46,8 +50,8 @@ Le [funnel](/fonctionnalites/funnel) QuoteBuilder existe pour ça : le prospect 
 
 Sans ce dossier, l’autopilote n’a rien de très utile à dire. Avec ce dossier, chaque touche peut citer le projet réel. Le prospect reconnaît sa demande. Il répond plus souvent.
 
-![Générateur de séquence de relances](/images/blog/automations.png)
-*T+0 à T+30 j, sujets et corps prêts à copier. Données d’exemple Atelier Nord.*
+![Automatisations : parcours demande et abandon](/images/blog/pourquoi-les-devis-meurent-sans-relance/05-automations.png)
+*Espace démo : parcours demande (soumission) et parcours abandon, actifs.*
 
 ## Ce que l’autopilote change concrètement
 

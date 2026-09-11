@@ -41,7 +41,7 @@ export function MarketingArticle({
       <BlogProgress />
       <article className="px-4 pb-6 pt-8 sm:px-6 sm:pt-12 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <header className="max-w-5xl">
+          <header>
             <nav className="flex flex-wrap items-center gap-2 text-xs font-medium text-mk-faint" aria-label="Fil d’Ariane">
               <Link href="/blog" className="hover:text-mk-ink">
                 Blog

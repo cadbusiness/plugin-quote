@@ -1,3 +1,7 @@
+---
+cover: /images/blog/score-demande-devis-b2b/04-devis-detail.png
+---
+
 # Comment scorer et prioriser une demande de devis B2B (grille 0–100)
 
 Vous avez 12 demandes de devis dans la boîte. Trois sont urgentes. Deux sont floues. Une arrive d’un compte qui ressemble à votre client idéal. Et le commercial, lui, ouvre souvent le mail le plus récent, pas le plus rentable.
@@ -10,8 +14,8 @@ Ce guide propose une méthode simple pour **scorer une demande de devis B2B** (p
 
 Public : fondateurs solo, responsables commerciaux, PME industrielles ou services configurables, agences qui gèrent plusieurs catalogues.
 
-![Outil de score brief devis](/images/blog/devis-detail.png)
-*Grille 0 à 100 : cinq questions, score live, reco avant de chiffrer.*
+![Dossier devis Léa Moreau, score 91](/images/blog/score-demande-devis-b2b/04-devis-detail.png)
+*Espace démo : Léa Moreau HOT 91, alerte « à faire maintenant », actions avant de chiffrer.*
 
 ## Pourquoi le scoring devis n’est pas du lead scoring marketing
 

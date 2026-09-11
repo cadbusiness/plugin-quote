@@ -1,10 +1,14 @@
+---
+cover: /images/blog/formulaire-contact-vs-funnel-devis-b2b/09-public-funnel.png
+---
+
 Le formulaire de contact est l’outil le plus installé du web B2B, et probablement le plus inadapté à une vente sur devis. Il a été conçu pour un message : une question, une réclamation, une prise de rendez-vous. Il collecte une intention floue. Il ne collecte pas un projet.
 
 Un funnel de devis inverse un peu la charge. Le prospect configure. Vous recevez un dossier. La suite (score, assignation, relances) devient possible parce que l’entrée n’est plus un paragraphe.
 
 Si vous vendez du [rayonnage](/secteurs/funnel-devis-rayonnage-stockage), une cuisine, une série, une location de matériel, vous le savez déjà : le premier appel sert surtout à découvrir ce que le formulaire n’a pas demandé. C’est du temps commercial brûlé en amont, avant même de parler prix.
 
-![Parcours public de devis](/images/blog/funnel-public.png)
+![Funnel public rayonnage, type de projet](/images/blog/formulaire-contact-vs-funnel-devis-b2b/09-public-funnel.png)
 *Le prospect configure l’espace. Pas un champ « votre message ».*
 
 ## Ce qu’un formulaire sait faire (et c’est déjà ça)
