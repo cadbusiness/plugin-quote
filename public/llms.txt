@@ -37,11 +37,13 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Secteurs : https://www.quotebuilder.co/secteurs
 - Funnel devis rayonnage & stockage : https://www.quotebuilder.co/secteurs/funnel-devis-rayonnage-stockage
 - Funnel devis menuiserie sur mesure : https://www.quotebuilder.co/secteurs/funnel-devis-menuiserie-sur-mesure
+- Funnel devis location événementielle : https://www.quotebuilder.co/secteurs/funnel-devis-location-evenementiel
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
 - Visite guidée d’un parcours devis B2B : https://www.quotebuilder.co/blog/visite-guidee-parcours-devis-b2b
 - Relancer un devis Hot depuis le dossier : https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier
+- Délai de réponse à une demande de devis B2B : https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b
 - Pourquoi les devis meurent sans relance : https://www.quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance
 - Formulaire de contact vs funnel de devis : https://www.quotebuilder.co/blog/formulaire-contact-vs-funnel-devis-b2b
 - Installer le widget devis : https://www.quotebuilder.co/blog/installer-widget-devis-wordpress-javascript

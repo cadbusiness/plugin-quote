@@ -148,6 +148,19 @@ export const BLOG_POSTS: BlogPost[] = [
     pinned: false,
   },
   {
+    slug: "delai-reponse-demande-devis-b2b",
+    path: "/blog/delai-reponse-demande-devis-b2b",
+    title: "Délai de réponse à une demande de devis B2B : SLA, chiffres et process",
+    description:
+      "Guide long : délai de réponse devis B2B (speed to lead). Benchmarks sourcés, SLA Hot/Warm/Cold, notifications, brief chiffrable, métriques et FAQ pour PME.",
+    publishedAt: "2026-09-11",
+    readingMinutes: 11,
+    tags: ["scoring", "relances"],
+    ctaHref: BLOG_DEMO_FUNNEL,
+    cover: "/images/blog/delai-reponse-demande-devis-b2b/03-devis.png",
+    pinned: false,
+  },
+  {
     slug: "configurateur-devis-vs-excel-pdf",
     path: "/blog/configurateur-devis-vs-excel-pdf",
     title: "Configurateur de devis vs Excel + PDF + email : ce qui change vraiment",

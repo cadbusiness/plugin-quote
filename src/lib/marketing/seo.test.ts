@@ -73,8 +73,10 @@ for (const required of [
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
+  "/secteurs/funnel-devis-location-evenementiel",
   "/blog/visite-guidee-parcours-devis-b2b",
   "/blog/relancer-devis-hot-depuis-dossier",
+  "/blog/delai-reponse-demande-devis-b2b",
   "/blog/score-demande-devis-b2b",
   "/blog/configurateur-devis-vs-excel-pdf",
   "/legal/cgu",
@@ -84,7 +86,7 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 8);
+assert.equal(BLOG_POSTS.length, 9);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "visite-guidee-parcours-devis-b2b")?.tags, [
   "funnel",
   "scoring",
@@ -102,6 +104,19 @@ assert.equal(
   "/images/blog/relancer-devis-hot-depuis-dossier/04-devis-detail.png",
 );
 assert.equal(BLOG_POSTS.find((post) => post.slug === "relancer-devis-hot-depuis-dossier")?.pinned, false);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "delai-reponse-demande-devis-b2b")?.tags, [
+  "scoring",
+  "relances",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "delai-reponse-demande-devis-b2b")?.ctaHref,
+  "/c/demo/rayonnage",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "delai-reponse-demande-devis-b2b")?.cover,
+  "/images/blog/delai-reponse-demande-devis-b2b/03-devis.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "delai-reponse-demande-devis-b2b")?.pinned, false);
 assert.equal(
   BLOG_POSTS.find((post) => post.slug === "visite-guidee-parcours-devis-b2b")?.ctaHref,
   "/c/demo/rayonnage",
@@ -132,8 +147,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 4);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 4);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 5);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 5);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 1);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
 assert.equal(midArticleHeadingIndex(12), 5);
@@ -242,6 +257,29 @@ const requiredSources = {
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
+  "delai-reponse-demande-devis-b2b.md": [
+    "/images/blog/delai-reponse-demande-devis-b2b/02-accueil.png",
+    "/images/blog/delai-reponse-demande-devis-b2b/03-devis.png",
+    "/images/blog/delai-reponse-demande-devis-b2b/04-devis-detail.png",
+    "/images/blog/delai-reponse-demande-devis-b2b/05-automations.png",
+    "/blog/score-demande-devis-b2b",
+    "/blog/relancer-devis-hot-depuis-dossier",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/blog/formulaire-contact-vs-funnel-devis-b2b",
+    "/secteurs/funnel-devis-location-evenementiel",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "funnel-devis-location-evenementiel.md": [
+    "/images/secteurs/funnel-devis-location-evenementiel/09-public-funnel.png",
+    "/images/secteurs/funnel-devis-location-evenementiel/03-devis.png",
+    "/images/secteurs/funnel-devis-location-evenementiel/07-funnels.png",
+    "/blog/delai-reponse-demande-devis-b2b",
+    "/blog/score-demande-devis-b2b",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
 } as const;
 
 for (const file of blogFiles) {
@@ -277,6 +315,28 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(relanceBody, /signup\?plan=free/);
+}
+
+{
+  const delaiRaw = readFileSync(join(blogDir, "delai-reponse-demande-devis-b2b.md"), "utf8");
+  assert.ok(delaiRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const delaiBody = stripFrontmatter(delaiRaw);
+  assert.ok(
+    delaiBody.startsWith("# Délai de réponse à une demande de devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(delaiBody, /signup\?plan=free/);
+}
+
+{
+  const eventRaw = readFileSync(join(blogDir, "funnel-devis-location-evenementiel.md"), "utf8");
+  assert.ok(eventRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const eventBody = stripFrontmatter(eventRaw);
+  assert.ok(
+    eventBody.startsWith("# Funnel de devis location événementielle"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(eventBody, /signup\?plan=free/);
 }
 
 for (const post of BLOG_POSTS) {
@@ -365,10 +425,12 @@ assert.equal(parkingBrief.band, "parking");
 const llmsPaths = [
   "/blog/visite-guidee-parcours-devis-b2b",
   "/blog/relancer-devis-hot-depuis-dossier",
+  "/blog/delai-reponse-demande-devis-b2b",
   "/blog/score-demande-devis-b2b",
   "/blog/configurateur-devis-vs-excel-pdf",
   "/outils/score-brief-devis",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
+  "/secteurs/funnel-devis-location-evenementiel",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -481,6 +543,22 @@ const relanceDir = join(process.cwd(), "public/images/blog/relancer-devis-hot-de
 for (const name of relanceImages) {
   const file = join(relanceDir, name);
   assert.ok(existsSync(file), `missing blog image ${name}`);
+  assert.ok(statSync(file).size > 10_000, `${name} is too small to be a real screenshot`);
+}
+
+const delaiImages = ["02-accueil.png", "03-devis.png", "04-devis-detail.png", "05-automations.png"];
+const delaiDir = join(process.cwd(), "public/images/blog/delai-reponse-demande-devis-b2b");
+for (const name of delaiImages) {
+  const file = join(delaiDir, name);
+  assert.ok(existsSync(file), `missing blog image ${name}`);
+  assert.ok(statSync(file).size > 10_000, `${name} is too small to be a real screenshot`);
+}
+
+const eventImages = ["03-devis.png", "07-funnels.png", "09-public-funnel.png"];
+const eventDir = join(process.cwd(), "public/images/secteurs/funnel-devis-location-evenementiel");
+for (const name of eventImages) {
+  const file = join(eventDir, name);
+  assert.ok(existsSync(file), `missing secteur image ${name}`);
   assert.ok(statSync(file).size > 10_000, `${name} is too small to be a real screenshot`);
 }
 
