@@ -8,6 +8,9 @@ Ce guide compare sans drama un **configurateur / parcours de devis** (wizard, r�
 
 Public : PME industrielles, menuiserie, rayonnage, agencement, services configurables, agences qui gèrent des catalogues pour leurs clients.
 
+![Parcours public de configuration](/images/blog/funnel-public.png)
+*Le prospect choisit le type d’espace. Pas un Excel en pièce jointe. Espace démo.*
+
 ## Définitions rapides
 
 ### Excel + PDF + email

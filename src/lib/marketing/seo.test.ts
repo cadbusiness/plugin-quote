@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync, statSync, unlinkSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
+  BLOG_DEMO_SHOTS,
   BLOG_IMAGE_DIR,
   BLOG_POSTS,
   BLOG_TAG_DEFS,
@@ -138,7 +139,7 @@ assert.equal(
 
 const articleLd = blogArticleJsonLd(BLOG_POSTS[0]!);
 assert.equal(articleLd["@type"], "Article");
-assert.match(String(articleLd.image), /opengraph-image/);
+assert.match(String(articleLd.image), /images\/blog\/devis-detail\.png/);
 assert.match(String(articleLd.mainEntityOfPage), /www\.quotebuilder\.co\/blog\//);
 
 const crumbs = blogBreadcrumbJsonLd(BLOG_POSTS[0]!);
@@ -162,21 +163,25 @@ const requiredSources = {
     "https://pipeline.zoominfo.com/sales/sales-follow-up-statistics",
     "/blog/formulaire-contact-vs-funnel-devis-b2b",
     "/outils/cout-devis-non-relance",
+    "/images/blog/automations.png",
   ],
   "formulaire-contact-vs-funnel-devis-b2b.md": [
     "/blog/pourquoi-les-devis-meurent-sans-relance",
     "/blog/installer-widget-devis-wordpress-javascript",
     "/fonctionnalites/funnel",
+    "/images/blog/funnel-public.png",
   ],
   "installer-widget-devis-wordpress-javascript.md": [
     "/blog/formulaire-contact-vs-funnel-devis-b2b",
     "/blog/sync-catalogue-woocommerce-shopify-parcours-devis",
     "www.quotebuilder.co",
+    "/images/blog/integrations.png",
   ],
   "sync-catalogue-woocommerce-shopify-parcours-devis.md": [
     "/blog/pourquoi-les-devis-meurent-sans-relance",
     "/blog/installer-widget-devis-wordpress-javascript",
     "/fonctionnalites/integrations",
+    "/images/blog/produits.png",
   ],
   "score-demande-devis-b2b.md": [
     "https://www.webyn.ai/blog/taux-conversion-moyen-b2b",
@@ -184,12 +189,14 @@ const requiredSources = {
     "/blog/formulaire-contact-vs-funnel-devis-b2b",
     "/outils/score-brief-devis",
     "/secteurs/funnel-devis-menuiserie-sur-mesure",
+    "/images/blog/devis-detail.png",
   ],
   "configurateur-devis-vs-excel-pdf.md": [
     "/blog/score-demande-devis-b2b",
     "/blog/formulaire-contact-vs-funnel-devis-b2b",
     "/secteurs/funnel-devis-menuiserie-sur-mesure",
     "/outils/score-brief-devis",
+    "/images/blog/funnel-public.png",
   ],
   "visite-guidee-parcours-devis-b2b.md": [
     "/images/blog/visite-guidee-parcours-devis-b2b/09-public-funnel.png",
@@ -417,7 +424,17 @@ const upcomingCovers = coverCandidatesForSlug("visite-guidee-parcours-devis-b2b"
 assert.ok(upcomingCovers.includes("/images/blog/visite-guidee-parcours-devis-b2b.webp"));
 assert.ok(upcomingCovers.includes("/images/blog/visite-guidee-parcours-devis-b2b.jpg"));
 assert.equal(resolveCoverForPost({ slug: "visite-guidee-parcours-devis-b2b" }), undefined);
-assert.equal(resolveCoverForPost(BLOG_POSTS[0]!), undefined);
+assert.equal(BLOG_DEMO_SHOTS.devisDetail, "/images/blog/devis-detail.png");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "score-demande-devis-b2b")?.cover, BLOG_DEMO_SHOTS.devisDetail);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "configurateur-devis-vs-excel-pdf")?.cover, BLOG_DEMO_SHOTS.funnelPublic);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance")?.cover, BLOG_DEMO_SHOTS.automations);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "formulaire-contact-vs-funnel-devis-b2b")?.cover, BLOG_DEMO_SHOTS.funnelPublic);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "installer-widget-devis-wordpress-javascript")?.cover, BLOG_DEMO_SHOTS.integrations);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "sync-catalogue-woocommerce-shopify-parcours-devis")?.cover, BLOG_DEMO_SHOTS.produits);
+for (const post of BLOG_POSTS) {
+  assert.ok(post.cover, `${post.slug} missing cover`);
+  assert.equal(resolveCoverForPost(post), normalizeCoverPath(post.cover!), `${post.slug} cover file missing`);
+}
 {
   const fixture = join(process.cwd(), "public/images/blog/visite-guidee-parcours-devis-b2b.webp");
   writeFileSync(fixture, "cover");
@@ -434,7 +451,14 @@ assert.equal(resolveCoverForPost(BLOG_POSTS[0]!), undefined);
 const articleSource = readFileSync(new URL("../../../src/components/marketing/marketing-article.tsx", import.meta.url), "utf8");
 assert.match(articleSource, /bg-mk-surface/);
 assert.match(articleSource, /BlogCover/);
+assert.match(articleSource, /max-w-7xl/);
+assert.match(articleSource, /max-w-5xl/);
+assert.match(articleSource, /max-w-\[45rem\]/);
 assert.doesNotMatch(articleSource, /#F6F0E8/);
+assert.doesNotMatch(
+  readFileSync(new URL("../../../src/components/marketing/blog-cover.tsx", import.meta.url), "utf8"),
+  /SCORING/,
+);
 assert.match(readFileSync(new URL("../../../src/lib/marketing/markdown.tsx", import.meta.url), "utf8"), /bg-mk-accent-soft/);
 
 const figure = parseImageLine("![Grille scorecard 0-100](figure:score-grid)");

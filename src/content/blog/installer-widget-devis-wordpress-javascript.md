@@ -10,6 +10,9 @@ Décidez de la page d’entrée. Trois patterns tiennent à peu près la route.
 
 Une page /devis dédiée : le funnel occupe le contenu, moins de distractions, idéal Ads (l’URL UTM pointe ici). Un bouton sur une fiche produit : le widget s’ouvre au clic, utile si le catalogue boutique reste la vitrine et que le devis est l’action. Un bloc en milieu d’article : pour un secteur ([rayonnage](/secteurs/funnel-devis-rayonnage-stockage), habitat…), le contenu qualifie, le funnel convertit.
 
+![Boutique devis de l’espace démo](/images/blog/integrations.png)
+*Mini-site devis, pas une caisse. Catalogue et demande de devis sur la même vitrine.*
+
 Évitez de remplacer brutalement le formulaire de contact du footer. Gardez-le pour le SAV. Le devis a sa page.
 
 ## Widget JavaScript : deux lignes, n’importe quel site

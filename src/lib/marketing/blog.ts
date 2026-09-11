@@ -14,6 +14,18 @@ export type BlogTagLabel = (typeof BLOG_TAG_DEFS)[number]["label"];
 /** Captures d’articles : `public/images/blog/{slug}.jpg|jpeg|png|webp`. */
 export const BLOG_IMAGE_DIR = "/images/blog";
 
+/** Écrans démo (données fictives uniquement). */
+export const BLOG_DEMO_SHOTS = {
+  accueil: `${BLOG_IMAGE_DIR}/accueil.png`,
+  devisListe: `${BLOG_IMAGE_DIR}/devis-liste.png`,
+  devisDetail: `${BLOG_IMAGE_DIR}/devis-detail.png`,
+  automations: `${BLOG_IMAGE_DIR}/automations.png`,
+  produits: `${BLOG_IMAGE_DIR}/produits.png`,
+  funnels: `${BLOG_IMAGE_DIR}/funnels.png`,
+  integrations: `${BLOG_IMAGE_DIR}/integrations.png`,
+  funnelPublic: `${BLOG_IMAGE_DIR}/funnel-public.png`,
+} as const;
+
 export function normalizeCoverPath(cover: string): string {
   const trimmed = cover.trim();
   if (!trimmed) return trimmed;
@@ -104,6 +116,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 12,
     tags: ["scoring", "funnel"],
     ctaHref: BLOG_DEMO_FUNNEL,
+    cover: BLOG_DEMO_SHOTS.devisDetail,
     pinned: true,
   },
   {
@@ -129,6 +142,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 11,
     tags: ["funnel", "scoring"],
     ctaHref: BLOG_DEMO_FUNNEL,
+    cover: BLOG_DEMO_SHOTS.funnelPublic,
   },
   {
     slug: "pourquoi-les-devis-meurent-sans-relance",
@@ -140,6 +154,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 12,
     tags: ["relances"],
     ctaHref: BLOG_TOOL_SEQUENCE,
+    cover: BLOG_DEMO_SHOTS.automations,
   },
   {
     slug: "formulaire-contact-vs-funnel-devis-b2b",
@@ -151,6 +166,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 11,
     tags: ["funnel"],
     ctaHref: BLOG_DEMO_FUNNEL,
+    cover: BLOG_DEMO_SHOTS.funnelPublic,
   },
   {
     slug: "installer-widget-devis-wordpress-javascript",
@@ -162,6 +178,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 10,
     tags: ["integrations"],
     ctaHref: BLOG_DEMO_SHOP,
+    cover: BLOG_DEMO_SHOTS.integrations,
   },
   {
     slug: "sync-catalogue-woocommerce-shopify-parcours-devis",
@@ -173,6 +190,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 11,
     tags: ["catalogue", "integrations"],
     ctaHref: BLOG_DEMO_SHOP,
+    cover: BLOG_DEMO_SHOTS.produits,
   },
 ];
 

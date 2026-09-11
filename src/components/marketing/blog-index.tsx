@@ -70,7 +70,7 @@ export function BlogIndex({ posts, tag }: { posts: BlogPost[]; tag?: string }) {
   const grid = featured ? filtered.filter((post) => post.slug !== featured.slug) : filtered;
 
   return (
-    <section className="mx-auto max-w-6xl px-6 pb-16">
+    <section className="mx-auto max-w-7xl px-6 pb-16">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap gap-2">
           <TagChip href="/blog" label="Tous" active={!tag} />

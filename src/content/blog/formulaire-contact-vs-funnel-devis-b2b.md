@@ -4,6 +4,9 @@ Un funnel de devis inverse un peu la charge. Le prospect configure. Vous recevez
 
 Si vous vendez du [rayonnage](/secteurs/funnel-devis-rayonnage-stockage), une cuisine, une série, une location de matériel, vous le savez déjà : le premier appel sert surtout à découvrir ce que le formulaire n’a pas demandé. C’est du temps commercial brûlé en amont, avant même de parler prix.
 
+![Parcours public de devis](/images/blog/funnel-public.png)
+*Le prospect configure l’espace. Pas un champ « votre message ».*
+
 ## Ce qu’un formulaire sait faire (et c’est déjà ça)
 
 Un bon formulaire réduit la friction. Nom, e-mail, téléphone, un champ libre, parfois une pièce jointe. Typeform, Gravity Forms, un bloc Gutenberg : le taux de complétion peut être correct. Pour une demande de brochure, c’est suffisant.
