@@ -197,4 +197,18 @@ for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
 }
 
+function isTableLine(line: string) {
+  return /^\s*\|.+\|\s*$/.test(line);
+}
+function isTableSeparator(line: string) {
+  return /^\s*\|?(?:\s*:?-{3,}:?\s*\|)+\s*:?-{3,}:?\s*\|?\s*$/.test(line);
+}
+const scoreMd = readFileSync(join(blogDir, "score-demande-devis-b2b.md"), "utf8");
+const scoreLines = scoreMd.split("\n");
+let tableBlocks = 0;
+for (let i = 0; i < scoreLines.length - 1; i += 1) {
+  if (isTableLine(scoreLines[i] ?? "") && isTableSeparator(scoreLines[i + 1] ?? "")) tableBlocks += 1;
+}
+assert.ok(tableBlocks >= 5, `expected scoring tables, got ${tableBlocks}`);
+
 console.log("marketing seo tests ok");
