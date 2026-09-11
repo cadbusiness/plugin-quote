@@ -1,3 +1,7 @@
+---
+cover: /images/blog/sync-catalogue-woocommerce-shopify-parcours-devis/06-produits.png
+---
+
 Un catalogue boutique et un catalogue de devis ne servent pas le même moment. WooCommerce et Shopify excellent à afficher un prix, une photo, un panier. Le devis B2B commence quand le prix public ne suffit plus : charge, délai, variante, pose, minimum de commande, exception.
 
 La tentation est de tout resaisir dans un deuxième outil. C’est ainsi que naissent les écarts : un SKU à jour dans Woo, une vieille fourchette dans le PDF, un commercial qui promet une référence désactivée. La sync QuoteBuilder existe pour une seule raison : **une source produits, un parcours de devis à côté, pas à la place**.
@@ -10,8 +14,8 @@ WooCommerce est disponible dès Starter. Shopify à partir de Pro. Agency repren
 
 La sync **n’est pas** un checkout. QuoteBuilder ne remplace pas le paiement Woo / Shopify. La boutique native QuoteBuilder, si vous l’utilisez, est un mini-site de devis : pages, SEO, catalogue, pas d’encaissement. Anthropic décrit des agents commerce retail ; ici le vertical est le **devis PME**. Claude aide à cadrer. Le commerçant garde le catalogue et la soumission.
 
-![Catalogue de la boutique démo](/images/blog/produits.png)
-*Le catalogue réel, posé dans un parcours de devis. Espace démo.*
+![Catalogue démo, SKU QB-DEMO, WooCommerce et manuel](/images/blog/sync-catalogue-woocommerce-shopify-parcours-devis/06-produits.png)
+*Espace démo : prix, SKU et source Woo ou manuel, prêts pour le parcours de devis.*
 
 ## Pourquoi le parcours a besoin du catalogue réel
 

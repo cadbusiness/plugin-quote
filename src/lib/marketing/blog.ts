@@ -15,15 +15,17 @@ export type BlogTagLabel = (typeof BLOG_TAG_DEFS)[number]["label"];
 export const BLOG_IMAGE_DIR = "/images/blog";
 
 /** Écrans démo (données fictives uniquement). */
+const WALKTHROUGH = `${BLOG_IMAGE_DIR}/visite-guidee-parcours-devis-b2b`;
 export const BLOG_DEMO_SHOTS = {
-  accueil: `${BLOG_IMAGE_DIR}/accueil.png`,
-  devisListe: `${BLOG_IMAGE_DIR}/devis-liste.png`,
-  devisDetail: `${BLOG_IMAGE_DIR}/devis-detail.png`,
-  automations: `${BLOG_IMAGE_DIR}/automations.png`,
-  produits: `${BLOG_IMAGE_DIR}/produits.png`,
-  funnels: `${BLOG_IMAGE_DIR}/funnels.png`,
-  integrations: `${BLOG_IMAGE_DIR}/integrations.png`,
-  funnelPublic: `${BLOG_IMAGE_DIR}/funnel-public.png`,
+  accueil: `${WALKTHROUGH}/02-accueil.png`,
+  devisListe: `${WALKTHROUGH}/03-devis.png`,
+  devisDetail: `${WALKTHROUGH}/04-devis-detail.png`,
+  automations: `${WALKTHROUGH}/05-automations.png`,
+  produits: `${WALKTHROUGH}/06-produits.png`,
+  funnels: `${WALKTHROUGH}/07-funnels.png`,
+  integrations: `${WALKTHROUGH}/08-integrations.png`,
+  funnelPublic: `${WALKTHROUGH}/09-public-funnel.png`,
+  boutiquePublic: `${WALKTHROUGH}/10-public-boutique.png`,
 } as const;
 
 export function normalizeCoverPath(cover: string): string {
@@ -116,7 +118,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 12,
     tags: ["scoring", "funnel"],
     ctaHref: BLOG_DEMO_FUNNEL,
-    cover: BLOG_DEMO_SHOTS.devisDetail,
+    cover: `${BLOG_IMAGE_DIR}/score-demande-devis-b2b/04-devis-detail.png`,
     pinned: true,
   },
   {
@@ -142,7 +144,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 11,
     tags: ["funnel", "scoring"],
     ctaHref: BLOG_DEMO_FUNNEL,
-    cover: BLOG_DEMO_SHOTS.funnelPublic,
+    cover: `${BLOG_IMAGE_DIR}/configurateur-devis-vs-excel-pdf/09-public-funnel.png`,
   },
   {
     slug: "pourquoi-les-devis-meurent-sans-relance",
@@ -154,7 +156,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 12,
     tags: ["relances"],
     ctaHref: BLOG_TOOL_SEQUENCE,
-    cover: BLOG_DEMO_SHOTS.automations,
+    cover: `${BLOG_IMAGE_DIR}/pourquoi-les-devis-meurent-sans-relance/05-automations.png`,
   },
   {
     slug: "formulaire-contact-vs-funnel-devis-b2b",
@@ -166,7 +168,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 11,
     tags: ["funnel"],
     ctaHref: BLOG_DEMO_FUNNEL,
-    cover: BLOG_DEMO_SHOTS.funnelPublic,
+    cover: `${BLOG_IMAGE_DIR}/formulaire-contact-vs-funnel-devis-b2b/09-public-funnel.png`,
   },
   {
     slug: "installer-widget-devis-wordpress-javascript",
@@ -178,7 +180,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 10,
     tags: ["integrations"],
     ctaHref: BLOG_DEMO_SHOP,
-    cover: BLOG_DEMO_SHOTS.integrations,
+    cover: `${BLOG_IMAGE_DIR}/installer-widget-devis-wordpress-javascript/08-integrations.png`,
   },
   {
     slug: "sync-catalogue-woocommerce-shopify-parcours-devis",
@@ -190,7 +192,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readingMinutes: 11,
     tags: ["catalogue", "integrations"],
     ctaHref: BLOG_DEMO_SHOP,
-    cover: BLOG_DEMO_SHOTS.produits,
+    cover: `${BLOG_IMAGE_DIR}/sync-catalogue-woocommerce-shopify-parcours-devis/06-produits.png`,
   },
 ];
 
