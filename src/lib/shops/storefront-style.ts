@@ -34,7 +34,23 @@ export function renderBoxStyle(
   opts?: { sanitize?: boolean },
 ): CSSProperties {
   const source = opts?.sanitize === false ? input : publicBoxInput(input);
-  return { ...boxStyle(source), ...extra };
+  return { ...extra, ...boxStyle(source) };
+}
+
+export function typeLock(box: BoxStyleInput) {
+  return cx(
+    box.fontSize?.trim() &&
+      "[&_h1]:text-[length:inherit] [&_h2]:text-[length:inherit] [&_h3]:text-[length:inherit] [&_p]:text-[length:inherit] [&_span]:text-[length:inherit] [&_dt]:text-[length:inherit] [&_dd]:text-[length:inherit]",
+    box.fontWeight?.trim() && "[&_h1]:font-[inherit] [&_h2]:font-[inherit] [&_h3]:font-[inherit] [&_p]:font-[inherit]",
+    box.color?.trim() && "[&_h1]:text-inherit [&_h2]:text-inherit [&_h3]:text-inherit [&_p]:text-inherit",
+  );
+}
+
+export function headingClass(box: BoxStyleInput, level: keyof typeof SHOP_HEADING) {
+  const preset = SHOP_HEADING[level];
+  const weight = box.fontWeight?.trim() ? "" : "font-semibold";
+  const size = box.fontSize?.trim() ? "tracking-tight" : preset.replace(/^font-semibold\s+/, "");
+  return cx(weight, size);
 }
 
 export function sectionPadClass(padding?: string) {

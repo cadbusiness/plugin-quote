@@ -4,19 +4,20 @@ import type { CSSProperties, ReactNode } from "react";
 import { ProductCard } from "@/components/storefront/product-card";
 import type { StorefrontModel } from "@/lib/shops/types";
 import { groupProductsByCategory } from "@/lib/catalog/group";
-import { ColorField, CompactTextField, SpacingField } from "@/lib/shops/inspector-fields";
-import type { BoxStyleInput } from "@/lib/shops/layout";
+import { ColorField, LengthField, SpacingField, UnitlessNumberField } from "@/lib/shops/inspector-fields";
+import { cssLength, type BoxStyleInput } from "@/lib/shops/layout";
 import { resolveShopHref } from "@/lib/shops/href";
 import {
   cx,
+  headingClass,
   heroPadClass,
   renderBoxStyle,
   sectionPadClass,
+  typeLock,
   SHOP_BODY,
   SHOP_CARD,
   SHOP_CTA,
   SHOP_CTA_SECONDARY,
-  SHOP_HEADING,
 } from "@/lib/shops/storefront-style";
 import { categoryPath } from "@/lib/shops/urls";
 
@@ -41,8 +42,8 @@ const boxFields = {
   margin: { type: "custom" as const, label: "Marge", render: SpacingField },
   background: { type: "custom" as const, label: "Fond", render: ColorField },
   color: { type: "custom" as const, label: "Couleur", render: ColorField },
-  fontSize: { type: "custom" as const, label: "Taille du texte", placeholder: "16px", render: CompactTextField },
-  fontWeight: { type: "custom" as const, label: "Graisse", placeholder: "600", render: CompactTextField },
+  fontSize: { type: "custom" as const, label: "Taille du texte", placeholder: "16", render: LengthField },
+  fontWeight: { type: "custom" as const, label: "Graisse", placeholder: "600", render: UnitlessNumberField },
   textAlign: {
     type: "select" as const,
     label: "Alignement",
@@ -61,11 +62,11 @@ const boxFields = {
       { label: "Absolute", value: "absolute" },
     ],
   },
-  top: { type: "custom" as const, label: "Top", placeholder: "0", render: CompactTextField },
-  left: { type: "custom" as const, label: "Left", placeholder: "0", render: CompactTextField },
-  zIndex: { type: "custom" as const, label: "Z-index", placeholder: "1", render: CompactTextField },
-  borderRadius: { type: "custom" as const, label: "Arrondi", placeholder: "8px", render: CompactTextField },
-  minHeight: { type: "custom" as const, label: "Hauteur min", placeholder: "auto", render: CompactTextField },
+  top: { type: "custom" as const, label: "Top", placeholder: "0", render: LengthField },
+  left: { type: "custom" as const, label: "Left", placeholder: "0", render: LengthField },
+  zIndex: { type: "custom" as const, label: "Z-index", placeholder: "1", render: UnitlessNumberField },
+  borderRadius: { type: "custom" as const, label: "Arrondi", placeholder: "8", render: LengthField },
+  minHeight: { type: "custom" as const, label: "Hauteur min", placeholder: "auto", render: LengthField },
 };
 
 function styleOf(props: BoxStyleInput, extra?: CSSProperties, puck?: PuckBag): CSSProperties {
@@ -128,7 +129,7 @@ function ShopSection({
   children: ReactNode;
 }) {
   return (
-    <section className={cx(sectionPadClass(box.padding), className)} style={styleOf(box, extraStyle, puck)}>
+    <section className={cx(sectionPadClass(box.padding), typeLock(box), className)} style={styleOf(box, extraStyle, puck)}>
       <div className="mx-auto w-full px-4 lg:px-6" style={{ maxWidth: MAX_WIDTH[maxWidth] || maxWidth || MAX_WIDTH["6xl"] }}>
         {children}
       </div>
@@ -200,7 +201,7 @@ export const shopPuckConfig = {
             { label: "4", value: "4" },
           ],
         },
-        gap: { type: "text", label: "Gutter" },
+        gap: { type: "custom" as const, label: "Gutter", placeholder: "16", render: LengthField },
         col1: { type: "slot" },
         col2: { type: "slot" },
         col3: { type: "slot" },
@@ -237,7 +238,7 @@ export const shopPuckConfig = {
         const n = Number(count || 2);
         const cols = [Col1, Col2, Col3, Col4].slice(0, n);
         return (
-          <div className={columnsClass(n)} style={styleOf(box, { gap: gap || "24px" }, puck)}>
+          <div className={columnsClass(n)} style={styleOf(box, { gap: cssLength(gap || "24px") }, puck)}>
             {cols.map((Col, index) => (
               <div key={index} className="min-w-0">
                 <Col className="flex flex-col gap-4" />
@@ -266,7 +267,7 @@ export const shopPuckConfig = {
       render: ({ text, level, puck, ...box }: BoxStyleInput & { text?: string; level?: string; puck?: PuckBag }) => {
         const Tag = (level === "h1" || level === "h3" ? level : "h2") as "h1" | "h2" | "h3";
         return (
-          <Tag className={SHOP_HEADING[Tag]} style={styleOf(box, undefined, puck)}>
+          <Tag className={headingClass(box, Tag)} style={styleOf(box, undefined, puck)}>
             {text || "Titre"}
           </Tag>
         );
@@ -296,7 +297,7 @@ export const shopPuckConfig = {
       render: ({ image, imageAlt, puck, ...box }: BoxStyleInput & { image?: string; imageAlt?: string; puck?: PuckBag }) =>
         image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={image} alt={imageAlt || ""} className="w-full rounded-2xl object-cover" style={styleOf(box, undefined, puck)} />
+          <img src={image} alt={imageAlt || ""} className={`w-full object-cover ${box.borderRadius?.trim() ? "" : "rounded-2xl"}`} style={styleOf(box, undefined, puck)} />
         ) : (
           <div
             className="flex min-h-48 items-center justify-center rounded-2xl bg-black/5 text-sm opacity-60"
@@ -377,10 +378,10 @@ export const shopPuckConfig = {
               background: `linear-gradient(165deg, color-mix(in srgb, ${accent} 16%, var(--shop-bg)) 0%, var(--shop-bg) 62%)`,
             };
         return (
-          <section className={cx("border-b border-black/10", heroPadClass(box.padding))} style={styleOf(box, wash, puck)}>
+          <section className={cx("border-b border-black/10", heroPadClass(box.padding), typeLock(box))} style={styleOf(box, wash, puck)}>
             <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 lg:grid-cols-2 lg:px-6">
               <div className={image ? "" : "lg:col-span-2 lg:max-w-3xl"}>
-                <h1 className={SHOP_HEADING.h1}>{heading || model?.shopName}</h1>
+                <h1 className={headingClass(box, "h1")}>{heading || model?.shopName}</h1>
                 {sub ? <p className={cx(SHOP_BODY, "mt-5 text-lg")}>{sub}</p> : null}
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <ShopLink
@@ -429,7 +430,7 @@ export const shopPuckConfig = {
         const sliced = listed.slice(0, Number(limit) || 12);
         return (
           <ShopSection box={box} puck={puck}>
-            {heading ? <h2 className={SHOP_HEADING.h2}>{heading}</h2> : null}
+            {heading ? <h2 className={headingClass(box, "h2")}>{heading}</h2> : null}
             <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {sliced.map((product) => (
                 <li key={product.id}>
@@ -459,7 +460,7 @@ export const shopPuckConfig = {
         const groups = groupProductsByCategory(model?.products ?? []);
         return (
           <ShopSection box={box} puck={puck}>
-            {heading ? <h2 className={SHOP_HEADING.h2}>{heading}</h2> : null}
+            {heading ? <h2 className={headingClass(box, "h2")}>{heading}</h2> : null}
             <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {groups.map((group) => {
                 const card = (
@@ -523,7 +524,7 @@ export const shopPuckConfig = {
             extraStyle={{ background: box.background || `${accent}14` }}
           >
             <div className="max-w-2xl">
-              <h2 className={SHOP_HEADING.h2}>{heading || "Demander un devis"}</h2>
+              <h2 className={headingClass(box, "h2")}>{heading || "Demander un devis"}</h2>
               {text ? <p className={cx(SHOP_BODY, "mt-4")}>{text}</p> : null}
               <ShopLink
                 href="/devis"
@@ -563,7 +564,7 @@ export const shopPuckConfig = {
         ...box
       }: BoxStyleInput & { heading?: string; faq?: { q?: string; a?: string }[]; puck?: PuckBag }) => (
         <ShopSection box={box} puck={puck}>
-          {heading ? <h2 className={SHOP_HEADING.h2}>{heading}</h2> : null}
+          {heading ? <h2 className={headingClass(box, "h2")}>{heading}</h2> : null}
           <dl className="mt-8 max-w-3xl divide-y divide-black/10">
             {(faq ?? []).map((item) => (
               <div key={item.q} className="py-5 first:pt-0">
@@ -599,7 +600,7 @@ export const shopPuckConfig = {
         ...box
       }: BoxStyleInput & { heading?: string; features?: { title?: string; text?: string }[]; puck?: PuckBag }) => (
         <ShopSection box={box} puck={puck}>
-          {heading ? <h2 className={SHOP_HEADING.h2}>{heading}</h2> : null}
+          {heading ? <h2 className={headingClass(box, "h2")}>{heading}</h2> : null}
           <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {(features ?? []).map((item) => (
               <li key={item.title} className={cx(SHOP_CARD, "px-6 py-6")}>
@@ -621,7 +622,7 @@ export const shopPuckConfig = {
       defaultProps: { heading: "Mentions légales", text: "", padding: "64px 0", position: "static" },
       render: ({ heading, text, puck, ...box }: BoxStyleInput & { heading?: string; text?: string; puck?: PuckBag }) => (
         <ShopSection box={box} puck={puck} maxWidth="3xl">
-          <h1 className={SHOP_HEADING.h1}>{heading}</h1>
+          <h1 className={headingClass(box, "h1")}>{heading}</h1>
           <div className={cx(SHOP_BODY, "mt-6 whitespace-pre-wrap")}>{text}</div>
         </ShopSection>
       ),
