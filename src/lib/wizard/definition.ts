@@ -4,6 +4,7 @@ import { normalizeAttributes, toProspectOptions } from "@/lib/catalog/attributes
 import { parseFunnelTracking, parseOrgGtm } from "@/lib/funnels/tracking";
 import { parseFunnelKind } from "@/lib/funnels/kind";
 import { pickPreferredBySlug, publicConfiguratorSlugs } from "@/lib/demo/public-slugs";
+import type { ShopCatalogScope } from "@/lib/shops/catalog-scope";
 import type {
   ConfiguratorDefinition,
   Product,
@@ -42,27 +43,17 @@ function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Produ
   };
 }
 
-export async function loadDefinition(
+async function assembleDefinition(
   supabase: SupabaseClient<Database>,
-  orgSlug: string,
-  configuratorSlug: string,
+  org: Database["public"]["Tables"]["organizations"]["Row"],
+  configurator: Database["public"]["Tables"]["configurators"]["Row"],
+  shopScope?: ShopCatalogScope,
 ): Promise<ConfiguratorDefinition | null> {
-  const { data: org } = await supabase
-    .from("organizations")
-    .select("*")
-    .eq("slug", orgSlug)
-    .maybeSingle();
-  if (!org) return null;
-
-  const slugs = publicConfiguratorSlugs(org.slug, configuratorSlug);
-  const { data: matches } = await supabase
-    .from("configurators")
-    .select("*")
-    .eq("organization_id", org.id)
-    .in("slug", slugs)
-    .eq("is_active", true);
-  const configurator = pickPreferredBySlug(matches, slugs);
-  if (!configurator) return null;
+  if (shopScope) {
+    if (configurator.id !== shopScope.configuratorId) return null;
+    if (configurator.organization_id !== shopScope.organizationId) return null;
+    if (org.id !== shopScope.organizationId) return null;
+  }
 
   const { data: steps } = await supabase
     .from("wizard_steps")
@@ -79,11 +70,21 @@ export async function loadDefinition(
         .order("sort_order", { ascending: true })
     : { data: [] };
 
-  const { data: products } = await supabase
+  let productQuery = supabase
     .from("products")
     .select("*")
     .eq("configurator_id", configurator.id)
     .eq("is_active", true);
+  if (shopScope) {
+    productQuery = productQuery.eq("organization_id", shopScope.organizationId);
+  }
+  const { data: products } = await productQuery;
+  const scopedProducts = (products ?? []).filter((row) => {
+    if (row.configurator_id !== configurator.id) return false;
+    if (shopScope && row.organization_id !== shopScope.organizationId) return false;
+    if (shopScope && row.configurator_id !== shopScope.configuratorId) return false;
+    return true;
+  });
 
   const questionsByStep = new Map<string, WizardQuestion[]>();
   for (const q of questions ?? []) {
@@ -131,8 +132,61 @@ export async function loadDefinition(
       sortOrder: s.sort_order,
       questions: questionsByStep.get(s.id) ?? [],
     })),
-    products: (products ?? []).map(mapProduct),
+    products: scopedProducts.map(mapProduct),
   };
+}
+
+export async function loadDefinition(
+  supabase: SupabaseClient<Database>,
+  orgSlug: string,
+  configuratorSlug: string,
+): Promise<ConfiguratorDefinition | null> {
+  const { data: org } = await supabase
+    .from("organizations")
+    .select("*")
+    .eq("slug", orgSlug)
+    .maybeSingle();
+  if (!org) return null;
+
+  const slugs = publicConfiguratorSlugs(org.slug, configuratorSlug);
+  const { data: matches } = await supabase
+    .from("configurators")
+    .select("*")
+    .eq("organization_id", org.id)
+    .in("slug", slugs)
+    .eq("is_active", true);
+  const configurator = pickPreferredBySlug(matches, slugs);
+  if (!configurator) return null;
+  return assembleDefinition(supabase, org, configurator);
+}
+
+export async function loadDefinitionByConfiguratorId(
+  supabase: SupabaseClient<Database>,
+  organizationId: string,
+  configuratorId: string,
+  shopScope?: ShopCatalogScope,
+): Promise<ConfiguratorDefinition | null> {
+  if (shopScope && (shopScope.configuratorId !== configuratorId || shopScope.organizationId !== organizationId)) {
+    return null;
+  }
+  const { data: org } = await supabase.from("organizations").select("*").eq("id", organizationId).maybeSingle();
+  if (!org) return null;
+  const { data: configurator } = await supabase
+    .from("configurators")
+    .select("*")
+    .eq("id", configuratorId)
+    .eq("organization_id", organizationId)
+    .eq("is_active", true)
+    .maybeSingle();
+  if (!configurator) return null;
+  return assembleDefinition(supabase, org, configurator, shopScope);
+}
+
+export async function loadShopDefinition(
+  supabase: SupabaseClient<Database>,
+  scope: ShopCatalogScope,
+): Promise<ConfiguratorDefinition | null> {
+  return loadDefinitionByConfiguratorId(supabase, scope.organizationId, scope.configuratorId, scope);
 }
 
 export function mapProductRow(row: Database["public"]["Tables"]["products"]["Row"]) {

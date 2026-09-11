@@ -154,6 +154,7 @@ export type QuoteSession = {
   customization: Customization;
   submittedQuoteId: string | null;
   contactDraft: ContactDraft;
+  configuratorId: string;
 };
 
 export type ContactPayload = {

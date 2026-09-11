@@ -12,6 +12,12 @@ import type { Json } from "@/lib/db/database.types";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 import { attributionColumns, type Attribution } from "@/lib/stats/attribution";
 import { pickPreferredBySlug, publicConfiguratorSlugs } from "@/lib/demo/public-slugs";
+import {
+  gateShopCatalogRequest,
+  resolveShopCatalog,
+  shopCatalogError,
+  type ShopCatalogGate,
+} from "@/lib/shops/catalog-scope";
 
 export function mapSession(row: Tables<"quote_sessions">): QuoteSession {
   const customization = (row.customization ?? {}) as Partial<Customization>;
@@ -32,6 +38,7 @@ export function mapSession(row: Tables<"quote_sessions">): QuoteSession {
     },
     submittedQuoteId: row.submitted_quote_id,
     contactDraft: (row.contact_draft ?? {}) as QuoteSession["contactDraft"],
+    configuratorId: row.configurator_id,
   };
 }
 
@@ -102,6 +109,63 @@ export async function createSession(
     },
   });
   return mapSession(data);
+}
+
+export async function createShopScopedSession(input: {
+  orgSlug: string;
+  shopSlug: string;
+  configuratorSlug?: string;
+  configuratorId?: string;
+  attribution?: Attribution;
+}): Promise<{ ok: true; session: QuoteSession } | Extract<ShopCatalogGate, { ok: false }>> {
+  const resolved = await resolveShopCatalog(input.orgSlug, input.shopSlug);
+  const gate = gateShopCatalogRequest(resolved, {
+    configuratorId: input.configuratorId,
+    configuratorSlug: input.configuratorSlug,
+  });
+  if (!gate.ok) return gate;
+
+  const supabase = createServiceClient();
+  const { data: cfgFlags } = await supabase
+    .from("configurators")
+    .select("wizard_enabled, chat_enabled")
+    .eq("id", gate.scope.configuratorId)
+    .maybeSingle();
+  const initialMode =
+    cfgFlags?.chat_enabled && !cfgFlags?.wizard_enabled ? "chat" : "wizard";
+
+  const token = randomBytes(24).toString("hex");
+  const { data, error } = await supabase
+    .from("quote_sessions")
+    .insert({
+      organization_id: gate.scope.organizationId,
+      configurator_id: gate.scope.configuratorId,
+      token,
+      mode: initialMode,
+      ...(input.attribution ? attributionColumns(input.attribution) : {}),
+    })
+    .select("*")
+    .single();
+  if (error || !data) {
+    const denied = shopCatalogError("no_catalog");
+    return { ok: false, reason: "no_catalog", status: denied.status, error: denied.error };
+  }
+  await supabase.from("analytics_events").insert({
+    organization_id: gate.scope.organizationId,
+    configurator_id: gate.scope.configuratorId,
+    session_id: data.id,
+    visitor_id: input.attribution?.visitorId ?? null,
+    event_type: ANALYTICS_EVENTS.started,
+    step: 0,
+    payload: {
+      utm_source: input.attribution?.utmSource ?? null,
+      utm_medium: input.attribution?.utmMedium ?? null,
+      utm_campaign: input.attribution?.utmCampaign ?? null,
+      referrer: input.attribution?.referrer ?? null,
+      gclid: input.attribution?.gclid ?? null,
+    },
+  });
+  return { ok: true, session: mapSession(data) };
 }
 
 export async function getSessionByToken(token: string) {
