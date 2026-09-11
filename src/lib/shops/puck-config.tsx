@@ -5,8 +5,19 @@ import { ProductCard } from "@/components/storefront/product-card";
 import type { StorefrontModel } from "@/lib/shops/types";
 import { groupProductsByCategory } from "@/lib/catalog/group";
 import { ColorField, CompactTextField, SpacingField } from "@/lib/shops/inspector-fields";
-import { boxStyle, type BoxStyleInput } from "@/lib/shops/layout";
+import type { BoxStyleInput } from "@/lib/shops/layout";
 import { resolveShopHref } from "@/lib/shops/href";
+import {
+  cx,
+  heroPadClass,
+  renderBoxStyle,
+  sectionPadClass,
+  SHOP_BODY,
+  SHOP_CARD,
+  SHOP_CTA,
+  SHOP_CTA_SECONDARY,
+  SHOP_HEADING,
+} from "@/lib/shops/storefront-style";
 import { categoryPath } from "@/lib/shops/urls";
 
 type PuckMeta = {
@@ -57,8 +68,8 @@ const boxFields = {
   minHeight: { type: "custom" as const, label: "Hauteur min", placeholder: "auto", render: CompactTextField },
 };
 
-function styleOf(props: BoxStyleInput, extra?: CSSProperties): CSSProperties {
-  return { ...boxStyle(props), ...extra };
+function styleOf(props: BoxStyleInput, extra?: CSSProperties, puck?: PuckBag): CSSProperties {
+  return renderBoxStyle(props, extra, { sanitize: !puck?.isEditing });
 }
 
 function modelOf(puck?: PuckBag): StorefrontModel | null {
@@ -101,6 +112,44 @@ function ShopLink({
   );
 }
 
+function ShopSection({
+  box,
+  puck,
+  className,
+  extraStyle,
+  maxWidth = "6xl",
+  children,
+}: {
+  box: BoxStyleInput;
+  puck?: PuckBag;
+  className?: string;
+  extraStyle?: CSSProperties;
+  maxWidth?: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className={cx(sectionPadClass(box.padding), className)} style={styleOf(box, extraStyle, puck)}>
+      <div className="mx-auto w-full px-4 lg:px-6" style={{ maxWidth: MAX_WIDTH[maxWidth] || maxWidth || MAX_WIDTH["6xl"] }}>
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function columnsClass(count: number) {
+  if (count >= 4) return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
+  if (count === 3) return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+  return "grid grid-cols-1 sm:grid-cols-2";
+}
+
+function emptyHint(text: string) {
+  return (
+    <p className="mt-8 rounded-2xl border border-dashed border-black/15 px-6 py-10 text-sm text-[color-mix(in_srgb,var(--shop-text)_62%,var(--shop-bg))]">
+      {text}
+    </p>
+  );
+}
+
 export const shopPuckConfig = {
   categories: {
     layout: { title: "Disposition", defaultExpanded: true, components: ["Section", "Columns"] },
@@ -127,18 +176,16 @@ export const shopPuckConfig = {
         },
         ...boxFields,
       },
-      defaultProps: { children: [], maxWidth: "6xl", padding: "56px 24px", position: "static" },
+      defaultProps: { children: [], maxWidth: "6xl", padding: "64px 0", position: "static" },
       render: ({
         children: Children,
         maxWidth,
         puck,
         ...box
-      }: BoxStyleInput & { children: (props?: object) => ReactNode; maxWidth?: string; puck?: PuckBag }) => (
-        <section style={styleOf(box)}>
-          <div className="mx-auto w-full px-4 lg:px-6" style={{ maxWidth: MAX_WIDTH[maxWidth || "6xl"] || maxWidth }}>
-            <Children />
-          </div>
-        </section>
+      }: BoxStyleInput & { children: (props?: { className?: string }) => ReactNode; maxWidth?: string; puck?: PuckBag }) => (
+        <ShopSection box={box} puck={puck} maxWidth={maxWidth || "6xl"}>
+          <Children className="flex flex-col gap-5 md:gap-6" />
+        </ShopSection>
       ),
     },
     Columns: {
@@ -162,7 +209,7 @@ export const shopPuckConfig = {
       },
       defaultProps: {
         count: "2",
-        gap: "16px",
+        gap: "24px",
         col1: [],
         col2: [],
         col3: [],
@@ -176,29 +223,24 @@ export const shopPuckConfig = {
         col2: Col2,
         col3: Col3,
         col4: Col4,
+        puck,
         ...box
       }: BoxStyleInput & {
         count?: string;
         gap?: string;
-        col1: (props?: object) => ReactNode;
-        col2: (props?: object) => ReactNode;
-        col3: (props?: object) => ReactNode;
-        col4: (props?: object) => ReactNode;
+        col1: (props?: { className?: string }) => ReactNode;
+        col2: (props?: { className?: string }) => ReactNode;
+        col3: (props?: { className?: string }) => ReactNode;
+        col4: (props?: { className?: string }) => ReactNode;
+        puck?: PuckBag;
       }) => {
         const n = Number(count || 2);
         const cols = [Col1, Col2, Col3, Col4].slice(0, n);
         return (
-          <div
-            style={{
-              ...styleOf(box),
-              display: "grid",
-              gap: gap || "16px",
-              gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))`,
-            }}
-          >
+          <div className={columnsClass(n)} style={styleOf(box, { gap: gap || "24px" }, puck)}>
             {cols.map((Col, index) => (
               <div key={index} className="min-w-0">
-                <Col />
+                <Col className="flex flex-col gap-4" />
               </div>
             ))}
           </div>
@@ -221,11 +263,10 @@ export const shopPuckConfig = {
         ...boxFields,
       },
       defaultProps: { text: "Titre", level: "h2", position: "static" },
-      render: ({ text, level, ...box }: BoxStyleInput & { text?: string; level?: string }) => {
+      render: ({ text, level, puck, ...box }: BoxStyleInput & { text?: string; level?: string; puck?: PuckBag }) => {
         const Tag = (level === "h1" || level === "h3" ? level : "h2") as "h1" | "h2" | "h3";
-        const size = Tag === "h1" ? "text-3xl lg:text-4xl" : Tag === "h3" ? "text-lg" : "text-xl";
         return (
-          <Tag className={`font-semibold tracking-tight ${size}`} style={styleOf(box)}>
+          <Tag className={SHOP_HEADING[Tag]} style={styleOf(box, undefined, puck)}>
             {text || "Titre"}
           </Tag>
         );
@@ -238,8 +279,8 @@ export const shopPuckConfig = {
         ...boxFields,
       },
       defaultProps: { text: "Présentez votre savoir-faire.", position: "static" },
-      render: ({ text, ...box }: BoxStyleInput & { text?: string }) => (
-        <p className="max-w-3xl text-sm leading-7 opacity-80 whitespace-pre-wrap" style={styleOf(box)}>
+      render: ({ text, puck, ...box }: BoxStyleInput & { text?: string; puck?: PuckBag }) => (
+        <p className={cx(SHOP_BODY, "whitespace-pre-wrap")} style={styleOf(box, undefined, puck)}>
           {text}
         </p>
       ),
@@ -252,12 +293,15 @@ export const shopPuckConfig = {
         ...boxFields,
       },
       defaultProps: { image: "", imageAlt: "", position: "static" },
-      render: ({ image, imageAlt, ...box }: BoxStyleInput & { image?: string; imageAlt?: string }) =>
+      render: ({ image, imageAlt, puck, ...box }: BoxStyleInput & { image?: string; imageAlt?: string; puck?: PuckBag }) =>
         image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={image} alt={imageAlt || ""} className="w-full rounded-lg object-cover" style={styleOf(box)} />
+          <img src={image} alt={imageAlt || ""} className="w-full rounded-2xl object-cover" style={styleOf(box, undefined, puck)} />
         ) : (
-          <div className="flex min-h-40 items-center justify-center rounded-lg bg-black/5 text-sm opacity-60" style={styleOf(box)}>
+          <div
+            className="flex min-h-48 items-center justify-center rounded-2xl bg-black/5 text-sm opacity-60"
+            style={styleOf(box, undefined, puck)}
+          >
             Image
           </div>
         ),
@@ -282,8 +326,8 @@ export const shopPuckConfig = {
             href={href || "/devis"}
             editing={puck?.isEditing}
             model={model}
-            className="inline-flex rounded-md px-4 py-2 text-sm font-medium text-white"
-            style={styleOf(box, { background: model?.theme.accent || "#E85D04" })}
+            className={cx(SHOP_CTA, "w-fit")}
+            style={styleOf(box, { background: model?.theme.accent || "#E85D04" }, puck)}
           >
             {label || "Demander un devis"}
           </ShopLink>
@@ -306,7 +350,7 @@ export const shopPuckConfig = {
         ctaLabel: "Demander un devis",
         image: "",
         imageAlt: "",
-        padding: "56px 0",
+        padding: "80px 0",
         position: "static",
       },
       render: ({
@@ -326,28 +370,37 @@ export const shopPuckConfig = {
         puck?: PuckBag;
       }) => {
         const model = modelOf(puck);
+        const accent = model?.theme.accent || "#E85D04";
+        const wash = box.background
+          ? undefined
+          : {
+              background: `linear-gradient(165deg, color-mix(in srgb, ${accent} 16%, var(--shop-bg)) 0%, var(--shop-bg) 62%)`,
+            };
         return (
-          <section className="border-b border-black/10" style={styleOf(box)}>
-            <div className="mx-auto grid max-w-6xl gap-8 px-4 py-14 lg:grid-cols-2 lg:items-center lg:px-6">
-              <div>
-                <h1 className="text-3xl font-semibold tracking-tight lg:text-4xl">{heading || model?.shopName}</h1>
-                {sub ? <p className="mt-4 max-w-xl text-base leading-7 opacity-80">{sub}</p> : null}
-                <ShopLink
-                  href="/devis"
-                  editing={puck?.isEditing}
-                  model={model}
-                  className="mt-6 inline-flex rounded-md px-4 py-2 text-sm font-medium text-white"
-                  style={{ background: model?.theme.accent || "#E85D04" }}
-                >
-                  {ctaLabel || "Demander un devis"}
-                </ShopLink>
+          <section className={cx("border-b border-black/10", heroPadClass(box.padding))} style={styleOf(box, wash, puck)}>
+            <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 lg:grid-cols-2 lg:px-6">
+              <div className={image ? "" : "lg:col-span-2 lg:max-w-3xl"}>
+                <h1 className={SHOP_HEADING.h1}>{heading || model?.shopName}</h1>
+                {sub ? <p className={cx(SHOP_BODY, "mt-5 text-lg")}>{sub}</p> : null}
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <ShopLink
+                    href="/devis"
+                    editing={puck?.isEditing}
+                    model={model}
+                    className={SHOP_CTA}
+                    style={{ background: accent }}
+                  >
+                    {ctaLabel || "Demander un devis"}
+                  </ShopLink>
+                  <ShopLink href="/catalogue" editing={puck?.isEditing} model={model} className={SHOP_CTA_SECONDARY}>
+                    Voir le catalogue
+                  </ShopLink>
+                </div>
               </div>
               {image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={image} alt={imageAlt || heading || ""} className="w-full rounded-lg object-cover" />
-              ) : (
-                <div className="min-h-48 rounded-lg bg-black/5" />
-              )}
+                <img src={image} alt={imageAlt || heading || ""} className="aspect-[4/3] w-full rounded-2xl object-cover shadow-sm" />
+              ) : null}
             </div>
           </section>
         );
@@ -361,7 +414,7 @@ export const shopPuckConfig = {
         limit: { type: "number", label: "Nombre max", min: 1, max: 48 },
         ...boxFields,
       },
-      defaultProps: { heading: "Catalogue", category: "", limit: 12, padding: "40px 0", position: "static" },
+      defaultProps: { heading: "Catalogue", category: "", limit: 12, padding: "64px 0", position: "static" },
       render: ({
         heading,
         category,
@@ -375,9 +428,9 @@ export const shopPuckConfig = {
         const listed = wanted ? products.filter((product) => (product.category || "Autres") === wanted) : products;
         const sliced = listed.slice(0, Number(limit) || 12);
         return (
-          <section className="mx-auto max-w-6xl px-4 lg:px-6" style={styleOf(box)}>
-            {heading ? <h2 className="text-xl font-semibold">{heading}</h2> : null}
-            <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ShopSection box={box} puck={puck}>
+            {heading ? <h2 className={SHOP_HEADING.h2}>{heading}</h2> : null}
+            <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {sliced.map((product) => (
                 <li key={product.id}>
                   <ProductCard
@@ -389,8 +442,8 @@ export const shopPuckConfig = {
                 </li>
               ))}
             </ul>
-            {!sliced.length ? <p className="mt-3 text-sm opacity-60">Aucun produit dans ce rayon pour l’instant.</p> : null}
-          </section>
+            {!sliced.length ? emptyHint("Aucun produit dans ce rayon pour l’instant.") : null}
+          </ShopSection>
         );
       },
     },
@@ -400,39 +453,41 @@ export const shopPuckConfig = {
         heading: { type: "text", label: "Titre" },
         ...boxFields,
       },
-      defaultProps: { heading: "Rayons", padding: "40px 0", position: "static" },
+      defaultProps: { heading: "Rayons", padding: "64px 0", position: "static" },
       render: ({ heading, puck, ...box }: BoxStyleInput & { heading?: string; puck?: PuckBag }) => {
         const model = modelOf(puck);
         const groups = groupProductsByCategory(model?.products ?? []);
         return (
-          <section className="mx-auto max-w-6xl px-4 lg:px-6" style={styleOf(box)}>
-            {heading ? <h2 className="text-xl font-semibold">{heading}</h2> : null}
-            <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {groups.map((group) => (
-                <li key={group.key}>
-                  {puck?.isEditing ? (
-                    <div className="block rounded-lg px-4 py-4 ring-1 ring-black/10">
-                      <span className="font-medium">{group.label}</span>
-                      <span className="mt-1 block text-xs opacity-60">
-                        {group.products.length} produit{group.products.length > 1 ? "s" : ""}
-                      </span>
-                    </div>
-                  ) : (
-                    <Link
-                      href={`/b/${model?.orgSlug}/${model?.shopSlug}${categoryPath(group.label)}`}
-                      className="block rounded-lg px-4 py-4 ring-1 ring-black/10 hover:bg-black/5"
-                    >
-                      <span className="font-medium">{group.label}</span>
-                      <span className="mt-1 block text-xs opacity-60">
-                        {group.products.length} produit{group.products.length > 1 ? "s" : ""}
-                      </span>
-                    </Link>
-                  )}
-                </li>
-              ))}
+          <ShopSection box={box} puck={puck}>
+            {heading ? <h2 className={SHOP_HEADING.h2}>{heading}</h2> : null}
+            <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {groups.map((group) => {
+                const card = (
+                  <>
+                    <span className="font-semibold tracking-tight">{group.label}</span>
+                    <span className="mt-2 block text-sm text-[color-mix(in_srgb,var(--shop-text)_62%,var(--shop-bg))]">
+                      {group.products.length} produit{group.products.length > 1 ? "s" : ""}
+                    </span>
+                  </>
+                );
+                return (
+                  <li key={group.key}>
+                    {puck?.isEditing ? (
+                      <div className={cx(SHOP_CARD, "px-6 py-6")}>{card}</div>
+                    ) : (
+                      <Link
+                        href={`/b/${model?.orgSlug}/${model?.shopSlug}${categoryPath(group.label)}`}
+                        className={cx(SHOP_CARD, "block px-6 py-6 transition hover:-translate-y-0.5 hover:shadow-md")}
+                      >
+                        {card}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
-            {!groups.length ? <p className="mt-3 text-sm opacity-60">Le catalogue se remplira depuis QuoteBuilder.</p> : null}
-          </section>
+            {!groups.length ? emptyHint("Le catalogue se remplira depuis QuoteBuilder.") : null}
+          </ShopSection>
         );
       },
     },
@@ -448,7 +503,7 @@ export const shopPuckConfig = {
         heading: "Un projet sur mesure ?",
         text: "Décrivez le besoin : nous chiffrons à partir du catalogue.",
         ctaLabel: "Ouvrir le devis",
-        padding: "48px 0",
+        padding: "64px 0",
         position: "static",
       },
       render: ({
@@ -461,21 +516,26 @@ export const shopPuckConfig = {
         const model = modelOf(puck);
         const accent = model?.theme.accent || "#E85D04";
         return (
-          <section className="border-y border-black/10" style={styleOf(box, { background: `${accent}12` })}>
-            <div className="mx-auto max-w-6xl px-4 lg:px-6">
-              <h2 className="text-xl font-semibold">{heading || "Demander un devis"}</h2>
-              {text ? <p className="mt-2 max-w-2xl text-sm leading-6 opacity-80">{text}</p> : null}
+          <ShopSection
+            box={box}
+            puck={puck}
+            className="border-y border-black/10"
+            extraStyle={{ background: box.background || `${accent}14` }}
+          >
+            <div className="max-w-2xl">
+              <h2 className={SHOP_HEADING.h2}>{heading || "Demander un devis"}</h2>
+              {text ? <p className={cx(SHOP_BODY, "mt-4")}>{text}</p> : null}
               <ShopLink
                 href="/devis"
                 editing={puck?.isEditing}
                 model={model}
-                className="mt-5 inline-flex rounded-md px-4 py-2 text-sm font-medium text-white"
+                className={cx(SHOP_CTA, "mt-8")}
                 style={{ background: accent }}
               >
                 {ctaLabel || "Ouvrir le devis"}
               </ShopLink>
             </div>
-          </section>
+          </ShopSection>
         );
       },
     },
@@ -495,23 +555,24 @@ export const shopPuckConfig = {
         },
         ...boxFields,
       },
-      defaultProps: { heading: "Questions fréquentes", faq: [], padding: "40px 0", position: "static" },
+      defaultProps: { heading: "Questions fréquentes", faq: [], padding: "64px 0", position: "static" },
       render: ({
         heading,
         faq,
+        puck,
         ...box
-      }: BoxStyleInput & { heading?: string; faq?: { q?: string; a?: string }[] }) => (
-        <section className="mx-auto max-w-6xl px-4 lg:px-6" style={styleOf(box)}>
-          {heading ? <h2 className="text-xl font-semibold">{heading}</h2> : null}
-          <dl className="mt-4 max-w-3xl divide-y divide-black/10">
+      }: BoxStyleInput & { heading?: string; faq?: { q?: string; a?: string }[]; puck?: PuckBag }) => (
+        <ShopSection box={box} puck={puck}>
+          {heading ? <h2 className={SHOP_HEADING.h2}>{heading}</h2> : null}
+          <dl className="mt-8 max-w-3xl divide-y divide-black/10">
             {(faq ?? []).map((item) => (
-              <div key={item.q} className="py-4">
-                <dt className="font-medium">{item.q}</dt>
-                <dd className="mt-1 text-sm leading-6 opacity-80">{item.a}</dd>
+              <div key={item.q} className="py-5 first:pt-0">
+                <dt className="text-base font-semibold">{item.q}</dt>
+                <dd className={cx(SHOP_BODY, "mt-2")}>{item.a}</dd>
               </div>
             ))}
           </dl>
-        </section>
+        </ShopSection>
       ),
     },
     Features: {
@@ -530,23 +591,24 @@ export const shopPuckConfig = {
         },
         ...boxFields,
       },
-      defaultProps: { heading: "Pourquoi cette vitrine", features: [], padding: "40px 0", position: "static" },
+      defaultProps: { heading: "Pourquoi cette vitrine", features: [], padding: "64px 0", position: "static" },
       render: ({
         heading,
         features,
+        puck,
         ...box
-      }: BoxStyleInput & { heading?: string; features?: { title?: string; text?: string }[] }) => (
-        <section className="mx-auto max-w-6xl px-4 lg:px-6" style={styleOf(box)}>
-          {heading ? <h2 className="text-xl font-semibold">{heading}</h2> : null}
-          <ul className="mt-4 grid gap-4 sm:grid-cols-3">
+      }: BoxStyleInput & { heading?: string; features?: { title?: string; text?: string }[]; puck?: PuckBag }) => (
+        <ShopSection box={box} puck={puck}>
+          {heading ? <h2 className={SHOP_HEADING.h2}>{heading}</h2> : null}
+          <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {(features ?? []).map((item) => (
-              <li key={item.title} className="rounded-lg px-4 py-4 ring-1 ring-black/10">
-                <p className="font-medium">{item.title}</p>
-                <p className="mt-1 text-sm leading-6 opacity-75">{item.text}</p>
+              <li key={item.title} className={cx(SHOP_CARD, "px-6 py-6")}>
+                <p className="font-semibold tracking-tight">{item.title}</p>
+                <p className={cx(SHOP_BODY, "mt-2")}>{item.text}</p>
               </li>
             ))}
           </ul>
-        </section>
+        </ShopSection>
       ),
     },
     Legal: {
@@ -556,14 +618,13 @@ export const shopPuckConfig = {
         text: { type: "textarea", label: "Texte" },
         ...boxFields,
       },
-      defaultProps: { heading: "Mentions légales", text: "", padding: "48px 0", position: "static" },
-      render: ({ heading, text, ...box }: BoxStyleInput & { heading?: string; text?: string }) => (
-        <article className="mx-auto max-w-3xl px-4 lg:px-6" style={styleOf(box)}>
-          <h1 className="text-3xl font-semibold tracking-tight">{heading}</h1>
-          <div className="mt-6 whitespace-pre-wrap text-sm leading-7 opacity-85">{text}</div>
-        </article>
+      defaultProps: { heading: "Mentions légales", text: "", padding: "64px 0", position: "static" },
+      render: ({ heading, text, puck, ...box }: BoxStyleInput & { heading?: string; text?: string; puck?: PuckBag }) => (
+        <ShopSection box={box} puck={puck} maxWidth="3xl">
+          <h1 className={SHOP_HEADING.h1}>{heading}</h1>
+          <div className={cx(SHOP_BODY, "mt-6 whitespace-pre-wrap")}>{text}</div>
+        </ShopSection>
       ),
     },
   },
 } as unknown as Config;
-
