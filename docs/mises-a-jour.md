@@ -13,9 +13,9 @@ RLS : lecture des notes pour `authenticated` ; pas d’écriture côté app (ser
 
 Le badge « non lu » du menu Support compte les versions **strictement plus récentes** que `last_seen_version`. Ouvrir `/mises-a-jour` enregistre la plus récente.
 
-Tant que la migration n’est pas appliquée, l’app affiche le seed bundlé (`src/lib/updates/seed.ts`, mêmes notes que 1.7 / 1.8 / 1.9 / 1.9.1) et mémorise le last-seen dans le cookie `qb-updates-seen`. Dès que les tables existent, elles deviennent la source de vérité.
+Tant que la migration n’est pas appliquée, l’app affiche le seed bundlé (`src/lib/updates/seed.ts`, mêmes notes que 1.7 / 1.8 / 1.9 / 1.9.1 / 1.9.2) et mémorise le last-seen dans le cookie `qb-updates-seen`. Dès que les tables existent, elles deviennent la source de vérité.
 
-Migrations : `0024_product_updates.sql` (tables + 1.7 / 1.8), `0025_product_update_1_9_0.sql` (1.9.0), `0026_product_update_1_9_1.sql` (1.9.1).
+Migrations : `0024_product_updates.sql` (tables + 1.7 / 1.8), `0025_product_update_1_9_0.sql` (1.9.0), `0026_product_update_1_9_1.sql` (1.9.1), `0027_product_update_1_9_2.sql` (1.9.2).
 
 ## Ajouter une version
 
