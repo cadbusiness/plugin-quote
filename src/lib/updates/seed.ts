@@ -2,8 +2,20 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.13.1",
+    version: "1.13.1",
+    title: "Liens boutique vers le devis restent dans la vitrine",
+    items: [
+      "Les anciens liens vers le funnel /c/… avec indication boutique redirigent vers le devis intégré /b/…/devis (boutique publiée et liée).",
+      "Les paramètres utiles (produit, UTM, etc.) sont conservés.",
+      "Sans boutique (ou boutique inconnue / non publiée / non liée), le funnel /c/ reste inchangé.",
+    ],
+    releasedAt: "2026-09-11",
+    createdAt: "2026-09-11T00:00:00.000Z",
+  },
   {
     id: "seed-1.13.0",
     version: "1.13.0",
