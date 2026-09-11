@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ConfiguratorApp } from "@/components/configurator/configurator-app";
+import type { ConfiguratorThemeOverride } from "@/lib/configurator/theme";
 import { breadcrumbJsonLd, shopMetadata, websiteJsonLd } from "@/lib/shops/seo";
 import { loadOr404, seoCtx, StorefrontShell, toModel } from "@/lib/shops/public-page";
 import { cx, SHOP_BODY, SHOP_CONTAINER, SHOP_CTA, SHOP_HEADING } from "@/lib/shops/storefront-style";
@@ -35,7 +36,16 @@ export default async function ShopDevisPage({ params, searchParams }: Props) {
   return (
     <StorefrontShell model={model}>
       {shop.funnelSlug ? (
-        <ShopEmbeddedQuote orgSlug={shop.orgSlug} configuratorSlug={shop.funnelSlug} productPrefill={productPrefill} />
+        <ShopEmbeddedQuote
+          orgSlug={shop.orgSlug}
+          configuratorSlug={shop.funnelSlug}
+          productPrefill={productPrefill}
+          themeOverride={{
+            accent: shop.theme.accent,
+            background: shop.theme.background,
+            text: shop.theme.text,
+          }}
+        />
       ) : (
         <ShopQuoteUnavailable shopName={shop.doc.shop.name} catalogueHref={catalogueHref} />
       )}
@@ -47,16 +57,23 @@ function ShopEmbeddedQuote({
   orgSlug,
   configuratorSlug,
   productPrefill,
+  themeOverride,
 }: {
   orgSlug: string;
   configuratorSlug: string;
   productPrefill?: string;
+  themeOverride: ConfiguratorThemeOverride;
 }) {
   // TODO Unify: seed ConfiguratorApp from ?product= (catalog id or SKU) once the funnel accepts a product prefill.
   void productPrefill;
   return (
     <div className="min-h-[60vh]">
-      <ConfiguratorApp orgSlug={orgSlug} configuratorSlug={configuratorSlug} embedded />
+      <ConfiguratorApp
+        orgSlug={orgSlug}
+        configuratorSlug={configuratorSlug}
+        embedded
+        themeOverride={themeOverride}
+      />
     </div>
   );
 }

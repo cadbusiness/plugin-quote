@@ -9,6 +9,10 @@ import { applyStorefrontCart, suggestionFromProducts } from "@/lib/wizard/storef
 import { CatalogBrowse } from "@/components/configurator/catalog-browse";
 import { ProductHtml } from "@/components/catalog/product-html";
 import { quoteLineCount } from "@/lib/funnels/kind";
+import {
+  resolveConfiguratorTheme,
+  type ConfiguratorThemeOverride,
+} from "@/lib/configurator/theme";
 import type {
   Answers,
   ConfiguratorDefinition,
@@ -20,10 +24,13 @@ import type {
   WizardQuestion,
 } from "@/lib/wizard/types";
 
+export type { ConfiguratorThemeOverride };
+
 type Props = {
   orgSlug: string;
   configuratorSlug: string;
   embedded?: boolean;
+  themeOverride?: ConfiguratorThemeOverride;
 };
 
 const SESSION_KEY = (org: string, slug: string) => `qb-session:${org}:${slug}`;
@@ -119,7 +126,7 @@ async function track(session: QuoteSession | null, eventType: string, step?: num
   }).catch(() => undefined);
 }
 
-export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) {
+export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded, themeOverride }: Props) {
   const [definition, setDefinition] = useState<ConfiguratorDefinition | null>(null);
   const [session, setSession] = useState<QuoteSession | null>(null);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -444,7 +451,8 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
     return <div className="p-8 text-center text-slate-500">Impossible de démarrer la session.</div>;
   }
 
-  const accent = String(definition.configurator.theme.accent ?? "#d97706");
+  const theme = resolveConfiguratorTheme(definition.configurator.theme.accent, themeOverride);
+  const accent = theme.accent;
   const isCatalog = definition.configurator.kind === "catalog";
   const chatOnly =
     definition.configurator.chatEnabled && !definition.configurator.wizardEnabled && !isCatalog;
@@ -479,33 +487,60 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
   }
 
   return (
-    <div className="min-h-full bg-slate-50">
-      <header className="border-b border-slate-200 bg-slate-950 text-white">
+    <div className={theme.themed ? "min-h-full" : "min-h-full bg-slate-50"} style={theme.style}>
+      <header
+        className={
+          theme.themed
+            ? "border-b border-black/10"
+            : "border-b border-slate-200 bg-slate-950 text-white"
+        }
+      >
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.16em] text-amber-400">
+            <p
+              className={
+                theme.themed
+                  ? "text-xs uppercase tracking-[0.16em]"
+                  : "text-xs uppercase tracking-[0.16em] text-amber-400"
+              }
+              style={theme.themed ? { color: accent } : undefined}
+            >
               {definition.organization.name}
             </p>
             <p className="text-lg font-medium">{definition.configurator.name}</p>
           </div>
           {isCatalog && !done ? (
-            <p className="rounded-full bg-white/10 px-3 py-1 text-sm">
+            <p className={`rounded-full px-3 py-1 text-sm ${theme.themed ? "bg-black/5" : "bg-white/10"}`}>
               {quoteLineCount(session.customization)} au devis
             </p>
           ) : null}
           {canSwitch ? (
-            <div className="flex rounded-full bg-white/10 p-1 text-sm">
+            <div className={`flex rounded-full p-1 text-sm ${theme.themed ? "bg-black/5" : "bg-white/10"}`}>
               <button
                 type="button"
                 onClick={() => switchMode("wizard")}
-                className={`rounded-full px-3 py-1 ${session.mode === "wizard" ? "bg-white text-slate-950" : ""}`}
+                className={`rounded-full px-3 py-1 ${
+                  session.mode === "wizard"
+                    ? theme.themed
+                      ? "text-white"
+                      : "bg-white text-slate-950"
+                    : ""
+                }`}
+                style={theme.themed && session.mode === "wizard" ? { background: accent } : undefined}
               >
                 Funnel
               </button>
               <button
                 type="button"
                 onClick={() => switchMode("chat")}
-                className={`rounded-full px-3 py-1 ${session.mode === "chat" ? "bg-white text-slate-950" : ""}`}
+                className={`rounded-full px-3 py-1 ${
+                  session.mode === "chat"
+                    ? theme.themed
+                      ? "text-white"
+                      : "bg-white text-slate-950"
+                    : ""
+                }`}
+                style={theme.themed && session.mode === "chat" ? { background: accent } : undefined}
               >
                 Chat IA
               </button>
@@ -516,7 +551,10 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
           <div className="mx-auto max-w-5xl px-5 pb-4">
             <div className="flex gap-2">
               {definition.steps.map((s, i) => (
-                <div key={s.id} className="h-1 flex-1 rounded-full bg-white/15">
+                <div
+                  key={s.id}
+                  className={`h-1 flex-1 rounded-full ${theme.themed ? "bg-black/10" : "bg-white/15"}`}
+                >
                   <div
                     className="h-1 rounded-full"
                     style={{
@@ -527,7 +565,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
                 </div>
               ))}
             </div>
-            <p className="mt-2 text-xs text-slate-300">
+            <p className={theme.themed ? "mt-2 text-xs opacity-70" : "mt-2 text-xs text-slate-300"}>
               Étape {(session.currentStep ?? 0) + 1} / {definition.steps.length}, {step?.title}
             </p>
           </div>
@@ -539,6 +577,8 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
           <ContactCapture
             draft={session.contactDraft}
             firstName={contact.name}
+            accent={accent}
+            themed={theme.themed}
             onSave={async (draft) => {
               const firstEmail = Boolean(draft.email && !session.contactDraft.email);
               setContact((c) => ({ ...c, ...draft }));
@@ -560,6 +600,8 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
               busy={busy}
               error={errors.chat}
               orgName={definition.organization.name}
+              accent={accent}
+              themed={theme.themed}
             />
             {showChatSuggestions ? (
               <SuggestionsPanel
@@ -600,6 +642,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
                 products={definition.products}
                 customization={session.customization}
                 accent={accent}
+                themed={theme.themed}
                 error={errors.catalog}
                 onChange={(customization) => persist({ customization })}
                 onContinue={() => void goNext()}
@@ -665,7 +708,12 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
                   type="button"
                   onClick={submit}
                   disabled={busy}
-                  className="rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
+                  className={
+                    theme.themed
+                      ? "rounded-lg px-5 py-2.5 text-sm font-medium text-white disabled:opacity-50"
+                      : "rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
+                  }
+                  style={theme.themed ? { background: accent } : undefined}
                 >
                   {busy ? "Envoi…" : isCatalog ? "Envoyer ma demande de devis" : "Envoyer ma demande"}
                 </button>
@@ -673,7 +721,12 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
                 <button
                   type="button"
                   onClick={goNext}
-                  className="rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-medium text-white hover:bg-slate-800"
+                  className={
+                    theme.themed
+                      ? "rounded-lg px-5 py-2.5 text-sm font-medium text-white"
+                      : "rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-medium text-white hover:bg-slate-800"
+                  }
+                  style={theme.themed ? { background: accent } : undefined}
                 >
                   {isCatalog && step.screenType === "customize" ? "Demander un devis" : "Continuer"}
                 </button>
@@ -1064,6 +1117,8 @@ function ChatPanel({
   busy,
   error,
   orgName,
+  accent,
+  themed,
 }: {
   messages: { role: "user" | "assistant"; content: string }[];
   value: string;
@@ -1072,6 +1127,8 @@ function ChatPanel({
   busy: boolean;
   error?: string;
   orgName: string;
+  accent: string;
+  themed: boolean;
 }) {
   return (
     <section className="mx-auto max-w-2xl">
@@ -1115,7 +1172,12 @@ function ChatPanel({
         <button
           type="submit"
           disabled={busy}
-          className="rounded-lg bg-[#E85D04] px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+          className={
+            themed
+              ? "rounded-lg px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+              : "rounded-lg bg-[#E85D04] px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+          }
+          style={themed ? { background: accent } : undefined}
         >
           {busy ? "…" : "Envoyer"}
         </button>
@@ -1129,10 +1191,14 @@ function ContactCapture({
   draft,
   firstName,
   onSave,
+  accent,
+  themed,
 }: {
   draft: ContactDraft;
   firstName: string;
   onSave: (draft: ContactDraft) => Promise<void>;
+  accent: string;
+  themed: boolean;
 }) {
   const [name, setName] = useState(draft.name ?? firstName ?? "");
   const [email, setEmail] = useState(draft.email ?? "");
@@ -1172,7 +1238,15 @@ function ContactCapture({
               className="mt-1 w-full rounded-md border border-slate-200 bg-white px-2 py-1.5"
             />
           </label>
-          <button type="submit" className="rounded-md bg-slate-950 px-3 py-2 text-sm text-white">
+          <button
+            type="submit"
+            className={
+              themed
+                ? "rounded-md px-3 py-2 text-sm text-white"
+                : "rounded-md bg-slate-950 px-3 py-2 text-sm text-white"
+            }
+            style={themed ? { background: accent } : undefined}
+          >
             Sauvegarder
           </button>
         </div>
