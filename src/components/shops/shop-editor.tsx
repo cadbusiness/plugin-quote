@@ -9,6 +9,7 @@ import { ShopChat, type EditorPage, type ShopChatDraft, type ShopChatResult } fr
 import { ListPanel } from "@/components/ui/list-panel";
 import { parseLayout } from "@/lib/shops/layout";
 import type { ShopLegal, ShopNavDraft, ShopProduct, ShopSeo, ShopTheme } from "@/lib/shops/types";
+import { QUOTE_MODE_OPTIONS } from "@/lib/quotes/quote-mode";
 
 const ShopBuilderCanvas = dynamic(
   () => import("@/components/shops/shop-builder-canvas").then((mod) => mod.ShopBuilderCanvas),
@@ -144,6 +145,35 @@ export function ShopEditor({
             <input value={theme.accent} onChange={(event) => setTheme({ ...theme, accent: event.target.value })} className="input" />
           </Field>
           {funnelName ? <p className="text-sm text-slate-500">Devis : {funnelName}</p> : null}
+          <div>
+            <p className="text-sm font-medium text-slate-900">Mode devis</p>
+            <p className="mt-0.5 text-sm text-slate-500">
+              Demande simple : contact + besoin + lignes catalogue optionnelles. La boutique prime sur le funnel
+              lié.
+            </p>
+            <div className="mt-2 flex gap-1 rounded-lg bg-slate-100 p-0.5 text-sm">
+              {QUOTE_MODE_OPTIONS.map((item) => {
+                const active = (theme.quoteMode ?? "configurator") === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() =>
+                      setTheme({
+                        ...theme,
+                        quoteMode: item.id === "configurator" ? undefined : item.id,
+                      })
+                    }
+                    className={`flex-1 rounded-md px-3 py-1.5 ${
+                      active ? "bg-white font-medium text-[#C2410C] shadow-sm" : "text-slate-500 hover:text-slate-800"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
           <p className="text-sm text-slate-500">{orgName} reste l’éditeur légal.</p>
         </div>
       ) : null}

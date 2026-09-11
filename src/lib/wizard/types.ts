@@ -72,6 +72,8 @@ export type Product = {
   stockStatus: string | null;
   /** Identifiant boutique (Woo / Shopify) pour préremplir depuis la vitrine. */
   externalId: string | null;
+  sku?: string | null;
+  configuratorId?: string;
 };
 
 export type Suggestion = {
@@ -105,6 +107,7 @@ export type ConfiguratorDefinition = {
     wizardEnabled: boolean;
     chatEnabled: boolean;
     kind: "form" | "chat" | "catalog";
+    quoteMode: "configurator" | "rfq";
     theme: Record<string, unknown>;
   };
   steps: WizardStep[];

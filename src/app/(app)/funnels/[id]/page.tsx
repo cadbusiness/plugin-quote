@@ -5,6 +5,7 @@ import { FunnelEditor } from "@/components/funnels/funnel-editor";
 import { parseFunnelTab } from "@/lib/funnels/tabs";
 import { parseFunnelTracking } from "@/lib/funnels/tracking";
 import { parseFunnelKind } from "@/lib/funnels/kind";
+import { resolveQuoteMode } from "@/lib/quotes/quote-mode";
 import { loadStatsDashboard } from "@/lib/stats/dashboard";
 import { getAppUrl } from "@/lib/supabase/env";
 import { nodeTitle } from "@/lib/workflows/labels";
@@ -77,6 +78,7 @@ export default async function FunnelEditorPage({
         wizardEnabled: funnel.wizard_enabled,
         chatEnabled: funnel.chat_enabled,
         kind: parseFunnelKind(funnel.theme, funnel.wizard_enabled, funnel.chat_enabled),
+        quoteMode: resolveQuoteMode({ configuratorTheme: funnel.theme }),
         isActive: funnel.is_active,
       }}
       orgName={ctx.organization.name}

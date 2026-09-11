@@ -163,8 +163,11 @@ export async function submitQuote(input: {
       price_max: null as number | null,
     })),
   ];
+  const need = String(answers.need ?? answers.besoin ?? "").trim();
   const requestName =
-    selected?.headline ?? selected?.name ?? (catalogItems.length ? "Demande catalogue" : "Configuration");
+    selected?.headline ??
+    selected?.name ??
+    (catalogItems.length ? "Demande catalogue" : need ? need.slice(0, 80) : "Configuration");
   if (items.length) {
     await supabase.from("quote_items").insert(items);
   }

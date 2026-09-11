@@ -12,6 +12,7 @@ import {
   type FunnelKind,
 } from "@/lib/funnels/builder";
 import { funnelKindFlags, themeWithKind } from "@/lib/funnels/kind";
+import { parseQuoteMode, themeWithQuoteMode } from "@/lib/quotes/quote-mode";
 import { mergeFunnelTracking } from "@/lib/funnels/tracking";
 import type { QuestionOptions, QuestionType, ScreenType } from "@/lib/wizard/types";
 import { parseTriggerConfig } from "@/lib/workflows/types";
@@ -73,6 +74,27 @@ export async function setFunnelKind(funnelId: string, kind: FunnelKind) {
   if (kind === "catalog") {
     await ensureCatalogSteps(funnelId);
   }
+  revalidatePath("/funnels");
+  revalidatePath(`/funnels/${funnelId}`);
+}
+
+export async function setFunnelQuoteMode(funnelId: string, mode: string) {
+  const ctx = await requireAdmin();
+  const quoteMode = parseQuoteMode(mode);
+  if (!funnelId || !quoteMode) return;
+  const supabase = await createClient();
+  const { data: current } = await supabase
+    .from("configurators")
+    .select("theme")
+    .eq("id", funnelId)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  if (!current) return;
+  await supabase
+    .from("configurators")
+    .update({ theme: themeWithQuoteMode(current.theme, quoteMode) })
+    .eq("id", funnelId)
+    .eq("organization_id", ctx.organization.id);
   revalidatePath("/funnels");
   revalidatePath(`/funnels/${funnelId}`);
 }

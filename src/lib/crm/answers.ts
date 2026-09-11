@@ -23,6 +23,9 @@ const KEY_LABELS: Record<string, string> = {
   style: "Style",
   timeline: "Délai souhaité",
   notes: "Précisions",
+  need: "Besoin",
+  besoin: "Besoin",
+  quote_mode: "Mode devis",
   usage: "Usage",
   essence: "Essence / finition",
   upkeep: "Entretien",
@@ -45,7 +48,10 @@ const KEY_ORDER = [
   "duration",
   "essence",
   "upkeep",
+  "need",
+  "besoin",
   "notes",
+  "quote_mode",
 ];
 
 const KEY_UNITS: Record<string, string> = {
@@ -104,6 +110,8 @@ const VALUE_LABELS: Record<string, string> = {
   earth: "Terrassement",
   power: "Énergie / Groupe",
   other: "Autre",
+  rfq: "Demande simple",
+  configurator: "Configurateur",
 };
 
 export type QuestionMeta = {

@@ -9,6 +9,7 @@ export type ShopCatalogScope = {
   shopSlug: string;
   configuratorId: string;
   configuratorSlug: string;
+  shopTheme?: unknown;
 };
 
 export type ShopCatalogDenyReason = "shop_unavailable" | "no_catalog" | "catalog_mismatch";
@@ -86,7 +87,7 @@ export async function resolveShopCatalog(orgSlug: string, shopSlug: string): Pro
   const slugs = publicShopSlugs(org.slug, shopSlug);
   const { data: matches } = await supabase
     .from("shops")
-    .select("id, slug, organization_id, configurator_id, status")
+    .select("id, slug, organization_id, configurator_id, status, theme")
     .eq("organization_id", org.id)
     .in("slug", slugs);
   const shop = pickPreferredBySlug(matches, slugs);
@@ -113,6 +114,7 @@ export async function resolveShopCatalog(orgSlug: string, shopSlug: string): Pro
       shopSlug: shop.slug,
       configuratorId: configurator.id,
       configuratorSlug: configurator.slug,
+      shopTheme: shop.theme,
     },
   };
 }

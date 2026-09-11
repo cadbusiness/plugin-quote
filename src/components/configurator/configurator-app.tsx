@@ -7,6 +7,7 @@ import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 import { parseStorefrontCart } from "@/lib/integrations/storefront";
 import { applyStorefrontCart, suggestionFromProducts } from "@/lib/wizard/storefront-cart";
 import { CatalogBrowse } from "@/components/configurator/catalog-browse";
+import { RfqForm } from "@/components/configurator/rfq-form";
 import { ProductHtml } from "@/components/catalog/product-html";
 import { quoteLineCount } from "@/lib/funnels/kind";
 import {
@@ -14,6 +15,7 @@ import {
   type ConfiguratorThemeOverride,
 } from "@/lib/configurator/theme";
 import { shopConfiguratorApiPath, shopSuggestionsApiPath } from "@/lib/shops/catalog-scope";
+import { isRfqQuoteMode, matchCatalogPrefill, scopeQuoteCatalog } from "@/lib/quotes/quote-mode";
 import type {
   Answers,
   ConfiguratorDefinition,
@@ -35,6 +37,7 @@ type Props = {
   shopConfiguratorId?: string;
   embedded?: boolean;
   themeOverride?: ConfiguratorThemeOverride;
+  productPrefill?: string;
 };
 
 const SESSION_KEY = (org: string, slug: string, shopSlug?: string) =>
@@ -159,6 +162,7 @@ export function ConfiguratorApp({
   shopConfiguratorId,
   embedded,
   themeOverride,
+  productPrefill,
 }: Props) {
   const [definition, setDefinition] = useState<ConfiguratorDefinition | null>(null);
   const [session, setSession] = useState<QuoteSession | null>(null);
@@ -169,6 +173,7 @@ export function ConfiguratorApp({
   const [done, setDone] = useState<{ score?: number; label?: string } | null>(null);
   const [chatInput, setChatInput] = useState("");
   const [contact, setContact] = useState({ name: "", email: "", phone: "", company: "", consentMarketing: false });
+  const [need, setNeed] = useState("");
 
   const step = definition?.steps[session?.currentStep ?? 0];
   const answers = useMemo(
@@ -264,6 +269,33 @@ export function ConfiguratorApp({
             consentMarketing: c.consentMarketing,
           }));
         }
+        const savedNeed = String(sessionNext.answers?.need ?? sessionNext.answers?.besoin ?? "");
+        if (savedNeed) setNeed(savedNeed);
+        if (
+          isRfqQuoteMode(def.configurator.quoteMode) &&
+          productPrefill &&
+          quoteLineCount(sessionNext.customization) < 1
+        ) {
+          const scoped = scopeQuoteCatalog(
+            def.products.filter((product): product is typeof product & { configuratorId: string } =>
+              Boolean(product.configuratorId),
+            ),
+            { shopSlug, shopConfiguratorId: shopConfiguratorId ?? def.configurator.id },
+          );
+          const match = matchCatalogPrefill(scoped.length ? scoped : def.products, productPrefill);
+          if (match) {
+            const seeded = {
+              ...sessionNext.customization,
+              quantities: { ...sessionNext.customization.quantities, [match.id]: 1 },
+            };
+            const patched = await api<QuoteSession>(`/api/public/sessions/${sessionNext.id}`, {
+              method: "PATCH",
+              token: sessionNext.token,
+              body: JSON.stringify({ customization: seeded }),
+            }).catch(() => null);
+            sessionNext = patched ?? { ...sessionNext, customization: seeded };
+          }
+        }
         if (sessionNext.submittedQuoteId) setDone({});
         else {
           track(sessionNext, ANALYTICS_EVENTS.started, 0);
@@ -278,7 +310,7 @@ export function ConfiguratorApp({
     return () => {
       cancelled = true;
     };
-  }, [orgSlug, configuratorSlug, shopSlug, shopConfiguratorId, embedded]);
+  }, [orgSlug, configuratorSlug, shopSlug, shopConfiguratorId, embedded, productPrefill]);
 
   useEffect(() => {
     const gtm = definition?.organization.gtmContainerId?.trim();
@@ -455,6 +487,37 @@ export function ConfiguratorApp({
     }
   }
 
+  async function submitRfq() {
+    if (!session) return;
+    const nextErrors: Record<string, string> = {};
+    if (!need.trim()) nextErrors.need = "Décrivez le besoin";
+    if (!contact.name.trim()) nextErrors.name = "Champ requis";
+    if (!contact.email.trim()) nextErrors.email = "Champ requis";
+    if (Object.keys(nextErrors).length) {
+      setErrors(nextErrors);
+      return;
+    }
+    setBusy(true);
+    try {
+      await persist(
+        {
+          answers: { ...session.answers, need: need.trim(), quote_mode: "rfq" },
+          contactDraft: {
+            name: contact.name,
+            email: contact.email,
+            phone: contact.phone,
+            company: contact.company,
+          },
+        },
+        true,
+      );
+      await submit();
+    } catch (error) {
+      setErrors({ submit: error instanceof Error ? error.message : "Soumission impossible" });
+      setBusy(false);
+    }
+  }
+
   async function submit() {
     if (!session) return;
     setBusy(true);
@@ -514,6 +577,14 @@ export function ConfiguratorApp({
 
   const theme = resolveConfiguratorTheme(definition.configurator.theme.accent, themeOverride);
   const accent = theme.accent;
+  const isRfq = isRfqQuoteMode(definition.configurator.quoteMode);
+  const rfqProducts = scopeQuoteCatalog(
+    definition.products.map((product) => ({
+      ...product,
+      configuratorId: product.configuratorId ?? definition.configurator.id,
+    })),
+    { shopSlug, shopConfiguratorId: shopConfiguratorId ?? definition.configurator.id },
+  );
   const isCatalog = definition.configurator.kind === "catalog";
   const chatOnly =
     definition.configurator.chatEnabled && !definition.configurator.wizardEnabled && !isCatalog;
@@ -543,6 +614,30 @@ export function ConfiguratorApp({
         {done.label ? (
           <p className="mt-6 text-sm text-slate-500">Référence interne · qualification {done.label}</p>
         ) : null}
+      </div>
+    );
+  }
+
+  if (isRfq) {
+    return (
+      <div className={theme.themed ? "min-h-full" : "min-h-full bg-slate-50"} style={theme.style}>
+        <RfqForm
+          orgName={definition.organization.name}
+          shopName={embedded ? undefined : definition.configurator.name}
+          products={rfqProducts}
+          customization={session.customization}
+          contact={contact}
+          need={need}
+          accent={accent}
+          themed={theme.themed}
+          embedded={embedded}
+          busy={busy}
+          errors={errors}
+          onNeedChange={setNeed}
+          onContactChange={(patch) => setContact((current) => ({ ...current, ...patch }))}
+          onCatalogChange={(customization) => void persist({ customization })}
+          onSubmit={() => void submitRfq()}
+        />
       </div>
     );
   }

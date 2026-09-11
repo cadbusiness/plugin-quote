@@ -20,6 +20,7 @@ export function CatalogBrowse({
   error,
   onChange,
   onContinue,
+  hideContinue,
 }: {
   products: Product[];
   customization: Customization;
@@ -27,7 +28,8 @@ export function CatalogBrowse({
   themed?: boolean;
   error?: string;
   onChange: (customization: Customization) => void;
-  onContinue: () => void;
+  onContinue?: () => void;
+  hideContinue?: boolean;
 }) {
   const groups = useMemo(() => groupProductsByCategory(products), [products]);
   const [view, setView] = useState<View>(() =>
@@ -205,29 +207,42 @@ export function CatalogBrowse({
         </article>
       ) : null}
 
-      <div className="sticky bottom-4 z-10 mt-8 flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
-        <p className="text-sm text-slate-600">
+      {hideContinue ? (
+        <p className="mt-6 text-sm text-slate-600">
           {count ? (
             <>
-              <span className="font-medium text-slate-900">{count}</span> article{count > 1 ? "s" : ""} au devis
+              <span className="font-medium text-slate-900">{count}</span> article{count > 1 ? "s" : ""} dans la demande
+              (facultatif).
             </>
           ) : (
-            "Ajoutez des produits, puis envoyez une demande globale."
+            "Ajoutez des produits si besoin — ce n’est pas obligatoire."
           )}
         </p>
-        <button
-          type="button"
-          onClick={onContinue}
-          className={
-            themed
-              ? "rounded-lg px-4 py-2 text-sm font-medium text-white"
-              : "rounded-lg bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
-          }
-          style={themed ? { background: accent } : undefined}
-        >
-          Voir le devis
-        </button>
-      </div>
+      ) : (
+        <div className="sticky bottom-4 z-10 mt-8 flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+          <p className="text-sm text-slate-600">
+            {count ? (
+              <>
+                <span className="font-medium text-slate-900">{count}</span> article{count > 1 ? "s" : ""} au devis
+              </>
+            ) : (
+              "Ajoutez des produits, puis envoyez une demande globale."
+            )}
+          </p>
+          <button
+            type="button"
+            onClick={onContinue}
+            className={
+              themed
+                ? "rounded-lg px-4 py-2 text-sm font-medium text-white"
+                : "rounded-lg bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+            }
+            style={themed ? { background: accent } : undefined}
+          >
+            Voir le devis
+          </button>
+        </div>
+      )}
       {error ? <p className="mt-3 text-sm text-red-600">{error}</p> : null}
     </div>
   );

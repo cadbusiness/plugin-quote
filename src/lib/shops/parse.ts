@@ -14,6 +14,7 @@ import type {
   ShopTheme,
 } from "@/lib/shops/types";
 import { SHOP_NAV_LOCATIONS, SHOP_PAGE_KINDS, SHOP_STATUSES } from "@/lib/shops/types";
+import { parseQuoteMode } from "@/lib/quotes/quote-mode";
 
 function obj(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) return {};
@@ -39,12 +40,14 @@ export const DEFAULT_GEO: ShopGeo = {
 
 export function parseTheme(value: unknown): ShopTheme {
   const raw = obj(value);
+  const quoteMode = parseQuoteMode(raw.quoteMode);
   return {
     accent: str(raw.accent, DEFAULT_THEME.accent) || DEFAULT_THEME.accent,
     background: str(raw.background, DEFAULT_THEME.background) || DEFAULT_THEME.background,
     text: str(raw.text, DEFAULT_THEME.text) || DEFAULT_THEME.text,
     seedPrompt: str(raw.seedPrompt) || undefined,
     templateId: isShopTemplateId(str(raw.templateId)) ? str(raw.templateId) : undefined,
+    quoteMode: quoteMode ?? undefined,
   };
 }
 
