@@ -234,7 +234,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
             </Link>
             <Link
               href="/signup"
-              className="rounded-full bg-mk-accent px-4 py-2 text-sm font-semibold text-white hover:bg-mk-accent-hover"
+              className="whitespace-nowrap rounded-full bg-mk-accent px-3 py-2 text-xs font-semibold text-white hover:bg-mk-accent-hover sm:px-4 sm:text-sm"
             >
               Essayer gratuitement
             </Link>
