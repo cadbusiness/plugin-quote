@@ -39,7 +39,7 @@ export async function createShop(formData: FormData): Promise<{ error?: string }
     };
   }
   revalidateShop(ctx.organization.slug, shop.slug, shop.id);
-  const chat = input.fromChat || input.seedPrompt ? "?chat=1" : "";
+  const chat = input.seedPrompt ? "?chat=1" : "";
   redirect(`/integrations/shop/${shop.id}${chat}`);
 }
 

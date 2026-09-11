@@ -88,7 +88,6 @@ export function CreateShopDialog({
     if (createFunnel || !configuratorId) data.set("create_funnel", "on");
     data.set("company", orgName);
     data.set("city", city);
-    if (mode === "chat") data.set("from_chat", "on");
     if (mode === "chat" && prompt.trim()) data.set("seed_prompt", prompt.trim());
     setError(null);
     startTransition(() => {
