@@ -2,14 +2,16 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { BookOpen, LifeBuoy, Mail, Webhook } from "lucide-react";
+import { BookOpen, LifeBuoy, Mail, Newspaper, Webhook } from "lucide-react";
 
 export function SupportMenu({
   collapsed,
   isAdmin,
+  unreadUpdates = 0,
 }: {
   collapsed: boolean;
   isAdmin: boolean;
+  unreadUpdates?: number;
 }) {
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState<{ bottom: number; left: number } | null>(null);
@@ -55,14 +57,39 @@ export function SupportMenu({
             : "text-slate-600 hover:bg-orange-50/50 hover:text-slate-900"
         }`}
       >
-        <LifeBuoy className={`h-3.5 w-3.5 shrink-0 ${open ? "text-[#E85D04]" : "text-slate-500"}`} aria-hidden />
+        <span className="relative">
+          <LifeBuoy className={`h-3.5 w-3.5 shrink-0 ${open ? "text-[#E85D04]" : "text-slate-500"}`} aria-hidden />
+          {collapsed && unreadUpdates > 0 ? (
+            <span className="absolute -right-1.5 -top-1.5 min-w-3.5 rounded-full bg-orange-100 px-1 text-[9px] font-medium leading-4 text-orange-800">
+              {unreadUpdates > 9 ? "9+" : unreadUpdates}
+            </span>
+          ) : null}
+        </span>
         {collapsed ? <span className="sr-only">Support</span> : "Support"}
+        {!collapsed && unreadUpdates > 0 ? (
+          <span className="ml-auto rounded-full bg-orange-50 px-1.5 py-0.5 text-[10px] font-medium text-orange-800">
+            {unreadUpdates > 9 ? "9+" : unreadUpdates}
+          </span>
+        ) : null}
       </button>
       {open ? (
         <div
           className="fixed z-50 w-56 overflow-hidden rounded-lg border border-slate-200 bg-white py-1 text-sm shadow-sm"
           style={{ bottom: pos?.bottom ?? 72, left: pos?.left ?? 8 }}
         >
+          <Link
+            href="/mises-a-jour"
+            className="flex items-center gap-2.5 px-3 py-2 text-slate-700 hover:bg-orange-50"
+            onClick={() => setOpen(false)}
+          >
+            <Newspaper className="h-4 w-4 text-[#E85D04]" aria-hidden />
+            <span className="flex-1">Mises à jour</span>
+            {unreadUpdates > 0 ? (
+              <span className="rounded-full bg-orange-50 px-1.5 py-0.5 text-[10px] font-medium text-orange-800">
+                {unreadUpdates > 9 ? "9+" : unreadUpdates}
+              </span>
+            ) : null}
+          </Link>
           <a
             href="mailto:hello@quotebuilder.app?subject=Aide%20QuoteBuilder"
             className="flex items-center gap-2.5 px-3 py-2 text-slate-700 hover:bg-orange-50"

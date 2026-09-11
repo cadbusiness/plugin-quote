@@ -152,6 +152,7 @@ Hors menu tant que le funnel et le catalogue ne sont pas au niveau.
 - **Gestion organisation (logo, couleurs)**, Ensuite. `branding` jsonb existe, pas d’écran.
 - **Abonnement Stripe**, Ensuite.
 - **API keys**, Livré (MCP). Gestion dans `/webhooks` ; package npm `quotebuilder-mcp`.
+- **Mises à jour produit (changelog in-app)**, Livré. `/mises-a-jour` : notes versionnées, badge non lu, last-seen par utilisateur. Voir `docs/mises-a-jour.md`.
 
 ---
 

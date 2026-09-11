@@ -7,6 +7,7 @@ import { OrgFamilyPicker } from "@/components/dashboard/org-family-picker";
 import { parseOrgFamily } from "@/lib/funnels/families";
 
 const ROWS: { href: string; label: string; hint: string; admin?: boolean }[] = [
+  { href: "/mises-a-jour", label: "Mises à jour", hint: "Nouveautés produit" },
   {
     href: "/integrations",
     label: "Boutiques",
