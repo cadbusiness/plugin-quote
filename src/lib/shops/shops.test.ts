@@ -31,6 +31,8 @@ assert.equal(parseBlocks([{ type: "text", heading: "A" }])[0]?.heading, "A");
 const migrated = migrateBlocksToLayout([{ id: "b1", type: "hero", heading: "Hello" }]);
 assert.equal(migrated.content[0]?.type, "Hero");
 assert.equal(migrated.content[0]?.props.heading, "Hello");
+assert.equal(blueprint.pages[0]!.blocks.content[0]!.props.padding, "80px 0");
+assert.equal(blueprint.pages[0]!.blocks.content.find((node) => node.type === "Catalog")?.props.padding, "64px 0");
 assert.equal(parseLayout([{ id: "b1", type: "faq", heading: "Q", faq: [{ q: "A", a: "B" }] }]).content[0]?.type, "Faq");
 
 assert.equal(pageTitle("Catalogue", "Atelier Nord"), "Catalogue · Atelier Nord");

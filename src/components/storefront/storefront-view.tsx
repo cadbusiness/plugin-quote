@@ -2,11 +2,13 @@ import { Render } from "@puckeditor/core/rsc";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ProductHtml } from "@/components/catalog/product-html";
+import { StorefrontHeader } from "@/components/storefront/storefront-header";
 import { formatPrice } from "@/lib/format";
 import { resolveShopHref } from "@/lib/shops/href";
 import { migrateBlocksToLayout, parseLayout } from "@/lib/shops/layout";
 import { shopPuckConfig } from "@/lib/shops/puck-config";
 import { footerNav, headerNav, jsonLdScript, themeStyle } from "@/lib/shops/seo";
+import { cx, SHOP_BODY, SHOP_CONTAINER, SHOP_CTA, SHOP_HEADING } from "@/lib/shops/storefront-style";
 import type { ShopBlock, ShopLayout, ShopProduct, StorefrontModel } from "@/lib/shops/types";
 import { quoteFunnelPath } from "@/lib/shops/urls";
 
@@ -36,34 +38,25 @@ export function StorefrontShell({
   const footer = footerNav(model.nav);
   const home = `/b/${model.orgSlug}/${model.shopSlug}`;
   return (
-    <div className="min-h-dvh" style={themeStyle(model.theme)}>
+    <div className="min-h-dvh overflow-x-clip" style={themeStyle(model.theme)}>
       <JsonLd data={model.jsonLd ?? []} />
-      <header className="border-b border-black/10">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-4 lg:px-6">
-          <Link href={home} className="mr-auto text-base font-semibold tracking-tight">
-            {model.shopName}
-          </Link>
-          <nav aria-label="Navigation principale" className="flex flex-wrap items-center gap-1">
-            {header.map((item) => (
-              <Link
-                key={`${item.location}-${item.sortOrder}-${item.label}`}
-                href={hrefFor(model, item.href)}
-                className="rounded-md px-3 py-1.5 text-sm hover:bg-black/5"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
-      </header>
+      <StorefrontHeader
+        shopName={model.shopName}
+        home={home}
+        accent={model.theme.accent}
+        items={header.map((item) => ({
+          label: item.label,
+          href: hrefFor(model, item.href),
+        }))}
+      />
       <main>{children}</main>
-      <footer className="mt-16 border-t border-black/10">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-8 text-sm lg:px-6">
-          <p className="mr-auto text-xs opacity-70">
+      <footer className="border-t border-black/10">
+        <div className={cx(SHOP_CONTAINER, "flex flex-col gap-6 py-12 text-sm md:flex-row md:items-center")}>
+          <p className="mr-auto text-sm text-[color-mix(in_srgb,var(--shop-text)_70%,var(--shop-bg))]">
             {model.legal.company || model.shopName}
             {model.legal.city ? ` · ${model.legal.city}` : ""}
           </p>
-          <nav aria-label="Mentions" className="flex flex-wrap gap-3 text-xs">
+          <nav aria-label="Mentions" className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
             {footer.map((item) => (
               <Link key={`${item.href}-${item.label}`} href={hrefFor(model, item.href)} className="underline-offset-2 hover:underline">
                 {item.label}
@@ -100,28 +93,28 @@ export function ProductDetail({
 }) {
   const quoteHref = quoteFunnelPath(model.orgSlug, model.funnelSlug);
   return (
-    <article className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-2 lg:px-6">
+    <article className={cx(SHOP_CONTAINER, "grid gap-10 py-12 lg:grid-cols-2 lg:items-start lg:gap-14 lg:py-16")}>
       {product.image_url ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={product.image_url} alt={product.name} className="w-full rounded-lg object-cover" />
+        <img src={product.image_url} alt={product.name} className="aspect-[4/3] w-full rounded-2xl object-cover shadow-sm" />
       ) : (
-        <div className="min-h-72 rounded-lg bg-black/5" />
+        <div className="aspect-[4/3] rounded-2xl bg-[color-mix(in_srgb,var(--shop-accent)_10%,transparent)]" />
       )}
       <div>
         {product.category ? (
-          <p className="text-xs uppercase tracking-wide opacity-60">{product.category}</p>
+          <p className="text-xs font-medium uppercase tracking-[0.16em] text-[color-mix(in_srgb,var(--shop-text)_55%,var(--shop-bg))]">
+            {product.category}
+          </p>
         ) : null}
-        <h1 className="mt-1 text-3xl font-semibold tracking-tight">{product.name}</h1>
-        <p className="mt-3 text-lg">{formatPrice(product.price_min, product.price_max, product.currency)}</p>
-        <div className="mt-5">
+        <h1 className={cx(SHOP_HEADING.h1, "mt-2 text-3xl sm:text-4xl lg:text-5xl")}>{product.name}</h1>
+        <p className="mt-4 text-xl font-semibold" style={{ color: "var(--shop-accent)" }}>
+          {formatPrice(product.price_min, product.price_max, product.currency)}
+        </p>
+        <div className={cx("mt-6", SHOP_BODY)}>
           <ProductHtml html={product.description} />
         </div>
         {quoteHref ? (
-          <Link
-            href={quoteHref}
-            className="mt-6 inline-flex rounded-md px-4 py-2 text-sm font-medium text-white"
-            style={{ background: model.theme.accent }}
-          >
+          <Link href={quoteHref} className={cx(SHOP_CTA, "mt-8")} style={{ background: model.theme.accent }}>
             Ajouter au devis
           </Link>
         ) : null}
@@ -138,7 +131,7 @@ export function StorefrontCrumbs({
   items: { name: string; path: string }[];
 }) {
   return (
-    <nav aria-label="Fil d’Ariane" className="mx-auto max-w-6xl px-4 pt-6 text-xs opacity-70 lg:px-6">
+    <nav aria-label="Fil d’Ariane" className={cx(SHOP_CONTAINER, "pt-8 text-sm text-[color-mix(in_srgb,var(--shop-text)_62%,var(--shop-bg))]")}>
       <ol className="flex flex-wrap gap-1">
         {items.map((item, index) => {
           const href = `/b/${model.orgSlug}/${model.shopSlug}${item.path === "/" ? "" : item.path}`;

@@ -122,11 +122,11 @@ export function emptyNode(type: ShopNodeType, extra: Record<string, unknown> = {
   const base: Record<string, unknown> = { id, padding: "", margin: "", background: "", color: "", position: "static" };
   switch (type) {
     case "Section":
-      return { type, props: { ...base, maxWidth: "6xl", minHeight: "", children: [], ...extra, id } };
+      return { type, props: { ...base, maxWidth: "6xl", padding: "64px 0", minHeight: "", children: [], ...extra, id } };
     case "Columns":
       return {
         type,
-        props: { ...base, count: "2", gap: "16px", col1: [], col2: [], col3: [], col4: [], ...extra, id },
+        props: { ...base, count: "2", gap: "24px", col1: [], col2: [], col3: [], col4: [], ...extra, id },
       };
     case "Heading":
       return { type, props: { ...base, text: "Titre", level: "h2", ...extra, id } };
@@ -146,14 +146,15 @@ export function emptyNode(type: ShopNodeType, extra: Record<string, unknown> = {
           ctaLabel: "Demander un devis",
           image: "",
           imageAlt: "",
+          padding: "80px 0",
           ...extra,
           id,
         },
       };
     case "Catalog":
-      return { type, props: { ...base, heading: "Catalogue", limit: 12, category: "", ...extra, id } };
+      return { type, props: { ...base, heading: "Catalogue", limit: 12, category: "", padding: "64px 0", ...extra, id } };
     case "Categories":
-      return { type, props: { ...base, heading: "Rayons", ...extra, id } };
+      return { type, props: { ...base, heading: "Rayons", padding: "64px 0", ...extra, id } };
     case "QuoteCta":
       return {
         type,
@@ -162,6 +163,7 @@ export function emptyNode(type: ShopNodeType, extra: Record<string, unknown> = {
           heading: "Un projet sur mesure ?",
           text: "Décrivez le besoin : nous chiffrons à partir du catalogue.",
           ctaLabel: "Ouvrir le devis",
+          padding: "64px 0",
           ...extra,
           id,
         },
@@ -176,6 +178,7 @@ export function emptyNode(type: ShopNodeType, extra: Record<string, unknown> = {
             { q: "Est-ce un achat en ligne ?", a: "Non. Cette boutique prépare un devis. Aucun paiement n’est pris ici." },
             { q: "Puis-je ajouter plusieurs produits ?", a: "Oui. Le funnel devis reprend le catalogue et compile une demande globale." },
           ],
+          padding: "64px 0",
           ...extra,
           id,
         },
@@ -191,12 +194,13 @@ export function emptyNode(type: ShopNodeType, extra: Record<string, unknown> = {
             { title: "Devis, pas de caisse", text: "Le prospect demande un chiffrage, vous restez maître du prix." },
             { title: "Référencement", text: "Pages indexables, données structurées, mentions légales." },
           ],
+          padding: "64px 0",
           ...extra,
           id,
         },
       };
     case "Legal":
-      return { type, props: { ...base, heading: "Mentions légales", text: "", ...extra, id } };
+      return { type, props: { ...base, heading: "Mentions légales", text: "", padding: "64px 0", ...extra, id } };
   }
 }
 
