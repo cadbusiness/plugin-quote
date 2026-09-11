@@ -70,8 +70,8 @@ export function MarketingArticle({
       </section>
 
       <MarketingCta
-        title="Relancez ce qui dort."
-        text="Parcours pour le prospect. Autopilote pour vous. Free sans carte."
+        title="Si vous voulez tester le parcours"
+        text="Le prospect configure. Vous recevez un dossier. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

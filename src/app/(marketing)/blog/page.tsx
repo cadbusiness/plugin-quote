@@ -47,8 +47,8 @@ export default function BlogIndexPage() {
       </section>
 
       <MarketingCta
-        title="Passez du texte au système."
-        text="Funnel, dossier, autopilote. Free sans carte."
+        title="Si vous voulez essayer le parcours"
+        text="Un funnel, un dossier, des relances. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

@@ -40,15 +40,15 @@ export function buildSequence({
       audience: "prospect",
       subject: vous
         ? `${who} : nous avons bien reçu ${what}`
-        : `Confirmation — ${what} est entre nos mains`,
+        : `Confirmation : ${what} est entre nos mains`,
       body: vous
-        ? `Bonjour,\n\nMerci d’avoir pris le temps de configurer ${what}. Chez ${who}, on a ouvert le dossier : contraintes, volumes et budget indicatif sont déjà là. Un commercial vous répond sous 24 h avec une proposition cadrée — pas un « on vous rappelle ».\n\nEn attendant, votre espace prospect reste ouvert pour ajouter une photo, un plan ou une précision.\n\nÀ très vite,\n${who}`
+        ? `Bonjour,\n\nMerci d’avoir pris le temps de configurer ${what}. Chez ${who}, on a ouvert le dossier : contraintes, volumes et budget indicatif sont déjà là. Un commercial vous répond sous 24 h avec une proposition cadrée, pas un « on vous rappelle ».\n\nEn attendant, votre espace prospect reste ouvert pour ajouter une photo, un plan ou une précision.\n\nÀ très vite,\n${who}`
         : `Bonjour,\n\nVotre demande concernant ${what} est enregistrée. Le dossier contient déjà le brief utile (${sector}). Nous revenons vers vous sous 24 h avec une proposition, pas une demande de précisions.\n\nVous pouvez compléter le dossier depuis le lien reçu.\n\n${who}`,
     },
     {
       when: "T+4 h",
       audience: "interne",
-      subject: `Rappel — ${what} encore en statut Nouveau`,
+      subject: `Rappel : ${what} encore en statut Nouveau`,
       body: `Le devis « ${what} » n’a pas changé de statut depuis 4 heures. Score et réponses sont dans la fiche. Relancer maintenant évite que le prospect reparte sur un autre fournisseur.\n\nAssigner ou passer en Contacté depuis le pipeline.`,
     },
     {
@@ -58,7 +58,7 @@ export function buildSequence({
         ? `Où en est ${what} ? Une mise au point`
         : `${what} : point d’étape à 24 h`,
       body: vous
-        ? `Bonjour,\n\nOn voulait juste confirmer que ${what} est en étude de notre côté. Si une contrainte a bougé (délai, charge, lieu), répondez à cet e-mail ou déposez-la dans l’espace prospect — ça évite un devis à côté.\n\nSinon, on vous envoie la proposition comme prévu.\n\n${who}`
+        ? `Bonjour,\n\nOn voulait juste confirmer que ${what} est en étude de notre côté. Si une contrainte a bougé (délai, charge, lieu), répondez à cet e-mail ou déposez-la dans l’espace prospect, ça évite un devis à côté.\n\nSinon, on vous envoie la proposition comme prévu.\n\n${who}`
         : `Bonjour,\n\n${what} est en cours d’étude. Toute contrainte nouvelle (délai, volume, site) peut être ajoutée au dossier. Sinon, la proposition part comme convenu.\n\n${who}`,
     },
     {
@@ -66,7 +66,7 @@ export function buildSequence({
       audience: "prospect",
       subject: vous
         ? `On peut encore ajuster ${what}`
-        : `Relance — ${what} est toujours ouvert`,
+        : `Relance : ${what} est toujours ouvert`,
       body: vous
         ? `Bonjour,\n\nTrois jours après votre configuration, ${what} n’a pas encore abouti. C’est fréquent : le bon devis demande souvent plusieurs allers-retours, pas un PDF unique.\n\nDites-nous simplement si le besoin est toujours là, reporté, ou si un point bloque (prix, délai, variante). On reprend à partir du dossier, sans tout redemander.\n\n${who}`
         : `Bonjour,\n\n${what} est toujours ouvert de notre côté. Si le besoin a changé, répondez en une phrase. Sinon, nous pouvons renvoyer la proposition ou une variante.\n\n${who}`,
@@ -76,17 +76,17 @@ export function buildSequence({
       audience: "prospect",
       subject: vous
         ? `Un cas proche de ${what} (${sector})`
-        : `Nurturing — retour d’expérience ${sector}`,
+        : `Nurturing : retour d’expérience ${sector}`,
       body: vous
-        ? `Bonjour,\n\nSur des projets ${sector} comme ${what}, le point qui fait souvent basculer la décision n’est pas le prix catalogue : c’est le brief (charge, délais, options réellement livrables).\n\nSi vous voulez, on reprend votre dossier 15 minutes — ou on classe sans suite, sans relance supplémentaire.\n\n${who}`
-        : `Bonjour,\n\nPour les projets ${sector}, un brief complet réduit les allers-retours. Votre dossier ${what} est toujours disponible. Répondez « on continue » ou « plus tard » — nous adaptons le suivi.\n\n${who}`,
+        ? `Bonjour,\n\nSur des projets ${sector} comme ${what}, le point qui fait souvent basculer la décision n’est pas le prix catalogue : c’est le brief (charge, délais, options réellement livrables).\n\nSi vous voulez, on reprend votre dossier 15 minutes, ou on classe sans suite, sans relance supplémentaire.\n\n${who}`
+        : `Bonjour,\n\nPour les projets ${sector}, un brief complet réduit les allers-retours. Votre dossier ${what} est toujours disponible. Répondez « on continue » ou « plus tard », on adapte le suivi.\n\n${who}`,
     },
     {
       when: "T+30 j",
       audience: "prospect",
       subject: vous
         ? `${what} : on referme, ou on reprend ?`
-        : `Réactivation — ${what} (J+30)`,
+        : `Réactivation : ${what} (J+30)`,
       body: vous
         ? `Bonjour,\n\nUn mois a passé depuis ${what}. On peut classer le dossier, ou le rouvrir si le projet revient dans le calendrier. Un oui / non suffit.\n\nMerci,\n${who}`
         : `Bonjour,\n\nDossier ${what} : clôture ou reprise. Répondez pour réactiver le suivi.\n\n${who}`,

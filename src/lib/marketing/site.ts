@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-/** Production host. Apex `quotebuilder.co` 308s here — never mix the two. */
+/** Production host. Apex `quotebuilder.co` 308s here; never mix the two. */
 export const SITE_HOST = "www.quotebuilder.co";
 export const APEX_HOST = "quotebuilder.co";
 export const SITE_URL = `https://${SITE_HOST}`;

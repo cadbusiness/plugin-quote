@@ -30,7 +30,7 @@ export function LostQuoteCalculator() {
       <form className="rounded-[22px] bg-white p-5 ring-1 ring-black/6 sm:p-6" onSubmit={(e) => e.preventDefault()}>
         <Field
           label="Devis envoyés par mois"
-          hint="PDF, e-mail ou configurateur — le volume que vous produisez."
+          hint="PDF, e-mail ou configurateur : le volume que vous produisez."
           value={quotesPerMonth}
           min={1}
           max={2000}

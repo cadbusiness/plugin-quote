@@ -718,7 +718,7 @@ export const FEATURE_MENU_GROUPS = MENU_GROUP_DEFS.map((group) => ({
   id: group.id,
   label: group.label,
   blurb: group.blurb,
-  /** @deprecated use label — kept for pages that still read title */
+  /** @deprecated use label (kept for pages that still read title) */
   title: group.label,
   description: group.blurb,
   slugs: group.slugs,

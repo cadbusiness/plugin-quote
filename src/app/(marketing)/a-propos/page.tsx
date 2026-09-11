@@ -76,9 +76,10 @@ export default function AboutPage() {
         <article className="rounded-[22px] bg-white p-5 ring-1 ring-black/6 sm:p-6">
           <h2 className="text-lg font-semibold tracking-tight">Ce que nous construisons</h2>
           <p className="mt-3 text-[16px] leading-7 text-[#1A1510]/75">
-            QuoteBuilder est le vertical B2B sur devis, côté PME : cuisinistes, rayonnagistes,
+            QuoteBuilder est un logiciel de devis B2B, côté PME : cuisinistes, rayonnagistes,
             ateliers, prestataires sur site. Le prospect configure. L’équipe reçoit un dossier
-            scoré. Un autopilote envoie les relances que 44 % des vendeurs n’écrivent jamais.
+            avec un score. Un autopilote envoie les relances que beaucoup d’équipes n’arrivent
+            pas à tenir à la main.
           </p>
           <p className="mt-3 text-[16px] leading-7 text-[#1A1510]/75">
             Ce n’est pas un checkout. La boutique native et les funnels préparent un devis. Ils
@@ -93,20 +94,23 @@ export default function AboutPage() {
             <li>
               <Link href="/comment-ca-marche" className="font-medium text-[#E85D04] hover:underline">
                 Comment ça marche
-              </Link>{" "}
-              — la chaîne offre → funnel → dossier → autopilote.
+              </Link>
+              {" : "}
+              la chaîne offre, funnel, dossier, autopilote.
             </li>
             <li>
               <Link href="/fonctionnalites" className="font-medium text-[#E85D04] hover:underline">
                 Fonctionnalités
-              </Link>{" "}
-              — huit modules reliés.
+              </Link>
+              {" : "}
+              huit modules reliés.
             </li>
             <li>
               <Link href="/tarifs" className="font-medium text-[#E85D04] hover:underline">
                 Tarifs
-              </Link>{" "}
-              — Free, puis 39 / 79 / 159 € par mois en annuel.
+              </Link>
+              {" : "}
+              Free, puis 39 / 79 / 159 € par mois en annuel.
             </li>
             <li>
               <Link href="/blog" className="font-medium text-[#E85D04] hover:underline">
@@ -115,14 +119,15 @@ export default function AboutPage() {
               et{" "}
               <Link href="/outils" className="font-medium text-[#E85D04] hover:underline">
                 outils
-              </Link>{" "}
-              — relances, widget, sync boutique.
+              </Link>
+              {" : "}
+              relances, widget, sync boutique.
             </li>
           </ul>
         </article>
       </section>
 
-      <MarketingCta title="Travailler avec le produit." text="Free sans carte. Vinci Liberta LTD — Dublin." />
+      <MarketingCta title="Essayer le produit" text="Free sans carte. Vinci Liberta LTD, Dublin." />
     </>
   );
 }
