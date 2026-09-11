@@ -2,8 +2,21 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.13.0",
+    version: "1.13.0",
+    title: "Catalogue boutique = seule source du devis intégré",
+    items: [
+      "Sur /b/…/devis, produits, suggestions et parcours viennent uniquement du catalogue relié à cette boutique.",
+      "Plus de mélange avec le catalogue d’une autre boutique ou d’un funnel org-wide.",
+      "Catalogue manquant ou inactif : message clair « Catalogue de cette boutique introuvable. ».",
+      "Les parcours /c/ (hors boutique) restent inchangés.",
+    ],
+    releasedAt: "2026-09-11",
+    createdAt: "2026-09-11T00:00:00.000Z",
+  },
   {
     id: "seed-1.12.0",
     version: "1.12.0",
