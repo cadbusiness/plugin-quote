@@ -15,6 +15,7 @@ npm run dev
 
 - Configurateur public : [http://localhost:3000/c/quickly/rayonnage](http://localhost:3000/c/quickly/rayonnage)
 - Dashboard : [http://localhost:3000/signup](http://localhost:3000/signup) puis `/onboarding` pour créer ou rejoindre un espace (Quickly = un client parmi d’autres)
+- Org démo agents / docs : slug `demo` — `DEMO_PASSWORD=… npm run seed:demo` puis `/login` (`demo@quotebuilder.app`). Voir `docs/demo-org.md` et `.cursor/skills/quotebuilder-demo/SKILL.md`.
 - Embed : `/embed/quickly/rayonnage`
 - Widget : `http://localhost:3000/widget.js`
 

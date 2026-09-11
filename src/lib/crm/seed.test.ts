@@ -4,6 +4,7 @@ import {
   ensureDefaultEmailTemplates,
   missingDefaultEmailTemplates,
 } from "./email-templates";
+import { QUOTE_STATUSES, missingQuoteStatuses } from "./seed";
 import {
   defaultDefinition,
   quoteSubmittedDefinition,
@@ -51,6 +52,15 @@ assert.deepEqual(
   kinds.filter((kind) => kind !== "prospect_confirm" && kind !== "sales_unprocessed"),
 );
 assert.equal(missingDefaultEmailTemplates(kinds).length, 0);
+
+const statusSlugs = QUOTE_STATUSES.map((status) => status.slug);
+assert.equal(new Set(statusSlugs).size, statusSlugs.length);
+assert.deepEqual(statusSlugs, ["new", "contacted", "in_progress", "won", "lost", "waiting"]);
+assert.equal(missingQuoteStatuses(statusSlugs).length, 0);
+assert.deepEqual(
+  missingQuoteStatuses(["new", "won"]).map((status) => status.slug),
+  ["contacted", "in_progress", "lost", "waiting"],
+);
 
 function fakeTemplatesClient(existingKinds: string[]) {
   const inserted: { organization_id: string; kind: string; subject: string; body: string }[] = [];

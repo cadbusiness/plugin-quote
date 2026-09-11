@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -11,9 +11,10 @@ import { AuthSplit } from "@/components/marketing/auth-split";
 const fieldClass =
   "mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-900/10";
 
-export function LoginForm({ configured }: { configured: boolean }) {
+export function LoginForm({ configured, demoPassword = "" }: { configured: boolean; demoPassword?: string }) {
   const searchParams = useSearchParams();
   const next = searchParams.get("next");
+  const passwordRef = useRef<HTMLInputElement>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(
@@ -70,6 +71,7 @@ export function LoginForm({ configured }: { configured: boolean }) {
         <label className="mt-4 block text-sm font-medium text-slate-700">
           Mot de passe
           <input
+            ref={passwordRef}
             type="password"
             required
             autoComplete="current-password"
@@ -98,8 +100,13 @@ export function LoginForm({ configured }: { configured: boolean }) {
               disabled={busy || !configured}
               onClick={() => {
                 setEmail(account.email);
-                setPassword(account.password);
-                void signIn(account.email, account.password);
+                if (demoPassword) {
+                  setPassword(demoPassword);
+                  void signIn(account.email, demoPassword);
+                  return;
+                }
+                setPassword("");
+                passwordRef.current?.focus();
               }}
               className="flex w-full items-center justify-between rounded-lg bg-white px-3 py-2 text-left text-sm ring-1 ring-slate-200 transition hover:ring-slate-400 disabled:opacity-50"
             >
@@ -107,7 +114,7 @@ export function LoginForm({ configured }: { configured: boolean }) {
                 <span className="font-medium text-slate-900">{account.label}</span>
                 <span className="mt-0.5 block text-xs text-slate-500">{account.email}</span>
               </span>
-              <span className="text-xs text-slate-400">Entrer</span>
+              <span className="text-xs text-slate-400">{demoPassword ? "Entrer" : "Remplir"}</span>
             </button>
           ))}
         </div>
