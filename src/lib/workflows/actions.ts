@@ -195,5 +195,5 @@ export async function executeSetStatus(supabase: Client, node: WorkflowNode, ctx
     type: "status_changed",
     payload: { status: status.slug, label: status.label, workflow_node: node.id } as Json as Record<string, unknown>,
   });
-  return { status: status.slug };
+  return { status: status.slug, isClosed: Boolean(status.is_closed) };
 }
