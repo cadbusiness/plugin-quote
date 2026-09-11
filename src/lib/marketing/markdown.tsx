@@ -50,6 +50,25 @@ function isListLine(line: string) {
   return /^[-*]\s+/.test(line) || /^\d+\.\s+/.test(line);
 }
 
+function isTableLine(line: string) {
+  return /^\s*\|.+\|\s*$/.test(line);
+}
+
+function splitTableRow(line: string) {
+  return line
+    .trim()
+    .replace(/^\|/, "")
+    .replace(/\|$/, "")
+    .split("|")
+    .map((cell) => cell.trim());
+}
+
+function isTableSeparator(line: string) {
+  if (!isTableLine(line)) return false;
+  const cells = splitTableRow(line);
+  return cells.length > 0 && cells.every((cell) => /^:?-{3,}:?$/.test(cell));
+}
+
 export function Markdown({ source }: { source: string }) {
   const lines = source.replace(/\r\n/g, "\n").trim().split("\n");
   const blocks: ReactNode[] = [];
@@ -111,6 +130,43 @@ export function Markdown({ source }: { source: string }) {
       continue;
     }
 
+    if (isTableLine(line) && i + 1 < lines.length && isTableSeparator(lines[i + 1] ?? "")) {
+      const header = splitTableRow(line);
+      i += 2;
+      const rows: string[][] = [];
+      while (i < lines.length && isTableLine(lines[i] ?? "") && !isTableSeparator(lines[i] ?? "")) {
+        rows.push(splitTableRow(lines[i] ?? ""));
+        i += 1;
+      }
+      blocks.push(
+        <div key={key++} className="mt-6 overflow-x-auto">
+          <table className="w-full min-w-[28rem] border-collapse text-left text-[14px] leading-6 text-[#1A1510]/80 sm:text-[15px]">
+            <thead>
+              <tr className="border-b border-[#1A1510]/12">
+                {header.map((cell, idx) => (
+                  <th key={idx} className="px-3 py-2 font-semibold first:pl-0 last:pr-0">
+                    {renderInline(cell, `th-${key}-${idx}`)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, ridx) => (
+                <tr key={ridx} className="border-b border-[#1A1510]/8 align-top">
+                  {row.map((cell, cidx) => (
+                    <td key={cidx} className="px-3 py-2 first:pl-0 last:pr-0">
+                      {renderInline(cell, `td-${key}-${ridx}-${cidx}`)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>,
+      );
+      continue;
+    }
+
     if (isListLine(line)) {
       const items: string[] = [];
       const ordered = /^\d+\.\s+/.test(line);
@@ -135,7 +191,7 @@ export function Markdown({ source }: { source: string }) {
     }
 
     const para: string[] = [];
-    while (i < lines.length && lines[i]?.trim() && !lines[i]?.startsWith("#") && !lines[i]?.startsWith(">") && !isListLine(lines[i] ?? "") && lines[i]?.trim() !== "---") {
+    while (i < lines.length && lines[i]?.trim() && !lines[i]?.startsWith("#") && !lines[i]?.startsWith(">") && !isListLine(lines[i] ?? "") && !isTableLine(lines[i] ?? "") && lines[i]?.trim() !== "---") {
       para.push(lines[i] ?? "");
       i += 1;
     }

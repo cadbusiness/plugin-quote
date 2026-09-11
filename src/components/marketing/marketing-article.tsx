@@ -43,7 +43,7 @@ export function MarketingArticle({
         </div>
       </article>
 
-      <MarketingFaq items={faq} />
+      {/^## FAQ\s*$/m.test(body) ? null : <MarketingFaq items={faq} />}
 
       <section className="border-y border-[#1A1510]/8 bg-white/55 px-6 py-12">
         <div className="mx-auto max-w-3xl">

@@ -28,7 +28,7 @@ export default function SecteursPage() {
 
       <section className="mx-auto max-w-6xl px-6 py-8 sm:py-12">
         <LandingSectors />
-        <div className="mx-auto mt-10 max-w-3xl">
+        <div className="mx-auto mt-10 grid max-w-3xl gap-4">
           <Link
             href="/secteurs/funnel-devis-rayonnage-stockage"
             className="block rounded-[22px] bg-white p-5 ring-1 ring-black/6 transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
@@ -40,8 +40,22 @@ export default function SecteursPage() {
               Funnel de devis rayonnage & stockage
             </p>
             <p className="mt-2 text-[15px] leading-7 text-[#1A1510]/65">
-              Charge, travées, surface, dossier, relances. Le template le plus détaillé pour
-              l’instant.
+              Charge, travées, surface, dossier, relances. Template pour fabricants et revendeurs.
+            </p>
+          </Link>
+          <Link
+            href="/secteurs/funnel-devis-menuiserie-sur-mesure"
+            className="block rounded-[22px] bg-white p-5 ring-1 ring-black/6 transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C45C26]">
+              Landing secteur
+            </p>
+            <p className="mt-2 text-lg font-semibold tracking-tight">
+              Funnel de devis menuiserie sur mesure
+            </p>
+            <p className="mt-2 text-[15px] leading-7 text-[#1A1510]/65">
+              Fenêtres, portes, agencement. Cotes, matériaux, pose, brief chiffrable, score et
+              relances.
             </p>
           </Link>
         </div>
