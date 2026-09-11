@@ -100,7 +100,7 @@ Si votre Content-Security-Policy bloque les scripts tiers, autorisez l’origine
 
 Google indexe le contenu autour, pas le canvas du funnel. Rédigez 400 mots utiles au-dessus ou en dessous : qui vous êtes, délai de réponse, ce que le prospect doit préparer (plan, photos, contraintes). Une landing [secteur](/secteurs/funnel-devis-rayonnage-stockage) fait ce travail. Une page vide avec un overlay n’aide personne, ni le prospect, ni l’index.
 
-Le titre et la meta de /devis doivent parler de devis, pas de « contact ». Canonical sur quotebuilder.co pour nos pages ; sur votre domaine pour les vôtres. N’ouvrez pas le funnel dans une URL paramétrée indexée en double.
+Le titre et la meta de /devis doivent parler de devis, pas de « contact ». Canonical sur www.quotebuilder.co pour nos pages ; sur votre domaine pour les vôtres. N’ouvrez pas le funnel dans une URL paramétrée indexée en double.
 
 ## Après le snippet : le vrai travail
 

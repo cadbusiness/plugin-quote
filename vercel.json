@@ -1,4 +1,18 @@
 {
+  "redirects": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "quotebuilder.co" }],
+      "destination": "https://www.quotebuilder.co/",
+      "statusCode": 308
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "quotebuilder.co" }],
+      "destination": "https://www.quotebuilder.co/:path*",
+      "statusCode": 308
+    }
+  ],
   "crons": [
     {
       "path": "/api/cron/automations",

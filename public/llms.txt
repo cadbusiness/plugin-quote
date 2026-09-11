@@ -2,7 +2,7 @@
 
 > Funnel de devis B2B pour PME. Le prospect configure le projet ; l’équipe reçoit un dossier scoré, puis un autopilote relance. Pas un checkout : QuoteBuilder prépare le devis, il n’encaisse pas.
 
-QuoteBuilder est édité par Vinci Liberta LTD, Dublin, Irlande. Site canonique : https://quotebuilder.co
+QuoteBuilder est édité par Vinci Liberta LTD, Dublin, Irlande. Site canonique : https://www.quotebuilder.co
 
 ## Produit
 
@@ -10,32 +10,34 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 
 ## Pages
 
-- Accueil : https://quotebuilder.co
-- Comment ça marche : https://quotebuilder.co/comment-ca-marche
-- Fonctionnalités : https://quotebuilder.co/fonctionnalites
-- Funnel de devis : https://quotebuilder.co/fonctionnalites/funnel
-- Catalogue & règles : https://quotebuilder.co/fonctionnalites/catalogue
-- Demandes & pipeline : https://quotebuilder.co/fonctionnalites/demandes
-- Autopilote : https://quotebuilder.co/fonctionnalites/autopilote
-- Espace prospect : https://quotebuilder.co/fonctionnalites/espace-prospect
-- Statistiques : https://quotebuilder.co/fonctionnalites/stats
-- Google Ads : https://quotebuilder.co/fonctionnalites/ads
-- Équipe : https://quotebuilder.co/fonctionnalites/equipe
-- Intégrations : https://quotebuilder.co/fonctionnalites/integrations
-- Secteurs : https://quotebuilder.co/secteurs
-- Funnel devis rayonnage & stockage : https://quotebuilder.co/secteurs/funnel-devis-rayonnage-stockage
-- Tarifs : https://quotebuilder.co/tarifs
-- À propos : https://quotebuilder.co/a-propos
-- Blog : https://quotebuilder.co/blog
-- Pourquoi les devis meurent sans relance : https://quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance
-- Formulaire de contact vs funnel de devis : https://quotebuilder.co/blog/formulaire-contact-vs-funnel-devis-b2b
-- Installer le widget devis : https://quotebuilder.co/blog/installer-widget-devis-wordpress-javascript
-- Sync WooCommerce / Shopify : https://quotebuilder.co/blog/sync-catalogue-woocommerce-shopify-parcours-devis
-- Outils : https://quotebuilder.co/outils
-- Calculateur coût d’un devis non relancé : https://quotebuilder.co/outils/cout-devis-non-relance
-- Générateur de séquence de relances : https://quotebuilder.co/outils/generateur-sequence-relances
-- Conditions d’utilisation : https://quotebuilder.co/legal/cgu
-- Politique de confidentialité : https://quotebuilder.co/legal/confidentialite
+- Accueil : https://www.quotebuilder.co
+- robots : https://www.quotebuilder.co/robots.txt
+- sitemap : https://www.quotebuilder.co/sitemap.xml
+- Comment ça marche : https://www.quotebuilder.co/comment-ca-marche
+- Fonctionnalités : https://www.quotebuilder.co/fonctionnalites
+- Funnel de devis : https://www.quotebuilder.co/fonctionnalites/funnel
+- Catalogue & règles : https://www.quotebuilder.co/fonctionnalites/catalogue
+- Demandes & pipeline : https://www.quotebuilder.co/fonctionnalites/demandes
+- Autopilote : https://www.quotebuilder.co/fonctionnalites/autopilote
+- Espace prospect : https://www.quotebuilder.co/fonctionnalites/espace-prospect
+- Statistiques : https://www.quotebuilder.co/fonctionnalites/stats
+- Google Ads : https://www.quotebuilder.co/fonctionnalites/ads
+- Équipe : https://www.quotebuilder.co/fonctionnalites/equipe
+- Intégrations : https://www.quotebuilder.co/fonctionnalites/integrations
+- Secteurs : https://www.quotebuilder.co/secteurs
+- Funnel devis rayonnage & stockage : https://www.quotebuilder.co/secteurs/funnel-devis-rayonnage-stockage
+- Tarifs : https://www.quotebuilder.co/tarifs
+- À propos : https://www.quotebuilder.co/a-propos
+- Blog : https://www.quotebuilder.co/blog
+- Pourquoi les devis meurent sans relance : https://www.quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance
+- Formulaire de contact vs funnel de devis : https://www.quotebuilder.co/blog/formulaire-contact-vs-funnel-devis-b2b
+- Installer le widget devis : https://www.quotebuilder.co/blog/installer-widget-devis-wordpress-javascript
+- Sync WooCommerce / Shopify : https://www.quotebuilder.co/blog/sync-catalogue-woocommerce-shopify-parcours-devis
+- Outils : https://www.quotebuilder.co/outils
+- Calculateur coût d’un devis non relancé : https://www.quotebuilder.co/outils/cout-devis-non-relance
+- Générateur de séquence de relances : https://www.quotebuilder.co/outils/generateur-sequence-relances
+- Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
+- Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 
 ## Tarifs
 

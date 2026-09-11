@@ -58,7 +58,7 @@ export default function AboutPage() {
               <dt className="text-[#1A1510]/45">Site canonique</dt>
               <dd className="font-medium">
                 <a href={SITE_URL} className="text-[#E85D04]">
-                  quotebuilder.co
+                  www.quotebuilder.co
                 </a>
               </dd>
             </div>

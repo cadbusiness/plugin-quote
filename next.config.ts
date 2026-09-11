@@ -9,7 +9,21 @@ const nextConfig: NextConfig = {
     },
   },
   async redirects() {
-    return [{ source: "/wizard", destination: "/funnels", permanent: false }];
+    return [
+      {
+        source: "/",
+        has: [{ type: "host", value: "quotebuilder.co" }],
+        destination: "https://www.quotebuilder.co/",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "quotebuilder.co" }],
+        destination: "https://www.quotebuilder.co/:path*",
+        permanent: true,
+      },
+      { source: "/wizard", destination: "/funnels", permanent: false },
+    ];
   },
   async headers() {
     return [
