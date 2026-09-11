@@ -94,7 +94,7 @@ Agency existe pour les réseaux qui portent plusieurs enseignes. Un funnel par m
 
 Le [Free](/tarifs) montre l’interface. L’annuel : Starter 39 €/mois, Pro 79 €/mois (Shopify, flux longs, stats avancées), Agency 159 €/mois pour les réseaux et revendeurs multi-marques. La famille « Rayonnage & stockage » est présélectionnable à la création du funnel. Les autres familles (habitat, industrie, événementiel…) suivent le même système, d’autres libellés.
 
-Éditeur : [Vinci Liberta LTD, Dublin](/a-propos). Site canonique : quotebuilder.co.
+Éditeur : [Vinci Liberta LTD, Dublin](/a-propos). Site canonique : www.quotebuilder.co.
 
 ## Mots-clés et pages à poser autour du funnel
 
