@@ -13,22 +13,22 @@ export default function PrivacyPage() {
   return (
     <article className="px-6 pb-20 pt-12 sm:pt-16">
       <div className="mx-auto max-w-3xl">
-        <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#C45C26]">Légal</p>
+        <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-mk-accent">Légal</p>
         <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl">
           Politique de confidentialité
         </h1>
-        <p className="mt-3 text-sm text-[#1A1510]/45">Dernière mise à jour : 11 septembre 2026 · Brouillon</p>
+        <p className="mt-3 text-sm text-mk-faint">Dernière mise à jour : 11 septembre 2026 · Brouillon</p>
         <div className="mt-6">
           <LegalDraftBanner />
         </div>
 
-        <div className="mt-10 space-y-8 text-[16px] leading-7 text-[#1A1510]/75">
+        <div className="mt-10 space-y-8 text-[16px] leading-7 text-mk-muted">
           <section>
-            <h2 className="text-xl font-semibold tracking-tight text-[#1A1510]">1. Responsable</h2>
+            <h2 className="text-xl font-semibold tracking-tight text-mk-ink">1. Responsable</h2>
             <p className="mt-3">
               Pour les données des comptes clients (inscription, facturation, logs d’usage) :{" "}
               {COMPANY.legalName}, {COMPANY.city}, {COMPANY.country}. Contact :{" "}
-              <a className="font-medium text-[#E85D04]" href={`mailto:${COMPANY.email}`}>
+              <a className="font-medium text-mk-accent" href={`mailto:${COMPANY.email}`}>
                 {COMPANY.email}
               </a>
               . DPO / représentant UE : [à nommer si requis].
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
             </p>
           </section>
           <section>
-            <h2 className="text-xl font-semibold tracking-tight text-[#1A1510]">2. Données collectées</h2>
+            <h2 className="text-xl font-semibold tracking-tight text-mk-ink">2. Données collectées</h2>
             <ul className="mt-3 list-disc space-y-2 pl-5">
               <li>Compte : e-mail, mot de passe (hash), organisation, rôle.</li>
               <li>Facturation : [prestataire de paiement à préciser], identifiants de plan.</li>
@@ -50,7 +50,7 @@ export default function PrivacyPage() {
             </ul>
           </section>
           <section>
-            <h2 className="text-xl font-semibold tracking-tight text-[#1A1510]">3. Finalités et bases</h2>
+            <h2 className="text-xl font-semibold tracking-tight text-mk-ink">3. Finalités et bases</h2>
             <p className="mt-3">
               Exécution du contrat (fournir le logiciel), intérêt légitime (sécurité, amélioration
               du service), obligation légale (comptabilité), consentement le cas échéant (cookies
@@ -58,7 +58,7 @@ export default function PrivacyPage() {
             </p>
           </section>
           <section>
-            <h2 className="text-xl font-semibold tracking-tight text-[#1A1510]">4. Destinataires et sous-traitants</h2>
+            <h2 className="text-xl font-semibold tracking-tight text-mk-ink">4. Destinataires et sous-traitants</h2>
             <p className="mt-3">
               Hébergement et infrastructure : [Vercel / Supabase / e-mail, à lister]. Transferts
               hors UE : [mécanisme SCC / décision d’adéquation à documenter]. Pas de vente de
@@ -66,14 +66,14 @@ export default function PrivacyPage() {
             </p>
           </section>
           <section>
-            <h2 className="text-xl font-semibold tracking-tight text-[#1A1510]">5. Durées</h2>
+            <h2 className="text-xl font-semibold tracking-tight text-mk-ink">5. Durées</h2>
             <p className="mt-3">
               Compte : durée de la relation + [X] mois. Prospects : selon vos instructions et
               votre politique. Sauvegardes : [durée]. Logs : [durée].
             </p>
           </section>
           <section>
-            <h2 className="text-xl font-semibold tracking-tight text-[#1A1510]">6. Droits</h2>
+            <h2 className="text-xl font-semibold tracking-tight text-mk-ink">6. Droits</h2>
             <p className="mt-3">
               Accès, rectification, effacement, limitation, opposition, portabilité, réclamation
               auprès d’une autorité (Irlande : DPC ; France : CNIL, selon le cas). Exercice :{" "}
@@ -82,13 +82,13 @@ export default function PrivacyPage() {
             </p>
           </section>
           <section>
-            <h2 className="text-xl font-semibold tracking-tight text-[#1A1510]">7. Documents liés</h2>
+            <h2 className="text-xl font-semibold tracking-tight text-mk-ink">7. Documents liés</h2>
             <p className="mt-3">
-              <Link href="/legal/cgu" className="font-medium text-[#E85D04] hover:underline">
+              <Link href="/legal/cgu" className="font-medium text-mk-accent hover:underline">
                 Conditions d’utilisation
               </Link>
               .{" "}
-              <Link href="/a-propos" className="font-medium text-[#E85D04] hover:underline">
+              <Link href="/a-propos" className="font-medium text-mk-accent hover:underline">
                 À propos de l’éditeur
               </Link>
               .

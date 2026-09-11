@@ -19,8 +19,8 @@ export function LandingSectors() {
               onClick={() => setActive(family.id)}
               className={`rounded-full px-3.5 py-2 text-sm ${
                 on
-                  ? "bg-[#1A1510] text-white"
-                  : "bg-white text-[#1A1510]/70 ring-1 ring-black/10 hover:bg-[#FFF8F1]"
+                  ? "bg-mk-dark text-white"
+                  : "bg-white text-mk-muted ring-1 ring-mk-border hover:bg-mk-band"
               }`}
             >
               {family.label}
@@ -28,10 +28,10 @@ export function LandingSectors() {
           );
         })}
       </div>
-      <p className="mx-auto mt-6 max-w-2xl text-center text-[15px] leading-7 text-[#1A1510]/60">
+      <p className="mx-auto mt-6 max-w-2xl text-center text-[15px] leading-7 text-mk-muted">
         Une famille, quelques templates : questionnaire, catalogue ou brief. Pas un wizard par micro-secteur.
       </p>
-      <p className="mx-auto mt-10 max-w-2xl text-center text-[17px] leading-8 text-[#1A1510]/75">
+      <p className="mx-auto mt-10 max-w-2xl text-center text-[17px] leading-8 text-mk-muted">
         {selected.pitch}
       </p>
     </div>

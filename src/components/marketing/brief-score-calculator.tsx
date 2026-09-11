@@ -96,12 +96,12 @@ export function BriefScoreCalculator() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-      <form className="rounded-[22px] bg-white p-5 ring-1 ring-black/6 sm:p-6" onSubmit={(e) => e.preventDefault()}>
-        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C45C26]">Questions</p>
+      <form className="rounded-2xl bg-white p-5 ring-1 ring-mk-border sm:p-6" onSubmit={(e) => e.preventDefault()}>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mk-accent">Questions</p>
         {QUESTIONS.map((question) => (
-          <fieldset key={question.key} className="mt-6 border-t border-[#1A1510]/8 pt-5 first:mt-4 first:border-t-0 first:pt-0">
+          <fieldset key={question.key} className="mt-6 border-t border-mk-border pt-5 first:mt-4 first:border-t-0 first:pt-0">
             <legend className="text-sm font-semibold">{question.title}</legend>
-            <p className="mt-1 text-[12px] text-[#1A1510]/45">Poids {question.weight}</p>
+            <p className="mt-1 text-[12px] text-mk-faint">Poids {question.weight}</p>
             <div className="mt-3 grid gap-2">
               {question.options.map((option) => {
                 const checked = answers[question.key] === option.value;
@@ -110,8 +110,8 @@ export function BriefScoreCalculator() {
                     key={option.value}
                     className={`flex cursor-pointer items-start gap-2.5 rounded-xl px-3 py-2.5 text-[14px] leading-5 ring-1 ${
                       checked
-                        ? "bg-[#fce8dc] ring-[#E85D04]"
-                        : "bg-[#fffdf9] ring-[#1A1510]/10 hover:ring-[#d4b89a]"
+                        ? "bg-mk-accent-soft ring-mk-accent"
+                        : "bg-mk-surface ring-mk-border hover:ring-mk-ink/20"
                     }`}
                   >
                     <input
@@ -130,39 +130,39 @@ export function BriefScoreCalculator() {
         ))}
       </form>
 
-      <div className="h-fit rounded-[22px] bg-[#1A1510] p-5 text-[#F6F0E8] sm:p-6 lg:sticky lg:top-24">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#F3B184]">Score live</p>
+      <div className="h-fit rounded-2xl bg-mk-dark p-5 text-mk-on-dark sm:p-6 lg:sticky lg:top-24">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mk-accent">Score live</p>
         <div className="mt-4 flex items-center gap-4">
           <div
-            className="flex h-24 w-24 flex-col items-center justify-center rounded-full border-4 bg-white text-[#1A1510]"
+            className="flex h-24 w-24 flex-col items-center justify-center rounded-full border-4 bg-white text-mk-ink"
             style={{ borderColor: color }}
             aria-live="polite"
           >
-            <strong className="text-3xl font-semibold leading-none text-[#E85D04]">{result.total}</strong>
-            <span className="mt-1 text-[11px] text-[#1A1510]/45">/ 100</span>
+            <strong className="text-3xl font-semibold leading-none text-mk-accent">{result.total}</strong>
+            <span className="mt-1 text-[11px] text-mk-faint">/ 100</span>
           </div>
           <div>
             <p
               className="inline-block rounded-full px-2.5 py-1 text-xs font-semibold"
               style={
                 result.band === "pending"
-                  ? { background: "#fce8dc", color: "#E85D04" }
+                  ? { background: "#fff1e6", color: "#E85D04" }
                   : { background: "#fff", color, border: `1px solid ${color}` }
               }
             >
               {pill}
             </p>
-            <p className="mt-2 text-sm leading-6 text-[#F6F0E8]/70">{text}</p>
+            <p className="mt-2 text-sm leading-6 text-mk-on-dark/70">{text}</p>
           </div>
         </div>
 
         <h2 className="mt-8 text-sm font-semibold">Recommandation</h2>
-        <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-[#F6F0E8]/75">
+        <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-mk-on-dark/75">
           {result.tips.map((tip) => (
             <li key={tip}>{tip}</li>
           ))}
         </ul>
-        <p className="mt-6 text-xs leading-5 text-[#F6F0E8]/45">
+        <p className="mt-6 text-xs leading-5 text-mk-on-dark/45">
           Score indicatif pour prioriser le temps de chiffrage, pas un verdict juridique ni financier. Les calculs
           restent dans votre navigateur.
         </p>

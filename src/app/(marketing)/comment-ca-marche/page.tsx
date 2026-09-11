@@ -15,11 +15,11 @@ export default function CommentCaMarchePage() {
     <>
       <section className="px-6 pb-4 pt-12 sm:pt-16">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-medium text-[#C45C26]">Démo produit</p>
+          <p className="text-sm font-medium text-mk-accent">Démo produit</p>
           <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl">
             Comment ça marche.
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-[#1A1510]/70 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-mk-muted sm:text-lg">
             La même chaîne que dans le logiciel. En quelques secondes.
           </p>
         </div>
@@ -31,7 +31,7 @@ export default function CommentCaMarchePage() {
         </div>
       </section>
 
-      <section className="bg-[#1A1510] px-6 py-14 text-[#F6F0E8] sm:py-20">
+      <section className="bg-mk-dark px-6 py-14 text-mk-on-dark sm:py-20">
         <div className="mx-auto max-w-6xl">
           <AutopilotStage />
         </div>

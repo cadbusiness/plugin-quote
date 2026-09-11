@@ -89,7 +89,7 @@ function toneClass(tone?: "hot" | "ok" | "muted") {
   if (tone === "hot") return "bg-rose-100 text-rose-700";
   if (tone === "ok") return "bg-emerald-100 text-emerald-800";
   if (tone === "muted") return "bg-amber-100 text-amber-800";
-  return "bg-[#F6F0E8] text-[#1A1510]/70";
+  return "bg-mk-band text-mk-muted";
 }
 
 export function FeaturePage({ feature }: { feature: Feature }) {
@@ -102,37 +102,34 @@ export function FeaturePage({ feature }: { feature: Feature }) {
 
   return (
     <>
-      <section className="relative overflow-hidden border-b border-[#1A1510]/8 px-6 pb-14 pt-12 sm:pb-16 sm:pt-16">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-24 top-0 h-72 w-72 rounded-full bg-[#F3B184]/35 blur-3xl"
-        />
+      <section className="relative overflow-hidden border-b border-mk-border px-6 pb-14 pt-12 sm:pb-16 sm:pt-16">
+        <div aria-hidden className="marketing-grid pointer-events-none absolute inset-0" />
         <div className="relative mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
           <div>
-            <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-[#1A1510]/45">
-              <Link href="/fonctionnalites" className="hover:text-[#1A1510]">
+            <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-mk-faint">
+              <Link href="/fonctionnalites" className="hover:text-mk-ink">
                 Fonctionnalités
               </Link>
               <span>/</span>
-              <span className="text-[#1A1510]/70">{feature.title}</span>
+              <span className="text-mk-muted">{feature.title}</span>
             </div>
-            <p className="mt-6 text-sm font-medium text-[#C45C26]">{feature.eyebrow}</p>
+            <p className="mt-6 text-sm font-medium text-mk-accent">{feature.eyebrow}</p>
             <h1 className="mt-3 max-w-3xl text-[1.9rem] font-semibold leading-[1.12] tracking-tight sm:text-5xl sm:leading-[1.08]">
               {feature.headline}
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#1A1510]/70 sm:text-lg">
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-mk-muted sm:text-lg">
               {feature.lead}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/signup"
-                className="rounded-full bg-[#E85D04] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#d35400]"
+                className="rounded-full bg-mk-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-mk-accent-hover"
               >
                 Essayer gratuitement
               </Link>
               <Link
                 href="/comment-ca-marche"
-                className="rounded-full bg-white px-5 py-2.5 text-sm font-medium text-[#1A1510] ring-1 ring-black/10 hover:bg-[#FFF8F1]"
+                className="rounded-full bg-white px-5 py-2.5 text-sm font-medium text-mk-ink ring-1 ring-mk-border hover:bg-mk-band"
               >
                 Voir la démo
               </Link>
@@ -140,9 +137,9 @@ export function FeaturePage({ feature }: { feature: Feature }) {
           </div>
 
           {mock ? (
-            <div className="rounded-[24px] bg-[#1A1510] p-5 text-[#F6F0E8] shadow-[0_30px_80px_-40px_rgba(26,21,16,0.7)] sm:p-6">
+            <div className="rounded-2xl bg-mk-dark p-5 text-mk-on-dark shadow-[0_30px_80px_-40px_rgba(26,21,16,0.7)] sm:p-6">
               <div className="flex items-center justify-between gap-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#F3B184]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mk-accent">
                   {mock.eyebrow}
                 </p>
                 <span className="rounded-full bg-emerald-500/20 px-2.5 py-1 text-[10px] font-semibold text-emerald-300">
@@ -155,7 +152,7 @@ export function FeaturePage({ feature }: { feature: Feature }) {
                     key={row.label}
                     className="flex items-center justify-between gap-3 rounded-2xl bg-white/6 px-3.5 py-3 ring-1 ring-white/8"
                   >
-                    <span className="text-sm text-[#F6F0E8]/70">{row.label}</span>
+                    <span className="text-sm text-mk-on-dark/70">{row.label}</span>
                     <span
                       className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${toneClass(row.tone)}`}
                     >
@@ -177,25 +174,25 @@ export function FeaturePage({ feature }: { feature: Feature }) {
               {feature.outcomes.map((item) => (
                 <li
                   key={item}
-                  className="flex gap-3 rounded-2xl bg-white px-4 py-3 text-[15px] leading-6 text-[#1A1510]/80 ring-1 ring-black/6"
+                  className="flex gap-3 rounded-2xl bg-white px-4 py-3 text-[15px] leading-6 text-mk-ink/80 ring-1 ring-mk-border"
                 >
-                  <span className="mt-0.5 font-semibold text-[#E85D04]">▸</span>
+                  <span className="mt-0.5 font-semibold text-mk-accent">▸</span>
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
-            <p className="mt-6 text-sm italic leading-6 text-[#1A1510]/55">{feature.proof}</p>
+            <p className="mt-6 text-sm italic leading-6 text-mk-muted">{feature.proof}</p>
           </div>
 
-          <div className="rounded-[24px] bg-white p-6 ring-1 ring-black/6 sm:p-8">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C45C26]">
+          <div className="rounded-2xl bg-white p-6 ring-1 ring-mk-border sm:p-8">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mk-accent">
               Capacités
             </p>
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               {feature.capabilities.map((cap) => (
-                <div key={cap.title} className="rounded-2xl bg-[#F6F0E8]/80 p-4">
-                  <h3 className="text-sm font-semibold text-[#1A1510]">{cap.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-[#1A1510]/65">{cap.text}</p>
+                <div key={cap.title} className="rounded-2xl bg-mk-band p-4">
+                  <h3 className="text-sm font-semibold text-mk-ink">{cap.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-mk-muted">{cap.text}</p>
                 </div>
               ))}
             </div>
@@ -204,9 +201,9 @@ export function FeaturePage({ feature }: { feature: Feature }) {
       </section>
 
       {siblings.length > 0 ? (
-        <section className="border-y border-[#1A1510]/8 bg-white/50 px-6 py-12">
+        <section className="border-y border-mk-border bg-mk-band px-6 py-12">
           <div className="mx-auto max-w-6xl">
-            <p className="text-sm font-medium text-[#C45C26]">
+            <p className="text-sm font-medium text-mk-accent">
               Même famille · {relatedGroup?.label}
             </p>
             <h2 className="mt-2 text-xl font-semibold tracking-tight sm:text-2xl">
@@ -217,11 +214,11 @@ export function FeaturePage({ feature }: { feature: Feature }) {
                 <Link
                   key={item.slug}
                   href={getFeatureHref(item.slug)}
-                  className="group rounded-[20px] bg-[#F6F0E8] p-5 ring-1 ring-black/5 transition hover:bg-white hover:shadow-[0_18px_50px_-28px_rgba(60,30,8,0.4)]"
+                  className="group rounded-xl bg-mk-surface p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_16px_40px_-28px_rgba(11,13,18,0.2)]"
                 >
-                  <h3 className="text-base font-semibold group-hover:text-[#E85D04]">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-[#1A1510]/60">{item.menuBlurb}</p>
-                  <p className="mt-3 text-sm font-medium text-[#1A1510]/40 group-hover:text-[#E85D04]">
+                  <h3 className="text-base font-semibold group-hover:text-mk-accent">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-mk-muted">{item.menuBlurb}</p>
+                  <p className="mt-3 text-sm font-medium text-mk-faint group-hover:text-mk-accent">
                     Voir →
                   </p>
                 </Link>
@@ -237,14 +234,14 @@ export function FeaturePage({ feature }: { feature: Feature }) {
             {prev ? (
               <Link
                 href={getFeatureHref(prev.slug)}
-                className="text-sm font-medium text-[#1A1510]/60 hover:text-[#1A1510]"
+                className="text-sm font-medium text-mk-muted hover:text-mk-ink"
               >
                 ← {prev.title}
               </Link>
             ) : (
               <Link
                 href="/fonctionnalites"
-                className="text-sm font-medium text-[#1A1510]/60 hover:text-[#1A1510]"
+                className="text-sm font-medium text-mk-muted hover:text-mk-ink"
               >
                 ← Toutes les fonctionnalités
               </Link>
@@ -254,12 +251,12 @@ export function FeaturePage({ feature }: { feature: Feature }) {
             {next ? (
               <Link
                 href={getFeatureHref(next.slug)}
-                className="text-sm font-medium text-[#1A1510]/60 hover:text-[#1A1510]"
+                className="text-sm font-medium text-mk-muted hover:text-mk-ink"
               >
                 {next.title} →
               </Link>
             ) : (
-              <Link href="/tarifs" className="text-sm font-medium text-[#1A1510]/60 hover:text-[#1A1510]">
+              <Link href="/tarifs" className="text-sm font-medium text-mk-muted hover:text-mk-ink">
                 Voir les tarifs →
               </Link>
             )}

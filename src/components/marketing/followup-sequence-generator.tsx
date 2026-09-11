@@ -113,7 +113,7 @@ export function FollowupSequenceGenerator() {
   return (
     <div>
       <form
-        className="grid gap-4 rounded-[22px] bg-white p-5 ring-1 ring-black/6 sm:grid-cols-2 sm:p-6"
+        className="grid gap-4 rounded-2xl bg-white p-5 ring-1 ring-mk-border sm:grid-cols-2 sm:p-6"
         onSubmit={(e) => e.preventDefault()}
       >
         <label className="block text-sm font-semibold">
@@ -121,7 +121,7 @@ export function FollowupSequenceGenerator() {
           <input
             value={company}
             onChange={(e) => setCompany(e.target.value)}
-            className="mt-1.5 w-full rounded-xl border border-[#1A1510]/10 bg-[#F6F0E8]/50 px-3.5 py-2.5 text-sm font-normal outline-none focus:border-[#E85D04]/50 focus:ring-2 focus:ring-[#E85D04]/15"
+            className="mt-1.5 w-full rounded-xl border border-mk-border bg-mk-band px-3.5 py-2.5 text-sm font-normal outline-none focus:border-mk-accent/50 focus:ring-2 focus:ring-mk-accent/20"
           />
         </label>
         <label className="block text-sm font-semibold">
@@ -129,7 +129,7 @@ export function FollowupSequenceGenerator() {
           <input
             value={offer}
             onChange={(e) => setOffer(e.target.value)}
-            className="mt-1.5 w-full rounded-xl border border-[#1A1510]/10 bg-[#F6F0E8]/50 px-3.5 py-2.5 text-sm font-normal outline-none focus:border-[#E85D04]/50 focus:ring-2 focus:ring-[#E85D04]/15"
+            className="mt-1.5 w-full rounded-xl border border-mk-border bg-mk-band px-3.5 py-2.5 text-sm font-normal outline-none focus:border-mk-accent/50 focus:ring-2 focus:ring-mk-accent/20"
           />
         </label>
         <label className="block text-sm font-semibold">
@@ -137,7 +137,7 @@ export function FollowupSequenceGenerator() {
           <select
             value={familyId}
             onChange={(e) => setFamilyId(e.target.value)}
-            className="mt-1.5 w-full rounded-xl border border-[#1A1510]/10 bg-[#F6F0E8]/50 px-3.5 py-2.5 text-sm font-normal outline-none focus:border-[#E85D04]/50"
+            className="mt-1.5 w-full rounded-xl border border-mk-border bg-mk-band px-3.5 py-2.5 text-sm font-normal outline-none focus:border-mk-accent/50"
           >
             {FUNNEL_FAMILIES.filter((item) => item.id !== "custom").map((item) => (
               <option key={item.id} value={item.id}>
@@ -156,8 +156,8 @@ export function FollowupSequenceGenerator() {
                 onClick={() => setTone(item.id)}
                 className={`rounded-full px-3.5 py-2 text-sm font-medium ${
                   tone === item.id
-                    ? "bg-[#1A1510] text-white"
-                    : "bg-[#F6F0E8] text-[#1A1510]/70 ring-1 ring-black/8"
+                    ? "bg-mk-dark text-white"
+                    : "bg-mk-bg text-mk-muted ring-1 ring-mk-border"
                 }`}
               >
                 {item.label}
@@ -173,10 +173,10 @@ export function FollowupSequenceGenerator() {
 
       <ol className="mt-6 space-y-4">
         {steps.map((step) => (
-          <li key={step.when} className="rounded-[22px] bg-white p-5 ring-1 ring-black/6 sm:p-6">
+          <li key={step.when} className="rounded-2xl bg-white p-5 ring-1 ring-mk-border sm:p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-[#1A1510] px-2.5 py-1 text-[11px] font-semibold text-white">
+                <span className="rounded-full bg-mk-dark px-2.5 py-1 text-[11px] font-semibold text-white">
                   {step.when}
                 </span>
                 <span
@@ -192,7 +192,7 @@ export function FollowupSequenceGenerator() {
               <CopyButton text={`Objet : ${step.subject}\n\n${step.body}`} />
             </div>
             <p className="mt-4 text-sm font-semibold">{step.subject}</p>
-            <pre className="mt-3 whitespace-pre-wrap font-sans text-[14px] leading-6 text-[#1A1510]/70">
+            <pre className="mt-3 whitespace-pre-wrap font-sans text-[14px] leading-6 text-mk-muted">
               {step.body}
             </pre>
           </li>

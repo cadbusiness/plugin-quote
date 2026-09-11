@@ -32,14 +32,14 @@ export default function ScoreBriefPage() {
     <>
       <section className="px-6 pb-6 pt-12 sm:pt-16">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#C45C26]">Outil</p>
+          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-mk-accent">Outil</p>
           <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl">
             Scorez la qualité d’un brief avant le devis
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-[#1A1510]/70 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-mk-muted sm:text-lg">
             Cinq questions pondérées, score live sur 100, et une reco concrète. Utile juste avant de passer 45 minutes
             à chiffrer.{" "}
-            <Link href="/blog/score-demande-devis-b2b" className="font-medium text-[#E85D04] underline-offset-2 hover:underline">
+            <Link href="/blog/score-demande-devis-b2b" className="font-medium text-mk-accent underline-offset-2 hover:underline">
               Lire le guide de scoring
             </Link>
             .
@@ -53,21 +53,21 @@ export default function ScoreBriefPage() {
 
       <section className="mx-auto max-w-3xl px-6 pb-4">
         <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">Ensuite</h2>
-        <p className="mt-4 text-[16px] leading-7 text-[#1A1510]/75">
+        <p className="mt-4 text-[16px] leading-7 text-mk-muted">
           Lire aussi :{" "}
-          <Link href="/blog/score-demande-devis-b2b" className="font-medium text-[#E85D04] underline-offset-2 hover:underline">
+          <Link href="/blog/score-demande-devis-b2b" className="font-medium text-mk-accent underline-offset-2 hover:underline">
             scorer une demande de devis
           </Link>
           {" · "}
-          <Link href="/blog/formulaire-contact-vs-funnel-devis-b2b" className="font-medium text-[#E85D04] underline-offset-2 hover:underline">
+          <Link href="/blog/formulaire-contact-vs-funnel-devis-b2b" className="font-medium text-mk-accent underline-offset-2 hover:underline">
             formulaire vs funnel
           </Link>
           {" · "}
-          <Link href="/blog/pourquoi-les-devis-meurent-sans-relance" className="font-medium text-[#E85D04] underline-offset-2 hover:underline">
+          <Link href="/blog/pourquoi-les-devis-meurent-sans-relance" className="font-medium text-mk-accent underline-offset-2 hover:underline">
             relances devis
           </Link>
           {" · "}
-          <Link href="/outils/cout-devis-non-relance" className="font-medium text-[#E85D04] underline-offset-2 hover:underline">
+          <Link href="/outils/cout-devis-non-relance" className="font-medium text-mk-accent underline-offset-2 hover:underline">
             coût d’un devis non relancé
           </Link>
           .

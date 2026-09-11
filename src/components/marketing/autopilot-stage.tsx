@@ -106,32 +106,32 @@ export function AutopilotStage() {
     <div ref={rootRef} className="mt-0">
       <div className="grid items-start gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10">
         <div>
-          <p className="text-sm font-medium text-[#F3B184]">Après la soumission</p>
+          <p className="text-sm font-medium text-mk-accent">Après la soumission</p>
           <h2 className="mt-2 max-w-md text-2xl font-semibold tracking-tight sm:text-3xl">
             Les devis avancent tout seuls.
           </h2>
-          <p className="mt-4 max-w-md text-[16px] leading-7 text-[#F6F0E8]/75 sm:text-[17px] sm:leading-8">
+          <p className="mt-4 max-w-md text-[16px] leading-7 text-mk-on-dark/75 sm:text-[17px] sm:leading-8">
             Les formulaires s’arrêtent là. QuoteBuilder enchaîne score, assignation et relances.
             Les touches que 92 % des équipes n’atteignent jamais.
           </p>
-          <ul className="mt-6 space-y-2.5 text-sm text-[#F6F0E8]/70">
+          <ul className="mt-6 space-y-2.5 text-sm text-mk-on-dark/70">
             <li className="flex gap-2">
-              <span className="text-[#E85D04]">▸</span>
+              <span className="text-mk-accent">▸</span>
               Pipeline + score Hot / Warm / Cold
             </li>
             <li className="flex gap-2">
-              <span className="text-[#E85D04]">▸</span>
+              <span className="text-mk-accent">▸</span>
               Assignation et notifications
             </li>
             <li className="flex gap-2">
-              <span className="text-[#E85D04]">▸</span>
+              <span className="text-mk-accent">▸</span>
               Workflows T+0, T+4 h, T+3 j
             </li>
           </ul>
           <button
             type="button"
             onClick={() => setPlaying((p) => !p)}
-            className="mt-6 text-sm font-medium text-[#F6F0E8]/50 underline-offset-4 hover:text-[#F6F0E8] hover:underline"
+            className="mt-6 text-sm font-medium text-mk-on-dark/50 underline-offset-4 hover:text-mk-on-dark hover:underline"
           >
             {playing ? "Pause" : "Rejouer"}
           </button>

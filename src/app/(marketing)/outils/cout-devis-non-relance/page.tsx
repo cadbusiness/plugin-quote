@@ -32,14 +32,14 @@ export default function CoutDevisPage() {
     <>
       <section className="px-6 pb-6 pt-12 sm:pt-16">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#C45C26]">Outil</p>
+          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-mk-accent">Outil</p>
           <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl">
             Coût d’un devis non relancé.
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-[#1A1510]/70 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-mk-muted sm:text-lg">
             80 % des ventes demandent cinq relances. La plupart des équipes s’arrêtent à une. Cet
             écart a un prix.{" "}
-            <Link href="/blog/pourquoi-les-devis-meurent-sans-relance" className="font-medium text-[#E85D04] underline-offset-2 hover:underline">
+            <Link href="/blog/pourquoi-les-devis-meurent-sans-relance" className="font-medium text-mk-accent underline-offset-2 hover:underline">
               Lire l’article
             </Link>
             .
@@ -53,22 +53,22 @@ export default function CoutDevisPage() {
 
       <section className="mx-auto max-w-3xl px-6 pb-4">
         <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">Comment le lire</h2>
-        <p className="mt-4 text-[16px] leading-7 text-[#1A1510]/75">
+        <p className="mt-4 text-[16px] leading-7 text-mk-muted">
           Le taux actuel est votre closing réel sur les devis envoyés, pas le taux de leads du
           site. Le taux cible est ce que vous jugez tenable si confirmation, rappel interne et
           relances partent vraiment. L’outil ne simule pas la saisonnalité ni le mix produit.
         </p>
-        <p className="mt-4 text-[16px] leading-7 text-[#1A1510]/75">
+        <p className="mt-4 text-[16px] leading-7 text-mk-muted">
           Ensuite, il faut des dossiers, pas des messages. Un{" "}
-          <Link href="/blog/formulaire-contact-vs-funnel-devis-b2b" className="font-medium text-[#E85D04] underline-offset-2 hover:underline">
+          <Link href="/blog/formulaire-contact-vs-funnel-devis-b2b" className="font-medium text-mk-accent underline-offset-2 hover:underline">
             funnel
           </Link>{" "}
           et une{" "}
-          <Link href="/outils/generateur-sequence-relances" className="font-medium text-[#E85D04] underline-offset-2 hover:underline">
+          <Link href="/outils/generateur-sequence-relances" className="font-medium text-mk-accent underline-offset-2 hover:underline">
             séquence
           </Link>{" "}
           tiennent l’écart. L’
-          <Link href="/fonctionnalites/autopilote" className="font-medium text-[#E85D04] underline-offset-2 hover:underline">
+          <Link href="/fonctionnalites/autopilote" className="font-medium text-mk-accent underline-offset-2 hover:underline">
             autopilote
           </Link>{" "}
           l’exécute.

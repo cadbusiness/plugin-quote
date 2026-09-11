@@ -57,26 +57,26 @@ export default function MenuiserieLandingPage() {
 
       <section className="px-6 pb-6 pt-12 sm:pt-16">
         <div className="mx-auto max-w-3xl">
-          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#C45C26]">
+          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-mk-accent">
             Secteur · Menuiserie sur mesure
           </p>
           <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl sm:leading-tight">
             Funnel de devis menuiserie sur mesure : fenêtres, portes, agencement
           </h1>
-          <p className="mt-4 text-[16px] leading-7 text-[#1A1510]/70 sm:text-lg">
+          <p className="mt-4 text-[16px] leading-7 text-mk-muted sm:text-lg">
             Un funnel transforme une demande vague en brief chiffrable : typologie, dimensions, matériaux,
             options, pose, délai, budget indicatif, puis score, assignation et relances.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/signup"
-              className="rounded-full bg-[#E85D04] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#d35400]"
+              className="rounded-full bg-mk-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-mk-accent-hover"
             >
               Créer ce funnel
             </Link>
             <Link
               href="/secteurs"
-              className="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#1A1510] ring-1 ring-black/8"
+              className="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-mk-ink ring-1 ring-mk-border"
             >
               Tous les secteurs
             </Link>
@@ -88,7 +88,7 @@ export default function MenuiserieLandingPage() {
         <Markdown source={body} />
       </section>
 
-      <section className="border-y border-[#1A1510]/8 bg-white/55 px-6 py-12">
+      <section className="border-y border-mk-border bg-mk-band px-6 py-12">
         <div className="mx-auto max-w-3xl">
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">La chaîne, sur ce métier</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -101,10 +101,10 @@ export default function MenuiserieLandingPage() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-2xl bg-white p-4 ring-1 ring-black/6 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)]"
+                className="rounded-2xl bg-white p-4 ring-1 ring-mk-border hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)]"
               >
                 <p className="font-semibold">{item.t}</p>
-                <p className="mt-1 text-sm text-[#1A1510]/55">{item.d}</p>
+                <p className="mt-1 text-sm text-mk-muted">{item.d}</p>
               </Link>
             ))}
           </div>

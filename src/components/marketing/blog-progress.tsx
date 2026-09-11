@@ -36,7 +36,7 @@ export function BlogProgress({ targetId = "article-body" }: { targetId?: string 
       aria-valuenow={Math.round(progress * 100)}
     >
       <div
-        className="h-full bg-[#E85D04] transition-[width] duration-100 ease-out"
+        className="h-full bg-mk-accent transition-[width] duration-100 ease-out"
         style={{ width: `${progress * 100}%` }}
       />
     </div>

@@ -10,6 +10,7 @@ import {
   getBlogPost,
   trimMetaDescription,
 } from "@/lib/marketing/blog";
+import { withResolvedCover } from "@/lib/marketing/blog-assets";
 import { loadPostBody } from "@/lib/marketing/load-post";
 import { pageMetadata } from "@/lib/marketing/site";
 
@@ -35,8 +36,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = getBlogPost(slug);
-  if (!post) notFound();
+  const found = getBlogPost(slug);
+  if (!found) notFound();
+  const post = withResolvedCover(found);
   const faq = BLOG_FAQ[post.slug] ?? [];
   const body = loadPostBody(post.slug);
   const articleLd = blogArticleJsonLd(post);
