@@ -3,6 +3,14 @@
 import { useEffect, useState, useTransition } from "react";
 import { createShop } from "@/app/(app)/integrations/shop-actions";
 import { FUNNEL_FAMILIES, type FunnelFamilyId } from "@/lib/funnels/families";
+import {
+  SHOP_SECTOR_TEMPLATES,
+  featuredTemplateForFamily,
+  type ShopTemplateId,
+} from "@/lib/shops/sector-templates";
+
+const FEATURED_FAMILIES = new Set(SHOP_SECTOR_TEMPLATES.map((item) => item.family));
+const OTHER_FAMILIES = FUNNEL_FAMILIES.filter((item) => !FEATURED_FAMILIES.has(item.id));
 
 type Funnel = { id: string; name: string };
 
@@ -31,10 +39,12 @@ export function CreateShopDialog({
   orgName: string;
 }) {
   const startFamily = defaultFamily ?? "custom";
+  const startTemplate = featuredTemplateForFamily(startFamily);
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
   const [mode, setMode] = useState<"template" | "chat">("template");
   const [family, setFamily] = useState<FunnelFamilyId>(startFamily);
+  const [templateId, setTemplateId] = useState<ShopTemplateId | null>(startTemplate?.id ?? null);
   const [name, setName] = useState(orgName);
   const [configuratorId, setConfiguratorId] = useState(funnels[0]?.id ?? "");
   const [createFunnel, setCreateFunnel] = useState(!funnels.length);
@@ -47,6 +57,7 @@ export function CreateShopDialog({
     setStep(0);
     setMode("template");
     setFamily(startFamily);
+    setTemplateId(featuredTemplateForFamily(startFamily)?.id ?? null);
     setName(orgName);
     setConfiguratorId(funnels[0]?.id ?? "");
     setCreateFunnel(!funnels.length);
@@ -84,6 +95,7 @@ export function CreateShopDialog({
     const data = new FormData();
     data.set("name", name.trim() || orgName);
     data.set("sector", family);
+    if (templateId) data.set("shop_template", templateId);
     if (configuratorId && !createFunnel) data.set("configurator_id", configuratorId);
     if (createFunnel || !configuratorId) data.set("create_funnel", "on");
     data.set("company", orgName);
@@ -117,7 +129,7 @@ export function CreateShopDialog({
               </p>
               <h2 id="create-shop-title" className="mt-1 text-lg font-semibold text-slate-900">
                 {step === 0 && "Comment la créer"}
-                {step === 1 && "Secteur"}
+                {step === 1 && "Template métier"}
                 {step === 2 && "Catalogue et identité"}
                 {step === 3 && "Brief pour l’IA"}
               </h2>
@@ -146,23 +158,66 @@ export function CreateShopDialog({
               ) : null}
 
               {step === 1 ? (
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {FUNNEL_FAMILIES.map((item) => {
-                    const on = family === item.id;
-                    return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => setFamily(item.id)}
-                        className={`rounded-lg px-3 py-3 text-left ring-1 transition-colors ${
-                          on ? `${item.tint} ring-current` : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
-                        }`}
-                      >
-                        <span className="block text-sm font-medium">{item.label}</span>
-                        <span className="mt-1 block text-xs leading-5 opacity-80">{item.blurb}</span>
-                      </button>
-                    );
-                  })}
+                <div className="space-y-5">
+                  <div>
+                    <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-slate-400">
+                      Templates métier
+                    </p>
+                    <div className="grid gap-2 sm:grid-cols-3">
+                      {SHOP_SECTOR_TEMPLATES.map((item) => {
+                        const on = templateId === item.id;
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => {
+                              setTemplateId(item.id);
+                              setFamily(item.family);
+                            }}
+                            className={`rounded-lg px-3 py-3 text-left ring-1 transition-colors ${
+                              on ? `${item.tint} ring-current` : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
+                            }`}
+                          >
+                            <span className="flex items-center gap-2">
+                              <span
+                                className="h-2.5 w-2.5 shrink-0 rounded-full"
+                                style={{ background: item.theme.accent }}
+                                aria-hidden
+                              />
+                              <span className="block text-sm font-medium">{item.label}</span>
+                            </span>
+                            <span className="mt-1 block text-xs leading-5 opacity-80">{item.blurb}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-slate-400">
+                      Autres secteurs
+                    </p>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      {OTHER_FAMILIES.map((item) => {
+                        const on = family === item.id && !templateId;
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => {
+                              setFamily(item.id);
+                              setTemplateId(null);
+                            }}
+                            className={`rounded-lg px-3 py-3 text-left ring-1 transition-colors ${
+                              on ? `${item.tint} ring-current` : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
+                            }`}
+                          >
+                            <span className="block text-sm font-medium">{item.label}</span>
+                            <span className="mt-1 block text-xs leading-5 opacity-80">{item.blurb}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               ) : null}
 

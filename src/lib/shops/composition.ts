@@ -1,6 +1,13 @@
 import { getFunnelFamily, type FunnelFamilyId } from "@/lib/funnels/families";
 import { emptyNode } from "@/lib/shops/layout";
 import { shopPlaceholders } from "@/lib/shops/placeholders";
+import {
+  DEFAULT_HOME_RHYTHM,
+  homeRhythmFor,
+  homeTypeSequence,
+  resolveShopSectorTemplate,
+  type HomeBlockId,
+} from "@/lib/shops/sector-templates";
 import type { ShopFaqItem, ShopFeatureItem, ShopLayout, ShopNode } from "@/lib/shops/types";
 
 const WASH = "#F6F1EA";
@@ -32,6 +39,7 @@ export type ShopCopy = {
   quoteCta: string;
   catalogHeroHeading: string;
   catalogHeroSub: string;
+  catalogPageTitle?: string;
   seoDescription: string;
 };
 
@@ -50,39 +58,39 @@ function packs(name: string, city: string): Record<FunnelFamilyId, ShopCopy> {
   const here = loc(city);
   return {
     racking: {
-      heroHeading: `${name} — rayonnage et stockage sur devis`,
-      heroSub: `Travées, charge et allées cadrés avant le chiffrage${here}. Catalogue réel, demande de devis — pas de paiement en ligne.`,
-      heroCta: "Demander un devis",
-      heroImageAlt: "Entrepôt avec travées de rayonnage",
+      heroHeading: `${name} — rayonnage industriel et stock B2B`,
+      heroSub: `Travées, charge utile et allées cadrées avant le calepinage${here}. Catalogue réel, devis écrit — pas de caisse.`,
+      heroCta: "Demander un devis stock",
+      heroImageAlt: "Entrepôt B2B, travées de rayonnage lourd",
       featuresHeading: "Ce que nous dimensionnons",
       features: [
         { title: "Charge et hauteur", text: "Niveaux, charge utile et hauteur sous poutre pour un brief chiffrable." },
         { title: "Allées et picking", text: "Circulation, réserve ou picking fréquent : la gamme suit l’usage." },
-        { title: "Étude avant pose", text: "Vous recevez un devis écrit. La pose se planifie ensuite, sans caisse en ligne." },
+        { title: "Étude avant pose", text: "Devis écrit, puis calepinage et pose. Rien n’est encaissé ici." },
       ],
-      proofHeading: "Repères pour cadrer le projet",
+      proofHeading: "Repères techniques",
       proof: [
         { title: "Charge", text: "Jusqu’à 800 kg et plus par niveau, selon la gamme." },
-        { title: "Délai d’étude", text: "Brief relu sous 48 h ouvrées une fois le besoin posé." },
+        { title: "Étude", text: "Brief relu sous 48 h ouvrées une fois surface et charge posées." },
         { title: "Terrain", text: "Entrepôt, réserve, atelier ou archives." },
       ],
-      aboutHeading: "Un brief d’entrepôt, pas un catalogue anonyme",
-      aboutText: `${name} part de votre surface, de la hauteur utile et de la charge. Le catalogue sert à composer le devis, pas à encaisser.`,
-      aboutImageAlt: "Allée de stockage industrielle",
+      aboutHeading: "Un brief d’entrepôt, pas un extrait catalogue",
+      aboutText: `${name} part de la surface, de la hauteur utile et de la charge. Le catalogue compose le devis ; il n’encaisse rien.`,
+      aboutImageAlt: "Allée de stockage palettier",
       imageFirst: false,
-      categoriesHeading: "Rayons",
-      catalogHeading: "Gammes à chiffrer",
-      processHeading: "Du brief au devis",
+      categoriesHeading: "Gammes",
+      catalogHeading: "Travées et accessoires",
+      processHeading: "Du brief technique au devis",
       process: [
-        { title: "1. Cadrer", text: "Espace, surface, charge, contraintes d’accès." },
-        { title: "2. Composer", text: "Travées et options depuis le catalogue." },
-        { title: "3. Devis", text: "L’équipe commerciale revient avec un chiffrage écrit." },
+        { title: "1. Brief", text: "Espace, surface, charge, contraintes d’accès." },
+        { title: "2. Calepinage", text: "Travées et options depuis le catalogue." },
+        { title: "3. Devis", text: "Chiffrage écrit, puis planning de pose." },
       ],
       faqHeading: "Questions fréquentes",
       faq: [
         {
           q: "Puis-je commander en ligne ?",
-          a: "Non. Cette vitrine prépare un devis. Vous composez le besoin, nous chiffrons.",
+          a: "Non. Cette vitrine prépare un devis stock. Vous composez le besoin, nous chiffrons.",
         },
         {
           q: "Quels projets de stockage acceptez-vous ?",
@@ -90,74 +98,76 @@ function packs(name: string, city: string): Record<FunnelFamilyId, ShopCopy> {
         },
         {
           q: "Les prix affichés sont-ils fermes ?",
-          a: "Ce sont des fourchettes catalogue. Le tarif contractuel figure sur le devis écrit.",
+          a: "Fourchettes catalogue. Le tarif contractuel figure sur le devis écrit.",
         },
         {
           q: "Intervenez-vous sur site ?",
           a: "Oui, une fois le devis accepté : calepinage, livraison et pose selon le brief.",
         },
       ],
-      quoteHeading: "Chiffrer un projet de stockage",
-      quoteText: "Décrivez l’espace ou partez du catalogue. Nous revenons avec un devis.",
-      quoteCta: "Ouvrir le devis",
-      catalogHeroHeading: "Catalogue rayonnage",
-      catalogHeroSub: "Parcourez les gammes, ouvrez une fiche, ajoutez-la à la demande de devis.",
-      seoDescription: `${name} — rayonnage et stockage${here}. Catalogue, catégories et demande de devis B2B. Pas de paiement en ligne.`,
+      quoteHeading: "Chiffrer un projet de stock",
+      quoteText: "Surface, charge, allées : nous calepinons et envoyons un devis.",
+      quoteCta: "Ouvrir le devis stock",
+      catalogHeroHeading: "Catalogue rayonnage B2B",
+      catalogHeroSub: "Gammes, travées et accessoires — à ajouter à la demande de devis.",
+      catalogPageTitle: "Gammes",
+      seoDescription: `${name} — rayonnage industriel et stock B2B${here}. Catalogue, gammes et demande de devis. Pas de paiement en ligne.`,
     },
     habitat: {
-      heroHeading: `${name} — cuisines et aménagements sur devis`,
-      heroSub: `Pièce, style et budget cadrés avant le rendez-vous${here}. Vous composez, nous chiffrons — sans paiement en ligne.`,
-      heroCta: "Demander un devis",
-      heroImageAlt: "Cuisine aménagée sur mesure",
-      featuresHeading: "Ce que nous cadrons",
+      heroHeading: `${name} — menuiserie et ouvrages sur devis`,
+      heroSub: `Essence, cotes et pose cadrées avant le devis d’atelier${here}. Fabrication sur mesure — pas de paiement en ligne.`,
+      heroCta: "Demander un devis d’ouvrage",
+      heroImageAlt: "Atelier de menuiserie, établis et essences",
+      featuresHeading: "Ce que l’atelier cadré",
       features: [
-        { title: "Pièce et usage", text: "Cuisine complète, îlot ou partiel : le brief suit le chantier." },
-        { title: "Style et matériaux", text: "Finitions, plan de travail et contraintes techniques avant le chiffrage." },
-        { title: "Budget indicatif", text: "Fourchettes catalogue pour situer, devis écrit pour contracter." },
+        { title: "Essence et finition", text: "Chêne, noyer, frêne ou laqué : le brief pose la matière avant le chiffrage." },
+        { title: "Cotes et contraintes", text: "Linéaire, accès, pièce mansardée — on chiffre sur le réel, pas une grille figée." },
+        { title: "Fabrication puis pose", text: "Le devis écrit précède l’atelier. Rien n’est encaissé ici." },
       ],
-      proofHeading: "Repères chantier",
+      proofHeading: "Repères d’atelier",
       proof: [
-        { title: "Projets", text: "Cuisine, menuiserie, aménagements intérieurs." },
-        { title: "Délai d’étude", text: "Retour sous 72 h une fois pièce et style posés." },
-        { title: "Sur mesure", text: "Chaque devis part du plan, pas d’une grille tarifaire figée." },
+        { title: "Essences", text: "Chêne, noyer, frêne, laqué — selon le catalogue." },
+        { title: "Étude", text: "Retour sous 72 h une fois l’ouvrage et les cotes posés." },
+        { title: "Ouvrages", text: "Meuble, ouverture, escalier, agencement." },
       ],
-      aboutHeading: "Un projet d’aménagement, pas une vente flash",
-      aboutText: `${name} s’appuie sur le catalogue pour proposer des lignes, puis chiffre le chantier. Le paiement n’a pas lieu ici.`,
-      aboutImageAlt: "Intérieur d’habitation aménagé",
+      aboutHeading: "Un ouvrage d’atelier, pas une cuisine en kit",
+      aboutText: `${name} part du relevé et de l’essence. Le catalogue montre les lignes ; le devis chiffre la fabrication et la pose.`,
+      aboutImageAlt: "Détail d’un ouvrage en bois massif",
       imageFirst: true,
-      categoriesHeading: "Univers",
-      catalogHeading: "Lignes et finitions",
-      processHeading: "Du brief au devis",
+      categoriesHeading: "Ouvrages",
+      catalogHeading: "Pièces et menuiseries",
+      processHeading: "Du relevé au devis",
       process: [
-        { title: "1. La pièce", text: "Usage, dimensions, contraintes d’eau et d’électriques." },
-        { title: "2. Le style", text: "Lignes catalogue et options de finition." },
-        { title: "3. Le devis", text: "Chiffrage écrit, puis rendez-vous si besoin." },
+        { title: "1. Relevé", text: "Usage, cotes, accès, contraintes de pose." },
+        { title: "2. Essence", text: "Ligne catalogue et finition." },
+        { title: "3. Devis", text: "Fabrication et pose chiffrées par écrit." },
       ],
       faqHeading: "Questions fréquentes",
       faq: [
         {
           q: "Puis-je commander en ligne ?",
-          a: "Non. Cette boutique prépare un devis d’aménagement. Aucun paiement n’est pris ici.",
+          a: "Non. Cette boutique prépare un devis d’ouvrage. Aucun paiement n’est pris ici.",
         },
         {
           q: "Faites-vous le sur-mesure ?",
-          a: "Oui. Le catalogue pose les gammes ; le devis ajuste cotes, finitions et pose.",
+          a: "Oui. Le catalogue pose les gammes ; le devis ajuste cotes, essence et pose.",
         },
         {
           q: "Les prix affichés sont-ils fermes ?",
-          a: "Fourchettes d’orientation. Le montant contractuel est sur le devis.",
+          a: "Fourchettes d’orientation. Le montant contractuel est sur le devis d’atelier.",
         },
         {
-          q: "Quels délais de pose ?",
-          a: "Ils dépendent du brief (pièce, matériaux). Ils figurent sur le devis, pas en ligne.",
+          q: "Quels délais de fabrication ?",
+          a: "Ils dépendent de l’ouvrage et de l’essence. Ils figurent sur le devis, pas en ligne.",
         },
       ],
-      quoteHeading: "Chiffrer un aménagement",
-      quoteText: "Décrivez la pièce ou partez du catalogue. Nous revenons avec un devis.",
-      quoteCta: "Ouvrir le devis",
-      catalogHeroHeading: "Catalogue aménagement",
-      catalogHeroSub: "Lignes, finitions et options — à ajouter à votre demande de devis.",
-      seoDescription: `${name} — cuisines et aménagements${here}. Catalogue et demande de devis. Pas de paiement en ligne.`,
+      quoteHeading: "Chiffrer un ouvrage",
+      quoteText: "Décrivez l’ouvrage ou partez du catalogue. Nous revenons avec un devis d’atelier.",
+      quoteCta: "Ouvrir le devis menuiserie",
+      catalogHeroHeading: "Catalogue menuiserie",
+      catalogHeroSub: "Meubles, ouvertures, escaliers, agencements — à ajouter à la demande de devis.",
+      catalogPageTitle: "Ouvrages",
+      seoDescription: `${name} — menuiserie et ouvrages sur mesure${here}. Catalogue et demande de devis. Pas de paiement en ligne.`,
     },
     events: {
       heroHeading: `${name} — location et événementiel sur devis`,
@@ -380,59 +390,60 @@ function packs(name: string, city: string): Record<FunnelFamilyId, ShopCopy> {
       seoDescription: `${name} — immobilier et construction${here}. Missions, catalogue et demande de devis. Pas de paiement en ligne.`,
     },
     health: {
-      heroHeading: `${name} — accompagnements et équipements sur devis`,
-      heroSub: `Acte ou équipement, contraintes et budget cadrés${here}. Le prospect se qualifie, nous chiffrons — sans paiement en ligne.`,
-      heroCta: "Demander un devis",
-      heroImageAlt: "Espace de soin professionnel",
+      heroHeading: `${name} — soins et protocoles sur devis`,
+      heroSub: `Peau, rituel et contraintes cadrés avant le bilan${here}. Protocoles au catalogue, devis écrit — sans paiement en ligne.`,
+      heroCta: "Demander un devis soin",
+      heroImageAlt: "Rituel skincare et actifs en situation",
       featuresHeading: "Ce que nous préparons",
       features: [
-        { title: "Acte ou équipement", text: "Le brief distingue le soin, le bilan et le matériel." },
-        { title: "Contraintes", text: "Locaux, normes, budget indicatif avant le rendez-vous." },
+        { title: "Diagnostic", text: "Type de peau, objectif, contre-indications avant le protocole." },
+        { title: "Rituel", text: "Actifs, durée, rythme : le brief pose le cadre du soin." },
         { title: "Devis préalable", text: "Chiffrage écrit. Aucun paiement en ligne." },
       ],
-      proofHeading: "Repères parcours",
+      proofHeading: "Repères cabinet",
       proof: [
-        { title: "Cadre", text: "Bilan, équipement, accompagnement." },
+        { title: "Protocoles", text: "Visage, silhouette, peau / laser, accompagnement." },
         { title: "Délai", text: "Retour sous 72 h une fois le besoin posé." },
         { title: "Confidentialité", text: "Le dossier reste chez vous, pas sur une caisse." },
       ],
-      aboutHeading: "Un rendez-vous préparé, pas une boutique santé",
-      aboutText: `${name} utilise le catalogue pour situer l’offre, puis chiffre. Cette vitrine ne prend pas de paiement.`,
-      aboutImageAlt: "Accueil d’un espace de soin",
+      aboutHeading: "Un protocole préparé, pas une boutique cosmétique",
+      aboutText: `${name} situe l’offre au catalogue, puis chiffre le rituel. Cette vitrine ne vend pas de flacons en ligne.`,
+      aboutImageAlt: "Espace de soin apaisé",
       imageFirst: true,
-      categoriesHeading: "Parcours",
-      catalogHeading: "Offres à chiffrer",
-      processHeading: "Du brief au devis",
+      categoriesHeading: "Rituels",
+      catalogHeading: "Soins et protocoles",
+      processHeading: "Du bilan au devis",
       process: [
-        { title: "1. Le besoin", text: "Acte, équipement, contraintes." },
-        { title: "2. L’offre", text: "Ligne catalogue adaptée." },
+        { title: "1. Le bilan", text: "Peau, objectif, contraintes." },
+        { title: "2. Le protocole", text: "Ligne catalogue adaptée." },
         { title: "3. Le devis", text: "Chiffrage, puis prise de rendez-vous." },
       ],
       faqHeading: "Questions fréquentes",
       faq: [
         {
           q: "Puis-je commander en ligne ?",
-          a: "Non. Cette vitrine prépare un devis. Aucun paiement n’est pris ici.",
+          a: "Non. Cette vitrine prépare un devis soin. Aucun paiement n’est pris ici.",
         },
         {
           q: "Est-ce un rendez-vous médical ?",
-          a: "Le funnel qualifie le besoin. Le rendez-vous se pose après le devis, selon l’offre.",
+          a: "Le funnel qualifie le besoin. Le rendez-vous se pose après le devis, selon le protocole.",
         },
         {
           q: "Les tarifs affichés sont-ils fermes ?",
-          a: "Fourchettes. Le devis précise l’acte ou l’équipement.",
+          a: "Fourchettes. Le devis précise le rituel ou l’équipement.",
         },
         {
           q: "Les données restent-elles confidentielles ?",
           a: "Oui. La demande alimente le dossier commerçant, pas une caisse tierce.",
         },
       ],
-      quoteHeading: "Préparer un devis",
-      quoteText: "Décrivez l’acte ou l’équipement. Nous revenons avec un chiffrage.",
+      quoteHeading: "Préparer un devis soin",
+      quoteText: "Décrivez le rituel ou l’équipement. Nous revenons avec un chiffrage.",
       quoteCta: "Ouvrir le devis",
-      catalogHeroHeading: "Catalogue des offres",
-      catalogHeroSub: "Parcours et équipements à ajouter à la demande de devis.",
-      seoDescription: `${name} — santé et bien-être${here}. Offres, catalogue et demande de devis. Pas de paiement en ligne.`,
+      catalogHeroHeading: "Catalogue des rituels",
+      catalogHeroSub: "Soins, protocoles et équipements — à ajouter à la demande de devis.",
+      catalogPageTitle: "Rituels",
+      seoDescription: `${name} — soins et protocoles${here}. Catalogue et demande de devis. Pas de paiement en ligne.`,
     },
     tech: {
       heroHeading: `${name} — missions tech et conseil sur devis`,
@@ -547,9 +558,15 @@ function packs(name: string, city: string): Record<FunnelFamilyId, ShopCopy> {
   };
 }
 
-export function shopCopyForFamily(input: { name: string; sector: string; city?: string }): ShopCopy {
+export function shopCopyForFamily(input: {
+  name: string;
+  sector: string;
+  city?: string;
+  templateId?: string | null;
+}): ShopCopy {
   const family = getFunnelFamily(input.sector);
-  return packs(input.name, input.city ?? "")[family.id];
+  const template = resolveShopSectorTemplate(input.templateId, family.id);
+  return packs(input.name, input.city ?? "")[template?.family ?? family.id];
 }
 
 function asLayout(content: ShopNode[]): ShopLayout {
@@ -571,9 +588,16 @@ function columnsOf(items: ShopStat[], gap = "28px"): ShopNode {
   });
 }
 
-export function buildHomeLayout(input: { name: string; sector: string; city?: string }): ShopLayout {
+function homeBlocks(input: {
+  name: string;
+  sector: string;
+  city?: string;
+  templateId?: string | null;
+}): Record<HomeBlockId, ShopNode> {
   const copy = shopCopyForFamily(input);
-  const photos = shopPlaceholders(input.sector);
+  const photos = shopPlaceholders(input.sector, input.templateId);
+  const template = resolveShopSectorTemplate(input.templateId, input.sector);
+  const wash = template?.wash ?? WASH;
   const textCol = [
     emptyNode("Heading", { text: copy.aboutHeading, level: "h2" }),
     emptyNode("Text", { text: copy.aboutText }),
@@ -581,26 +605,26 @@ export function buildHomeLayout(input: { name: string; sector: string; city?: st
   ];
   const imageCol = [emptyNode("Image", { image: photos.split.image, imageAlt: copy.aboutImageAlt })];
 
-  return asLayout([
-    emptyNode("Hero", {
+  return {
+    hero: emptyNode("Hero", {
       heading: copy.heroHeading,
       sub: copy.heroSub,
       ctaLabel: copy.heroCta,
       image: photos.hero.image,
       imageAlt: copy.heroImageAlt,
-      padding: "80px 0",
+      padding: template?.heroPadding ?? "80px 0",
     }),
-    emptyNode("Features", {
+    features: emptyNode("Features", {
       heading: copy.featuresHeading,
       features: copy.features,
       padding: "64px 0",
     }),
-    emptyNode("Section", {
+    proof: emptyNode("Section", {
       padding: "64px 0",
-      background: WASH,
+      background: wash,
       children: [emptyNode("Heading", { text: copy.proofHeading, level: "h2" }), columnsOf(copy.proof)],
     }),
-    emptyNode("Section", {
+    about: emptyNode("Section", {
       padding: "64px 0",
       children: [
         emptyNode("Columns", {
@@ -611,26 +635,43 @@ export function buildHomeLayout(input: { name: string; sector: string; city?: st
         }),
       ],
     }),
-    emptyNode("Categories", { heading: copy.categoriesHeading, padding: "64px 0" }),
-    emptyNode("Catalog", { heading: copy.catalogHeading, limit: 8, padding: "64px 0" }),
-    emptyNode("Section", {
+    categories: emptyNode("Categories", { heading: copy.categoriesHeading, padding: "64px 0" }),
+    catalog: emptyNode("Catalog", { heading: copy.catalogHeading, limit: 8, padding: "64px 0" }),
+    process: emptyNode("Section", {
       padding: "64px 0",
-      background: WASH,
+      background: wash,
       children: [emptyNode("Heading", { text: copy.processHeading, level: "h2" }), columnsOf(copy.process)],
     }),
-    emptyNode("Faq", { heading: copy.faqHeading, faq: copy.faq, padding: "64px 0" }),
-    emptyNode("QuoteCta", {
+    faq: emptyNode("Faq", { heading: copy.faqHeading, faq: copy.faq, padding: "64px 0" }),
+    quote: emptyNode("QuoteCta", {
       heading: copy.quoteHeading,
       text: copy.quoteText,
       ctaLabel: copy.quoteCta,
       padding: "64px 0",
     }),
-  ]);
+  };
 }
 
-export function buildCatalogLayout(input: { name: string; sector: string; city?: string }): ShopLayout {
+export function buildHomeLayout(input: {
+  name: string;
+  sector: string;
+  city?: string;
+  templateId?: string | null;
+}): ShopLayout {
+  const rhythm = homeRhythmFor(input.sector, input.templateId);
+  const blocks = homeBlocks(input);
+  return asLayout(rhythm.map((id) => blocks[id]));
+}
+
+export function buildCatalogLayout(input: {
+  name: string;
+  sector: string;
+  city?: string;
+  templateId?: string | null;
+}): ShopLayout {
   const copy = shopCopyForFamily(input);
-  const photos = shopPlaceholders(input.sector);
+  const photos = shopPlaceholders(input.sector, input.templateId);
+  const template = resolveShopSectorTemplate(input.templateId, input.sector);
   return asLayout([
     emptyNode("Hero", {
       heading: copy.catalogHeroHeading,
@@ -638,7 +679,7 @@ export function buildCatalogLayout(input: { name: string; sector: string; city?:
       ctaLabel: copy.heroCta,
       image: photos.catalog.image,
       imageAlt: copy.heroImageAlt,
-      padding: "80px 0",
+      padding: template?.heroPadding ?? "80px 0",
     }),
     emptyNode("Categories", { heading: copy.categoriesHeading, padding: "64px 0" }),
     emptyNode("Catalog", { heading: copy.catalogHeading, limit: 24, padding: "64px 0" }),
@@ -651,17 +692,7 @@ export function buildCatalogLayout(input: { name: string; sector: string; city?:
   ]);
 }
 
-export const HOME_RHYTHM = [
-  "Hero",
-  "Features",
-  "Section",
-  "Section",
-  "Categories",
-  "Catalog",
-  "Section",
-  "Faq",
-  "QuoteCta",
-] as const;
+export const HOME_RHYTHM = homeTypeSequence(DEFAULT_HOME_RHYTHM);
 
 export function layoutTypeSequence(layout: ShopLayout): string[] {
   return layout.content.map((node) => node.type);
@@ -708,7 +739,7 @@ Checklist obligatoire :
 1. get_tree slug=accueil puis slug=catalogue (lis les ids, n’invente pas).
 2. Hero accueil : heading spécifique au brief (pas seulement le nom), chapô 2 phrases métier, image + imageAlt remplis. CTA = demander un devis.
 3. Features, preuves (colonnes), à-propos (colonnes texte + image), FAQ, QuoteCta : vocabulaire du secteur / brief. Jamais « acheter », « panier », « checkout », « payer en ligne ».
-4. Rythme accueil à conserver ou rétablir : Hero → Features → preuves (Section + Columns) → à-propos (Section + Columns) → Categories → Catalog → parcours (Section + Columns) → Faq → QuoteCta.
+4. Rythme accueil : conserve Hero, Features, Categories, Catalog, Faq, QuoteCta et les 3 Sections (preuves, à-propos, parcours). L’ordre peut suivre le template (atelier menuiserie, rituel skincare, spec stock B2B). Ne réordonne pas sans raison.
 5. Catalogue : Hero imagé + Categories + Catalog + QuoteCta. Insère un QuoteCta s’il manque.
 6. Tous les slots image vides : renseigne image + imageAlt (placeholders ci-dessous si le brief n’envoie pas de photo).
 7. set_page_seo accueil et catalogue (title unique, meta 150-160 caractères). set_seo global + GEO si une ville est dans le brief.
