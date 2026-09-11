@@ -31,6 +31,36 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
       a: "Ouvrez le funnel démo rayonnage et la boutique démo, puis comparez avec votre formulaire actuel sur un cas réel. Si le brief sort plus chiffrable, vous avez votre réponse.",
     },
   ],
+  "relancer-devis-hot-depuis-dossier": [
+    {
+      q: "Qu’est-ce qu’un devis Hot concrètement ?",
+      a: "Un dossier dont le score dépasse un seuil écrit (souvent 80/100) : fit, urgence, brief complet, signal budget, engagement. Ce n’est pas « le commercial a un bon feeling ».",
+    },
+    {
+      q: "Faut-il toujours appeler un Hot ?",
+      a: "Pas toujours, mais souvent oui quand le brief demande une visite, un décideur, ou une contrainte site. Si le Hot est un complément catalogue simple, un mail précis le jour même peut suffire. Le dossier doit guider le canal.",
+    },
+    {
+      q: "Que faire si le Hot n’a pas d’owner ?",
+      a: "Assigner immédiatement, même temporairement. Un Hot sans owner est un défaut de process. Tant que « l’équipe » est owner, le SLA est fictif.",
+    },
+    {
+      q: "Les automations peuvent-elles relancer les Hot toutes seules ?",
+      a: "Elles peuvent confirmer, notifier, et porter une partie de la cadence post-devis. Elles ne doivent pas masquer un Hot avec question ouverte non traitée.",
+    },
+    {
+      q: "Combien de relances avant de classer perdu ?",
+      a: "Assez pour couvrir votre calendrier écrit (souvent 4 à 6 touches utiles sur un cycle court), puis une sortie claire : perdu, nurture Cold, ou report avec date.",
+    },
+    {
+      q: "Comment construire la séquence sans partir de zéro ?",
+      a: "Utilisez le générateur de séquence de relances, validez le ton en équipe, branchez le répétitif dans les automations, gardez les étapes à jugement dans le dossier.",
+    },
+    {
+      q: "Par où tester le process dans QuoteBuilder ?",
+      a: "Côté prospect : démo funnel rayonnage. Côté vendeur : essai Free pour voir accueil, liste Demandes, détail dossier, automations.",
+    },
+  ],
   "score-demande-devis-b2b": [
     {
       q: "Faut-il montrer le score au prospect ?",
