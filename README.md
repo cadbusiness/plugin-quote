@@ -27,6 +27,8 @@ WordPress : plugin dans `extensions/quotebuilder-wp/`. Shortcode `[quotebuilder 
 
 MCP (Claude Desktop) : package `quotebuilder-mcp/` — voir `docs/mcp.md`. Clés API dans **Paramètres → API & webhooks**.
 
+Notes de version in-app : **Support → Mises à jour** (`/mises-a-jour`). Pour publier une version, voir `docs/mises-a-jour.md`.
+
 ### Plugin WP — auto-update (pattern BeautyHub)
 
 Le plugin vérifie le manifeste public Supabase (`bucket wp-plugin` → `info.json`) et propose la mise à jour dans **Extensions**, sans passer par wordpress.org.

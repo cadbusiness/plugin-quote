@@ -46,6 +46,7 @@ export async function middleware(request: NextRequest) {
     "/segments",
     "/integrations",
     "/acquisition",
+    "/mises-a-jour",
   ];
   const isApp = appPaths.some((p) => path === p || path.startsWith(`${p}/`) || path.startsWith(`${p}.`));
   const isAdmin = path === "/admin" || path.startsWith("/admin/");
@@ -157,6 +158,8 @@ export const config = {
     "/integrations/:path*",
     "/acquisition",
     "/acquisition/:path*",
+    "/mises-a-jour",
+    "/mises-a-jour/:path*",
     "/api/ads/:path*",
     "/invite/:path*",
     "/login",

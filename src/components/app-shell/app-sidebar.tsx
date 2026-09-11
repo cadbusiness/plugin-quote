@@ -137,12 +137,14 @@ export function AppSidebar({
   isPlatformAdmin = false,
   email,
   snapshot,
+  unreadUpdates = 0,
   collapsed: initialCollapsed = false,
 }: {
   isAdmin: boolean;
   isPlatformAdmin?: boolean;
   email: string | null;
   snapshot: SidebarSnapshot;
+  unreadUpdates?: number;
   collapsed?: boolean;
 }) {
   const pathname = usePathname();
@@ -241,7 +243,7 @@ export function AppSidebar({
                 <PanelLeftOpen className="h-4 w-4" />
               </button>
             )}
-            <SupportMenu collapsed isAdmin={isAdmin} />
+            <SupportMenu collapsed isAdmin={isAdmin} unreadUpdates={unreadUpdates} />
             <span
               title={display}
               className="mt-1 flex h-8 w-8 items-center justify-center rounded-lg bg-[#E85D04] text-xs font-semibold text-white"
@@ -261,7 +263,7 @@ export function AppSidebar({
           </div>
         ) : (
           <>
-            <SupportMenu collapsed={false} isAdmin={isAdmin} />
+            <SupportMenu collapsed={false} isAdmin={isAdmin} unreadUpdates={unreadUpdates} />
             <div className="mt-1 flex items-center gap-2 rounded-lg px-1.5 py-1">
               <span
                 title={display}

@@ -886,6 +886,51 @@ export type Database = {
         }
         Relationships: []
       }
+      product_update_reads: {
+        Row: {
+          last_seen_version: string
+          seen_at: string
+          user_id: string
+        }
+        Insert: {
+          last_seen_version: string
+          seen_at?: string
+          user_id: string
+        }
+        Update: {
+          last_seen_version?: string
+          seen_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      product_updates: {
+        Row: {
+          created_at: string
+          id: string
+          items: Json
+          released_at: string | null
+          title: string
+          version: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          items?: Json
+          released_at?: string | null
+          title: string
+          version: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          items?: Json
+          released_at?: string | null
+          title?: string
+          version?: string
+        }
+        Relationships: []
+      }
       prospect_access: {
         Row: {
           id: string
