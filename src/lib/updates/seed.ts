@@ -2,8 +2,21 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024_product_updates.sql`. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.9.0",
+    version: "1.9.0",
+    title: "Notes de version dans le dashboard",
+    items: [
+      "Nouvelle page Support → Mises à jour pour parcourir les nouveautés produit.",
+      "Un badge non lu apparaît dans le menu Support jusqu’à l’ouverture.",
+      "Accès aussi depuis Paramètres.",
+      "Les versions non lues affichent une pastille « Nouveau ».",
+    ],
+    releasedAt: "2026-09-11",
+    createdAt: "2026-09-11T00:00:00.000Z",
+  },
   {
     id: "seed-1.8.0",
     version: "1.8.0",
