@@ -174,6 +174,19 @@ export const BLOG_POSTS: BlogPost[] = [
     pinned: false,
   },
   {
+    slug: "devis-en-ligne-integre-boutique",
+    path: "/blog/devis-en-ligne-integre-boutique",
+    title: "Devis en ligne intégré boutique : le configurateur reste dans votre vitrine",
+    description:
+      "Comment intégrer un devis en ligne et un configurateur dans la boutique publique : même chrome, CTA Ajouter au devis, route /devis, dossier vendeur. Process, 3 démos, checklist.",
+    publishedAt: "2026-09-11",
+    readingMinutes: 11,
+    tags: ["funnel", "catalogue"],
+    ctaHref: "https://www.quotebuilder.co/b/demo/atelier-peau-claire/devis",
+    cover: "/images/blog/devis-en-ligne-integre-boutique/unify-shop-home.png",
+    pinned: false,
+  },
+  {
     slug: "configurateur-devis-vs-excel-pdf",
     path: "/blog/configurateur-devis-vs-excel-pdf",
     title: "Configurateur de devis vs Excel + PDF + email : ce qui change vraiment",
