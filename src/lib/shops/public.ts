@@ -2,6 +2,7 @@ import { cache } from "react";
 import { createServiceClient } from "@/lib/supabase/service";
 import { loadShopProducts } from "@/lib/shops/document";
 import { navFromRow, pageFromRow, parseLegal, parseSeo, parseStatus, parseTheme } from "@/lib/shops/parse";
+import { pickPreferredBySlug, publicShopSlugs } from "@/lib/demo/public-slugs";
 import type { ShopDocument, ShopProduct } from "@/lib/shops/types";
 
 export type PublicShop = {
@@ -25,12 +26,13 @@ export const loadPublicShop = cache(async function loadPublicShop(
   const supabase = createServiceClient();
   const { data: org } = await supabase.from("organizations").select("id, name, slug").eq("slug", orgSlug).maybeSingle();
   if (!org) return null;
-  const { data: shop } = await supabase
+  const slugs = publicShopSlugs(org.slug, shopSlug);
+  const { data: matches } = await supabase
     .from("shops")
     .select("*")
     .eq("organization_id", org.id)
-    .eq("slug", shopSlug)
-    .maybeSingle();
+    .in("slug", slugs);
+  const shop = pickPreferredBySlug(matches, slugs);
   if (!shop) return null;
   const status = parseStatus(shop.status);
   if (status === "archived") return null;

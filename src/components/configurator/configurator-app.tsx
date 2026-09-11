@@ -437,8 +437,11 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded }: Props) 
   if (loading) {
     return <div className="flex min-h-[28rem] items-center justify-center text-slate-500">Chargement…</div>;
   }
-  if (!definition || !session) {
+  if (!definition) {
     return <div className="p-8 text-center text-slate-500">Configurateur introuvable.</div>;
+  }
+  if (!session) {
+    return <div className="p-8 text-center text-slate-500">Impossible de démarrer la session.</div>;
   }
 
   const accent = String(definition.configurator.theme.accent ?? "#d97706");

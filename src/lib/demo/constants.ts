@@ -1,4 +1,4 @@
-export const DEMO_SEED_VERSION = 1;
+export const DEMO_SEED_VERSION = 2;
 
 export const DEMO_ORG = {
   name: "QuoteBuilder Démo",
@@ -12,8 +12,10 @@ export const DEMO_ORG = {
 } as const;
 
 export const DEMO_FUNNEL_SLUG = "rayonnage";
-export const DEMO_FUNNEL_ALIASES = ["rayonnage", "principal"] as const;
+/** Canonical first, then legacy slugs seen on the demo org (onboarding + UI create). */
+export const DEMO_FUNNEL_ALIASES = ["rayonnage", "principal", "funnel-rayonnage"] as const;
 export const DEMO_SHOP_SLUG = "vitrine";
+export const DEMO_SHOP_ALIASES = ["vitrine", "espace-demo", "vitrine-rayonnage"] as const;
 
 export const DEMO_ACCOUNTS = [
   {

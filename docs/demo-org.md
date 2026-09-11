@@ -98,3 +98,22 @@ Ne pas inventer un second seed parallèle. Ne pas toucher l’org `quickly` depu
 4. Partager le mot de passe aux agents via le coffre d’équipe, pas Slack en clair.
 
 `scripts/seed-demo-users.mjs` délègue à ce CLI (rétrocompat).
+
+## URLs publiques cassées (`/c/demo/rayonnage`, `/b/demo/vitrine`)
+
+Les résolveurs publics honorent les alias de l’org `demo` uniquement
+(`principal` / `funnel-rayonnage` → funnel, `espace-demo` / `vitrine-rayonnage` → boutique).
+Le seed v2 remap ces slugs vers `rayonnage` et `vitrine`.
+
+Si la prod a encore les slugs hérités **et** que le seed ne peut pas tourner tout de suite :
+
+1. Ouvrir le SQL editor du projet Supabase `spgskgtycqxjziwjpjol`.
+2. Exécuter `scripts/fix-demo-public-slugs.sql` (idempotent, org `demo` seulement).
+3. Dès que les secrets sont dispo : `npm run seed:demo` pour aligner nom, chat, catalogue et boutique.
+
+Vérifier :
+
+```bash
+curl -sS "https://www.quotebuilder.co/api/public/configurator/demo/rayonnage" | jq '.configurator.slug,.configurator.chatEnabled'
+curl -sS -o /dev/null -w "%{http_code}\n" "https://www.quotebuilder.co/b/demo/vitrine"
+```
