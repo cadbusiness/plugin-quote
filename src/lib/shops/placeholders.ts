@@ -20,7 +20,7 @@ const SETS: Record<FunnelFamilyId, ShopPlaceholderSet> = {
   racking: {
     hero: { image: unsplash("photo-1586528116311-ad8dd3c8310d"), hint: "Entrepôt B2B, travées" },
     split: { image: unsplash("photo-1553413077-190dd305871c", 1400), hint: "Allée palettier" },
-    catalog: { image: unsplash("photo-1565793298595-6a880e38b7da", 1400), hint: "Rayonnage industriel" },
+    catalog: { image: unsplash("photo-1587293852726-70cdb56c2866", 1400), hint: "Rayonnage industriel" },
   },
   habitat: {
     hero: { image: unsplash("photo-1504148455328-c376907d081c"), hint: "Atelier de menuiserie" },
@@ -50,7 +50,7 @@ const SETS: Record<FunnelFamilyId, ShopPlaceholderSet> = {
   health: {
     hero: { image: unsplash("photo-1570172619644-dfd03ed5d881"), hint: "Rituel skincare" },
     split: { image: unsplash("photo-1544161515-4ab6ce6db874", 1400), hint: "Espace de soin apaisé" },
-    catalog: { image: unsplash("photo-1556228720-1951f5d5c0de", 1400), hint: "Actifs et protocoles" },
+    catalog: { image: unsplash("photo-1612817288484-6f916006741a", 1400), hint: "Actifs et protocoles" },
   },
   tech: {
     hero: { image: unsplash("photo-1519389950473-47ba0277781c"), hint: "Équipe produit" },
