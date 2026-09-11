@@ -7,12 +7,14 @@ import {
   getFeatureHref,
   type FeatureSlug,
 } from "@/lib/marketing/content";
+import { pageMetadata } from "@/lib/marketing/site";
 
-export const metadata: Metadata = {
-  title: "Fonctionnalités · QuoteBuilder",
+export const metadata: Metadata = pageMetadata({
+  title: "Fonctionnalités",
   description:
     "Funnel, catalogue, pipeline, autopilote, espace prospect, stats, équipe, intégrations. La plateforme complète.",
-};
+  path: "/fonctionnalites",
+});
 
 function featureBySlug(slug: FeatureSlug) {
   return FEATURES.find((f) => f.slug === slug)!;
