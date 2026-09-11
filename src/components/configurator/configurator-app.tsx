@@ -13,6 +13,7 @@ import {
   resolveConfiguratorTheme,
   type ConfiguratorThemeOverride,
 } from "@/lib/configurator/theme";
+import { shopConfiguratorApiPath, shopSuggestionsApiPath } from "@/lib/shops/catalog-scope";
 import type {
   Answers,
   ConfiguratorDefinition,
@@ -29,11 +30,30 @@ export type { ConfiguratorThemeOverride };
 type Props = {
   orgSlug: string;
   configuratorSlug: string;
+  shopSlug?: string;
+  /** Shop-linked catalog id. When set, definition/session must match this catalog. */
+  shopConfiguratorId?: string;
   embedded?: boolean;
   themeOverride?: ConfiguratorThemeOverride;
 };
 
-const SESSION_KEY = (org: string, slug: string) => `qb-session:${org}:${slug}`;
+const SESSION_KEY = (org: string, slug: string, shopSlug?: string) =>
+  shopSlug ? `qb-session:${org}:shop:${shopSlug}` : `qb-session:${org}:${slug}`;
+
+function definitionUrl(
+  orgSlug: string,
+  configuratorSlug: string,
+  shopSlug?: string,
+  shopConfiguratorId?: string,
+) {
+  if (shopSlug) return shopConfiguratorApiPath(orgSlug, shopSlug, shopConfiguratorId);
+  return `/api/public/configurator/${orgSlug}/${configuratorSlug}`;
+}
+
+function suggestionsUrl(sessionId: string, orgSlug: string, shopSlug?: string) {
+  if (!shopSlug) return `/api/public/sessions/${sessionId}/suggestions`;
+  return shopSuggestionsApiPath(sessionId, orgSlug, shopSlug);
+}
 
 async function api<T>(url: string, init?: RequestInit & { token?: string }): Promise<T> {
   const headers = new Headers(init?.headers);
@@ -103,13 +123,19 @@ function attributionBody(attr: Attribution) {
   };
 }
 
-async function trackPageView(orgSlug: string, configuratorSlug: string, attr: Attribution) {
+async function trackPageView(
+  orgSlug: string,
+  configuratorSlug: string,
+  attr: Attribution,
+  shopSlug?: string,
+) {
   await fetch("/api/public/track", {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({
       orgSlug,
       configuratorSlug,
+      shopSlug,
       eventType: ANALYTICS_EVENTS.pageView,
       ...attributionBody(attr),
       search: typeof window !== "undefined" ? window.location.search : "",
@@ -126,7 +152,14 @@ async function track(session: QuoteSession | null, eventType: string, step?: num
   }).catch(() => undefined);
 }
 
-export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded, themeOverride }: Props) {
+export function ConfiguratorApp({
+  orgSlug,
+  configuratorSlug,
+  shopSlug,
+  shopConfiguratorId,
+  embedded,
+  themeOverride,
+}: Props) {
   const [definition, setDefinition] = useState<ConfiguratorDefinition | null>(null);
   const [session, setSession] = useState<QuoteSession | null>(null);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -148,15 +181,21 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded, themeOver
     (async () => {
       try {
         const def = await api<ConfiguratorDefinition>(
-          `/api/public/configurator/${orgSlug}/${configuratorSlug}`,
+          definitionUrl(orgSlug, configuratorSlug, shopSlug, shopConfiguratorId),
         );
         if (cancelled) return;
+        if (
+          (shopConfiguratorId && def.configurator.id !== shopConfiguratorId) ||
+          (shopSlug && def.configurator.slug !== configuratorSlug)
+        ) {
+          throw new Error("Ce catalogue n’appartient pas à cette boutique");
+        }
         setDefinition(def);
-        const stored = localStorage.getItem(SESSION_KEY(orgSlug, configuratorSlug));
+        const stored = localStorage.getItem(SESSION_KEY(orgSlug, configuratorSlug, shopSlug));
         const attr = readAttribution();
         const fromWidget = new URLSearchParams(window.location.search).has("qb_vid");
         if (!embedded || !fromWidget) {
-          await trackPageView(orgSlug, configuratorSlug, attr);
+          await trackPageView(orgSlug, configuratorSlug, attr, shopSlug);
         }
         let next: QuoteSession | null = null;
         if (stored) {
@@ -164,11 +203,20 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded, themeOver
           next = await api<QuoteSession>(`/api/public/sessions/${parsed.id}`, {
             token: parsed.token,
           }).catch(() => null);
+          if (next && shopSlug && next.configuratorId && next.configuratorId !== def.configurator.id) {
+            next = null;
+          }
         }
         if (!next) {
           next = await api<QuoteSession>("/api/public/sessions", {
             method: "POST",
-            body: JSON.stringify({ orgSlug, configuratorSlug, ...attributionBody(attr) }),
+            body: JSON.stringify({
+              orgSlug,
+              configuratorSlug,
+              configuratorId: shopConfiguratorId,
+              shopSlug,
+              ...attributionBody(attr),
+            }),
           });
         } else {
           await api<QuoteSession>(`/api/public/sessions/${next.id}`, {
@@ -195,8 +243,15 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded, themeOver
           const seeded = suggestionFromProducts(applied.matched);
           if (seeded) setSuggestions([seeded]);
         }
+        if (
+          sessionNext.configuratorId &&
+          ((shopConfiguratorId && sessionNext.configuratorId !== shopConfiguratorId) ||
+            sessionNext.configuratorId !== def.configurator.id)
+        ) {
+          throw new Error("Ce catalogue n’appartient pas à cette boutique");
+        }
         localStorage.setItem(
-          SESSION_KEY(orgSlug, configuratorSlug),
+          SESSION_KEY(orgSlug, configuratorSlug, shopSlug),
           JSON.stringify({ id: sessionNext.id, token: sessionNext.token }),
         );
         setSession(sessionNext);
@@ -214,6 +269,8 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded, themeOver
           track(sessionNext, ANALYTICS_EVENTS.started, 0);
           pushGa(def.organization.gaMeasurementId, ANALYTICS_EVENTS.started, { step: 0 });
         }
+      } catch {
+        if (!cancelled) setDefinition(null);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -221,7 +278,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded, themeOver
     return () => {
       cancelled = true;
     };
-  }, [orgSlug, configuratorSlug, embedded]);
+  }, [orgSlug, configuratorSlug, shopSlug, shopConfiguratorId, embedded]);
 
   useEffect(() => {
     const gtm = definition?.organization.gtmContainerId?.trim();
@@ -302,7 +359,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded, themeOver
   async function loadSuggestions(current = session) {
     if (!current) return;
     const data = await api<{ suggestions: Suggestion[] }>(
-      `/api/public/sessions/${current.id}/suggestions`,
+      suggestionsUrl(current.id, orgSlug, shopSlug),
       { token: current.token },
     );
     setSuggestions(data.suggestions);
@@ -445,7 +502,11 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, embedded, themeOver
     return <div className="flex min-h-[28rem] items-center justify-center text-slate-500">Chargement…</div>;
   }
   if (!definition) {
-    return <div className="p-8 text-center text-slate-500">Configurateur introuvable.</div>;
+    return (
+      <div className="p-8 text-center text-slate-500">
+        {shopSlug ? "Catalogue de cette boutique introuvable." : "Configurateur introuvable."}
+      </div>
+    );
   }
   if (!session) {
     return <div className="p-8 text-center text-slate-500">Impossible de démarrer la session.</div>;

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/service";
 import { resolvePublicConfigurator } from "@/lib/public/session";
+import { gateShopCatalogRequest, resolveShopCatalog } from "@/lib/shops/catalog-scope";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 import { attributionPayload, parseAttribution } from "@/lib/stats/attribution";
 import { clientIp, rateLimit, rateLimitResponse } from "@/lib/security/rate-limit";
@@ -10,7 +11,9 @@ const ALLOWED = new Set<string>(Object.values(ANALYTICS_EVENTS));
 
 const schema = z.object({
   orgSlug: z.string().min(1),
-  configuratorSlug: z.string().min(1),
+  configuratorSlug: z.string().min(1).optional(),
+  configuratorId: z.string().min(1).optional(),
+  shopSlug: z.string().min(1).optional(),
   eventType: z.string().min(1),
   visitorId: z.string().optional(),
   sessionId: z.string().optional(),
@@ -42,7 +45,19 @@ export async function POST(req: Request) {
   if (!ALLOWED.has(parsed.data.eventType)) {
     return cors(NextResponse.json({ error: "Événement inconnu" }, { status: 400 }));
   }
-  const resolved = await resolvePublicConfigurator(parsed.data.orgSlug, parsed.data.configuratorSlug);
+  let resolved: { organizationId: string; configuratorId: string } | null = null;
+  if (parsed.data.shopSlug) {
+    const gate = gateShopCatalogRequest(await resolveShopCatalog(parsed.data.orgSlug, parsed.data.shopSlug), {
+      configuratorId: parsed.data.configuratorId,
+      configuratorSlug: parsed.data.configuratorSlug,
+    });
+    if (!gate.ok) {
+      return cors(NextResponse.json({ error: gate.error }, { status: gate.status }));
+    }
+    resolved = { organizationId: gate.scope.organizationId, configuratorId: gate.scope.configuratorId };
+  } else if (parsed.data.configuratorSlug) {
+    resolved = await resolvePublicConfigurator(parsed.data.orgSlug, parsed.data.configuratorSlug);
+  }
   if (!resolved) {
     return cors(NextResponse.json({ error: "Configurateur introuvable" }, { status: 404 }));
   }
