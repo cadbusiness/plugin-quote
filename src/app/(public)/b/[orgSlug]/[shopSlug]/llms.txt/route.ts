@@ -2,7 +2,7 @@ import { groupProductsByCategory } from "@/lib/catalog/group";
 import { loadPublicShop } from "@/lib/shops/public";
 import { llmsTxt } from "@/lib/shops/seo";
 import { getAppUrl } from "@/lib/supabase/env";
-import { quoteFunnelPath } from "@/lib/shops/urls";
+import { shopQuotePath } from "@/lib/shops/urls";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ orgSlug: string; shopSlug: string }> }) {
   const { orgSlug, shopSlug } = await params;
@@ -14,7 +14,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ orgSlug
     legal: shop.legal,
     pages: shop.pages.map((page) => ({ title: page.title, slug: page.slug })),
     categories: groupProductsByCategory(shop.products).map((group) => group.label),
-    quoteUrl: quoteFunnelPath(shop.orgSlug, shop.funnelSlug),
+    quoteUrl: `${getAppUrl()}${shopQuotePath(shop.orgSlug, shop.doc.shop.slug)}`,
     origin: getAppUrl(),
     orgSlug: shop.orgSlug,
     shopSlug: shop.doc.shop.slug,

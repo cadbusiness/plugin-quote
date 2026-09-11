@@ -6,7 +6,7 @@ import { shopPagePath } from "@/lib/shops/urls";
 
 type Props = { params: Promise<{ orgSlug: string; shopSlug: string; pageSlug: string }> };
 
-const RESERVED = new Set(["catalogue", "c", "p", "sitemap.xml", "robots.txt", "llms.txt"]);
+const RESERVED = new Set(["catalogue", "c", "p", "devis", "sitemap.xml", "robots.txt", "llms.txt"]);
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { orgSlug, shopSlug, pageSlug } = await params;
