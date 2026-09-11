@@ -2,8 +2,22 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.10.0",
+    version: "1.10.0",
+    title: "Templates boutique par secteur",
+    items: [
+      "Trois bases prêtes à l’emploi : menuiserie, soins (skincare) et stock B2B.",
+      "Chaque template a son thème, son rythme de page et ses textes métier.",
+      "Choix du modèle dans la boîte de création de boutique (cartes dédiées + autres secteurs).",
+      "Le Chat IA reprend le vocabulaire et les images du template choisi.",
+      "La boutique reste en demande de devis (pas de checkout).",
+    ],
+    releasedAt: "2026-09-11",
+    createdAt: "2026-09-11T00:00:00.000Z",
+  },
   {
     id: "seed-1.9.3",
     version: "1.9.3",
