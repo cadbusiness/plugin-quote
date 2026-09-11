@@ -2,8 +2,21 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.9.3",
+    version: "1.9.3",
+    title: "Inspecteur boutique : padding et marges appliqués",
+    items: [
+      "Padding et marge saisis dans l’inspecteur s’appliquent enfin sur le canvas (les nombres sans unité deviennent des px).",
+      "Steppers +/− pour padding, marge, taille, graisse, top, left, z-index, arrondi, hauteur min et gutter.",
+      "Les styles de l’inspecteur passent devant les presets vitrine (police, couleur, graisse).",
+      "Saisie au clavier inchangée ; les steppers ajustent au clic.",
+    ],
+    releasedAt: "2026-09-11",
+    createdAt: "2026-09-11T00:00:00.000Z",
+  },
   {
     id: "seed-1.9.2",
     version: "1.9.2",
