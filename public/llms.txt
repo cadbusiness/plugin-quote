@@ -45,6 +45,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Relancer un devis Hot depuis le dossier : https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier
 - Délai de réponse à une demande de devis B2B : https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b
 - Template boutique en ligne menuiserie devis : https://www.quotebuilder.co/blog/template-boutique-en-ligne-menuiserie-devis
+- Devis en ligne intégré boutique : https://www.quotebuilder.co/blog/devis-en-ligne-integre-boutique
 - Pourquoi les devis meurent sans relance : https://www.quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance
 - Formulaire de contact vs funnel de devis : https://www.quotebuilder.co/blog/formulaire-contact-vs-funnel-devis-b2b
 - Installer le widget devis : https://www.quotebuilder.co/blog/installer-widget-devis-wordpress-javascript

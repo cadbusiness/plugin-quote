@@ -78,6 +78,7 @@ for (const required of [
   "/blog/relancer-devis-hot-depuis-dossier",
   "/blog/delai-reponse-demande-devis-b2b",
   "/blog/template-boutique-en-ligne-menuiserie-devis",
+  "/blog/devis-en-ligne-integre-boutique",
   "/blog/score-demande-devis-b2b",
   "/blog/configurateur-devis-vs-excel-pdf",
   "/legal/cgu",
@@ -87,7 +88,7 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 10);
+assert.equal(BLOG_POSTS.length, 11);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "visite-guidee-parcours-devis-b2b")?.tags, [
   "funnel",
   "scoring",
@@ -133,6 +134,21 @@ assert.equal(
 assert.equal(BLOG_POSTS.find((post) => post.slug === "template-boutique-en-ligne-menuiserie-devis")?.readingMinutes, 12);
 assert.equal(BLOG_POSTS.find((post) => post.slug === "template-boutique-en-ligne-menuiserie-devis")?.publishedAt, "2026-09-11");
 assert.equal(BLOG_POSTS.find((post) => post.slug === "template-boutique-en-ligne-menuiserie-devis")?.pinned, false);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "devis-en-ligne-integre-boutique")?.tags, [
+  "funnel",
+  "catalogue",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "devis-en-ligne-integre-boutique")?.ctaHref,
+  "https://www.quotebuilder.co/b/demo/atelier-peau-claire/devis",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "devis-en-ligne-integre-boutique")?.cover,
+  "/images/blog/devis-en-ligne-integre-boutique/unify-shop-home.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "devis-en-ligne-integre-boutique")?.readingMinutes, 11);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "devis-en-ligne-integre-boutique")?.publishedAt, "2026-09-11");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "devis-en-ligne-integre-boutique")?.pinned, false);
 assert.equal(
   BLOG_POSTS.find((post) => post.slug === "visite-guidee-parcours-devis-b2b")?.ctaHref,
   "/c/demo/rayonnage",
@@ -165,7 +181,7 @@ assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tag
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 5);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 5);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 2);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 3);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
 assert.equal(midArticleHeadingIndex(12), 5);
 assert.ok(trimMetaDescription(BLOG_POSTS[0]!.description).length <= 155);
@@ -304,6 +320,17 @@ const requiredSources = {
     "/secteurs/funnel-devis-menuiserie-sur-mesure",
     "/signup?plan=free",
   ],
+  "devis-en-ligne-integre-boutique.md": [
+    "/images/blog/devis-en-ligne-integre-boutique/unify-shop-home.png",
+    "/images/blog/devis-en-ligne-integre-boutique/unify-add-or-catalog.png",
+    "/images/blog/devis-en-ligne-integre-boutique/unify-devis-skincare.png",
+    "/images/blog/devis-en-ligne-integre-boutique/unify-devis-menuiserie.png",
+    "/images/blog/devis-en-ligne-integre-boutique/unify-devis-stock.png",
+    "/b/demo/atelier-peau-claire/devis",
+    "/b/demo/atelier-bois-nord/devis",
+    "/b/demo/stock-pro-b2b/devis",
+    "/signup?plan=free",
+  ],
   "funnel-devis-location-evenementiel.md": [
     "/images/secteurs/funnel-devis-location-evenementiel/09-public-funnel.png",
     "/images/secteurs/funnel-devis-location-evenementiel/03-devis.png",
@@ -371,6 +398,17 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(templateBody, /signup\?plan=free/);
+}
+
+{
+  const unifyRaw = readFileSync(join(blogDir, "devis-en-ligne-integre-boutique.md"), "utf8");
+  assert.ok(unifyRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const unifyBody = stripFrontmatter(unifyRaw);
+  assert.ok(
+    unifyBody.startsWith("# Devis en ligne intégré boutique"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(unifyBody, /signup\?plan=free/);
 }
 
 {
@@ -472,6 +510,7 @@ const llmsPaths = [
   "/blog/relancer-devis-hot-depuis-dossier",
   "/blog/delai-reponse-demande-devis-b2b",
   "/blog/template-boutique-en-ligne-menuiserie-devis",
+  "/blog/devis-en-ligne-integre-boutique",
   "/blog/score-demande-devis-b2b",
   "/blog/configurateur-devis-vs-excel-pdf",
   "/outils/score-brief-devis",
@@ -614,6 +653,20 @@ const templateShopImages = [
 const templateShopDir = join(process.cwd(), "public/images/blog/template-boutique-secteur-devis");
 for (const name of templateShopImages) {
   const file = join(templateShopDir, name);
+  assert.ok(existsSync(file), `missing blog image ${name}`);
+  assert.ok(statSync(file).size > 10_000, `${name} is too small to be a real screenshot`);
+}
+
+const unifyShopImages = [
+  "unify-shop-home.png",
+  "unify-add-or-catalog.png",
+  "unify-devis-skincare.png",
+  "unify-devis-menuiserie.png",
+  "unify-devis-stock.png",
+];
+const unifyShopDir = join(process.cwd(), "public/images/blog/devis-en-ligne-integre-boutique");
+for (const name of unifyShopImages) {
+  const file = join(unifyShopDir, name);
   assert.ok(existsSync(file), `missing blog image ${name}`);
   assert.ok(statSync(file).size > 10_000, `${name} is too small to be a real screenshot`);
 }

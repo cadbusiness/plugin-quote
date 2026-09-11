@@ -219,6 +219,32 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
       a: "Oui. Menuiserie Atelier Bois Nord, skincare Atelier Peau Claire, stock Stock Pro B2B. Chaque démo a son catalogue dédié sous /catalogue.",
     },
   ],
+  "devis-en-ligne-integre-boutique": [
+    {
+      q: "Qu’est-ce qu’un devis en ligne intégré boutique concrètement ?",
+      a: "C’est un parcours de demande de devis storefront servi sous l’URL boutique (/b/.../devis), avec le même header/footer que le catalogue, et des CTA shop-local (Devis, Ajouter au devis). La soumission crée un dossier commercial.",
+    },
+    {
+      q: "Est-ce que le funnel /c disparaît ?",
+      a: "Non. Il reste pertinent pour les landings projet et l’acquisition où le catalogue n’est pas le point d’entrée. Ce qui change : depuis la boutique publique, vous n’êtes plus forcé de sortir vers /c pour composer.",
+    },
+    {
+      q: "« Ajouter au devis » remplace-t-il le panier e-commerce ?",
+      a: "Oui, dans une logique quote-request only. Le prospect assemble un brief, pas une commande à encaisser. Les prix affichés sont des fourchettes catalogue ; le devis écrit tranche.",
+    },
+    {
+      q: "Pourquoi certaines démos affichent « Calcul des configurations… » ?",
+      a: "Sur les templates catalogue-first (menuiserie, stock), l’étape Catalogue charge les gammes et règles. Le message est un état de chargement live. Attendez quelques secondes puis continuez ; ce n’est pas un blocage du chrome boutique.",
+    },
+    {
+      q: "Puis-je garder mon site WordPress et n’utiliser que la boutique devis ?",
+      a: "Oui. Beaucoup d’équipes gardent le site corporate et publient la vitrine QuoteBuilder pour le catalogue + devis. L’important est que le clic « Demander un devis » mène à un brief structuré, pas à un mailto.",
+    },
+    {
+      q: "Combien de temps pour tester en démo ?",
+      a: "Zéro compte pour les trois URLs /devis listées plus haut. Pour votre propre boutique : compte Free, choix d’un template secteur, publish, test du chrome sur /devis.",
+    },
+  ],
   "sync-catalogue-woocommerce-shopify-parcours-devis": [
     {
       q: "La sync remplace-t-elle la boutique ?",
