@@ -10,6 +10,26 @@ export type BlogPost = {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "score-demande-devis-b2b",
+    path: "/blog/score-demande-devis-b2b",
+    title: "Comment scorer et prioriser une demande de devis B2B (grille 0–100)",
+    description:
+      "Guide pratique : scorer les demandes de devis B2B (fit, urgence, complétude, budget, comportement). Grille 0–100, playbooks Hot/Warm/Cold, métriques et FAQ.",
+    publishedAt: "2026-09-11",
+    readingMinutes: 12,
+    eyebrow: "Pilotage",
+  },
+  {
+    slug: "configurateur-devis-vs-excel-pdf",
+    path: "/blog/configurateur-devis-vs-excel-pdf",
+    title: "Configurateur de devis vs Excel + PDF + email : ce qui change vraiment",
+    description:
+      "Comparatif pragmatique : parcours / configurateur de devis contre Excel, PDF et emails. Erreurs, marge, cycle time, multi-décideurs, migration et FAQ pour PME B2B.",
+    publishedAt: "2026-09-11",
+    readingMinutes: 11,
+    eyebrow: "Acquisition",
+  },
+  {
     slug: "pourquoi-les-devis-meurent-sans-relance",
     path: "/blog/pourquoi-les-devis-meurent-sans-relance",
     title: "Pourquoi les devis meurent sans relance",

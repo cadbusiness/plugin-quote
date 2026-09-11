@@ -1,6 +1,58 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "score-demande-devis-b2b": [
+    {
+      q: "Faut-il montrer le score au prospect ?",
+      a: "Non en général. Montrez plutôt un récap clair du brief et les prochaines étapes. Le score est un outil interne de priorisation.",
+    },
+    {
+      q: "Un score 100 est-il réaliste ?",
+      a: "Rarement, et ce n’est pas grave. Un Hot à 82 bien traité bat un « 100 » cosmétique.",
+    },
+    {
+      q: "Peut-on scorer uniquement à la main ?",
+      a: "Oui jusqu’à ~30 devis / mois. Au-delà, la dérive est quasi certaine sans pipeline.",
+    },
+    {
+      q: "Lead scoring CRM vs score devis : que garder ?",
+      a: "Gardez le firmographique marketing en amont. Pour les demandes de devis, basculez sur la grille 5 axes. Mélanger les deux sans règles crée des Hot marketing qui sont Cold opérationnels.",
+    },
+    {
+      q: "Que faire des demandes multi-décideurs ?",
+      a: "Ajoutez un bonus comportement si plusieurs contacts du même compte engagent. Le cycle s’allonge, mais le signal d’achat monte souvent.",
+    },
+    {
+      q: "Comment lier score et pricing SaaS / outil ?",
+      a: "Si vous industrialisez le parcours (funnel, catalogue, pipeline), un outil comme QuoteBuilder (Free puis Starter / Pro / Agency selon volume) sert surtout à capturer les champs du score et à exécuter les playbooks, pas à remplacer le jugement commercial.",
+    },
+  ],
+  "configurateur-devis-vs-excel-pdf": [
+    {
+      q: "Configurateur, CPQ, funnel de devis : c’est la même chose ?",
+      a: "Pas exactement. CPQ (Configure Price Quote) couvre souvent configuration + pricing + quote dans des contextes complexes. Un funnel de devis capture un brief chiffrable et orchestre la suite (score, relances). Pour beaucoup de PME, le funnel suffit avant un CPQ lourd.",
+    },
+    {
+      q: "Peut-on garder le PDF ?",
+      a: "Oui. Beaucoup d’équipes génèrent encore un PDF en sortie d’un parcours. La différence : le PDF n’est plus la seule source de vérité.",
+    },
+    {
+      q: "Et la signature électronique ?",
+      a: "Utile plus tard. D’abord fiabiliser brief + offre + suivi. Signer plus vite un devis faux n’aide personne.",
+    },
+    {
+      q: "Comment former l’équipe ?",
+      a: "Une session d’1 h sur le parcours, un cheat sheet des 10 règles, et une revue hebdo des dossiers bizarre pendant 1 mois. Pas un séminaire de 2 jours.",
+    },
+    {
+      q: "Quel ROI attendre ?",
+      a: "Mesurez cycle time, taux d’erreur, close rate des dossiers Hot, et heures commerciales récupérées. Les benchmarks externes donnent le courage. Vos chiffres donnent la décision.",
+    },
+    {
+      q: "QuoteBuilder remplace-t-il Excel à 100 % ?",
+      a: "Non, et ce n’est pas le but. Il structure l’entrée, le pipeline et les relances. Les cas extrêmes restent hybrides.",
+    },
+  ],
   "pourquoi-les-devis-meurent-sans-relance": [
     {
       q: "Les statistiques Invesp / Belkins / ZoomInfo valent-elles pour le B2B français ?",

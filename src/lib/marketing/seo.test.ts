@@ -3,6 +3,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { BLOG_POSTS } from "./blog";
 import { BLOG_FAQ } from "./blog-faq";
+import { computeBriefScore } from "./brief-score";
 import { computeLostQuote } from "./lost-quote";
 import { MARKETING_ROUTES } from "./routes";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
@@ -47,8 +48,12 @@ for (const required of [
   "/blog/pourquoi-les-devis-meurent-sans-relance",
   "/outils/cout-devis-non-relance",
   "/outils/generateur-sequence-relances",
+  "/outils/score-brief-devis",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
+  "/secteurs/funnel-devis-menuiserie-sur-mesure",
+  "/blog/score-demande-devis-b2b",
+  "/blog/configurateur-devis-vs-excel-pdf",
   "/legal/cgu",
   "/legal/confidentialite",
   "/fonctionnalites/funnel",
@@ -56,11 +61,11 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 4);
+assert.equal(BLOG_POSTS.length, 6);
 
 const blogDir = join(process.cwd(), "src/content/blog");
 const blogFiles = readdirSync(blogDir).filter((name) => name.endsWith(".md"));
-assert.ok(blogFiles.length >= 4, "expected blog markdown files");
+assert.ok(blogFiles.length >= 6, "expected blog markdown files");
 
 const requiredSources = {
   "pourquoi-les-devis-meurent-sans-relance.md": [
@@ -84,6 +89,19 @@ const requiredSources = {
     "/blog/pourquoi-les-devis-meurent-sans-relance",
     "/blog/installer-widget-devis-wordpress-javascript",
     "/fonctionnalites/integrations",
+  ],
+  "score-demande-devis-b2b.md": [
+    "https://www.webyn.ai/blog/taux-conversion-moyen-b2b",
+    "https://brixongroup.com/en/benchmark-study-how-top-performers-in-the-dach-industrial-sector-achieve-three-times-higher-conversion-rates",
+    "/blog/formulaire-contact-vs-funnel-devis-b2b",
+    "/outils/score-brief-devis",
+    "/secteurs/funnel-devis-menuiserie-sur-mesure",
+  ],
+  "configurateur-devis-vs-excel-pdf.md": [
+    "/blog/score-demande-devis-b2b",
+    "/blog/formulaire-contact-vs-funnel-devis-b2b",
+    "/secteurs/funnel-devis-menuiserie-sur-mesure",
+    "/outils/score-brief-devis",
   ],
 } as const;
 
@@ -128,5 +146,55 @@ const lost = computeLostQuote({
 assert.equal(lost.monthlyCurrent, 40 * 3500 * 0.12);
 assert.equal(lost.monthlyGap, 40 * 3500 * 0.1);
 assert.equal(lost.annualGap, lost.monthlyGap * 12);
+
+const emptyBrief = computeBriefScore({
+  products: null,
+  constraints: null,
+  budget: null,
+  urgency: null,
+  fit: null,
+});
+assert.equal(emptyBrief.total, 0);
+assert.equal(emptyBrief.band, "pending");
+
+const hotBrief = computeBriefScore({
+  products: 25,
+  constraints: 20,
+  budget: 20,
+  urgency: 20,
+  fit: 15,
+});
+assert.equal(hotBrief.total, 100);
+assert.equal(hotBrief.band, "hot");
+
+const warmBrief = computeBriefScore({
+  products: 18,
+  constraints: 14,
+  budget: 14,
+  urgency: 8,
+  fit: 6,
+});
+assert.equal(warmBrief.total, 60);
+assert.equal(warmBrief.band, "warm");
+
+const parkingBrief = computeBriefScore({
+  products: 0,
+  constraints: 0,
+  budget: 0,
+  urgency: 0,
+  fit: 0,
+});
+assert.equal(parkingBrief.total, 0);
+assert.equal(parkingBrief.band, "parking");
+
+const llmsPaths = [
+  "/blog/score-demande-devis-b2b",
+  "/blog/configurateur-devis-vs-excel-pdf",
+  "/outils/score-brief-devis",
+  "/secteurs/funnel-devis-menuiserie-sur-mesure",
+];
+for (const path of llmsPaths) {
+  assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
+}
 
 console.log("marketing seo tests ok");

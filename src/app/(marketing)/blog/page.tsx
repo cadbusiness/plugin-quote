@@ -7,7 +7,7 @@ import { pageMetadata } from "@/lib/marketing/site";
 export const metadata: Metadata = pageMetadata({
   title: "Blog",
   description:
-    "Devis B2B, relances, funnel vs formulaire, widget WordPress, sync WooCommerce / Shopify. Textes longs, sources, outils.",
+    "Devis B2B, scoring, configurateur vs Excel, relances, funnel vs formulaire, widget WordPress, sync WooCommerce / Shopify.",
   path: "/blog",
 });
 

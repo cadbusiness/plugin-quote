@@ -26,6 +26,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Intégrations : https://www.quotebuilder.co/fonctionnalites/integrations
 - Secteurs : https://www.quotebuilder.co/secteurs
 - Funnel devis rayonnage & stockage : https://www.quotebuilder.co/secteurs/funnel-devis-rayonnage-stockage
+- Funnel devis menuiserie sur mesure : https://www.quotebuilder.co/secteurs/funnel-devis-menuiserie-sur-mesure
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
@@ -33,9 +34,12 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Formulaire de contact vs funnel de devis : https://www.quotebuilder.co/blog/formulaire-contact-vs-funnel-devis-b2b
 - Installer le widget devis : https://www.quotebuilder.co/blog/installer-widget-devis-wordpress-javascript
 - Sync WooCommerce / Shopify : https://www.quotebuilder.co/blog/sync-catalogue-woocommerce-shopify-parcours-devis
+- Score demande devis B2B : https://www.quotebuilder.co/blog/score-demande-devis-b2b
+- Configurateur de devis vs Excel + PDF : https://www.quotebuilder.co/blog/configurateur-devis-vs-excel-pdf
 - Outils : https://www.quotebuilder.co/outils
 - Calculateur coût d’un devis non relancé : https://www.quotebuilder.co/outils/cout-devis-non-relance
 - Générateur de séquence de relances : https://www.quotebuilder.co/outils/generateur-sequence-relances
+- Score brief devis : https://www.quotebuilder.co/outils/score-brief-devis
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 

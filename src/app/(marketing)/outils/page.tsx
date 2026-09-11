@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/marketing/site";
 export const metadata: Metadata = pageMetadata({
   title: "Outils devis B2B",
   description:
-    "Calculateur de CA perdu sans relance, générateur de séquence e-mails T+0 à T+30 j. Outils gratuits QuoteBuilder.",
+    "Calculateur de CA perdu sans relance, générateur de séquence e-mails, score de brief 0–100. Outils gratuits QuoteBuilder.",
   path: "/outils",
 });
 
@@ -23,6 +23,12 @@ const TOOLS = [
     title: "Générateur de séquence de relances",
     text: "T+0, T+4 h, T+24 h, T+3 j, T+7 j, T+30 j. Sujets et corps prêts à copier, selon le secteur.",
   },
+  {
+    href: "/outils/score-brief-devis",
+    eyebrow: "Pilotage",
+    title: "Score brief devis (0–100)",
+    text: "Cinq questions pondérées. Score live et reco Hot / Warm / Cold / Parking avant de chiffrer.",
+  },
 ] as const;
 
 export default function OutilsIndexPage() {
@@ -35,7 +41,7 @@ export default function OutilsIndexPage() {
             Chiffrer le trou. Rédiger les touches.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-[#1A1510]/70 sm:text-lg">
-            Deux outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
+            Trois outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
           </p>
         </div>
       </section>
