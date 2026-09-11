@@ -1,30 +1,16 @@
 Le rayonnage se vend rarement en un clic. Une travée a une charge, une hauteur, une profondeur, un environnement (sec, froid, alimentaire), un sol, un délai de pose, parfois une norme. Le prospect qui écrit « on veut du rayonnage pour 400 m² » n’a pas encore un devis. Il a une intention. Le commercial qui rappelle sans brief passe la première heure à faire le questionnaire que le site n’a pas posé.
 
-Un funnel de devis pour le stockage inverse cette heure. Le prospect compose les travées, la charge et la surface. Vous recevez un dossier chiffrable. L’autopilote relance et assigne. C’est le pitch de la famille QuoteBuilder « Rayonnage & stockage » — et c’est le métier de cette page.
+Un funnel de devis pour le stockage inverse cette heure. Le prospect compose les travées, la charge et la surface. Vous recevez un dossier chiffrable. L’autopilote relance et assigne. C’est le pitch de la famille QuoteBuilder « Rayonnage & stockage », et c’est le métier de cette page.
 
 ## Pourquoi le formulaire contact rate ce secteur
 
 Le stockage est un achat multi-contraintes. Un champ libre écrase tout. « Entrepôt à équiper » peut vouloir dire : mezzanine, cantilever, dynamique, picking, archives, réserve de magasin. Chaque famille a des questions différentes. Les mélanger dans un message unique garantit un appel de requalification.
 
-Trois conséquences, toujours les mêmes chez les fabricants et revendeurs.
-
-**Le devis part trop tôt ou trop tard.** Trop tôt : une fourchette large, le prospect compare mal. Trop tard : trois allers-retours, le concurrent a déjà une offre « assez bonne ».
-
-**Le catalogue n’entre pas dans le site.** Les gammes vivent dans un ERP, un tarif Excel, parfois WooCommerce avec des photos. La page Contact n’y touche pas. Le commercial rouvre le tarif à la main.
-
-**Les relances meurent.** Un projet d’entrepôt a un cycle long. Le premier interlocuteur n’est pas l’acheteur. Sans [cinq touches utiles](/blog/pourquoi-les-devis-meurent-sans-relance), le dossier s’enterre sous les urgences de pose.
+Les conséquences reviennent souvent chez les fabricants et revendeurs. Le devis part trop tôt ou trop tard : trop tôt, une fourchette large, le prospect compare mal ; trop tard, trois allers-retours, le concurrent a déjà une offre « assez bonne ». Le catalogue n’entre pas dans le site : les gammes vivent dans un ERP, un tarif Excel, parfois WooCommerce avec des photos, et la page Contact n’y touche pas. Le commercial rouvre le tarif à la main. Et les relances meurent. Un projet d’entrepôt a un cycle long. Le premier interlocuteur n’est pas l’acheteur. Sans [cinq touches utiles](/blog/pourquoi-les-devis-meurent-sans-relance), le dossier s’enterre sous les urgences de pose.
 
 ## Ce que le prospect doit configurer
 
-Un bon parcours rayonnage n’est pas un configurateur 3D. C’est un brief. Les écrans qui reviennent :
-
-- **Usage.** Réserve, picking, archives, cantilever long, froid, alimentaire.
-- **Géométrie.** Surface au sol, hauteur sous barre, longueur d’allée, obstacles.
-- **Charge.** Par niveau, par travée, type de charge (palette, bac, pneus, tôles).
-- **Environnement.** Sol, sismicité, hygrométrie, contraintes incendie — au moins un signal.
-- **Délai et site.** Date d’exploitation, accès engins, déchargement.
-- **Budget indicatif.** Fourchette, pas un prix public mensonger.
-- **Identité.** Progressive : le projet d’abord, l’e-mail dès qu’il y a assez pour relancer un abandon.
+Un bon parcours rayonnage n’est pas un configurateur 3D. C’est un brief. Les écrans qui reviennent : usage (réserve, picking, archives, cantilever long, froid, alimentaire), géométrie (surface au sol, hauteur sous barre, longueur d’allée, obstacles), charge (par niveau, par travée, type de charge : palette, bac, pneus, tôles), environnement (sol, sismicité, hygrométrie, contraintes incendie, au moins un signal), délai et site (date d’exploitation, accès engins, déchargement), budget indicatif (fourchette, pas un prix public mensonger), et l’identité en progressif. Le projet d’abord, l’e-mail dès qu’il y a assez pour relancer un abandon.
 
 QuoteBuilder pose ces steps dans un [funnel](/fonctionnalites/funnel) : choix, texte, fichier (plan, photo de l’existant), produits, chat IA si le cas est tordu, soumission. Le wizard cadre. Le chat débloque. Le dossier est le même.
 
@@ -54,19 +40,15 @@ La plupart des rayonnagistes ont déjà un WordPress, parfois Woo. [Deux lignes 
 
 ## Ce que QuoteBuilder n’est pas
 
-Pas un ERP de production. Pas un logiciel d’implantation 3D. Pas un checkout de racks au mètre. Le devis reste un document humain, préparé à partir d’un brief machine. Les équipes qui réussissent gardent le commercial sur la proposition et l’exception. Elles retirent au commercial le questionnaire et le suivi à vide.
+Pas un ERP de production. Pas un logiciel d’implantation 3D. Pas un checkout de racks au mètre. Le devis reste un document humain, préparé à partir d’un brief machine. Les équipes qui s’en sortent gardent le commercial sur la proposition et l’exception. Elles retirent au commercial le questionnaire et le suivi à vide.
 
 ## Un parcours type, écran par écran
 
 Voici un enchaînement qui tient sur mobile, dans une réserve, entre deux palettes.
 
-1. **Usage.** Quatre choix maximum : réserve palette, picking, cantilever / long, archives / magasin. Un cinquième « autre » ouvre le chat ou un champ texte.
-2. **Surface et hauteur.** Chiffres ronds. Personne ne mesure au millimètre dans un funnel. Assez pour scorer et pour choisir une famille.
-3. **Charge.** Palettes, kg par niveau, ou « on ne sait pas » — ce dernier choix est précieux : il signale un dossier à requalifier, pas un dossier à jeter.
-4. **Contrainte site.** Accès, sol, alimentaire / froid, délai d’exploitation. Cases, pas dissertation.
-5. **Gamme.** Deux ou trois séries actives, photos réelles, fourchette. Si/Alors a déjà filtré.
-6. **Plan ou photo.** Optionnel mais décisif. L’espace prospect permet d’ajouter plus tard.
-7. **Identité.** E-mail, société, téléphone. L’e-mail plus tôt si vous voulez relancer les abandons.
+L’usage d’abord, quatre choix maximum : réserve palette, picking, cantilever / long, archives / magasin. Un cinquième « autre » ouvre le chat ou un champ texte. Ensuite surface et hauteur, chiffres ronds. Personne ne mesure au millimètre dans un funnel. Assez pour scorer et pour choisir une famille.
+
+La charge : palettes, kg par niveau, ou « on ne sait pas ». Ce dernier choix est précieux. Il signale un dossier à requalifier, pas un dossier à jeter. La contrainte site (accès, sol, alimentaire / froid, délai d’exploitation) se pose en cases, pas en dissertation. La gamme : deux ou trois séries actives, photos réelles, fourchette. Si/Alors a déjà filtré. Le plan ou la photo, optionnel mais souvent décisif. L’espace prospect permet d’ajouter plus tard. L’identité en dernier : e-mail, société, téléphone. L’e-mail plus tôt si vous voulez relancer les abandons.
 
 Six à huit écrans. Au-delà, vous recréez le cahier des charges que le prospect fuyait. En deçà, vous recréez le formulaire.
 
@@ -100,18 +82,22 @@ Le [Free](/tarifs) montre l’interface. L’annuel : Starter 39 €/mois, Pro 7
 
 Vous n’avez pas besoin d’une usine à contenu. Trois URLs tiennent beaucoup de demandes.
 
-- **/devis** — le funnel. H1 « Demander un devis rayonnage », délai, widget.
-- **/rayonnage-industriel** ou équivalent — le contenu qui qualifie (charge, normes, cas). Lien fort vers /devis.
-- **Fiches gammes** — photo, fourchette, bouton « Configurer ». Pas un ajout panier si vous ne vendez pas au mètre.
+La page /devis porte le funnel. H1 « Demander un devis rayonnage », délai, widget. Une page /rayonnage-industriel (ou équivalent) porte le contenu qui qualifie : charge, normes, cas. Lien fort vers /devis. Les fiches gammes : photo, fourchette, bouton « Configurer ». Pas un ajout panier si vous ne vendez pas au mètre.
 
 Les templates de mots-clés QuoteBuilder (racking, cantilever, installation entrepôt) se collent dans Google Ads. Mesurez le devis, pas le clic. Un CPC bas sur « rayonnage pas cher » qui amène des curieux sans surface ni charge n’est pas une victoire. Un CPC plus haut sur « installation racking palette 800 kg » qui amène trois dossiers Hot, si.
 
 Le [blog](/blog) côté QuoteBuilder (relances, formulaire vs funnel, widget, sync) peut se mailler depuis vos pages ressources, en citation, pas en copier-coller. Votre expertise reste la pose et la charge. La nôtre, le système autour du devis.
 
-Si vous voulez uniquement chiffrer le trou avant d’équiper : [calculateur](/outils/cout-devis-non-relance). Si vous voulez les e-mails : [séquence](/outils/generateur-sequence-relances). Puis le produit.
+Si vous voulez uniquement chiffrer le trou avant d’équiper : [calculateur](/outils/cout-devis-non-relance). Si vous voulez les e-mails : [séquence](/outils/generateur-sequence-relances). Puis le produit, si ça tient la route.
 
 ## Ce que l’équipe voit le lundi matin
 
 Sans système : une boîte info@, trois PDF dans les envoyés, un tableau « à relancer » que personne n’a ouvert depuis jeudi, un prospect qui rappelle « vous avez eu le temps de regarder ? ». Avec QuoteBuilder : une liste flush, les Hot en haut, les abandons à part, les runs d’autopilote sur la fiche, un espace où le plan de vendredi a été déposé. Le commercial prépare deux propositions. Il ne reconstitue pas six briefs.
 
-C’est tout le sujet du secteur. Le rayonnage est déjà assez technique. Le logiciel n’a pas à l’être. Il a à empêcher que la technique se noie dans des messages vides. Famille présélectionnée, template, widget, sync si la boutique existe. Dublin pour l’éditeur, votre dépôt pour la pose.
+C’est un peu tout le sujet du secteur. Le rayonnage est déjà assez technique. Le logiciel n’a pas à l’être. Il a à empêcher que la technique se noie dans des messages vides. Famille présélectionnée, template, widget, sync si la boutique existe. Dublin pour l’éditeur, votre dépôt pour la pose.
+
+Un exemple banal, pour coller les morceaux. Un responsable d’exploitation écrit « besoin de racks pour 400 m², rappelez-moi ». Sans funnel, vous avez un mobile et une surface. Avec funnel, vous avez déjà l’usage (réserve palette), une hauteur sous barre, une charge au niveau, une photo du sol, un e-mail. Même si le devis final prend encore une visite, la première heure de questionnaire a déjà eu lieu. C’est ça que le secteur gagne, pas un configurateur magique.
+
+Si vous hésitez encore entre formulaire et parcours, relisez [formulaire vs funnel](/blog/formulaire-contact-vs-funnel-devis-b2b). Si le site est déjà là, le [widget](/blog/installer-widget-devis-wordpress-javascript) pose le funnel sans refonte. Le reste, c’est de lire cinq dossiers et d’ajuster deux questions.
+
+Les équipes qui bloquent le plus longtemps sont souvent celles qui veulent le parcours « parfait » avant de le publier. Publiez un funnel court. Lisez les cinq premières demandes. Coupez une question trop floue, ajoutez la contrainte qui manquait. Le template rayonnage est un point de départ, pas un cahier des charges figé.

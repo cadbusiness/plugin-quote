@@ -109,8 +109,8 @@ export default function RayonnageLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Équipez le parcours, pas seulement l’entrepôt."
-        text="Template rayonnage. Free sans carte."
+        title="Essayer le template rayonnage"
+        text="Un parcours charge, travées, surface. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

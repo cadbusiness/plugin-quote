@@ -5,7 +5,7 @@ import { COMPANY, pageMetadata } from "@/lib/marketing/site";
 
 export const metadata: Metadata = pageMetadata({
   title: "Politique de confidentialité",
-  description: `Politique de confidentialité ${COMPANY.product} (${COMPANY.legalName}, Dublin). Brouillon RGPD — à valider par un avocat.`,
+  description: `Politique de confidentialité ${COMPANY.product} (${COMPANY.legalName}, Dublin). Brouillon RGPD, à valider par un avocat.`,
   path: "/legal/confidentialite",
 });
 
@@ -46,7 +46,7 @@ export default function PrivacyPage() {
               <li>Facturation : [prestataire de paiement à préciser], identifiants de plan.</li>
               <li>Usage : événements funnel, soumissions, journaux techniques.</li>
               <li>Prospects (pour le compte du client) : identité progressive, réponses, fichiers.</li>
-              <li>Cookies / mesure : [liste à figer — analytics, session, Ads si connecté].</li>
+              <li>Cookies / mesure : [liste à figer : analytics, session, Ads si connecté].</li>
             </ul>
           </section>
           <section>
@@ -60,7 +60,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold tracking-tight text-[#1A1510]">4. Destinataires et sous-traitants</h2>
             <p className="mt-3">
-              Hébergement et infrastructure : [Vercel / Supabase / e-mail — à lister]. Transferts
+              Hébergement et infrastructure : [Vercel / Supabase / e-mail, à lister]. Transferts
               hors UE : [mécanisme SCC / décision d’adéquation à documenter]. Pas de vente de
               données prospects à des tiers à des fins publicitaires.
             </p>

@@ -5,7 +5,7 @@ import { COMPANY, pageMetadata } from "@/lib/marketing/site";
 
 export const metadata: Metadata = pageMetadata({
   title: "Conditions d’utilisation",
-  description: `Conditions d’utilisation de ${COMPANY.product} — brouillon édité par ${COMPANY.legalName} (Dublin). À valider par un avocat.`,
+  description: `Conditions d’utilisation de ${COMPANY.product}, brouillon édité par ${COMPANY.legalName} (Dublin). À valider par un avocat.`,
   path: "/legal/cgu",
 });
 
@@ -83,7 +83,7 @@ export default function CguPage() {
             <h2 className="text-xl font-semibold tracking-tight text-[#1A1510]">6. Droit applicable</h2>
             <p className="mt-3">
               Droit irlandais, tribunaux de Dublin, sauf disposition impérative contraire [à
-              valider — clients UE / consommateurs].
+              valider, clients UE / consommateurs].
             </p>
           </section>
         </div>

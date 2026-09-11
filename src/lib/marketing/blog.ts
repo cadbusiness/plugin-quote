@@ -14,7 +14,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/pourquoi-les-devis-meurent-sans-relance",
     title: "Pourquoi les devis meurent sans relance",
     description:
-      "80 % des ventes demandent 5 relances. 44 % des équipes s’arrêtent à la première. Sources Invesp, Belkins, ZoomInfo — et ce qu’un autopilote change.",
+      "80 % des ventes demandent 5 relances. 44 % des équipes s’arrêtent à la première. Sources Invesp, Belkins, ZoomInfo, et ce qu’un calendrier de relances change vraiment.",
     publishedAt: "2026-09-11",
     readingMinutes: 12,
     eyebrow: "Pilotage",

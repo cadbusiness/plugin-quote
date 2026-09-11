@@ -1,9 +1,13 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 import { BLOG_POSTS } from "./blog";
+import { BLOG_FAQ } from "./blog-faq";
 import { computeLostQuote } from "./lost-quote";
 import { MARKETING_ROUTES } from "./routes";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
+
+const EM_DASH = /\u2014/;
 
 assert.equal(SITE_HOST, "www.quotebuilder.co");
 assert.equal(APEX_HOST, "quotebuilder.co");
@@ -53,6 +57,58 @@ for (const required of [
 }
 
 assert.equal(BLOG_POSTS.length, 4);
+
+const blogDir = join(process.cwd(), "src/content/blog");
+const blogFiles = readdirSync(blogDir).filter((name) => name.endsWith(".md"));
+assert.ok(blogFiles.length >= 4, "expected blog markdown files");
+
+const requiredSources = {
+  "pourquoi-les-devis-meurent-sans-relance.md": [
+    "https://www.invespcro.com/blog/follow-up-sales-emails/",
+    "https://belkins.io/blog/b2b-sales-follow-up-statistics",
+    "https://pipeline.zoominfo.com/sales/sales-follow-up-statistics",
+    "/blog/formulaire-contact-vs-funnel-devis-b2b",
+    "/outils/cout-devis-non-relance",
+  ],
+  "formulaire-contact-vs-funnel-devis-b2b.md": [
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/blog/installer-widget-devis-wordpress-javascript",
+    "/fonctionnalites/funnel",
+  ],
+  "installer-widget-devis-wordpress-javascript.md": [
+    "/blog/formulaire-contact-vs-funnel-devis-b2b",
+    "/blog/sync-catalogue-woocommerce-shopify-parcours-devis",
+    "www.quotebuilder.co",
+  ],
+  "sync-catalogue-woocommerce-shopify-parcours-devis.md": [
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/blog/installer-widget-devis-wordpress-javascript",
+    "/fonctionnalites/integrations",
+  ],
+} as const;
+
+for (const file of blogFiles) {
+  const body = readFileSync(join(blogDir, file), "utf8");
+  assert.doesNotMatch(body, EM_DASH, `${file} still contains an em dash`);
+  const words = body.split(/\s+/).filter(Boolean).length;
+  assert.ok(words >= 1800, `${file} is too short for SEO (${words} words)`);
+  const extras = requiredSources[file as keyof typeof requiredSources];
+  if (extras) {
+    for (const needle of extras) {
+      assert.match(body, new RegExp(needle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), `${file} missing ${needle}`);
+    }
+  }
+}
+
+for (const post of BLOG_POSTS) {
+  assert.doesNotMatch(post.title, EM_DASH, `${post.slug} title has an em dash`);
+  assert.doesNotMatch(post.description, EM_DASH, `${post.slug} description has an em dash`);
+  assert.ok(BLOG_FAQ[post.slug]?.length, `${post.slug} missing FAQ`);
+  for (const item of BLOG_FAQ[post.slug] ?? []) {
+    assert.doesNotMatch(item.q, EM_DASH, `${post.slug} FAQ question has an em dash`);
+    assert.doesNotMatch(item.a, EM_DASH, `${post.slug} FAQ answer has an em dash`);
+  }
+}
 
 const meta = pageMetadata({
   title: "Connexion",

@@ -54,7 +54,7 @@ export default function CoutDevisPage() {
       <section className="mx-auto max-w-3xl px-6 pb-4">
         <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">Comment le lire</h2>
         <p className="mt-4 text-[16px] leading-7 text-[#1A1510]/75">
-          Le taux actuel est votre closing réel sur les devis envoyés — pas le taux de leads du
+          Le taux actuel est votre closing réel sur les devis envoyés, pas le taux de leads du
           site. Le taux cible est ce que vous jugez tenable si confirmation, rappel interne et
           relances partent vraiment. L’outil ne simule pas la saisonnalité ni le mix produit.
         </p>

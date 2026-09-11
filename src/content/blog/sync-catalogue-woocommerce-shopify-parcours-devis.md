@@ -1,6 +1,6 @@
 Un catalogue boutique et un catalogue de devis ne servent pas le même moment. WooCommerce et Shopify excellent à afficher un prix, une photo, un panier. Le devis B2B commence quand le prix public ne suffit plus : charge, délai, variante, pose, minimum de commande, exception.
 
-La tentation est de tout resaisir dans un deuxième outil. C’est ainsi que naissent les écarts : un SKU à jour dans Woo, une vieille fourchette dans le PDF, un commercial qui promet une référence désactivée. La sync QuoteBuilder existe pour une seule raison : **une source produits, un parcours de devis à côté — pas à la place**.
+La tentation est de tout resaisir dans un deuxième outil. C’est ainsi que naissent les écarts : un SKU à jour dans Woo, une vieille fourchette dans le PDF, un commercial qui promet une référence désactivée. La sync QuoteBuilder existe pour une seule raison : **une source produits, un parcours de devis à côté, pas à la place**.
 
 ## Ce que la sync importe (et ce qu’elle ne promet pas)
 
@@ -14,33 +14,21 @@ La sync **n’est pas** un checkout. QuoteBuilder ne remplace pas le paiement Wo
 
 Sans catalogue, le funnel pose des questions abstraites. Avec catalogue, chaque réponse peut **suggérer**. C’est le Si/Alors : « réserve sèche + allée étroite » n’affiche pas la même gamme qu’« picking + forte rotation ». Le prospect voit ce que vous livrez. Vous recevez des lignes, pas un roman.
 
-Trois effets apparaissent vite.
-
-**Moins de promesses impossibles.** Une référence hors stock ou hors métier se désactive. Elle sort du parcours. Le commercial arrête de dire non après coup.
-
-**Un budget indicatif plus tôt.** Prix min / max ou fourchette, selon ce que vous exposez. Assez pour scorer. Pas assez pour se substituer à la proposition finale.
-
-**Un brief que l’autopilote peut citer.** Relancer « votre configuration rayonnage 4 m, 400 kg » n’a rien à voir avec « je reviens vers vous concernant votre demande ». Voir [pourquoi les devis meurent sans relance](/blog/pourquoi-les-devis-meurent-sans-relance).
+Les effets apparaissent assez vite. Une référence hors stock ou hors métier se désactive, elle sort du parcours, le commercial arrête de dire non après coup. Le budget indicatif arrive plus tôt (prix min / max ou fourchette, selon ce que vous exposez) : assez pour scorer, pas assez pour se substituer à la proposition finale. Et le brief que l’autopilote peut citer change tout. Relancer « votre configuration rayonnage 4 m, 400 kg » n’a rien à voir avec « je reviens vers vous concernant votre demande ». Voir [pourquoi les devis meurent sans relance](/blog/pourquoi-les-devis-meurent-sans-relance).
 
 ## WooCommerce : le cas le plus fréquent
 
 Beaucoup de PME ont déjà Woo pour une vitrine, parfois avec des prix cachés, parfois avec un panier que personne n’utilise. Le plugin WordPress QuoteBuilder peut masquer prix / panier, lister les demandes, préremplir le funnel. La sync alimente le catalogue côté QuoteBuilder.
 
-Schéma propre :
-
-1. Woo reste le référentiel produits (photos, déclinaisons, catégories).
-2. QuoteBuilder importe et synchronise.
-3. Les règles Si/Alors se posent dans QuoteBuilder, pas dans un plugin de logique Woo bricolé.
-4. Le [widget ou le bloc](/blog/installer-widget-devis-wordpress-javascript) ouvre le parcours sur le site.
-5. La [demande](/fonctionnalites/demandes) arrive scorée. L’[autopilote](/fonctionnalites/autopilote) enchaîne.
+Le schéma propre est assez simple. Woo reste le référentiel produits (photos, déclinaisons, catégories). QuoteBuilder importe et synchronise. Les règles Si/Alors se posent dans QuoteBuilder, pas dans un plugin de logique Woo bricolé. Le [widget ou le bloc](/blog/installer-widget-devis-wordpress-javascript) ouvre le parcours sur le site. La [demande](/fonctionnalites/demandes) arrive scorée. L’[autopilote](/fonctionnalites/autopilote) enchaîne.
 
 Ce que vous ne faites pas : recopier les SKU dans un tableur « pour le commercial ». Ce tableur a déjà trahi quelqu’un cette année.
 
 ## Shopify : même idée, autre admin
 
-Shopify est souvent plus propre sur le média et les variantes. L’app personnalisée en `read_products` suffit pour l’import. Vous ne construisez pas un storefront Hydrogen pour vendre sur devis. Vous branchez le catalogue, vous gardez le checkout Shopify pour ce qui se paie en ligne — pièces, accessoires, standard — et vous orientez le sur-mesure vers le funnel.
+Shopify est souvent plus propre sur le média et les variantes. L’app personnalisée en `read_products` suffit pour l’import. Vous ne construisez pas un storefront Hydrogen pour vendre sur devis. Vous branchez le catalogue, vous gardez le checkout Shopify pour ce qui se paie en ligne (pièces, accessoires, standard) et vous orientez le sur-mesure vers le funnel.
 
-Mélange fréquent : 80 % du catalogue est commandable. 20 % est du projet. Ce 20 % produit 80 % du CA. Le mettre dans le même panier que les consommables est un mensonge UX. Deux CTA : « Acheter » (Shopify) et « Configurer un devis » (QuoteBuilder). La sync garantit que les 20 % ont les bonnes photos et les bons noms.
+Mélange d’ailleurs fréquent : 80 % du catalogue est commandable. 20 % est du projet. Ce 20 % produit souvent 80 % du CA. Le mettre dans le même panier que les consommables est un mensonge UX. Deux CTA : « Acheter » (Shopify) et « Configurer un devis » (QuoteBuilder). La sync garantit que les 20 % ont les bonnes photos et les bons noms.
 
 ## Boutique native vs boutique syncée
 
@@ -50,17 +38,11 @@ Si vous avez déjà Woo ou Shopify, n’ouvrez pas une troisième vérité produ
 
 ## Qualité de sync : ce qu’il faut vérifier
 
-**Noms lisibles.** Un titre SEO Shopify n’est pas un libellé de step. Ajustez ce que le prospect voit dans le funnel.
+Les noms doivent rester lisibles. Un titre SEO Shopify n’est pas un libellé de step. Ajustez ce que le prospect voit dans le funnel. Sur les prix, fourchettes plutôt que prix public : en B2B, afficher le prix TTC d’une travée sans la pose ment un peu. Préférez une fourchette et un score, puis la proposition.
 
-**Prix.** Fourchettes vs prix public. En B2B, afficher le prix TTC d’une travée sans la pose ment. Préférez une fourchette et un score, puis la proposition.
+Une photo de gamme vaut mieux que vingt déclinaisons illisibles sur mobile. Côté fréquence, webhooks pour les changements, sync planifiée en filet. Un import manuel « un jour » redevient un tableur. Et n’activez pas tout : tout importer puis tout afficher noie le prospect. Activez le périmètre du funnel. Le reste attend.
 
-**Images.** Une photo de gamme vaut mieux que vingt déclinaisons illisibles sur mobile.
-
-**Fréquence.** Webhooks pour les changements. Sync planifiée en filet. Un import manuel « un jour » redevient un tableur.
-
-**Activation.** Tout importer puis tout afficher noie le prospect. Activez le périmètre du funnel. Le reste attend.
-
-## Règles Si/Alors : le catalogue devient intelligent
+## Règles Si/Alors : le catalogue devient un peu plus utile
 
 La sync apporte les fiches. Les règles apportent le métier. « Si hauteur > 6 m alors gamme X. » « Si usage alimentaire alors inox. » Sans règles, le catalogue est une liste. Avec règles, le parcours se comporte comme un commercial junior honnête : il ne propose que ce qui passe.
 
@@ -68,7 +50,7 @@ Ces règles sont dans QuoteBuilder, pas dans le thème. Elles survivent à un ch
 
 ## Mesurer autre chose que « produits importés »
 
-Un import à 400 SKU n’est pas un succès. Un succès, c’est : moins d’appels de requalification, plus de dossiers avec produits, un coût par devis Ads qui baisse parce que le brief est meilleur, un [écart de closing](/outils/cout-devis-non-relance) que vous pouvez montrer.
+Un import à 400 SKU n’est pas un succès. Un succès, c’est plutôt : moins d’appels de requalification, plus de dossiers avec produits, un coût par devis Ads qui baisse parce que le brief est meilleur, un [écart de closing](/outils/cout-devis-non-relance) que vous pouvez montrer.
 
 Les [stats par funnel](/fonctionnalites/stats) existent pour ça. Un funnel « projet » et un funnel « rechange » n’ont pas le même tunnel. Ne les mélangez pas dans un unique wizard parce que la sync a tout mis dans le même seau.
 
@@ -80,12 +62,7 @@ L’erreur classique est l’inverse : tout synchroniser, tout afficher, s’ét
 
 ## Gouvernance : qui a le droit de toucher à quoi
 
-Sans règle claire, la sync redevient un tableur. Décidez :
-
-- **Qui crée une fiche.** En général, la personne déjà responsable de Woo / Shopify. QuoteBuilder n’est pas un second PIM.
-- **Qui active dans le funnel.** Souvent le commercial ou l’admin devis. Une nouveauté boutique n’a pas à surgir dans un parcours projet le lendemain.
-- **Qui écrit les Si/Alors.** Quelqu’un qui connaît les exceptions (inox, délai, minimum). Pas un stagiaire « pour tester ».
-- **Qui coupe.** Une rupture, une gamme arrêtée, une photo mensongère : désactivation le jour même. La sync ne doit pas réactiver toute seule une fiche que vous avez volontairement retirée du devis — vérifiez le comportement d’un réimport avant d’automatiser.
+Sans règle claire, la sync redevient un tableur. Décidez qui crée une fiche (en général, la personne déjà responsable de Woo / Shopify ; QuoteBuilder n’est pas un second PIM), qui active dans le funnel (souvent le commercial ou l’admin devis ; une nouveauté boutique n’a pas à surgir dans un parcours projet le lendemain), qui écrit les Si/Alors (quelqu’un qui connaît les exceptions : inox, délai, minimum ; pas un stagiaire « pour tester »), et qui coupe. Une rupture, une gamme arrêtée, une photo mensongère : désactivation le jour même. La sync ne doit pas réactiver toute seule une fiche que vous avez volontairement retirée du devis. Vérifiez le comportement d’un réimport avant d’automatiser.
 
 Documentez ça en dix lignes dans l’équipe. Ce n’est pas de la processite. C’est ce qui empêche le brief de mentir.
 
@@ -109,7 +86,7 @@ Projet 100 % sur-mesure sans référence : le funnel peut vivre avec des questio
 
 WooCommerce et Shopify savent vendre ce qui a un prix. QuoteBuilder sait faire entrer ce qui a un brief. La sync est le pont : les fiches restent où elles sont maintenues, le parcours devient le dossier, l’autopilote a enfin quelque chose de précis à relancer.
 
-Deux référentiels, c’est deux mensonges en circulation. Un référentiel, un funnel, un pipeline : c’est un système de devis. Le reste est de la saisie.
+Deux référentiels, c’est deux versions qui divergent. Un référentiel, un funnel, un pipeline : c’est un système de devis. Le reste est de la saisie.
 
 ## Après la première semaine de sync
 
@@ -121,4 +98,6 @@ Puis branchez l’[autopilote](/fonctionnalites/autopilote). Un catalogue juste 
 
 Les [tarifs](/tarifs) : Woo dès Starter (39 €/mois en annuel), Shopify dès Pro (79 €/mois). Agency si plusieurs boutiques clientes. Free pour voir l’UI, pas pour une sync boutique.
 
-Un dernier test simple : prenez une référence que vous venez de renommer dans Woo ou Shopify. Attendez le webhook ou lancez une sync. Le funnel doit afficher le nouveau nom sans que vous touchiez un step. Si ce n’est pas le cas, le pont n’est pas en place — le commercial, lui, croit qu’il l’est. C’est exactement le genre d’écart qui fait renaître le tableur. Fermez-le avant d’annoncer que « le catalogue est branché ».
+Un dernier test simple : prenez une référence que vous venez de renommer dans Woo ou Shopify. Attendez le webhook ou lancez une sync. Le funnel doit afficher le nouveau nom sans que vous touchiez un step. Si ce n’est pas le cas, le pont n’est pas en place. Le commercial, lui, croit qu’il l’est. C’est exactement le genre d’écart qui fait renaître le tableur. Fermez-le avant d’annoncer que « le catalogue est branché ».
+
+Comptez aussi le délai. Un webhook qui met vingt minutes, ce n’est pas grave. Un import qui n’arrive jamais, si. Notez qui a lancé la dernière sync, et sur quelle boutique. Trois comptes Shopify plus tard, personne ne sait plus laquelle alimente le funnel.

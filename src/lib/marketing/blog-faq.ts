@@ -4,7 +4,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
   "pourquoi-les-devis-meurent-sans-relance": [
     {
       q: "Les statistiques Invesp / Belkins / ZoomInfo valent-elles pour le B2B français ?",
-      a: "Les pourcentages viennent d’études anglophones sur le suivi commercial. L’ordre de grandeur se retrouve chez les PME qui vendent sur devis : la première relance part, les suivantes meurent dans la boîte mail. C’est ce trou que l’autopilote referme.",
+      a: "Les pourcentages viennent d’études anglophones sur le suivi commercial. L’ordre de grandeur se retrouve chez les PME qui vendent sur devis : la première relance part, les suivantes restent dans les brouillons. L’autopilote sert surtout à ne pas oublier la suite.",
     },
     {
       q: "Combien de relances avant d’être intrusif ?",
@@ -16,7 +16,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "QuoteBuilder remplace-t-il le commercial ?",
-      a: "Non. L’autopilote envoie les touches que personne n’enchaîne. Le commercial conclut sur un dossier déjà cadré.",
+      a: "Non. L’autopilote envoie les touches que personne n’enchaîne. Le commercial conclut, sur un dossier déjà un peu cadré.",
     },
   ],
   "formulaire-contact-vs-funnel-devis-b2b": [
@@ -34,7 +34,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Chat IA ou wizard ?",
-      a: "Le wizard cadre. Le chat débloque les cas flous. Les deux écrivent dans le même dossier. C’est le point, pas le canal.",
+      a: "Le wizard cadre. Le chat débloque les cas flous. Les deux écrivent dans le même dossier. Le canal importe moins que la fiche à la fin.",
     },
   ],
   "installer-widget-devis-wordpress-javascript": [
@@ -52,7 +52,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Combien de temps pour installer ?",
-      a: "Compte QuoteBuilder, funnel publié, deux lignes de JS ou un bloc. Minutes, pas un projet SI.",
+      a: "Compte QuoteBuilder, funnel publié, deux lignes de JS ou un bloc. Plutôt des minutes qu’un projet SI.",
     },
   ],
   "sync-catalogue-woocommerce-shopify-parcours-devis": [
