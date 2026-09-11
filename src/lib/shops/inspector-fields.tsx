@@ -1,5 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 
+type FieldMeta = { label?: string; placeholder?: string };
+
 function parseSides(value: string): [string, string, string, string] {
   const parts = value.trim().split(/\s+/).filter(Boolean);
   if (parts.length === 0) return ["", "", "", ""];
@@ -32,14 +34,92 @@ function Label({ children }: { children: ReactNode }) {
   return <span className="mb-1 block text-[11px] font-medium text-slate-500">{children}</span>;
 }
 
-const cell: CSSProperties = {
-  width: "100%",
-  border: "1px solid #e2e8f0",
-  borderRadius: 4,
-  padding: "5px 6px",
-  fontSize: 12,
-  lineHeight: "16px",
-};
+function numFromLength(raw: unknown): string {
+  const s = String(raw ?? "").trim();
+  if (!s || s === "auto" || s === "none" || s === "inherit") return "";
+  const m = s.match(/^-?\d+(?:\.\d+)?/);
+  return m ? m[0] : "";
+}
+
+function bumpValue(raw: unknown, delta: number, withPx: boolean, step = 1): string {
+  const n = Number.parseFloat(numFromLength(raw));
+  if (!Number.isFinite(n)) {
+    if (!withPx && step === 100) return String(Math.min(900, Math.max(100, 600 + delta)));
+    return withPx ? `${delta}px` : String(delta);
+  }
+  const next = n + delta;
+  if (withPx) return `${next}px`;
+  if (step === 100) return String(Math.min(900, Math.max(100, next)));
+  return String(next);
+}
+
+function displayValue(raw: unknown): string {
+  const s = String(raw ?? "").trim();
+  if (s === "auto" || s === "none" || s === "inherit") return s;
+  return numFromLength(raw);
+}
+
+function parseTypedValue(raw: string, withPx: boolean): string | null {
+  const t = raw.trim();
+  if (t === "") return "";
+  if (t === "auto" || t === "none" || t === "inherit") return t;
+  if (/^-?\d+(?:\.\d+)?$/.test(t)) return withPx ? `${t}px` : t;
+  return null;
+}
+
+function Stepper({
+  value,
+  onChange,
+  withPx,
+  placeholder,
+  ariaLabel,
+  step = 1,
+}: {
+  value: unknown;
+  onChange: (v: string) => void;
+  withPx: boolean;
+  placeholder?: string;
+  ariaLabel: string;
+  step?: number;
+}) {
+  const shown = displayValue(value);
+  return (
+    <div className="flex min-w-0 items-stretch overflow-hidden rounded border border-slate-200 bg-white focus-within:border-orange-400">
+      <input
+        type="text"
+        inputMode="decimal"
+        aria-label={ariaLabel}
+        value={shown}
+        placeholder={placeholder}
+        onChange={(event) => {
+          const next = parseTypedValue(event.target.value, withPx);
+          if (next !== null) onChange(next);
+        }}
+        className="min-w-0 flex-1 border-0 bg-transparent px-1.5 py-1.5 text-[12px] leading-4 text-stone-800 outline-none"
+      />
+      <div className="flex w-5 shrink-0 flex-col border-l border-slate-200">
+        <button
+          type="button"
+          aria-label={`${ariaLabel} plus`}
+          tabIndex={-1}
+          className="flex h-4 items-center justify-center text-stone-500 hover:bg-orange-50 hover:text-orange-600"
+          onClick={() => onChange(bumpValue(value, step, withPx, step))}
+        >
+          <span className="block h-0 w-0 border-x-[4px] border-b-[5px] border-x-transparent border-b-current" />
+        </button>
+        <button
+          type="button"
+          aria-label={`${ariaLabel} moins`}
+          tabIndex={-1}
+          className="flex h-4 items-center justify-center border-t border-slate-200 text-stone-500 hover:bg-orange-50 hover:text-orange-600"
+          onClick={() => onChange(bumpValue(value, -step, withPx, step))}
+        >
+          <span className="block h-0 w-0 border-x-[4px] border-t-[5px] border-x-transparent border-t-current" />
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export function SpacingField({
   value,
@@ -48,11 +128,12 @@ export function SpacingField({
 }: {
   value?: string;
   onChange: (value: string) => void;
-  field: { label?: string };
+  field?: FieldMeta;
 }) {
   const [top, right, bottom, left] = parseSides(typeof value === "string" ? value : "");
   function set(index: 0 | 1 | 2 | 3, next: string) {
-    const sides: [string, string, string, string] = [top, right, bottom, left];
+    const fill = (side: string) => side || "0px";
+    const sides: [string, string, string, string] = [fill(top), fill(right), fill(bottom), fill(left)];
     sides[index] = next;
     onChange(joinSides(...sides));
   }
@@ -64,12 +145,20 @@ export function SpacingField({
   ];
   return (
     <div>
-      <Label>{field.label}</Label>
+      {field?.label ? <Label>{field.label}</Label> : null}
       <div className="grid grid-cols-4 gap-1">
         {boxes.map((box) => (
           <label key={box.label} className="min-w-0">
-            <span className="mb-0.5 block text-[10px] uppercase tracking-wide text-slate-400">{box.label}</span>
-            <input value={box.value} onChange={(event) => set(box.i, event.target.value)} placeholder="0" style={cell} />
+            <span className="mb-0.5 block text-center text-[10px] font-medium uppercase tracking-wide text-slate-400">
+              {box.label}
+            </span>
+            <Stepper
+              value={box.value}
+              onChange={(next) => set(box.i, next)}
+              withPx
+              placeholder="0"
+              ariaLabel={box.label}
+            />
           </label>
         ))}
       </div>
@@ -84,12 +173,12 @@ export function ColorField({
 }: {
   value?: string;
   onChange: (value: string) => void;
-  field: { label?: string };
+  field?: FieldMeta;
 }) {
   const text = typeof value === "string" ? value : "";
   return (
     <div>
-      <Label>{field.label}</Label>
+      {field?.label ? <Label>{field.label}</Label> : null}
       <div className="flex items-center gap-1.5">
         <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded border border-slate-200">
           {text ? null : (
@@ -97,20 +186,24 @@ export function ColorField({
               aria-hidden
               className="pointer-events-none absolute inset-0"
               style={{
-                background:
-                  "repeating-conic-gradient(#e2e8f0 0% 25%, #fff 0% 50%) 50% / 8px 8px",
+                background: "repeating-conic-gradient(#e2e8f0 0% 25%, #fff 0% 50%) 50% / 8px 8px",
               }}
             />
           )}
           <input
             type="color"
-            aria-label={field.label}
+            aria-label={field?.label || "Couleur"}
             value={hexOf(text)}
             onChange={(event) => onChange(event.target.value)}
             className={`absolute inset-0 h-full w-full cursor-pointer border-0 p-0 ${text ? "" : "opacity-0"}`}
           />
         </span>
-        <input value={text} onChange={(event) => onChange(event.target.value)} placeholder="auto" style={cell} />
+        <input
+          value={text}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder="auto"
+          className="w-full rounded border border-slate-200 px-1.5 py-1.5 text-[12px] leading-4 text-stone-800 outline-none focus:border-orange-400"
+        />
       </div>
     </div>
   );
@@ -123,17 +216,67 @@ export function CompactTextField({
 }: {
   value?: string;
   onChange: (value: string) => void;
-  field: { label?: string; placeholder?: string };
+  field?: FieldMeta;
 }) {
   return (
     <div>
-      <Label>{field.label}</Label>
+      {field?.label ? <Label>{field.label}</Label> : null}
       <input
         value={typeof value === "string" ? value : ""}
         onChange={(event) => onChange(event.target.value)}
-        placeholder={field.placeholder ?? ""}
-        style={cell}
+        placeholder={field?.placeholder ?? ""}
+        className="w-full rounded border border-slate-200 px-1.5 py-1.5 text-[12px] leading-4 text-stone-800 outline-none focus:border-orange-400"
       />
     </div>
   );
 }
+
+export function LengthField({
+  value,
+  onChange,
+  field,
+}: {
+  value?: string;
+  onChange: (value: string) => void;
+  field?: FieldMeta;
+}) {
+  return (
+    <div>
+      {field?.label ? <Label>{field.label}</Label> : null}
+      <Stepper
+        value={value}
+        onChange={onChange}
+        withPx
+        placeholder={field?.placeholder ?? "0"}
+        ariaLabel={field?.label || "Valeur"}
+      />
+    </div>
+  );
+}
+
+export function UnitlessNumberField({
+  value,
+  onChange,
+  field,
+}: {
+  value?: string;
+  onChange: (value: string) => void;
+  field?: FieldMeta;
+}) {
+  const step = field?.label === "Graisse" ? 100 : 1;
+  return (
+    <div>
+      {field?.label ? <Label>{field.label}</Label> : null}
+      <Stepper
+        value={value}
+        onChange={onChange}
+        withPx={false}
+        placeholder={field?.placeholder ?? ""}
+        ariaLabel={field?.label || "Valeur"}
+        step={step}
+      />
+    </div>
+  );
+}
+
+export const inspectorLabel: CSSProperties = { fontSize: 11 };

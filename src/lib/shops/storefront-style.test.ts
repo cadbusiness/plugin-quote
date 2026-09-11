@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { boxStyle } from "./layout";
 import {
   cx,
+  headingClass,
   heroPadClass,
   isMeaningfulCss,
   isShopCta,
@@ -23,6 +24,12 @@ assert.equal(sectionPadClass(""), "py-12 md:py-16");
 assert.equal(sectionPadClass("0px"), "py-12 md:py-16");
 assert.equal(sectionPadClass("40px 0"), "");
 assert.equal(heroPadClass(""), "py-16 md:py-20 lg:py-24");
+assert.equal(
+  renderBoxStyle({ background: "#111111" }, { background: "#E85D04" }).background,
+  "#111111",
+);
+assert.equal(headingClass({ fontSize: "28px" }, "h2").includes("text-2xl"), false);
+assert.equal(headingClass({}, "h2").includes("text-2xl"), true);
 
 const overlay = publicBoxInput({
   padding: "0px",

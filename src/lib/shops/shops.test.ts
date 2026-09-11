@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { emptyBlock, parseBlock, parseBlocks } from "./blocks";
 import { executeShopTool, ensureSeedTurnPublished } from "./agent/executor";
-import { migrateBlocksToLayout, parseLayout } from "./layout";
+import { boxStyle, cssLength, cssSpacing, migrateBlocksToLayout, parseLayout } from "./layout";
 import { buildShopBlueprint, requiredShopSlugs } from "./templates";
 import { mentionsLegalesBody } from "./legal";
 import { clipDescription, pageTitle, productJsonLd, shopMetadata, sitemapEntries } from "./seo";
@@ -34,6 +34,26 @@ assert.equal(migrated.content[0]?.props.heading, "Hello");
 assert.equal(blueprint.pages[0]!.blocks.content[0]!.props.padding, "80px 0");
 assert.equal(blueprint.pages[0]!.blocks.content.find((node) => node.type === "Catalog")?.props.padding, "64px 0");
 assert.equal(parseLayout([{ id: "b1", type: "faq", heading: "Q", faq: [{ q: "A", a: "B" }] }]).content[0]?.type, "Faq");
+
+assert.equal(cssLength("2"), "2px");
+assert.equal(cssLength("2px"), "2px");
+assert.equal(cssLength("auto"), "auto");
+assert.equal(cssLength("1.5rem"), "1.5rem");
+assert.equal(cssSpacing("20 2 2 2"), "20px 2px 2px 2px");
+assert.equal(cssSpacing("40px 0"), "40px 0px");
+assert.deepEqual(boxStyle({ padding: "2" }), { padding: "2px", boxSizing: "border-box" });
+assert.deepEqual(boxStyle({ margin: "20 2 2 2" }), { margin: "20px 2px 2px 2px" });
+const lengths = boxStyle({ fontSize: "16", top: "8", left: "4", borderRadius: "8", minHeight: "120" });
+assert.equal(lengths.fontSize, "16px");
+assert.equal(lengths.top, "8px");
+assert.equal(lengths.left, "4px");
+assert.equal(lengths.borderRadius, "8px");
+assert.equal(lengths.minHeight, "120px");
+assert.equal(boxStyle({ background: "auto", color: "auto" }).background, undefined);
+assert.equal(boxStyle({ background: "#E85D04", color: "#111111" }).background, "#E85D04");
+assert.equal(boxStyle({ fontWeight: "700", textAlign: "center", zIndex: "3" }).fontWeight, "700");
+assert.equal(boxStyle({ position: "relative", zIndex: "3" }).position, "relative");
+assert.equal(boxStyle({ position: "static" }).position, undefined);
 
 assert.equal(pageTitle("Catalogue", "Atelier Nord"), "Catalogue · Atelier Nord");
 assert.equal(clipDescription("a".repeat(200)).endsWith("…"), true);

@@ -52,12 +52,46 @@ export function emptyLayout(): ShopLayout {
   return { root: { props: {} }, content: [] };
 }
 
+const LENGTH_KEYS = new Set<keyof BoxStyleInput>([
+  "fontSize",
+  "top",
+  "left",
+  "borderRadius",
+  "minHeight",
+  "width",
+  "maxWidth",
+]);
+
+export function cssLength(value: string): string {
+  const raw = value.trim();
+  if (!raw || raw === "auto" || raw === "none" || raw === "inherit") return raw;
+  if (/^-?\d+(\.\d+)?$/.test(raw)) return `${raw}px`;
+  return raw;
+}
+
+export function cssSpacing(value: string): string {
+  return value
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(cssLength)
+    .join(" ");
+}
+
 export function boxStyle(input: BoxStyleInput): Record<string, string> {
   const style: Record<string, string> = {};
   const assign = (key: keyof BoxStyleInput, css: string) => {
     const value = input[key]?.trim();
-    if (!value) return;
+    if (!value || value === "auto") return;
     if (key === "position" && value === "static") return;
+    if (key === "padding" || key === "margin") {
+      style[css] = cssSpacing(value);
+      return;
+    }
+    if (LENGTH_KEYS.has(key)) {
+      style[css] = cssLength(value);
+      return;
+    }
     style[css] = value;
   };
   assign("padding", "padding");
@@ -75,6 +109,7 @@ export function boxStyle(input: BoxStyleInput): Record<string, string> {
   assign("minHeight", "minHeight");
   assign("width", "width");
   assign("maxWidth", "maxWidth");
+  if (style.padding) style.boxSizing = "border-box";
   return style;
 }
 
