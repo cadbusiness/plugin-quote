@@ -2,8 +2,21 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.11.0",
+    version: "1.11.0",
+    title: "Devis intégré dans la boutique",
+    items: [
+      "Sur la vitrine publique, « Devis » et « Ajouter au devis » restent dans la boutique (/b/…/devis) au lieu d’ouvrir le funnel /c/….",
+      "La page devis garde le chrome boutique (nav, thème --shop-*).",
+      "Sans configurateur relié : message clair + lien vers le catalogue (plus de crash).",
+      "Sitemap, JSON-LD produit et llms.txt pointent vers l’URL devis de la boutique.",
+    ],
+    releasedAt: "2026-09-11",
+    createdAt: "2026-09-11T00:00:00.000Z",
+  },
   {
     id: "seed-1.10.0",
     version: "1.10.0",
