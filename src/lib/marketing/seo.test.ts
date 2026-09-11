@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync, readdirSync, unlinkSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync, unlinkSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   BLOG_IMAGE_DIR,
@@ -20,6 +20,7 @@ import {
 } from "./blog";
 import { coverCandidatesForSlug, resolveCoverForPost } from "./blog-assets";
 import { BLOG_FAQ } from "./blog-faq";
+import { stripFrontmatter } from "./load-post";
 import { computeBriefScore } from "./brief-score";
 import { computeLostQuote } from "./lost-quote";
 import { MARKETING_ROUTES } from "./routes";
@@ -71,6 +72,7 @@ for (const required of [
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
+  "/blog/visite-guidee-parcours-devis-b2b",
   "/blog/score-demande-devis-b2b",
   "/blog/configurateur-devis-vs-excel-pdf",
   "/legal/cgu",
@@ -80,7 +82,20 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 6);
+assert.equal(BLOG_POSTS.length, 7);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "visite-guidee-parcours-devis-b2b")?.tags, [
+  "funnel",
+  "scoring",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "visite-guidee-parcours-devis-b2b")?.ctaHref,
+  "/c/demo/rayonnage",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "visite-guidee-parcours-devis-b2b")?.cover,
+  "/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "visite-guidee-parcours-devis-b2b")?.pinned, false);
 assert.deepEqual(BLOG_TAG_DEFS.map((tag) => tag.slug), [
   "scoring",
   "relances",
@@ -102,8 +117,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 2);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 2);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 3);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 3);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 1);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
 assert.equal(midArticleHeadingIndex(12), 5);
@@ -176,6 +191,23 @@ const requiredSources = {
     "/secteurs/funnel-devis-menuiserie-sur-mesure",
     "/outils/score-brief-devis",
   ],
+  "visite-guidee-parcours-devis-b2b.md": [
+    "/images/blog/visite-guidee-parcours-devis-b2b/09-public-funnel.png",
+    "/images/blog/visite-guidee-parcours-devis-b2b/10-public-boutique.png",
+    "/images/blog/visite-guidee-parcours-devis-b2b/02-accueil.png",
+    "/images/blog/visite-guidee-parcours-devis-b2b/03-devis.png",
+    "/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png",
+    "/images/blog/visite-guidee-parcours-devis-b2b/06-produits.png",
+    "/images/blog/visite-guidee-parcours-devis-b2b/07-funnels.png",
+    "/images/blog/visite-guidee-parcours-devis-b2b/08-integrations.png",
+    "/images/blog/visite-guidee-parcours-devis-b2b/05-automations.png",
+    "/blog/formulaire-contact-vs-funnel-devis-b2b",
+    "/blog/score-demande-devis-b2b",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/c/demo/rayonnage",
+    "/b/demo/vitrine",
+    "/signup?plan=free",
+  ],
 } as const;
 
 for (const file of blogFiles) {
@@ -189,6 +221,17 @@ for (const file of blogFiles) {
       assert.match(body, new RegExp(needle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), `${file} missing ${needle}`);
     }
   }
+}
+
+{
+  const walkthroughRaw = readFileSync(join(blogDir, "visite-guidee-parcours-devis-b2b.md"), "utf8");
+  assert.ok(walkthroughRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const walkthroughBody = stripFrontmatter(walkthroughRaw);
+  assert.ok(
+    walkthroughBody.startsWith("# De la demande au dossier devis"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(walkthroughBody, /signup\?plan=free/);
 }
 
 for (const post of BLOG_POSTS) {
@@ -275,6 +318,7 @@ assert.equal(parkingBrief.total, 0);
 assert.equal(parkingBrief.band, "parking");
 
 const llmsPaths = [
+  "/blog/visite-guidee-parcours-devis-b2b",
   "/blog/score-demande-devis-b2b",
   "/blog/configurateur-devis-vs-excel-pdf",
   "/outils/score-brief-devis",
@@ -347,6 +391,24 @@ assert.equal(
   stripCalloutPrefix("Note QuoteBuilder. On évite les slogans."),
   "Note QuoteBuilder. On évite les slogans.",
 );
+
+const walkthroughImages = [
+  "02-accueil.png",
+  "03-devis.png",
+  "04-devis-detail.png",
+  "05-automations.png",
+  "06-produits.png",
+  "07-funnels.png",
+  "08-integrations.png",
+  "09-public-funnel.png",
+  "10-public-boutique.png",
+];
+const walkthroughDir = join(process.cwd(), "public/images/blog/visite-guidee-parcours-devis-b2b");
+for (const name of walkthroughImages) {
+  const file = join(walkthroughDir, name);
+  assert.ok(existsSync(file), `missing blog image ${name}`);
+  assert.ok(statSync(file).size > 10_000, `${name} is too small to be a real screenshot`);
+}
 
 assert.equal(BLOG_IMAGE_DIR, "/images/blog");
 assert.equal(normalizeCoverPath("visite-guidee-parcours-devis-b2b.jpg"), "/images/blog/visite-guidee-parcours-devis-b2b.jpg");

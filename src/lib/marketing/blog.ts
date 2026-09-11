@@ -107,6 +107,19 @@ export const BLOG_POSTS: BlogPost[] = [
     pinned: true,
   },
   {
+    slug: "visite-guidee-parcours-devis-b2b",
+    path: "/blog/visite-guidee-parcours-devis-b2b",
+    title: "De la demande au dossier devis : visite guidée d’un parcours B2B",
+    description:
+      "Visite guidée d’un parcours devis B2B : funnel public, boutique, pipeline, dossier devis, catalogue, automations et relances. Captures démo et checklist de mise en place.",
+    publishedAt: "2026-09-11",
+    readingMinutes: 14,
+    tags: ["funnel", "scoring"],
+    ctaHref: BLOG_DEMO_FUNNEL,
+    cover: "/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png",
+    pinned: false,
+  },
+  {
     slug: "configurateur-devis-vs-excel-pdf",
     path: "/blog/configurateur-devis-vs-excel-pdf",
     title: "Configurateur de devis vs Excel + PDF + email : ce qui change vraiment",
