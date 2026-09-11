@@ -78,7 +78,15 @@ assert.equal(
 );
 assert.equal(
   resolveShopHref("/c/demo/rayonnage", { orgSlug: "demo", shopSlug: "vitrine", funnelSlug: "rayonnage" }),
-  "/c/demo/rayonnage",
+  "/b/demo/vitrine/devis",
+);
+assert.equal(
+  resolveShopHref("/c/demo/rayonnage?product=sku-1", { orgSlug: "demo", shopSlug: "vitrine", funnelSlug: "rayonnage" }),
+  "/b/demo/vitrine/devis?product=sku-1",
+);
+assert.equal(
+  resolveShopHref("/c/demo/autre", { orgSlug: "demo", shopSlug: "vitrine", funnelSlug: "rayonnage" }),
+  "/c/demo/autre",
 );
 assert.equal(
   resolveShopHref("/catalogue", { orgSlug: "demo", shopSlug: "vitrine", funnelSlug: "rayonnage" }),
