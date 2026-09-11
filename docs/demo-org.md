@@ -117,3 +117,21 @@ Vérifier :
 curl -sS "https://www.quotebuilder.co/api/public/configurator/demo/rayonnage" | jq '.configurator.slug,.configurator.chatEnabled'
 curl -sS -o /dev/null -w "%{http_code}\n" "https://www.quotebuilder.co/b/demo/vitrine"
 ```
+
+Chat IA crée désormais les boutiques déjà `published`. Une boutique créée avant ce correctif
+peut rester `draft` : `/b/demo/{slug}` 404 pour les visiteurs. Publier via le bouton
+« Publier » dans `/integrations/shop/{id}`, ou SQL idempotent org `demo` seulement :
+
+```sql
+-- scripts/publish-atelier-stockpro.sql
+UPDATE public.shops AS s
+SET status = 'published',
+    published_at = COALESCE(s.published_at, now()),
+    updated_at = now()
+FROM public.organizations AS o
+WHERE s.organization_id = o.id
+  AND o.slug = 'demo'
+  AND s.id = 'f4f30846-4a8b-4223-a088-121d26d32d29'
+  AND s.slug = 'atelier-stockpro'
+  AND s.status = 'draft';
+```

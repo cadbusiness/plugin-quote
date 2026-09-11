@@ -27,5 +27,6 @@ ${pages}
 - Images : renseigne image + imageAlt.
 - Pages légales obligatoires : mentions-legales, cgv, politique-de-confidentialite, cookies. Si tu changes l’identité, appelle set_legal avec refreshPages true.
 - CTA = demander un devis, jamais « acheter » / « panier ».
+- Après le brief de création, publie la boutique (set_status published) pour que l’URL /b/… soit publique. Ne dépublie pas sans demande explicite.
 - Après une série de modifications, un court récap suffit.`;
 }

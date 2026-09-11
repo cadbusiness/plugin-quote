@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { emptyBlock, parseBlock, parseBlocks } from "./blocks";
-import { executeShopTool } from "./agent/executor";
+import { executeShopTool, ensureSeedTurnPublished } from "./agent/executor";
+import { parseCreateShopForm, shopCreatesPublished } from "./create";
 import { migrateBlocksToLayout, parseLayout } from "./layout";
 import { buildShopBlueprint, requiredShopSlugs } from "./templates";
 import { mentionsLegalesBody } from "./legal";
@@ -162,6 +163,31 @@ assert.equal(col2?.[0]?.type, "Image");
 
 const seo = executeShopTool(doc, "set_seo", { description: "Vitrine devis rayonnage à Lyon.", locality: "Lyon" });
 assert.equal(seo.ok, true);
+
+assert.equal(shopCreatesPublished({}), false);
+assert.equal(shopCreatesPublished({ fromChat: true }), true);
+assert.equal(shopCreatesPublished({ seedPrompt: "Cuisiniste à Lyon" }), true);
+
+const chatForm = new FormData();
+chatForm.set("name", "Atelier StockPro");
+chatForm.set("from_chat", "on");
+chatForm.set("seed_prompt", "Vitrine B2B stock");
+const parsedChat = parseCreateShopForm(chatForm);
+assert.equal(parsedChat?.fromChat, true);
+assert.equal(parsedChat?.seedPrompt, "Vitrine B2B stock");
+assert.equal(shopCreatesPublished(parsedChat!), true);
+
+const templateForm = new FormData();
+templateForm.set("name", "Atelier StockPro");
+const parsedTemplate = parseCreateShopForm(templateForm);
+assert.equal(parsedTemplate?.fromChat, false);
+assert.equal(shopCreatesPublished(parsedTemplate!), false);
+
+assert.equal(ensureSeedTurnPublished(doc, false), false);
+assert.equal(doc.shop.status, "draft");
+assert.equal(ensureSeedTurnPublished(doc, true), true);
+assert.equal(doc.shop.status, "published");
+assert.equal(ensureSeedTurnPublished(doc, true), false);
 
 const published = executeShopTool(doc, "set_status", { status: "published" });
 assert.equal(published.ok, true);

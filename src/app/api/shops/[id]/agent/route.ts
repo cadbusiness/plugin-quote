@@ -1,9 +1,12 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
+import { ensureSeedTurnPublished } from "@/lib/shops/agent/executor";
 import { runShopAgentTurn } from "@/lib/shops/agent/loop";
 import { applyEditorDraft, serializeEditorDraft, type ShopEditorDraft } from "@/lib/shops/draft";
 import { loadShopDocument, persistShopDocument } from "@/lib/shops/document";
+import { shopBasePath } from "@/lib/shops/urls";
 import { createClient } from "@/lib/supabase/server";
 
 export const maxDuration = 120;
@@ -40,13 +43,20 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   }
 
   try {
+    const history = parsed.data.history ?? [];
     const turn = await runShopAgentTurn({
       doc,
       orgName: ctx.organization.name,
-      history: parsed.data.history ?? [],
+      history,
       userMessage: parsed.data.message,
     });
+    ensureSeedTurnPublished(doc, history.length === 0);
     await persistShopDocument(supabase, ctx.organization.id, doc);
+    const publicPath = shopBasePath(ctx.organization.slug, doc.shop.slug);
+    revalidatePath("/integrations");
+    revalidatePath(`/integrations/shop/${id}`);
+    revalidatePath(publicPath);
+    revalidatePath(publicPath, "layout");
     return NextResponse.json({ text: turn.assistantText, trace: turn.toolTrace, ...serializeEditorDraft(doc) });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Erreur agent";

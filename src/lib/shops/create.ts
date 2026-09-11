@@ -17,7 +17,12 @@ export type CreateShopInput = {
   createCatalogFunnel: boolean;
   legal: Partial<ShopLegal>;
   seedPrompt?: string;
+  fromChat?: boolean;
 };
+
+export function shopCreatesPublished(input: Pick<CreateShopInput, "fromChat" | "seedPrompt">) {
+  return Boolean(input.fromChat || input.seedPrompt);
+}
 
 export function parseCreateShopForm(formData: FormData): CreateShopInput | null {
   const name = String(formData.get("name") ?? "").trim();
@@ -26,6 +31,7 @@ export function parseCreateShopForm(formData: FormData): CreateShopInput | null 
   const sector = isFunnelFamilyId(sectorRaw) ? sectorRaw : "custom";
   const catalogFrom = String(formData.get("configurator_id") ?? "").trim();
   const createCatalogFunnel = formData.get("create_funnel") === "on" || !catalogFrom;
+  const fromChat = formData.get("from_chat") === "on" || formData.get("from_chat") === "1";
   return {
     name,
     sector,
@@ -42,6 +48,7 @@ export function parseCreateShopForm(formData: FormData): CreateShopInput | null 
       director: String(formData.get("director") ?? "").trim(),
     }),
     seedPrompt: String(formData.get("seed_prompt") ?? "").trim() || undefined,
+    fromChat,
   };
 }
 
@@ -87,6 +94,7 @@ export async function insertShopFromTemplate(
     return Boolean(data);
   }, input.name);
 
+  const published = shopCreatesPublished(input);
   const { data: shop, error } = await supabase
     .from("shops")
     .insert({
@@ -95,7 +103,8 @@ export async function insertShopFromTemplate(
       name: blueprint.name,
       slug,
       sector: blueprint.sector,
-      status: "draft",
+      status: published ? "published" : "draft",
+      published_at: published ? new Date().toISOString() : null,
       theme: asJson(blueprint.theme),
       seo: asJson(blueprint.seo),
       legal: asJson(blueprint.legal),

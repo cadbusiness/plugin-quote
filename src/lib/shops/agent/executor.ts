@@ -284,3 +284,11 @@ export function executeShopTool(doc: ShopDocument, name: string, input: Record<s
 
   return { ok: false, error: `Outil inconnu: ${name}` };
 }
+
+/** First Chat IA turn (empty history) always leaves a public /b/… URL. */
+export function ensureSeedTurnPublished(doc: ShopDocument, isSeedTurn: boolean) {
+  if (!isSeedTurn) return false;
+  if (doc.shop.status === "published") return false;
+  executeShopTool(doc, "set_status", { status: "published" });
+  return true;
+}
