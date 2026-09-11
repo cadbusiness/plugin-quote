@@ -24,6 +24,7 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/tarifs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/blog/visite-guidee-parcours-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/score-demande-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/configurateur-devis-vs-excel-pdf", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/pourquoi-les-devis-meurent-sans-relance", changeFrequency: "monthly", priority: 0.8 },

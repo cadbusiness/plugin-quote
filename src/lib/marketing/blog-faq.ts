@@ -1,6 +1,36 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "visite-guidee-parcours-devis-b2b": [
+    {
+      q: "C’est quoi un dossier devis B2B ?",
+      a: "Un dossier devis, c’est l’ensemble des informations nécessaires pour prioriser et chiffrer : contact, projet, contraintes, fourchette, source, score, owner, échanges. Ce n’est pas seulement le PDF du devis.",
+    },
+    {
+      q: "Faut-il un funnel et une boutique ?",
+      a: "Pas obligatoirement les deux au jour 1. Le funnel guidé suffit pour beaucoup d’offres configurables. Ajoutez la vitrine si le catalogue est large et que les prospects cherchent par référence. Les deux peuvent alimenter la même liste Demandes.",
+    },
+    {
+      q: "Combien d’étapes dans un funnel devis ?",
+      a: "Cinq à sept est un bon point de départ. Moins si l’offre est simple. Plus seulement si chaque étape ajoute une info vraiment utile au chiffrage. La barre de progression aide le prospect à savoir où il en est.",
+    },
+    {
+      q: "Le score doit-il être visible pour le prospect ?",
+      a: "En général non. Montrez un récap du brief et les prochaines étapes. Le score (Hot / Warm / Cold) sert à l’équipe pour allouer le temps.",
+    },
+    {
+      q: "Que faire si une demande Hot attend depuis une semaine ?",
+      a: "Traitez-la comme une urgence manuelle : appeler, répondre à la question ouverte, noter l’échange dans le dossier. Puis vérifiez pourquoi aucune automation ni alerte n’a couvert le cas.",
+    },
+    {
+      q: "Les automations remplacent-elles les relances humaines ?",
+      a: "Non. Elles portent la confirmation, les rappels et une partie des Warm / abandons. Les Hot complexes, les multi-décideurs et les objections restent du travail commercial.",
+    },
+    {
+      q: "Par où tester sans reconstruire tout mon site ?",
+      a: "Ouvrez le funnel démo rayonnage et la boutique démo, puis comparez avec votre formulaire actuel sur un cas réel. Si le brief sort plus chiffrable, vous avez votre réponse.",
+    },
+  ],
   "score-demande-devis-b2b": [
     {
       q: "Faut-il montrer le score au prospect ?",
