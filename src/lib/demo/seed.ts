@@ -1,17 +1,17 @@
 import type { User } from "@supabase/supabase-js";
-import { DEMO_FUNNEL_SLUG, DEMO_ORG, DEMO_OWNER_EMAIL, DEMO_SALES_EMAIL, DEMO_SEED_VERSION } from "@/lib/demo/constants";
+import { DEMO_FUNNEL_ALIASES, DEMO_ORG, DEMO_OWNER_EMAIL, DEMO_SALES_EMAIL, DEMO_SEED_VERSION } from "@/lib/demo/constants";
+import { pickDemoFunnel } from "@/lib/demo/public-slugs";
 import { ensureDemoOrg } from "@/lib/demo/modules/org";
 import { SEED_MODULES } from "@/lib/demo/registry";
 import type { DemoClient, SeedContext, SeedModuleResult, SeedReport } from "@/lib/demo/types";
 
 async function hydrateContext(ctx: SeedContext) {
-  const { data: funnel } = await ctx.supabase
+  const { data: funnels } = await ctx.supabase
     .from("configurators")
     .select("*")
     .eq("organization_id", ctx.org.id)
-    .eq("slug", DEMO_FUNNEL_SLUG)
-    .maybeSingle();
-  ctx.funnel = funnel;
+    .in("slug", [...DEMO_FUNNEL_ALIASES]);
+  ctx.funnel = pickDemoFunnel(funnels);
 
   const { data: members } = await ctx.supabase
     .from("memberships")

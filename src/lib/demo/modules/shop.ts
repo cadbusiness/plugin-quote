@@ -1,4 +1,5 @@
-import { DEMO_ORG, DEMO_SHOP_SLUG } from "@/lib/demo/constants";
+import { DEMO_ORG, DEMO_SHOP_ALIASES, DEMO_SHOP_SLUG } from "@/lib/demo/constants";
+import { pickPreferredBySlug } from "@/lib/demo/public-slugs";
 import { insertShopFromTemplate } from "@/lib/shops/create";
 import type { SeedModule } from "@/lib/demo/types";
 
@@ -6,21 +7,22 @@ export const shopModule: SeedModule = {
   id: "shop",
   title: "Boutique native",
   async run(ctx) {
-    const { data: bySlug } = await ctx.supabase
+    const { data: byAlias, error: aliasError } = await ctx.supabase
       .from("shops")
       .select("id, slug, status")
       .eq("organization_id", ctx.org.id)
-      .eq("slug", DEMO_SHOP_SLUG)
-      .maybeSingle();
-    const { data: byName } = bySlug
-      ? { data: null }
-      : await ctx.supabase
-          .from("shops")
-          .select("id, slug, status")
-          .eq("organization_id", ctx.org.id)
-          .eq("name", "Vitrine rayonnage")
-          .maybeSingle();
-    const existing = bySlug ?? byName;
+      .in("slug", [...DEMO_SHOP_ALIASES]);
+    if (aliasError) throw aliasError;
+    let existing = pickPreferredBySlug(byAlias, DEMO_SHOP_ALIASES);
+    if (!existing) {
+      const { data: byName } = await ctx.supabase
+        .from("shops")
+        .select("id, slug, status")
+        .eq("organization_id", ctx.org.id)
+        .eq("name", "Vitrine rayonnage")
+        .maybeSingle();
+      existing = byName;
+    }
 
     if (existing) {
       const { error } = await ctx.supabase

@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "seed:demo": "npx tsx src/lib/demo/cli.ts",
-    "test:demo-seed": "npx tsx src/lib/crm/seed.test.ts && npx tsx src/lib/demo/seed.test.ts",
+    "test:demo-seed": "npx tsx src/lib/crm/seed.test.ts && npx tsx src/lib/demo/seed.test.ts && npx tsx src/lib/demo/public-slugs.test.ts",
     "build:wp-plugin": "node scripts/build-wp-plugin-zip.mjs",
     "publish:wp-plugin": "node scripts/publish-wp-plugin.mjs"
   },
