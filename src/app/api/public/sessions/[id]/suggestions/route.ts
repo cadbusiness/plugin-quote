@@ -28,7 +28,7 @@ export async function GET(
   const requestedCatalog = url.searchParams.get("configuratorId") ?? url.searchParams.get("catalog");
   if (shopSlug && orgSlug) {
     const gate = gateShopCatalogRequest(await resolveShopCatalog(orgSlug, shopSlug), {
-      configuratorId: requestedCatalog ?? sessionRow.configurator_id,
+      configuratorId: requestedCatalog || sessionRow.configurator_id,
     });
     if (!gate.ok) {
       return NextResponse.json({ error: gate.error }, { status: gate.status });

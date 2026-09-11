@@ -39,6 +39,7 @@ export default async function ShopDevisPage({ params, searchParams }: Props) {
         <ShopEmbeddedQuote
           orgSlug={shop.orgSlug}
           shopSlug={shop.doc.shop.slug}
+          shopConfiguratorId={shop.doc.shop.configurator_id}
           configuratorSlug={shop.funnelSlug}
           productPrefill={productPrefill}
           themeOverride={{
@@ -57,12 +58,14 @@ export default async function ShopDevisPage({ params, searchParams }: Props) {
 function ShopEmbeddedQuote({
   orgSlug,
   shopSlug,
+  shopConfiguratorId,
   configuratorSlug,
   productPrefill,
   themeOverride,
 }: {
   orgSlug: string;
   shopSlug: string;
+  shopConfiguratorId: string | null;
   configuratorSlug: string;
   productPrefill?: string;
   themeOverride: ConfiguratorThemeOverride;
@@ -74,6 +77,7 @@ function ShopEmbeddedQuote({
       <ConfiguratorApp
         orgSlug={orgSlug}
         shopSlug={shopSlug}
+        shopConfiguratorId={shopConfiguratorId ?? undefined}
         configuratorSlug={configuratorSlug}
         embedded
         themeOverride={themeOverride}

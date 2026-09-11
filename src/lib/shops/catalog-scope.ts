@@ -31,8 +31,10 @@ export function shopCatalogError(reason: ShopCatalogDenyReason) {
   return SHOP_CATALOG_ERRORS[reason];
 }
 
-export function shopConfiguratorApiPath(orgSlug: string, shopSlug: string) {
-  return `/api/public/shop/${orgSlug}/${shopSlug}/configurator`;
+export function shopConfiguratorApiPath(orgSlug: string, shopSlug: string, requestedConfiguratorId?: string) {
+  const path = `/api/public/shop/${orgSlug}/${shopSlug}/configurator`;
+  if (!requestedConfiguratorId) return path;
+  return `${path}?configuratorId=${encodeURIComponent(requestedConfiguratorId)}`;
 }
 
 export function shopSuggestionsApiPath(sessionId: string, orgSlug: string, shopSlug: string) {

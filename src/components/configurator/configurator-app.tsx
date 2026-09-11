@@ -31,6 +31,8 @@ type Props = {
   orgSlug: string;
   configuratorSlug: string;
   shopSlug?: string;
+  /** Shop-linked catalog id. When set, definition/session must match this catalog. */
+  shopConfiguratorId?: string;
   embedded?: boolean;
   themeOverride?: ConfiguratorThemeOverride;
 };
@@ -38,8 +40,13 @@ type Props = {
 const SESSION_KEY = (org: string, slug: string, shopSlug?: string) =>
   shopSlug ? `qb-session:${org}:shop:${shopSlug}` : `qb-session:${org}:${slug}`;
 
-function definitionUrl(orgSlug: string, configuratorSlug: string, shopSlug?: string) {
-  if (shopSlug) return shopConfiguratorApiPath(orgSlug, shopSlug);
+function definitionUrl(
+  orgSlug: string,
+  configuratorSlug: string,
+  shopSlug?: string,
+  shopConfiguratorId?: string,
+) {
+  if (shopSlug) return shopConfiguratorApiPath(orgSlug, shopSlug, shopConfiguratorId);
   return `/api/public/configurator/${orgSlug}/${configuratorSlug}`;
 }
 
@@ -145,7 +152,14 @@ async function track(session: QuoteSession | null, eventType: string, step?: num
   }).catch(() => undefined);
 }
 
-export function ConfiguratorApp({ orgSlug, configuratorSlug, shopSlug, embedded, themeOverride }: Props) {
+export function ConfiguratorApp({
+  orgSlug,
+  configuratorSlug,
+  shopSlug,
+  shopConfiguratorId,
+  embedded,
+  themeOverride,
+}: Props) {
   const [definition, setDefinition] = useState<ConfiguratorDefinition | null>(null);
   const [session, setSession] = useState<QuoteSession | null>(null);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -167,10 +181,13 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, shopSlug, embedded,
     (async () => {
       try {
         const def = await api<ConfiguratorDefinition>(
-          definitionUrl(orgSlug, configuratorSlug, shopSlug),
+          definitionUrl(orgSlug, configuratorSlug, shopSlug, shopConfiguratorId),
         );
         if (cancelled) return;
-        if (shopSlug && def.configurator.slug !== configuratorSlug) {
+        if (
+          (shopConfiguratorId && def.configurator.id !== shopConfiguratorId) ||
+          (shopSlug && def.configurator.slug !== configuratorSlug)
+        ) {
           throw new Error("Ce catalogue n’appartient pas à cette boutique");
         }
         setDefinition(def);
@@ -196,6 +213,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, shopSlug, embedded,
             body: JSON.stringify({
               orgSlug,
               configuratorSlug,
+              configuratorId: shopConfiguratorId,
               shopSlug,
               ...attributionBody(attr),
             }),
@@ -225,7 +243,11 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, shopSlug, embedded,
           const seeded = suggestionFromProducts(applied.matched);
           if (seeded) setSuggestions([seeded]);
         }
-        if (shopSlug && sessionNext.configuratorId && sessionNext.configuratorId !== def.configurator.id) {
+        if (
+          sessionNext.configuratorId &&
+          ((shopConfiguratorId && sessionNext.configuratorId !== shopConfiguratorId) ||
+            sessionNext.configuratorId !== def.configurator.id)
+        ) {
           throw new Error("Ce catalogue n’appartient pas à cette boutique");
         }
         localStorage.setItem(
@@ -256,7 +278,7 @@ export function ConfiguratorApp({ orgSlug, configuratorSlug, shopSlug, embedded,
     return () => {
       cancelled = true;
     };
-  }, [orgSlug, configuratorSlug, shopSlug, embedded]);
+  }, [orgSlug, configuratorSlug, shopSlug, shopConfiguratorId, embedded]);
 
   useEffect(() => {
     const gtm = definition?.organization.gtmContainerId?.trim();

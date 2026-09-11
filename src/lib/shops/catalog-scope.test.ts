@@ -121,6 +121,14 @@ const catalog = [
 
 assert.equal(shopConfiguratorApiPath("demo", "vitrine"), "/api/public/shop/demo/vitrine/configurator");
 assert.equal(
+  shopConfiguratorApiPath("demo", "vitrine", "catalog-a"),
+  "/api/public/shop/demo/vitrine/configurator?configuratorId=catalog-a",
+);
+assert.equal(
+  shopConfiguratorApiPath("demo", "vitrine", "catalog-b"),
+  "/api/public/shop/demo/vitrine/configurator?configuratorId=catalog-b",
+);
+assert.equal(
   shopSuggestionsApiPath("sess-1", "demo", "vitrine"),
   "/api/public/sessions/sess-1/suggestions?org=demo&shop=vitrine",
 );
