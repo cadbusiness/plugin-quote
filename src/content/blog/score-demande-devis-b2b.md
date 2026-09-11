@@ -15,7 +15,7 @@ Ce guide propose une méthode simple pour **scorer une demande de devis B2B** (p
 Public : fondateurs solo, responsables commerciaux, PME industrielles ou services configurables, agences qui gèrent plusieurs catalogues.
 
 ![Dossier devis Léa Moreau, score 91](/images/blog/score-demande-devis-b2b/04-devis-detail.png)
-*Espace démo : dossier Hôtel Rivage, score 91, lignes et note avant de chiffrer.*
+*Espace démo : Léa Moreau HOT 91, alerte « à faire maintenant », actions avant de chiffrer.*
 
 ## Pourquoi le scoring devis n’est pas du lead scoring marketing
 

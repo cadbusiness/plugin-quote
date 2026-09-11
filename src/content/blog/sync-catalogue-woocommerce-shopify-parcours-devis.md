@@ -14,8 +14,8 @@ WooCommerce est disponible dès Starter. Shopify à partir de Pro. Agency repren
 
 La sync **n’est pas** un checkout. QuoteBuilder ne remplace pas le paiement Woo / Shopify. La boutique native QuoteBuilder, si vous l’utilisez, est un mini-site de devis : pages, SEO, catalogue, pas d’encaissement. Anthropic décrit des agents commerce retail ; ici le vertical est le **devis PME**. Claude aide à cadrer. Le commerçant garde le catalogue et la soumission.
 
-![Catalogue démo, SKU QB-DEMO, WooCommerce et manuel](/images/blog/sync-catalogue-woocommerce-shopify-parcours-devis/06-produits.png)
-*Espace démo : prix, SKU et source Woo ou manuel, prêts pour le parcours de devis.*
+![Catalogue démo WooCommerce, alertes à compléter](/images/blog/sync-catalogue-woocommerce-shopify-parcours-devis/06-produits.png)
+*Espace démo : sync Woo, produits sans prix / sans SKU, prêts pour le parcours de devis.*
 
 ## Pourquoi le parcours a besoin du catalogue réel
 

@@ -79,7 +79,7 @@ Funnel guidé et boutique ne s’excluent pas. Beaucoup d’équipes exposent le
 Dès qu’une soumission arrive, le vendeur ne voit pas un mail isolé. Il voit un **tableau de bord** : visites, devis, conversion, CA, puis la liste des demandes prioritaires avec score Hot / Warm.
 
 ![Accueil QuoteBuilder, KPIs et demandes scorées](/images/blog/visite-guidee-parcours-devis-b2b/02-accueil.png)
-*Accueil `/accueil` : demandes, Hot, conversion, puis Claire Martin, Léa Moreau, scores.*
+*Accueil `/accueil` : KPIs, demandes Hot/Warm, abandons, tendance.*
 
 Dans la capture démo, Léa Moreau (Hôtel Rivage) arrive en **HOT 91** avec un projet à 4 produits, surface ≥ 400 m², charge lourde. Claire Martin est en **HOT 86**. Thomas Berger en **WARM 64**. Le commercial sait immédiatement où poser son temps.
 
@@ -94,7 +94,7 @@ Le bloc Abandons (visites, e-mail, relance) complète le tableau : ce qui n’a 
 La vue Demandes est la file de travail quotidienne. Filtres par statut, assigné, score, dates. Export CSV si besoin. Chaque ligne montre le dossier, le projet (fourchette estimée, tags de qualification), le score, et l’âge de la demande.
 
 ![Liste des demandes devis avec scores et fourchettes](/images/blog/visite-guidee-parcours-devis-b2b/03-devis.png)
-*Liste `/devis` : Claire Martin, Léa Moreau, scores HOT / WARM, fourchettes et messages.*
+*Liste `/devis` : Léa Moreau HOT 91, Claire Martin, Thomas Berger, fourchettes et alertes.*
 
 Exemple lu sur l’écran : Léa Moreau, Google Ads, ligne de cuisson pro estimée 22 580 € – 29 600 €, tags « Grande surface », « Charge lourde », « Accès difficile », score 91, alerte « sans réponse depuis 8 jours ». Claire Martin arrive des réseaux sociaux avec un rayonnage mi-lourd. Thomas Berger, organique, picking 2,50 m, Warm 64.
 
@@ -107,7 +107,7 @@ Pour tester la qualité d’un brief avant même d’ouvrir un outil lourd, vous
 Le cœur du parcours vendeur, c’est la fiche dossier. Identité du prospect, score, statut, source, funnel d’origine, onglets (Dossier, Projet, Client, Échanges, Automatisations), et une colonne de suivi (owner, validation multi-décideurs, historique).
 
 ![Dossier devis détail Léa Moreau, score 91 et actions](/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png)
-*Détail `/devis` : Léa Moreau, Hôtel Rivage, HOT 91, lignes inox et picking, note de visite.*
+*Détail demande : score 91, alerte « à faire maintenant », actions Écrire / Appeler / Relancer.*
 
 Dans la démo, le bandeau noir ne laisse pas d’ambiguïté : Léa a demandé une visite sur site, pas seulement un PDF. « Sans réponse depuis 8 jours. Aucun flux automatique ne couvre ce cas. » Boutons : répondre par e-mail, appeler et noter, lancer une relance. Le score 91 est justifié par des raisons visibles (grande surface, charge lourde, accès difficile, projet pro, contraintes techniques). Source : Google Ads. Funnel : Configurateur principal.
 
@@ -124,7 +124,7 @@ La suggestion d’inviter un décideur (hôtel = rarement une seule personne) es
 Sans catalogue propre, le funnel produit des briefs sur des références mortes ou sans prix. L’écran Catalogue centralise les produits (souvent synchronisés depuis WooCommerce), signale ce qui manque, et sépare le « prix fixe » du « à chiffrer ».
 
 ![Catalogue produits avec alertes à compléter](/images/blog/visite-guidee-parcours-devis-b2b/06-produits.png)
-*Catalogue `/produits` : SKU QB-DEMO, fourchettes, sources WooCommerce et manuel.*
+*Catalogue `/produits` : sync Woo, alertes « sans prix / sans SKU », produits à chiffrer.*
 
 La démo affiche un bandeau orange : 15 produits sans prix (non chiffrables), 96 sans SKU. Ce n’est pas cosmétique. Un produit sans prix dans un parcours public crée de la friction côté commercial après coup. Mieux vaut corriger ici, avant que le prospect compose son panier devis.
 
@@ -135,7 +135,7 @@ Pour une synchro e-commerce plus large, voir [sync catalogue WooCommerce / Shopi
 Une PME n’a rarement qu’un seul point d’entrée. Ads, organique, partenaires, pages secteur : chaque canal peut mériter son parcours. L’écran Funnels liste les parcours actifs, leur famille, leur type (catalogue ou formulaire), les devis sur 30 jours, et le lien public.
 
 ![Liste des funnels actifs et liens publics](/images/blog/visite-guidee-parcours-devis-b2b/07-funnels.png)
-*Funnels `/funnels` : Funnel rayonnage actif, famille Rayonnage & stockage, lien /demo/rayonnage.*
+*Funnels `/funnels` : catalogue, rayonnage, configurateur principal, liens publics.*
 
 Dans la démo : Catalogue Espace démo, Catalogue rayonnage, Funnel rayonnage, Configurateur principal. Familles « Rayonnage & stockage » ou « Sur mesure ». Le Configurateur principal montre déjà des devis sur la période. Chaque ligne a son slug public.
 
@@ -146,7 +146,7 @@ L’idée simple : **plusieurs portes, une seule file Demandes**. Vous ne multip
 Les produits configurés par le prospect doivent venir de quelque part. L’écran Boutiques (intégrations) montre les sources : WooCommerce branché, boutique hébergée QuoteBuilder, dernière sync, funnel alimenté, état connecté ou brouillon.
 
 ![Boutiques et intégrations catalogue Woo / hébergée](/images/blog/visite-guidee-parcours-devis-b2b/08-integrations.png)
-*Boutiques `/integrations` : Vitrine rayonnage en ligne et Quickly Woo connecté.*
+*Boutiques : WooCommerce connecté + boutique hébergée, sync et funnels alimentés.*
 
 Texte d’intro de l’écran : « D’où viennent les produits que vos clients configurent. Branchez Woo ou Shopify, ou ouvrez une boutique QuoteBuilder. » Dans la capture : 97 produits configurables, 2 sources, dernière sync récente. Une source Woo « Connectée », une boutique hébergée encore en brouillon avec bouton « Mettre en ligne ».
 

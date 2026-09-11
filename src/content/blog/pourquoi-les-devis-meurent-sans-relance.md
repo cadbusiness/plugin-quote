@@ -51,7 +51,7 @@ Le [funnel](/fonctionnalites/funnel) QuoteBuilder existe pour ça : le prospect 
 Sans ce dossier, l’autopilote n’a rien de très utile à dire. Avec ce dossier, chaque touche peut citer le projet réel. Le prospect reconnaît sa demande. Il répond plus souvent.
 
 ![Automatisations : parcours demande et abandon](/images/blog/pourquoi-les-devis-meurent-sans-relance/05-automations.png)
-*Espace démo : parcours demande (soumission) et parcours abandon, actifs, avec files d’attente.*
+*Espace démo : parcours demande (soumission) et parcours abandon, actifs.*
 
 ## Ce que l’autopilote change concrètement
 
