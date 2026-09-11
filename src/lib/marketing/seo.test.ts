@@ -77,6 +77,7 @@ for (const required of [
   "/blog/visite-guidee-parcours-devis-b2b",
   "/blog/relancer-devis-hot-depuis-dossier",
   "/blog/delai-reponse-demande-devis-b2b",
+  "/blog/template-boutique-en-ligne-menuiserie-devis",
   "/blog/score-demande-devis-b2b",
   "/blog/configurateur-devis-vs-excel-pdf",
   "/legal/cgu",
@@ -86,7 +87,7 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 9);
+assert.equal(BLOG_POSTS.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "visite-guidee-parcours-devis-b2b")?.tags, [
   "funnel",
   "scoring",
@@ -117,6 +118,21 @@ assert.equal(
   "/images/blog/delai-reponse-demande-devis-b2b/03-devis.png",
 );
 assert.equal(BLOG_POSTS.find((post) => post.slug === "delai-reponse-demande-devis-b2b")?.pinned, false);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "template-boutique-en-ligne-menuiserie-devis")?.tags, [
+  "integrations",
+  "catalogue",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "template-boutique-en-ligne-menuiserie-devis")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "template-boutique-en-ligne-menuiserie-devis")?.cover,
+  "/images/blog/template-boutique-secteur-devis/menuiserie-home.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "template-boutique-en-ligne-menuiserie-devis")?.readingMinutes, 12);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "template-boutique-en-ligne-menuiserie-devis")?.publishedAt, "2026-09-11");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "template-boutique-en-ligne-menuiserie-devis")?.pinned, false);
 assert.equal(
   BLOG_POSTS.find((post) => post.slug === "visite-guidee-parcours-devis-b2b")?.ctaHref,
   "/c/demo/rayonnage",
@@ -149,7 +165,7 @@ assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tag
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 5);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 5);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 1);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 2);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
 assert.equal(midArticleHeadingIndex(12), 5);
 assert.ok(trimMetaDescription(BLOG_POSTS[0]!.description).length <= 155);
@@ -270,6 +286,24 @@ const requiredSources = {
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
+  "template-boutique-en-ligne-menuiserie-devis.md": [
+    "/images/blog/template-boutique-secteur-devis/menuiserie-home.png",
+    "/images/blog/template-boutique-secteur-devis/menuiserie-catalog.png",
+    "/images/blog/template-boutique-secteur-devis/skin-home.png",
+    "/images/blog/template-boutique-secteur-devis/skin-cta.png",
+    "/images/blog/template-boutique-secteur-devis/skin-catalog.png",
+    "/images/blog/template-boutique-secteur-devis/stock-home.png",
+    "/images/blog/template-boutique-secteur-devis/stock-catalog.png",
+    "/images/blog/template-boutique-secteur-devis/catalogue-vendeur.png",
+    "/images/blog/template-boutique-secteur-devis/integrations.png",
+    "/b/demo/atelier-bois-nord",
+    "/b/demo/atelier-peau-claire",
+    "/b/demo/stock-pro-b2b",
+    "/blog/visite-guidee-parcours-devis-b2b",
+    "/blog/sync-catalogue-woocommerce-shopify-parcours-devis",
+    "/secteurs/funnel-devis-menuiserie-sur-mesure",
+    "/signup?plan=free",
+  ],
   "funnel-devis-location-evenementiel.md": [
     "/images/secteurs/funnel-devis-location-evenementiel/09-public-funnel.png",
     "/images/secteurs/funnel-devis-location-evenementiel/03-devis.png",
@@ -326,6 +360,17 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(delaiBody, /signup\?plan=free/);
+}
+
+{
+  const templateRaw = readFileSync(join(blogDir, "template-boutique-en-ligne-menuiserie-devis.md"), "utf8");
+  assert.ok(templateRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const templateBody = stripFrontmatter(templateRaw);
+  assert.ok(
+    templateBody.startsWith("# Template boutique en ligne menuiserie devis"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(templateBody, /signup\?plan=free/);
 }
 
 {
@@ -426,6 +471,7 @@ const llmsPaths = [
   "/blog/visite-guidee-parcours-devis-b2b",
   "/blog/relancer-devis-hot-depuis-dossier",
   "/blog/delai-reponse-demande-devis-b2b",
+  "/blog/template-boutique-en-ligne-menuiserie-devis",
   "/blog/score-demande-devis-b2b",
   "/blog/configurateur-devis-vs-excel-pdf",
   "/outils/score-brief-devis",
@@ -550,6 +596,24 @@ const delaiImages = ["02-accueil.png", "03-devis.png", "04-devis-detail.png", "0
 const delaiDir = join(process.cwd(), "public/images/blog/delai-reponse-demande-devis-b2b");
 for (const name of delaiImages) {
   const file = join(delaiDir, name);
+  assert.ok(existsSync(file), `missing blog image ${name}`);
+  assert.ok(statSync(file).size > 10_000, `${name} is too small to be a real screenshot`);
+}
+
+const templateShopImages = [
+  "menuiserie-home.png",
+  "menuiserie-catalog.png",
+  "skin-home.png",
+  "skin-cta.png",
+  "skin-catalog.png",
+  "stock-home.png",
+  "stock-catalog.png",
+  "catalogue-vendeur.png",
+  "integrations.png",
+];
+const templateShopDir = join(process.cwd(), "public/images/blog/template-boutique-secteur-devis");
+for (const name of templateShopImages) {
+  const file = join(templateShopDir, name);
   assert.ok(existsSync(file), `missing blog image ${name}`);
   assert.ok(statSync(file).size > 10_000, `${name} is too small to be a real screenshot`);
 }

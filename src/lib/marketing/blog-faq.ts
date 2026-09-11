@@ -193,6 +193,32 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
       a: "Compte QuoteBuilder, funnel publié, deux lignes de JS ou un bloc. Plutôt des minutes qu’un projet SI.",
     },
   ],
+  "template-boutique-en-ligne-menuiserie-devis": [
+    {
+      q: "Un template boutique menuiserie remplace-t-il mon site vitrine WordPress ?",
+      a: "Pas forcément. Beaucoup d’équipes gardent le site corporate (agence, blog, recrutement) et publient la boutique devis QuoteBuilder en sous-domaine ou en lien principal « Demander un devis ». L’important est que le parcours chiffrage soit métier, pas que tout le site migre d’un coup.",
+    },
+    {
+      q: "Pourquoi ne pas juste désactiver le paiement sur Shopify ?",
+      a: "Vous pouvez. Mais le thème, les libellés, le panier et le SEO restent pensés checkout. Les prospects cherchent encore « Ajouter au panier ». Une base devis retire cette ambiguïté et branche la soumission sur un dossier commercial (score, relance), pas sur une commande à 0 €.",
+    },
+    {
+      q: "Skincare B2B : faut-il afficher les prix ?",
+      a: "Affichez des fourchettes catalogue si elles aident à filtrer. Masquez si chaque protocole dépend du bilan. Dans les deux cas, le CTA reste « Demander un devis », jamais « Payer maintenant ».",
+    },
+    {
+      q: "Stock / rayonnage : funnel ou boutique ?",
+      a: "Les deux se complètent. Le funnel rayonnage cadre un projet (type d’espace, contraintes). La boutique vitrine sert l’acheteur qui navigue par référence. Même pipeline derrière.",
+    },
+    {
+      q: "Combien de temps pour passer du template à l’URL publique ?",
+      a: "Avec un catalogue déjà listé (même imparfait), beaucoup d’équipes publient une V1 en quelques heures : template, Chat IA sur les textes, photos, publish. Le polish Puck et les intégrations viennent ensuite.",
+    },
+    {
+      q: "Les trois templates sont-ils déjà en démo publique ?",
+      a: "Oui. Menuiserie Atelier Bois Nord, skincare Atelier Peau Claire, stock Stock Pro B2B. Chaque démo a son catalogue dédié sous /catalogue.",
+    },
+  ],
   "sync-catalogue-woocommerce-shopify-parcours-devis": [
     {
       q: "La sync remplace-t-elle la boutique ?",

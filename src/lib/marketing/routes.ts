@@ -28,6 +28,7 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/blog/visite-guidee-parcours-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/relancer-devis-hot-depuis-dossier", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/delai-reponse-demande-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/blog/template-boutique-en-ligne-menuiserie-devis", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/score-demande-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/configurateur-devis-vs-excel-pdf", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/pourquoi-les-devis-meurent-sans-relance", changeFrequency: "monthly", priority: 0.8 },

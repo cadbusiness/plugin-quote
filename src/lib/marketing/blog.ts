@@ -161,6 +161,19 @@ export const BLOG_POSTS: BlogPost[] = [
     pinned: false,
   },
   {
+    slug: "template-boutique-en-ligne-menuiserie-devis",
+    path: "/blog/template-boutique-en-ligne-menuiserie-devis",
+    title: "Template boutique en ligne menuiserie devis : base métier vs thème générique",
+    description:
+      "Pourquoi un template boutique métier (menuiserie, skincare B2B, stock rayonnage) convertit mieux en demande de devis qu’un thème e-commerce générique. Process Puck + Chat IA, captures et checklist.",
+    publishedAt: "2026-09-11",
+    readingMinutes: 12,
+    tags: ["integrations", "catalogue"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/template-boutique-secteur-devis/menuiserie-home.png",
+    pinned: false,
+  },
+  {
     slug: "configurateur-devis-vs-excel-pdf",
     path: "/blog/configurateur-devis-vs-excel-pdf",
     title: "Configurateur de devis vs Excel + PDF + email : ce qui change vraiment",
