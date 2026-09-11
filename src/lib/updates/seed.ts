@@ -2,8 +2,21 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.9.2",
+    version: "1.9.2",
+    title: "Menu mobile boutique publique réparé",
+    items: [
+      "Sur téléphone, le menu hamburger de la vitrine s’ouvre en plein écran (plus de tiroir coupé).",
+      "Tous les liens (Accueil, Catalogue, etc.) restent visibles et utilisables, y compris avec encoche.",
+      "Zones de tap plus confortables sur les liens empilés.",
+      "Moins de défilement latéral accidentel sur la page boutique.",
+    ],
+    releasedAt: "2026-09-11",
+    createdAt: "2026-09-11T00:00:00.000Z",
+  },
   {
     id: "seed-1.9.1",
     version: "1.9.1",
