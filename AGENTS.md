@@ -35,3 +35,7 @@ Pages `src/app/(app)/` : `ListPanel` + `ListToolbar` + `DataTable`.
 - Bord à bord : listes flush dans `ListPanel`, jamais de carte inset (`p-4` + `rounded-* border`).
 - Pas de `<h1>` redondant si la sidebar indique déjà la section.
 - Référence : `.cursor/rules/ui-list-pages.mdc` et `.cursor/rules/ui-shell-design.mdc`.
+
+## Org démo (captures, docs, blog)
+
+Espace namespacé `demo` — login `demo@quotebuilder.app`, mot de passe = secret `DEMO_PASSWORD` (hors git). Seed idempotent : `npm run seed:demo`. Parcours écrans : `.cursor/skills/quotebuilder-demo/SKILL.md` et `docs/demo-org.md`.
