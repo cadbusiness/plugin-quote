@@ -38,18 +38,20 @@ export function StorefrontShell({
   const footer = footerNav(model.nav);
   const home = `/b/${model.orgSlug}/${model.shopSlug}`;
   return (
-    <div className="min-h-dvh overflow-x-clip" style={themeStyle(model.theme)}>
+    <div className="min-h-dvh" style={themeStyle(model.theme)}>
       <JsonLd data={model.jsonLd ?? []} />
       <StorefrontHeader
         shopName={model.shopName}
         home={home}
         accent={model.theme.accent}
+        background={model.theme.background}
+        text={model.theme.text}
         items={header.map((item) => ({
           label: item.label,
           href: hrefFor(model, item.href),
         }))}
       />
-      <main>{children}</main>
+      <main className="overflow-x-clip">{children}</main>
       <footer className="border-t border-black/10">
         <div className={cx(SHOP_CONTAINER, "flex flex-col gap-6 py-12 text-sm md:flex-row md:items-center")}>
           <p className="mr-auto text-sm text-[color-mix(in_srgb,var(--shop-text)_70%,var(--shop-bg))]">
