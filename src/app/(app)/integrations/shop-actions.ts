@@ -8,7 +8,16 @@ import { loadShopDocument, persistShopDocument } from "@/lib/shops/document";
 import { asJson } from "@/lib/shops/types";
 import { parseLayout } from "@/lib/shops/layout";
 import { parseLegal, parsePageSeo, parseSeo, parseStatus, parseTheme } from "@/lib/shops/parse";
+import { shopBasePath } from "@/lib/shops/urls";
 import { createClient } from "@/lib/supabase/server";
+
+function revalidateShop(orgSlug: string, shopSlug: string, shopId?: string) {
+  revalidatePath("/integrations");
+  if (shopId) revalidatePath(`/integrations/shop/${shopId}`);
+  const publicPath = shopBasePath(orgSlug, shopSlug);
+  revalidatePath(publicPath);
+  revalidatePath(publicPath, "layout");
+}
 
 async function requireAdmin() {
   const ctx = await getOrgContext();
@@ -29,7 +38,7 @@ export async function createShop(formData: FormData): Promise<{ error?: string }
         "Impossible de créer la boutique. Vérifiez que la migration 0021_native_shops est appliquée sur Supabase.",
     };
   }
-  revalidatePath("/integrations");
+  revalidateShop(ctx.organization.slug, shop.slug, shop.id);
   const chat = input.seedPrompt ? "?chat=1" : "";
   redirect(`/integrations/shop/${shop.id}${chat}`);
 }
@@ -86,8 +95,7 @@ export async function saveShop(formData: FormData) {
   }
 
   await persistShopDocument(supabase, ctx.organization.id, doc);
-  revalidatePath("/integrations");
-  revalidatePath(`/integrations/shop/${id}`);
+  revalidateShop(ctx.organization.slug, doc.shop.slug, id);
   return { ok: true };
 }
 
@@ -96,7 +104,7 @@ export async function publishShop(formData: FormData) {
   const id = String(formData.get("id") ?? "");
   const next = String(formData.get("status") ?? "published");
   const supabase = await createClient();
-  await supabase
+  const { data: shop } = await supabase
     .from("shops")
     .update({
       status: next === "draft" ? "draft" : "published",
@@ -104,16 +112,24 @@ export async function publishShop(formData: FormData) {
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)
-    .eq("organization_id", ctx.organization.id);
-  revalidatePath("/integrations");
-  revalidatePath(`/integrations/shop/${id}`);
+    .eq("organization_id", ctx.organization.id)
+    .select("slug")
+    .maybeSingle();
+  revalidateShop(ctx.organization.slug, shop?.slug ?? id, id);
 }
 
 export async function deleteShop(formData: FormData) {
   const ctx = await requireAdmin();
   const id = String(formData.get("id") ?? "");
   const supabase = await createClient();
+  const { data: shop } = await supabase
+    .from("shops")
+    .select("slug")
+    .eq("id", id)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
   await supabase.from("shops").delete().eq("id", id).eq("organization_id", ctx.organization.id);
-  revalidatePath("/integrations");
+  if (shop?.slug) revalidateShop(ctx.organization.slug, shop.slug, id);
+  else revalidatePath("/integrations");
   redirect("/integrations");
 }
