@@ -1,11 +1,11 @@
 import { ImageResponse } from "next/og";
-import { getBlogPost } from "@/lib/marketing/blog";
+import { BLOG_POSTS, getBlogPost } from "@/lib/marketing/blog";
 
-export const alt = "Article QuoteBuilder";
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
+export function generateStaticParams() {
+  return BLOG_POSTS.map((post) => ({ slug: post.slug }));
+}
 
-export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
+export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = getBlogPost(slug);
   const title = post?.title ?? "QuoteBuilder";
@@ -71,6 +71,6 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         </div>
       </div>
     ),
-    { ...size },
+    { width: 1200, height: 630 },
   );
 }
