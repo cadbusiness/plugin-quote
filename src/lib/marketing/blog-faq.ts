@@ -61,6 +61,32 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
       a: "Côté prospect : démo funnel rayonnage. Côté vendeur : essai Free pour voir accueil, liste Demandes, détail dossier, automations.",
     },
   ],
+  "delai-reponse-demande-devis-b2b": [
+    {
+      q: "Quel délai de réponse viser pour un devis B2B ?",
+      a: "Pour un Hot en heures ouvrées, beaucoup de PME gagnent déjà en passant sous 1 heure de premier contact utile. La cible « 5 minutes » est un benchmark inbound exigeant, utile si vous avez du volume Ads et une astreinte.",
+    },
+    {
+      q: "Faut-il répondre le week-end ?",
+      a: "Si vos prospects déposent des demandes le samedi, une auto-confirm + reprise lundi tôt vaut mieux que le silence. Une vraie astreinte se justifie surtout sur les Hot à forte valeur.",
+    },
+    {
+      q: "L’auto-reply compte-t-il comme réponse ?",
+      a: "Comme accusé, oui. Comme first response utile, non. Le prospect veut savoir qu’un humain a lu le brief ou qu’un créneau est proposé.",
+    },
+    {
+      q: "Comment accélérer sans embaucher ?",
+      a: "Moins de demandes pourries (meilleure entrée), score, assignation claire, créneaux protégés inbound, et suppression des transferts Excel.",
+    },
+    {
+      q: "Speed to lead et relance après devis, c’est la même chose ?",
+      a: "Non. Speed to lead = premier contact après la demande. Relance = suivi après envoi de l’offre. Les deux fuient du CA. Traitez-les comme deux pipelines liés.",
+    },
+    {
+      q: "Un chatbot suffit-il ?",
+      a: "Un bot qui clarifie le brief et book un créneau aide. Un bot qui promet des délais irréalistes ou qui bloque l’humain ralentit. Gardez la sortie vers un dossier + owner.",
+    },
+  ],
   "score-demande-devis-b2b": [
     {
       q: "Faut-il montrer le score au prospect ?",
