@@ -79,14 +79,14 @@ export function MarketingArticle({
         ) : null}
 
         <div className="mx-auto max-w-6xl px-6 pb-8">
-          <div className="lg:grid lg:grid-cols-[minmax(0,45rem)_1fr] lg:items-start lg:gap-16">
+          <div className="lg:grid lg:grid-cols-[minmax(0,45rem)_minmax(13rem,1fr)] lg:gap-16">
             <div id="article-body" className="max-w-[45rem]">
               <BlogToc headings={headings} variant="mobile" />
               <Markdown source={body} midAfterHeading={midAfter} midSlot={<BlogMidCta />} />
             </div>
-            <div className="hidden pt-4 lg:block">
+            <aside className="hidden lg:block">
               <BlogToc headings={headings} variant="desktop" />
-            </div>
+            </aside>
           </div>
         </div>
       </article>
