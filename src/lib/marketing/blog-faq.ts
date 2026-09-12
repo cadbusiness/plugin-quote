@@ -1,6 +1,40 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "creer-devis-avec-claude-mcp": [
+    {
+      q: "C’est quoi QuoteBuilder MCP ?",
+      a: "Un serveur Model Context Protocol (package npm quotebuilder-mcp) qui expose des tools Claude Desktop pour lire et écrire dans votre compte QuoteBuilder (leads / devis, stats, funnels, automations selon la version). La feature devis v0 ajoute create_quote, list_quotes, get_quote_status.",
+    },
+    {
+      q: "Faut-il un compte payant ?",
+      a: "Non pour démarrer : créez un compte Free, générez une clé API, branchez Claude. Les plafonds et options avancées suivent votre plan (tarifs).",
+    },
+    {
+      q: "Quelle URL mettre dans QB_API_URL ?",
+      a: "Celle documentée par le package / README MCP. Aujourd’hui le défaut documenté est https://app.quotebuilder.io. L’URL canonique du produit web reste https://www.quotebuilder.co. En doute, recopiez exactement la valeur de votre doc interne ou du README du package, ne « corrigez » pas au feeling.",
+    },
+    {
+      q: "create_quote envoie-t-il un e-mail au prospect ?",
+      a: "Pas par défaut. run_autopilot vaut false sauf si vous le forcez à true. C’est voulu : créer depuis Claude ≠ publier une soumission web avec workflows quote.submitted.",
+    },
+    {
+      q: "Pourquoi pas submitQuote ?",
+      a: "submitQuote correspond au monde public / prospect (funnel, boutique, token / PIN selon parcours). Les tools MCP devis v0 wrappent /api/leads avec une clé vendeur. Deux portes, un pipeline.",
+    },
+    {
+      q: "Claude remplace-t-il le score Hot / Warm ?",
+      a: "Non. Le score et la priorisation restent dans QuoteBuilder (et dans votre grille métier). MCP vous aide à créer et lire le dossier ; la priorisation se joue dans la file Demandes. Méthode : score demande devis B2B.",
+    },
+    {
+      q: "Où voir le devis après création ?",
+      a: "Dans l’app : accueil, liste /devis, fiche détail. Depuis Claude : list_quotes et get_quote_status. Si rien n’apparaît, vérifiez la clé, l’org, le flag MCP_DEVIS_V0, et les logs MCP de Claude Desktop.",
+    },
+    {
+      q: "Puis-je générer le PDF depuis Claude en v0 ?",
+      a: "Non. Hors scope v0. Générez / envoyez le PDF depuis QuoteBuilder une fois le dossier propre.",
+    },
+  ],
   "visite-guidee-parcours-devis-b2b": [
     {
       q: "C’est quoi un dossier devis B2B ?",
