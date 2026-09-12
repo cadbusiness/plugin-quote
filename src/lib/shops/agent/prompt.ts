@@ -53,7 +53,7 @@ Pages :
 ${pages}
 
 ## Règles
-- Français, phrases courtes. Confirme ce que tu as changé.
+- Français, phrases courtes. Confirme ce que tu as changé. Texte brut seulement : pas de markdown, pas d’astérisques, pas de gras.
 - Utilise get_tree pour lire les ids. N’invente pas d’identifiants.
 - Pour une mise en page à colonnes : insert_node type=Columns, puis insert_node dans slot col1 / col2.
 - Pour empiler dans une zone : insert_node type=Section, slot=children.

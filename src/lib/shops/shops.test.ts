@@ -3,7 +3,7 @@ import { emptyBlock, parseBlock, parseBlocks } from "./blocks";
 import { executeShopTool, ensureSeedTurnPublished } from "./agent/executor";
 import { encodeShopAgentSse, parseShopAgentSse, shopChatChips, shopToolTouched } from "./agent/events";
 import { parseShopAgentSelection, shopAgentSelectionPrompt, shouldSendChatOnEnter } from "./agent/selection";
-import { historyForAgent, mergeShopChat, parseChatLog } from "./chat-store";
+import { historyForAgent, mergeShopChat, parseChatLog, plainShopChatText } from "./chat-store";
 import { boxStyle, cssLength, cssSpacing, layoutsEqual, migrateBlocksToLayout, parseLayout } from "./layout";
 import { buildShopBlueprint, requiredShopSlugs } from "./templates";
 import { mentionsLegalesBody } from "./legal";
@@ -295,6 +295,9 @@ assert.deepEqual(
   { pageSlug: "accueil", nodeId: "hero-1", mutated: true },
 );
 assert.equal(shopToolTouched("get_tree", { slug: "accueil" }, "").mutated, false);
+assert.equal(plainShopChatText("✅ **Titre du bandeau réécrit** : « Menuiserie »"), "✅ Titre du bandeau réécrit : « Menuiserie »");
+assert.equal(plainShopChatText("* item\n**gras**"), "item\ngras");
+assert.equal(parseChatLog([{ role: "assistant", content: "**Fait.**" }])[0]?.content, "Fait.");
 assert.equal(parseChatLog([{ role: "user", content: "ok" }, { role: "nope", content: "" }]).length, 1);
 assert.equal(historyForAgent([{ role: "user", content: "brief", hidden: true }, { role: "assistant", content: "Fait." }]).length, 1);
 assert.equal(mergeShopChat([{ role: "user", content: "a" }, { role: "assistant", content: "b" }], [{ role: "user", content: "a" }]).length, 2);

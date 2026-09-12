@@ -5,7 +5,7 @@ import { shopToolLabel, shopToolTouched, type ShopAgentStreamEvent } from "@/lib
 import { buildShopAgentSystemPrompt } from "@/lib/shops/agent/prompt";
 import type { ShopAgentSelection } from "@/lib/shops/agent/selection";
 import { SHOP_AGENT_TOOLS } from "@/lib/shops/agent/tools";
-import type { ShopChatMessage } from "@/lib/shops/chat-store";
+import { plainShopChatText, type ShopChatMessage } from "@/lib/shops/chat-store";
 import { serializeEditorDraft } from "@/lib/shops/draft";
 import type { ShopDocument } from "@/lib/shops/types";
 
@@ -79,7 +79,7 @@ export async function runShopAgentTurn(input: {
       .filter((block): block is Anthropic.TextBlock => block.type === "text")
       .map((block) => block.text);
     if (texts.length) {
-      assistantText = texts.join("\n").trim();
+      assistantText = plainShopChatText(texts.join("\n"));
       await input.onEvent?.({ type: "text", text: assistantText });
     }
 
@@ -126,7 +126,7 @@ export async function runShopAgentTurn(input: {
   }
 
   return {
-    assistantText: assistantText || "C’est mis à jour.",
+    assistantText: plainShopChatText(assistantText) || "C’est mis à jour.",
     toolTrace,
     nodeId: lastNodeId,
     pageSlug: lastPageSlug,

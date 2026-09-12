@@ -6,6 +6,7 @@ import { parseShopAgentSse, shopChatChips, shopChatFollowUps } from "@/lib/shops
 import { shopAgentSelectionLabel, shouldSendChatOnEnter, type ShopAgentSelection } from "@/lib/shops/agent/selection";
 import {
   historyForAgent,
+  plainShopChatText,
   saveShopChatLocal,
   type ShopChatMessage,
 } from "@/lib/shops/chat-store";
@@ -310,7 +311,7 @@ export function ShopChat({
               </ul>
             ) : null}
             {message.content || (pending && index === visible.length - 1 && message.role === "assistant")
-              ? message.content || "En cours…"
+              ? (message.role === "assistant" ? plainShopChatText(message.content) : message.content) || "En cours…"
               : null}
           </div>
         ))}

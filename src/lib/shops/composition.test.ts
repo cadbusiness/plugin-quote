@@ -117,6 +117,7 @@ assert.match(seedPrompt, /jamais « acheter »/);
 const laterPrompt = buildShopAgentSystemPrompt(doc, "Atelier Nord", { isSeedTurn: false });
 assert.doesNotMatch(laterPrompt, /Premier tour \(création\)/);
 assert.match(laterPrompt, /image de référence/);
+assert.match(laterPrompt, /pas d.astérisques/);
 const selectedPrompt = buildShopAgentSystemPrompt(doc, "Atelier Nord", {
   isSeedTurn: false,
   selection: { kind: "node", pageSlug: "accueil", pageTitle: "Accueil", id: "hero-1", type: "Hero" },
