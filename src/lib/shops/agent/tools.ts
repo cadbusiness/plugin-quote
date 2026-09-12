@@ -193,6 +193,15 @@ export const SHOP_AGENT_TOOLS: Anthropic.Tool[] = [
     },
   },
   {
+    name: "set_name",
+    description: "Renomme la boutique (nom affiché dans l’en-tête).",
+    input_schema: {
+      type: "object",
+      properties: { name: { type: "string" } },
+      required: ["name"],
+    },
+  },
+  {
     name: "set_nav",
     description: "Remplace le menu header ou footer.",
     input_schema: {

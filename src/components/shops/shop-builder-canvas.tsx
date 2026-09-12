@@ -31,10 +31,16 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
+import { ShopChromeInspector } from "@/components/shops/shop-chrome-inspector";
+import { StorefrontHeader } from "@/components/storefront/storefront-header";
+import { resolveShopHref } from "@/lib/shops/href";
+import { SHOP_NODE_LABEL, shopNodeLabel } from "@/lib/shops/labels";
 import { parseLayout } from "@/lib/shops/layout";
 import { shopPuckConfig } from "@/lib/shops/puck-config";
 import { footerNav, headerNav, themeStyle } from "@/lib/shops/seo";
-import type { ShopLayout, StorefrontModel } from "@/lib/shops/types";
+import type { ShopLayout, ShopNavDraft, StorefrontModel } from "@/lib/shops/types";
+import { shopBasePath } from "@/lib/shops/urls";
+import { cx, SHOP_CONTAINER } from "@/lib/shops/storefront-style";
 
 const usePuckUi = createUsePuck();
 
@@ -50,22 +56,6 @@ const VIEWPORT_ICON: Record<ViewportWidth, typeof Monitor> = {
   1280: Monitor,
   768: Tablet,
   390: Smartphone,
-};
-
-const NODE_LABEL: Record<string, string> = {
-  Section: "Section",
-  Columns: "Colonnes",
-  Heading: "Titre",
-  Text: "Texte",
-  Image: "Image",
-  Button: "Bouton",
-  Hero: "Bandeau",
-  Catalog: "Grille produits",
-  Categories: "Menu catégories",
-  QuoteCta: "Demande de devis",
-  Faq: "Questions fréquentes",
-  Features: "Points forts",
-  Legal: "Texte légal",
 };
 
 const DOCK_MIN = 360;
@@ -126,7 +116,7 @@ function ShopBlockPalette() {
             {expanded ? (
               <Drawer>
                 {category.items.map((name) => (
-                  <Drawer.Item key={name} name={name} label={NODE_LABEL[name] ?? name}>
+                  <Drawer.Item key={name} name={name} label={SHOP_NODE_LABEL[name] ?? name}>
                     {ShopDrawerItem}
                   </Drawer.Item>
                 ))}
@@ -186,6 +176,8 @@ function useDockWidth() {
 }
 
 type DockTab = "blocks" | "structure" | "chat";
+export type ShopBuilderTab = DockTab;
+export type ShopBuilderChrome = "header" | "footer" | null;
 
 const DOCK_TABS: { id: DockTab; label: string; icon: typeof Boxes }[] = [
   { id: "blocks", label: "Blocs", icon: Boxes },
@@ -275,51 +267,113 @@ function ShopChrome({
   );
 }
 
-function ShopPuckDock({ tab, chat }: { tab: DockTab; chat: ReactNode }) {
+function PuckLayoutSync({ layout, epoch }: { layout: ShopLayout; epoch: number }) {
+  const dispatch = usePuckUi((s) => s.dispatch);
+  const last = useRef(0);
+  useEffect(() => {
+    if (!epoch || epoch === last.current) return;
+    last.current = epoch;
+    dispatch({ type: "setData", data: layout });
+  }, [epoch, layout, dispatch]);
+  return null;
+}
+
+function PuckSelectionBridge({
+  chrome,
+  onPuckSelect,
+}: {
+  chrome: ShopBuilderChrome;
+  onPuckSelect: (item: { id: string; type: string } | null) => void;
+}) {
+  const selected = usePuckUi((s) => s.selectedItem);
+  const prevId = useRef<string | null>(null);
+  const cb = useRef(onPuckSelect);
+  cb.current = onPuckSelect;
+
+  useEffect(() => {
+    const id = typeof selected?.props?.id === "string" ? selected.props.id : "";
+    const next = selected && id ? { id, type: selected.type } : null;
+    const nextId = next?.id ?? null;
+    if (next && nextId !== prevId.current) cb.current(next);
+    else if (!next && !chrome) cb.current(null);
+    prevId.current = nextId;
+  }, [selected, chrome]);
+  return null;
+}
+
+function ShopPuckDock({
+  tab,
+  chat,
+  chrome,
+  name,
+  nav,
+  onName,
+  onNav,
+  onTab,
+}: {
+  tab: DockTab;
+  chat: ReactNode;
+  chrome: ShopBuilderChrome;
+  name: string;
+  nav: ShopNavDraft[];
+  onName: (name: string) => void;
+  onNav: (nav: ShopNavDraft[]) => void;
+  onTab: (tab: DockTab) => void;
+}) {
   const selected = usePuckUi((s) => s.selectedItem);
   const dispatch = usePuckUi((s) => s.dispatch);
 
-  if (tab === "chat") {
-    return <div className="flex min-h-0 flex-1 flex-col">{chat}</div>;
-  }
-
-  if (tab === "structure") {
-    return (
-      <div className="shop-puck-drawer min-h-0 flex-1 overflow-y-auto px-2 py-2">
-        <p className="flex items-center gap-1.5 px-1 pb-2 text-[11px] leading-4 text-slate-400">
-          <Layers className="h-3.5 w-3.5" aria-hidden />
-          Calques de la page
-        </p>
-        <Puck.Outline />
-      </div>
-    );
-  }
-
-  if (selected) {
-    return (
-      <div className="flex min-h-0 flex-1 flex-col">
-        <div className="flex h-10 shrink-0 items-center gap-1 border-b border-slate-100 px-2">
-          <button
-            type="button"
-            onClick={() => dispatch({ type: "setUi", ui: { itemSelector: null } })}
-            className="-ml-1 inline-flex items-center gap-0.5 rounded-md px-1.5 py-1 text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-          >
-            <ChevronLeft className="h-4 w-4" aria-hidden />
-            Blocs
-          </button>
-          <p className="truncate text-sm font-medium text-slate-900">{NODE_LABEL[selected.type] ?? selected.type}</p>
-        </div>
-        <div className="shop-inspector min-h-0 flex-1 overflow-y-auto px-3 py-3">
-          <Puck.Fields />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="shop-puck-drawer min-h-0 flex-1 overflow-y-auto px-2 py-2">
-      <ShopBlockPalette />
-    </div>
+    <>
+      <div className={tab === "chat" ? "flex min-h-0 flex-1 flex-col" : "hidden"}>{chat}</div>
+      {tab === "chat" ? null : tab === "structure" ? (
+        <div className="shop-puck-drawer min-h-0 flex-1 overflow-y-auto px-2 py-2">
+          <p className="flex items-center gap-1.5 px-1 pb-2 text-[11px] leading-4 text-slate-400">
+            <Layers className="h-3.5 w-3.5" aria-hidden />
+            Calques de la page
+          </p>
+          <Puck.Outline />
+        </div>
+      ) : chrome ? (
+        <ShopChromeInspector
+          chrome={chrome}
+          name={name}
+          nav={nav}
+          onName={onName}
+          onNav={onNav}
+          onChat={() => onTab("chat")}
+        />
+      ) : selected ? (
+        <div className="flex min-h-0 flex-1 flex-col">
+          <div className="flex h-10 shrink-0 items-center gap-1 border-b border-slate-100 px-2">
+            <button
+              type="button"
+              onClick={() => dispatch({ type: "setUi", ui: { itemSelector: null } })}
+              className="-ml-1 inline-flex items-center gap-0.5 rounded-md px-1.5 py-1 text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+            >
+              <ChevronLeft className="h-4 w-4" aria-hidden />
+              Blocs
+            </button>
+            <p className="truncate text-sm font-medium text-slate-900">{shopNodeLabel(selected.type)}</p>
+            <button
+              type="button"
+              onClick={() => onTab("chat")}
+              className="ml-auto inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-[#C2410C] hover:bg-orange-50"
+            >
+              <MessageSquare className="h-3.5 w-3.5" aria-hidden />
+              Chat
+            </button>
+          </div>
+          <div className="shop-inspector min-h-0 flex-1 overflow-y-auto px-3 py-3">
+            <Puck.Fields />
+          </div>
+        </div>
+      ) : (
+        <div className="shop-puck-drawer min-h-0 flex-1 overflow-y-auto px-2 py-2">
+          <ShopBlockPalette />
+        </div>
+      )}
+    </>
   );
 }
 
@@ -330,6 +384,15 @@ function ShopPuckLayout({
   settings,
   settingsOpen,
   model,
+  tab,
+  onTab,
+  chrome,
+  onChrome,
+  onName,
+  onNav,
+  layout,
+  layoutEpoch,
+  onPuckSelect,
 }: {
   leading: ReactNode;
   trailing: ReactNode;
@@ -337,23 +400,50 @@ function ShopPuckLayout({
   settings?: ReactNode;
   settingsOpen?: boolean;
   model: StorefrontModel;
+  tab: DockTab;
+  onTab: (tab: DockTab) => void;
+  chrome: ShopBuilderChrome;
+  onChrome: (chrome: ShopBuilderChrome) => void;
+  onName: (name: string) => void;
+  onNav: (nav: ShopNavDraft[]) => void;
+  layout: ShopLayout;
+  layoutEpoch: number;
+  onPuckSelect: (item: { id: string; type: string } | null) => void;
 }) {
-  const [tab, setTab] = useState<DockTab>("blocks");
   const dock = useDockWidth();
+  const dispatch = usePuckUi((s) => s.dispatch);
   const viewportWidth = usePuckUi((s) => s.appState.ui.viewports?.current?.width);
   const framed = viewportWidth === 768 || viewportWidth === 390;
   const header = headerNav(model.nav);
   const footer = footerNav(model.nav);
+  const home = shopBasePath(model.orgSlug, model.shopSlug);
+
+  function selectChrome(next: "header" | "footer") {
+    dispatch({ type: "setUi", ui: { itemSelector: null } });
+    onChrome(next);
+    if (tab !== "chat") onTab("blocks");
+  }
 
   return (
     <div className="flex h-full min-h-0 flex-1 flex-col">
-      <ShopChrome leading={leading} trailing={trailing} tab={tab} onTab={setTab} />
+      <PuckLayoutSync layout={layout} epoch={layoutEpoch} />
+      <PuckSelectionBridge chrome={chrome} onPuckSelect={onPuckSelect} />
+      <ShopChrome leading={leading} trailing={trailing} tab={tab} onTab={onTab} />
       <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
         <aside
           className="flex min-h-0 w-full flex-col overflow-hidden border-b border-slate-200 bg-white max-lg:!w-full lg:h-full lg:shrink-0 lg:border-r lg:border-b-0"
           style={{ width: dock.width }}
         >
-          <ShopPuckDock tab={tab} chat={chat} />
+          <ShopPuckDock
+            tab={tab}
+            chat={chat}
+            chrome={chrome}
+            name={model.shopName}
+            nav={model.nav}
+            onName={onName}
+            onNav={onNav}
+            onTab={onTab}
+          />
         </aside>
         <button
           type="button"
@@ -379,25 +469,57 @@ function ShopPuckLayout({
                   ...(framed && typeof viewportWidth === "number" ? { width: viewportWidth, maxWidth: "100%" } : {}),
                 }}
               >
-                <header className="border-b border-black/10">
-                  <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-4">
-                    <p className="mr-auto text-base font-semibold tracking-tight">{model.shopName}</p>
-                    <nav className="flex flex-wrap gap-1 text-sm opacity-80">
-                      {header.map((item) => (
-                        <span key={`${item.location}-${item.sortOrder}-${item.label}`} className="rounded-md px-3 py-1.5">
-                          {item.label}
-                        </span>
+                <StorefrontHeader
+                  editing
+                  selected={chrome === "header"}
+                  onSelect={() => selectChrome("header")}
+                  shopName={model.shopName}
+                  home={home}
+                  accent={model.theme.accent}
+                  background={model.theme.background}
+                  text={model.theme.text}
+                  items={header.map((item) => ({
+                    label: item.label,
+                    href: resolveShopHref(item.href, {
+                      orgSlug: model.orgSlug,
+                      shopSlug: model.shopSlug,
+                      funnelSlug: model.funnelSlug,
+                    }),
+                  }))}
+                />
+                <Puck.Preview />
+                <footer
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Pied de page"
+                  aria-pressed={chrome === "footer"}
+                  onClick={() => selectChrome("footer")}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      selectChrome("footer");
+                    }
+                  }}
+                  className={cx(
+                    "relative cursor-pointer border-t border-black/10",
+                    chrome === "footer" && "ring-2 ring-inset ring-[#E85D04]",
+                  )}
+                >
+                  {chrome === "footer" ? (
+                    <span className="absolute top-2 left-3 rounded-full bg-[#E85D04] px-2 py-0.5 text-[10px] font-medium tracking-wide text-white uppercase">
+                      Pied
+                    </span>
+                  ) : null}
+                  <div className={cx(SHOP_CONTAINER, "flex flex-col gap-6 py-12 text-sm md:flex-row md:items-center")}>
+                    <p className="mr-auto text-sm text-[color-mix(in_srgb,var(--shop-text)_70%,var(--shop-bg))]">
+                      {model.legal.company || model.shopName}
+                      {model.legal.city ? ` · ${model.legal.city}` : ""}
+                    </p>
+                    <nav aria-label="Mentions" className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+                      {footer.map((item) => (
+                        <span key={`${item.href}-${item.label}`}>{item.label}</span>
                       ))}
                     </nav>
-                  </div>
-                </header>
-                <Puck.Preview />
-                <footer className="border-t border-black/10">
-                  <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-6 text-xs opacity-70">
-                    <p className="mr-auto">{model.legal.company || model.shopName}</p>
-                    {footer.map((item) => (
-                      <span key={`${item.href}-${item.label}`}>{item.label}</span>
-                    ))}
                   </div>
                 </footer>
               </div>
@@ -418,6 +540,14 @@ export function ShopBuilderCanvas({
   settingsOpen,
   leading,
   trailing,
+  tab,
+  onTab,
+  chrome,
+  onChrome,
+  onName,
+  onNav,
+  layoutEpoch,
+  onPuckSelect,
 }: {
   layout: ShopLayout;
   model: StorefrontModel;
@@ -426,6 +556,14 @@ export function ShopBuilderCanvas({
   chat: ReactNode;
   leading: ReactNode;
   trailing: ReactNode;
+  tab: ShopBuilderTab;
+  onTab: (tab: ShopBuilderTab) => void;
+  chrome: ShopBuilderChrome;
+  onChrome: (chrome: ShopBuilderChrome) => void;
+  onName: (name: string) => void;
+  onNav: (nav: ShopNavDraft[]) => void;
+  layoutEpoch: number;
+  onPuckSelect: (item: { id: string; type: string } | null) => void;
   onChange: (layout: ShopLayout) => void;
 }) {
   return (
@@ -448,6 +586,15 @@ export function ShopBuilderCanvas({
           settings={settings}
           settingsOpen={settingsOpen}
           model={model}
+          tab={tab}
+          onTab={onTab}
+          chrome={chrome}
+          onChrome={onChrome}
+          onName={onName}
+          onNav={onNav}
+          layout={layout}
+          layoutEpoch={layoutEpoch}
+          onPuckSelect={onPuckSelect}
         />
       </Puck>
     </div>

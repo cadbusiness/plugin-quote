@@ -116,6 +116,12 @@ assert.match(seedPrompt, /rayonnage industriel|stock B2B|rayonnage/);
 assert.match(seedPrompt, /jamais « acheter »/);
 const laterPrompt = buildShopAgentSystemPrompt(doc, "Atelier Nord", { isSeedTurn: false });
 assert.doesNotMatch(laterPrompt, /Premier tour \(création\)/);
+const selectedPrompt = buildShopAgentSystemPrompt(doc, "Atelier Nord", {
+  isSeedTurn: false,
+  selection: { kind: "node", pageSlug: "accueil", pageTitle: "Accueil", id: "hero-1", type: "Hero" },
+});
+assert.match(selectedPrompt, /update_node slug=accueil id=hero-1/);
+assert.match(selectedPrompt, /get_tree uniquement avec slug=accueil/);
 
 const blueprint = buildShopBlueprint({
   name: "Atelier Nord",

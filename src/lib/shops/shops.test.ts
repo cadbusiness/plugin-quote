@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
 import { emptyBlock, parseBlock, parseBlocks } from "./blocks";
 import { executeShopTool, ensureSeedTurnPublished } from "./agent/executor";
+import { parseShopAgentSelection, shopAgentSelectionPrompt, shouldSendChatOnEnter } from "./agent/selection";
 import { boxStyle, cssLength, cssSpacing, migrateBlocksToLayout, parseLayout } from "./layout";
 import { buildShopBlueprint, requiredShopSlugs } from "./templates";
 import { mentionsLegalesBody } from "./legal";
-import { clipDescription, pageTitle, productJsonLd, shopMetadata, sitemapEntries } from "./seo";
+import { clipDescription, footerNav, headerNav, pageTitle, productJsonLd, replaceNavLocation, shopMetadata, sitemapEntries } from "./seo";
 import { resolveShopHref } from "./href";
 import { findProductBySlug, productSlug, shopBasePath, shopQuotePath } from "./urls";
 import type { ShopDocument } from "./types";
@@ -88,6 +89,24 @@ assert.equal(
   resolveShopHref("/c/demo/autre", { orgSlug: "demo", shopSlug: "vitrine", funnelSlug: "rayonnage" }),
   "/c/demo/autre",
 );
+
+const swapped = replaceNavLocation(
+  [
+    { location: "header", label: "Accueil", href: "/", sortOrder: 0 },
+    { location: "footer", label: "CGV", href: "/cgv", sortOrder: 0 },
+  ],
+  "header",
+  [
+    { label: "Home", href: "/" },
+    { label: "Devis", href: "/devis" },
+  ],
+);
+assert.deepEqual(
+  headerNav(swapped).map((item) => item.label),
+  ["Home", "Devis"],
+);
+assert.equal(footerNav(swapped).length, 1);
+assert.equal(footerNav(swapped)[0]?.label, "CGV");
 assert.equal(
   resolveShopHref("/catalogue", { orgSlug: "demo", shopSlug: "vitrine", funnelSlug: "rayonnage" }),
   "/b/demo/vitrine/catalogue",
@@ -231,11 +250,34 @@ assert.equal(ensureSeedTurnPublished(doc, true), true);
 assert.equal(doc.shop.status, "published");
 assert.equal(ensureSeedTurnPublished(doc, true), false);
 
+const renamed = executeShopTool(doc, "set_name", { name: "Atelier Bois Nord" });
+assert.equal(renamed.ok, true);
+assert.equal(doc.shop.name, "Atelier Bois Nord");
+
 const published = executeShopTool(doc, "set_status", { status: "published" });
 assert.equal(published.ok, true);
 assert.equal(doc.shop.status, "published");
 
 const missing = executeShopTool(doc, "update_node", { slug: "nope", id: "b1", heading: "x" });
 assert.equal(missing.ok, false);
+
+assert.equal(shouldSendChatOnEnter({ key: "Enter", shiftKey: false }), true);
+assert.equal(shouldSendChatOnEnter({ key: "Enter", shiftKey: true }), false);
+assert.equal(shouldSendChatOnEnter({ key: "Enter", shiftKey: false, isComposing: true }), false);
+assert.equal(shouldSendChatOnEnter({ key: "a", shiftKey: false }), false);
+
+assert.equal(parseShopAgentSelection({ kind: "chrome", chrome: "header" })?.kind, "chrome");
+assert.equal(parseShopAgentSelection({ kind: "node" }), null);
+const nodeSel = parseShopAgentSelection({
+  kind: "node",
+  pageSlug: "accueil",
+  pageTitle: "Accueil",
+  id: "hero-1",
+  type: "Hero",
+});
+assert.ok(nodeSel);
+assert.match(shopAgentSelectionPrompt(nodeSel!), /update_node slug=accueil id=hero-1/);
+assert.match(shopAgentSelectionPrompt(nodeSel!), /Bandeau/);
+assert.match(shopAgentSelectionPrompt({ kind: "chrome", chrome: "header" }), /set_nav location=header/);
 
 console.log("shops tests ok");

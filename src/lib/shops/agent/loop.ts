@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { COMMERCE_AGENT_CONFIG } from "@/lib/commerce-agent/config";
 import { executeShopTool } from "@/lib/shops/agent/executor";
 import { buildShopAgentSystemPrompt } from "@/lib/shops/agent/prompt";
+import type { ShopAgentSelection } from "@/lib/shops/agent/selection";
 import { SHOP_AGENT_TOOLS } from "@/lib/shops/agent/tools";
 import type { ShopDocument } from "@/lib/shops/types";
 
@@ -17,6 +18,7 @@ export async function runShopAgentTurn(input: {
   orgName: string;
   history: ShopChatMessage[];
   userMessage: string;
+  selection?: ShopAgentSelection | null;
 }): Promise<ShopAgentTurnResult> {
   const apiKey = process.env.ANTHROPIC_API_KEY?.trim();
   if (!apiKey) {
@@ -25,7 +27,10 @@ export async function runShopAgentTurn(input: {
 
   const client = new Anthropic({ apiKey });
   const isSeedTurn = input.history.length === 0;
-  const system = buildShopAgentSystemPrompt(input.doc, input.orgName, { isSeedTurn });
+  const system = buildShopAgentSystemPrompt(input.doc, input.orgName, {
+    isSeedTurn,
+    selection: input.selection,
+  });
   const messages: Anthropic.MessageParam[] = [
     ...input.history.map((message) => ({ role: message.role, content: message.content })),
     { role: "user", content: input.userMessage },

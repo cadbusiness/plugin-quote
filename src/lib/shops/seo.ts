@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { groupProductsByCategory } from "@/lib/catalog/group";
 import { legalAddress } from "@/lib/shops/legal";
-import type { ShopLegal, ShopNavDraft, ShopPageDraft, ShopProduct, ShopSeo, ShopTheme } from "@/lib/shops/types";
+import type { ShopLegal, ShopNavDraft, ShopNavLocation, ShopPageDraft, ShopProduct, ShopSeo, ShopTheme } from "@/lib/shops/types";
 import { categoryPath, productPath, shopAbsoluteUrl, shopPagePath } from "@/lib/shops/urls";
 
 export type ShopSeoContext = {
@@ -281,6 +281,21 @@ export function headerNav(nav: ShopNavDraft[]) {
 
 export function footerNav(nav: ShopNavDraft[]) {
   return nav.filter((item) => item.location === "footer").sort((a, b) => a.sortOrder - b.sortOrder);
+}
+
+export function replaceNavLocation(
+  nav: ShopNavDraft[],
+  location: ShopNavLocation,
+  items: Array<{ label: string; href: string }>,
+): ShopNavDraft[] {
+  const others = nav.filter((item) => item.location !== location);
+  const next = items.map((item, index) => ({
+    location,
+    label: item.label,
+    href: item.href,
+    sortOrder: index,
+  }));
+  return [...others, ...next];
 }
 
 export function themeStyle(theme: ShopTheme): CSSProperties {

@@ -1,5 +1,6 @@
 import { getFunnelFamily } from "@/lib/funnels/families";
 import { shopSnapshot } from "@/lib/shops/agent/executor";
+import { shopAgentSelectionPrompt, type ShopAgentSelection } from "@/lib/shops/agent/selection";
 import { SHOP_AGENT_FIRST_TURN_PLAYBOOK, shopCopyForFamily } from "@/lib/shops/composition";
 import { placeholderCatalogForPrompt } from "@/lib/shops/placeholders";
 import { resolveShopSectorTemplate } from "@/lib/shops/sector-templates";
@@ -8,7 +9,7 @@ import type { ShopDocument } from "@/lib/shops/types";
 export function buildShopAgentSystemPrompt(
   doc: ShopDocument,
   orgName: string,
-  opts?: { isSeedTurn?: boolean },
+  opts?: { isSeedTurn?: boolean; selection?: ShopAgentSelection | null },
 ) {
   const snap = shopSnapshot(doc);
   const family = getFunnelFamily(snap.sector);
@@ -61,5 +62,5 @@ ${pages}
 - Pages légales obligatoires : mentions-legales, cgv, politique-de-confidentialite, cookies. Si tu changes l’identité, appelle set_legal avec refreshPages true.
 - CTA = demander un devis, jamais « acheter » / « panier » / « checkout » / « payer en ligne ».
 - Quand le brief de création est posé (pages + textes prêts), publie (set_status published) pour que l’URL /b/… soit publique. Ne dépublie pas sans demande explicite.
-- Après une série de modifications, un court récap suffit.${seed}`;
+- Après une série de modifications, un court récap suffit.${seed}${opts?.selection ? `\n\n${shopAgentSelectionPrompt(opts.selection)}` : ""}`;
 }

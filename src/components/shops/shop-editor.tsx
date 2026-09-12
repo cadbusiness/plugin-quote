@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useMemo, useState, useTransition, type ReactNode } from "react";
 import { ChevronLeft, Eye, Settings } from "lucide-react";
 import { deleteShop, publishShop, saveShop } from "@/app/(app)/integrations/shop-actions";
-import { ShopChat, type EditorPage, type ShopChatDraft, type ShopChatResult } from "@/components/shops/shop-chat";
+import { ShopChat, type EditorPage, type ShopChatDraft, type ShopChatMessage, type ShopChatResult } from "@/components/shops/shop-chat";
+import type { ShopBuilderChrome, ShopBuilderTab } from "@/components/shops/shop-builder-canvas";
 import { ListPanel } from "@/components/ui/list-panel";
 import { parseLayout } from "@/lib/shops/layout";
 import type { ShopLegal, ShopNavDraft, ShopProduct, ShopSeo, ShopTheme } from "@/lib/shops/types";
@@ -32,6 +33,7 @@ export function ShopEditor({
   linkedQuoteMode,
   orgName,
   orgSlug,
+  openChat,
 }: {
   shop: {
     id: string;
@@ -52,6 +54,7 @@ export function ShopEditor({
   linkedQuoteMode: QuoteMode;
   orgName: string;
   orgSlug: string;
+  openChat?: boolean;
 }) {
   const [name, setName] = useState(shop.name);
   const [status, setStatus] = useState(shop.status);
@@ -64,6 +67,10 @@ export function ShopEditor({
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [settingsTab, setSettingsTab] = useState<"shop" | "seo" | "legal" | "nav">("shop");
   const [layoutEpoch, setLayoutEpoch] = useState(0);
+  const [tab, setTab] = useState<ShopBuilderTab>(openChat ? "chat" : "blocks");
+  const [chrome, setChrome] = useState<ShopBuilderChrome>(null);
+  const [puckSelection, setPuckSelection] = useState<{ id: string; type: string } | null>(null);
+  const [chatMessages, setChatMessages] = useState<ShopChatMessage[]>([]);
   const [pending, startTransition] = useTransition();
 
   const page = pages.find((item) => item.id === pageId) ?? pages[0] ?? null;
@@ -113,6 +120,19 @@ export function ShopEditor({
     setNav(result.nav);
     setLayoutEpoch((value) => value + 1);
   }
+
+  const chatSelection =
+    chrome != null
+      ? { kind: "chrome" as const, chrome }
+      : puckSelection && page
+        ? {
+            kind: "node" as const,
+            pageSlug: page.slug,
+            pageTitle: page.title,
+            id: puckSelection.id,
+            type: puckSelection.type,
+          }
+        : null;
 
   const settings = (
     <div className="mx-auto max-w-2xl px-4 py-6 lg:px-6">
@@ -279,13 +299,46 @@ export function ShopEditor({
     <ListPanel className="min-h-0 overflow-hidden">
       {page ? (
         <ShopBuilderCanvas
-          key={`${page.id}-${layoutEpoch}`}
+          key={page.id}
           layout={page.blocks}
           model={model}
           onChange={(blocks) => patchPage(page.id, { blocks })}
           settingsOpen={settingsOpen}
           settings={settings}
-          chat={<ShopChat shopId={shop.id} seedPrompt={shop.seedPrompt} getDraft={draft} onApplied={applyChat} />}
+          tab={tab}
+          onTab={setTab}
+          chrome={chrome}
+          onChrome={(next) => {
+            setSettingsOpen(false);
+            setChrome(next);
+            if (next) setPuckSelection(null);
+          }}
+          onName={setName}
+          onNav={setNav}
+          layoutEpoch={layoutEpoch}
+          onPuckSelect={(item) => {
+            if (item) {
+              setChrome(null);
+              setPuckSelection(item);
+              return;
+            }
+            setPuckSelection(null);
+          }}
+          chat={
+            <ShopChat
+              shopId={shop.id}
+              seedPrompt={shop.seedPrompt}
+              getDraft={draft}
+              onApplied={applyChat}
+              messages={chatMessages}
+              onMessages={setChatMessages}
+              selection={chatSelection}
+              onClearSelection={() => {
+                setChrome(null);
+                setPuckSelection(null);
+              }}
+            />
+          }
           leading={
             <>
               <Link
@@ -301,6 +354,8 @@ export function ShopEditor({
                 onChange={(event) => {
                   setPageId(event.target.value);
                   setSettingsOpen(false);
+                  setChrome(null);
+                  setPuckSelection(null);
                 }}
                 aria-label="Page à éditer"
                 className="h-8 min-w-0 max-w-44 rounded-md border border-white/15 bg-white/10 px-2 text-sm text-white"

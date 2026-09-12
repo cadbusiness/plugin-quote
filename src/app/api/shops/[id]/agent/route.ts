@@ -4,6 +4,7 @@ import { z } from "zod";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { ensureSeedTurnPublished } from "@/lib/shops/agent/executor";
 import { runShopAgentTurn } from "@/lib/shops/agent/loop";
+import { parseShopAgentSelection } from "@/lib/shops/agent/selection";
 import { applyEditorDraft, serializeEditorDraft, type ShopEditorDraft } from "@/lib/shops/draft";
 import { loadShopDocument, persistShopDocument } from "@/lib/shops/document";
 import { shopBasePath } from "@/lib/shops/urls";
@@ -23,6 +24,7 @@ const schema = z.object({
     .max(24)
     .optional(),
   draft: z.unknown().optional(),
+  selection: z.unknown().optional(),
 });
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -49,6 +51,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       orgName: ctx.organization.name,
       history,
       userMessage: parsed.data.message,
+      selection: parseShopAgentSelection(parsed.data.selection),
     });
     ensureSeedTurnPublished(doc, history.length === 0);
     await persistShopDocument(supabase, ctx.organization.id, doc);

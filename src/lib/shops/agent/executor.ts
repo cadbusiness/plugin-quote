@@ -259,6 +259,13 @@ export function executeShopTool(doc: ShopDocument, name: string, input: Record<s
     return { ok: true, summary: `Page ${rawSlug} créée` };
   }
 
+  if (name === "set_name") {
+    const next = String(input.name ?? "").trim();
+    if (next.length < 2) return { ok: false, error: "Nom trop court" };
+    doc.shop.name = next;
+    return { ok: true, summary: `Boutique renommée « ${next} »` };
+  }
+
   if (name === "set_nav") {
     const location = parseNavLocation(input.location);
     const items = Array.isArray(input.items) ? input.items : [];
