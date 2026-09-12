@@ -74,6 +74,7 @@ for (const required of [
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
+  "/blog/creer-devis-avec-claude-mcp",
   "/blog/visite-guidee-parcours-devis-b2b",
   "/blog/relancer-devis-hot-depuis-dossier",
   "/blog/delai-reponse-demande-devis-b2b",
@@ -88,7 +89,23 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 11);
+assert.equal(BLOG_POSTS.length, 12);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "creer-devis-avec-claude-mcp")?.tags, [
+  "integrations",
+  "scoring",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "creer-devis-avec-claude-mcp")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "creer-devis-avec-claude-mcp")?.cover,
+  "/images/blog/creer-devis-avec-claude-mcp/03-devis.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "creer-devis-avec-claude-mcp")?.readingMinutes, 12);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "creer-devis-avec-claude-mcp")?.publishedAt, "2026-09-12");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "creer-devis-avec-claude-mcp")?.pinned, false);
+assert.equal(BLOG_FAQ["creer-devis-avec-claude-mcp"]?.length, 8);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "visite-guidee-parcours-devis-b2b")?.tags, [
   "funnel",
   "scoring",
@@ -179,8 +196,9 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 5);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 5);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 6);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 6);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 4);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 3);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
 assert.equal(midArticleHeadingIndex(12), 5);
@@ -198,16 +216,17 @@ assert.equal(
   "/outils/generateur-sequence-relances",
 );
 
-const articleLd = blogArticleJsonLd(BLOG_POSTS[0]!);
+const featuredScore = BLOG_POSTS.find((post) => post.slug === "score-demande-devis-b2b")!;
+const articleLd = blogArticleJsonLd(featuredScore);
 assert.equal(articleLd["@type"], "Article");
 assert.match(String(articleLd.image), /images\/blog\/score-demande-devis-b2b\/04-devis-detail\.png/);
 assert.match(String(articleLd.mainEntityOfPage), /www\.quotebuilder\.co\/blog\//);
 
-const crumbs = blogBreadcrumbJsonLd(BLOG_POSTS[0]!);
+const crumbs = blogBreadcrumbJsonLd(featuredScore);
 assert.equal(crumbs["@type"], "BreadcrumbList");
 assert.equal(crumbs.itemListElement.length, 3);
 assert.equal(crumbs.itemListElement[0]?.name, "Blog");
-assert.equal(crumbs.itemListElement[1]?.name, primaryTagLabel(BLOG_POSTS[0]!));
+assert.equal(crumbs.itemListElement[1]?.name, primaryTagLabel(featuredScore));
 
 for (const value of Object.values(BLOG_UI)) {
   assert.doesNotMatch(value, EM_DASH, `BLOG_UI still contains an em dash: ${value}`);
@@ -331,6 +350,16 @@ const requiredSources = {
     "/b/demo/stock-pro-b2b/devis",
     "/signup?plan=free",
   ],
+  "creer-devis-avec-claude-mcp.md": [
+    "/images/blog/creer-devis-avec-claude-mcp/02-accueil.png",
+    "/images/blog/creer-devis-avec-claude-mcp/03-devis.png",
+    "/images/blog/creer-devis-avec-claude-mcp/04-devis-detail.png",
+    "/images/blog/creer-devis-avec-claude-mcp/05-automations.png",
+    "/images/blog/creer-devis-avec-claude-mcp/08-integrations.png",
+    "/signup?plan=free",
+    "MCP_DEVIS_V0",
+    "create_quote",
+  ],
   "funnel-devis-location-evenementiel.md": [
     "/images/secteurs/funnel-devis-location-evenementiel/09-public-funnel.png",
     "/images/secteurs/funnel-devis-location-evenementiel/03-devis.png",
@@ -412,6 +441,17 @@ for (const file of blogFiles) {
 }
 
 {
+  const mcpRaw = readFileSync(join(blogDir, "creer-devis-avec-claude-mcp.md"), "utf8");
+  assert.ok(mcpRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const mcpBody = stripFrontmatter(mcpRaw);
+  assert.ok(
+    mcpBody.startsWith("# Créer un devis avec Claude"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(mcpBody, /signup\?plan=free/);
+}
+
+{
   const eventRaw = readFileSync(join(blogDir, "funnel-devis-location-evenementiel.md"), "utf8");
   assert.ok(eventRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
   const eventBody = stripFrontmatter(eventRaw);
@@ -447,7 +487,7 @@ const articleMeta = pageMetadata({
   path: "/blog/score-demande-devis-b2b",
   type: "article",
   publishedTime: "2026-09-11",
-  image: blogOgImagePath(BLOG_POSTS[0]!),
+  image: blogOgImagePath(featuredScore),
 });
 assert.equal(articleMeta.alternates?.canonical, "https://www.quotebuilder.co/blog/score-demande-devis-b2b");
 const ogImages = articleMeta.openGraph?.images;
@@ -506,6 +546,7 @@ assert.equal(parkingBrief.total, 0);
 assert.equal(parkingBrief.band, "parking");
 
 const llmsPaths = [
+  "/blog/creer-devis-avec-claude-mcp",
   "/blog/visite-guidee-parcours-devis-b2b",
   "/blog/relancer-devis-hot-depuis-dossier",
   "/blog/delai-reponse-demande-devis-b2b",
@@ -667,6 +708,20 @@ const unifyShopImages = [
 const unifyShopDir = join(process.cwd(), "public/images/blog/devis-en-ligne-integre-boutique");
 for (const name of unifyShopImages) {
   const file = join(unifyShopDir, name);
+  assert.ok(existsSync(file), `missing blog image ${name}`);
+  assert.ok(statSync(file).size > 10_000, `${name} is too small to be a real screenshot`);
+}
+
+const mcpImages = [
+  "02-accueil.png",
+  "03-devis.png",
+  "04-devis-detail.png",
+  "05-automations.png",
+  "08-integrations.png",
+];
+const mcpDir = join(process.cwd(), "public/images/blog/creer-devis-avec-claude-mcp");
+for (const name of mcpImages) {
+  const file = join(mcpDir, name);
   assert.ok(existsSync(file), `missing blog image ${name}`);
   assert.ok(statSync(file).size > 10_000, `${name} is too small to be a real screenshot`);
 }

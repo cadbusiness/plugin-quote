@@ -109,6 +109,19 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "creer-devis-avec-claude-mcp",
+    path: "/blog/creer-devis-avec-claude-mcp",
+    title: "Créer un devis avec Claude : QuoteBuilder MCP sur Claude Desktop",
+    description:
+      "Créer et suivre un devis B2B depuis Claude Desktop via QuoteBuilder MCP (create_quote, list_quotes, get_quote_status). Clé API, flag MCP_DEVIS_V0, process create→dossier, limites v0.",
+    publishedAt: "2026-09-12",
+    readingMinutes: 12,
+    tags: ["integrations", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/creer-devis-avec-claude-mcp/03-devis.png",
+    pinned: false,
+  },
+  {
     slug: "score-demande-devis-b2b",
     path: "/blog/score-demande-devis-b2b",
     title: "Comment scorer et prioriser une demande de devis B2B (grille 0–100)",

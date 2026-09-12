@@ -25,6 +25,7 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/tarifs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/blog/creer-devis-avec-claude-mcp", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/visite-guidee-parcours-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/relancer-devis-hot-depuis-dossier", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/delai-reponse-demande-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
