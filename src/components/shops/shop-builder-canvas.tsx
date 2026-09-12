@@ -30,12 +30,12 @@ import {
   Type,
   type LucideIcon,
 } from "lucide-react";
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import { ShopChromeInspector } from "@/components/shops/shop-chrome-inspector";
 import { StorefrontHeader } from "@/components/storefront/storefront-header";
 import { resolveShopHref } from "@/lib/shops/href";
 import { SHOP_NODE_LABEL, shopNodeLabel } from "@/lib/shops/labels";
-import { parseLayout } from "@/lib/shops/layout";
+import { layoutsEqual, parseLayout } from "@/lib/shops/layout";
 import { shopPuckConfig } from "@/lib/shops/puck-config";
 import { footerNav, headerNav, themeStyle } from "@/lib/shops/seo";
 import type { ShopLayout, ShopNavDraft, StorefrontModel } from "@/lib/shops/types";
@@ -270,22 +270,32 @@ function ShopChrome({
 function PuckFocusNode({ nodeId, pulse }: { nodeId: string | null; pulse: number }) {
   const getSelectorForId = usePuckUi((s) => s.getSelectorForId);
   const dispatch = usePuckUi((s) => s.dispatch);
+  const getSelectorRef = useRef(getSelectorForId);
+  const dispatchRef = useRef(dispatch);
+  getSelectorRef.current = getSelectorForId;
+  dispatchRef.current = dispatch;
+
   useEffect(() => {
     if (!nodeId || !pulse) return;
-    const selector = getSelectorForId(nodeId);
-    if (selector) dispatch({ type: "setUi", ui: { itemSelector: selector } });
-  }, [nodeId, pulse, getSelectorForId, dispatch]);
+    const selector = getSelectorRef.current(nodeId);
+    if (!selector) return;
+    dispatchRef.current({ type: "setUi", ui: { itemSelector: selector } });
+  }, [nodeId, pulse]);
   return null;
 }
 
 function PuckLayoutSync({ layout, epoch }: { layout: ShopLayout; epoch: number }) {
   const dispatch = usePuckUi((s) => s.dispatch);
   const last = useRef(0);
+  const layoutRef = useRef(layout);
+  const dispatchRef = useRef(dispatch);
+  layoutRef.current = layout;
+  dispatchRef.current = dispatch;
   useEffect(() => {
     if (!epoch || epoch === last.current) return;
     last.current = epoch;
-    dispatch({ type: "setData", data: layout });
-  }, [epoch, layout, dispatch]);
+    dispatchRef.current({ type: "setData", data: layoutRef.current });
+  }, [epoch]);
   return null;
 }
 
@@ -588,18 +598,26 @@ export function ShopBuilderCanvas({
   pulse?: number;
   focusNodeId?: string | null;
 }) {
+  const metadata = useMemo(() => ({ model }), [model]);
+  const layoutRef = useRef(layout);
+  layoutRef.current = layout;
+
   return (
     <div className={`shop-puck flex min-h-0 min-w-0 flex-1 flex-col${working ? " shop-puck-working" : ""}${pulse ? " shop-puck-pulse" : ""}`}>
       <Puck
         config={shopPuckConfig}
         data={layout}
-        metadata={{ model }}
+        metadata={metadata}
         iframe={{ enabled: false }}
         plugins={[]}
         overrides={{ drawerItem: ShopDrawerItem }}
         height="100%"
         viewports={VIEWPORTS}
-        onChange={(data: Data) => onChange(parseLayout(data))}
+        onChange={(data: Data) => {
+          const next = parseLayout(data);
+          if (layoutsEqual(layoutRef.current, next)) return;
+          onChange(next);
+        }}
       >
         <ShopPuckLayout
           leading={leading}

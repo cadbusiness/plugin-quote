@@ -9,7 +9,7 @@ import { ShopChat, type EditorPage, type ShopChatDraft, type ShopChatMessage, ty
 import type { ShopBuilderChrome, ShopBuilderTab } from "@/components/shops/shop-builder-canvas";
 import { ListPanel } from "@/components/ui/list-panel";
 import { loadShopChatLocal, mergeShopChat, parseChatLog } from "@/lib/shops/chat-store";
-import { parseLayout } from "@/lib/shops/layout";
+import { layoutsEqual, parseLayout } from "@/lib/shops/layout";
 import type { ShopLegal, ShopNavDraft, ShopProduct, ShopSeo, ShopTheme } from "@/lib/shops/types";
 import { QUOTE_MODE_OPTIONS, type QuoteMode } from "@/lib/quotes/quote-mode";
 
@@ -121,14 +121,19 @@ export function ShopEditor({
   }
 
   function applyChat(result: ShopChatResult) {
+    const nextPages = result.pages.map((item) => ({ ...item, blocks: parseLayout(item.blocks) }));
+    const current = pages.find((item) => item.id === pageId);
+    const incoming = nextPages.find((item) => item.id === pageId);
     setName(result.name);
     setStatus(result.status);
     setTheme(result.theme);
     setSeo(result.seo);
     setLegal(result.legal);
-    setPages(result.pages.map((item) => ({ ...item, blocks: parseLayout(item.blocks) })));
+    setPages(nextPages);
     setNav(result.nav);
-    setLayoutEpoch((value) => value + 1);
+    if (!current || !incoming || !layoutsEqual(current.blocks, incoming.blocks)) {
+      setLayoutEpoch((value) => value + 1);
+    }
   }
 
   function undoChat() {
@@ -355,12 +360,12 @@ export function ShopEditor({
           onPuckSelect={(item) => {
             if (item) {
               setChrome(null);
-              setPuckSelection(item);
+              setPuckSelection((current) => (current?.id === item.id && current.type === item.type ? current : item));
               setSettingsOpen(false);
               setTab("chat");
               return;
             }
-            setPuckSelection(null);
+            setPuckSelection((current) => (current ? null : current));
           }}
           chat={
             <ShopChat

@@ -4,7 +4,7 @@ import { executeShopTool, ensureSeedTurnPublished } from "./agent/executor";
 import { encodeShopAgentSse, parseShopAgentSse, shopChatChips, shopToolTouched } from "./agent/events";
 import { parseShopAgentSelection, shopAgentSelectionPrompt, shouldSendChatOnEnter } from "./agent/selection";
 import { historyForAgent, mergeShopChat, parseChatLog } from "./chat-store";
-import { boxStyle, cssLength, cssSpacing, migrateBlocksToLayout, parseLayout } from "./layout";
+import { boxStyle, cssLength, cssSpacing, layoutsEqual, migrateBlocksToLayout, parseLayout } from "./layout";
 import { buildShopBlueprint, requiredShopSlugs } from "./templates";
 import { mentionsLegalesBody } from "./legal";
 import { clipDescription, footerNav, headerNav, pageTitle, productJsonLd, replaceNavLocation, shopMetadata, sitemapEntries } from "./seo";
@@ -42,6 +42,9 @@ assert.equal(migrated.content[0]?.props.heading, "Hello");
 assert.equal(blueprint.pages[0]!.blocks.content[0]!.props.padding, "80px 0");
 assert.equal(blueprint.pages[0]!.blocks.content.find((node) => node.type === "Catalog")?.props.padding, "64px 0");
 assert.equal(parseLayout([{ id: "b1", type: "faq", heading: "Q", faq: [{ q: "A", a: "B" }] }]).content[0]?.type, "Faq");
+const same = parseLayout({ root: { props: {} }, content: [{ type: "Heading", props: { id: "h1", text: "A" } }] });
+assert.equal(layoutsEqual(same, parseLayout(same)), true);
+assert.equal(layoutsEqual(same, parseLayout({ root: { props: {} }, content: [{ type: "Heading", props: { id: "h1", text: "B" } }] })), false);
 
 assert.equal(cssLength("2"), "2px");
 assert.equal(cssLength("2px"), "2px");

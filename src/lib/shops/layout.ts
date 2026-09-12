@@ -290,6 +290,10 @@ export function parseLayout(value: unknown): ShopLayout {
   return migrateBlocksToLayout(parseBlocks(value));
 }
 
+export function layoutsEqual(a: ShopLayout, b: ShopLayout) {
+  return JSON.stringify(a) === JSON.stringify(b);
+}
+
 export function childSlots(node: ShopNode): { key: string; nodes: ShopNode[] }[] {
   const slots: { key: string; nodes: ShopNode[] }[] = [];
   for (const key of Object.keys(node.props)) {
