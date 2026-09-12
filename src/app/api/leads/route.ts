@@ -1,5 +1,6 @@
 import { isApiAuth, jsonError, jsonOk, requireApiAuth } from "@/lib/api/http";
 import { apiGetLeads, apiCreateLead, type LeadScore, type LeadStatusSlug } from "@/lib/api/leads";
+import { shouldRunQuoteAutopilot } from "@/lib/api/quote-status";
 
 export async function GET(req: Request) {
   const auth = await requireApiAuth(req);
@@ -40,6 +41,7 @@ export async function POST(req: Request) {
         body.data && typeof body.data === "object" && !Array.isArray(body.data)
           ? (body.data as Record<string, unknown>)
           : {},
+      run_autopilot: shouldRunQuoteAutopilot(body.run_autopilot),
     });
     return jsonOk({ lead }, { status: 201 });
   } catch (error) {

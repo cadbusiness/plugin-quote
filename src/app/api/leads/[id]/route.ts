@@ -1,5 +1,5 @@
 import { isApiAuth, jsonError, jsonOk, requireApiAuth } from "@/lib/api/http";
-import { apiGetLeadDetail, apiUpdateLeadStatus } from "@/lib/api/leads";
+import { apiGetLeadDetail, apiGetQuoteStatus, apiUpdateLeadStatus } from "@/lib/api/leads";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -9,6 +9,13 @@ export async function GET(req: Request, ctx: Ctx) {
   const { id } = await ctx.params;
 
   try {
+    const url = new URL(req.url);
+    const view = url.searchParams.get("view");
+    if (view === "status") {
+      const quote = await apiGetQuoteStatus(auth.organizationId, id);
+      if (!quote) return jsonError("Lead introuvable", 404);
+      return jsonOk({ quote });
+    }
     const lead = await apiGetLeadDetail(auth.organizationId, id);
     if (!lead) return jsonError("Lead introuvable", 404);
     return jsonOk({ lead });

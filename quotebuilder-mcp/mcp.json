@@ -1,6 +1,6 @@
 {
   "name": "quotebuilder",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "QuoteBuilder MCP — CRM devis B2B pour Claude Desktop",
   "runtime": "node",
   "entry": "dist/index.js",
@@ -13,6 +13,11 @@
       "description": "URL de base de l’app QuoteBuilder",
       "required": false,
       "default": "https://app.quotebuilder.io"
+    },
+    "MCP_DEVIS_V0": {
+      "description": "Mettre à 1 / true / on pour exposer create_quote, list_quotes, get_quote_status",
+      "required": false,
+      "default": ""
     }
   },
   "tools": [
@@ -20,6 +25,9 @@
     "get_lead_detail",
     "update_lead_status",
     "create_lead",
+    "list_quotes",
+    "get_quote_status",
+    "create_quote",
     "get_stats",
     "list_funnels",
     "get_funnel_performance",
