@@ -2,8 +2,22 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.15.0",
+    version: "1.15.0",
+    title: "Chat boutique : la conversation reste ouverte",
+    items: [
+      "Entrée envoie le message (Maj+Entrée pour une nouvelle ligne).",
+      "Le fil et l’onglet Chat restent ouverts après chaque réponse IA ; le canvas se met à jour sans tout remonter.",
+      "Clique un bloc, l’en-tête ou le pied : le Chat cible cette zone (plus de réécriture de toute la boutique).",
+      "Inspecteur dédié pour le nom et les liens du menu depuis l’en-tête ou le pied, avec raccourci Chat.",
+      "Aperçu en direct des étapes IA, image en pièce jointe, et annulation du dernier tour.",
+    ],
+    releasedAt: "2026-09-12",
+    createdAt: "2026-09-12T00:00:00.000Z",
+  },
   {
     id: "seed-1.14.0",
     version: "1.14.0",
