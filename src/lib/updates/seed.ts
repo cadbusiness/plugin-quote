@@ -2,8 +2,21 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.14.0",
+    version: "1.14.0",
+    title: "Devis depuis Claude (MCP)",
+    items: [
+      "Avec Claude Desktop et le flag MCP devis, tu peux créer un devis, lister les demandes et lire le statut sans ouvrir le dashboard.",
+      "La création depuis Claude n’envoie pas les emails d’autopilote par défaut ; active-les seulement si tu veux les relances.",
+      "Le statut renvoyé reste allégé : score, assignation et funnel, sans notes ni réponses internes.",
+      "Documenté côté API / MCP (Paramètres → API & webhooks et docs MCP).",
+    ],
+    releasedAt: "2026-09-12",
+    createdAt: "2026-09-12T00:00:00.000Z",
+  },
   {
     id: "seed-1.13.1",
     version: "1.13.1",
