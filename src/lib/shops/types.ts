@@ -19,6 +19,8 @@ export type ShopTheme = {
   templateId?: string;
   /** Shop-local devis path. When set, overrides the linked configurator. */
   quoteMode?: QuoteMode;
+  /** Fil du chat builder — jamais exposé sur la vitrine. */
+  chatLog?: { role: "user" | "assistant"; content: string; hidden?: boolean; image?: string }[];
 };
 
 export type ShopGeo = {

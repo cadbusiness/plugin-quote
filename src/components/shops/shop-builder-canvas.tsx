@@ -267,6 +267,17 @@ function ShopChrome({
   );
 }
 
+function PuckFocusNode({ nodeId, pulse }: { nodeId: string | null; pulse: number }) {
+  const getSelectorForId = usePuckUi((s) => s.getSelectorForId);
+  const dispatch = usePuckUi((s) => s.dispatch);
+  useEffect(() => {
+    if (!nodeId || !pulse) return;
+    const selector = getSelectorForId(nodeId);
+    if (selector) dispatch({ type: "setUi", ui: { itemSelector: selector } });
+  }, [nodeId, pulse, getSelectorForId, dispatch]);
+  return null;
+}
+
 function PuckLayoutSync({ layout, epoch }: { layout: ShopLayout; epoch: number }) {
   const dispatch = usePuckUi((s) => s.dispatch);
   const last = useRef(0);
@@ -393,6 +404,8 @@ function ShopPuckLayout({
   layout,
   layoutEpoch,
   onPuckSelect,
+  focusNodeId,
+  pulse,
 }: {
   leading: ReactNode;
   trailing: ReactNode;
@@ -409,6 +422,8 @@ function ShopPuckLayout({
   layout: ShopLayout;
   layoutEpoch: number;
   onPuckSelect: (item: { id: string; type: string } | null) => void;
+  focusNodeId: string | null;
+  pulse: number;
 }) {
   const dock = useDockWidth();
   const dispatch = usePuckUi((s) => s.dispatch);
@@ -421,12 +436,13 @@ function ShopPuckLayout({
   function selectChrome(next: "header" | "footer") {
     dispatch({ type: "setUi", ui: { itemSelector: null } });
     onChrome(next);
-    if (tab !== "chat") onTab("blocks");
+    onTab("chat");
   }
 
   return (
     <div className="flex h-full min-h-0 flex-1 flex-col">
       <PuckLayoutSync layout={layout} epoch={layoutEpoch} />
+      <PuckFocusNode nodeId={focusNodeId} pulse={pulse} />
       <PuckSelectionBridge chrome={chrome} onPuckSelect={onPuckSelect} />
       <ShopChrome leading={leading} trailing={trailing} tab={tab} onTab={onTab} />
       <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
@@ -548,6 +564,9 @@ export function ShopBuilderCanvas({
   onNav,
   layoutEpoch,
   onPuckSelect,
+  working,
+  pulse,
+  focusNodeId,
 }: {
   layout: ShopLayout;
   model: StorefrontModel;
@@ -565,9 +584,12 @@ export function ShopBuilderCanvas({
   layoutEpoch: number;
   onPuckSelect: (item: { id: string; type: string } | null) => void;
   onChange: (layout: ShopLayout) => void;
+  working?: boolean;
+  pulse?: number;
+  focusNodeId?: string | null;
 }) {
   return (
-    <div className="shop-puck flex min-h-0 min-w-0 flex-1 flex-col">
+    <div className={`shop-puck flex min-h-0 min-w-0 flex-1 flex-col${working ? " shop-puck-working" : ""}${pulse ? " shop-puck-pulse" : ""}`}>
       <Puck
         config={shopPuckConfig}
         data={layout}
@@ -595,6 +617,8 @@ export function ShopBuilderCanvas({
           layout={layout}
           layoutEpoch={layoutEpoch}
           onPuckSelect={onPuckSelect}
+          focusNodeId={focusNodeId ?? null}
+          pulse={pulse ?? 0}
         />
       </Puck>
     </div>

@@ -116,6 +116,7 @@ assert.match(seedPrompt, /rayonnage industriel|stock B2B|rayonnage/);
 assert.match(seedPrompt, /jamais « acheter »/);
 const laterPrompt = buildShopAgentSystemPrompt(doc, "Atelier Nord", { isSeedTurn: false });
 assert.doesNotMatch(laterPrompt, /Premier tour \(création\)/);
+assert.match(laterPrompt, /image de référence/);
 const selectedPrompt = buildShopAgentSystemPrompt(doc, "Atelier Nord", {
   isSeedTurn: false,
   selection: { kind: "node", pageSlug: "accueil", pageTitle: "Accueil", id: "hero-1", type: "Hero" },

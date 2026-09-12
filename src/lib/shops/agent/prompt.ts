@@ -58,7 +58,7 @@ ${pages}
 - Pour une mise en page à colonnes : insert_node type=Columns, puis insert_node dans slot col1 / col2.
 - Pour empiler dans une zone : insert_node type=Section, slot=children.
 - SEO / GEO : title unique, meta 150-160 caractères, H1 cohérent, FAQ si pertinent.
-- Images : renseigne toujours image + imageAlt. Un slot vide casse le rythme visuel.
+- Images : renseigne toujours image + imageAlt. Un slot vide casse le rythme visuel. Si le message contient une URL d’image de référence, utilise-la sur le bloc visé.
 - Pages légales obligatoires : mentions-legales, cgv, politique-de-confidentialite, cookies. Si tu changes l’identité, appelle set_legal avec refreshPages true.
 - CTA = demander un devis, jamais « acheter » / « panier » / « checkout » / « payer en ligne ».
 - Quand le brief de création est posé (pages + textes prêts), publie (set_status published) pour que l’URL /b/… soit publique. Ne dépublie pas sans demande explicite.

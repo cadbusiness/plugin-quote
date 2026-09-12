@@ -48,6 +48,7 @@ export default async function ShopEditorPage({
         legal: parseLegal(doc.shop.legal),
         seedPrompt: theme.seedPrompt,
       }}
+      initialChat={theme.chatLog}
       pages={doc.pages.map((page) => {
         const draft = pageFromRow(page);
         return {

@@ -2,12 +2,13 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useMemo, useState, useTransition, type ReactNode } from "react";
+import { useMemo, useRef, useState, useTransition, type ReactNode } from "react";
 import { ChevronLeft, Eye, Settings } from "lucide-react";
 import { deleteShop, publishShop, saveShop } from "@/app/(app)/integrations/shop-actions";
 import { ShopChat, type EditorPage, type ShopChatDraft, type ShopChatMessage, type ShopChatResult } from "@/components/shops/shop-chat";
 import type { ShopBuilderChrome, ShopBuilderTab } from "@/components/shops/shop-builder-canvas";
 import { ListPanel } from "@/components/ui/list-panel";
+import { loadShopChatLocal, mergeShopChat, parseChatLog } from "@/lib/shops/chat-store";
 import { parseLayout } from "@/lib/shops/layout";
 import type { ShopLegal, ShopNavDraft, ShopProduct, ShopSeo, ShopTheme } from "@/lib/shops/types";
 import { QUOTE_MODE_OPTIONS, type QuoteMode } from "@/lib/quotes/quote-mode";
@@ -34,6 +35,7 @@ export function ShopEditor({
   orgName,
   orgSlug,
   openChat,
+  initialChat,
 }: {
   shop: {
     id: string;
@@ -55,6 +57,7 @@ export function ShopEditor({
   orgName: string;
   orgSlug: string;
   openChat?: boolean;
+  initialChat?: ShopChatMessage[];
 }) {
   const [name, setName] = useState(shop.name);
   const [status, setStatus] = useState(shop.status);
@@ -70,7 +73,14 @@ export function ShopEditor({
   const [tab, setTab] = useState<ShopBuilderTab>(openChat ? "chat" : "blocks");
   const [chrome, setChrome] = useState<ShopBuilderChrome>(null);
   const [puckSelection, setPuckSelection] = useState<{ id: string; type: string } | null>(null);
-  const [chatMessages, setChatMessages] = useState<ShopChatMessage[]>([]);
+  const [chatMessages, setChatMessages] = useState<ShopChatMessage[]>(() =>
+    mergeShopChat(loadShopChatLocal(shop.id), parseChatLog(initialChat ?? shop.theme.chatLog)),
+  );
+  const [canUndo, setCanUndo] = useState(false);
+  const [chatBusy, setChatBusy] = useState(false);
+  const [focusNodeId, setFocusNodeId] = useState<string | null>(null);
+  const [pulse, setPulse] = useState(0);
+  const undoRef = useRef<ShopChatDraft | null>(null);
   const [pending, startTransition] = useTransition();
 
   const page = pages.find((item) => item.id === pageId) ?? pages[0] ?? null;
@@ -98,7 +108,7 @@ export function ShopEditor({
     data.set("id", shop.id);
     data.set("name", name);
     data.set("status", status);
-    data.set("theme", JSON.stringify(theme));
+    data.set("theme", JSON.stringify({ ...theme, chatLog: chatMessages.filter((item) => !item.hidden).slice(-24) }));
     data.set("seo", JSON.stringify(seo));
     data.set("legal", JSON.stringify(legal));
     data.set("pages", JSON.stringify(pages));
@@ -119,6 +129,26 @@ export function ShopEditor({
     setPages(result.pages.map((item) => ({ ...item, blocks: parseLayout(item.blocks) })));
     setNav(result.nav);
     setLayoutEpoch((value) => value + 1);
+  }
+
+  function undoChat() {
+    const previous = undoRef.current;
+    if (!previous) return;
+    applyChat(previous);
+    undoRef.current = null;
+    setCanUndo(false);
+    const data = new FormData();
+    data.set("id", shop.id);
+    data.set("name", previous.name);
+    data.set("status", previous.status);
+    data.set("theme", JSON.stringify(previous.theme));
+    data.set("seo", JSON.stringify(previous.seo));
+    data.set("legal", JSON.stringify(previous.legal));
+    data.set("pages", JSON.stringify(previous.pages));
+    data.set("nav", JSON.stringify(previous.nav));
+    startTransition(() => {
+      void saveShop(data);
+    });
   }
 
   const chatSelection =
@@ -311,15 +341,23 @@ export function ShopEditor({
           onChrome={(next) => {
             setSettingsOpen(false);
             setChrome(next);
-            if (next) setPuckSelection(null);
+            if (next) {
+              setPuckSelection(null);
+              setTab("chat");
+            }
           }}
           onName={setName}
           onNav={setNav}
           layoutEpoch={layoutEpoch}
+          working={chatBusy}
+          pulse={pulse}
+          focusNodeId={focusNodeId}
           onPuckSelect={(item) => {
             if (item) {
               setChrome(null);
               setPuckSelection(item);
+              setSettingsOpen(false);
+              setTab("chat");
               return;
             }
             setPuckSelection(null);
@@ -336,6 +374,22 @@ export function ShopEditor({
               onClearSelection={() => {
                 setChrome(null);
                 setPuckSelection(null);
+              }}
+              onInspect={() => setTab("blocks")}
+              onBusy={setChatBusy}
+              onBeforeSend={() => {
+                undoRef.current = draft();
+                setCanUndo(true);
+              }}
+              onUndo={undoChat}
+              canUndo={canUndo}
+              onFocusNode={(nodeId, pageSlug) => {
+                if (pageSlug) {
+                  const match = pages.find((item) => item.slug === pageSlug);
+                  if (match) setPageId(match.id);
+                }
+                setFocusNodeId(nodeId);
+                if (nodeId) setPulse((value) => value + 1);
               }}
             />
           }

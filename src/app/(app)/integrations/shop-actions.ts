@@ -54,7 +54,12 @@ export async function saveShop(formData: FormData) {
   const status = parseStatus(formData.get("status"));
   doc.shop.status = status;
   if (status === "published" && !doc.shop.published_at) doc.shop.published_at = new Date().toISOString();
-  doc.shop.theme = asJson(parseTheme(JSON.parse(String(formData.get("theme") ?? "{}"))));
+  const previousTheme = parseTheme(doc.shop.theme);
+  const nextTheme = parseTheme(JSON.parse(String(formData.get("theme") ?? "{}")));
+  doc.shop.theme = asJson({
+    ...nextTheme,
+    chatLog: nextTheme.chatLog?.length ? nextTheme.chatLog : previousTheme.chatLog,
+  });
   doc.shop.seo = asJson(parseSeo(JSON.parse(String(formData.get("seo") ?? "{}")), doc.shop.name));
   doc.shop.legal = asJson(parseLegal(JSON.parse(String(formData.get("legal") ?? "{}"))));
 

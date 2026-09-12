@@ -26,7 +26,12 @@ export type ShopEditorDraft = {
 export function applyEditorDraft(doc: ShopDocument, draft: ShopEditorDraft) {
   if (draft.name.trim()) doc.shop.name = draft.name.trim();
   doc.shop.status = parseStatus(draft.status);
-  doc.shop.theme = asJson(parseTheme(draft.theme));
+  const previousTheme = parseTheme(doc.shop.theme);
+  const nextTheme = parseTheme(draft.theme);
+  doc.shop.theme = asJson({
+    ...nextTheme,
+    chatLog: nextTheme.chatLog?.length ? nextTheme.chatLog : previousTheme.chatLog,
+  });
   doc.shop.seo = asJson(parseSeo(draft.seo, doc.shop.name));
   doc.shop.legal = asJson(parseLegal(draft.legal));
   if (draft.pages.length) {

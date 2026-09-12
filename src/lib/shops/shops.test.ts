@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import { emptyBlock, parseBlock, parseBlocks } from "./blocks";
 import { executeShopTool, ensureSeedTurnPublished } from "./agent/executor";
+import { encodeShopAgentSse, parseShopAgentSse, shopChatChips, shopToolTouched } from "./agent/events";
 import { parseShopAgentSelection, shopAgentSelectionPrompt, shouldSendChatOnEnter } from "./agent/selection";
+import { historyForAgent, mergeShopChat, parseChatLog } from "./chat-store";
 import { boxStyle, cssLength, cssSpacing, migrateBlocksToLayout, parseLayout } from "./layout";
 import { buildShopBlueprint, requiredShopSlugs } from "./templates";
 import { mentionsLegalesBody } from "./legal";
@@ -279,5 +281,19 @@ assert.ok(nodeSel);
 assert.match(shopAgentSelectionPrompt(nodeSel!), /update_node slug=accueil id=hero-1/);
 assert.match(shopAgentSelectionPrompt(nodeSel!), /Bandeau/);
 assert.match(shopAgentSelectionPrompt({ kind: "chrome", chrome: "header" }), /set_nav location=header/);
+
+const sse = encodeShopAgentSse({ type: "tool", step: { name: "update_node", label: "Mise à jour du bloc", status: "ok" } });
+const parsedSse = parseShopAgentSse(`${sse}partial`);
+assert.equal(parsedSse.events[0]?.type, "tool");
+assert.equal(parsedSse.rest, "partial");
+assert.ok(shopChatChips({ kind: "node", pageSlug: "accueil", pageTitle: "Accueil", id: "h", type: "Hero" }).includes("Réécris le titre"));
+assert.deepEqual(
+  shopToolTouched("update_node", { slug: "accueil", id: "hero-1" }, "Nœud hero-1 mis à jour"),
+  { pageSlug: "accueil", nodeId: "hero-1", mutated: true },
+);
+assert.equal(shopToolTouched("get_tree", { slug: "accueil" }, "").mutated, false);
+assert.equal(parseChatLog([{ role: "user", content: "ok" }, { role: "nope", content: "" }]).length, 1);
+assert.equal(historyForAgent([{ role: "user", content: "brief", hidden: true }, { role: "assistant", content: "Fait." }]).length, 1);
+assert.equal(mergeShopChat([{ role: "user", content: "a" }, { role: "assistant", content: "b" }], [{ role: "user", content: "a" }]).length, 2);
 
 console.log("shops tests ok");

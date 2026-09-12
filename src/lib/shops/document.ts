@@ -30,6 +30,7 @@ export async function persistShopDocument(
 ) {
   const theme = parseTheme(doc.shop.theme);
   delete theme.seedPrompt;
+  if (!theme.chatLog?.length) delete theme.chatLog;
   await supabase
     .from("shops")
     .update({

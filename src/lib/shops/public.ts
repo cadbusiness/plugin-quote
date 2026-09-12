@@ -48,13 +48,16 @@ export const loadPublicShop = cache(async function loadPublicShop(
   ]);
 
   const doc: ShopDocument = { shop, pages: pages ?? [], nav: nav ?? [] };
+  const theme = parseTheme(shop.theme);
+  delete theme.chatLog;
+  delete theme.seedPrompt;
   return {
     orgSlug: org.slug,
     orgName: org.name,
     funnelSlug: funnel.data?.slug ?? null,
     doc,
     products,
-    theme: parseTheme(shop.theme),
+    theme,
     seo: parseSeo(shop.seo, shop.name),
     legal: parseLegal(shop.legal),
     pages: (pages ?? []).map(pageFromRow),
