@@ -100,5 +100,5 @@ export function shopChatChips(selection?: ShopAgentSelection | null) {
 }
 
 export function shopChatFollowUps() {
-  return ["Plus net", "Autre texte"];
+  return ["Encore plus net", "Autre formulation", "Reviens en arrière"];
 }

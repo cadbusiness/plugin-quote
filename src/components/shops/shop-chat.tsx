@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUp, ImagePlus, Square } from "lucide-react";
+import { ArrowUp, ImagePlus, Square, Undo2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { parseShopAgentSse, shopChatChips, shopChatFollowUps } from "@/lib/shops/agent/events";
 import { shopAgentSelectionLabel, shouldSendChatOnEnter, type ShopAgentSelection } from "@/lib/shops/agent/selection";
@@ -281,7 +281,7 @@ export function ShopChat({
                   key={chip}
                   type="button"
                   onClick={() => void send(chip)}
-                  className="text-[11px] text-slate-400 hover:text-[#C2410C]"
+                  className="rounded-full border border-slate-200 px-2.5 py-1 text-xs text-slate-600 hover:border-orange-200 hover:bg-orange-50 hover:text-[#C2410C]"
                 >
                   {chip}
                 </button>
@@ -332,24 +332,23 @@ export function ShopChat({
       </div>
 
       {visible.some((item) => item.role === "assistant" && item.content) && !pending ? (
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 px-3 pt-1">
-          {chips
-            .filter((chip) => chip !== "Reviens en arrière")
-            .map((chip) => (
-              <button
-                key={chip}
-                type="button"
-                onClick={() => void send(chip)}
-                className="text-[11px] text-slate-400 hover:text-[#C2410C]"
-              >
-                {chip}
-              </button>
-            ))}
-          {canUndo && onUndo ? (
-            <button type="button" onClick={onUndo} className="text-[11px] text-slate-400 hover:text-slate-700">
-              Annuler
+        <div className="flex flex-wrap gap-1.5 border-t border-slate-50 px-3 pt-2">
+          {chips.map((chip) => (
+            <button
+              key={chip}
+              type="button"
+              onClick={() => {
+                if (chip === "Reviens en arrière") {
+                  onUndo?.();
+                  return;
+                }
+                void send(chip);
+              }}
+              className="rounded-full border border-slate-200 px-2.5 py-1 text-xs text-slate-600 hover:border-orange-200 hover:bg-orange-50 hover:text-[#C2410C]"
+            >
+              {chip}
             </button>
-          ) : null}
+          ))}
         </div>
       ) : null}
 
@@ -425,6 +424,12 @@ export function ShopChat({
             </button>
           )}
         </div>
+        {canUndo && onUndo ? (
+          <button type="button" onClick={onUndo} className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-slate-800">
+            <Undo2 className="h-3.5 w-3.5" aria-hidden />
+            Annuler le dernier tour
+          </button>
+        ) : null}
       </form>
     </div>
   );

@@ -181,10 +181,10 @@ type DockTab = "blocks" | "structure" | "chat";
 export type ShopBuilderTab = DockTab;
 export type ShopBuilderChrome = "header" | "footer" | null;
 
-const DOCK_TABS: { id: DockTab; label: string }[] = [
-  { id: "blocks", label: "Blocs" },
-  { id: "structure", label: "Structure" },
-  { id: "chat", label: "Chat" },
+const DOCK_TABS: { id: DockTab; label: string; icon: typeof Boxes }[] = [
+  { id: "blocks", label: "Blocs", icon: Boxes },
+  { id: "structure", label: "Structure", icon: Layers },
+  { id: "chat", label: "Chat", icon: MessageSquare },
 ];
 
 function ViewportButtons() {
@@ -244,24 +244,25 @@ function ShopChrome({
         <ViewportButtons />
       </div>
       <div className="flex min-w-0 flex-1 justify-center">
-        <nav aria-label="Panneau" className="flex items-center gap-4">
+        <div className="flex rounded-md bg-white/10 p-0.5">
           {DOCK_TABS.map((item) => {
+            const Icon = item.icon;
             const active = tab === item.id;
             return (
               <button
                 key={item.id}
                 type="button"
                 onClick={() => onTab(item.id)}
-                className={`relative pb-0.5 text-[11px] font-medium tracking-wide ${
-                  active ? "text-white" : "text-white/45 hover:text-white/80"
+                className={`inline-flex h-7 items-center gap-1.5 rounded px-2.5 text-xs font-medium ${
+                  active ? "bg-white text-stone-900" : "text-white/70 hover:text-white"
                 }`}
               >
+                <Icon className="h-3.5 w-3.5" aria-hidden />
                 {item.label}
-                {active ? <span className="absolute inset-x-0 -bottom-1.5 h-px bg-white" /> : null}
               </button>
             );
           })}
-        </nav>
+        </div>
       </div>
       <div className="flex shrink-0 items-center justify-end gap-1.5">{trailing}</div>
     </div>
