@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { createPortal } from "react-dom";
 import {
   DndContext,
   PointerSensor,
@@ -61,8 +62,10 @@ export function ParcoursBuilder({
   const [ordered, setOrdered] = useState(steps);
   const [selectedId, setSelectedId] = useState<string | null>(steps[0]?.id ?? null);
   const [picker, setPicker] = useState(false);
+  const [pickerPos, setPickerPos] = useState<{ top: number; right: number } | null>(null);
   const [mounted, setMounted] = useState(false);
   const pickerRef = useRef<HTMLDivElement>(null);
+  const pickerMenuRef = useRef<HTMLDivElement>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
 
   useEffect(() => {
@@ -70,13 +73,21 @@ export function ParcoursBuilder({
   }, []);
 
   useEffect(() => {
-    if (!picker) return;
-    function onPointerDown(event: PointerEvent) {
-      if (!pickerRef.current?.contains(event.target as Node)) setPicker(false);
+    function onDoc(event: MouseEvent) {
+      const target = event.target as Node;
+      if (pickerRef.current?.contains(target) || pickerMenuRef.current?.contains(target)) return;
+      setPicker(false);
     }
-    document.addEventListener("pointerdown", onPointerDown);
-    return () => document.removeEventListener("pointerdown", onPointerDown);
-  }, [picker]);
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setPicker(false);
+    }
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, []);
 
   useEffect(() => {
     setOrdered(steps);
@@ -127,6 +138,16 @@ export function ParcoursBuilder({
     const next = arrayMove(ordered, oldIndex, newIndex);
     setOrdered(next);
     run(() => saveFunnelStepOrder(funnelId, next.map((step) => step.id)));
+  }
+
+  function togglePicker() {
+    if (picker) {
+      setPicker(false);
+      return;
+    }
+    const rect = pickerRef.current?.getBoundingClientRect();
+    if (rect) setPickerPos({ top: rect.bottom + 4, right: window.innerWidth - rect.right });
+    setPicker(true);
   }
 
   function addScreen(type: ScreenType) {
@@ -194,32 +215,42 @@ export function ParcoursBuilder({
               rail
             )}
           </div>
-          <div ref={pickerRef} className="relative shrink-0">
+          <div ref={pickerRef} className="relative z-40 shrink-0">
             <button
               type="button"
               disabled={pending}
               aria-expanded={picker}
+              aria-haspopup="menu"
               aria-label="Ajouter une étape"
-              onClick={() => setPicker((open) => !open)}
+              onClick={togglePicker}
               className="flex h-12 w-10 items-center justify-center rounded-lg border border-dashed border-slate-300 text-[#E85D04] hover:border-[#E85D04] hover:bg-orange-50 disabled:opacity-50"
             >
               <Plus className="h-4 w-4" aria-hidden />
             </button>
-            {picker ? (
-              <div className="absolute top-full right-0 z-30 mt-1 w-64 rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg">
-                {SCREEN_ADD.map((item) => (
-                  <button
-                    key={item.type}
-                    type="button"
-                    onClick={() => addScreen(item.type)}
-                    className="flex w-full flex-col rounded-md px-3 py-2 text-left hover:bg-orange-50"
+            {picker && mounted
+              ? createPortal(
+                  <div
+                    ref={pickerMenuRef}
+                    role="menu"
+                    className="fixed z-50 w-64 rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg"
+                    style={{ top: pickerPos?.top ?? 0, right: pickerPos?.right ?? 16 }}
                   >
-                    <span className="text-sm font-medium text-slate-900">{screenLabel(item.type, kind)}</span>
-                    <span className="text-xs text-slate-500">{item.hint}</span>
-                  </button>
-                ))}
-              </div>
-            ) : null}
+                    {SCREEN_ADD.map((item) => (
+                      <button
+                        key={item.type}
+                        type="button"
+                        role="menuitem"
+                        onClick={() => addScreen(item.type)}
+                        className="flex w-full flex-col rounded-md px-3 py-2 text-left hover:bg-orange-50"
+                      >
+                        <span className="text-sm font-medium text-slate-900">{screenLabel(item.type, kind)}</span>
+                        <span className="text-xs text-slate-500">{item.hint}</span>
+                      </button>
+                    ))}
+                  </div>,
+                  document.body,
+                )
+              : null}
           </div>
         </div>
       </div>
