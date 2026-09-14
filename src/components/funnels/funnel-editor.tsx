@@ -14,7 +14,7 @@ import type { PreviewProduct } from "@/components/funnels/parcours-preview";
 import { renameFunnel, saveFunnelTracking, setFunnelActive } from "@/app/(app)/funnels/actions";
 import { FunnelRowActions } from "@/components/funnels/funnel-row-actions";
 import type { FunnelKind } from "@/lib/funnels/builder";
-import { funnelKindHint, funnelKindLabel, funnelKindTone, funnelVisibilityLabel } from "@/lib/funnels/kind";
+import { funnelKindHint, funnelKindLabel, funnelKindTone } from "@/lib/funnels/kind";
 import type { Tables } from "@/lib/db/database.types";
 import { FUNNEL_TABS, type FunnelTab } from "@/lib/funnels/tabs";
 import type { FunnelTracking } from "@/lib/funnels/tracking";
@@ -26,7 +26,6 @@ function tabHref(funnelId: string, tab: FunnelTab) {
 
 export function FunnelEditor({
   funnel,
-  orgName,
   steps,
   questions,
   products,
@@ -47,7 +46,6 @@ export function FunnelEditor({
     kind: FunnelKind;
     isActive: boolean;
   };
-  orgName: string;
   steps: Tables<"wizard_steps">[];
   questions: Tables<"wizard_questions">[];
   products: PreviewProduct[];
@@ -100,42 +98,34 @@ export function FunnelEditor({
           <span title={funnelKindHint(funnel.kind)}>
             <Chip tone={funnelKindTone(funnel.kind)}>{funnelKindLabel(funnel.kind)}</Chip>
           </span>
+          <Link
+            href={publicUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="shrink-0 rounded-full border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+          >
+            Tester le parcours
+          </Link>
+          <button
+            type="button"
+            disabled={pending}
+            onClick={() => startTransition(() => void setFunnelActive(funnel.id, !funnel.isActive))}
+            className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-medium disabled:opacity-50 ${
+              funnel.isActive
+                ? "border border-emerald-200 bg-emerald-50 text-emerald-800"
+                : "bg-[#E85D04] text-white hover:bg-[#d35400]"
+            }`}
+          >
+            {funnel.isActive ? "Publié" : "Publier"}
+          </button>
           <FunnelRowActions
             funnelId={funnel.id}
             name={funnel.name}
             publicUrl={publicUrl}
             isActive={funnel.isActive}
             showArchive={false}
+            showPreview={false}
           />
-          <button
-            type="button"
-            role="switch"
-            aria-checked={funnel.isActive}
-            disabled={pending}
-            onClick={() => startTransition(() => void setFunnelActive(funnel.id, !funnel.isActive))}
-            className={`inline-flex items-center gap-2.5 rounded-lg border px-2.5 py-1.5 disabled:opacity-50 ${
-              funnel.isActive ? "border-emerald-200 bg-emerald-50" : "border-slate-200 bg-slate-50"
-            }`}
-          >
-            <span className="text-left">
-              <span className={`block text-sm font-medium leading-none ${funnel.isActive ? "text-emerald-800" : "text-slate-700"}`}>
-                {funnelVisibilityLabel(funnel.isActive)}
-              </span>
-              <span className="mt-0.5 block text-[11px] leading-none text-slate-500">
-                {funnel.isActive ? "Visible aux prospects" : "Invisible"}
-              </span>
-            </span>
-            <span
-              aria-hidden
-              className={`relative h-5 w-9 shrink-0 rounded-full ${funnel.isActive ? "bg-emerald-500" : "bg-slate-300"}`}
-            >
-              <span
-                className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow-sm ${
-                  funnel.isActive ? "left-4" : "left-0.5"
-                }`}
-              />
-            </span>
-          </button>
         </div>
         <LocalTabNav
           items={FUNNEL_TABS}
@@ -151,8 +141,6 @@ export function FunnelEditor({
         <div className="flex min-h-[36rem] flex-1 flex-col lg:min-h-[calc(100dvh-12rem)]">
           <ParcoursBuilder
             funnelId={funnel.id}
-            funnelName={funnel.name}
-            orgName={orgName}
             kind={funnel.kind}
             steps={steps}
             questions={questions}

@@ -77,7 +77,6 @@ export default async function FunnelEditorPage({
         kind: parseFunnelKind(funnel.theme, funnel.wizard_enabled, funnel.chat_enabled),
         isActive: funnel.is_active,
       }}
-      orgName={ctx.organization.name}
       steps={steps ?? []}
       questions={funnelQuestions}
       products={(() => {

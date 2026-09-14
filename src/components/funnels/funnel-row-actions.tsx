@@ -10,6 +10,7 @@ export function FunnelRowActions({
   publicUrl,
   isActive,
   showArchive = true,
+  showPreview = true,
   previewHref,
 }: {
   funnelId: string;
@@ -17,6 +18,7 @@ export function FunnelRowActions({
   publicUrl: string;
   isActive: boolean;
   showArchive?: boolean;
+  showPreview?: boolean;
   previewHref?: string;
 }) {
   const [pending, startTransition] = useTransition();
@@ -48,16 +50,18 @@ export function FunnelRowActions({
 
   return (
     <div className="relative z-10 flex items-center justify-end gap-0.5">
-      <a
-        href={previewHref ?? publicUrl}
-        target="_blank"
-        rel="noreferrer"
-        title="Prévisualiser"
-        aria-label={`Prévisualiser ${name}`}
-        className={iconClass}
-      >
-        <Eye className="h-4 w-4" aria-hidden />
-      </a>
+      {showPreview ? (
+        <a
+          href={previewHref ?? publicUrl}
+          target="_blank"
+          rel="noreferrer"
+          title="Prévisualiser"
+          aria-label={`Prévisualiser ${name}`}
+          className={iconClass}
+        >
+          <Eye className="h-4 w-4" aria-hidden />
+        </a>
+      ) : null}
       <button
         type="button"
         title={copied ? "Lien copié" : "Copier le lien"}

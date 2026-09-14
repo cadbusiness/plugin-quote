@@ -46,6 +46,30 @@ export function screenLabel(type: ScreenType, kind: FunnelKind = "form") {
   return SCREEN_LABEL[type];
 }
 
+export function screenRailKind(type: ScreenType, kind: FunnelKind = "form") {
+  if (kind === "chat") return "Bloc";
+  if (type === "questions") return "Question";
+  if (type === "suggestions") return kind === "catalog" ? "Rayons" : "Résultat";
+  if (type === "customize") return kind === "catalog" ? "Devis" : "Options";
+  return "Contact";
+}
+
+export function railSummary(
+  type: ScreenType,
+  questions: { options?: { choices?: { value: string }[] } }[],
+) {
+  if (type === "questions") {
+    const fields = questions.length;
+    const options = questions.reduce((sum, question) => sum + (question.options?.choices?.length ?? 0), 0);
+    if (!fields) return "Aucun champ";
+    if (fields === 1 && options) return `${options} option${options > 1 ? "s" : ""}`;
+    return `${fields} champ${fields > 1 ? "s" : ""}`;
+  }
+  if (type === "suggestions") return "Produits adaptés";
+  if (type === "customize") return "Quantités et options";
+  return "Email obligatoire";
+}
+
 export function defaultStepCopy(type: ScreenType, kind: FunnelKind = "form") {
   if (kind === "catalog" && type === "suggestions") {
     return { title: "Catalogue", subtitle: "Parcourez les gammes et ajoutez les produits au devis" };
