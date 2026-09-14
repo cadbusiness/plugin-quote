@@ -1,12 +1,14 @@
 import { getFunnelFamily } from "@/lib/funnels/families";
 import { slugify } from "@/lib/org/slug";
 import { newBlockId } from "@/lib/shops/blocks";
+import { buildAboutSection } from "@/lib/shops/composition";
 import {
   emptyNode,
   insertNode,
   layoutJson,
   moveNode,
   parseLayout,
+  placeNode,
   replaceLegalText,
   summarizeLayout,
   updateNode,
@@ -122,10 +124,35 @@ const LEGACY_TYPE: Record<string, string> = {
   legal: "Legal",
 };
 
+function foldType(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[_/\s]+/g, "-");
+}
+
+function isAboutType(type: string) {
+  const folded = foldType(type);
+  return folded === "about" || folded === "a-propos" || folded === "propos" || folded === "apropos";
+}
+
+function resolvePageSlug(doc: ShopDocument, slug: string) {
+  const raw = slug.trim();
+  if (raw && pageBySlug(doc, raw)) return raw;
+  const folded = foldType(raw);
+  const match = doc.pages.find((page) => foldType(page.slug) === folded);
+  if (match) return match.slug;
+  if (!raw || isAboutType(raw)) return pageBySlug(doc, "accueil")?.slug ?? doc.pages[0]?.slug ?? raw;
+  return raw;
+}
+
 export function executeShopTool(doc: ShopDocument, name: string, input: Record<string, unknown>): ShopOpResult {
   if (name === "get_tree" || name === "get_shop") {
-    const slug = typeof input.slug === "string" ? input.slug : "";
-    if (slug) {
+    const rawSlug = typeof input.slug === "string" ? input.slug.trim() : "";
+    if (rawSlug) {
+      const slug = resolvePageSlug(doc, rawSlug);
       const layout = pageLayout(doc, slug);
       if (!layout) return { ok: false, error: `Page ${slug} introuvable` };
       return { ok: true, summary: summarizeLayout(layout) };
@@ -134,17 +161,43 @@ export function executeShopTool(doc: ShopDocument, name: string, input: Record<s
   }
 
   if (name === "insert_node" || name === "add_block") {
-    const slug = String(input.slug ?? "");
+    const slug = resolvePageSlug(doc, String(input.slug ?? ""));
     const type = String(input.type ?? "");
     const layout = pageLayout(doc, slug);
     if (!layout) return { ok: false, error: `Page ${slug} introuvable` };
-    const mappedType = LEGACY_TYPE[type] ?? type;
+    const folded = foldType(type);
+    const mappedType = LEGACY_TYPE[type] ?? LEGACY_TYPE[folded] ?? LEGACY_TYPE[folded.replace(/-/g, "_")] ?? type;
+    const afterId = typeof input.afterId === "string" ? input.afterId : undefined;
+    const parentId = typeof input.parentId === "string" ? input.parentId : undefined;
+    const slot = typeof input.slot === "string" ? input.slot : undefined;
+    const index = typeof input.index === "number" ? input.index : undefined;
+    if (isAboutType(type)) {
+      const theme = parseTheme(doc.shop.theme);
+      const seo = parseSeo(doc.shop.seo, doc.shop.name);
+      const about = buildAboutSection({
+        name: doc.shop.name,
+        sector: doc.shop.sector,
+        city: seo.geo.locality || parseLegal(doc.shop.legal).city,
+        templateId: theme.templateId,
+        heading: typeof input.heading === "string" ? input.heading : undefined,
+        text: typeof input.text === "string" ? input.text : undefined,
+      });
+      const result = placeNode(layout, about, {
+        parentId,
+        slot,
+        index,
+        afterId: afterId || layout.content.find((node) => node.type === "Hero")?.props.id,
+      });
+      if (!result.ok) return result;
+      setPageLayout(doc, slug, result.layout);
+      return { ok: true, summary: `Section à propos ajoutée sur ${slug} (${result.id})` };
+    }
     const result = insertNode(layout, {
       type: mappedType,
-      parentId: typeof input.parentId === "string" ? input.parentId : undefined,
-      slot: typeof input.slot === "string" ? input.slot : undefined,
-      index: typeof input.index === "number" ? input.index : undefined,
-      afterId: typeof input.afterId === "string" ? input.afterId : undefined,
+      parentId,
+      slot,
+      index,
+      afterId,
       props: nodeProps(input),
     });
     if (!result.ok) return result;
@@ -153,7 +206,7 @@ export function executeShopTool(doc: ShopDocument, name: string, input: Record<s
   }
 
   if (name === "update_node" || name === "update_block") {
-    const slug = String(input.slug ?? "");
+    const slug = resolvePageSlug(doc, String(input.slug ?? ""));
     const id = String(input.id ?? "");
     const layout = pageLayout(doc, slug);
     if (!layout) return { ok: false, error: `Page ${slug} introuvable` };
@@ -164,7 +217,7 @@ export function executeShopTool(doc: ShopDocument, name: string, input: Record<s
   }
 
   if (name === "delete_node" || name === "remove_block") {
-    const slug = String(input.slug ?? "");
+    const slug = resolvePageSlug(doc, String(input.slug ?? ""));
     const id = String(input.id ?? "");
     const layout = pageLayout(doc, slug);
     if (!layout) return { ok: false, error: `Page ${slug} introuvable` };
@@ -175,7 +228,7 @@ export function executeShopTool(doc: ShopDocument, name: string, input: Record<s
   }
 
   if (name === "move_node" || name === "reorder_blocks") {
-    const slug = String(input.slug ?? "");
+    const slug = resolvePageSlug(doc, String(input.slug ?? ""));
     const id = String(input.id ?? "");
     const layout = pageLayout(doc, slug);
     if (!layout) return { ok: false, error: `Page ${slug} introuvable` };

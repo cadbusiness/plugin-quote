@@ -118,6 +118,7 @@ const laterPrompt = buildShopAgentSystemPrompt(doc, "Atelier Nord", { isSeedTurn
 assert.doesNotMatch(laterPrompt, /Premier tour \(création\)/);
 assert.match(laterPrompt, /image de référence/);
 assert.match(laterPrompt, /pas d.astérisques/);
+assert.match(laterPrompt, /type=about/);
 const selectedPrompt = buildShopAgentSystemPrompt(doc, "Atelier Nord", {
   isSeedTurn: false,
   selection: { kind: "node", pageSlug: "accueil", pageTitle: "Accueil", id: "hero-1", type: "Hero" },

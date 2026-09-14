@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { emptyBlock, parseBlock, parseBlocks } from "./blocks";
 import { executeShopTool, ensureSeedTurnPublished } from "./agent/executor";
-import { encodeShopAgentSse, parseShopAgentSse, shopChatChips, shopToolTouched } from "./agent/events";
+import { encodeShopAgentSse, parseShopAgentSse, shopAgentClosingText, shopChatChips, shopToolTouched } from "./agent/events";
 import { parseShopAgentSelection, shopAgentSelectionPrompt, shouldSendChatOnEnter } from "./agent/selection";
 import { historyForAgent, mergeShopChat, parseChatLog, plainShopChatText } from "./chat-store";
-import { boxStyle, cssLength, cssSpacing, layoutsEqual, migrateBlocksToLayout, parseLayout } from "./layout";
+import { boxStyle, cssLength, cssSpacing, layoutsEqual, migrateBlocksToLayout, parseLayout, resolveNodeId, summarizeLayout } from "./layout";
 import { buildShopBlueprint, requiredShopSlugs } from "./templates";
 import { mentionsLegalesBody } from "./legal";
 import { clipDescription, footerNav, headerNav, pageTitle, productJsonLd, replaceNavLocation, shopMetadata, sitemapEntries } from "./seo";
@@ -221,6 +221,16 @@ const tree = executeShopTool(doc, "get_tree", { slug: "accueil" });
 assert.equal(tree.ok, true);
 if (tree.ok) assert.match(tree.summary, /Hero/);
 
+const about = executeShopTool(doc, "insert_node", { slug: "a-propos", type: "about", heading: "L’atelier" });
+assert.equal(about.ok, true);
+const aboutLayout = parseLayout(doc.pages[0]!.blocks);
+assert.equal(aboutLayout.content.some((node) => node.type === "Section"), true);
+assert.match(summarizeLayout(aboutLayout), /L’atelier|atelier/i);
+const aboutId = aboutLayout.content.find((node) => node.type === "Section")?.props.id ?? "";
+assert.ok(aboutId.length > 8);
+assert.equal(resolveNodeId(aboutLayout, aboutId.slice(0, 8)), aboutId);
+assert.equal(executeShopTool(doc, "update_node", { slug: "accueil", id: aboutId.slice(0, 8), padding: "80px 0" }).ok, true);
+
 const added = executeShopTool(doc, "insert_node", { slug: "accueil", type: "Text", text: "Notre atelier" });
 assert.equal(added.ok, true);
 const layout = parseLayout(doc.pages[0]!.blocks);
@@ -290,6 +300,9 @@ const parsedSse = parseShopAgentSse(`${sse}partial`);
 assert.equal(parsedSse.events[0]?.type, "tool");
 assert.equal(parsedSse.rest, "partial");
 assert.ok(shopChatChips({ kind: "node", pageSlug: "accueil", pageTitle: "Accueil", id: "h", type: "Hero" }).includes("Réécris le titre"));
+assert.ok(shopChatChips().includes("Ajoute une section à propos"));
+assert.equal(shopAgentClosingText("", [{ name: "insert_node", status: "error" }]), "Je n’ai pas pu modifier la page. Réessaie : « Ajoute une section à propos sous le bandeau ».");
+assert.equal(shopAgentClosingText("", [{ name: "update_node", status: "ok" }]), "C’est mis à jour.");
 assert.deepEqual(
   shopToolTouched("update_node", { slug: "accueil", id: "hero-1" }, "Nœud hero-1 mis à jour"),
   { pageSlug: "accueil", nodeId: "hero-1", mutated: true },

@@ -588,6 +588,37 @@ function columnsOf(items: ShopStat[], gap = "28px"): ShopNode {
   });
 }
 
+export function buildAboutSection(input: {
+  name: string;
+  sector: string;
+  city?: string;
+  templateId?: string | null;
+  heading?: string;
+  text?: string;
+}): ShopNode {
+  const copy = shopCopyForFamily(input);
+  const photos = shopPlaceholders(input.sector, input.templateId);
+  const heading = input.heading?.trim() || copy.aboutHeading;
+  const text = input.text?.trim() || copy.aboutText;
+  const textCol = [
+    emptyNode("Heading", { text: heading, level: "h2" }),
+    emptyNode("Text", { text }),
+    emptyNode("Button", { label: copy.heroCta, href: "/devis" }),
+  ];
+  const imageCol = [emptyNode("Image", { image: photos.split.image, imageAlt: copy.aboutImageAlt })];
+  return emptyNode("Section", {
+    padding: "64px 0",
+    children: [
+      emptyNode("Columns", {
+        count: "2",
+        gap: "40px",
+        col1: copy.imageFirst ? imageCol : textCol,
+        col2: copy.imageFirst ? textCol : imageCol,
+      }),
+    ],
+  });
+}
+
 function homeBlocks(input: {
   name: string;
   sector: string;
@@ -598,12 +629,6 @@ function homeBlocks(input: {
   const photos = shopPlaceholders(input.sector, input.templateId);
   const template = resolveShopSectorTemplate(input.templateId, input.sector);
   const wash = template?.wash ?? WASH;
-  const textCol = [
-    emptyNode("Heading", { text: copy.aboutHeading, level: "h2" }),
-    emptyNode("Text", { text: copy.aboutText }),
-    emptyNode("Button", { label: copy.heroCta, href: "/devis" }),
-  ];
-  const imageCol = [emptyNode("Image", { image: photos.split.image, imageAlt: copy.aboutImageAlt })];
 
   return {
     hero: emptyNode("Hero", {
@@ -624,17 +649,7 @@ function homeBlocks(input: {
       background: wash,
       children: [emptyNode("Heading", { text: copy.proofHeading, level: "h2" }), columnsOf(copy.proof)],
     }),
-    about: emptyNode("Section", {
-      padding: "64px 0",
-      children: [
-        emptyNode("Columns", {
-          count: "2",
-          gap: "40px",
-          col1: copy.imageFirst ? imageCol : textCol,
-          col2: copy.imageFirst ? textCol : imageCol,
-        }),
-      ],
-    }),
+    about: buildAboutSection(input),
     categories: emptyNode("Categories", { heading: copy.categoriesHeading, padding: "64px 0" }),
     catalog: emptyNode("Catalog", { heading: copy.catalogHeading, limit: 8, padding: "64px 0" }),
     process: emptyNode("Section", {

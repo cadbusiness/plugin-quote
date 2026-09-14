@@ -332,8 +332,26 @@ function walkFind(nodes: ShopNode[], parentId: string | null, slot: string, id: 
   return null;
 }
 
+function collectIds(nodes: ShopNode[], out: string[] = []): string[] {
+  for (const node of nodes) {
+    out.push(node.props.id);
+    for (const slot of childSlots(node)) collectIds(slot.nodes, out);
+  }
+  return out;
+}
+
+export function resolveNodeId(layout: ShopLayout, id: string): string | null {
+  const wanted = id.trim();
+  if (!wanted) return null;
+  const ids = collectIds(layout.content);
+  if (ids.includes(wanted)) return wanted;
+  const prefixed = ids.filter((item) => item.startsWith(wanted));
+  return prefixed.length === 1 ? prefixed[0] : null;
+}
+
 export function findNode(layout: ShopLayout, id: string): NodeLocation | null {
-  return walkFind(layout.content, null, "content", id);
+  const resolved = resolveNodeId(layout, id);
+  return resolved ? walkFind(layout.content, null, "content", resolved) : null;
 }
 
 function cloneNode(node: ShopNode): ShopNode {
@@ -386,20 +404,11 @@ function insertAt(layout: ShopLayout, parentId: string | null, slot: string, ind
   return true;
 }
 
-export function insertNode(
-  layout: ShopLayout,
-  input: {
-    type: string;
-    parentId?: string;
-    slot?: string;
-    index?: number;
-    afterId?: string;
-    props?: Record<string, unknown>;
-  },
+function placeClonedNode(
+  next: ShopLayout,
+  node: ShopNode,
+  input: { parentId?: string; slot?: string; index?: number; afterId?: string },
 ): { ok: true; layout: ShopLayout; id: string } | { ok: false; error: string } {
-  if (!isShopNodeType(input.type)) return { ok: false, error: `Type inconnu: ${input.type}` };
-  const next = cloneLayout(layout);
-  const node = emptyNode(input.type, input.props ?? {});
   let parentId = input.parentId?.trim() ? input.parentId.trim() : null;
   let slot = input.slot?.trim() || "";
   let index = typeof input.index === "number" ? input.index : -1;
@@ -426,6 +435,29 @@ export function insertNode(
     insertAt(next, null, "content", index, node);
   }
   return { ok: true, layout: next, id: node.props.id };
+}
+
+export function insertNode(
+  layout: ShopLayout,
+  input: {
+    type: string;
+    parentId?: string;
+    slot?: string;
+    index?: number;
+    afterId?: string;
+    props?: Record<string, unknown>;
+  },
+): { ok: true; layout: ShopLayout; id: string } | { ok: false; error: string } {
+  if (!isShopNodeType(input.type)) return { ok: false, error: `Type inconnu: ${input.type}` };
+  return placeClonedNode(cloneLayout(layout), emptyNode(input.type, input.props ?? {}), input);
+}
+
+export function placeNode(
+  layout: ShopLayout,
+  node: ShopNode,
+  input: { parentId?: string; slot?: string; index?: number; afterId?: string } = {},
+): { ok: true; layout: ShopLayout; id: string } | { ok: false; error: string } {
+  return placeClonedNode(cloneLayout(layout), cloneNode(node), input);
 }
 
 export function updateNode(
@@ -509,7 +541,7 @@ export function summarizeLayout(layout: ShopLayout): string {
   function visit(nodes: ShopNode[], depth: number) {
     for (const node of nodes) {
       const label = String(node.props.heading || node.props.text || node.props.label || node.type);
-      parts.push(`${"  ".repeat(depth)}${node.type}:${node.props.id.slice(0, 8)} « ${String(label).slice(0, 48)} »`);
+      parts.push(`${"  ".repeat(depth)}${node.type}:${node.props.id} « ${String(label).slice(0, 48)} »`);
       for (const slot of childSlots(node)) visit(slot.nodes, depth + 1);
     }
   }

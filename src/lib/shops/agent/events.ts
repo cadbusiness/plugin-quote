@@ -76,6 +76,17 @@ export function parseShopAgentSse(buffer: string) {
   return { events, rest };
 }
 
+export function shopAgentClosingText(text: string, toolTrace: { name: string; status: string }[]) {
+  const clean = text.trim();
+  if (clean) return clean;
+  const wrote = toolTrace.some((item) => item.status === "ok" && !["get_tree", "get_shop"].includes(item.name));
+  if (wrote) return "C’est mis à jour.";
+  if (toolTrace.some((item) => item.status === "error")) {
+    return "Je n’ai pas pu modifier la page. Réessaie : « Ajoute une section à propos sous le bandeau ».";
+  }
+  return "C’est mis à jour.";
+}
+
 export function shopChatChips(selection?: ShopAgentSelection | null) {
   if (selection?.kind === "chrome") {
     return selection.chrome === "header"
@@ -85,7 +96,7 @@ export function shopChatChips(selection?: ShopAgentSelection | null) {
   if (selection?.kind === "node") {
     return ["Réécris le titre", "Raccourcis le texte", "Change l’image", "Plus premium"];
   }
-  return ["Plus premium", "Raccourcis les textes", "Change l’image du bandeau", "Ajoute une FAQ", "Mets le CTA devis en avant"];
+  return ["Plus premium", "Ajoute une section à propos", "Raccourcis les textes", "Change l’image du bandeau", "Ajoute une FAQ", "Mets le CTA devis en avant"];
 }
 
 export function shopChatFollowUps() {

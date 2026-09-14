@@ -13,7 +13,7 @@ export type ShopChatMessage = {
   content: string;
   hidden?: boolean;
   image?: string;
-  steps?: { name: string; label: string; status: "run" | "ok" | "error" }[];
+  steps?: { name: string; label: string; status: "run" | "ok" | "error"; summary?: string }[];
 };
 
 const KEY = (shopId: string) => `qb-shop-chat:${shopId}`;

@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { COMMERCE_AGENT_CONFIG } from "@/lib/commerce-agent/config";
 import { executeShopTool } from "@/lib/shops/agent/executor";
-import { shopToolLabel, shopToolTouched, type ShopAgentStreamEvent } from "@/lib/shops/agent/events";
+import { shopAgentClosingText, shopToolLabel, shopToolTouched, type ShopAgentStreamEvent } from "@/lib/shops/agent/events";
 import { buildShopAgentSystemPrompt } from "@/lib/shops/agent/prompt";
 import type { ShopAgentSelection } from "@/lib/shops/agent/selection";
 import { SHOP_AGENT_TOOLS } from "@/lib/shops/agent/tools";
@@ -126,7 +126,7 @@ export async function runShopAgentTurn(input: {
   }
 
   return {
-    assistantText: plainShopChatText(assistantText) || "C’est mis à jour.",
+    assistantText: shopAgentClosingText(plainShopChatText(assistantText), toolTrace),
     toolTrace,
     nodeId: lastNodeId,
     pageSlug: lastPageSlug,

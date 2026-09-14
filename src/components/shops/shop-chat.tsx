@@ -306,6 +306,7 @@ export function ShopChat({
                   <li key={`${step.name}-${stepIndex}`}>
                     {step.status === "run" ? "… " : step.status === "error" ? "× " : "✓ "}
                     {step.label}
+                    {step.status === "error" && step.summary ? ` — ${step.summary}` : ""}
                   </li>
                 ))}
               </ul>
