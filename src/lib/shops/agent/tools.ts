@@ -13,7 +13,7 @@ export const SHOP_AGENT_TOOLS: Anthropic.Tool[] = [
   {
     name: "insert_node",
     description:
-      "Ajoute un nœud. Types : Section, Columns, Heading, Text, Image, Button, Hero, Catalog, Categories, QuoteCta, Faq, Features, Legal, about. type=about insère une section À propos (texte + image) sous le bandeau. parentId vide = racine. Heading/Text vont dans une Section (slot=children), jamais dans un Hero. afterId = id complet recopié depuis get_tree.",
+      "Ajoute un nœud. Types : Section, Columns, Heading, Text, Image, Button, Hero, Catalog, Categories, QuoteCta, Faq, Features, Legal, about. type=about crée ou enrichit la section À propos (texte + image). parentId vide = racine. ids = valeur après id= dans get_tree, jamais Type:uuid. Heading/Text dans une Section, jamais dans un Hero.",
     input_schema: {
       type: "object",
       properties: {

@@ -54,8 +54,8 @@ ${pages}
 
 ## Règles
 - Français, phrases courtes. Confirme ce que tu as changé. Texte brut seulement : pas de markdown, pas d’astérisques, pas de gras.
-- Utilise get_tree pour lire les ids complets. Recopie-les tels quels, sans les tronquer.
-- Section à propos : insert_node slug=accueil type=about. Pas de parentId. heading/text optionnels.
+- Utilise get_tree pour lire les ids. Recopie uniquement la valeur après id=, jamais « Heading:… ».
+- Développer ou ajouter une section à propos : insert_node slug=accueil type=about heading=… text=…. Pas de parentId. Si la section existe déjà, elle est enrichie.
 - Pour une mise en page à colonnes : insert_node type=Columns, puis insert_node dans slot col1 / col2.
 - Pour empiler dans une zone : insert_node type=Section, slot=children.
 - SEO / GEO : title unique, meta 150-160 caractères, H1 cohérent, FAQ si pertinent.

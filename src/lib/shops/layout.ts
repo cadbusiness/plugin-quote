@@ -340,13 +340,34 @@ function collectIds(nodes: ShopNode[], out: string[] = []): string[] {
   return out;
 }
 
+export function normalizeNodeId(id: string) {
+  const trimmed = id.trim().replace(/^id=/i, "");
+  const labeled = trimmed.match(/^(?:[A-Za-z][\w-]*):([0-9a-f]{8,}(?:-[0-9a-f-]+)?)$/i);
+  return labeled?.[1] ?? trimmed;
+}
+
 export function resolveNodeId(layout: ShopLayout, id: string): string | null {
-  const wanted = id.trim();
+  const wanted = normalizeNodeId(id);
   if (!wanted) return null;
   const ids = collectIds(layout.content);
   if (ids.includes(wanted)) return wanted;
   const prefixed = ids.filter((item) => item.startsWith(wanted));
   return prefixed.length === 1 ? prefixed[0] : null;
+}
+
+export function firstNodeId(layout: ShopLayout, type: string, rootId?: string): string | null {
+  const root = rootId ? findNode(layout, rootId)?.node : null;
+  const walk = (nodes: ShopNode[]): string | null => {
+    for (const node of nodes) {
+      if (node.type === type) return node.props.id;
+      for (const slot of childSlots(node)) {
+        const found = walk(slot.nodes);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+  return walk(root ? [root] : layout.content);
 }
 
 export function findNode(layout: ShopLayout, id: string): NodeLocation | null {
@@ -541,7 +562,7 @@ export function summarizeLayout(layout: ShopLayout): string {
   function visit(nodes: ShopNode[], depth: number) {
     for (const node of nodes) {
       const label = String(node.props.heading || node.props.text || node.props.label || node.type);
-      parts.push(`${"  ".repeat(depth)}${node.type}:${node.props.id} « ${String(label).slice(0, 48)} »`);
+      parts.push(`${"  ".repeat(depth)}${node.type} id=${node.props.id} « ${String(label).slice(0, 48)} »`);
       for (const slot of childSlots(node)) visit(slot.nodes, depth + 1);
     }
   }

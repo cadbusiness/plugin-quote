@@ -713,6 +713,17 @@ export function layoutTypeSequence(layout: ShopLayout): string[] {
   return layout.content.map((node) => node.type);
 }
 
+export function findAboutSectionId(layout: ShopLayout): string | null {
+  for (const node of layout.content) {
+    if (node.type !== "Section") continue;
+    const types = collectNodeTypes([node]);
+    if (types.includes("Columns") && types.includes("Image") && types.includes("Heading") && types.includes("Text")) {
+      return node.props.id;
+    }
+  }
+  return null;
+}
+
 export function collectNodeTypes(nodes: ShopNode[]): string[] {
   const types: string[] = [];
   const visit = (list: ShopNode[]) => {

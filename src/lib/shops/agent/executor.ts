@@ -1,9 +1,10 @@
 import { getFunnelFamily } from "@/lib/funnels/families";
 import { slugify } from "@/lib/org/slug";
 import { newBlockId } from "@/lib/shops/blocks";
-import { buildAboutSection } from "@/lib/shops/composition";
+import { buildAboutSection, findAboutSectionId } from "@/lib/shops/composition";
 import {
   emptyNode,
+  firstNodeId,
   insertNode,
   layoutJson,
   moveNode,
@@ -174,13 +175,29 @@ export function executeShopTool(doc: ShopDocument, name: string, input: Record<s
     if (isAboutType(type)) {
       const theme = parseTheme(doc.shop.theme);
       const seo = parseSeo(doc.shop.seo, doc.shop.name);
+      const heading = typeof input.heading === "string" ? input.heading.trim() : "";
+      const text = typeof input.text === "string" ? input.text.trim() : "";
+      const existingId = !afterId && !parentId ? findAboutSectionId(layout) : null;
+      if (existingId) {
+        let next = layout;
+        const apply = (typeName: string, patch: Record<string, unknown>) => {
+          const id = firstNodeId(next, typeName, existingId);
+          if (!id) return;
+          const result = updateNode(next, id, patch);
+          if (result.ok) next = result.layout;
+        };
+        if (heading) apply("Heading", { text: heading });
+        if (text) apply("Text", { text });
+        setPageLayout(doc, slug, next);
+        return { ok: true, summary: `Section à propos développée sur ${slug} (${existingId})` };
+      }
       const about = buildAboutSection({
         name: doc.shop.name,
         sector: doc.shop.sector,
         city: seo.geo.locality || parseLegal(doc.shop.legal).city,
         templateId: theme.templateId,
-        heading: typeof input.heading === "string" ? input.heading : undefined,
-        text: typeof input.text === "string" ? input.text : undefined,
+        heading: heading || undefined,
+        text: text || undefined,
       });
       const result = placeNode(layout, about, {
         parentId,
