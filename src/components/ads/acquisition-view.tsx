@@ -219,25 +219,25 @@ function DisconnectedBanner({
   onConnect: () => void;
 }) {
   return (
-    <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-200 px-4 py-4 lg:px-6">
-      <div className="min-w-0 max-w-2xl">
-        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400">
+    <div className="flex flex-wrap items-start justify-between gap-4 bg-slate-900 px-4 py-5 text-white lg:px-6">
+      <div className="min-w-0 max-w-3xl">
+        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-400">
           Google Ads · non connecté
         </p>
-        <p className="mt-1 text-lg font-semibold tracking-tight text-slate-900">{title}</p>
-        <p className="mt-1 text-sm text-slate-500">{detail}</p>
+        <p className="mt-1.5 text-xl font-semibold tracking-tight sm:text-2xl">{title}</p>
+        <p className="mt-1.5 text-sm text-slate-300">{detail}</p>
       </div>
-      <div className="flex flex-col items-end gap-1">
+      <div className="flex shrink-0 flex-col items-end gap-2">
         {admin ? (
           <button
             type="button"
             onClick={onConnect}
-            className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#D45203]"
+            className="rounded-md bg-[#E85D04] px-3.5 py-2 text-sm font-medium text-white hover:bg-[#D45203]"
           >
             Connecter Google Ads
           </button>
         ) : null}
-        <p className="text-[11px] text-slate-400">+ 2 min · lecture seule</p>
+        <p className="text-[11px] text-slate-400">≈ 2 min, lecture seule</p>
       </div>
     </div>
   );
@@ -269,32 +269,10 @@ function DisconnectedKpis({
 
   return (
     <div className="grid grid-cols-2 divide-x divide-y divide-slate-200 border-b border-slate-200 lg:grid-cols-4 lg:divide-y-0">
-      <KpiCell
-        label="Devis issus des pubs"
-        help="Demandes dont le visiteur est arrivé par une pub Google."
-        value={String(quotes)}
-        hint={campaignHint}
-        muted={quotes === 0}
-      />
-      <KpiCell
-        label="Clients signés"
-        help="Dossiers Gagné attribués à une pub Google."
-        value={String(won)}
-        hint={wonHint}
-        muted={won === 0}
-      />
-      <KpiCell
-        label="Coût par devis"
-        help="Budget Ads divisé par les devis reçus. Visible dès que le compte est branché."
-        pending
-        hint="disponible dès la connexion"
-      />
-      <KpiCell
-        label="Coût par client"
-        help="Budget Ads divisé par les dossiers Gagné. Visible dès que le compte est branché."
-        pending
-        hint="disponible dès la connexion"
-      />
+      <KpiCell label="Devis issus des pubs" value={String(quotes)} hint={campaignHint} size="hero" />
+      <KpiCell label="Clients signés" value={String(won)} hint={wonHint} size="hero" />
+      <KpiCell label="Coût par devis" pending hint="disponible dès la connexion" />
+      <KpiCell label="Coût par client" pending hint="disponible dès la connexion" />
     </div>
   );
 }
@@ -373,30 +351,30 @@ function KpiCell({
   size,
 }: {
   label: string;
-  help: string;
+  help?: string;
   value?: string | null;
   hint: string;
   muted?: boolean;
   pending?: boolean;
-  size?: "lg";
+  size?: "lg" | "hero";
 }) {
   return (
-    <div className="px-4 py-3.5 lg:px-6">
+    <div className="px-4 py-4 lg:px-6">
       <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400">
-        <LabelHelp help={help}>{label}</LabelHelp>
+        {help ? <LabelHelp help={help}>{label}</LabelHelp> : label}
       </p>
       {pending ? (
-        <p className="mt-1 text-xl italic text-slate-300">—</p>
+        <div className="mt-1 h-9" aria-hidden />
       ) : (
         <p
           className={`mt-1 font-semibold tabular-nums tracking-tight ${
-            size === "lg" ? "text-3xl" : "text-xl"
-          } ${muted || value === "0" ? "text-slate-300" : "text-slate-900"}`}
+            size === "hero" ? "text-4xl" : size === "lg" ? "text-3xl" : "text-xl"
+          } ${muted ? "text-slate-300" : "text-slate-900"}`}
         >
           {value}
         </p>
       )}
-      <p className="mt-0.5 text-xs text-slate-500">{hint}</p>
+      <p className={`mt-1 text-xs ${pending ? "text-slate-400" : "text-slate-500"}`}>{hint}</p>
     </div>
   );
 }
@@ -421,24 +399,33 @@ function CampaignsBlock({
         : "Les devis pub sont déjà rattachés. Le coût s’affiche une fois Google Ads branché."
       : connected
         ? "Classées par coût par client — le plus rentable en haut."
-        : `${rows.length} campagne${rows.length > 1 ? "s" : ""} · cliquez pour l’URL, les mots-clés.`;
+        : `${rows.length} campagne${rows.length > 1 ? "s" : ""} · cliquez pour l’URL et les mots-clés`;
 
   return (
     <section>
       <ListToolbar>
         <div className="mr-auto min-w-0">
-          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400">
-            <LabelHelp help="Une ligne = une pub. Cliquez pour copier l’URL et les mots-clés, sans quitter Ads.">
-              Campagnes
-            </LabelHelp>
-          </p>
-          <p className="mt-0.5 text-sm text-slate-500">{countLabel}</p>
+          {connected ? (
+            <>
+              <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400">Campagnes</p>
+              <p className="mt-0.5 text-sm text-slate-500">{countLabel}</p>
+            </>
+          ) : (
+            <p className="text-sm text-slate-700">
+              <span className="font-semibold text-slate-900">Campagnes</span>
+              <span className="text-slate-400"> · {countLabel}</span>
+            </p>
+          )}
         </div>
         {connected ? <span className="text-xs text-slate-400">30 jours</span> : null}
         <button
           type="button"
           onClick={() => onOpen(null)}
-          className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#D45203]"
+          className={
+            connected
+              ? "rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#D45203]"
+              : "rounded-full px-3 py-1.5 text-sm font-medium text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"
+          }
         >
           Préparer une campagne
         </button>
@@ -477,21 +464,29 @@ function DisconnectedCampaignTable({
         const pct = visitors ? row.quotes / visitors : 0;
         return (
           <ClickableRow key={`${row.campaign}-${row.source}`} onSelect={() => onOpen(row)}>
-            <td className="px-4 py-3 lg:px-6">
-              <div className="font-medium text-slate-900">{row.campaign}</div>
-              <span className="mt-1 inline-block">
-                <Chip tone={status.tone}>{status.label}</Chip>
+            <td className="px-4 py-3.5 lg:px-6">
+              <div className="font-semibold text-slate-900">{row.campaign}</div>
+              <span
+                className={`mt-1 inline-flex items-center gap-1.5 text-xs ${
+                  status.tone === "emerald" ? "text-emerald-700" : "text-slate-400"
+                }`}
+              >
+                <span
+                  className={`h-1.5 w-1.5 rounded-full ${status.tone === "emerald" ? "bg-emerald-500" : "bg-slate-300"}`}
+                  aria-hidden
+                />
+                {status.label}
               </span>
             </td>
-            <td className="px-4 py-3 text-slate-600 lg:px-6">{funnelOf(row, funnels)}</td>
-            <td className={`px-4 py-3 tabular-nums lg:px-6 ${row.quotes === 0 ? "text-slate-300" : "text-slate-900"}`}>
+            <td className="px-4 py-3.5 text-slate-600 lg:px-6">{funnelOf(row, funnels)}</td>
+            <td className={`px-4 py-3.5 tabular-nums lg:px-6 ${row.quotes === 0 ? "text-slate-300" : "text-slate-900"}`}>
               {row.quotes}
             </td>
-            <td className="px-4 py-3 lg:px-6">
-              <Chip tone={row.won ? "emerald" : "slate"}>{row.won}</Chip>
+            <td className={`px-4 py-3.5 tabular-nums lg:px-6 ${row.won === 0 ? "text-slate-300" : "text-slate-900"}`}>
+              {row.won}
             </td>
-            <td className="px-4 py-3 lg:px-6">
-              <div className="min-w-[7rem]">
+            <td className="px-4 py-3.5 lg:px-6">
+              <div className="min-w-[8rem]">
                 <GaugeBar pct={pct} tone="orange" />
                 <p className={`mt-1 text-xs ${row.quotes && visitors ? "text-slate-500" : "text-slate-400"}`}>
                   {adsConversionCaption(row.quotes, visitors)}

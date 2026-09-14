@@ -75,10 +75,10 @@ export function closedLoop(input: {
 export function adsDisconnectedCopy(campaignCount: number) {
   const detail =
     campaignCount === 0
-      ? "Sans Ads, il manque la dépense : sans elle, aucun chiffre peut être calculé."
+      ? "Il manque la dépense : sans elle, aucun coût ne peut être calculé."
       : campaignCount === 1
-        ? "Votre campagne est déjà là. Sans Ads, il manque la dépense : sans elle, aucun chiffre peut être calculé."
-        : `Vos ${campaignCount} campagnes sont déjà là. Sans Ads, il manque la dépense : sans elle, aucun chiffre peut être calculé.`;
+        ? "Votre campagne est déjà suivie côté devis. Il manque la dépense : sans elle, aucun coût ne peut être calculé."
+        : `Vos ${campaignCount} campagnes sont déjà suivies côté devis. Il manque la dépense : sans elle, aucun coût ne peut être calculé.`;
   return {
     title: "Branchez le compte pour voir ce que coûte un devis, et ce que coûte un client",
     detail,
@@ -86,13 +86,13 @@ export function adsDisconnectedCopy(campaignCount: number) {
 }
 
 export function adsConversionCaption(quotes: number, visitors: number) {
-  if (!quotes || !visitors) return "à mesurer pour l’instant";
-  return `${quotes} devis pour ${visitors} visité${visitors > 1 ? "s" : ""}`;
+  if (!quotes || !visitors) return "rien à mesurer pour l’instant";
+  return `${quotes} devis pour ${visitors} clic${visitors > 1 ? "s" : ""} suivi${visitors > 1 ? "s" : ""}`;
 }
 
-export function adsCampaignStatus(quotes: number, visitors: number) {
-  if (quotes > 0 || visitors > 0) return { label: "Diffusion en cours", tone: "emerald" as const };
-  return { label: "En attente de clics", tone: "slate" as const };
+export function adsCampaignStatus(quotes: number) {
+  if (quotes > 0) return { label: "Diffusion en cours", tone: "emerald" as const };
+  return { label: "Aucun devis à ce jour", tone: "slate" as const };
 }
 
 export type AdsBudgetInsight = {
