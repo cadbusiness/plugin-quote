@@ -5,11 +5,13 @@ import Link from "next/link";
 import { DataTable, ListToolbar } from "@/components/ui/list-panel";
 import { Chip } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
+import { AbandonDrawer } from "@/components/crm/abandon-drawer";
 import { AbandonGauges, AbandonProgress } from "@/components/crm/abandon-gauges";
 import { LocalPills, replaceClientUrl } from "@/components/ui/local-tabs";
 import { formatRelative } from "@/lib/format";
 import {
   filterAbandonRows,
+  type AbandonRow,
   type AbandonSnapshot,
   type AbandonView,
 } from "@/lib/crm/abandons";
@@ -30,6 +32,20 @@ function viewHref(view: AbandonView) {
   return view === "tous" ? "/sessions" : `/sessions?vue=${view}`;
 }
 
+function pagesLabel(count: number) {
+  return count === 1 ? "1 page" : `${count} pages`;
+}
+
+function statusChip(row: AbandonRow) {
+  if (row.recoverable) {
+    if (row.stale) {
+      return <Chip tone={row.relanced ? "violet" : "amber"}>{row.relanced ? "Relancé" : "À relancer"}</Chip>;
+    }
+    return <Chip tone="orange">Récupérable</Chip>;
+  }
+  return <Chip tone="slate">Sans email</Chip>;
+}
+
 export function AbandonSessionsView({
   snapshot,
   initialView,
@@ -38,7 +54,9 @@ export function AbandonSessionsView({
   initialView: AbandonView;
 }) {
   const [view, setView] = useState(initialView);
+  const [openId, setOpenId] = useState<string | null>(null);
   const rows = filterAbandonRows(snapshot.rows, view);
+  const openRow = rows.find((row) => row.id === openId) ?? snapshot.rows.find((row) => row.id === openId) ?? null;
 
   return (
     <>
@@ -66,11 +84,12 @@ export function AbandonSessionsView({
       />
 
       {rows.length ? (
-        <DataTable headers={["Prospect", "Funnel", "Avancement", "Activité", "État"]}>
+        <DataTable headers={["Prospect", "Funnel", "Avancement", "Visite", "Activité", "État"]}>
           {rows.map((row) => (
             <ClickableRow
               key={row.id}
               href={`/reprendre/${row.token}`}
+              onSelect={() => setOpenId(row.id)}
               className={row.recoverable && row.stale && !row.relanced ? "bg-amber-50/40" : ""}
             >
               <td className="px-4 py-2.5 lg:px-6">
@@ -81,20 +100,14 @@ export function AbandonSessionsView({
               <td className="px-4 py-2.5 lg:px-6">
                 <AbandonProgress progress={row.progress} step={row.step} stepCount={row.stepCount} />
               </td>
-              <td className="px-4 py-2.5 text-slate-900 lg:px-6">{formatRelative(row.lastActivity)}</td>
               <td className="px-4 py-2.5 lg:px-6">
-                {row.recoverable ? (
-                  row.stale ? (
-                    <Chip tone={row.relanced ? "violet" : "amber"}>
-                      {row.relanced ? "Relancé" : "À relancer"}
-                    </Chip>
-                  ) : (
-                    <Chip tone="orange">Récupérable</Chip>
-                  )
-                ) : (
-                  <Chip tone="slate">Sans email</Chip>
-                )}
+                <div className="font-medium tabular-nums text-slate-900">{row.durationLabel}</div>
+                <div className="text-slate-500">
+                  {[row.countryName, pagesLabel(row.pageCount)].filter(Boolean).join(" · ")}
+                </div>
               </td>
+              <td className="px-4 py-2.5 text-slate-900 lg:px-6">{formatRelative(row.lastActivity)}</td>
+              <td className="px-4 py-2.5 lg:px-6">{statusChip(row)}</td>
             </ClickableRow>
           ))}
         </DataTable>
@@ -107,6 +120,8 @@ export function AbandonSessionsView({
               : "Aucun abandon pour le moment."}
         </p>
       )}
+
+      {openRow ? <AbandonDrawer row={openRow} onClose={() => setOpenId(null)} /> : null}
     </>
   );
 }

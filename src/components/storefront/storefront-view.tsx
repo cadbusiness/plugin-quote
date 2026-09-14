@@ -2,15 +2,17 @@ import { Render } from "@puckeditor/core/rsc";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ProductHtml } from "@/components/catalog/product-html";
+import { AddToQuoteButton } from "@/components/storefront/add-to-quote-button";
+import { ShopQuoteDraftProvider } from "@/components/storefront/shop-quote-draft";
 import { StorefrontHeader } from "@/components/storefront/storefront-header";
+import { StorefrontVisitTracker } from "@/components/storefront/storefront-visit-tracker";
 import { formatPrice } from "@/lib/format";
 import { resolveShopHref } from "@/lib/shops/href";
 import { migrateBlocksToLayout, parseLayout } from "@/lib/shops/layout";
 import { shopPuckConfig } from "@/lib/shops/puck-config";
 import { footerNav, headerNav, jsonLdScript, themeStyle } from "@/lib/shops/seo";
-import { cx, SHOP_BODY, SHOP_CONTAINER, SHOP_CTA, SHOP_HEADING } from "@/lib/shops/storefront-style";
+import { cx, SHOP_BODY, SHOP_CONTAINER, SHOP_HEADING } from "@/lib/shops/storefront-style";
 import type { ShopBlock, ShopLayout, ShopProduct, StorefrontModel } from "@/lib/shops/types";
-import { shopQuotePath } from "@/lib/shops/urls";
 
 export type { StorefrontModel };
 
@@ -39,34 +41,37 @@ export function StorefrontShell({
   const home = `/b/${model.orgSlug}/${model.shopSlug}`;
   return (
     <div className="min-h-dvh" style={themeStyle(model.theme)}>
-      <JsonLd data={model.jsonLd ?? []} />
-      <StorefrontHeader
-        shopName={model.shopName}
-        home={home}
-        accent={model.theme.accent}
-        background={model.theme.background}
-        text={model.theme.text}
-        items={header.map((item) => ({
-          label: item.label,
-          href: hrefFor(model, item.href),
-        }))}
-      />
-      <main className="overflow-x-clip">{children}</main>
-      <footer className="border-t border-black/10">
-        <div className={cx(SHOP_CONTAINER, "flex flex-col gap-6 py-12 text-sm md:flex-row md:items-center")}>
-          <p className="mr-auto text-sm text-[color-mix(in_srgb,var(--shop-text)_70%,var(--shop-bg))]">
-            {model.legal.company || model.shopName}
-            {model.legal.city ? ` · ${model.legal.city}` : ""}
-          </p>
-          <nav aria-label="Mentions" className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
-            {footer.map((item) => (
-              <Link key={`${item.href}-${item.label}`} href={hrefFor(model, item.href)} className="underline-offset-2 hover:underline">
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
-      </footer>
+      <ShopQuoteDraftProvider orgSlug={model.orgSlug} shopSlug={model.shopSlug}>
+        <StorefrontVisitTracker orgSlug={model.orgSlug} shopSlug={model.shopSlug} funnelSlug={model.funnelSlug} />
+        <JsonLd data={model.jsonLd ?? []} />
+        <StorefrontHeader
+          shopName={model.shopName}
+          home={home}
+          accent={model.theme.accent}
+          background={model.theme.background}
+          text={model.theme.text}
+          items={header.map((item) => ({
+            label: item.label,
+            href: hrefFor(model, item.href),
+          }))}
+        />
+        <main className="overflow-x-clip">{children}</main>
+        <footer className="border-t border-black/10">
+          <div className={cx(SHOP_CONTAINER, "flex flex-col gap-6 py-12 text-sm md:flex-row md:items-center")}>
+            <p className="mr-auto text-sm text-[color-mix(in_srgb,var(--shop-text)_70%,var(--shop-bg))]">
+              {model.legal.company || model.shopName}
+              {model.legal.city ? ` · ${model.legal.city}` : ""}
+            </p>
+            <nav aria-label="Mentions" className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+              {footer.map((item) => (
+                <Link key={`${item.href}-${item.label}`} href={hrefFor(model, item.href)} className="underline-offset-2 hover:underline">
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </footer>
+      </ShopQuoteDraftProvider>
     </div>
   );
 }
@@ -93,7 +98,6 @@ export function ProductDetail({
   model: StorefrontModel;
   product: ShopProduct;
 }) {
-  const quoteHref = `${shopQuotePath(model.orgSlug, model.shopSlug)}?product=${encodeURIComponent(product.id)}`;
   return (
     <article className={cx(SHOP_CONTAINER, "grid gap-10 py-12 lg:grid-cols-2 lg:items-start lg:gap-14 lg:py-16")}>
       {product.image_url ? (
@@ -115,9 +119,12 @@ export function ProductDetail({
         <div className={cx("mt-6", SHOP_BODY)}>
           <ProductHtml html={product.description} />
         </div>
-        <Link href={quoteHref} className={cx(SHOP_CTA, "mt-8")} style={{ background: model.theme.accent }}>
-          Ajouter au devis
-        </Link>
+        <AddToQuoteButton
+          orgSlug={model.orgSlug}
+          shopSlug={model.shopSlug}
+          product={product}
+          accent={model.theme.accent}
+        />
       </div>
     </article>
   );

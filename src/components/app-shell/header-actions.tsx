@@ -132,7 +132,7 @@ export function HeaderActions({
               Campagne email
             </ActionLink>
             {isAdmin ? (
-              <ActionLink href="/equipe" icon={UserPlus} onClick={() => setMenu(null)}>
+              <ActionLink href="/equipe#nouveau" icon={UserPlus} onClick={() => setMenu(null)}>
                 Inviter un membre
               </ActionLink>
             ) : null}

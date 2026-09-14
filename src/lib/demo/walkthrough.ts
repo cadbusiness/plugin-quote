@@ -39,7 +39,7 @@ export const WALKTHROUGH_SCREENS: WalkthroughScreen[] = [
     id: "sessions",
     label: "Abandons",
     path: "/sessions",
-    why: "Sessions stale avec email, relance.",
+    why: "Durée, pays, pages visitées, panneau latéral au clic.",
     seedModule: "sessions",
   },
   {
@@ -116,7 +116,7 @@ export const WALKTHROUGH_SCREENS: WalkthroughScreen[] = [
     id: "equipe",
     label: "Équipe",
     path: "/equipe",
-    why: "Owner + commercial assignables.",
+    why: "Fiche membre, rôles, accès, stats.",
     seedModule: "accounts",
   },
   {

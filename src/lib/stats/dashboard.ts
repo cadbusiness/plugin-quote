@@ -51,7 +51,11 @@ export type Kpi = {
   deltaLabel: string;
   deltaTone: "good" | "bad" | "muted";
   tone: BubbleTone;
+  spark?: number[];
+  meter?: number;
 };
+
+export const SPARK_DAYS = 8;
 
 export const HOME_PULSE_IDS: KpiId[] = ["visits", "quotes", "conversion", "volume"];
 
@@ -244,6 +248,76 @@ export function deltaMeta(current: number, previous: number, invert = false): Pi
     deltaLabel: `${arrow}${rounded}% vs préc.`,
     deltaTone: pct === 0 ? "muted" : good ? "good" : "bad",
   };
+}
+
+export type DeltaKind = "percent" | "count" | "points" | "eur";
+
+function deltaArrow(diff: number) {
+  if (diff > 0) return "▲";
+  if (diff < 0) return "▼";
+  return "=";
+}
+
+function deltaToneOf(diff: number, invert = false): Kpi["deltaTone"] {
+  if (diff === 0) return "muted";
+  const good = invert ? diff < 0 : diff > 0;
+  return good ? "good" : "bad";
+}
+
+export function deltaDisplay(
+  current: number,
+  previous: number,
+  kind: DeltaKind,
+  invert = false,
+): Pick<Kpi, "deltaLabel" | "deltaTone"> {
+  const diff = current - previous;
+  const tone = deltaToneOf(diff, invert);
+  const mag = Math.abs(diff);
+  const mark = deltaArrow(diff);
+  if (kind === "percent") {
+    if (previous === 0) {
+      return mag === 0
+        ? { deltaLabel: "—", deltaTone: "muted" }
+        : { deltaLabel: `${mark} ${formatKpiNumber(mag)}`, deltaTone: tone };
+    }
+    return {
+      deltaLabel: `${mark} ${Math.abs(Math.round((diff / previous) * 100))} %`,
+      deltaTone: tone,
+    };
+  }
+  if (kind === "count") {
+    return { deltaLabel: `${mark} ${formatKpiNumber(Math.round(mag))}`, deltaTone: tone };
+  }
+  if (kind === "points") {
+    const pts = Math.abs(Math.round(diff));
+    return { deltaLabel: `${mark} ${pts} pt${pts > 1 ? "s" : ""}`, deltaTone: tone };
+  }
+  return {
+    deltaLabel: `${mark} ${formatKpiNumber(Math.round(mag))} € vs période préc.`,
+    deltaTone: tone,
+  };
+}
+
+export function sparkDayKey(iso: string | Date) {
+  const d = typeof iso === "string" ? new Date(iso) : iso;
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+export function sparkDayKeys(now = new Date(), days = SPARK_DAYS) {
+  const keys: string[] = [];
+  for (let i = days - 1; i >= 0; i -= 1) {
+    keys.push(sparkDayKey(new Date(now.getFullYear(), now.getMonth(), now.getDate() - i)));
+  }
+  return keys;
+}
+
+export function sparkCounts(dates: string[], keys: string[]) {
+  const counts = new Map(keys.map((key) => [key, 0]));
+  for (const iso of dates) {
+    const key = sparkDayKey(iso);
+    if (counts.has(key)) counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  return keys.map((key) => counts.get(key) ?? 0);
 }
 
 function draftEmail(draft: Json) {

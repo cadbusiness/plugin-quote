@@ -1,4 +1,5 @@
 import { Chip, scoreTone, statusTone, type ChipTone } from "@/components/ui/chip";
+import { GAUGE_TONES, GaugeBar, type GaugeTone } from "@/components/ui/gauge";
 import { formatPrice, formatRelative } from "@/lib/format";
 import type { QuoteInboxCue } from "@/lib/crm/quote-next-action";
 
@@ -123,17 +124,52 @@ export function QuoteProjectCell({ extras }: { extras: QuoteListExtras }) {
   );
 }
 
+const SCORE_GAUGE: Record<string, GaugeTone> = {
+  hot: "rose",
+  warm: "orange",
+  cold: "sky",
+};
+
+export function ScoreMark({
+  score,
+  scoreLabel,
+}: {
+  score: number | null;
+  scoreLabel?: string | null;
+}) {
+  const tone = SCORE_GAUGE[scoreLabel ?? ""] ?? "slate";
+  const color = GAUGE_TONES[tone];
+  return (
+    <div className="flex flex-col items-end gap-1">
+      <div className="flex items-baseline gap-1.5">
+        <span className="text-3xl font-semibold leading-none tabular-nums tracking-tight" style={{ color }}>
+          {score != null ? score : "–"}
+        </span>
+        {scoreLabel ? (
+          <span className="text-[10px] font-semibold uppercase tracking-wide" style={{ color }}>
+            {scoreLabel}
+          </span>
+        ) : null}
+      </div>
+      {score != null ? (
+        <div className="w-16">
+          <GaugeBar pct={score / 100} tone={tone} />
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export function QuoteScoreCell({
   score,
+  scoreLabel,
 }: {
   score: number | null;
   scoreLabel?: string | null;
 }) {
   return (
-    <td className="w-24 px-4 py-3.5 lg:w-28 lg:px-6">
-      <span className="text-3xl font-semibold leading-none tabular-nums tracking-tight text-slate-900">
-        {score != null ? score : "–"}
-      </span>
+    <td className="w-28 px-4 py-3.5 lg:w-32 lg:px-6">
+      <ScoreMark score={score} scoreLabel={scoreLabel} />
     </td>
   );
 }

@@ -4,32 +4,38 @@ import { useRouter } from "next/navigation";
 
 export function ClickableRow({
   href,
+  onSelect,
   children,
   className = "",
 }: {
-  href: string;
+  href?: string;
+  onSelect?: () => void;
   children: React.ReactNode;
   className?: string;
 }) {
   const router = useRouter();
 
   function prefetch() {
-    router.prefetch(href);
+    if (href) router.prefetch(href);
   }
 
   function go(event: { target: EventTarget | null; metaKey?: boolean; ctrlKey?: boolean; button?: number }) {
     const el = event.target as HTMLElement | null;
     if (el?.closest("a, button, input, select, textarea, label")) return;
-    if (event.metaKey || event.ctrlKey || event.button === 1) {
+    if (href && (event.metaKey || event.ctrlKey || event.button === 1)) {
       window.open(href, "_blank", "noopener,noreferrer");
       return;
     }
-    router.push(href);
+    if (onSelect) {
+      onSelect();
+      return;
+    }
+    if (href) router.push(href);
   }
 
   return (
     <tr
-      role="link"
+      role={href ? "link" : "button"}
       tabIndex={0}
       className={`cursor-pointer border-b border-slate-100 transition-colors hover:bg-orange-50/70 ${className}`}
       onPointerEnter={prefetch}
@@ -44,7 +50,8 @@ export function ClickableRow({
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          router.push(href);
+          if (onSelect) onSelect();
+          else if (href) router.push(href);
         }
       }}
     >

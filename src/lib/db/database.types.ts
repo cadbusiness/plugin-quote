@@ -1486,6 +1486,11 @@ export type Database = {
           last_activity_at: string
           mode: string
           organization_id: string
+          country: string | null
+          city: string | null
+          region: string | null
+          user_agent: string | null
+          device: string | null
           referrer: string | null
           wbraid: string | null
           selected_suggestion_id: string | null
@@ -1515,6 +1520,11 @@ export type Database = {
           last_activity_at?: string
           mode?: string
           organization_id: string
+          country?: string | null
+          city?: string | null
+          region?: string | null
+          user_agent?: string | null
+          device?: string | null
           referrer?: string | null
           wbraid?: string | null
           selected_suggestion_id?: string | null
@@ -1544,6 +1554,11 @@ export type Database = {
           last_activity_at?: string
           mode?: string
           organization_id?: string
+          country?: string | null
+          city?: string | null
+          region?: string | null
+          user_agent?: string | null
+          device?: string | null
           referrer?: string | null
           wbraid?: string | null
           selected_suggestion_id?: string | null

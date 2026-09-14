@@ -76,7 +76,7 @@ export const accountsModule: SeedModule = {
         if (existing.role !== account.role || existing.status !== "active") {
           const { error } = await ctx.supabase
             .from("memberships")
-            .update({ role: account.role, status: "active" })
+            .update({ role: account.role, status: "active", invited_email: account.email })
             .eq("id", existing.id);
           if (error) throw error;
         }
@@ -87,6 +87,7 @@ export const accountsModule: SeedModule = {
         user_id: user.id,
         role: account.role,
         status: "active",
+        invited_email: account.email,
       });
       if (error) throw error;
     }

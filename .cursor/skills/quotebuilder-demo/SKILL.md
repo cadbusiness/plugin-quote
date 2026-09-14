@@ -33,7 +33,7 @@ Parcourir dans cet ordre. Toute la ligne ouvre le détail. Pas d’emoji. Shell 
 | 2 | Tableau de bord | `/accueil` | KPI, pipeline, abandons |
 | 3 | Demandes | `/devis` | Scores hot/warm/cold, statuts couleur, liste flush |
 | 4 | Dossier | `/devis/{id}` | Réponses, lignes, note, activité, message (ex. Claire Martin / Léa Moreau) |
-| 5 | Abandons | `/sessions` | Sessions stale avec e-mail (Dock Ouest, Atelier Sud) |
+| 5 | Abandons | `/sessions` | Durée, pays, pages ; clic ouvre le panneau (Dock Ouest, Atelier Sud) |
 | 6 | Automatisations | `/automations` | Parcours soumission + abandon |
 | 7 | Canvas | `/automations/{id}` | E-mails, wait, branches |
 | 8 | Catalogue | `/produits` | SKU `QB-DEMO-*`, fourchettes |
@@ -44,7 +44,7 @@ Parcourir dans cet ordre. Toute la ligne ouvre le détail. Pas d’emoji. Shell 
 | 13 | Builder boutique | `/integrations/shop/{id}` | Pages accueil / catalogue / légales |
 | 14 | Stats | `/stats` | Tunnel visites → devis |
 | 15 | Segments | `/segments` | Chauds, B2B, entrepôt |
-| 16 | Équipe | `/equipe` | Owner + commercial |
+| 16 | Équipe | `/equipe` | Owner + commercial, ligne cliquable, stats |
 | 17 | Funnel public | `/c/demo/rayonnage` | Wizard prospect |
 | 18 | Boutique publique | `/b/demo/vitrine` | Mini-site devis, pas de paiement |
 

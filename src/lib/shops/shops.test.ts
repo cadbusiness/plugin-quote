@@ -9,7 +9,16 @@ import { buildShopBlueprint, requiredShopSlugs } from "./templates";
 import { mentionsLegalesBody } from "./legal";
 import { clipDescription, footerNav, headerNav, pageTitle, productJsonLd, replaceNavLocation, shopMetadata, sitemapEntries } from "./seo";
 import { resolveShopHref } from "./href";
-import { findProductBySlug, productSlug, shopBasePath, shopQuotePath } from "./urls";
+import {
+  isShopQuoteFormPhase,
+  parseShopQuoteDraft,
+  removeShopQuoteLine,
+  setShopQuoteLineQty,
+  shopQuoteDraftKey,
+  shopQuoteItemCount,
+  upsertShopQuoteLine,
+} from "./quote-draft";
+import { findProductBySlug, productSlug, shopBasePath, shopQuoteFormPath, shopQuotePath } from "./urls";
 import type { ShopDocument } from "./types";
 
 const blueprint = buildShopBlueprint({
@@ -70,6 +79,23 @@ assert.equal(pageTitle("Catalogue", "Atelier Nord"), "Catalogue · Atelier Nord"
 assert.equal(clipDescription("a".repeat(200)).endsWith("…"), true);
 assert.equal(shopBasePath("demo", "atelier"), "/b/demo/atelier");
 assert.equal(shopQuotePath("demo", "vitrine"), "/b/demo/vitrine/devis");
+assert.equal(shopQuoteFormPath("demo", "vitrine"), "/b/demo/vitrine/devis?envoyer=1");
+assert.equal(isShopQuoteFormPhase("1"), true);
+assert.equal(isShopQuoteFormPhase("envoyer"), true);
+assert.equal(isShopQuoteFormPhase(undefined), false);
+assert.equal(shopQuoteDraftKey("demo", "vitrine"), "qb-shop-quote:demo:vitrine");
+{
+  const added = upsertShopQuoteLine([], { id: "p1", qty: 2, name: "Bardage" });
+  assert.equal(shopQuoteItemCount(added), 1);
+  assert.equal(added[0]?.qty, 2);
+  const updated = upsertShopQuoteLine(added, { id: "p1", qty: 3 });
+  assert.equal(updated[0]?.qty, 3);
+  assert.equal(updated[0]?.name, "Bardage");
+  assert.equal(setShopQuoteLineQty(updated, "p1", 0)[0]?.qty, 1);
+  assert.equal(removeShopQuoteLine(updated, "p1").length, 0);
+  assert.deepEqual(parseShopQuoteDraft('[{"id":"p1","qty":2}]'), [{ id: "p1", qty: 2 }]);
+  assert.deepEqual(parseShopQuoteDraft("nope"), []);
+}
 assert.equal(
   resolveShopHref("/devis", { orgSlug: "demo", shopSlug: "vitrine", funnelSlug: "rayonnage" }),
   "/b/demo/vitrine/devis",

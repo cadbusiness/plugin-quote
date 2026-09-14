@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ConfiguratorApp } from "@/components/configurator/configurator-app";
 import type { ConfiguratorThemeOverride } from "@/lib/configurator/theme";
+import { ShopQuotePage } from "@/components/storefront/shop-quote-page";
 import { breadcrumbJsonLd, shopMetadata, websiteJsonLd } from "@/lib/shops/seo";
 import { loadOr404, seoCtx, StorefrontShell, toModel } from "@/lib/shops/public-page";
 import { cx, SHOP_BODY, SHOP_CONTAINER, SHOP_CTA, SHOP_HEADING } from "@/lib/shops/storefront-style";
@@ -9,7 +9,7 @@ import { shopPagePath } from "@/lib/shops/urls";
 
 type Props = {
   params: Promise<{ orgSlug: string; shopSlug: string }>;
-  searchParams: Promise<{ product?: string }>;
+  searchParams: Promise<{ product?: string; envoyer?: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ShopDevisPage({ params, searchParams }: Props) {
   const { orgSlug, shopSlug } = await params;
   const shop = await loadOr404(orgSlug, shopSlug);
-  const { product: productPrefill } = await searchParams;
+  const { product: productPrefill, envoyer } = await searchParams;
   const ctx = seoCtx(shop, "/devis", "Devis", `Demander un devis — ${shop.doc.shop.name}`);
   const jsonLd = [
     websiteJsonLd(ctx),
@@ -32,56 +32,31 @@ export default async function ShopDevisPage({ params, searchParams }: Props) {
   ];
   const model = toModel(shop, jsonLd);
   const catalogueHref = `/b/${shop.orgSlug}/${shop.doc.shop.slug}${shopPagePath("catalogue")}`;
+  const themeOverride: ConfiguratorThemeOverride = {
+    accent: shop.theme.accent,
+    background: shop.theme.background,
+    text: shop.theme.text,
+  };
 
   return (
     <StorefrontShell model={model}>
-      {shop.funnelSlug ? (
-        <ShopEmbeddedQuote
+      {shop.funnelSlug || shop.products.length ? (
+        <ShopQuotePage
           orgSlug={shop.orgSlug}
           shopSlug={shop.doc.shop.slug}
           shopConfiguratorId={shop.doc.shop.configurator_id}
           configuratorSlug={shop.funnelSlug}
+          products={shop.products}
+          catalogueHref={catalogueHref}
+          shopName={shop.doc.shop.name}
           productPrefill={productPrefill}
-          themeOverride={{
-            accent: shop.theme.accent,
-            background: shop.theme.background,
-            text: shop.theme.text,
-          }}
+          envoyer={envoyer}
+          themeOverride={themeOverride}
         />
       ) : (
         <ShopQuoteUnavailable shopName={shop.doc.shop.name} catalogueHref={catalogueHref} />
       )}
     </StorefrontShell>
-  );
-}
-
-function ShopEmbeddedQuote({
-  orgSlug,
-  shopSlug,
-  shopConfiguratorId,
-  configuratorSlug,
-  productPrefill,
-  themeOverride,
-}: {
-  orgSlug: string;
-  shopSlug: string;
-  shopConfiguratorId: string | null;
-  configuratorSlug: string;
-  productPrefill?: string;
-  themeOverride: ConfiguratorThemeOverride;
-}) {
-  return (
-    <div className="min-h-[60vh]">
-      <ConfiguratorApp
-        orgSlug={orgSlug}
-        shopSlug={shopSlug}
-        shopConfiguratorId={shopConfiguratorId ?? undefined}
-        configuratorSlug={configuratorSlug}
-        productPrefill={productPrefill}
-        embedded
-        themeOverride={themeOverride}
-      />
-    </div>
   );
 }
 

@@ -3,6 +3,7 @@ import {
   dossierWhy,
   firstNameOf,
   funnelContext,
+  nameInitials,
   quoteInboxCue,
   quoteNextAction,
   statusUnchangedLabel,
@@ -12,6 +13,10 @@ import {
 import type { QuoteDetail } from "./quote-detail";
 
 assert.equal(firstNameOf("Léa Moreau"), "Léa");
+assert.equal(nameInitials("Léa Moreau"), "LM");
+assert.equal(nameInitials("Claire Martin"), "CM");
+assert.equal(nameInitials("Thomas"), "TH");
+assert.equal(nameInitials("  "), "?");
 assert.equal(wantHeading("Léa Moreau"), "Ce que Léa veut");
 assert.match(validationHint("Hôtel Rivage"), /hôtel/);
 assert.equal(funnelContext([{ value: "Cuisine d'hôtel" }, { value: "420 m²" }]), "Cuisine d'hôtel · 420 m²");

@@ -49,6 +49,10 @@ export function shopQuotePath(orgSlug: string, shopSlug: string) {
   return `${shopBasePath(orgSlug, shopSlug)}/devis`;
 }
 
+export function shopQuoteFormPath(orgSlug: string, shopSlug: string) {
+  return `${shopQuotePath(orgSlug, shopSlug)}?envoyer=1`;
+}
+
 export function quoteFunnelPath(orgSlug: string, funnelSlug: string | null | undefined) {
   if (!funnelSlug) return null;
   return `/c/${orgSlug}/${funnelSlug}`;

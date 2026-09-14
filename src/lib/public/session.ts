@@ -11,6 +11,7 @@ import type {
 import type { Json } from "@/lib/db/database.types";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 import { attributionColumns, type Attribution } from "@/lib/stats/attribution";
+import { visitColumns, type VisitContext } from "@/lib/stats/visit";
 import { pickPreferredBySlug, publicConfiguratorSlugs } from "@/lib/demo/public-slugs";
 import {
   gateShopCatalogRequest,
@@ -66,6 +67,7 @@ export async function createSession(
   orgSlug: string,
   configuratorSlug: string,
   attribution?: Attribution,
+  visit?: VisitContext,
 ) {
   const resolved = await resolvePublicConfigurator(orgSlug, configuratorSlug);
   if (!resolved) return null;
@@ -81,17 +83,21 @@ export async function createSession(
     cfgFlags?.chat_enabled && !cfgFlags?.wizard_enabled ? "chat" : "wizard";
 
   const token = randomBytes(24).toString("hex");
-  const { data, error } = await supabase
+  const base = {
+    organization_id: resolved.organizationId,
+    configurator_id: resolved.configuratorId,
+    token,
+    mode: initialMode,
+    ...(attribution ? attributionColumns(attribution) : {}),
+  };
+  let { data, error } = await supabase
     .from("quote_sessions")
-    .insert({
-      organization_id: resolved.organizationId,
-      configurator_id: resolved.configuratorId,
-      token,
-      mode: initialMode,
-      ...(attribution ? attributionColumns(attribution) : {}),
-    })
+    .insert({ ...base, ...(visit ? visitColumns(visit) : {}) })
     .select("*")
     .single();
+  if (error && visit) {
+    ({ data, error } = await supabase.from("quote_sessions").insert(base).select("*").single());
+  }
   if (error || !data) return null;
   await supabase.from("analytics_events").insert({
     organization_id: resolved.organizationId,
@@ -106,6 +112,10 @@ export async function createSession(
       utm_campaign: attribution?.utmCampaign ?? null,
       referrer: attribution?.referrer ?? null,
       gclid: attribution?.gclid ?? null,
+      path: attribution?.landingPath ?? null,
+      country: visit?.country ?? null,
+      city: visit?.city ?? null,
+      device: visit?.device ?? null,
     },
   });
   return mapSession(data);
@@ -117,6 +127,7 @@ export async function createShopScopedSession(input: {
   configuratorSlug?: string;
   configuratorId?: string;
   attribution?: Attribution;
+  visit?: VisitContext;
 }): Promise<{ ok: true; session: QuoteSession } | Extract<ShopCatalogGate, { ok: false }>> {
   const resolved = await resolveShopCatalog(input.orgSlug, input.shopSlug);
   const gate = gateShopCatalogRequest(resolved, {
@@ -135,17 +146,21 @@ export async function createShopScopedSession(input: {
     cfgFlags?.chat_enabled && !cfgFlags?.wizard_enabled ? "chat" : "wizard";
 
   const token = randomBytes(24).toString("hex");
-  const { data, error } = await supabase
+  const base = {
+    organization_id: gate.scope.organizationId,
+    configurator_id: gate.scope.configuratorId,
+    token,
+    mode: initialMode,
+    ...(input.attribution ? attributionColumns(input.attribution) : {}),
+  };
+  let { data, error } = await supabase
     .from("quote_sessions")
-    .insert({
-      organization_id: gate.scope.organizationId,
-      configurator_id: gate.scope.configuratorId,
-      token,
-      mode: initialMode,
-      ...(input.attribution ? attributionColumns(input.attribution) : {}),
-    })
+    .insert({ ...base, ...(input.visit ? visitColumns(input.visit) : {}) })
     .select("*")
     .single();
+  if (error && input.visit) {
+    ({ data, error } = await supabase.from("quote_sessions").insert(base).select("*").single());
+  }
   if (error || !data) {
     const denied = shopCatalogError("no_catalog");
     return { ok: false, reason: "no_catalog", status: denied.status, error: denied.error };
@@ -163,6 +178,10 @@ export async function createShopScopedSession(input: {
       utm_campaign: input.attribution?.utmCampaign ?? null,
       referrer: input.attribution?.referrer ?? null,
       gclid: input.attribution?.gclid ?? null,
+      path: input.attribution?.landingPath ?? null,
+      country: input.visit?.country ?? null,
+      city: input.visit?.city ?? null,
+      device: input.visit?.device ?? null,
     },
   });
   return { ok: true, session: mapSession(data) };
@@ -198,6 +217,7 @@ export async function updateSession(
     customization?: Customization;
     contactDraft?: QuoteSession["contactDraft"];
     attribution?: Attribution;
+    visit?: VisitContext;
   },
 ) {
   const supabase = createServiceClient();
@@ -212,14 +232,14 @@ export async function updateSession(
   }
   if (patch.customization) update.customization = patch.customization as unknown as Json;
   if (patch.contactDraft) update.contact_draft = patch.contactDraft as unknown as Json;
-  if (patch.attribution) {
+  if (patch.attribution || patch.visit) {
     const { data: existing } = await supabase
       .from("quote_sessions")
-      .select("utm_source, visitor_id, gclid")
+      .select("utm_source, visitor_id, gclid, country, device")
       .eq("id", id)
       .eq("token", token)
       .maybeSingle();
-    if (existing && !existing.utm_source) {
+    if (existing && patch.attribution && !existing.utm_source) {
       const cols = attributionColumns(patch.attribution);
       update.utm_source = cols.utm_source;
       update.utm_medium = cols.utm_medium;
@@ -229,14 +249,25 @@ export async function updateSession(
       update.referrer = cols.referrer;
       update.landing_path = cols.landing_path;
     }
-    if (existing && !existing.visitor_id && patch.attribution.visitorId) {
+    if (existing && patch.attribution && !existing.visitor_id && patch.attribution.visitorId) {
       update.visitor_id = patch.attribution.visitorId;
     }
-    if (existing && !existing.gclid && patch.attribution.gclid) {
+    if (existing && patch.attribution && !existing.gclid && patch.attribution.gclid) {
       const cols = attributionColumns(patch.attribution);
       update.gclid = cols.gclid;
       update.gbraid = cols.gbraid;
       update.wbraid = cols.wbraid;
+    }
+    if (existing && patch.visit && !existing.country && patch.visit.country) {
+      const cols = visitColumns(patch.visit);
+      update.country = cols.country;
+      update.city = cols.city;
+      update.region = cols.region;
+    }
+    if (existing && patch.visit && !existing.device && patch.visit.device) {
+      const cols = visitColumns(patch.visit);
+      update.device = cols.device;
+      update.user_agent = cols.user_agent;
     }
   }
 
@@ -272,4 +303,9 @@ type DatabaseUpdate = {
   gclid?: string | null;
   gbraid?: string | null;
   wbraid?: string | null;
+  country?: string | null;
+  city?: string | null;
+  region?: string | null;
+  user_agent?: string | null;
+  device?: string | null;
 };

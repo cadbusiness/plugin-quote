@@ -1,15 +1,18 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Chip, scoreTone, statusTone } from "@/components/ui/chip";
+import { Chip, statusTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
 import { DataTable } from "@/components/ui/list-panel";
 import { AbandonGauges } from "@/components/crm/abandon-gauges";
+import { ScoreMark } from "@/components/crm/quote-list-cells";
 import { MonthChart } from "@/components/stats/month-chart";
 import { KpiStrip } from "@/components/stats/kpi-strip";
+import { nameInitials } from "@/lib/crm/quote-next-action";
+import { quoteTabHref } from "@/lib/crm/quote-tabs";
 import { WORKFLOW_STATUS_LABELS } from "@/lib/workflows/labels";
 import type { WorkflowStatus } from "@/lib/workflows/types";
 import { HOME_PULSE_IDS } from "@/lib/stats/dashboard";
-import { moduleSpan, type HomeDashboard, type HomeModuleId } from "@/lib/crm/home";
+import { moduleSpan, rankHomeQuotes, type HomeDashboard, type HomeModuleId } from "@/lib/crm/home";
 
 const CAMPAIGN: Record<string, { tone: "amber" | "sky" | "emerald" | "violet"; label: string }> = {
   draft: { tone: "amber", label: "Brouillon" },
@@ -29,19 +32,29 @@ function ModuleFrame({
   href,
   hrefLabel,
   badge,
+  prominent,
   children,
 }: {
   title: string;
   href: string;
   hrefLabel: string;
   badge?: ReactNode;
+  prominent?: boolean;
   children: ReactNode;
 }) {
   return (
     <section className="h-full bg-white">
-      <div className="flex items-center justify-between gap-3 px-4 py-2 lg:px-5">
+      <div className="flex items-center justify-between gap-3 px-4 py-2.5 lg:px-5">
         <div className="flex min-w-0 items-center gap-2">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{title}</p>
+          <p
+            className={
+              prominent
+                ? "text-sm font-semibold text-slate-900"
+                : "text-xs font-medium uppercase tracking-wide text-slate-500"
+            }
+          >
+            {title}
+          </p>
           {badge}
         </div>
         <Link href={href} className="text-sm font-medium text-[#E85D04] hover:underline">
@@ -57,16 +70,26 @@ function Empty({ children }: { children: ReactNode }) {
   return <p className="px-4 py-5 text-sm text-slate-500 lg:px-5">{children}</p>;
 }
 
+function ReasonPills({ reasons }: { reasons: string[] }) {
+  if (!reasons.length) return null;
+  return (
+    <div className="mt-1.5 flex flex-wrap gap-1">
+      {reasons.slice(0, 2).map((reason) => (
+        <span
+          key={reason}
+          className="inline-flex items-center rounded-full border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600"
+        >
+          {reason}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function QuotesModule({ data }: { data: HomeDashboard }) {
   const statusById = new Map(data.statuses.map((s) => [s.id, s]));
-  const ranked = [...data.quotes]
-    .sort((a, b) => {
-      const aOpen = data.extras.get(a.id)?.opened ?? true;
-      const bOpen = data.extras.get(b.id)?.opened ?? true;
-      if (aOpen === bOpen) return 0;
-      return aOpen ? 1 : -1;
-    })
-    .slice(0, 4);
+  const openedById = new Map([...data.extras.entries()].map(([id, extra]) => [id, extra.opened]));
+  const ranked = rankHomeQuotes(data.quotes, openedById);
   const newCount = ranked.filter((quote) => {
     const slug = quote.status_id ? statusById.get(quote.status_id)?.slug : quote.status;
     return slug === "new";
@@ -75,7 +98,8 @@ function QuotesModule({ data }: { data: HomeDashboard }) {
     <ModuleFrame
       title="Demandes"
       href="/devis"
-      hrefLabel="Toutes"
+      hrefLabel="Toutes les demandes →"
+      prominent
       badge={
         newCount ? (
           <Chip tone="orange">
@@ -92,49 +116,73 @@ function QuotesModule({ data }: { data: HomeDashboard }) {
           </Link>
         </Empty>
       ) : (
-        <DataTable headers={["Dossier", "Projet", "Score"]}>
+        <DataTable
+          headers={["Dossier", "Projet", "Priorité"]}
+          headClassName="sr-only"
+          tableClassName="table-fixed"
+          columnClassNames={["", "hidden sm:table-cell", "w-36 lg:w-44"]}
+        >
           {ranked.map((quote) => {
             const status = quote.status_id ? statusById.get(quote.status_id) : undefined;
             const extra = data.extras.get(quote.id);
+            const reply = extra?.cue?.hot || extra?.opened === false;
             return (
               <ClickableRow
                 key={quote.id}
                 href={`/devis/${quote.id}`}
                 className={extra?.opened === false ? "bg-orange-50/50" : ""}
               >
-                <td className="px-4 py-2.5 lg:px-5">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-medium text-slate-900">{quote.contact_name}</span>
-                    <Chip tone={statusTone(status?.slug ?? quote.status)}>{status?.label ?? quote.status}</Chip>
+                <td className="px-4 py-4 lg:px-5">
+                  <div className="flex gap-3">
+                    <span
+                      aria-hidden
+                      className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-900 text-[11px] font-semibold tracking-wide text-white"
+                    >
+                      {nameInitials(quote.contact_name)}
+                    </span>
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-semibold tracking-tight text-slate-900">{quote.contact_name}</span>
+                        <Chip tone={statusTone(status?.slug ?? quote.status)}>{status?.label ?? quote.status}</Chip>
+                      </div>
+                      <p className="mt-0.5 text-sm text-slate-500">{quote.contact_company ?? quote.contact_email}</p>
+                      {extra?.cue ? (
+                        <p className={`mt-1 truncate text-sm ${extra.cue.hot ? "text-slate-800" : "text-slate-600"}`}>
+                          {extra.cue.quoted ? `« ${extra.cue.title} »` : extra.cue.title}
+                        </p>
+                      ) : extra?.firstName ? (
+                        <p className="mt-1 truncate text-sm text-slate-500">{extra.firstName}</p>
+                      ) : null}
+                    </div>
                   </div>
-                  <div className="text-slate-500">{quote.contact_company ?? quote.contact_email}</div>
-                  {extra?.cue ? (
-                    <p className="mt-1 truncate text-sm text-slate-700">
-                      {extra.cue.quoted ? `« ${extra.cue.title} »` : extra.cue.title}
-                    </p>
-                  ) : extra?.firstName ? (
-                    <p className="mt-1 truncate text-sm text-slate-500">{extra.firstName}</p>
-                  ) : null}
                 </td>
-                <td className="px-4 py-2.5 lg:px-5">
+                <td className="hidden px-4 py-4 sm:table-cell lg:px-5">
                   {extra?.itemCount ? (
                     <>
                       <div className="font-medium text-slate-900">
                         {extra.itemCount} produit{extra.itemCount > 1 ? "s" : ""}
                       </div>
-                      {extra.reasons[0] ? (
-                        <p className="text-xs text-slate-500">{extra.reasons.slice(0, 2).join(" · ")}</p>
-                      ) : null}
+                      <ReasonPills reasons={extra.reasons} />
                     </>
                   ) : (
                     <span className="text-slate-400">—</span>
                   )}
                 </td>
-                <td className="px-4 py-2.5 lg:px-5">
-                  <Chip tone={scoreTone(quote.score_label)}>
-                    {(quote.score_label ?? "-").toUpperCase()}
-                    {quote.score != null ? ` ${quote.score}` : ""}
-                  </Chip>
+                <td className="px-4 py-4 lg:px-5">
+                  <div className="flex flex-col items-end gap-2">
+                    <ScoreMark score={quote.score} scoreLabel={quote.score_label} />
+                    <Link
+                      href={quoteTabHref(quote.id, "echanges", "mail")}
+                      aria-label={`Répondre à ${quote.contact_name}`}
+                      className={
+                        reply
+                          ? "rounded-md bg-[#E85D04] px-3 py-1 text-xs font-medium text-white hover:bg-[#D45203]"
+                          : "rounded-md border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                      }
+                    >
+                      Répondre
+                    </Link>
+                  </div>
                 </td>
               </ClickableRow>
             );
@@ -258,14 +306,14 @@ function TeamModule({ data }: { data: HomeDashboard }) {
       ) : (
         <DataTable headers={["Membre", "Rôle"]}>
           {rows.map((member) => (
-            <tr key={member.id} className="border-b border-slate-100">
+            <ClickableRow key={member.id} href={`/equipe/${member.id}`}>
               <td className="px-4 py-2 font-medium text-slate-900 lg:px-5">{member.label}</td>
               <td className="px-4 py-2 lg:px-5">
-                <Chip tone={member.role === "owner" || member.role === "admin" ? "violet" : "orange"}>
-                  {member.role}
+                <Chip tone={member.role === "owner" || member.role === "admin" ? "violet" : "sky"}>
+                  {member.roleLabel}
                 </Chip>
               </td>
-            </tr>
+            </ClickableRow>
           ))}
         </DataTable>
       )}
@@ -312,15 +360,26 @@ const RENDER: Record<HomeModuleId, (data: HomeDashboard) => ReactNode> = {
 
 export function HomeDashboardView({ data }: { data: HomeDashboard }) {
   const pulse = (data.stats?.kpis ?? []).filter((kpi) => HOME_PULSE_IDS.includes(kpi.id));
+  const showQuotes = data.modules.includes("quotes");
+  const rest = data.modules.filter((id) => id !== "quotes");
   if (!data.modules.length && !pulse.length) {
     return <Empty>Aucun module affiché. Ajoutez-en un pour composer votre tableau de bord.</Empty>;
   }
   return (
     <div className="flex flex-col gap-px bg-slate-200">
-      {pulse.length ? <KpiStrip items={pulse} compact /> : null}
-      {data.modules.length ? (
+      {pulse.length || showQuotes ? (
+        <div className="bg-white">
+          {pulse.length ? <KpiStrip items={pulse} compact /> : null}
+          {showQuotes ? (
+            <div className={pulse.length ? "border-t border-slate-100" : ""}>
+              <QuotesModule data={data} />
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+      {rest.length ? (
         <div className="grid gap-px bg-slate-200 lg:grid-cols-2">
-          {data.modules.map((id) => {
+          {rest.map((id) => {
             const render = RENDER[id];
             if (!render) return null;
             const span = moduleSpan(id);

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSession, updateSession } from "@/lib/public/session";
+import { visitFromRequest } from "@/lib/stats/visit";
 
 function tokenFrom(req: Request) {
   return req.headers.get("x-session-token")?.trim() ?? "";
@@ -32,6 +33,7 @@ export async function PATCH(
     customization: body.customization,
     contactDraft: body.contactDraft,
     attribution: body.attribution,
+    visit: visitFromRequest(req),
   });
   if (!session) return NextResponse.json({ error: "Session introuvable" }, { status: 404 });
   return NextResponse.json(session);

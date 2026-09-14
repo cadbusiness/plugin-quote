@@ -329,48 +329,6 @@ export async function revokeQuoteCollaborator(quoteId: string, collaboratorId: s
   revalidatePath(`/devis/${quoteId}`);
 }
 
-export async function inviteMember(formData: FormData) {
-  const ctx = await getOrgContext();
-  if (!ctx) redirect("/onboarding");
-  if (!isAdminRole(ctx.role)) redirect("/devis");
-  const email = String(formData.get("email") ?? "").trim().toLowerCase();
-  const role = String(formData.get("role") ?? "sales");
-  if (!email || !["admin", "sales"].includes(role)) return;
-  const supabase = await createClient();
-  const token = crypto.randomUUID();
-  const { error } = await supabase.from("memberships").insert({
-    organization_id: ctx.organization.id,
-    role,
-    status: "pending",
-    invited_email: email,
-    invite_token: token,
-  });
-  if (error) {
-    console.error("inviteMember", error.message);
-    redirect("/equipe?error=invite");
-  }
-  await sendTemplateEmail({
-    to: email,
-    subject: `Invitation ${ctx.organization.name}`,
-    body: `Vous êtes invité sur QuoteBuilder (${ctx.organization.name}).\n${getAppUrl()}/invite/${token}`,
-  });
-  revalidatePath("/equipe");
-}
-
-export async function updateMemberRole(id: string, role: string) {
-  const ctx = await getOrgContext();
-  if (!ctx) redirect("/onboarding");
-  if (!isAdminRole(ctx.role)) redirect("/devis");
-  if (!["admin", "sales"].includes(role)) return;
-  const supabase = await createClient();
-  await supabase
-    .from("memberships")
-    .update({ role })
-    .eq("id", id)
-    .eq("organization_id", ctx.organization.id);
-  revalidatePath("/equipe");
-}
-
 export async function saveOrgTracking(formData: FormData) {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");

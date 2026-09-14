@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createSession, createShopScopedSession } from "@/lib/public/session";
 import { clientIp, rateLimit, rateLimitResponse } from "@/lib/security/rate-limit";
+import { visitFromRequest } from "@/lib/stats/visit";
 
 const schema = z
   .object({
@@ -42,6 +43,8 @@ export async function POST(req: Request) {
     landingPath: parsed.data.landingPath,
   };
 
+  const visit = visitFromRequest(req);
+
   if (parsed.data.shopSlug) {
     const result = await createShopScopedSession({
       orgSlug: parsed.data.orgSlug,
@@ -49,6 +52,7 @@ export async function POST(req: Request) {
       configuratorSlug: parsed.data.configuratorSlug,
       configuratorId: parsed.data.configuratorId,
       attribution,
+      visit,
     });
     if (!result.ok) {
       return NextResponse.json({ error: result.error }, { status: result.status });
@@ -56,7 +60,7 @@ export async function POST(req: Request) {
     return NextResponse.json(result.session);
   }
 
-  const session = await createSession(parsed.data.orgSlug, parsed.data.configuratorSlug!, attribution);
+  const session = await createSession(parsed.data.orgSlug, parsed.data.configuratorSlug!, attribution, visit);
   if (!session) {
     return NextResponse.json({ error: "Configurateur introuvable" }, { status: 404 });
   }

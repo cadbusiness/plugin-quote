@@ -90,6 +90,7 @@ export async function middleware(request: NextRequest) {
       .from("memberships")
       .select("id")
       .eq("user_id", user.id)
+      .eq("status", "active")
       .limit(1)
       .maybeSingle();
     return Boolean(data);
@@ -162,6 +163,7 @@ export const config = {
     "/mises-a-jour/:path*",
     "/api/ads/:path*",
     "/invite/:path*",
+    "/mot-de-passe",
     "/login",
     "/signup",
     "/onboarding",

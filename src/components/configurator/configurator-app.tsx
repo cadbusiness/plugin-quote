@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { formatPrice } from "@/lib/format";
 import { parseAttribution, type Attribution } from "@/lib/stats/attribution";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
-import { parseStorefrontCart } from "@/lib/integrations/storefront";
+import { parseStorefrontCart, type StorefrontCartLine } from "@/lib/integrations/storefront";
 import { applyStorefrontCart, suggestionFromProducts } from "@/lib/wizard/storefront-cart";
 import { CatalogBrowse } from "@/components/configurator/catalog-browse";
 import { RfqForm } from "@/components/configurator/rfq-form";
@@ -38,6 +38,8 @@ type Props = {
   embedded?: boolean;
   themeOverride?: ConfiguratorThemeOverride;
   productPrefill?: string;
+  /** Native shop list (or WP widget). Applied when the form actually starts. */
+  initialCart?: StorefrontCartLine[];
 };
 
 const SESSION_KEY = (org: string, slug: string, shopSlug?: string) =>
@@ -131,6 +133,7 @@ async function trackPageView(
   configuratorSlug: string,
   attr: Attribution,
   shopSlug?: string,
+  sessionId?: string,
 ) {
   await fetch("/api/public/track", {
     method: "POST",
@@ -139,6 +142,7 @@ async function trackPageView(
       orgSlug,
       configuratorSlug,
       shopSlug,
+      sessionId,
       eventType: ANALYTICS_EVENTS.pageView,
       ...attributionBody(attr),
       search: typeof window !== "undefined" ? window.location.search : "",
@@ -146,12 +150,25 @@ async function trackPageView(
   }).catch(() => undefined);
 }
 
-async function track(session: QuoteSession | null, eventType: string, step?: number) {
+async function track(
+  session: QuoteSession | null,
+  eventType: string,
+  step?: number,
+  extra?: Record<string, unknown>,
+) {
   if (!session) return;
   await fetch(`/api/public/sessions/${session.id}/events`, {
     method: "POST",
     headers: { "content-type": "application/json", "x-session-token": session.token },
-    body: JSON.stringify({ eventType, step, visitorId: visitorId() }),
+    body: JSON.stringify({
+      eventType,
+      step,
+      visitorId: visitorId(),
+      payload: {
+        path: typeof window !== "undefined" ? window.location.pathname + window.location.search : null,
+        ...extra,
+      },
+    }),
   }).catch(() => undefined);
 }
 
@@ -163,6 +180,7 @@ export function ConfiguratorApp({
   embedded,
   themeOverride,
   productPrefill,
+  initialCart,
 }: Props) {
   const [definition, setDefinition] = useState<ConfiguratorDefinition | null>(null);
   const [session, setSession] = useState<QuoteSession | null>(null);
@@ -199,9 +217,6 @@ export function ConfiguratorApp({
         const stored = localStorage.getItem(SESSION_KEY(orgSlug, configuratorSlug, shopSlug));
         const attr = readAttribution();
         const fromWidget = new URLSearchParams(window.location.search).has("qb_vid");
-        if (!embedded || !fromWidget) {
-          await trackPageView(orgSlug, configuratorSlug, attr, shopSlug);
-        }
         let next: QuoteSession | null = null;
         if (stored) {
           const parsed = JSON.parse(stored) as { id: string; token: string };
@@ -211,6 +226,9 @@ export function ConfiguratorApp({
           if (next && shopSlug && next.configuratorId && next.configuratorId !== def.configurator.id) {
             next = null;
           }
+        }
+        if (!embedded || !fromWidget) {
+          await trackPageView(orgSlug, configuratorSlug, attr, shopSlug, next?.id);
         }
         if (!next) {
           next = await api<QuoteSession>("/api/public/sessions", {
@@ -232,9 +250,17 @@ export function ConfiguratorApp({
         }
         if (cancelled || !next) return;
         let sessionNext = next;
-        const cart = parseStorefrontCart(new URLSearchParams(window.location.search).get("qb_cart"));
+        const scoped = scopeQuoteCatalog(
+          def.products.filter((product): product is typeof product & { configuratorId: string } =>
+            Boolean(product.configuratorId),
+          ),
+          { shopSlug, shopConfiguratorId: shopConfiguratorId ?? def.configurator.id },
+        );
+        const catalog = shopSlug && scoped.length ? scoped : def.products;
+        const cartFromUrl = parseStorefrontCart(new URLSearchParams(window.location.search).get("qb_cart"));
+        const cart = cartFromUrl.length ? cartFromUrl : (initialCart ?? []);
         if (cart.length) {
-          const applied = applyStorefrontCart(def.products, cart, sessionNext.customization);
+          const applied = applyStorefrontCart(catalog, cart, sessionNext.customization);
           const customizeIndex = def.steps.findIndex((stepDef) => stepDef.screenType === "customize");
           const patched = await api<QuoteSession>(`/api/public/sessions/${sessionNext.id}`, {
             method: "PATCH",
@@ -247,6 +273,21 @@ export function ConfiguratorApp({
           sessionNext = patched ?? { ...sessionNext, customization: applied.customization };
           const seeded = suggestionFromProducts(applied.matched);
           if (seeded) setSuggestions([seeded]);
+        }
+        if (productPrefill) {
+          const match = matchCatalogPrefill(catalog, productPrefill);
+          if (match && !(sessionNext.customization.quantities[match.id] > 0)) {
+            const seeded = {
+              ...sessionNext.customization,
+              quantities: { ...sessionNext.customization.quantities, [match.id]: 1 },
+            };
+            const patched = await api<QuoteSession>(`/api/public/sessions/${sessionNext.id}`, {
+              method: "PATCH",
+              token: sessionNext.token,
+              body: JSON.stringify({ customization: seeded }),
+            }).catch(() => null);
+            sessionNext = patched ?? { ...sessionNext, customization: seeded };
+          }
         }
         if (
           sessionNext.configuratorId &&
@@ -271,31 +312,6 @@ export function ConfiguratorApp({
         }
         const savedNeed = String(sessionNext.answers?.need ?? sessionNext.answers?.besoin ?? "");
         if (savedNeed) setNeed(savedNeed);
-        if (
-          isRfqQuoteMode(def.configurator.quoteMode) &&
-          productPrefill &&
-          quoteLineCount(sessionNext.customization) < 1
-        ) {
-          const scoped = scopeQuoteCatalog(
-            def.products.filter((product): product is typeof product & { configuratorId: string } =>
-              Boolean(product.configuratorId),
-            ),
-            { shopSlug, shopConfiguratorId: shopConfiguratorId ?? def.configurator.id },
-          );
-          const match = matchCatalogPrefill(scoped.length ? scoped : def.products, productPrefill);
-          if (match) {
-            const seeded = {
-              ...sessionNext.customization,
-              quantities: { ...sessionNext.customization.quantities, [match.id]: 1 },
-            };
-            const patched = await api<QuoteSession>(`/api/public/sessions/${sessionNext.id}`, {
-              method: "PATCH",
-              token: sessionNext.token,
-              body: JSON.stringify({ customization: seeded }),
-            }).catch(() => null);
-            sessionNext = patched ?? { ...sessionNext, customization: seeded };
-          }
-        }
         if (sessionNext.submittedQuoteId) setDone({});
         else {
           track(sessionNext, ANALYTICS_EVENTS.started, 0);
@@ -310,7 +326,7 @@ export function ConfiguratorApp({
     return () => {
       cancelled = true;
     };
-  }, [orgSlug, configuratorSlug, shopSlug, shopConfiguratorId, embedded, productPrefill]);
+  }, [orgSlug, configuratorSlug, shopSlug, shopConfiguratorId, embedded, productPrefill, initialCart]);
 
   useEffect(() => {
     const gtm = definition?.organization.gtmContainerId?.trim();
@@ -413,7 +429,9 @@ export function ConfiguratorApp({
       const nextStep = Math.min(session.currentStep + 1, definition.steps.length - 1);
       const needsSuggestions = definition.steps[nextStep]?.screenType === "suggestions";
       const next = await persist({ answers: nextAnswers, currentStep: nextStep }, needsSuggestions);
-      track(session, `quotebuilder_step_${nextStep}`, nextStep);
+      track(session, `quotebuilder_step_${nextStep}`, nextStep, {
+        title: definition.steps[nextStep]?.title,
+      });
       pushGa(definition.organization.gaMeasurementId, `quotebuilder_step_${nextStep}`, { step: nextStep });
       if (needsSuggestions) {
         await loadSuggestions(next ?? undefined);

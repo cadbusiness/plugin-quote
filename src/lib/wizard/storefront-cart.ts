@@ -1,21 +1,19 @@
 import type { Customization, Product, StorefrontLine, Suggestion } from "@/lib/wizard/types";
 import type { StorefrontCartLine } from "@/lib/integrations/storefront";
+import { matchCatalogPrefill } from "@/lib/quotes/quote-mode";
 
 export function applyStorefrontCart(
   products: Product[],
   cart: StorefrontCartLine[],
   current: Customization,
 ): { customization: Customization; matched: Product[] } {
-  const byExternal = new Map(
-    products.filter((p) => p.externalId).map((p) => [p.externalId as string, p]),
-  );
   const quantities = { ...current.quantities };
   const options = { ...current.options };
   const unmatched: StorefrontLine[] = [];
   const matched: Product[] = [];
 
   for (const line of cart) {
-    const product = byExternal.get(line.id);
+    const product = matchCatalogPrefill(products, line.id);
     if (product) {
       quantities[product.id] = line.qty;
       if (line.options && Object.keys(line.options).length) {

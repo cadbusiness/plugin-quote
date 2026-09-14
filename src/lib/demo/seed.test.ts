@@ -90,6 +90,8 @@ assert.ok(tokens.every((token) => token.startsWith("qb-demo-")));
 assert.ok(DEMO_SESSIONS.some((session) => session.contact.email));
 assert.ok(DEMO_SESSIONS.some((session) => !session.contact.email));
 assert.ok(DEMO_SESSIONS.some((session) => session.hoursAgo >= 4));
+assert.ok(DEMO_SESSIONS.every((session) => session.country && session.pages.length > 0));
+assert.ok(DEMO_SESSIONS.every((session) => session.durationMin >= 1));
 
 assert.ok(DEMO_SEGMENTS.some((segment) => segment.rules.all.some((rule) => rule.field === "score_label")));
 assert.ok(DEMO_SEGMENTS.some((segment) => segment.rules.all.some((rule) => rule.field === "audience")));

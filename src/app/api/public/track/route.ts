@@ -5,6 +5,7 @@ import { resolvePublicConfigurator } from "@/lib/public/session";
 import { gateShopCatalogRequest, resolveShopCatalog } from "@/lib/shops/catalog-scope";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 import { attributionPayload, parseAttribution } from "@/lib/stats/attribution";
+import { visitFromRequest, visitPayload } from "@/lib/stats/visit";
 import { clientIp, rateLimit, rateLimitResponse } from "@/lib/security/rate-limit";
 
 const ALLOWED = new Set<string>(Object.values(ANALYTICS_EVENTS));
@@ -21,6 +22,7 @@ const schema = z.object({
   search: z.string().optional(),
   referrer: z.string().optional(),
   landingPath: z.string().optional(),
+  title: z.string().optional(),
 });
 
 function cors(res: NextResponse) {
@@ -67,6 +69,7 @@ export async function POST(req: Request) {
     landingPath: parsed.data.landingPath,
     visitorId: parsed.data.visitorId,
   });
+  const visit = visitFromRequest(req);
   const supabase = createServiceClient();
   await supabase.from("analytics_events").insert({
     organization_id: resolved.organizationId,
@@ -75,7 +78,11 @@ export async function POST(req: Request) {
     visitor_id: attribution.visitorId,
     event_type: parsed.data.eventType,
     step: parsed.data.step ?? null,
-    payload: attributionPayload(attribution),
+    payload: {
+      ...attributionPayload(attribution),
+      ...visitPayload(visit),
+      title: parsed.data.title ?? null,
+    },
   });
   return cors(NextResponse.json({ ok: true }));
 }

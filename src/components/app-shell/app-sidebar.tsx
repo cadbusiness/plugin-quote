@@ -62,7 +62,7 @@ const GROUPS: { label: string; items: Item[] }[] = [
     label: "Pilotage",
     items: [
       { href: "/stats", label: "Statistiques", icon: BarChart3, exact: true },
-      { href: "/equipe", label: "Équipe", icon: Users, exact: true, admin: true },
+      { href: "/equipe", label: "Équipe", icon: Users, admin: true },
       { href: "/canaux", label: "Canaux", icon: Radio },
     ],
   },

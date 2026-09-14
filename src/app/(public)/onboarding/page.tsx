@@ -12,6 +12,7 @@ export default async function OnboardingPage({
   const user = await getAuthUser();
   if (!user) redirect("/login");
   const next = safeNextPath((await searchParams).next ?? null);
+  if (next?.startsWith("/invite/")) redirect(next);
   const ctx = await getOrgContext();
   if (ctx) redirect(next || "/devis");
 

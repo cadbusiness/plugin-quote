@@ -96,6 +96,7 @@ export function attributionPayload(attr: Attribution) {
     utm_campaign: attr.utmCampaign ?? null,
     referrer: attr.referrer ?? null,
     gclid: attr.gclid ?? null,
+    path: attr.landingPath ?? null,
   };
 }
 

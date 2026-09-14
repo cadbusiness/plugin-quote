@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { AuthSplit } from "@/components/marketing/auth-split";
-import { safeNextPath } from "@/lib/auth/next-path";
+import { postSignupPath, safeNextPath } from "@/lib/auth/next-path";
 
 const fieldClass =
   "mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-900/10";
@@ -38,7 +38,7 @@ function SignupForm() {
       setError(authError.message);
       return;
     }
-    router.push(next ? `/onboarding?next=${encodeURIComponent(next)}` : "/onboarding");
+    router.push(postSignupPath(next));
     router.refresh();
   }
 

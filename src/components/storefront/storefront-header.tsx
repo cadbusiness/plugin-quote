@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { createPortal } from "react-dom";
+import { useShopQuoteDraftOptional } from "@/components/storefront/shop-quote-draft";
 import { cx, isShopCta, SHOP_CONTAINER, SHOP_CTA } from "@/lib/shops/storefront-style";
 
 export type StorefrontNavItem = { label: string; href: string };
@@ -35,6 +36,8 @@ export function StorefrontHeader({
   const panelId = useId();
   const cta = [...items].reverse().find(isShopCta) ?? null;
   const links = cta ? items.filter((item) => item !== cta) : items;
+  const draft = useShopQuoteDraftOptional();
+  const quoteCount = draft?.ready ? draft.count : 0;
 
   useEffect(() => {
     setMounted(true);
@@ -116,14 +119,7 @@ export function StorefrontHeader({
                   />
                 ))}
                 {cta ? (
-                  <Link
-                    href={cta.href}
-                    className={cx(SHOP_CTA, "mt-3")}
-                    style={{ background: accent }}
-                    onClick={() => setOpen(false)}
-                  >
-                    {cta.label}
-                  </Link>
+                  <ShopQuoteCta href={cta.href} label={cta.label} accent={accent} count={quoteCount} className="mt-3" onClick={() => setOpen(false)} />
                 ) : null}
               </nav>
             </div>
@@ -173,9 +169,7 @@ export function StorefrontHeader({
                 {cta.label}
               </span>
             ) : (
-              <Link href={cta.href} className={cx(SHOP_CTA, "ml-2")} style={{ background: accent }}>
-                {cta.label}
-              </Link>
+              <ShopQuoteCta href={cta.href} label={cta.label} accent={accent} count={quoteCount} className="ml-2" />
             )
           ) : null}
         </nav>
@@ -205,6 +199,33 @@ export function StorefrontHeader({
       </div>
       {drawer}
     </header>
+  );
+}
+
+function ShopQuoteCta({
+  href,
+  label,
+  accent,
+  count,
+  className,
+  onClick,
+}: {
+  href: string;
+  label: string;
+  accent: string;
+  count: number;
+  className?: string;
+  onClick?: () => void;
+}) {
+  return (
+    <Link href={href} className={cx(SHOP_CTA, className)} style={{ background: accent }} onClick={onClick}>
+      {label}
+      {count > 0 ? (
+        <span className="ml-2 inline-flex min-w-5 items-center justify-center rounded-full bg-white/20 px-1.5 text-[11px] font-semibold">
+          {count > 99 ? "99+" : count}
+        </span>
+      ) : null}
+    </Link>
   );
 }
 

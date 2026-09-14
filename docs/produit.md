@@ -94,8 +94,11 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 - **Création de campagnes / enchères / budgets dans QuoteBuilder**, Hors scope. On ne construit pas Adzooma.
 
 ### Équipe
-- **Invitation par email**, Livré.
-- **Rôles Admin / Commercial**, Livré. Owner en plus.
+- **Invitation par email**, Livré. Dialog rôle (commercial / admin) + email, lien signup ou login.
+- **Rôles Admin / Commercial**, Livré. Owner en plus. Fiche membre : changer le rôle, suspendre, révoquer l’invitation.
+- **Fiche membre**, Livré. `/equipe/[id]` : compte, accès (ce que le rôle peut faire), demandes assignées, journal d’activité.
+- **Accès et mot de passe**, Livré. Renvoyer l’invitation ; lien de réinitialisation pour un compte actif.
+- **Stats par membre**, Livré. Demandes, ouvertes, gagnés, conversion, dernière activité.
 - **Assignation des demandes**, Livré.
 - **Notifications d’assignation**, Livré.
 

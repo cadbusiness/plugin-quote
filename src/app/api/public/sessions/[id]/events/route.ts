@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/service";
+import { visitFromRequest, visitPayload } from "@/lib/stats/visit";
 
 export async function POST(
   req: Request,
@@ -18,6 +19,11 @@ export async function POST(
   const body = await req.json().catch(() => ({}));
   const eventType = String(body.eventType ?? "");
   if (!eventType) return NextResponse.json({ error: "eventType requis" }, { status: 400 });
+  const visit = visitFromRequest(req);
+  const clientPayload =
+    body.payload && typeof body.payload === "object" && !Array.isArray(body.payload)
+      ? (body.payload as Record<string, unknown>)
+      : {};
   await supabase.from("analytics_events").insert({
     organization_id: session.organization_id,
     configurator_id: session.configurator_id,
@@ -25,7 +31,7 @@ export async function POST(
     visitor_id: typeof body.visitorId === "string" ? body.visitorId : session.visitor_id,
     event_type: eventType,
     step: typeof body.step === "number" ? body.step : null,
-    payload: body.payload && typeof body.payload === "object" ? body.payload : {},
+    payload: { ...clientPayload, ...visitPayload(visit) },
   });
   return NextResponse.json({ ok: true });
 }

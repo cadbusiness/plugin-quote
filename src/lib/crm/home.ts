@@ -6,10 +6,14 @@ import { listQuotes, loadQuoteListExtras } from "@/lib/crm/quotes";
 import { loadSegmentContacts } from "@/lib/segments/resolve";
 import { matchSegment, parseSegmentRules } from "@/lib/segments/match";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
+import { memberListLabel, roleLabel } from "@/lib/crm/team";
 import {
-  deltaMeta,
+  deltaDisplay,
   formatKpiEur,
   formatKpiNumber,
+  sparkCounts,
+  sparkDayKeys,
+  SPARK_DAYS,
   type Kpi,
   type MonthPoint,
 } from "@/lib/stats/dashboard";
@@ -37,7 +41,7 @@ export type HomeModuleDef = {
 };
 
 export const HOME_MODULES: HomeModuleDef[] = [
-  { id: "quotes", label: "Demandes", hint: "Les 4 derniers dossiers, pleine largeur.", defaultOn: true, span: "full" },
+  { id: "quotes", label: "Demandes", hint: "Les 4 dossiers les plus chauds, pleine largeur.", defaultOn: true, span: "full" },
   { id: "abandons", label: "Abandons", hint: "Jauges visites → email → relance.", defaultOn: true, span: "half" },
   { id: "stats", label: "Tendance", hint: "Devis et signés sur 6 mois.", defaultOn: true, span: "half" },
   { id: "automations", label: "Automatisations", hint: "Parcours actifs, 4 lignes.", defaultOn: true, admin: true, span: "half" },
@@ -89,6 +93,23 @@ export function moduleSpan(id: HomeModuleId) {
   return HOME_MODULES.find((item) => item.id === id)?.span ?? "half";
 }
 
+export function rankHomeQuotes<T extends { id: string; score: number | null; created_at: string }>(
+  quotes: T[],
+  openedById: Map<string, boolean>,
+  limit = 4,
+): T[] {
+  return [...quotes]
+    .sort((a, b) => {
+      const scoreDiff = (b.score ?? -1) - (a.score ?? -1);
+      if (scoreDiff) return scoreDiff;
+      const aOpen = openedById.get(a.id) ?? true;
+      const bOpen = openedById.get(b.id) ?? true;
+      if (aOpen !== bOpen) return aOpen ? 1 : -1;
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    })
+    .slice(0, limit);
+}
+
 export type HomeQuote = Awaited<ReturnType<typeof listQuotes>>[number];
 
 export type HomeCampaign = {
@@ -119,6 +140,7 @@ export type HomeMember = {
   id: string;
   label: string;
   role: string;
+  roleLabel: string;
   status: string;
 };
 
@@ -173,7 +195,8 @@ async function loadHomeStats(
   const prevStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const sixStart = new Date(now.getFullYear(), now.getMonth() - 5, 1);
 
-  const [{ data: quotes }, { data: statuses }, { count: visitors }, { count: prevVisitors }, { data: sessions }] =
+  const sparkStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (SPARK_DAYS - 1));
+  const [{ data: quotes }, { data: statuses }, { count: visitors }, { count: prevVisitors }, { data: sessions }, { data: visitSpark }] =
     await Promise.all([
       supabase
         .from("quotes")
@@ -200,6 +223,13 @@ async function loadHomeStats(
         .eq("organization_id", orgId)
         .gte("created_at", sixStart.toISOString())
         .limit(800),
+      supabase
+        .from("analytics_events")
+        .select("created_at")
+        .eq("organization_id", orgId)
+        .eq("event_type", ANALYTICS_EVENTS.pageView)
+        .gte("created_at", sparkStart.toISOString())
+        .limit(2000),
     ]);
 
   const list = quotes ?? [];
@@ -236,6 +266,15 @@ async function loadHomeStats(
   const prevVisits = prevVisitors ?? 0;
   const conversion = visits ? (submitted / visits) * 100 : 0;
   const prevConversion = prevVisits ? (prevSubmitted / prevVisits) * 100 : 0;
+  const sparkKeys = sparkDayKeys(now);
+  const visitSparkSeries = sparkCounts(
+    (visitSpark ?? []).map((row) => row.created_at),
+    sparkKeys,
+  );
+  const quoteSparkSeries = sparkCounts(
+    list.map((quote) => quote.created_at),
+    sparkKeys,
+  );
 
   const kpis: Kpi[] = [
     {
@@ -244,7 +283,8 @@ async function loadHomeStats(
       value: formatKpiNumber(visits),
       hint: "ce mois",
       tone: "slate",
-      ...deltaMeta(visits, prevVisits),
+      spark: visitSparkSeries,
+      ...deltaDisplay(visits, prevVisits, "percent"),
     },
     {
       id: "quotes",
@@ -252,23 +292,25 @@ async function loadHomeStats(
       value: formatKpiNumber(submitted),
       hint: submitted ? "reçus" : "en attente du premier",
       tone: "orange",
-      ...deltaMeta(submitted, prevSubmitted),
+      spark: quoteSparkSeries,
+      ...deltaDisplay(submitted, prevSubmitted, "count"),
     },
     {
       id: "conversion",
       label: "Conversion",
-      value: `${Math.round(conversion)}%`,
+      value: `${Math.round(conversion)} %`,
       hint: visits ? `${submitted} / ${visits}` : "-",
       tone: "orange",
-      ...deltaMeta(conversion, prevConversion),
+      meter: Math.min(1, conversion / 100),
+      ...deltaDisplay(conversion, prevConversion, "points"),
     },
     {
       id: "volume",
-      label: "CA",
+      label: "Chiffre d'affaires",
       value: formatKpiEur(volume),
       hint: submitted ? "demandes du mois" : "-",
       tone: "sky",
-      ...deltaMeta(volume, prevVolume),
+      ...deltaDisplay(volume, prevVolume, "eur"),
     },
   ];
 
@@ -314,7 +356,7 @@ export async function loadHomeDashboard(
 
   const [quotes, statusesRes, abandons, stats, campaignsRes, workflowsRes, runsRes, segmentsRes, membersRes, assigneesRes, funnelsRes] =
     await Promise.all([
-      need.has("quotes") ? listQuotes(supabase, orgId, { limit: 4 }) : Promise.resolve([]),
+      need.has("quotes") ? listQuotes(supabase, orgId, { limit: 16 }) : Promise.resolve([]),
       need.has("quotes")
         ? supabase.from("quote_statuses").select("id, label, slug").eq("organization_id", orgId)
         : Promise.resolve({ data: [] as { id: string; label: string; slug: string }[] }),
@@ -419,8 +461,9 @@ export async function loadHomeDashboard(
     segments,
     members: (membersRes.data ?? []).map((m) => ({
       id: m.id,
-      label: m.invited_email || m.role,
+      label: memberListLabel(m.invited_email, m.role),
       role: m.role,
+      roleLabel: roleLabel(m.role),
       status: m.status,
     })),
     unassigned,
