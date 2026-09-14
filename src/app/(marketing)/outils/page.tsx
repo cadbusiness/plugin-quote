@@ -6,11 +6,17 @@ import { pageMetadata } from "@/lib/marketing/site";
 export const metadata: Metadata = pageMetadata({
   title: "Outils devis B2B",
   description:
-    "Calculateur de CA perdu sans relance, générateur de séquence e-mails, score de brief 0–100. Outils gratuits QuoteBuilder.",
+    "Estimateur de pipeline, coût d’un devis non relancé, générateur de séquence, score de brief 0–100. Outils gratuits QuoteBuilder.",
   path: "/outils",
 });
 
 const TOOLS = [
+  {
+    href: "/outils/estimateur-valeur-pipeline-devis",
+    eyebrow: "Pilotage",
+    title: "Estimateur de valeur pipeline devis",
+    text: "Devis ouverts, panier, taux actuel et cible. Pipeline brut, écart, option mix Hot / Warm / Cold.",
+  },
   {
     href: "/outils/cout-devis-non-relance",
     eyebrow: "Pilotage",
@@ -41,7 +47,7 @@ export default function OutilsIndexPage() {
             Chiffrer le trou. Rédiger les touches.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-mk-muted sm:text-lg">
-            Trois outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
+            Quatre outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
           </p>
         </div>
       </section>

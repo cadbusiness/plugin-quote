@@ -86,7 +86,15 @@ export type BlogTool = {
   tags: readonly BlogTagSlug[];
 };
 
+export const BLOG_TOOL_PIPELINE = "/outils/estimateur-valeur-pipeline-devis";
+
 export const BLOG_TOOLS: readonly BlogTool[] = [
+  {
+    href: BLOG_TOOL_PIPELINE,
+    title: "Estimateur de valeur pipeline devis",
+    text: "Devis ouverts, panier, taux actuel et cible. Pipeline brut, écart, option mix Hot / Warm / Cold.",
+    tags: ["scoring", "relances"],
+  },
   {
     href: "/outils/cout-devis-non-relance",
     title: "Coût d’un devis non relancé",
@@ -108,6 +116,19 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "espace-prospect-devis-en-ligne",
+    path: "/blog/espace-prospect-devis-en-ligne",
+    title: "Espace prospect devis en ligne : lien partagé, PIN, statut et conversion",
+    description:
+      "Espace prospect devis en ligne : lien + PIN, statut, récap, uploads. Process funnel→dossier, anti-patterns PDF/mail, métriques et FAQ B2B.",
+    publishedAt: "2026-09-14",
+    readingMinutes: 12,
+    tags: ["funnel", "relances"],
+    ctaHref: "/fonctionnalites/espace-prospect",
+    cover: "/images/blog/espace-prospect-devis-en-ligne/04-devis-detail.png",
+    pinned: false,
+  },
   {
     slug: "creer-devis-avec-claude-mcp",
     path: "/blog/creer-devis-avec-claude-mcp",
