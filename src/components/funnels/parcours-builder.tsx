@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import {
   DndContext,
   PointerSensor,
@@ -62,11 +62,21 @@ export function ParcoursBuilder({
   const [selectedId, setSelectedId] = useState<string | null>(steps[0]?.id ?? null);
   const [picker, setPicker] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const pickerRef = useRef<HTMLDivElement>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!picker) return;
+    function onPointerDown(event: PointerEvent) {
+      if (!pickerRef.current?.contains(event.target as Node)) setPicker(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [picker]);
 
   useEffect(() => {
     setOrdered(steps);
@@ -132,10 +142,10 @@ export function ParcoursBuilder({
   }
 
   const rail = (
-    <div className="flex items-stretch gap-1">
+    <div className="flex items-center gap-0.5">
       {ordered.map((step, index) => (
-        <div key={step.id} className="flex items-center gap-1">
-          {index > 0 ? <ChevronRight className="h-4 w-4 shrink-0 text-slate-300" aria-hidden /> : null}
+        <div key={step.id} className="flex items-center gap-0.5">
+          {index > 0 ? <ChevronRight className="h-3.5 w-3.5 shrink-0 text-slate-300" aria-hidden /> : null}
           {mounted ? (
             <SortableRailCard
               step={step}
@@ -157,33 +167,6 @@ export function ParcoursBuilder({
           )}
         </div>
       ))}
-      <div className="relative flex items-center pl-1">
-        {ordered.length ? <ChevronRight className="mr-1 h-4 w-4 shrink-0 text-slate-300" aria-hidden /> : null}
-        <button
-          type="button"
-          disabled={pending}
-          aria-label="Ajouter une étape"
-          onClick={() => setPicker((open) => !open)}
-          className="flex h-[4.75rem] w-12 shrink-0 items-center justify-center rounded-xl border border-dashed border-slate-300 text-[#E85D04] hover:border-[#E85D04] hover:bg-orange-50 disabled:opacity-50"
-        >
-          <Plus className="h-4 w-4" aria-hidden />
-        </button>
-        {picker ? (
-          <div className="absolute top-full right-0 z-20 mt-1 w-64 rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg">
-            {SCREEN_ADD.map((item) => (
-              <button
-                key={item.type}
-                type="button"
-                onClick={() => addScreen(item.type)}
-                className="flex w-full flex-col rounded-md px-3 py-2 text-left hover:bg-orange-50"
-              >
-                <span className="text-sm font-medium text-slate-900">{screenLabel(item.type, kind)}</span>
-                <span className="text-xs text-slate-500">{item.hint}</span>
-              </button>
-            ))}
-          </div>
-        ) : null}
-      </div>
     </div>
   );
 
@@ -199,16 +182,45 @@ export function ParcoursBuilder({
           </div>
           <p className="hidden text-xs text-slate-400 sm:block">Glissez pour réordonner · cliquez pour éditer</p>
         </div>
-        <div className="mt-3 overflow-x-auto pb-1">
-          {mounted ? (
-            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-              <SortableContext items={ordered.map((step) => step.id)} strategy={horizontalListSortingStrategy}>
-                {rail}
-              </SortableContext>
-            </DndContext>
-          ) : (
-            rail
-          )}
+        <div className="mt-3 flex items-center gap-2">
+          <div className="min-w-0 flex-1 overflow-x-auto">
+            {mounted ? (
+              <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+                <SortableContext items={ordered.map((step) => step.id)} strategy={horizontalListSortingStrategy}>
+                  {rail}
+                </SortableContext>
+              </DndContext>
+            ) : (
+              rail
+            )}
+          </div>
+          <div ref={pickerRef} className="relative shrink-0">
+            <button
+              type="button"
+              disabled={pending}
+              aria-expanded={picker}
+              aria-label="Ajouter une étape"
+              onClick={() => setPicker((open) => !open)}
+              className="flex h-12 w-10 items-center justify-center rounded-lg border border-dashed border-slate-300 text-[#E85D04] hover:border-[#E85D04] hover:bg-orange-50 disabled:opacity-50"
+            >
+              <Plus className="h-4 w-4" aria-hidden />
+            </button>
+            {picker ? (
+              <div className="absolute top-full right-0 z-30 mt-1 w-64 rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg">
+                {SCREEN_ADD.map((item) => (
+                  <button
+                    key={item.type}
+                    type="button"
+                    onClick={() => addScreen(item.type)}
+                    className="flex w-full flex-col rounded-md px-3 py-2 text-left hover:bg-orange-50"
+                  >
+                    <span className="text-sm font-medium text-slate-900">{screenLabel(item.type, kind)}</span>
+                    <span className="text-xs text-slate-500">{item.hint}</span>
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
 
@@ -318,17 +330,17 @@ function RailCard({
       type="button"
       {...handleProps}
       onClick={onSelect}
-      className={`flex h-[4.75rem] w-[10.75rem] shrink-0 flex-col justify-between rounded-xl border px-3 py-2.5 text-left ${
+      className={`flex h-12 w-40 shrink-0 flex-col justify-center rounded-lg border px-2.5 py-1.5 text-left ${
         selected
           ? "border-slate-900 bg-slate-900 text-white shadow-sm"
           : "border-slate-200 bg-white text-slate-900 hover:border-slate-300"
       }`}
     >
-      <p className={`text-[10px] font-medium uppercase tracking-wide ${selected ? "text-slate-300" : "text-slate-400"}`}>
+      <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">
         {index + 1} · {screenRailKind(type, kind)}
       </p>
-      <p className="truncate text-sm font-semibold">{step.title}</p>
-      <p className={`truncate text-[11px] ${selected ? "text-slate-300" : "text-slate-500"}`}>{summary}</p>
+      <p className="truncate text-xs font-semibold leading-tight">{step.title}</p>
+      <p className={`truncate text-[10px] ${selected ? "text-slate-400" : "text-slate-500"}`}>{summary}</p>
     </button>
   );
 }

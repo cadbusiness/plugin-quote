@@ -23,14 +23,14 @@ export function ProductCard({
           <img
             src={product.image_url}
             alt={product.name}
-            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+            className="h-full w-full object-contain p-4 transition duration-300 group-hover:scale-[1.02]"
           />
         ) : (
           <div className="h-full w-full bg-[color-mix(in_srgb,var(--shop-accent)_10%,transparent)]" />
         )}
       </div>
       <div className="space-y-1.5 px-5 py-4">
-        <p className="font-semibold leading-snug tracking-tight">{product.name}</p>
+        <p className="line-clamp-2 text-sm font-semibold leading-snug tracking-tight">{product.name}</p>
         <p className="text-sm font-medium" style={{ color: "var(--shop-accent)" }}>
           {formatPrice(product.price_min, product.price_max, product.currency)}
         </p>

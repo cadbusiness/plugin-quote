@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ProductTile } from "@/components/catalog/product-tile";
 import { formatPrice } from "@/lib/format";
 import { CatalogBrowsePreview } from "@/components/configurator/catalog-browse";
 import type { FunnelKind } from "@/lib/funnels/builder";
@@ -43,7 +44,7 @@ export function FormScreenBody({
 }) {
   return (
     <div>
-      <h2 className="text-xl font-semibold tracking-tight text-slate-900">{step.title}</h2>
+      <h2 className="text-base font-semibold tracking-tight text-slate-900">{step.title}</h2>
       {step.subtitle ? <p className="mt-1 text-sm text-slate-500">{step.subtitle}</p> : null}
       {step.screenType === "questions" ? (
         <div className="mt-5 space-y-5">
@@ -242,20 +243,17 @@ export function CatalogPreview({ products }: { products: PreviewProduct[] }) {
     );
   }
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-2 gap-2">
       {products.map((product) => (
-        <div key={product.id} className="rounded-xl border border-slate-200 bg-white p-3 text-left">
-          {product.imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={product.imageUrl} alt="" className="mb-2 h-24 w-full rounded-md object-cover" />
-          ) : (
-            <div className="mb-2 h-24 rounded-md bg-slate-100" />
-          )}
-          <p className="text-xs font-medium uppercase tracking-wide text-amber-700">Recommandé</p>
-          <p className="mt-0.5 font-medium text-slate-900">{product.name}</p>
-          {product.description ? <p className="mt-1 line-clamp-2 text-xs text-slate-500">{product.description}</p> : null}
-          <p className="mt-2 text-sm font-medium text-slate-700">{formatPrice(product.priceMin, product.priceMax)}</p>
-        </div>
+        <ProductTile
+          key={product.id}
+          name={product.name}
+          description={product.description}
+          imageUrl={product.imageUrl}
+          priceMin={product.priceMin}
+          priceMax={product.priceMax}
+          badge="Recommandé"
+        />
       ))}
     </div>
   );
@@ -271,7 +269,7 @@ function CustomizePreview({ products }: { products: PreviewProduct[] }) {
         <div key={product.id} className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3">
           {product.imageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={product.imageUrl} alt="" className="h-12 w-12 rounded-md object-cover" />
+            <img src={product.imageUrl} alt="" className="h-12 w-12 rounded-md object-contain bg-slate-50" />
           ) : (
             <div className="h-12 w-12 rounded-md bg-slate-100" />
           )}

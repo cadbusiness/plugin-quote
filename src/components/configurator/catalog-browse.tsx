@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ProductHtml } from "@/components/catalog/product-html";
+import { ProductMedia, ProductTile } from "@/components/catalog/product-tile";
 import { formatPrice } from "@/lib/format";
 import { groupProductsByCategory } from "@/lib/catalog/group";
 import { quoteLineCount } from "@/lib/funnels/kind";
@@ -94,12 +95,11 @@ export function CatalogBrowse({
                   className="rounded-xl border border-slate-200 bg-white p-4 text-left hover:border-slate-300"
                 >
                   {cover ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={cover} alt="" className="mb-3 h-28 w-full rounded-lg object-cover" />
+                    <ProductMedia src={cover} className="mb-3 aspect-[4/3] rounded-lg p-2" />
                   ) : (
-                    <div className="mb-3 h-28 rounded-lg bg-slate-100" />
+                    <div className="mb-3 aspect-[4/3] rounded-lg bg-slate-100" />
                   )}
-                  <p className="font-medium text-slate-900">{group.label}</p>
+                  <p className="line-clamp-2 text-sm font-medium leading-snug text-slate-900">{group.label}</p>
                   <p className="mt-1 text-sm text-slate-500">
                     {group.products.length} produit{group.products.length > 1 ? "s" : ""}
                   </p>
@@ -114,7 +114,7 @@ export function CatalogBrowse({
 
       {view.name === "products" ? (
         listed.length ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
             {listed.map((item) => {
               const inQuote = (customization.quantities[item.id] ?? 0) > 0;
               return (
@@ -122,24 +122,16 @@ export function CatalogBrowse({
                   key={item.id}
                   type="button"
                   onClick={() => openProduct(item, view.category)}
-                  className="rounded-xl border border-slate-200 bg-white p-4 text-left hover:border-slate-300"
+                  className="rounded-xl text-left hover:opacity-95"
                 >
-                  {item.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={item.imageUrl} alt="" className="mb-3 h-36 w-full rounded-lg object-cover" />
-                  ) : (
-                    <div className="mb-3 h-36 rounded-lg bg-slate-100" />
-                  )}
-                  <p className="font-medium text-slate-900">{item.name}</p>
-                  <p className="mt-1 text-sm font-medium text-slate-700">{formatPrice(item.priceMin, item.priceMax, item.currency)}</p>
-                  {inQuote ? (
-                    <p
-                      className={`mt-2 text-xs font-medium ${themed ? "" : "text-amber-700"}`}
-                      style={themed ? { color: accent } : undefined}
-                    >
-                      Dans le devis
-                    </p>
-                  ) : null}
+                  <ProductTile
+                    name={item.name}
+                    imageUrl={item.imageUrl}
+                    priceMin={item.priceMin}
+                    priceMax={item.priceMax}
+                    currency={item.currency}
+                    badge={inQuote ? "Dans le devis" : undefined}
+                  />
                 </button>
               );
             })}
@@ -270,18 +262,15 @@ export function CatalogBrowsePreview({
     );
   }
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-2 gap-2">
       {products.slice(0, 6).map((product) => (
-        <div key={product.id} className="rounded-xl border border-slate-200 bg-white p-3">
-          {product.imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={product.imageUrl} alt="" className="mb-2 h-20 w-full rounded-md object-cover" />
-          ) : (
-            <div className="mb-2 h-20 rounded-md bg-slate-100" />
-          )}
-          <p className="text-sm font-medium text-slate-900">{product.name}</p>
-          <p className="mt-1 text-xs text-slate-500">{formatPrice(product.priceMin, product.priceMax)}</p>
-        </div>
+        <ProductTile
+          key={product.id}
+          name={product.name}
+          imageUrl={product.imageUrl}
+          priceMin={product.priceMin}
+          priceMax={product.priceMax}
+        />
       ))}
     </div>
   );
@@ -293,10 +282,9 @@ function ProductShot({ product }: { product: Product }) {
   return (
     <div>
       {current ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={current} alt={product.name} className="h-56 w-full rounded-lg object-cover ring-1 ring-slate-200" />
+        <ProductMedia src={current} alt={product.name} className="aspect-[4/3] rounded-lg p-3 ring-1 ring-slate-200" />
       ) : (
-        <div className="h-56 rounded-lg bg-slate-100" />
+        <div className="aspect-[4/3] rounded-lg bg-slate-100" />
       )}
       {gallery.length > 1 ? (
         <div className="mt-3 flex gap-2 overflow-x-auto">
@@ -310,7 +298,7 @@ function ProductShot({ product }: { product: Product }) {
               }`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={image.src} alt={image.alt ?? ""} className="h-14 w-14 object-cover" />
+              <img src={image.src} alt={image.alt ?? ""} className="h-14 w-14 object-contain bg-slate-50" />
             </button>
           ))}
         </div>
