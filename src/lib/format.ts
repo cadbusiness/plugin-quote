@@ -1,10 +1,10 @@
 export function formatPrice(
   min: number | null | undefined,
   max: number | null | undefined,
-  currency = "EUR",
+  currency?: string | null,
 ) {
   if (min == null && max == null) return "Sur devis";
-  const code = currency.trim() || "EUR";
+  const code = (currency ?? "EUR").trim() || "EUR";
   const fmt = (n: number) => {
     try {
       return new Intl.NumberFormat("fr-FR", {

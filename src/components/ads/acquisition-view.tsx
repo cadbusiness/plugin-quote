@@ -473,7 +473,7 @@ function DisconnectedCampaignTable({
   return (
     <DataTable headers={["Campagne", "Funnel", "Devis", "Signés", "Conversion"]}>
       {rows.map((row) => {
-        const status = adsCampaignStatus(row.quotes, row.visitors);
+        const status = adsCampaignStatus(row.quotes);
         const visitors = Math.max(row.visitors, row.quotes);
         const pct = visitors ? row.quotes / visitors : 0;
         return (

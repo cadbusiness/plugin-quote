@@ -49,9 +49,9 @@ assert.equal(kitchen.campaignName, "search-cuisine");
 assert.equal(adsDisconnectedCopy(2).detail.startsWith("Vos 2 campagnes sont déjà suivies"), true);
 assert.equal(adsConversionCaption(1, 1), "1 devis pour 1 clic suivi");
 assert.equal(adsConversionCaption(0, 0), "rien à mesurer pour l’instant");
-assert.equal(adsCampaignStatus(1, 4).label, "Diffusion en cours");
-assert.equal(adsCampaignStatus(0, 4).label, "Aucun devis à ce jour");
-assert.equal(adsCampaignStatus(0, 0).tone, "slate");
+assert.equal(adsCampaignStatus(1).label, "Diffusion en cours");
+assert.equal(adsCampaignStatus(0).label, "Aucun devis à ce jour");
+assert.equal(adsCampaignStatus(0).tone, "slate");
 const insight = adsBudgetInsight([
   { campaign: "hotel-cuisine-2026", spend: 560, costPerWon: 187 },
   { campaign: "rayonnage", spend: 380, costPerWon: 380 },
