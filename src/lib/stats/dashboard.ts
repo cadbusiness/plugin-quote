@@ -2,7 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/db/database.types";
 import { classifySource } from "@/lib/stats/attribution";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
-import { campaignKey, campaignsMatch, closedLoop, microsToEur } from "@/lib/ads/roi";
+import { campaignKey, campaignsMatch, closedLoop, costPer, microsToEur } from "@/lib/ads/roi";
 
 export type StatsRange = "day" | "week" | "month";
 
@@ -149,6 +149,9 @@ export type AdsSnapshot = {
   status: string | null;
   lastSyncAt: string | null;
   spend: number;
+  prevSpend: number;
+  prevCostPerWon: number | null;
+  avgDeal: number;
   clicks: number;
   impressions: number;
 };
@@ -479,7 +482,7 @@ export async function loadStatsDashboard(
       .from("ads_campaign_stats")
       .select("campaign_id, campaign_name, date, impressions, clicks, cost_micros")
       .eq("organization_id", orgId)
-      .gte("date", periodStart.toISOString().slice(0, 10)),
+      .gte("date", prevStart.toISOString().slice(0, 10)),
   ]);
 
   const statusById = new Map((statuses ?? []).map((s) => [s.id, s]));
@@ -823,7 +826,14 @@ export async function loadStatsDashboard(
   const recoverable = abandonedEmail.length * (avgDeal || 0);
 
   const adsSpendByKey = new Map<string, { spend: number; clicks: number; impressions: number; name: string; id: string }>();
+  const periodDate = periodStart.toISOString().slice(0, 10);
+  let prevAdsSpend = 0;
   for (const row of adsDays ?? []) {
+    const spend = microsToEur(row.cost_micros);
+    if (row.date < periodDate) {
+      prevAdsSpend += spend;
+      continue;
+    }
     const key = campaignKey(row.campaign_name) || campaignKey(row.campaign_id);
     const currentRow = adsSpendByKey.get(key) ?? {
       spend: 0,
@@ -832,7 +842,7 @@ export async function loadStatsDashboard(
       name: row.campaign_name,
       id: row.campaign_id,
     };
-    currentRow.spend += microsToEur(row.cost_micros);
+    currentRow.spend += spend;
     currentRow.clicks += row.clicks;
     currentRow.impressions += row.impressions;
     adsSpendByKey.set(key, currentRow);
@@ -989,12 +999,30 @@ export async function loadStatsDashboard(
     })
     .sort((a, b) => b.quotes - a.quotes || b.spend - a.spend);
 
+  const adsQuotesPrev = previous.quotes.filter((quote) => {
+    const session = quote.session_id ? previous.sessions.find((s) => s.id === quote.session_id) : undefined;
+    return (
+      classifySource({
+        utmSource: quote.utm_source ?? session?.utm_source,
+        utmMedium: quote.utm_medium ?? session?.utm_medium,
+        referrer: quote.referrer ?? session?.referrer,
+        gclid: quote.gclid ?? session?.gclid,
+        gbraid: quote.gbraid ?? session?.gbraid,
+        wbraid: quote.wbraid ?? session?.wbraid,
+      }) === "Google Ads"
+    );
+  });
+  const prevAdsWon = adsQuotesPrev.filter((quote) => slugOf(quote) === "won").length;
+
   const ads: AdsSnapshot = {
     connected: Boolean(adsConnection && (adsConnection.status === "active" || adsConnection.customer_name)),
     customerName: adsConnection?.customer_name ?? null,
     status: adsConnection?.status ?? null,
     lastSyncAt: adsConnection?.last_sync_at ?? null,
     spend: adsList.reduce((sum, row) => sum + row.spend, 0),
+    prevSpend: prevAdsSpend,
+    prevCostPerWon: costPer(prevAdsSpend, prevAdsWon),
+    avgDeal,
     clicks: adsList.reduce((sum, row) => sum + row.clicks, 0),
     impressions: adsList.reduce((sum, row) => sum + row.impressions, 0),
   };

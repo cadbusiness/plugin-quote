@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { deltaDisplay, sparkCounts, sparkDayKeys, trendStory } from "./dashboard";
 
-assert.equal(deltaDisplay(30, 27, "percent").deltaLabel, "▲ 11 %");
-assert.equal(deltaDisplay(30, 27, "percent").deltaTone, "good");
+assert.equal(deltaDisplay(187, 228, "percent", true).deltaTone, "good");
+assert.equal(deltaDisplay(187, 228, "percent", true).deltaLabel, "▼ 18 %");
 assert.equal(deltaDisplay(3, 2, "count").deltaLabel, "▲ 1");
 assert.equal(deltaDisplay(10, 12, "points").deltaLabel, "▼ 2 pts");
 assert.equal(deltaDisplay(10, 12, "points").deltaTone, "bad");

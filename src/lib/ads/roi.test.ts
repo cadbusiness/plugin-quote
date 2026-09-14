@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { parseAttribution, classifySource, attributionColumns } from "@/lib/stats/attribution";
-import { campaignKey, campaignsMatch, closedLoop, costPer, microsToEur } from "@/lib/ads/roi";
+import { campaignKey, campaignsMatch, closedLoop, costPer, microsToEur, adsBudgetInsight, adsCampaignStatus, adsConversionCaption, adsDisconnectedCopy, adsInsightCopy, rankAdsCampaigns } from "@/lib/ads/roi";
 import { adsLandingUrl } from "@/lib/ads/utm";
 import { keywordPackForSector, keywordsAsPaste } from "@/lib/ads/keywords";
 
@@ -45,5 +45,33 @@ assert.ok(keywordsAsPaste(pack).includes("[devis rayonnage]"));
 
 const kitchen = keywordPackForSector("kitchen");
 assert.equal(kitchen.campaignName, "search-cuisine");
+
+assert.equal(adsDisconnectedCopy(2).detail.startsWith("Vos 2 campagnes"), true);
+assert.equal(adsConversionCaption(1, 1), "1 devis pour 1 visité");
+assert.equal(adsConversionCaption(0, 0), "à mesurer pour l’instant");
+assert.equal(adsCampaignStatus(1, 4).label, "Diffusion en cours");
+assert.equal(adsCampaignStatus(0, 0).tone, "slate");
+const insight = adsBudgetInsight([
+  { campaign: "hotel-cuisine-2026", spend: 560, costPerWon: 187 },
+  { campaign: "rayonnage", spend: 380, costPerWon: 380 },
+]);
+assert.equal(insight?.high, "rayonnage");
+assert.equal(insight?.low, "hotel-cuisine-2026");
+assert.equal(insight?.extra, 193);
+assert.equal(insight?.weakerBudget, true);
+assert.equal(
+  adsInsightCopy(insight!),
+  "« rayonnage » coûte 193 € de plus par client que « hotel-cuisine-2026 » — pour un budget plus faible.",
+);
+assert.deepEqual(
+  rankAdsCampaigns(
+    [
+      { campaign: "a", costPerWon: 100, spend: 200, quotes: 2, visitors: 10 },
+      { campaign: "b", costPerWon: 300, spend: 100, quotes: 1, visitors: 4 },
+    ],
+    true,
+  ).map((row) => row.campaign),
+  ["a", "b"],
+);
 
 console.log("ads/roi + attribution ok");
