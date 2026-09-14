@@ -1,4 +1,5 @@
 import { createHmac } from "node:crypto";
+import { parseRelated } from "@/lib/catalog/affinity";
 import { sanitizeProductHtml } from "@/lib/catalog/html";
 import { htmlToText, parsePrice } from "@/lib/integrations/html";
 import { safeEqual } from "@/lib/integrations/secrets";
@@ -41,6 +42,8 @@ type WooProduct = {
   images?: WooImage[];
   attributes?: WooAttribute[];
   variations?: number[];
+  upsell_ids?: number[];
+  cross_sell_ids?: number[];
 };
 
 type WooVariation = {
@@ -266,6 +269,10 @@ function normalizeProduct(
         : null,
     options: mapOptions(product),
     variants,
+    related: parseRelated({
+      upsellIds: product.upsell_ids ?? [],
+      crossSellIds: product.cross_sell_ids ?? [],
+    }),
     externalUpdatedAt: product.date_modified_gmt ? `${product.date_modified_gmt}Z` : null,
   };
 }

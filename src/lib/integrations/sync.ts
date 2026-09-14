@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { parseRelated } from "@/lib/catalog/affinity";
 import { parseGallery } from "@/lib/catalog/media";
 import { shouldPushLocal, shouldSkipOverwrite } from "@/lib/catalog/sync-policy";
 import type { Database, Json, TablesInsert } from "@/lib/db/database.types";
@@ -74,6 +75,7 @@ export function buildProductRow(
     category: product.category,
     tags: product.tags,
     stock_status: product.stockStatus,
+    related: parseRelated(product.related) as unknown as Json,
   };
 
   const content_hash = createHash("sha1").update(JSON.stringify(row)).digest("hex");

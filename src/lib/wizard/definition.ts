@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { parseRelated } from "@/lib/catalog/affinity";
 import type { Database, Json } from "@/lib/db/database.types";
 import { normalizeAttributes, toProspectOptions } from "@/lib/catalog/attributes";
 import { parseFunnelTracking, parseOrgGtm } from "@/lib/funnels/tracking";
@@ -43,6 +44,7 @@ function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Produ
     externalId: row.external_id,
     sku: row.sku,
     configuratorId: row.configurator_id,
+    related: parseRelated(row.related),
   };
 }
 

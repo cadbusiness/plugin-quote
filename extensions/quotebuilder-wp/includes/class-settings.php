@@ -52,6 +52,7 @@ class QuoteBuilder_Settings {
             'showBackToShop',
             'showUpdateList',
             'showClearList',
+            'showComplements',
         ];
     }
 
@@ -120,6 +121,9 @@ class QuoteBuilder_Settings {
             'showClearList' => true,
             'clearListLabel' => 'Effacer la liste',
             'quotePageId' => '',
+            'showComplements' => true,
+            'complementsTitle' => 'Souvent demandé avec',
+            'complementsLimit' => 4,
         ];
     }
 
@@ -169,6 +173,14 @@ class QuoteBuilder_Settings {
         if ($settings['requestButtonStyle'] !== 'link') {
             $settings['requestButtonStyle'] = 'button';
         }
+        $limit = (int) $settings['complementsLimit'];
+        if ($limit < 1) {
+            $limit = 1;
+        }
+        if ($limit > 8) {
+            $limit = 8;
+        }
+        $settings['complementsLimit'] = $limit;
         $page_id = (int) get_option('quotebuilder_quote_page_id');
         if ($page_id && empty($settings['quotePageId'])) {
             $settings['quotePageId'] = (string) $page_id;
@@ -200,6 +212,7 @@ class QuoteBuilder_Settings {
             'priceLabel', 'buttonLabel', 'requestQuoteLabel', 'addedLabel', 'alreadyInListLabel',
             'browseListLabel', 'listTitle', 'emptyMessage', 'funnelCta', 'formTitle',
             'continueShoppingLabel', 'updateListLabel', 'clearListLabel', 'quotePageId',
+            'complementsTitle',
         ];
         foreach ($text_keys as $key) {
             $next[$key] = sanitize_text_field($next[$key] ?? '');
@@ -215,6 +228,14 @@ class QuoteBuilder_Settings {
         $next['productButtonPosition'] = $next['productButtonPosition'] === 'below' ? 'below' : 'inline';
         $next['pageLayout'] = $next['pageLayout'] === 'stack' ? 'stack' : 'split';
         $next['continueShoppingUrlMode'] = $next['continueShoppingUrlMode'] === 'custom' ? 'custom' : 'shop';
+        $limit = (int) ($next['complementsLimit'] ?? 4);
+        if ($limit < 1) {
+            $limit = 1;
+        }
+        if ($limit > 8) {
+            $limit = 8;
+        }
+        $next['complementsLimit'] = $limit;
         $colors = [
             'buttonBg' => '#E85D04',
             'buttonBgHover' => '#C2410C',

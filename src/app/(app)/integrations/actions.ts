@@ -279,6 +279,9 @@ export async function updateStorefront(formData: FormData) {
       showBackToShop: formData.get("showBackToShop") === "on",
       showUpdateList: formData.get("showUpdateList") === "on",
       showClearList: formData.get("showClearList") === "on",
+      showComplements: formData.get("showComplements") === "on",
+      complementsTitle: String(formData.get("complementsTitle") ?? ""),
+      complementsLimit: Number(formData.get("complementsLimit") ?? 4),
     }),
   };
   await supabase

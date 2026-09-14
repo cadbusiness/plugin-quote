@@ -245,6 +245,7 @@ export default async function ConnectionPage({
           <Check name="showGrandTotal" defaultChecked={sf.showGrandTotal} label="Montant total" />
           <Check name="showTaxes" defaultChecked={sf.showTaxes} label="Taxes" />
           <Check name="showUniqueCount" defaultChecked={sf.showUniqueCount} label="Nombre de produits" />
+          <Check name="showComplements" defaultChecked={sf.showComplements} label="Produits qui vont avec" />
           <Field name="pageLayout" label="Mise en page" defaultValue={sf.pageLayout}>
             <option value="split">Liste à gauche</option>
             <option value="stack">Liste au-dessus</option>
@@ -253,6 +254,8 @@ export default async function ConnectionPage({
           <Text name="formTitle" label="Titre avant le formulaire" defaultValue={sf.formTitle} />
           <Text name="funnelCta" label="Bouton d’envoi" defaultValue={sf.funnelCta} />
           <Text name="emptyMessage" label="Liste vide" defaultValue={sf.emptyMessage} />
+          <Text name="complementsTitle" label="Titre des compléments" defaultValue={sf.complementsTitle} />
+          <Text name="complementsLimit" label="Nombre de compléments" defaultValue={String(sf.complementsLimit)} />
           <Text name="continueShoppingLabel" label="Retour boutique" defaultValue={sf.continueShoppingLabel} />
         </div>
 

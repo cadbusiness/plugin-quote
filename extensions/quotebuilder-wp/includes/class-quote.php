@@ -286,6 +286,13 @@ class QuoteBuilder_Quote {
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
+                <?php
+                if ($items) {
+                    echo QuoteBuilder_Complements::html(array_map(function ($item) {
+                        return $item['id'];
+                    }, $items));
+                }
+                ?>
             </div>
             <?php if ($show_funnel) : ?>
             <div class="qb-quote-funnel">

@@ -1,3 +1,4 @@
+import type { ProductRelated } from "@/lib/catalog/affinity";
 import type { Json } from "@/lib/db/database.types";
 import type { QuoteMode } from "@/lib/quotes/quote-mode";
 
@@ -75,6 +76,7 @@ export type Product = {
   externalId: string | null;
   sku?: string | null;
   configuratorId?: string;
+  related?: ProductRelated;
 };
 
 export type Suggestion = {

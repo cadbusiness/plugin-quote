@@ -533,8 +533,15 @@ body.toplevel_page_quotebuilder .qb-settings{width:auto!important;max-width:none
                     <?php self::switch_row('showBackToShop', 'Bouton « Retour à la boutique »', $settings['showBackToShop']); ?>
                     <?php self::switch_row('showUpdateList', 'Bouton « Mettre à jour la liste »', $settings['showUpdateList']); ?>
                     <?php self::switch_row('showClearList', 'Bouton « Effacer la liste »', $settings['showClearList']); ?>
+                    <?php self::switch_row('showComplements', 'Proposer les produits qui vont avec', $settings['showComplements']); ?>
                 </div>
                 <?php
+                self::row('Titre des compléments', 'Sous la liste et sur la fiche produit.', function () use ($settings) {
+                    self::input('complementsTitle', $settings['complementsTitle']);
+                });
+                self::row('Nombre de compléments', '1 à 8. Upsells Woo d’abord, puis cross-sells, puis même gamme.', function () use ($settings) {
+                    echo '<input type="number" min="1" max="8" name="complementsLimit" value="' . esc_attr((string) $settings['complementsLimit']) . '">';
+                });
                 self::row('Libellé retour boutique', '', function () use ($settings) {
                     self::input('continueShoppingLabel', $settings['continueShoppingLabel']);
                 });

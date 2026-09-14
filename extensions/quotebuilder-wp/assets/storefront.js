@@ -86,6 +86,10 @@
           toast(cfg.alreadyInListLabel || "Ce produit figure déjà dans votre liste de devis.", true);
           return;
         }
+        if (document.querySelector(".qb-quote-page")) {
+          window.location.reload();
+          return;
+        }
         if (cfg.afterAdd === "list" && json.data.url) {
           window.location.href = json.data.url;
           return;

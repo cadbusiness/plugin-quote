@@ -43,5 +43,10 @@ assert.equal(merged.afterAdd, "notice");
 assert.equal(merged.pageLayout, "stack");
 assert.equal(merged.formTitle, "");
 assert.equal(merged.listTitle, DEFAULT_STOREFRONT.listTitle);
+assert.equal(empty.showComplements, true);
+assert.equal(empty.complementsTitle, "Souvent demandé avec");
+assert.equal(empty.complementsLimit, 4);
+assert.equal(parseStorefront({ complementsLimit: "2", showComplements: false }).complementsLimit, 2);
+assert.equal(parseStorefront({ complementsLimit: 99 }).complementsLimit, 8);
 
 console.log("integrations/storefront ok");

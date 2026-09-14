@@ -1,4 +1,5 @@
 import { createHmac } from "node:crypto";
+import { parseRelated } from "@/lib/catalog/affinity";
 import { htmlToText, parsePrice } from "@/lib/integrations/html";
 import { safeEqual } from "@/lib/integrations/secrets";
 import {
@@ -293,6 +294,7 @@ function normalizeProduct(product: ShopifyProduct, fallbackCurrency: string): No
           : "outofstock",
     options: mapOptions(product),
     variants,
+    related: parseRelated(null),
     externalUpdatedAt: product.updatedAt,
   };
 }

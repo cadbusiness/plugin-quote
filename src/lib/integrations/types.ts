@@ -1,3 +1,4 @@
+import type { ProductRelated } from "@/lib/catalog/affinity";
 import type { ProductOption } from "@/lib/wizard/types";
 import { DEFAULT_STOREFRONT, parseStorefront, type StorefrontSettings } from "@/lib/integrations/storefront";
 
@@ -45,6 +46,7 @@ export type NormalizedProduct = {
   stockStatus: "instock" | "outofstock" | "onbackorder" | null;
   options: ProductOption[];
   variants: ProductVariant[];
+  related: ProductRelated;
   externalUpdatedAt: string | null;
 };
 

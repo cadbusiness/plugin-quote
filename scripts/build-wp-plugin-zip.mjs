@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>Le plugin ne démarre plus une session WooCommerce à chaque page : le cache plein page (LiteSpeed, Hostinger) peut à nouveau servir les visiteurs anonymes.</li><li>Moins de lectures options / taxonomies sur les grilles produits.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>Sur la fiche produit et la liste de devis, le plugin propose automatiquement les annexes Woo (upsells, cross-sells, même gamme).</li></ul>`,
     },
     null,
     2,

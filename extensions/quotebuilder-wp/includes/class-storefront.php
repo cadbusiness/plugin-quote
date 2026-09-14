@@ -17,6 +17,7 @@ class QuoteBuilder_Storefront {
         add_action('woocommerce_after_add_to_cart_form', [self::class, 'product_button_below']);
         add_action('woocommerce_proceed_to_checkout', [self::class, 'cart_button'], 20);
         add_action('woocommerce_review_order_before_submit', [self::class, 'checkout_button']);
+        add_action('woocommerce_after_single_product_summary', ['QuoteBuilder_Complements', 'product_page'], 12);
         add_filter('render_block', [self::class, 'render_block'], 20, 2);
         add_action('wp_footer', [self::class, 'drawer']);
         add_filter('body_class', [self::class, 'body_class']);

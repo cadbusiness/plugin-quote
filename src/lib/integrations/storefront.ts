@@ -1,3 +1,5 @@
+import { clampComplementsLimit, DEFAULT_COMPLEMENTS_LIMIT } from "@/lib/catalog/affinity";
+
 /**
  * Réglages vitrine partagés entre WordPress, Shopify et QuoteBuilder.
  * Le plugin (WP aujourd’hui, app Shopify ensuite) lit et écrit ce contrat.
@@ -77,6 +79,9 @@ export type StorefrontSettings = {
   showClearList: boolean;
   clearListLabel: string;
   quotePageId: string;
+  showComplements: boolean;
+  complementsTitle: string;
+  complementsLimit: number;
 };
 
 const ORANGE = "#E85D04";
@@ -147,6 +152,9 @@ export const DEFAULT_STOREFRONT: StorefrontSettings = {
   showClearList: true,
   clearListLabel: "Effacer la liste",
   quotePageId: "",
+  showComplements: true,
+  complementsTitle: "Souvent demandé avec",
+  complementsLimit: DEFAULT_COMPLEMENTS_LIMIT,
 };
 
 function asBool(value: unknown, fallback: boolean) {
@@ -274,6 +282,9 @@ export function parseStorefront(value: unknown): StorefrontSettings {
     showClearList: asBool(raw.showClearList, DEFAULT_STOREFRONT.showClearList),
     clearListLabel: asText(raw.clearListLabel, DEFAULT_STOREFRONT.clearListLabel),
     quotePageId: asOptionalText(raw.quotePageId, DEFAULT_STOREFRONT.quotePageId),
+    showComplements: asBool(raw.showComplements, DEFAULT_STOREFRONT.showComplements),
+    complementsTitle: asText(raw.complementsTitle, DEFAULT_STOREFRONT.complementsTitle),
+    complementsLimit: clampComplementsLimit(raw.complementsLimit, DEFAULT_STOREFRONT.complementsLimit),
   };
 }
 
