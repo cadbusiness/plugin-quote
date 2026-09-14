@@ -24,6 +24,7 @@ import { BLOG_FAQ } from "./blog-faq";
 import { stripFrontmatter } from "./load-post";
 import { computeBriefScore } from "./brief-score";
 import { computeLostQuote } from "./lost-quote";
+import { computePipelineValue } from "./pipeline-value";
 import { MARKETING_ROUTES } from "./routes";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
 import { CREAM_HEX, TAG_COVER } from "./theme";
@@ -68,12 +69,14 @@ for (const required of [
   "/blog",
   "/blog/pourquoi-les-devis-meurent-sans-relance",
   "/outils/cout-devis-non-relance",
+  "/outils/estimateur-valeur-pipeline-devis",
   "/outils/generateur-sequence-relances",
   "/outils/score-brief-devis",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
+  "/blog/espace-prospect-devis-en-ligne",
   "/blog/creer-devis-avec-claude-mcp",
   "/blog/visite-guidee-parcours-devis-b2b",
   "/blog/relancer-devis-hot-depuis-dossier",
@@ -89,7 +92,23 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 12);
+assert.equal(BLOG_POSTS.length, 13);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "espace-prospect-devis-en-ligne")?.tags, [
+  "funnel",
+  "relances",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "espace-prospect-devis-en-ligne")?.ctaHref,
+  "/fonctionnalites/espace-prospect",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "espace-prospect-devis-en-ligne")?.cover,
+  "/images/blog/espace-prospect-devis-en-ligne/04-devis-detail.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "espace-prospect-devis-en-ligne")?.readingMinutes, 12);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "espace-prospect-devis-en-ligne")?.publishedAt, "2026-09-14");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "espace-prospect-devis-en-ligne")?.pinned, false);
+assert.equal(BLOG_FAQ["espace-prospect-devis-en-ligne"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "creer-devis-avec-claude-mcp")?.tags, [
   "integrations",
   "scoring",
@@ -198,6 +217,8 @@ assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tag
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 6);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 6);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "funnel" }).length, 6);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "relances" }).length, 4);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 4);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 3);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
@@ -350,6 +371,20 @@ const requiredSources = {
     "/b/demo/stock-pro-b2b/devis",
     "/signup?plan=free",
   ],
+  "espace-prospect-devis-en-ligne.md": [
+    "/images/blog/espace-prospect-devis-en-ligne/02-accueil.png",
+    "/images/blog/espace-prospect-devis-en-ligne/03-devis.png",
+    "/images/blog/espace-prospect-devis-en-ligne/04-devis-detail.png",
+    "/images/blog/espace-prospect-devis-en-ligne/05-automations.png",
+    "/images/blog/espace-prospect-devis-en-ligne/09-public-funnel.png",
+    "/blog/score-demande-devis-b2b",
+    "/blog/relancer-devis-hot-depuis-dossier",
+    "/blog/formulaire-contact-vs-funnel-devis-b2b",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/fonctionnalites/espace-prospect",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
   "creer-devis-avec-claude-mcp.md": [
     "/images/blog/creer-devis-avec-claude-mcp/02-accueil.png",
     "/images/blog/creer-devis-avec-claude-mcp/03-devis.png",
@@ -441,6 +476,17 @@ for (const file of blogFiles) {
 }
 
 {
+  const espaceRaw = readFileSync(join(blogDir, "espace-prospect-devis-en-ligne.md"), "utf8");
+  assert.ok(espaceRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const espaceBody = stripFrontmatter(espaceRaw);
+  assert.ok(
+    espaceBody.startsWith("# Espace prospect devis en ligne"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(espaceBody, /signup\?plan=free/);
+}
+
+{
   const mcpRaw = readFileSync(join(blogDir, "creer-devis-avec-claude-mcp.md"), "utf8");
   assert.ok(mcpRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
   const mcpBody = stripFrontmatter(mcpRaw);
@@ -505,6 +551,37 @@ assert.equal(lost.monthlyCurrent, 40 * 3500 * 0.12);
 assert.equal(lost.monthlyGap, 40 * 3500 * 0.1);
 assert.equal(lost.annualGap, lost.monthlyGap * 12);
 
+const pipeline = computePipelineValue({
+  openQuotes: 40,
+  basket: 3500,
+  currentRate: 12,
+  targetRate: 22,
+});
+assert.equal(pipeline.brut, 40 * 3500);
+assert.equal(pipeline.caActuel, 40 * 3500 * 0.12);
+assert.equal(pipeline.caCible, 40 * 3500 * 0.22);
+assert.equal(pipeline.gap, pipeline.caCible - pipeline.caActuel);
+assert.equal(pipeline.annual, pipeline.gap * 12);
+assert.equal(pipeline.weighted, null);
+
+const pipelineMix = computePipelineValue({
+  openQuotes: 40,
+  basket: 3500,
+  currentRate: 12,
+  targetRate: 22,
+  mix: {
+    hot: { mix: 20, win: 40 },
+    warm: { mix: 50, win: 15 },
+    cold: { mix: 30, win: 5 },
+  },
+});
+assert.equal(
+  pipelineMix.weighted,
+  40 * 0.2 * 3500 * 0.4 + 40 * 0.5 * 3500 * 0.15 + 40 * 0.3 * 3500 * 0.05,
+);
+assert.equal(pipelineMix.mixTotal, 100);
+assert.match(String(pipelineMix.tip), /Hot/);
+
 const emptyBrief = computeBriefScore({
   products: null,
   constraints: null,
@@ -546,6 +623,7 @@ assert.equal(parkingBrief.total, 0);
 assert.equal(parkingBrief.band, "parking");
 
 const llmsPaths = [
+  "/blog/espace-prospect-devis-en-ligne",
   "/blog/creer-devis-avec-claude-mcp",
   "/blog/visite-guidee-parcours-devis-b2b",
   "/blog/relancer-devis-hot-depuis-dossier",
@@ -554,6 +632,7 @@ const llmsPaths = [
   "/blog/devis-en-ligne-integre-boutique",
   "/blog/score-demande-devis-b2b",
   "/blog/configurateur-devis-vs-excel-pdf",
+  "/outils/estimateur-valeur-pipeline-devis",
   "/outils/score-brief-devis",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
@@ -708,6 +787,20 @@ const unifyShopImages = [
 const unifyShopDir = join(process.cwd(), "public/images/blog/devis-en-ligne-integre-boutique");
 for (const name of unifyShopImages) {
   const file = join(unifyShopDir, name);
+  assert.ok(existsSync(file), `missing blog image ${name}`);
+  assert.ok(statSync(file).size > 10_000, `${name} is too small to be a real screenshot`);
+}
+
+const espaceImages = [
+  "02-accueil.png",
+  "03-devis.png",
+  "04-devis-detail.png",
+  "05-automations.png",
+  "09-public-funnel.png",
+];
+const espaceDir = join(process.cwd(), "public/images/blog/espace-prospect-devis-en-ligne");
+for (const name of espaceImages) {
+  const file = join(espaceDir, name);
   assert.ok(existsSync(file), `missing blog image ${name}`);
   assert.ok(statSync(file).size > 10_000, `${name} is too small to be a real screenshot`);
 }

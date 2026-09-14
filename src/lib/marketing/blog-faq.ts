@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "espace-prospect-devis-en-ligne": [
+    {
+      q: "Qu’est-ce qu’un espace prospect devis en ligne ?",
+      a: "C’est une page dédiée à une demande de devis, accessible sans compte via un lien partagé et un PIN. Le prospect y voit le statut, un récap, peut uploader des pièces et échanger des messages liés au dossier.",
+    },
+    {
+      q: "En quoi c’est différent d’un portail client ?",
+      a: "Le portail client sert souvent l’après-vente (factures, tickets, historique). L’espace prospect sert la prévente : clarifier et suivre une demande avant (et autour) du devis.",
+    },
+    {
+      q: "Le prospect doit-il créer un compte ?",
+      a: "Non. Sur QuoteBuilder, le parcours type est lien magique + PIN à 6 chiffres, sans compte obligatoire côté prospect. C’est volontaire : la friction d’inscription tue l’enrichissement du brief.",
+    },
+    {
+      q: "À quoi sert le PIN ?",
+      a: "À limiter l’accès si le lien circule trop largement (forward, copie). Le PIN reste simple (6 chiffres) pour ne pas bloquer le multi-décideur légitime.",
+    },
+    {
+      q: "Peut-on remplacer complètement les mails ?",
+      a: "Non, et ce n’est pas le but. Les mails restent pour notifier et pour certains échanges formels. L’objectif est que pièces, statut et clarifications vivent sur le dossier, pas que vous interdisiez Outlook.",
+    },
+    {
+      q: "Quand activer l’espace prospect dans le parcours ?",
+      a: "Idéalement dès la confirmation T+0 après funnel / widget. Plus tôt le prospect a un endroit pour déposer plan et photos, moins vous reconstruisez le brief en J+3.",
+    },
+    {
+      q: "L’espace prospect remplace-t-il la signature électronique ?",
+      a: "Non. Signature et espace jouent des rôles différents. L’espace stabilise et suit. La signature formalise. Les enchaîner trop tôt (signer un brief flou) crée des litiges.",
+    },
+    {
+      q: "Sur quel plan QuoteBuilder l’espace prospect complet est-il disponible ?",
+      a: "Les plans publics sont Free, Starter (39 €/mois en annuel selon offre), Pro (79 €/mois en annuel selon offre). L’espace prospect complet est en pratique souvent sur Pro. Vérifiez la page tarifs / fonctionnalité pour le détail exact au moment où vous lisez : les bundles évoluent.",
+    },
+    {
+      q: "Comment mesurer si ça marche chez nous ?",
+      a: "Suivez ouverture du lien, time-to-first-enrichment, présence d’uploads sur dossiers techniques, et baisse des mails « avez-vous reçu ? ». Couplez avec votre speed-to-lead et votre taux de Hot traités dans le SLA.",
+    },
+    {
+      q: "Et si le prospect ne ouvre jamais l’espace ?",
+      a: "Traitez-le comme un signal : mail de confirmation faible, PIN peu visible, ou besoin mal scoré. Relancez avec le lien en évidence, et vérifiez le fit / l’urgence avant d’investir un long chiffrage.",
+    },
+  ],
   "creer-devis-avec-claude-mcp": [
     {
       q: "C’est quoi QuoteBuilder MCP ?",
