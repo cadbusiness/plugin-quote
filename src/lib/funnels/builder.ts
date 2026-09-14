@@ -54,13 +54,15 @@ export function screenRailKind(type: ScreenType, kind: FunnelKind = "form") {
   return "Contact";
 }
 
-export function railSummary(
-  type: ScreenType,
-  questions: { options?: { choices?: { value: string }[] } }[],
-) {
+export function railSummary(type: ScreenType, questions: { options?: unknown }[]) {
   if (type === "questions") {
     const fields = questions.length;
-    const options = questions.reduce((sum, question) => sum + (question.options?.choices?.length ?? 0), 0);
+    const options = questions.reduce((sum, question) => {
+      const raw = question.options;
+      if (!raw || typeof raw !== "object" || Array.isArray(raw)) return sum;
+      const choices = (raw as { choices?: unknown }).choices;
+      return sum + (Array.isArray(choices) ? choices.length : 0);
+    }, 0);
     if (!fields) return "Aucun champ";
     if (fields === 1 && options) return `${options} option${options > 1 ? "s" : ""}`;
     return `${fields} champ${fields > 1 ? "s" : ""}`;
