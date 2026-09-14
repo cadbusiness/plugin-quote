@@ -74,6 +74,26 @@ export type AbandonSnapshot = {
   rows: AbandonRow[];
 };
 
+export type AbandonStory = {
+  lead: string;
+  stress: string | null;
+  waiting: { count: number; days: number } | null;
+};
+
+export function abandonStory(snapshot: AbandonSnapshot, now = Date.now()): AbandonStory {
+  const n = snapshot.started;
+  const lead =
+    n === 0
+      ? "Aucune visite abandonnée récemment."
+      : `${n} visiteur${n > 1 ? "s ont" : " a"} quitté le funnel sans devis.`;
+  const pending = snapshot.rows.filter((row) => !row.relanced);
+  const stress = n > 0 && snapshot.relanced === 0 ? "Aucun n’a encore été relancé." : null;
+  if (!pending.length) return { lead, stress, waiting: null };
+  const oldest = Math.min(...pending.map((row) => new Date(row.lastActivity).getTime()));
+  const days = Number.isFinite(oldest) ? Math.max(0, Math.floor((now - oldest) / 86_400_000)) : 0;
+  return { lead, stress, waiting: { count: pending.length, days } };
+}
+
 type VisitEvent = {
   id: string;
   session_id: string | null;

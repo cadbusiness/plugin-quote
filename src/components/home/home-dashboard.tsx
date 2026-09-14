@@ -3,28 +3,30 @@ import type { ReactNode } from "react";
 import { Chip, statusTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
 import { DataTable } from "@/components/ui/list-panel";
-import { AbandonGauges } from "@/components/crm/abandon-gauges";
 import { ScoreMark } from "@/components/crm/quote-list-cells";
 import { MonthChart } from "@/components/stats/month-chart";
 import { KpiStrip } from "@/components/stats/kpi-strip";
 import { nameInitials } from "@/lib/crm/quote-next-action";
 import { quoteTabHref } from "@/lib/crm/quote-tabs";
+import { abandonStory } from "@/lib/crm/abandons";
 import { WORKFLOW_STATUS_LABELS } from "@/lib/workflows/labels";
 import type { WorkflowStatus } from "@/lib/workflows/types";
-import { HOME_PULSE_IDS } from "@/lib/stats/dashboard";
-import { moduleSpan, rankHomeQuotes, type HomeDashboard, type HomeModuleId } from "@/lib/crm/home";
+import { HOME_PULSE_IDS, trendStory } from "@/lib/stats/dashboard";
+import {
+  moduleSpan,
+  rankHomeQuotes,
+  rankHomeWorkflows,
+  workflowActivity,
+  type HomeDashboard,
+  type HomeModuleId,
+  type HomeWorkflow,
+} from "@/lib/crm/home";
 
 const CAMPAIGN: Record<string, { tone: "amber" | "sky" | "emerald" | "violet"; label: string }> = {
   draft: { tone: "amber", label: "Brouillon" },
   sending: { tone: "sky", label: "Envoi" },
   sent: { tone: "emerald", label: "Envoyée" },
   scheduled: { tone: "violet", label: "Planifiée" },
-};
-
-const WORKFLOW_TONE: Record<WorkflowStatus, "amber" | "emerald" | "slate"> = {
-  draft: "amber",
-  active: "emerald",
-  archived: "slate",
 };
 
 function ModuleFrame({
@@ -84,6 +86,34 @@ function ReasonPills({ reasons }: { reasons: string[] }) {
       ))}
     </div>
   );
+}
+
+function MeterRow({ label, value, max }: { label: string; value: number; max: number }) {
+  const pct = max > 0 ? Math.round((value / max) * 100) : 0;
+  return (
+    <div>
+      <div className="flex items-center justify-between gap-3 text-sm">
+        <span className="text-slate-600">{label}</span>
+        <span className="font-medium tabular-nums text-slate-900">{value}</span>
+      </div>
+      <div className="mt-1 h-2 overflow-hidden rounded-full bg-slate-100">
+        <div className="h-full rounded-full bg-slate-900" style={{ width: `${pct}%` }} />
+      </div>
+    </div>
+  );
+}
+
+function StatusDot({ on, label }: { on: boolean; label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 text-xs text-slate-500">
+      <span className={`h-2 w-2 rounded-full ${on ? "bg-emerald-500" : "bg-slate-300"}`} />
+      {label}
+    </span>
+  );
+}
+
+function pauseSince(iso: string) {
+  return `En pause depuis le ${new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}`;
 }
 
 function QuotesModule({ data }: { data: HomeDashboard }) {
@@ -195,9 +225,48 @@ function QuotesModule({ data }: { data: HomeDashboard }) {
 
 function AbandonsModule({ data }: { data: HomeDashboard }) {
   const snapshot = data.abandons;
+  if (!snapshot) {
+    return (
+      <ModuleFrame title="Abandons" href="/sessions?vue=relance" hrefLabel="Relancer tout" prominent>
+        <Empty>Aucune session récente.</Empty>
+      </ModuleFrame>
+    );
+  }
+  const story = abandonStory(snapshot);
+  const abandonFlow = data.workflows.find(
+    (workflow) => workflow.trigger_type === "session.abandoned" && workflow.status === "active",
+  );
+  const sequenceHref = abandonFlow ? `/automations/${abandonFlow.id}` : "/sessions?vue=relance";
+  const pending = snapshot.stale;
   return (
-    <ModuleFrame title="Abandons" href="/sessions?vue=relance" hrefLabel="Relancer">
-      {snapshot ? <AbandonGauges snapshot={snapshot} view="tous" compact /> : <Empty>Aucune session récente.</Empty>}
+    <ModuleFrame title="Abandons" href="/sessions?vue=relance" hrefLabel="Relancer tout" prominent>
+      <div className="px-4 pb-4 lg:px-5">
+        <p className="max-w-lg text-[15px] font-semibold leading-snug tracking-tight text-slate-900">
+          {story.lead}{" "}
+          {story.stress ? <span className="text-red-600">{story.stress}</span> : null}
+        </p>
+        <div className="mt-4 space-y-3">
+          <MeterRow label="Visites abandonnées" value={snapshot.started} max={snapshot.started} />
+          <MeterRow label="Email envoyé" value={snapshot.relanced} max={snapshot.started} />
+          <MeterRow label="À relancer" value={pending} max={snapshot.started} />
+        </div>
+      </div>
+      {story.waiting ? (
+        <div className="mx-4 mb-4 flex flex-wrap items-center justify-between gap-3 rounded-lg bg-orange-50 px-3 py-2.5 lg:mx-5">
+          <p className="text-sm text-orange-950">
+            {story.waiting.count} relance{story.waiting.count > 1 ? "s" : ""} en attente
+            {story.waiting.days >= 1
+              ? ` depuis ${story.waiting.days} jour${story.waiting.days > 1 ? "s" : ""}`
+              : ""}
+          </p>
+          <Link
+            href={sequenceHref}
+            className="rounded-md bg-[#E85D04] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#D45203]"
+          >
+            Lancer la séquence
+          </Link>
+        </div>
+      ) : null}
     </ModuleFrame>
   );
 }
@@ -206,34 +275,57 @@ function StatsModule({ data }: { data: HomeDashboard }) {
   const months = data.stats?.months ?? [];
   const hasSeries = months.some((month) => month.quotes || month.won || month.abandons);
   return (
-    <ModuleFrame title="Tendance" href="/stats" hrefLabel="Rapport">
-      {hasSeries ? <MonthChart months={months} /> : <Empty>Pas encore de volume ce mois.</Empty>}
+    <ModuleFrame title="Tendance · 6 mois" href="/stats" hrefLabel="Rapport" prominent>
+      {hasSeries ? (
+        <MonthChart months={months} headline={trendStory(months)} counts />
+      ) : (
+        <Empty>Pas encore de volume ce mois.</Empty>
+      )}
     </ModuleFrame>
   );
 }
 
+function workflowStatus(workflow: HomeWorkflow) {
+  const active = workflow.status === "active";
+  if (active) return { on: true, label: WORKFLOW_STATUS_LABELS.active };
+  return { on: false, label: "En pause" };
+}
+
 function AutomationsModule({ data }: { data: HomeDashboard }) {
-  const rows = data.workflows.slice(0, 4);
+  const rows = rankHomeWorkflows(data.workflows);
+  const activeCount = data.workflows.filter((workflow) => workflow.status === "active").length;
   return (
-    <ModuleFrame title="Automatisations" href="/automations" hrefLabel="Parcours">
+    <ModuleFrame
+      title="Automatisations"
+      href="/automations"
+      hrefLabel="Parcours"
+      prominent
+      badge={
+        data.workflows.length ? (
+          <span className="text-sm text-slate-500">
+            · {activeCount} active{activeCount > 1 ? "s" : ""}
+          </span>
+        ) : undefined
+      }
+    >
       {rows.length === 0 ? (
         <Empty>Aucun parcours actif.</Empty>
       ) : (
-        <DataTable headers={["Parcours", "État"]}>
+        <DataTable headers={["Parcours", "État"]} headClassName="sr-only">
           {rows.map((workflow) => {
             const status = workflow.status as WorkflowStatus;
+            const activity = workflowActivity(workflow.sent, workflow.lastAt);
+            const mark = workflowStatus(workflow);
             return (
               <ClickableRow key={workflow.id} href={`/automations/${workflow.id}`}>
-                <td className="px-4 py-2 lg:px-5">
-                  <div className="font-medium text-slate-900">{workflow.name}</div>
-                  {workflow.failed ? (
-                    <span className="text-xs text-rose-700">
-                      {workflow.failed} échec{workflow.failed > 1 ? "s" : ""}
-                    </span>
-                  ) : null}
+                <td className="px-4 py-3 lg:px-5">
+                  <div className="font-semibold tracking-tight text-slate-900">{workflow.name}</div>
+                  <p className={`mt-0.5 text-xs ${activity.hot ? "text-red-600" : "text-slate-500"}`}>
+                    {status === "draft" && !workflow.sent ? pauseSince(workflow.updated_at) : activity.text}
+                  </p>
                 </td>
-                <td className="px-4 py-2 lg:px-5">
-                  <Chip tone={WORKFLOW_TONE[status] ?? "slate"}>{WORKFLOW_STATUS_LABELS[status] ?? workflow.status}</Chip>
+                <td className="w-28 px-4 py-3 text-right lg:px-5">
+                  <StatusDot on={mark.on} label={mark.label} />
                 </td>
               </ClickableRow>
             );
@@ -244,10 +336,49 @@ function AutomationsModule({ data }: { data: HomeDashboard }) {
   );
 }
 
+function SegmentsModule({ data }: { data: HomeDashboard }) {
+  const rows = data.segments.slice(0, 4);
+  return (
+    <ModuleFrame title="Segmentation" href="/segments" hrefLabel="Segments" prominent>
+      {rows.length === 0 ? (
+        <div className="mx-4 mb-4 rounded-xl border border-dashed border-slate-200 px-4 py-8 text-center lg:mx-5">
+          <p className="text-sm font-semibold text-slate-900">Aucun segment</p>
+          <p className="mx-auto mt-1 max-w-xs text-sm text-slate-500">
+            Regroupez vos contacts par score, surface ou canal pour cibler vos relances.
+          </p>
+          <Link
+            href="/segments#nouveau"
+            className="mt-4 inline-flex rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-800"
+          >
+            Créer un segment
+          </Link>
+          {data.segmentHint ? (
+            <p className="mt-3 text-xs text-slate-400">
+              Suggestion : « {data.segmentHint.label} »
+              {data.segmentHint.count
+                ? ` (${data.segmentHint.count} contact${data.segmentHint.count > 1 ? "s" : ""})`
+                : ""}
+            </p>
+          ) : null}
+        </div>
+      ) : (
+        <DataTable headers={["Segment", "Contacts"]} headClassName="sr-only">
+          {rows.map((segment) => (
+            <ClickableRow key={segment.id} href={`/segments/${segment.id}`}>
+              <td className="px-4 py-3 font-semibold tracking-tight text-slate-900 lg:px-5">{segment.name}</td>
+              <td className="px-4 py-3 text-right tabular-nums text-slate-500 lg:px-5">{segment.count}</td>
+            </ClickableRow>
+          ))}
+        </DataTable>
+      )}
+    </ModuleFrame>
+  );
+}
+
 function EmailsModule({ data }: { data: HomeDashboard }) {
   const rows = data.campaigns.slice(0, 4);
   return (
-    <ModuleFrame title="Emails" href="/emails" hrefLabel="Campagnes">
+    <ModuleFrame title="Emails" href="/emails" hrefLabel="Campagnes" prominent>
       {rows.length === 0 ? (
         <Empty>
           <Link href="/emails#nouveau" className="font-medium text-[#E85D04] hover:underline">
@@ -267,30 +398,6 @@ function EmailsModule({ data }: { data: HomeDashboard }) {
               </ClickableRow>
             );
           })}
-        </DataTable>
-      )}
-    </ModuleFrame>
-  );
-}
-
-function SegmentsModule({ data }: { data: HomeDashboard }) {
-  const rows = data.segments.slice(0, 4);
-  return (
-    <ModuleFrame title="Segmentation" href="/segments" hrefLabel="Segments">
-      {rows.length === 0 ? (
-        <Empty>
-          <Link href="/segments#nouveau" className="font-medium text-[#E85D04] hover:underline">
-            Nouveau segment
-          </Link>
-        </Empty>
-      ) : (
-        <DataTable headers={["Segment", "Contacts"]}>
-          {rows.map((segment) => (
-            <ClickableRow key={segment.id} href={`/segments/${segment.id}`}>
-              <td className="px-4 py-2 font-medium text-slate-900 lg:px-5">{segment.name}</td>
-              <td className="px-4 py-2 tabular-nums lg:px-5">{segment.count}</td>
-            </ClickableRow>
-          ))}
         </DataTable>
       )}
     </ModuleFrame>

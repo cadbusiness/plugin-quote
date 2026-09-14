@@ -41,6 +41,26 @@ export type MonthPoint = {
   abandons: number;
 };
 
+export function trendStory(months: MonthPoint[]) {
+  const active = months.filter((month) => month.quotes || month.won || month.abandons);
+  if (!active.length) return "Pas encore de volume sur 6 mois.";
+  const monthName = (month: MonthPoint) => {
+    const [year, mo] = month.key.split("-").map(Number);
+    return new Date(year, (mo ?? 1) - 1, 1).toLocaleDateString("fr-FR", { month: "long" });
+  };
+  if (active.length === 1) {
+    return `Toute l’activité est concentrée sur ${monthName(active[0])} — pas encore d’historique à comparer.`;
+  }
+  const last = months[months.length - 1];
+  const prev = months[months.length - 2];
+  if (!last || !prev) return `Le rythme se lit sur ${active.length} mois.`;
+  const lastVol = last.quotes + last.won;
+  const prevVol = prev.quotes + prev.won;
+  if (lastVol > prevVol) return `Les devis accélèrent en ${monthName(last)}.`;
+  if (lastVol < prevVol) return `Moins de devis en ${monthName(last)} qu’avant.`;
+  return `Le rythme tient sur ${active.length} mois.`;
+}
+
 export type KpiId = "visits" | "quotes" | "conversion" | "volume" | "contact";
 
 export type Kpi = {

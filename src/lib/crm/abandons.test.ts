@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { filterAbandonRows, visitStops, type AbandonRow } from "./abandons";
+import { abandonStory, filterAbandonRows, visitStops, type AbandonRow } from "./abandons";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 
 const base = {
@@ -80,5 +80,24 @@ const widget = visitStops({
 assert.equal(widget.some((stop) => stop.label === "Widget"), false);
 assert.equal(widget.some((stop) => stop.label === "Cantilever lourd"), true);
 assert.equal(widget.some((stop) => stop.label === "Demande de devis"), true);
+
+const noneRelanced = abandonStory(
+  {
+    started: 24,
+    baskets: 0,
+    stale: 0,
+    anonymous: 24,
+    relanced: 0,
+    rows: [
+      { relanced: false, lastActivity: "2026-09-07T10:00:00.000Z" } as AbandonRow,
+      { relanced: false, lastActivity: "2026-09-12T10:00:00.000Z" } as AbandonRow,
+    ],
+  },
+  Date.parse("2026-09-13T10:00:00.000Z"),
+);
+assert.match(noneRelanced.lead, /24 visiteurs ont quitté/);
+assert.equal(noneRelanced.stress, "Aucun n’a encore été relancé.");
+assert.equal(noneRelanced.waiting?.count, 2);
+assert.equal(noneRelanced.waiting?.days, 6);
 
 console.log("crm/abandons.test.ts: ok");

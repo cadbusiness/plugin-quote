@@ -7,6 +7,7 @@ import { loadSegmentContacts } from "@/lib/segments/resolve";
 import { matchSegment, parseSegmentRules } from "@/lib/segments/match";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 import { memberListLabel, roleLabel } from "@/lib/crm/team";
+import { formatRelative } from "@/lib/format";
 import {
   deltaDisplay,
   formatKpiEur,
@@ -42,9 +43,9 @@ export type HomeModuleDef = {
 
 export const HOME_MODULES: HomeModuleDef[] = [
   { id: "quotes", label: "Demandes", hint: "Les 4 dossiers les plus chauds, pleine largeur.", defaultOn: true, span: "full" },
-  { id: "abandons", label: "Abandons", hint: "Jauges visites → email → relance.", defaultOn: true, span: "half" },
-  { id: "stats", label: "Tendance", hint: "Devis et signés sur 6 mois.", defaultOn: true, span: "half" },
-  { id: "automations", label: "Automatisations", hint: "Parcours actifs, 4 lignes.", defaultOn: true, admin: true, span: "half" },
+  { id: "abandons", label: "Abandons", hint: "Qui a quitté, qui a été relancé.", defaultOn: true, span: "half" },
+  { id: "stats", label: "Tendance", hint: "Devis, signés et abandons sur 6 mois.", defaultOn: true, span: "half" },
+  { id: "automations", label: "Automatisations", hint: "Parcours, envois, dernière exécution.", defaultOn: true, admin: true, span: "half" },
   { id: "emails", label: "Emails", hint: "Campagnes récentes, 4 lignes.", defaultOn: true, span: "half" },
   { id: "segments", label: "Segmentation", hint: "Listes et volume de contacts.", defaultOn: true, span: "half" },
   { id: "team", label: "Équipe", hint: "Membres et rôles.", defaultOn: false, admin: true, span: "half" },
@@ -125,10 +126,34 @@ export type HomeWorkflow = {
   name: string;
   status: string;
   trigger_type: string;
+  updated_at: string;
   running: number;
   waiting: number;
   failed: number;
+  sent: number;
+  lastAt: string | null;
 };
+
+export type HomeSegmentHint = {
+  label: string;
+  count: number;
+};
+
+export function workflowActivity(sent: number, lastAt: string | null) {
+  if (!sent) return { text: "0 envoi · jamais déclenché", hot: true };
+  const when = lastAt ? formatRelative(lastAt) : "";
+  const last = when ? ` · dernier ${when.charAt(0).toLowerCase()}${when.slice(1)}` : "";
+  return { text: `${sent} envoi${sent > 1 ? "s" : ""}${last}`, hot: false };
+}
+
+export function rankHomeWorkflows(workflows: HomeWorkflow[], limit = 4) {
+  return [...workflows]
+    .sort((a, b) => {
+      if (a.status !== b.status) return a.status === "active" ? -1 : b.status === "active" ? 1 : 0;
+      return (b.lastAt ?? b.updated_at).localeCompare(a.lastAt ?? a.updated_at);
+    })
+    .slice(0, limit);
+}
 
 export type HomeSegment = {
   id: string;
@@ -167,6 +192,7 @@ export type HomeDashboard = {
   campaigns: HomeCampaign[];
   workflows: HomeWorkflow[];
   segments: HomeSegment[];
+  segmentHint: HomeSegmentHint | null;
   members: HomeMember[];
   unassigned: number;
   funnels: HomeFunnel[];
@@ -348,6 +374,7 @@ export async function loadHomeDashboard(
     campaigns: [],
     workflows: [],
     segments: [],
+    segmentHint: null,
     members: [],
     unassigned: 0,
     funnels: [],
@@ -373,15 +400,21 @@ export async function loadHomeDashboard(
       need.has("automations")
         ? supabase
             .from("workflows")
-            .select("id, name, status, trigger_type")
+            .select("id, name, status, trigger_type, updated_at")
             .eq("organization_id", orgId)
             .neq("status", "archived")
             .order("created_at", { ascending: false })
-            .limit(4)
-        : Promise.resolve({ data: [] as { id: string; name: string; status: string; trigger_type: string }[] }),
+            .limit(8)
+        : Promise.resolve({
+            data: [] as { id: string; name: string; status: string; trigger_type: string; updated_at: string }[],
+          }),
       need.has("automations")
-        ? supabase.from("workflow_runs").select("workflow_id, status").eq("organization_id", orgId).limit(400)
-        : Promise.resolve({ data: [] as { workflow_id: string; status: string }[] }),
+        ? supabase
+            .from("workflow_runs")
+            .select("workflow_id, status, started_at")
+            .eq("organization_id", orgId)
+            .limit(400)
+        : Promise.resolve({ data: [] as { workflow_id: string; status: string; started_at: string }[] }),
       need.has("segments")
         ? supabase
             .from("contact_segments")
@@ -409,12 +442,23 @@ export async function loadHomeDashboard(
   const statuses = statusesRes.data ?? [];
   const extras = quotes.length ? await loadQuoteListExtras(supabase, quotes) : new Map();
 
-  const runTally = new Map<string, { running: number; waiting: number; failed: number }>();
+  const runTally = new Map<
+    string,
+    { running: number; waiting: number; failed: number; sent: number; lastAt: string | null }
+  >();
   for (const run of runsRes.data ?? []) {
-    const current = runTally.get(run.workflow_id) ?? { running: 0, waiting: 0, failed: 0 };
+    const current = runTally.get(run.workflow_id) ?? {
+      running: 0,
+      waiting: 0,
+      failed: 0,
+      sent: 0,
+      lastAt: null,
+    };
+    current.sent += 1;
     if (run.status === "running") current.running += 1;
     if (run.status === "waiting") current.waiting += 1;
     if (run.status === "failed") current.failed += 1;
+    if (!current.lastAt || run.started_at > current.lastAt) current.lastAt = run.started_at;
     runTally.set(run.workflow_id, current);
   }
 
@@ -428,6 +472,16 @@ export async function loadHomeDashboard(
     }));
   }
 
+  let segmentHint: HomeSegmentHint | null = null;
+  if (need.has("segments") && segments.length === 0) {
+    const { count } = await supabase
+      .from("quotes")
+      .select("id", { count: "exact", head: true })
+      .eq("organization_id", orgId)
+      .gte("score", 80)
+      .eq("status", "new");
+    segmentHint = { label: "Score ≥ 80 non contactés", count: count ?? 0 };
+  }
   const assignedIds = new Set<string>();
   if (need.has("team") && (assigneesRes.data ?? []).length) {
     const { data: assigneeRows } = await supabase
@@ -456,9 +510,10 @@ export async function loadHomeDashboard(
     campaigns: campaignsRes.data ?? [],
     workflows: (workflowsRes.data ?? []).map((workflow) => ({
       ...workflow,
-      ...(runTally.get(workflow.id) ?? { running: 0, waiting: 0, failed: 0 }),
+      ...(runTally.get(workflow.id) ?? { running: 0, waiting: 0, failed: 0, sent: 0, lastAt: null }),
     })),
     segments,
+    segmentHint,
     members: (membersRes.data ?? []).map((m) => ({
       id: m.id,
       label: memberListLabel(m.invited_email, m.role),
