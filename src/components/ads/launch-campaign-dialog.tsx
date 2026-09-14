@@ -1,43 +1,46 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { CopyBlock } from "@/components/funnels/copy-block";
 import { keywordsAsPaste, type KeywordPack } from "@/lib/ads/keywords";
+import { LANDING_KIND_LABEL, type AdsLanding, type AdsLandingKind } from "@/lib/ads/landings";
+import { CAMPAIGN_STEPS } from "@/lib/ads/utm";
 import { formatEurExact, formatPercent } from "@/lib/format";
 import type { CampaignStatsRow } from "@/lib/stats/dashboard";
 
-export type LandingUrl = {
-  funnelId: string;
-  name: string;
-  sector: string;
-  url: string;
-  campaign: string;
-};
+export type LandingUrl = AdsLanding;
+
+const GOOGLE_ADS_URL = "https://ads.google.com";
+
+const KIND_ORDER: AdsLandingKind[] = ["funnel", "shop", "wordpress"];
 
 export function LaunchCampaignDialog({
   open,
   onClose,
   packs,
   landingUrls,
-  initialFunnelId,
+  initialLandingId,
   campaign,
+  adsConnected,
 }: {
   open: boolean;
   onClose: () => void;
   packs: KeywordPack[];
-  landingUrls: LandingUrl[];
-  initialFunnelId?: string | null;
+  landingUrls: AdsLanding[];
+  initialLandingId?: string | null;
   campaign?: CampaignStatsRow | null;
+  adsConnected?: boolean;
 }) {
   if (!open) return null;
   return (
     <LaunchBody
-      key={`${campaign?.campaign ?? "new"}-${initialFunnelId ?? ""}`}
+      key={`${campaign?.campaign ?? "new"}-${initialLandingId ?? ""}`}
       onClose={onClose}
       packs={packs}
       landingUrls={landingUrls}
-      initialFunnelId={initialFunnelId}
+      initialLandingId={initialLandingId}
       campaign={campaign}
+      adsConnected={adsConnected}
     />
   );
 }
@@ -46,20 +49,26 @@ function LaunchBody({
   onClose,
   packs,
   landingUrls,
-  initialFunnelId,
+  initialLandingId,
   campaign,
+  adsConnected,
 }: {
   onClose: () => void;
   packs: KeywordPack[];
-  landingUrls: LandingUrl[];
-  initialFunnelId?: string | null;
+  landingUrls: AdsLanding[];
+  initialLandingId?: string | null;
   campaign?: CampaignStatsRow | null;
+  adsConnected?: boolean;
 }) {
-  const startId = initialFunnelId || landingUrls[0]?.funnelId || "";
-  const [funnelId, setFunnelId] = useState(startId);
-  const current = landingUrls.find((item) => item.funnelId === funnelId) ?? landingUrls[0];
+  const start = landingUrls.find((item) => item.id === initialLandingId) ?? landingUrls[0];
+  const [landingId, setLandingId] = useState(start?.id ?? "");
+  const current = landingUrls.find((item) => item.id === landingId) ?? landingUrls[0];
   const [sector, setSector] = useState(current ? packSector(packs, current.sector) : packs[0]?.sector ?? "general");
   const pack = packs.find((item) => item.sector === sector) ?? packs[0];
+  const kinds = KIND_ORDER.filter((item) => landingsOf(landingUrls, item).length > 0);
+  const [kind, setKind] = useState<AdsLandingKind>(current?.kind ?? kinds[0] ?? "funnel");
+  const ofKind = useMemo(() => landingsOf(landingUrls, kind), [landingUrls, kind]);
+  const selected = ofKind.find((item) => item.id === landingId) ?? ofKind[0] ?? current;
 
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
@@ -86,9 +95,7 @@ function LaunchBody({
             {title}
           </h2>
           <p className="mt-1 text-sm text-slate-500">
-            {campaign
-              ? "URL, nom et mots-clés de cette pub. La campagne se crée dans Google Ads."
-              : "Search · Leads · 10–30 € / jour. QuoteBuilder fournit le lien et les mots-clés."}
+            Trois gestes. La pub se crée dans Google Ads, pas ici.
           </p>
         </div>
 
@@ -105,56 +112,81 @@ function LaunchBody({
           ) : null}
 
           {landingUrls.length === 0 ? (
-            <p className="text-sm text-slate-500">Créez d’abord un funnel : c’est la page d’arrivée de la pub.</p>
+            <p className="text-sm text-slate-500">
+              Publiez un funnel, une boutique, ou branchez WordPress : c’est la page d’arrivée de la pub.
+            </p>
           ) : (
-            <div className="space-y-4">
-              <label className="block text-sm">
-                <span className="font-medium text-slate-900">Funnel de destination</span>
-                <span className="mt-0.5 block text-xs text-slate-500">Le visiteur arrive ici, pas sur votre site.</span>
-                {landingUrls.length > 1 ? (
+            <div className="space-y-5">
+              <Step n={1} title={CAMPAIGN_STEPS[0].title} text={CAMPAIGN_STEPS[0].text}>
+                {kinds.length > 1 ? (
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {kinds.map((item) => (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => {
+                          setKind(item);
+                          const next = landingsOf(landingUrls, item)[0];
+                          if (next) {
+                            setLandingId(next.id);
+                            setSector(packSector(packs, next.sector));
+                          }
+                        }}
+                        className={`rounded-full px-3 py-1.5 text-sm ${
+                          item === kind
+                            ? "bg-orange-50 font-medium text-[#C2410C]"
+                            : "text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50"
+                        }`}
+                      >
+                        {LANDING_KIND_LABEL[item]}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+                {ofKind.length > 1 ? (
                   <select
-                    value={current?.funnelId ?? ""}
+                    value={selected?.id ?? ""}
                     onChange={(event) => {
-                      const next = event.target.value;
-                      setFunnelId(next);
-                      const landing = landingUrls.find((item) => item.funnelId === next);
-                      if (landing) setSector(packSector(packs, landing.sector));
+                      const next = landingUrls.find((item) => item.id === event.target.value);
+                      if (!next) return;
+                      setLandingId(next.id);
+                      setKind(next.kind);
+                      setSector(packSector(packs, next.sector));
                     }}
                     className="mt-2 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
                   >
-                    {landingUrls.map((item) => (
-                      <option key={item.funnelId} value={item.funnelId}>
+                    {ofKind.map((item) => (
+                      <option key={item.id} value={item.id}>
                         {item.name}
                       </option>
                     ))}
                   </select>
                 ) : (
-                  <p className="mt-2 font-medium text-slate-900">{current?.name}</p>
+                  <p className="mt-2 font-medium text-slate-900">{selected?.name}</p>
                 )}
-              </label>
+                {selected ? <p className="mt-1 text-xs text-slate-500">{selected.hint}</p> : null}
+              </Step>
 
-              {current ? (
-                <div>
-                  <p className="text-sm font-medium text-slate-900">URL à coller dans l’annonce</p>
-                  <p className="mt-0.5 text-xs text-slate-500">Ne modifiez pas le lien : le suivi est déjà dedans.</p>
-                  <UrlCopy value={current.url} />
+              {selected ? (
+                <Step n={2} title={CAMPAIGN_STEPS[1].title} text={CAMPAIGN_STEPS[1].text}>
+                  <UrlCopy value={selected.url} />
                   {pack ? (
                     <p className="mt-2 text-sm text-slate-600">
-                      Nommez la campagne{" "}
+                      Dans Google Ads, nommez la campagne{" "}
                       <span className="rounded bg-orange-50 px-1.5 py-0.5 font-mono text-[13px] font-medium text-[#C2410C]">
                         {pack.campaignName}
                       </span>
                     </p>
                   ) : null}
-                </div>
+                </Step>
               ) : null}
 
               {pack ? (
                 <details className="rounded-lg bg-slate-50 px-3 py-3">
                   <summary className="cursor-pointer text-sm font-medium text-slate-900">
-                    Mots-clés du métier
+                    Mots-clés du métier (optionnel)
                   </summary>
-                  <p className="mt-1 text-xs text-slate-500">À coller dans le groupe d’annonces Google Ads.</p>
+                  <p className="mt-1 text-xs text-slate-500">À coller dans le groupe d’annonces, si vous en créez un.</p>
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {packs.map((item) => (
                       <button
@@ -185,19 +217,56 @@ function LaunchBody({
           )}
         </div>
 
-        <div className="flex items-center justify-between gap-2 border-t border-slate-100 px-5 py-3">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 px-5 py-3">
           <p className="text-xs text-slate-500">
-            {campaign && campaign.conversion != null ? `Conversion ${formatPercent(campaign.conversion)}` : "La pub se crée dans Google Ads."}
+            {adsConnected
+              ? campaign && campaign.conversion != null
+                ? `Conversion ${formatPercent(campaign.conversion)}`
+                : "La pub se crée dans Google, pas ici."
+              : "Ensuite, branchez le compte pour voir ce que ça coûte."}
           </p>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#D45203]"
-          >
-            Fermer
-          </button>
+          <div className="flex items-center gap-2">
+            <a
+              href={GOOGLE_ADS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-md px-3 py-1.5 text-sm font-medium text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"
+            >
+              Ouvrir Google Ads
+            </a>
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#D45203]"
+            >
+              Fermer
+            </button>
+          </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function Step({
+  n,
+  title,
+  text,
+  children,
+}: {
+  n: number;
+  title: string;
+  text: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div>
+      <p className="text-sm font-medium text-slate-900">
+        <span className="mr-1.5 tabular-nums text-slate-400">{n}.</span>
+        {title}
+      </p>
+      <p className="mt-0.5 text-xs text-slate-500">{text}</p>
+      {children}
     </div>
   );
 }
@@ -236,11 +305,12 @@ function UrlCopy({ value }: { value: string }) {
   );
 }
 
+function landingsOf(urls: AdsLanding[], kind: AdsLandingKind) {
+  return urls.filter((item) => item.kind === kind);
+}
+
 function packSector(packs: KeywordPack[], sector: string) {
   return packs.some((item) => item.sector === sector) ? sector : packs[0]?.sector ?? "general";
 }
 
-export function campaignLanding(row: CampaignStatsRow, urls: LandingUrl[]) {
-  if (row.funnelId) return urls.find((item) => item.funnelId === row.funnelId) ?? null;
-  return urls.find((item) => item.campaign === row.campaign) ?? null;
-}
+export { campaignLanding } from "@/lib/ads/landings";

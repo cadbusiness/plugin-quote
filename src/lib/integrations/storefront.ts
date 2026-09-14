@@ -79,6 +79,8 @@ export type StorefrontSettings = {
   showClearList: boolean;
   clearListLabel: string;
   quotePageId: string;
+  /** Permalink WP de la page devis, poussé par le plugin. */
+  quotePageUrl: string;
   showComplements: boolean;
   complementsTitle: string;
   complementsLimit: number;
@@ -152,6 +154,7 @@ export const DEFAULT_STOREFRONT: StorefrontSettings = {
   showClearList: true,
   clearListLabel: "Effacer la liste",
   quotePageId: "",
+  quotePageUrl: "",
   showComplements: true,
   complementsTitle: "Souvent demandé avec",
   complementsLimit: DEFAULT_COMPLEMENTS_LIMIT,
@@ -282,6 +285,7 @@ export function parseStorefront(value: unknown): StorefrontSettings {
     showClearList: asBool(raw.showClearList, DEFAULT_STOREFRONT.showClearList),
     clearListLabel: asText(raw.clearListLabel, DEFAULT_STOREFRONT.clearListLabel),
     quotePageId: asOptionalText(raw.quotePageId, DEFAULT_STOREFRONT.quotePageId),
+    quotePageUrl: asOptionalText(raw.quotePageUrl, DEFAULT_STOREFRONT.quotePageUrl),
     showComplements: asBool(raw.showComplements, DEFAULT_STOREFRONT.showComplements),
     complementsTitle: asText(raw.complementsTitle, DEFAULT_STOREFRONT.complementsTitle),
     complementsLimit: clampComplementsLimit(raw.complementsLimit, DEFAULT_STOREFRONT.complementsLimit),

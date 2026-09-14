@@ -125,6 +125,8 @@ export function AcquisitionView({
           title={copy.title}
           detail={copy.detail}
           admin={admin}
+          configured={configured}
+          connectHref={connectHref}
           onConnect={() => setConnectOpen(true)}
         />
       )}
@@ -200,8 +202,9 @@ export function AcquisitionView({
         }}
         packs={packs}
         landingUrls={landingUrls}
-        initialFunnelId={activeLanding?.funnelId ?? activeRow?.funnelId}
+        initialLandingId={activeLanding?.id}
         campaign={activeRow}
+        adsConnected={connected}
       />
     </>
   );
@@ -211,11 +214,15 @@ function DisconnectedBanner({
   title,
   detail,
   admin,
+  configured,
+  connectHref,
   onConnect,
 }: {
   title: string;
   detail: string;
   admin: boolean;
+  configured: boolean;
+  connectHref: string;
   onConnect: () => void;
 }) {
   return (
@@ -228,7 +235,14 @@ function DisconnectedBanner({
         <p className="mt-1.5 text-sm text-slate-300">{detail}</p>
       </div>
       <div className="flex shrink-0 flex-col items-end gap-2">
-        {admin ? (
+        {admin && configured ? (
+          <a
+            href={connectHref}
+            className="rounded-md bg-[#E85D04] px-3.5 py-2 text-sm font-medium text-white hover:bg-[#D45203]"
+          >
+            Connecter Google Ads
+          </a>
+        ) : admin ? (
           <button
             type="button"
             onClick={onConnect}

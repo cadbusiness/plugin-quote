@@ -83,12 +83,17 @@ class QuoteBuilder_Quote {
         return 0;
     }
 
+    public static function flush_page_cache() {
+        self::$cached_page_url = null;
+    }
+
     public static function page_url() {
         if (self::$cached_page_url !== null) {
             return self::$cached_page_url;
         }
         $page_id = (int) get_option('quotebuilder_quote_page_id');
-        self::$cached_page_url = $page_id ? get_permalink($page_id) : home_url('/demande-de-devis');
+        $permalink = $page_id ? get_permalink($page_id) : false;
+        self::$cached_page_url = $permalink ? $permalink : home_url('/demande-de-devis');
         return self::$cached_page_url;
     }
 

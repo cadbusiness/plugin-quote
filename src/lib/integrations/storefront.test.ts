@@ -43,6 +43,8 @@ assert.equal(merged.afterAdd, "notice");
 assert.equal(merged.pageLayout, "stack");
 assert.equal(merged.formTitle, "");
 assert.equal(merged.listTitle, DEFAULT_STOREFRONT.listTitle);
+assert.equal(empty.quotePageUrl, "");
+assert.equal(parseStorefront({ quotePageUrl: "https://atelier.example/devis" }).quotePageUrl, "https://atelier.example/devis");
 assert.equal(empty.showComplements, true);
 assert.equal(empty.complementsTitle, "Souvent demandé avec");
 assert.equal(empty.complementsLimit, 4);

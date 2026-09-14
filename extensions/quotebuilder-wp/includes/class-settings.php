@@ -121,6 +121,7 @@ class QuoteBuilder_Settings {
             'showClearList' => true,
             'clearListLabel' => 'Effacer la liste',
             'quotePageId' => '',
+            'quotePageUrl' => '',
             'showComplements' => true,
             'complementsTitle' => 'Souvent demandé avec',
             'complementsLimit' => 4,
@@ -185,6 +186,7 @@ class QuoteBuilder_Settings {
         if ($page_id && empty($settings['quotePageId'])) {
             $settings['quotePageId'] = (string) $page_id;
         }
+        $settings['quotePageUrl'] = QuoteBuilder_Quote::page_url();
         self::$storefront = $settings;
         return $settings;
     }
@@ -258,6 +260,8 @@ class QuoteBuilder_Settings {
             update_option('quotebuilder_quote_page_id', $page_id);
         }
         $next['quotePageId'] = $page_id ? (string) $page_id : '';
+        QuoteBuilder_Quote::flush_page_cache();
+        $next['quotePageUrl'] = esc_url_raw(QuoteBuilder_Quote::page_url());
         update_option('quotebuilder_storefront', $next, true);
         self::$storefront = null;
         QuoteBuilder_Pairing::push_storefront($next);

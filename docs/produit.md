@@ -90,7 +90,7 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 - **Tracking UTM + gclid**, Livré. Session, devis, widget. Conversion upload au devis et au statut Gagné.
 - **ROI campagne → devis → gagné**, Livré. Dépense Ads sync, coût par devis, coût par client.
 - **Templates de mots-clés par secteur**, Livré. Rayonnage, cuisine, menuiserie, paysagiste, location, aménagement.
-- **Guide première campagne + URL UTM du funnel**, Livré. Copier/coller dans Google Ads.
+- **Guide première campagne + URL UTM** (funnel, boutique `/devis`, page devis WordPress), Livré. Copier/coller dans Google Ads.
 - **Création de campagnes / enchères / budgets dans QuoteBuilder**, Hors scope. On ne construit pas Adzooma.
 
 ### Équipe

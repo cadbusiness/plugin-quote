@@ -5,9 +5,10 @@ import { ListPanel } from "@/components/ui/list-panel";
 import { AcquisitionView } from "@/components/ads/acquisition-view";
 import { loadStatsDashboard } from "@/lib/stats/dashboard";
 import { googleAdsConfigured } from "@/lib/ads/google";
+import { buildAdsLandings } from "@/lib/ads/landings";
 import { loadAdsConnection, mapAdsConnection } from "@/lib/ads/sync";
-import { allKeywordPacks, keywordPackForSector } from "@/lib/ads/keywords";
-import { adsLandingUrl } from "@/lib/ads/utm";
+import { allKeywordPacks } from "@/lib/ads/keywords";
+import { parseSettings } from "@/lib/integrations/types";
 import { getAppUrl } from "@/lib/supabase/env";
 
 function pendingFromSettings(settings: unknown): { id: string; name: string }[] {
@@ -30,7 +31,7 @@ export default async function AcquisitionPage({
   const query = await searchParams;
   const supabase = await createClient();
   const admin = isAdminRole(ctx.role);
-  const [stats, row, { data: funnels }] = await Promise.all([
+  const [stats, row, { data: funnels }, { data: shops }, { data: connections }] = await Promise.all([
     loadStatsDashboard(supabase, ctx.organization.id, "month"),
     loadAdsConnection(supabase, ctx.organization.id),
     supabase
@@ -38,18 +39,37 @@ export default async function AcquisitionPage({
       .select("id, name, slug, sector")
       .eq("organization_id", ctx.organization.id)
       .order("name"),
+    supabase
+      .from("shops")
+      .select("id, name, slug, sector, status")
+      .eq("organization_id", ctx.organization.id)
+      .order("name"),
+    supabase
+      .from("catalog_connections")
+      .select("id, label, store_domain, provider, status, settings, configurator_id")
+      .eq("organization_id", ctx.organization.id)
+      .eq("provider", "woocommerce"),
   ]);
   const origin = getAppUrl();
-  const landingUrls = (funnels ?? []).map((funnel) => {
-    const pack = keywordPackForSector(funnel.sector);
-    const publicUrl = `${origin}/c/${ctx.organization.slug}/${funnel.slug}`;
-    return {
-      funnelId: funnel.id,
-      name: funnel.name,
-      sector: funnel.sector,
-      campaign: pack.campaignName,
-      url: adsLandingUrl(publicUrl, pack.campaignName, funnel.slug),
-    };
+  const funnelById = new Map((funnels ?? []).map((funnel) => [funnel.id, funnel]));
+  const landingUrls = buildAdsLandings({
+    origin,
+    orgSlug: ctx.organization.slug,
+    funnels: funnels ?? [],
+    shops: shops ?? [],
+    wordpress: (connections ?? [])
+      .filter((connection) => connection.status === "active")
+      .map((connection) => {
+        const settings = parseSettings(connection.settings);
+        const funnel = connection.configurator_id ? funnelById.get(connection.configurator_id) : undefined;
+        return {
+          id: connection.id,
+          label: connection.label,
+          storeDomain: connection.store_domain,
+          quotePageUrl: settings.storefront.quotePageUrl,
+          sector: funnel?.sector ?? null,
+        };
+      }),
   });
   const pendingCustomers = pendingFromSettings(row?.settings);
   const configured = googleAdsConfigured();
