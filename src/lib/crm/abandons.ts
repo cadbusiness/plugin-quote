@@ -145,7 +145,7 @@ export function visitStops(input: {
     stops.push({ at, label, detail });
   }
 
-  if (input.landingPath) {
+  if (input.landingPath && !/\/embed\//.test(input.landingPath)) {
     push(input.startedAt, visitPageLabel(input.landingPath), input.landingPath);
   }
 

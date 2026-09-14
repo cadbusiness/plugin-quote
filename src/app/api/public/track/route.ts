@@ -22,7 +22,7 @@ const schema = z.object({
   search: z.string().optional(),
   referrer: z.string().optional(),
   landingPath: z.string().optional(),
-  title: z.string().optional(),
+  title: z.string().max(200).optional(),
 });
 
 function cors(res: NextResponse) {

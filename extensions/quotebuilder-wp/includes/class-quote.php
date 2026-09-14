@@ -5,6 +5,9 @@ if (!defined('ABSPATH')) {
 }
 
 class QuoteBuilder_Quote {
+    private static $cached_items = null;
+    private static $cached_page_url = null;
+
     public static function init() {
         add_shortcode('quotebuilder_quote', [self::class, 'render_page']);
         add_action('wp_ajax_quotebuilder_quote', [self::class, 'ajax']);
@@ -16,27 +19,26 @@ class QuoteBuilder_Quote {
     }
 
     public static function items() {
-        $items = [];
-        if (function_exists('WC') && WC()->session) {
-            $items = WC()->session->get(self::key(), []);
+        if (self::$cached_items !== null) {
+            return self::$cached_items;
         }
-        if (!is_array($items) || !$items) {
-            $cookie = isset($_COOKIE[self::key()]) ? wp_unslash($_COOKIE[self::key()]) : '';
-            $decoded = json_decode($cookie, true);
-            $items = is_array($decoded) ? $decoded : [];
-        }
-        return array_values(array_filter($items, function ($item) {
+        $cookie = isset($_COOKIE[self::key()]) ? wp_unslash($_COOKIE[self::key()]) : '';
+        $decoded = json_decode($cookie, true);
+        $items = is_array($decoded) ? $decoded : [];
+        self::$cached_items = array_values(array_filter($items, function ($item) {
             return is_array($item) && !empty($item['id']);
         }));
+        return self::$cached_items;
     }
 
     public static function persist($items) {
-        $items = array_values($items);
-        if (function_exists('WC') && WC()->session) {
-            WC()->session->set(self::key(), $items);
-        }
-        setcookie(self::key(), wp_json_encode($items), time() + WEEK_IN_SECONDS, COOKIEPATH ?: '/', '', is_ssl(), false);
-        $_COOKIE[self::key()] = wp_json_encode($items);
+        $items = array_values(array_filter($items, function ($item) {
+            return is_array($item) && !empty($item['id']);
+        }));
+        $payload = wp_json_encode($items);
+        setcookie(self::key(), $payload, time() + WEEK_IN_SECONDS, COOKIEPATH ?: '/', '', is_ssl(), false);
+        $_COOKIE[self::key()] = $payload;
+        self::$cached_items = $items;
         return $items;
     }
 
@@ -82,8 +84,12 @@ class QuoteBuilder_Quote {
     }
 
     public static function page_url() {
+        if (self::$cached_page_url !== null) {
+            return self::$cached_page_url;
+        }
         $page_id = (int) get_option('quotebuilder_quote_page_id');
-        return $page_id ? get_permalink($page_id) : home_url('/demande-de-devis');
+        self::$cached_page_url = $page_id ? get_permalink($page_id) : home_url('/demande-de-devis');
+        return self::$cached_page_url;
     }
 
     public static function shop_url() {
@@ -303,9 +309,6 @@ class QuoteBuilder_Quote {
 
     public static function ajax() {
         check_ajax_referer('quotebuilder_storefront', 'nonce');
-        if (function_exists('WC') && WC()->session && !WC()->session->has_session()) {
-            WC()->session->set_customer_session_cookie(true);
-        }
         $action = sanitize_key($_POST['quote_action'] ?? '');
         $already = false;
         if ($action === 'add') {

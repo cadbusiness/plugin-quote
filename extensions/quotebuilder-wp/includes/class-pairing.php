@@ -218,6 +218,7 @@ class QuoteBuilder_Pairing {
             update_option('quotebuilder_last_sync_at', sanitize_text_field($body['last_sync_at']));
         }
         update_option('quotebuilder_paired_at', current_time('mysql'));
+        QuoteBuilder_Settings::flush_runtime_cache();
     }
 
     public static function pair($code) {

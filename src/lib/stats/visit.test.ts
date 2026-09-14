@@ -30,6 +30,10 @@ assert.equal(visitPageLabel("/b/demo/vitrine/catalogue"), "Catalogue");
 assert.equal(visitPageLabel("/b/demo/vitrine/devis"), "Demande de devis");
 assert.equal(visitPageLabel("/c/demo/rayonnage"), "Configurateur");
 assert.equal(visitPageLabel("/b/demo/vitrine/mentions-legales"), "Mentions legales");
+assert.equal(visitPageLabel("/demande-de-devis"), "Demande de devis");
+assert.equal(visitPageLabel("/produit/rayonnage-mi-lourd"), "Fiche produit");
+assert.equal(visitPageLabel("/product-category/rayonnage"), "Catégorie");
+assert.equal(visitPageLabel("/shop"), "Boutique");
 
 const geo = requestGeo(
   new Headers({

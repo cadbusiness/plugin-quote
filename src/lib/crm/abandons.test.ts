@@ -59,4 +59,26 @@ const synthesized = visitStops({
 assert.equal(synthesized.some((stop) => stop.label === "Configurateur"), true);
 assert.equal(synthesized.some((stop) => stop.label === "Type de projet"), true);
 
+const widget = visitStops({
+  startedAt: "2026-09-13T10:00:00.000Z",
+  landingPath: "/embed/demo/rayonnage",
+  currentStep: 0,
+  stepTitles: ["Type de projet"],
+  events: [
+    {
+      created_at: "2026-09-13T10:00:30.000Z",
+      event_type: ANALYTICS_EVENTS.pageView,
+      payload: { path: "/produit/cantilever", title: "Cantilever lourd" },
+    },
+    {
+      created_at: "2026-09-13T10:01:00.000Z",
+      event_type: ANALYTICS_EVENTS.pageView,
+      payload: { path: "/demande-de-devis", title: "Demande de devis" },
+    },
+  ],
+});
+assert.equal(widget.some((stop) => stop.label === "Widget"), false);
+assert.equal(widget.some((stop) => stop.label === "Cantilever lourd"), true);
+assert.equal(widget.some((stop) => stop.label === "Demande de devis"), true);
+
 console.log("crm/abandons.test.ts: ok");

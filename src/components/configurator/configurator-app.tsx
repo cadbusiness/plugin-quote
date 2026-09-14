@@ -107,7 +107,7 @@ function readAttribution(): Attribution {
   return parseAttribution({
     search: params,
     referrer: params.get("qb_ref") || document.referrer || null,
-    landingPath: window.location.pathname + window.location.search,
+    landingPath: params.get("qb_landing") || window.location.pathname + window.location.search,
     visitorId: visitorId(),
   });
 }
@@ -146,6 +146,10 @@ async function trackPageView(
       eventType: ANALYTICS_EVENTS.pageView,
       ...attributionBody(attr),
       search: typeof window !== "undefined" ? window.location.search : "",
+      title:
+        typeof window !== "undefined"
+          ? new URLSearchParams(window.location.search).get("qb_page") || undefined
+          : undefined,
     }),
   }).catch(() => undefined);
 }

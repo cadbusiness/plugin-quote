@@ -161,4 +161,65 @@
       qty: event.target.value,
     });
   });
+
+  function visitorId() {
+    try {
+      var existing = localStorage.getItem("qb-vid");
+      if (existing) return existing;
+      var next = window.crypto && window.crypto.randomUUID ? window.crypto.randomUUID() : String(Date.now());
+      localStorage.setItem("qb-vid", next);
+      return next;
+    } catch (e) {
+      return String(Date.now());
+    }
+  }
+
+  function currentPath() {
+    return window.location.pathname + (window.location.search || "");
+  }
+
+  function firstTouch() {
+    var current = {
+      search: window.location.search || "",
+      referrer: document.referrer || "",
+      landingPath: currentPath(),
+      title: cfg.pageTitle || document.title || "",
+    };
+    try {
+      var raw = sessionStorage.getItem("qb-attr");
+      if (raw) {
+        var saved = JSON.parse(raw);
+        if (saved && typeof saved === "object") return saved;
+      }
+      sessionStorage.setItem("qb-attr", JSON.stringify(current));
+    } catch (e) {}
+    return current;
+  }
+
+  function trackVisit() {
+    if (!cfg.origin || !cfg.org || !cfg.funnel || !cfg.pageKind) return;
+    var attr = firstTouch();
+    var payload = JSON.stringify({
+      orgSlug: cfg.org,
+      configuratorSlug: cfg.funnel,
+      eventType: "quotebuilder_page_view",
+      visitorId: visitorId(),
+      search: attr.search || window.location.search || "",
+      referrer: document.referrer || attr.referrer || "",
+      landingPath: currentPath(),
+      title: (cfg.pageTitle || document.title || attr.title || "").slice(0, 160),
+    });
+    var url = String(cfg.origin).replace(/\/$/, "") + "/api/public/track";
+    try {
+      navigator.sendBeacon(url, new Blob([payload], { type: "application/json" }));
+    } catch (e) {
+      fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: payload, keepalive: true }).catch(function () {});
+    }
+  }
+
+  if (window.requestIdleCallback) {
+    window.requestIdleCallback(trackVisit, { timeout: 2500 });
+  } else {
+    window.setTimeout(trackVisit, 0);
+  }
 })();

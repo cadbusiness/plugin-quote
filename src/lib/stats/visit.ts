@@ -168,9 +168,13 @@ export function visitPageLabel(path: string | null | undefined) {
   if (!path) return "Page";
   const clean = path.split("?")[0] ?? path;
   if (/\/embed\//.test(clean)) return "Widget";
+  if (/demande-de-devis/.test(clean)) return "Demande de devis";
   if (/\/devis\/?$/.test(clean)) return "Demande de devis";
   if (/\/catalogue\/?$/.test(clean)) return "Catalogue";
-  if (/\/p\//.test(clean)) return "Fiche produit";
+  if (/\/product-category\/|\/categorie-produit\/|\/product-tag\//.test(clean)) return "Catégorie";
+  if (/\/product\/|\/produit\//.test(clean) || /\/p\//.test(clean)) return "Fiche produit";
+  if (/\/shop\/?$|\/boutique\/?$/.test(clean)) return "Boutique";
+  if (/\/panier\/?$|\/cart\/?$/.test(clean)) return "Panier";
   if (/\/c\/[^/]+\/[^/]+/.test(clean) && !clean.includes("/b/")) return "Configurateur";
   const parts = clean.split("/").filter(Boolean);
   if (parts[0] === "b") {

@@ -5,6 +5,8 @@ if (!defined('ABSPATH')) {
 }
 
 class QuoteBuilder_Storefront {
+    private static $applies_cache = [];
+
     public static function init() {
         add_action('wp_enqueue_scripts', [self::class, 'assets']);
         add_filter('woocommerce_get_price_html', [self::class, 'price_html'], 20, 2);
@@ -21,7 +23,10 @@ class QuoteBuilder_Storefront {
     }
 
     public static function assets() {
-        if (is_admin() || !QuoteBuilder_Settings::connected()) {
+        if (is_admin() || wp_doing_ajax() || is_feed() || (defined('REST_REQUEST') && REST_REQUEST)) {
+            return;
+        }
+        if (!QuoteBuilder_Settings::connected()) {
             return;
         }
         wp_enqueue_style(
@@ -39,6 +44,7 @@ class QuoteBuilder_Storefront {
         );
         $funnel = QuoteBuilder_Settings::funnel();
         $settings = QuoteBuilder_Settings::storefront();
+        $visit = self::visit_page();
         wp_localize_script('quotebuilder-storefront', 'QuoteBuilderStore', [
             'ajax' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('quotebuilder_storefront'),
@@ -52,7 +58,46 @@ class QuoteBuilder_Storefront {
             'origin' => QuoteBuilder_Settings::origin(),
             'org' => $funnel['org'],
             'funnel' => $funnel['id'],
+            'pageTitle' => $visit['title'],
+            'pageKind' => $visit['kind'],
         ]);
+    }
+
+    public static function visit_page() {
+        if (is_404() || is_feed() || is_preview()) {
+            return ['kind' => '', 'title' => ''];
+        }
+        $kind = 'page';
+        $title = '';
+        if (function_exists('is_product') && is_product()) {
+            $kind = 'product';
+            $product = wc_get_product(get_the_ID());
+            if ($product) {
+                $title = $product->get_name();
+            }
+        } elseif (function_exists('is_product_category') && is_product_category()) {
+            $kind = 'category';
+            $term = get_queried_object();
+            if ($term && !empty($term->name)) {
+                $title = $term->name;
+            }
+        } elseif (function_exists('is_shop') && is_shop()) {
+            $kind = 'shop';
+            $title = 'Boutique';
+        } elseif (function_exists('is_cart') && is_cart()) {
+            $kind = 'cart';
+            $title = 'Panier';
+        } elseif (function_exists('is_checkout') && is_checkout()) {
+            $kind = 'checkout';
+            $title = 'Commande';
+        } elseif ((int) get_option('quotebuilder_quote_page_id') === (int) get_queried_object_id()) {
+            $kind = 'quote';
+            $title = 'Demande de devis';
+        }
+        return [
+            'kind' => $kind,
+            'title' => substr(wp_strip_all_tags((string) $title), 0, 160),
+        ];
     }
 
     public static function body_class($classes) {
@@ -87,12 +132,19 @@ class QuoteBuilder_Storefront {
         if (!$product) {
             return true;
         }
+        $cache_id = (int) $product->get_id();
+        if (isset(self::$applies_cache[$cache_id])) {
+            return self::$applies_cache[$cache_id];
+        }
         if ($product->is_in_stock()) {
             if ($settings['stockMode'] === 'oos_only') {
-                return false;
+                return self::$applies_cache[$cache_id] = false;
             }
         } elseif ($settings['stockMode'] === 'hide_oos') {
-            return false;
+            return self::$applies_cache[$cache_id] = false;
+        }
+        if ($settings['scope'] === 'all') {
+            return self::$applies_cache[$cache_id] = true;
         }
         $product_id = (string) $product->get_id();
         $parent_id = $product->is_type('variation') ? (string) $product->get_parent_id() : $product_id;
@@ -101,12 +153,9 @@ class QuoteBuilder_Storefront {
         $in_tags = self::in_terms($parent_id, 'product_tag', $settings['tagIds']);
         $listed = $in_products || $in_cats || $in_tags;
         if ($settings['scope'] === 'include') {
-            return $listed;
+            return self::$applies_cache[$cache_id] = $listed;
         }
-        if ($settings['scope'] === 'exclude') {
-            return !$listed;
-        }
-        return true;
+        return self::$applies_cache[$cache_id] = !$listed;
     }
 
     private static function audience_ok($settings) {
@@ -130,16 +179,7 @@ class QuoteBuilder_Storefront {
         if (!$ids) {
             return false;
         }
-        $terms = wp_get_post_terms((int) $product_id, $taxonomy, ['fields' => 'ids']);
-        if (is_wp_error($terms)) {
-            return false;
-        }
-        foreach ($terms as $term_id) {
-            if (in_array((string) $term_id, $ids, true)) {
-                return true;
-            }
-        }
-        return false;
+        return has_term(array_map('intval', $ids), $taxonomy, (int) $product_id);
     }
 
     public static function sale_flash($html, $post, $product) {
@@ -294,7 +334,7 @@ class QuoteBuilder_Storefront {
     }
 
     public static function drawer() {
-        if (is_admin() || !QuoteBuilder_Settings::connected()) {
+        if (is_admin() || wp_doing_ajax() || !QuoteBuilder_Settings::connected()) {
             return;
         }
         $count = QuoteBuilder_Quote::count();

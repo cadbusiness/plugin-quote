@@ -5,6 +5,10 @@ if (!defined('ABSPATH')) {
 }
 
 class QuoteBuilder_Settings {
+    private static $storefront = null;
+    private static $connected = null;
+    private static $funnel = null;
+
     public static function init() {
         add_action('wp_ajax_quotebuilder_save_storefront', [self::class, 'ajax_save_storefront']);
         add_action('wp_ajax_quotebuilder_search_products', [self::class, 'ajax_search_products']);
@@ -120,6 +124,9 @@ class QuoteBuilder_Settings {
     }
 
     public static function storefront() {
+        if (self::$storefront !== null) {
+            return self::$storefront;
+        }
         $saved = get_option('quotebuilder_storefront', []);
         if (!is_array($saved)) {
             $saved = [];
@@ -166,7 +173,14 @@ class QuoteBuilder_Settings {
         if ($page_id && empty($settings['quotePageId'])) {
             $settings['quotePageId'] = (string) $page_id;
         }
+        self::$storefront = $settings;
         return $settings;
+    }
+
+    public static function flush_runtime_cache() {
+        self::$storefront = null;
+        self::$connected = null;
+        self::$funnel = null;
     }
 
     public static function save_storefront($incoming) {
@@ -223,22 +237,31 @@ class QuoteBuilder_Settings {
             update_option('quotebuilder_quote_page_id', $page_id);
         }
         $next['quotePageId'] = $page_id ? (string) $page_id : '';
-        update_option('quotebuilder_storefront', $next);
+        update_option('quotebuilder_storefront', $next, true);
+        self::$storefront = null;
         QuoteBuilder_Pairing::push_storefront($next);
         return $next;
     }
 
     public static function connected() {
-        return (bool) get_option('quotebuilder_connection_id') && get_option('quotebuilder_plugin_token');
+        if (self::$connected !== null) {
+            return self::$connected;
+        }
+        self::$connected = (bool) get_option('quotebuilder_connection_id') && get_option('quotebuilder_plugin_token');
+        return self::$connected;
     }
 
     public static function funnel() {
-        return [
+        if (self::$funnel !== null) {
+            return self::$funnel;
+        }
+        self::$funnel = [
             'org' => get_option('quotebuilder_org_slug', ''),
             'orgName' => get_option('quotebuilder_org_name', ''),
             'id' => get_option('quotebuilder_funnel_slug', ''),
             'name' => get_option('quotebuilder_funnel_name', ''),
         ];
+        return self::$funnel;
     }
 
     public static function request($path, $args = []) {
