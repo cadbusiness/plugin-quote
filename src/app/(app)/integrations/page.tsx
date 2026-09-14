@@ -5,16 +5,17 @@ import { ClickableRow } from "@/components/ui/clickable-row";
 import { ConnectStoreButton, ConnectStoreDialog } from "@/components/integrations/connect-store-dialog";
 import { CreateShopDialog } from "@/components/shops/create-shop-dialog";
 import { CreateShopButton } from "@/components/shops/create-shop-button";
-import { PublishShopButton } from "@/components/shops/publish-shop-button";
+import { ShopRowActions } from "@/components/shops/shop-row-actions";
 import { DataTable, ListPanel } from "@/components/ui/list-panel";
 import { SyncButton } from "@/components/integrations/sync-button";
+import { ConnectionRowActions } from "@/components/integrations/connection-row-actions";
 import { PairingActions } from "@/components/integrations/pairing-card";
-import { SourceMenu } from "@/components/integrations/source-menu";
 import { formatRelative } from "@/lib/format";
 import { parseOrgFamily } from "@/lib/funnels/families";
 import { wordpressPluginRelease } from "@/lib/integrations/plugin-release";
 import { PROVIDER_LABELS, type CatalogProvider } from "@/lib/integrations/types";
 import { shopBasePath } from "@/lib/shops/urls";
+import { getAppUrl } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 
 export const maxDuration = 300;
@@ -56,10 +57,11 @@ export default async function IntegrationsPage() {
       .eq("is_active", true),
   ]);
 
-  const native = shops ?? [];
-  const rows = connections ?? [];
+  const native = [...(shops ?? [])].sort((a, b) => shopRank(a.status) - shopRank(b.status));
+  const rows = [...(connections ?? [])].sort((a, b) => connectionRank(a.status) - connectionRank(b.status));
   const pluginVersion = wordpressPluginRelease().version;
   const family = parseOrgFamily(ctx.organization.branding);
+  const origin = getAppUrl();
   const funnelById = new Map((funnels ?? []).map((funnel) => [funnel.id, funnel.name]));
   const funnelIds = native.map((shop) => shop.configurator_id).filter(Boolean) as string[];
   const { data: productRows } =
@@ -145,21 +147,14 @@ export default async function IntegrationsPage() {
                   <td className="px-4 py-3.5 lg:px-6">
                     <StatusMark live={status.live} error={connection.status === "error"} label={status.label} hint={hint} />
                   </td>
-                  <td className="px-4 py-3.5 text-right lg:px-6">
+                  <td className="whitespace-nowrap px-4 py-3.5 text-right lg:px-6">
                     <div className="flex items-center justify-end gap-1.5">
                       <SyncButton connectionId={connection.id} variant="outline" />
-                      <SourceMenu
-                        items={[
-                          { href: `/integrations/${connection.id}`, label: "Réglages" },
-                          ...(provider === "woocommerce"
-                            ? [
-                                {
-                                  href: `/api/public/plugin/wordpress/download?v=${encodeURIComponent(pluginVersion)}`,
-                                  label: "Télécharger le plugin",
-                                },
-                              ]
-                            : []),
-                        ]}
+                      <ConnectionRowActions
+                        connectionId={connection.id}
+                        name={connection.label}
+                        storeUrl={storeHref(connection.store_domain)}
+                        enabled={connection.status !== "disabled"}
                       />
                     </div>
                   </td>
@@ -169,6 +164,7 @@ export default async function IntegrationsPage() {
             {native.map((shop) => {
               const status = SHOP_STATUS_COPY[shop.status] ?? SHOP_STATUS_COPY.draft;
               const path = shopBasePath(ctx.organization.slug, shop.slug);
+              const archived = shop.status === "archived";
               return (
                 <ClickableRow
                   key={shop.id}
@@ -177,7 +173,7 @@ export default async function IntegrationsPage() {
                 >
                   <td className="px-4 py-3.5 lg:px-6">
                     <span className="flex flex-wrap items-center gap-2">
-                      <span className="font-medium text-slate-900">{shop.name}</span>
+                      <span className={`font-medium ${archived ? "text-slate-500" : "text-slate-900"}`}>{shop.name}</span>
                       <Chip tone="orange">Intégrée</Chip>
                     </span>
                     <span className="mt-0.5 block text-xs text-slate-500">{path}</span>
@@ -195,16 +191,14 @@ export default async function IntegrationsPage() {
                   <td className="px-4 py-3.5 lg:px-6">
                     <StatusMark live={status.live} label={status.label} hint={status.hint} />
                   </td>
-                  <td className="px-4 py-3.5 text-right lg:px-6">
-                    <div className="flex items-center justify-end gap-1.5">
-                      {shop.status === "draft" ? <PublishShopButton id={shop.id} status={shop.status} /> : null}
-                      <SourceMenu
-                        items={[
-                          { href: `/integrations/shop/${shop.id}`, label: "Éditer" },
-                          { href: path, label: "Aperçu", external: true },
-                        ]}
-                      />
-                    </div>
+                  <td className="whitespace-nowrap px-4 py-3.5 text-right lg:px-6">
+                    <ShopRowActions
+                      shopId={shop.id}
+                      name={shop.name}
+                      publicUrl={`${origin}${path}`}
+                      previewHref={path}
+                      archived={archived}
+                    />
                   </td>
                 </ClickableRow>
               );
@@ -305,4 +299,22 @@ function formatSyncStamp(iso: string) {
   const hours = String(date.getHours()).padStart(2, "0");
   const minutes = String(date.getMinutes()).padStart(2, "0");
   return `${day}/${month} ${hours}:${minutes}`;
+}
+
+function storeHref(domain: string | null | undefined) {
+  const value = domain?.trim() ?? "";
+  if (!value) return "";
+  return /^https?:\/\//i.test(value) ? value : `https://${value}`;
+}
+
+function shopRank(status: string) {
+  if (status === "published") return 0;
+  if (status === "draft") return 1;
+  return 2;
+}
+
+function connectionRank(status: string) {
+  if (status === "active") return 0;
+  if (status === "error") return 1;
+  return 2;
 }

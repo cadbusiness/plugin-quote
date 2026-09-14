@@ -7,7 +7,7 @@ import { insertShopFromTemplate, parseCreateShopForm } from "@/lib/shops/create"
 import { loadShopDocument, persistShopDocument } from "@/lib/shops/document";
 import { asJson } from "@/lib/shops/types";
 import { parseLayout } from "@/lib/shops/layout";
-import { parseLegal, parsePageSeo, parseSeo, parseStatus, parseTheme } from "@/lib/shops/parse";
+import { parseLegal, parsePageSeo, parseSeo, parseStatus, parseTheme, shopStatusAfterArchiveToggle } from "@/lib/shops/parse";
 import { shopBasePath } from "@/lib/shops/urls";
 import { createClient } from "@/lib/supabase/server";
 
@@ -123,18 +123,49 @@ export async function publishShop(formData: FormData) {
   revalidateShop(ctx.organization.slug, shop?.slug ?? id, id);
 }
 
-export async function deleteShop(formData: FormData) {
+export async function setShopArchived(shopId: string) {
   const ctx = await requireAdmin();
-  const id = String(formData.get("id") ?? "");
+  if (!shopId) return;
+  const supabase = await createClient();
+  const { data: current } = await supabase
+    .from("shops")
+    .select("slug, status, published_at")
+    .eq("id", shopId)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  if (!current) return;
+  const next = shopStatusAfterArchiveToggle(current.status, current.published_at);
+  const { data: shop } = await supabase
+    .from("shops")
+    .update({
+      status: next,
+      published_at:
+        next === "published" ? current.published_at ?? new Date().toISOString() : current.published_at,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", shopId)
+    .eq("organization_id", ctx.organization.id)
+    .select("slug")
+    .maybeSingle();
+  revalidateShop(ctx.organization.slug, shop?.slug ?? current.slug, shopId);
+}
+
+export async function deleteShop(formData: FormData) {
+  await removeShop(String(formData.get("id") ?? ""));
+}
+
+export async function removeShop(shopId: string) {
+  const ctx = await requireAdmin();
+  if (!shopId) return;
   const supabase = await createClient();
   const { data: shop } = await supabase
     .from("shops")
     .select("slug")
-    .eq("id", id)
+    .eq("id", shopId)
     .eq("organization_id", ctx.organization.id)
     .maybeSingle();
-  await supabase.from("shops").delete().eq("id", id).eq("organization_id", ctx.organization.id);
-  if (shop?.slug) revalidateShop(ctx.organization.slug, shop.slug, id);
+  await supabase.from("shops").delete().eq("id", shopId).eq("organization_id", ctx.organization.id);
+  if (shop?.slug) revalidateShop(ctx.organization.slug, shop.slug, shopId);
   else revalidatePath("/integrations");
   redirect("/integrations");
 }

@@ -18,6 +18,7 @@ import {
   shopQuoteItemCount,
   upsertShopQuoteLine,
 } from "./quote-draft";
+import { parseStatus, shopStatusAfterArchiveToggle } from "./parse";
 import { findProductBySlug, productSlug, shopBasePath, shopQuoteFormPath, shopQuotePath } from "./urls";
 import type { ShopDocument } from "./types";
 
@@ -78,6 +79,11 @@ assert.equal(boxStyle({ position: "static" }).position, undefined);
 assert.equal(pageTitle("Catalogue", "Atelier Nord"), "Catalogue · Atelier Nord");
 assert.equal(clipDescription("a".repeat(200)).endsWith("…"), true);
 assert.equal(shopBasePath("demo", "atelier"), "/b/demo/atelier");
+assert.equal(shopStatusAfterArchiveToggle("published", "2026-01-01"), "archived");
+assert.equal(shopStatusAfterArchiveToggle("draft", null), "archived");
+assert.equal(shopStatusAfterArchiveToggle("archived", "2026-01-01"), "published");
+assert.equal(shopStatusAfterArchiveToggle("archived", null), "draft");
+assert.equal(parseStatus("archived"), "archived");
 assert.equal(shopQuotePath("demo", "vitrine"), "/b/demo/vitrine/devis");
 assert.equal(shopQuoteFormPath("demo", "vitrine"), "/b/demo/vitrine/devis?envoyer=1");
 assert.equal(isShopQuoteFormPhase("1"), true);

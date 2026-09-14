@@ -101,6 +101,11 @@ export function parseStatus(value: unknown): ShopStatus {
   return SHOP_STATUSES.includes(value as ShopStatus) ? (value as ShopStatus) : "draft";
 }
 
+export function shopStatusAfterArchiveToggle(status: string, publishedAt: string | null) {
+  if (status === "archived") return publishedAt ? ("published" as const) : ("draft" as const);
+  return "archived" as const;
+}
+
 export function parsePageKind(value: unknown): ShopPageKind {
   return SHOP_PAGE_KINDS.includes(value as ShopPageKind) ? (value as ShopPageKind) : "custom";
 }
