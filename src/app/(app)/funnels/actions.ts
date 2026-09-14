@@ -41,6 +41,50 @@ export async function setFunnelActive(funnelId: string, active: boolean) {
     .eq("organization_id", ctx.organization.id);
   revalidatePath("/funnels");
   revalidatePath(`/funnels/${funnelId}`);
+  revalidatePath("/accueil");
+}
+
+export async function deleteFunnel(funnelId: string) {
+  const ctx = await requireAdmin();
+  if (!funnelId) return { ok: false as const, reason: "missing" as const };
+  const supabase = await createClient();
+  const { data: funnel } = await supabase
+    .from("configurators")
+    .select("id")
+    .eq("id", funnelId)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  if (!funnel) return { ok: false as const, reason: "missing" as const };
+  const { count } = await supabase
+    .from("quotes")
+    .select("id", { count: "exact", head: true })
+    .eq("organization_id", ctx.organization.id)
+    .eq("configurator_id", funnelId);
+  if (count && count > 0) return { ok: false as const, reason: "quotes" as const, count };
+  const { data: workflows } = await supabase
+    .from("workflows")
+    .select("id, trigger_config")
+    .eq("organization_id", ctx.organization.id);
+  await Promise.all(
+    (workflows ?? []).map((workflow) => {
+      const config = parseTriggerConfig(workflow.trigger_config);
+      const ids = config.configuratorIds ?? [];
+      if (!ids.includes(funnelId)) return Promise.resolve();
+      const next = ids.filter((id) => id !== funnelId);
+      return supabase
+        .from("workflows")
+        .update({
+          trigger_config: { ...config, configuratorIds: next.length ? next : ids },
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", workflow.id)
+        .eq("organization_id", ctx.organization.id);
+    }),
+  );
+  await supabase.from("configurators").delete().eq("id", funnelId).eq("organization_id", ctx.organization.id);
+  revalidatePath("/funnels");
+  revalidatePath("/accueil");
+  redirect("/funnels");
 }
 
 export async function saveFunnelTracking(formData: FormData) {

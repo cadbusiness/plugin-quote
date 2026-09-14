@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { ChevronLeft, ExternalLink } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { ListPanel } from "@/components/ui/list-panel";
 import { Chip } from "@/components/ui/chip";
 import { LocalTabNav, replaceClientUrl } from "@/components/ui/local-tabs";
@@ -12,8 +12,9 @@ import { FunnelStatsPanel } from "@/components/funnels/funnel-stats-panel";
 import { ParcoursBuilder } from "@/components/funnels/parcours-builder";
 import type { PreviewProduct } from "@/components/funnels/parcours-preview";
 import { renameFunnel, saveFunnelTracking, setFunnelActive } from "@/app/(app)/funnels/actions";
+import { FunnelRowActions } from "@/components/funnels/funnel-row-actions";
 import type { FunnelKind } from "@/lib/funnels/builder";
-import { funnelKindHint, funnelKindLabel, funnelKindTone } from "@/lib/funnels/kind";
+import { funnelKindHint, funnelKindLabel, funnelKindTone, funnelVisibilityLabel } from "@/lib/funnels/kind";
 import type { Tables } from "@/lib/db/database.types";
 import { FUNNEL_TABS, type FunnelTab } from "@/lib/funnels/tabs";
 import type { FunnelTracking } from "@/lib/funnels/tracking";
@@ -99,16 +100,13 @@ export function FunnelEditor({
           <span title={funnelKindHint(funnel.kind)}>
             <Chip tone={funnelKindTone(funnel.kind)}>{funnelKindLabel(funnel.kind)}</Chip>
           </span>
-          <Link
-            href={publicUrl}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Ouvrir le lien public"
-            className="inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-1.5 text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-          >
-            Ouvrir
-            <ExternalLink className="h-3.5 w-3.5" aria-hidden />
-          </Link>
+          <FunnelRowActions
+            funnelId={funnel.id}
+            name={funnel.name}
+            publicUrl={publicUrl}
+            isActive={funnel.isActive}
+            showArchive={false}
+          />
           <button
             type="button"
             role="switch"
@@ -121,7 +119,7 @@ export function FunnelEditor({
           >
             <span className="text-left">
               <span className={`block text-sm font-medium leading-none ${funnel.isActive ? "text-emerald-800" : "text-slate-700"}`}>
-                {funnel.isActive ? "Actif" : "Brouillon"}
+                {funnelVisibilityLabel(funnel.isActive)}
               </span>
               <span className="mt-0.5 block text-[11px] leading-none text-slate-500">
                 {funnel.isActive ? "Visible aux prospects" : "Invisible"}

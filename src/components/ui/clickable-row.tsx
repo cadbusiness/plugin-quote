@@ -48,6 +48,8 @@ export function ClickableRow({
         }
       }}
       onKeyDown={(event) => {
+        const el = event.target as HTMLElement | null;
+        if (el?.closest("a, button, input, select, textarea, label")) return;
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
           if (onSelect) onSelect();

@@ -444,7 +444,7 @@ function FunnelsModule({ data }: { data: HomeDashboard }) {
             <ClickableRow key={funnel.id} href={`/funnels/${funnel.id}`}>
               <td className="px-4 py-2 font-medium text-slate-900 lg:px-5">{funnel.name}</td>
               <td className="px-4 py-2 lg:px-5">
-                <Chip tone={funnel.is_active ? "emerald" : "amber"}>{funnel.is_active ? "Actif" : "Brouillon"}</Chip>
+                <Chip tone={funnel.is_active ? "emerald" : "slate"}>{funnel.is_active ? "Actif" : "Archivé"}</Chip>
               </td>
             </ClickableRow>
           ))}

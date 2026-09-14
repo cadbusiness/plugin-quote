@@ -88,6 +88,14 @@ export function funnelKindTone(kind: FunnelKind): "orange" | "violet" | "sky" {
   return FUNNEL_KIND_OPTIONS.find((item) => item.id === kind)?.tone ?? "orange";
 }
 
+export function funnelVisibilityLabel(isActive: boolean) {
+  return isActive ? "Actif" : "Archivé";
+}
+
+export function funnelVisibilityTone(isActive: boolean): "emerald" | "slate" {
+  return isActive ? "emerald" : "slate";
+}
+
 export function catalogDefaultName(formName: string) {
   if (formName.startsWith("Funnel ")) return `Catalogue ${formName.slice("Funnel ".length)}`;
   if (formName === "Nouveau funnel") return "Catalogue";

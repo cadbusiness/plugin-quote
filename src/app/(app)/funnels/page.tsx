@@ -5,11 +5,19 @@ import { DataTable, ListPanel } from "@/components/ui/list-panel";
 import { Chip } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
 import { CreateFunnelDialog } from "@/components/dashboard/create-funnel-dialog";
+import { FunnelRowActions } from "@/components/funnels/funnel-row-actions";
 import { getTemplateFamily } from "@/lib/funnels/templates";
 import { parseOrgFamily } from "@/lib/funnels/families";
-import { funnelKindLabel, funnelKindTone, parseFunnelKind } from "@/lib/funnels/kind";
+import {
+  funnelKindLabel,
+  funnelKindTone,
+  funnelVisibilityLabel,
+  funnelVisibilityTone,
+  parseFunnelKind,
+} from "@/lib/funnels/kind";
 import { loadStatsDashboard } from "@/lib/stats/dashboard";
 import { formatPercent } from "@/lib/format";
+import { getAppUrl } from "@/lib/supabase/env";
 
 export default async function FunnelsPage() {
   const ctx = await getOrgContext();
@@ -25,24 +33,28 @@ export default async function FunnelsPage() {
     loadStatsDashboard(supabase, ctx.organization.id, "month"),
   ]);
 
-  const list = funnels ?? [];
+  const list = [...(funnels ?? [])].sort((a, b) => Number(b.is_active) - Number(a.is_active));
   const byId = new Map(stats.funnels.map((row) => [row.id, row]));
+  const origin = getAppUrl();
 
   return (
     <ListPanel>
-      <DataTable headers={["Funnel", "Famille", "Type", "30 j", "Lien public"]}>
+      <DataTable
+        headers={["Funnel", "Famille", "Type", "30 j", ""]}
+        columnClassNames={["", "", "", "", "w-px text-right"]}
+      >
         {list.map((funnel) => {
           const family = getTemplateFamily(funnel.sector);
-          const href = `/c/${ctx.organization.slug}/${funnel.slug}`;
+          const publicUrl = `${origin}/c/${ctx.organization.slug}/${funnel.slug}`;
           const kind = parseFunnelKind(funnel.theme, funnel.wizard_enabled, funnel.chat_enabled);
           const row = byId.get(funnel.id);
           return (
             <ClickableRow key={funnel.id} href={`/funnels/${funnel.id}`}>
               <td className="px-4 py-3 lg:px-6">
-                <div className="font-medium text-slate-900">{funnel.name}</div>
-                <Chip tone={funnel.is_active ? "emerald" : "amber"}>
-                  {funnel.is_active ? "Actif" : "Brouillon"}
-                </Chip>
+                <div className={`font-medium ${funnel.is_active ? "text-slate-900" : "text-slate-500"}`}>
+                  {funnel.name}
+                </div>
+                <Chip tone={funnelVisibilityTone(funnel.is_active)}>{funnelVisibilityLabel(funnel.is_active)}</Chip>
               </td>
               <td className="px-4 py-3 lg:px-6">
                 <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ${family.tint}`}>
@@ -64,16 +76,14 @@ export default async function FunnelsPage() {
                   <span className="text-slate-400">—</span>
                 )}
               </td>
-              <td className="px-4 py-3 lg:px-6">
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  title="Ouvrir le lien public"
-                  className="relative z-10 inline-flex max-w-[16rem] items-center truncate rounded-md bg-slate-50 px-2 py-1 font-mono text-[11px] text-slate-600 ring-1 ring-slate-200 hover:bg-orange-50 hover:text-[#C2410C] hover:ring-orange-200"
-                >
-                  /{ctx.organization.slug}/{funnel.slug}
-                </a>
+              <td className="whitespace-nowrap px-4 py-3 lg:px-6">
+                <FunnelRowActions
+                  funnelId={funnel.id}
+                  name={funnel.name}
+                  publicUrl={publicUrl}
+                  previewHref={`/c/${ctx.organization.slug}/${funnel.slug}`}
+                  isActive={funnel.is_active}
+                />
               </td>
             </ClickableRow>
           );
