@@ -106,7 +106,7 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 - **Widget JS universel**, Livré.
 - **Plugin WordPress + bloc Gutenberg**, Livré. Vitrine devis Woo (prix, panier, liste, funnel) branchée sur QuoteBuilder. Connexion en un clic depuis le plugin.
 - **Webhook sortant / export JSON**, Livré.
-- **API keys + MCP Server**, Livré. Clés `qb_live_…` dans `/webhooks` ; package `quotebuilder-mcp` (Claude Desktop). Voir `docs/mcp.md`.
+- **API keys + MCP Server**, Livré. Clés `qb_live_…` dans `/webhooks` ; serveur HTTP `/api/mcp` (ChatGPT, Claude distant, Cursor) + package `quotebuilder-mcp` (Claude Desktop). Voir `docs/mcp.md`.
 - **WooCommerce (catalogue + commandes + statuts)**, Partiel. Catalogue livré (import, sync, webhooks, appairage plugin). Plugin vitrine : masquer prix / panier, liste de devis, funnel prérempli. Commandes et statuts Woo à faire.
 
 ### Paramètres cœur
@@ -154,7 +154,7 @@ Hors menu tant que le funnel et le catalogue ne sont pas au niveau.
 - **Zapier**, Ensuite.
 - **Gestion organisation (logo, couleurs)**, Ensuite. `branding` jsonb existe, pas d’écran.
 - **Abonnement Stripe**, Ensuite.
-- **API keys**, Livré (MCP). Gestion dans `/webhooks` ; package npm `quotebuilder-mcp`.
+- **API keys**, Livré (MCP). Gestion dans `/webhooks` ; serveur HTTP `/api/mcp` + package npm `quotebuilder-mcp`.
 - **Mises à jour produit (changelog in-app)**, Livré. `/mises-a-jour` : notes versionnées, badge non lu, last-seen par utilisateur. Voir `docs/mises-a-jour.md`.
 
 ---

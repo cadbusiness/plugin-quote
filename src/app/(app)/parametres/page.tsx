@@ -14,7 +14,7 @@ const ROWS: { href: string; label: string; hint: string; admin?: boolean }[] = [
     hint: "Boutique QuoteBuilder, WooCommerce, Shopify",
     admin: true,
   },
-  { href: "/webhooks", label: "API & webhooks", hint: "Clés MCP, webhooks sortants", admin: true },
+  { href: "/webhooks", label: "API & webhooks", hint: "MCP Claude / ChatGPT, webhooks", admin: true },
   { href: "/templates", label: "Emails", hint: "Templates prospect et commercial", admin: true },
   { href: "/equipe", label: "Équipe", hint: "Accès, rôles, journal", admin: true },
   { href: "/stats?tab=suivi", label: "Suivi Google", hint: "Analytics 4 et Tag Manager", admin: true },

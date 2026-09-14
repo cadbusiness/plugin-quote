@@ -48,6 +48,7 @@ export async function middleware(request: NextRequest) {
     "/acquisition",
     "/mises-a-jour",
   ];
+  const isOAuthConsent = path === "/oauth/authorize";
   const isApp = appPaths.some((p) => path === p || path.startsWith(`${p}/`) || path.startsWith(`${p}.`));
   const isAdmin = path === "/admin" || path.startsWith("/admin/");
   const superAdmin = user?.app_metadata?.role === "super_admin";
@@ -60,7 +61,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(next);
   }
 
-  if ((isApp || isAdmin) && !user) {
+  if ((isApp || isAdmin || isOAuthConsent) && !user) {
     const login = request.nextUrl.clone();
     login.pathname = "/login";
     login.search = "";
@@ -167,6 +168,7 @@ export const config = {
     "/login",
     "/signup",
     "/onboarding",
+    "/oauth/authorize",
     "/admin",
     "/admin/:path*",
   ],

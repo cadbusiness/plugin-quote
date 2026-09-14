@@ -31,9 +31,8 @@ export function extractApiToken(req: Request): string | null {
   return header || null;
 }
 
-export async function authenticateApiKey(req: Request): Promise<ApiAuthContext | null> {
-  const token = extractApiToken(req);
-  if (!token || !token.startsWith(KEY_PREFIX)) return null;
+export async function authenticateApiToken(token: string): Promise<ApiAuthContext | null> {
+  if (!token.startsWith(KEY_PREFIX)) return null;
 
   const prefix = token.slice(0, KEY_PREFIX.length + 8);
   const hash = hashToken(token);
@@ -61,6 +60,12 @@ export async function authenticateApiKey(req: Request): Promise<ApiAuthContext |
   };
 }
 
+export async function authenticateApiKey(req: Request): Promise<ApiAuthContext | null> {
+  const token = extractApiToken(req);
+  if (!token) return null;
+  return authenticateApiToken(token);
+}
+
 export async function createOrgApiKey(input: {
   organizationId: string;
   name: string;
@@ -75,7 +80,7 @@ export async function createOrgApiKey(input: {
     .from("api_keys")
     .insert({
       organization_id: input.organizationId,
-      name: input.name.trim() || "MCP / Claude",
+      name: input.name.trim() || "MCP",
       key_prefix: prefix,
       key_hash: hashToken(token),
       created_by: input.createdBy,

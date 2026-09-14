@@ -7,6 +7,7 @@ import { consumeApiKeyFlash, createApiKey, revokeApiKey } from "@/app/(app)/webh
 import { listOrgApiKeys } from "@/lib/api/keys";
 import { formatDate } from "@/lib/format";
 import { ApiKeyCreatedBanner } from "@/components/integrations/api-key-created-banner";
+import { McpSetupPanel } from "@/components/integrations/mcp-setup-panel";
 
 export default async function WebhooksPage() {
   const ctx = await getOrgContext();
@@ -36,15 +37,16 @@ export default async function WebhooksPage() {
       {createdToken ? <ApiKeyCreatedBanner token={createdToken} /> : null}
 
       <div className="border-b border-slate-200 px-4 py-4 lg:px-6">
-        <h2 className="mb-1 text-sm font-medium text-slate-900">Clés API (MCP / Claude)</h2>
+        <h2 className="mb-1 text-sm font-medium text-slate-900">Clés API (MCP / Claude / ChatGPT)</h2>
         <p className="mb-3 text-sm text-slate-500">
-          Utilisez une clé <code className="text-xs">qb_live_…</code> dans Claude Desktop pour piloter
-          leads, stats et relances.
+          Une clé <code className="text-xs">qb_live_…</code> authentifie Claude Desktop, ChatGPT Desktop,
+          Cursor, et le serveur MCP distant.
         </p>
+        <McpSetupPanel />
         <form action={createApiKey} className="flex flex-wrap gap-2">
           <input
             name="name"
-            placeholder="MCP / Claude Desktop"
+            placeholder="MCP / Claude / ChatGPT"
             className="min-w-64 flex-1 border border-slate-200 px-3 py-2 text-sm"
           />
           <button className="rounded-md bg-[#E85D04] px-3 py-2 text-sm font-medium text-white">

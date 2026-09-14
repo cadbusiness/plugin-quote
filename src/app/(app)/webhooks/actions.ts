@@ -13,7 +13,7 @@ export async function createApiKey(formData: FormData) {
   if (!ctx) redirect("/onboarding");
   if (!isAdminRole(ctx.role)) redirect("/devis");
 
-  const name = String(formData.get("name") ?? "").trim() || "MCP / Claude";
+  const name = String(formData.get("name") ?? "").trim() || "MCP";
   const { token } = await createOrgApiKey({
     organizationId: ctx.organization.id,
     name,

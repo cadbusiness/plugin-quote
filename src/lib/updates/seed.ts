@@ -2,8 +2,20 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.16.0",
+    version: "1.16.0",
+    title: "MCP distant : Claude et ChatGPT",
+    items: [
+      "Un serveur MCP hébergé est disponible sur /api/mcp : Claude, ChatGPT et Cursor parlent au même pipeline devis.",
+      "ChatGPT (web) se connecte en OAuth (Paramètres → API & webhooks). Claude Desktop garde npx ou la clé Bearer.",
+      "Les outils devis (créer, lister, statut) sont actifs sur le serveur distant, sans flag.",
+    ],
+    releasedAt: "2026-09-14",
+    createdAt: "2026-09-14T00:00:00.000Z",
+  },
   {
     id: "seed-1.15.0",
     version: "1.15.0",

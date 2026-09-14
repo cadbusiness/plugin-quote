@@ -26,7 +26,7 @@ npm run dev
 
 WordPress : plugin dans `extensions/quotebuilder-wp/`. Shortcode `[quotebuilder org="quickly" id="rayonnage"]`. Dans WordPress, **Connecter** ouvre QuoteBuilder (login + choix du funnel) puis importe le catalogue WooCommerce. Le zip et la version sont générés au build (`/quotebuilder-wp.zip`, `/api/public/plugin/wordpress`). Les sites en 2.1+ voient les mises à jour dans Extensions.
 
-MCP (Claude Desktop) : package `quotebuilder-mcp/` — voir `docs/mcp.md`. Clés API dans **Paramètres → API & webhooks**.
+MCP (Claude / ChatGPT) : serveur HTTP `/api/mcp` + package `quotebuilder-mcp/` — voir `docs/mcp.md`. Clés API dans **Paramètres → API & webhooks**.
 
 Notes de version in-app : **Support → Mises à jour** (`/mises-a-jour`). Pour publier une version, voir `docs/mises-a-jour.md`.
 

@@ -56,6 +56,136 @@ export type Database = {
           },
         ]
       }
+      mcp_oauth_clients: {
+        Row: {
+          client_id: string
+          client_name: string
+          created_at: string
+          id: string
+          redirect_uris: string[]
+          token_endpoint_auth_method: string
+        }
+        Insert: {
+          client_id: string
+          client_name?: string
+          created_at?: string
+          id?: string
+          redirect_uris: string[]
+          token_endpoint_auth_method?: string
+        }
+        Update: {
+          client_id?: string
+          client_name?: string
+          created_at?: string
+          id?: string
+          redirect_uris?: string[]
+          token_endpoint_auth_method?: string
+        }
+        Relationships: []
+      }
+      mcp_oauth_codes: {
+        Row: {
+          client_id: string
+          code_hash: string
+          created_at: string
+          expires_at: string
+          id: string
+          organization_id: string
+          redirect_uri: string
+          resource: string | null
+          code_challenge: string
+          used_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          client_id: string
+          code_hash: string
+          created_at?: string
+          expires_at: string
+          id?: string
+          organization_id: string
+          redirect_uri: string
+          resource?: string | null
+          code_challenge: string
+          used_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          client_id?: string
+          code_hash?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          organization_id?: string
+          redirect_uri?: string
+          resource?: string | null
+          code_challenge?: string
+          used_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mcp_oauth_codes_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mcp_oauth_tokens: {
+        Row: {
+          access_expires_at: string
+          access_hash: string
+          client_id: string
+          created_at: string
+          id: string
+          last_used_at: string | null
+          organization_id: string
+          refresh_expires_at: string
+          refresh_hash: string
+          revoked_at: string | null
+          scopes: string[]
+          user_id: string | null
+        }
+        Insert: {
+          access_expires_at: string
+          access_hash: string
+          client_id: string
+          created_at?: string
+          id?: string
+          last_used_at?: string | null
+          organization_id: string
+          refresh_expires_at: string
+          refresh_hash: string
+          revoked_at?: string | null
+          scopes?: string[]
+          user_id?: string | null
+        }
+        Update: {
+          access_expires_at?: string
+          access_hash?: string
+          client_id?: string
+          created_at?: string
+          id?: string
+          last_used_at?: string | null
+          organization_id?: string
+          refresh_expires_at?: string
+          refresh_hash?: string
+          revoked_at?: string | null
+          scopes?: string[]
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mcp_oauth_tokens_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ads_campaign_stats: {
         Row: {
           campaign_id: string

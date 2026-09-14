@@ -1,7 +1,7 @@
 {
   "name": "quotebuilder",
   "version": "1.1.0",
-  "description": "QuoteBuilder MCP — CRM devis B2B pour Claude Desktop",
+  "description": "QuoteBuilder MCP — CRM devis B2B pour Claude, ChatGPT et Cursor",
   "runtime": "node",
   "entry": "dist/index.js",
   "env": {

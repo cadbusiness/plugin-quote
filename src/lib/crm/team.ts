@@ -182,7 +182,7 @@ export const TEAM_CAPABILITIES: CapabilityDef[] = [
   { id: "automations", area: "Automatisations", hint: "Canvas, parcours, exécutions", roles: ["owner", "admin"] },
   { id: "equipe", area: "Équipe", hint: "Inviter, rôles, accès, journal", roles: ["owner", "admin"] },
   { id: "canaux-org", area: "Canaux de l’espace", hint: "Boîte partagée de l’organisation", roles: ["owner", "admin"] },
-  { id: "api", area: "API et webhooks", hint: "Clés MCP, exports", roles: ["owner", "admin"] },
+  { id: "api", area: "API et webhooks", hint: "Clés MCP Claude / ChatGPT, exports", roles: ["owner", "admin"] },
   { id: "parametres", area: "Paramètres", hint: "Templates, suivi, RGPD", roles: ["owner", "admin"] },
 ];
 

@@ -1,8 +1,36 @@
 # QuoteBuilder MCP
 
-Serveur [Model Context Protocol](https://modelcontextprotocol.io) pour piloter QuoteBuilder depuis Claude Desktop (leads, stats, funnels, relances).
+Serveur [Model Context Protocol](https://modelcontextprotocol.io) pour piloter QuoteBuilder depuis Claude, ChatGPT et Cursor (leads, stats, funnels, relances).
 
-## Installation
+## Serveur HTTP (recommandé)
+
+URL : `https://www.quotebuilder.co/api/mcp` (ou l’URL de votre déploiement + `/api/mcp`).
+
+Créer une clé `qb_live_…` dans **Paramètres → API & webhooks**.
+
+### ChatGPT (web)
+
+Paramètres → Applications et connecteurs → activer le mode développeur → Créer. Coller l’URL MCP, authentification **OAuth** (client id / secret vides). QuoteBuilder ouvre l’écran d’autorisation.
+
+### ChatGPT Desktop, Codex, Cursor, Claude distant
+
+Bearer token :
+
+```json
+{
+  "mcpServers": {
+    "quotebuilder": {
+      "url": "https://www.quotebuilder.co/api/mcp",
+      "headers": {
+        "Authorization": "Bearer qb_live_votre_cle"
+      }
+    }
+  }
+}
+```
+
+## Installation stdio (Claude Desktop local)
+
 
 ```bash
 npm install -g quotebuilder-mcp
