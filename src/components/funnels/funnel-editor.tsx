@@ -2,18 +2,18 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ExternalLink } from "lucide-react";
 import { ListPanel } from "@/components/ui/list-panel";
+import { Chip } from "@/components/ui/chip";
 import { LocalTabNav, replaceClientUrl } from "@/components/ui/local-tabs";
 import { CopyBlock } from "@/components/funnels/copy-block";
 import { FunnelAutomations, type FunnelWorkflowRow } from "@/components/funnels/funnel-automations";
 import { FunnelStatsPanel } from "@/components/funnels/funnel-stats-panel";
 import { ParcoursBuilder } from "@/components/funnels/parcours-builder";
 import type { PreviewProduct } from "@/components/funnels/parcours-preview";
-import { renameFunnel, saveFunnelTracking, setFunnelActive, setFunnelKind, setFunnelQuoteMode } from "@/app/(app)/funnels/actions";
+import { renameFunnel, saveFunnelTracking, setFunnelActive } from "@/app/(app)/funnels/actions";
 import type { FunnelKind } from "@/lib/funnels/builder";
-import { FUNNEL_KIND_OPTIONS } from "@/lib/funnels/kind";
-import { QUOTE_MODE_OPTIONS, type QuoteMode } from "@/lib/quotes/quote-mode";
+import { funnelKindHint, funnelKindLabel, funnelKindTone } from "@/lib/funnels/kind";
 import type { Tables } from "@/lib/db/database.types";
 import { FUNNEL_TABS, type FunnelTab } from "@/lib/funnels/tabs";
 import type { FunnelTracking } from "@/lib/funnels/tracking";
@@ -43,10 +43,7 @@ export function FunnelEditor({
     id: string;
     name: string;
     slug: string;
-    wizardEnabled: boolean;
-    chatEnabled: boolean;
     kind: FunnelKind;
-    quoteMode: QuoteMode;
     isActive: boolean;
   };
   orgName: string;
@@ -65,8 +62,6 @@ export function FunnelEditor({
 }) {
   const [pending, startTransition] = useTransition();
   const [tab, setTab] = useState(initialTab);
-  const kind = funnel.kind;
-  const quoteMode = funnel.quoteMode;
   const embedUrl = publicUrl.replace("/c/", "/embed/");
   const widget = `<div data-quotebuilder data-org="${orgSlug}" data-id="${funnel.slug}"></div>\n<script src="${new URL("/widget.js", publicUrl).origin}/widget.js" async></script>`;
   const iframe = `<iframe src="${embedUrl}" title="${funnel.name}" style="width:100%;min-height:720px;border:0"></iframe>`;
@@ -101,33 +96,18 @@ export function FunnelEditor({
             }}
             className="min-w-0 flex-1 bg-transparent text-sm font-semibold text-slate-900 outline-none"
           />
-          <div className="flex max-w-[min(100%,22rem)] shrink-0 overflow-x-auto rounded-full bg-slate-100 p-0.5 text-xs font-medium">
-            {FUNNEL_KIND_OPTIONS.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                disabled={pending || kind === item.id}
-                onClick={() => startTransition(() => void setFunnelKind(funnel.id, item.id))}
-                className={`rounded-full px-2.5 py-1 ${
-                  kind === item.id
-                    ? item.id === "chat"
-                      ? "bg-white text-violet-800 shadow-sm"
-                      : item.id === "catalog"
-                        ? "bg-white text-sky-800 shadow-sm"
-                        : "bg-white text-[#C2410C] shadow-sm"
-                    : "text-slate-500"
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
+          <span title={funnelKindHint(funnel.kind)}>
+            <Chip tone={funnelKindTone(funnel.kind)}>{funnelKindLabel(funnel.kind)}</Chip>
+          </span>
           <Link
             href={publicUrl}
             target="_blank"
-            className="rounded-md px-2 py-1.5 text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+            rel="noreferrer"
+            aria-label="Ouvrir le lien public"
+            className="inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-1.5 text-sm text-slate-500 hover:bg-slate-50 hover:text-slate-900"
           >
-            Aperçu
+            Ouvrir
+            <ExternalLink className="h-3.5 w-3.5" aria-hidden />
           </Link>
           <button
             type="button"
@@ -175,7 +155,7 @@ export function FunnelEditor({
             funnelId={funnel.id}
             funnelName={funnel.name}
             orgName={orgName}
-            kind={kind}
+            kind={funnel.kind}
             steps={steps}
             questions={questions}
             products={products}
@@ -202,29 +182,6 @@ export function FunnelEditor({
             <p className="mt-0.5 text-sm text-slate-500">
               Page publique, widget, plugin WordPress (liste de devis + funnel) — le même parcours.
             </p>
-          </div>
-          <div className="border-b border-slate-100 px-4 py-4 lg:px-6">
-            <p className="text-sm font-medium text-slate-900">Mode devis</p>
-            <p className="mt-0.5 text-sm text-slate-500">
-              wizard = parcours, catalog = rayons, rfq = brief. Une boutique liée peut encore surcharger ce réglage.
-            </p>
-            <div className="mt-3 flex max-w-lg gap-1 rounded-lg bg-slate-100 p-0.5 text-sm">
-              {QUOTE_MODE_OPTIONS.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  disabled={pending || quoteMode === item.id}
-                  onClick={() => startTransition(() => void setFunnelQuoteMode(funnel.id, item.id))}
-                  className={`flex-1 rounded-md px-3 py-1.5 ${
-                    quoteMode === item.id
-                      ? "bg-white font-medium text-[#C2410C] shadow-sm"
-                      : "text-slate-500"
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
           </div>
           <CopyBlock label="Lien public" value={publicUrl} />
           <CopyBlock label="Widget JS" value={widget} />

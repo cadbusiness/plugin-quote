@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { restrictProductsToShopCatalog } from "@/lib/shops/catalog-scope";
+import { themeForNewFunnel } from "@/lib/funnels/kind";
 import {
   isCatalogQuoteMode,
   isQuoteMode,
@@ -33,6 +34,11 @@ assert.equal(quoteModeFromTheme({ quoteMode: "light" }), "rfq");
 assert.equal(quoteModeFromTheme({ quoteMode: "configurator" }), "wizard");
 assert.equal(quoteModeFromTheme({ quoteMode: "wizard" }), "wizard");
 assert.equal(quoteModeFromTheme({ quoteMode: "catalog" }), "catalog");
+
+assert.equal(resolveQuoteMode({ configuratorTheme: themeForNewFunnel("form") }), "wizard");
+assert.equal(resolveQuoteMode({ configuratorTheme: themeForNewFunnel("chat") }), "wizard");
+assert.equal(resolveQuoteMode({ configuratorTheme: themeForNewFunnel("catalog") }), "catalog");
+assert.equal((themeForNewFunnel("catalog") as { kind?: string }).kind, "catalog");
 
 assert.equal(resolveQuoteMode({}), "wizard");
 assert.equal(resolveQuoteMode({ configuratorTheme: { kind: "form" } }), "wizard");

@@ -1,5 +1,6 @@
 import type { Json } from "@/lib/db/database.types";
 import type { FunnelKind } from "@/lib/funnels/builder";
+import { themeWithQuoteMode, type QuoteMode } from "@/lib/quotes/quote-mode";
 
 export const FUNNEL_KIND_OPTIONS: {
   id: FunnelKind;
@@ -10,19 +11,19 @@ export const FUNNEL_KIND_OPTIONS: {
   {
     id: "form",
     label: "Formulaire",
-    hint: "Questions de cadrage, puis les produits adaptés.",
+    hint: "Le prospect répond à vos questions, puis voit les produits adaptés.",
     tone: "orange",
   },
   {
     id: "chat",
     label: "Chat IA",
-    hint: "Le prospect décrit le projet, l’IA propose.",
+    hint: "Le prospect décrit le projet ; l’IA s’appuie sur le catalogue.",
     tone: "violet",
   },
   {
     id: "catalog",
     label: "Catalogue",
-    hint: "Rayons, fiches produits, ajout au devis, une demande globale.",
+    hint: "Le prospect parcourt les gammes d’abord, puis envoie une demande unique.",
     tone: "sky",
   },
 ];
@@ -49,7 +50,14 @@ export function funnelKindFlags(kind: FunnelKind): { wizardEnabled: boolean; cha
   return { wizardEnabled: true, chatEnabled: false };
 }
 
-export function themeWithKind(theme: Json | null | undefined, kind: FunnelKind): Json {
+export function quoteModeForKind(kind: FunnelKind): QuoteMode {
+  return kind === "catalog" ? "catalog" : "wizard";
+}
+
+export function themeWithKind(
+  theme: Json | Record<string, unknown> | null | undefined,
+  kind: FunnelKind,
+): Json {
   const base =
     theme && typeof theme === "object" && !Array.isArray(theme)
       ? { ...(theme as Record<string, unknown>) }
@@ -60,8 +68,20 @@ export function themeWithKind(theme: Json | null | undefined, kind: FunnelKind):
   return next as Json;
 }
 
+/** Type + quoteMode aligned. Used at creation; the type is not switched afterwards. */
+export function themeForNewFunnel(
+  kind: FunnelKind,
+  theme: Json | Record<string, unknown> | null | undefined = {},
+): Json {
+  return themeWithQuoteMode(themeWithKind(theme, kind), quoteModeForKind(kind));
+}
+
 export function funnelKindLabel(kind: FunnelKind): string {
   return FUNNEL_KIND_OPTIONS.find((item) => item.id === kind)?.label ?? "Formulaire";
+}
+
+export function funnelKindHint(kind: FunnelKind): string {
+  return FUNNEL_KIND_OPTIONS.find((item) => item.id === kind)?.hint ?? FUNNEL_KIND_OPTIONS[0].hint;
 }
 
 export function funnelKindTone(kind: FunnelKind): "orange" | "violet" | "sky" {

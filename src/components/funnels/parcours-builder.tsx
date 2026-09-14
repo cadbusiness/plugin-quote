@@ -11,6 +11,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import Link from "next/link";
 import { GripVertical, Plus, Trash2 } from "lucide-react";
 import {
   addFunnelQuestion,
@@ -23,6 +24,7 @@ import {
 } from "@/app/(app)/funnels/actions";
 import { ChatStepBody, FormScreenBody, type PreviewProduct, type PreviewStep } from "@/components/funnels/parcours-preview";
 import { QUESTION_ADD, QUESTION_LABEL, SCREEN_ADD, screenLabel, type FunnelKind } from "@/lib/funnels/builder";
+import { funnelKindHint, funnelKindLabel } from "@/lib/funnels/kind";
 import type { QuestionOptions, QuestionType, ScreenType } from "@/lib/wizard/types";
 import type { Tables } from "@/lib/db/database.types";
 
@@ -123,6 +125,7 @@ export function ParcoursBuilder({
   const canvas = (
     <>
       <InsertPlus
+        kind={kind}
         open={picker === "start"}
         disabled={pending}
         onToggle={() => setPicker((current) => (current === "start" ? null : "start"))}
@@ -152,6 +155,7 @@ export function ParcoursBuilder({
               />
             )}
             <InsertPlus
+              kind={kind}
               open={picker === step.id}
               disabled={pending}
               onToggle={() => setPicker((current) => (current === step.id ? null : step.id))}
@@ -170,11 +174,7 @@ export function ParcoursBuilder({
           <p className="text-[10px] uppercase tracking-[0.16em] text-amber-400">{orgName}</p>
           <p className="text-sm font-medium">{funnelName}</p>
           <p className="mt-1 text-[11px] text-slate-300">
-            {kind === "chat"
-              ? "Chat IA · glissez les blocs dans la conversation"
-              : kind === "catalog"
-                ? "Catalogue · rayons, produits, devis global"
-                : "Formulaire · glissez les écrans du parcours"}
+            {funnelKindLabel(kind)} — {funnelKindHint(kind)}
           </p>
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 lg:px-8">
@@ -215,11 +215,13 @@ export function ParcoursBuilder({
 }
 
 function InsertPlus({
+  kind,
   open,
   disabled,
   onToggle,
   onPick,
 }: {
+  kind: FunnelKind;
   open: boolean;
   disabled: boolean;
   onToggle: () => void;
@@ -245,7 +247,7 @@ function InsertPlus({
               onClick={() => onPick(item.type)}
               className="flex w-full flex-col rounded-md px-3 py-2 text-left hover:bg-orange-50"
             >
-              <span className="text-sm font-medium text-slate-900">{item.label}</span>
+              <span className="text-sm font-medium text-slate-900">{screenLabel(item.type, kind)}</span>
               <span className="text-xs text-slate-500">{item.hint}</span>
             </button>
           ))}
@@ -451,17 +453,26 @@ function StepInspector({
           )}
         </div>
       ) : (
-        <p className="mt-3 text-sm text-slate-500">
-          {step.screen_type === "suggestions"
-            ? kind === "catalog"
-              ? "Le prospect parcourt les catégories, ouvre une fiche, puis ajoute au devis."
-              : "Le catalogue affiche les produits de ce funnel. Modifiez-les dans Catalogue."
-            : step.screen_type === "customize"
+        <>
+          <p className="mt-3 text-sm text-slate-500">
+            {step.screen_type === "suggestions"
               ? kind === "catalog"
-                ? "Le devis global : quantités et options des produits ajoutés."
-                : "Le prospect règle quantités et options sur les produits choisis."
-              : "Le prospect laisse nom, email, téléphone et société."}
-        </p>
+                ? "Le prospect parcourt les catégories, ouvre une fiche, puis ajoute au devis."
+                : "Les produits adaptés au brief s’affichent ici."
+              : step.screen_type === "customize"
+                ? kind === "catalog"
+                  ? "Le devis global : quantités et options des produits ajoutés."
+                  : "Le prospect règle quantités et options sur les produits choisis."
+                : "Le prospect laisse nom, email, téléphone et société."}
+          </p>
+          {step.screen_type === "suggestions" ? (
+            <p className="mt-2 text-sm">
+              <Link href="/produits" className="font-medium text-[#C2410C] hover:underline">
+                Les fiches se gèrent dans Catalogue
+              </Link>
+            </p>
+          ) : null}
+        </>
       )}
     </aside>
   );

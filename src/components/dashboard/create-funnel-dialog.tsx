@@ -17,7 +17,7 @@ type ExistingFunnel = { id: string; name: string };
 
 const SCREENS: { id: ScreenType; label: string; hint: string }[] = [
   { id: "questions", label: "Questions de cadrage", hint: "Le prospect qualifie son projet" },
-  { id: "suggestions", label: "Catalogue", hint: "On lui propose vos produits" },
+  { id: "suggestions", label: "Produits recommandés", hint: "On lui propose vos produits" },
   { id: "customize", label: "Personnalisation", hint: "Quantités, options, précisions" },
   { id: "contact", label: "Formulaire de contact", hint: "Nom, email, téléphone, société" },
 ];
@@ -253,7 +253,7 @@ export function CreateFunnelDialog({
                   <div>
                     <p className="text-sm font-medium text-slate-900">Type</p>
                     <p className="mt-0.5 text-xs text-slate-500">
-                      Formulaire, chat, ou catalogue à parcourir. Un funnel, un parcours. Pré-rempli selon le template.
+                      Un funnel, un parcours. Le type se choisit ici et ne change plus.
                     </p>
                     <div className="mt-2 grid gap-2">
                       {FUNNEL_KIND_OPTIONS.map((item) => {

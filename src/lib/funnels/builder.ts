@@ -4,7 +4,7 @@ export type FunnelKind = "form" | "chat" | "catalog";
 
 export const SCREEN_LABEL: Record<ScreenType, string> = {
   questions: "Questions",
-  suggestions: "Catalogue",
+  suggestions: "Produits recommandés",
   customize: "Options",
   contact: "Identité",
 };
@@ -20,7 +20,7 @@ export const QUESTION_LABEL: Record<QuestionType, string> = {
 
 export const SCREEN_ADD: { type: ScreenType; label: string; hint: string }[] = [
   { type: "questions", label: "Questions", hint: "Écran de brief" },
-  { type: "suggestions", label: "Catalogue", hint: "Produits recommandés" },
+  { type: "suggestions", label: "Produits recommandés", hint: "Fiches adaptées au brief" },
   { type: "customize", label: "Options", hint: "Quantités et variantes" },
   { type: "contact", label: "Identité", hint: "Nom, email, société" },
 ];

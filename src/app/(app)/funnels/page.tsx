@@ -37,7 +37,7 @@ export default async function FunnelsPage() {
           const kind = parseFunnelKind(funnel.theme, funnel.wizard_enabled, funnel.chat_enabled);
           const row = byId.get(funnel.id);
           return (
-            <ClickableRow key={funnel.id} href={`/funnels/${funnel.id}?tab=stats`}>
+            <ClickableRow key={funnel.id} href={`/funnels/${funnel.id}`}>
               <td className="px-4 py-3 lg:px-6">
                 <div className="font-medium text-slate-900">{funnel.name}</div>
                 <Chip tone={funnel.is_active ? "emerald" : "amber"}>

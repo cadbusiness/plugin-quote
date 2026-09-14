@@ -1,6 +1,6 @@
 import { DEMO_FUNNEL_ALIASES, DEMO_FUNNEL_SLUG } from "@/lib/demo/constants";
 import { pickDemoFunnel } from "@/lib/demo/public-slugs";
-import { themeWithKind } from "@/lib/funnels/kind";
+import { themeForNewFunnel } from "@/lib/funnels/kind";
 import { getFunnelTemplate, type TemplateStep } from "@/lib/funnels/templates";
 import type { DemoClient, DemoFunnel, SeedContext, SeedModule } from "@/lib/demo/types";
 
@@ -69,9 +69,9 @@ export async function ensureDemoFunnel(ctx: SeedContext): Promise<{ funnel: Demo
         wizard_enabled: true,
         chat_enabled: true,
         is_active: true,
-        theme: themeWithKind(
-          existing.theme && typeof existing.theme === "object" ? existing.theme : { accent: "#E85D04" },
+        theme: themeForNewFunnel(
           "form",
+          existing.theme && typeof existing.theme === "object" ? existing.theme : { accent: "#E85D04" },
         ),
       })
       .eq("id", existing.id)
@@ -92,7 +92,7 @@ export async function ensureDemoFunnel(ctx: SeedContext): Promise<{ funnel: Demo
       wizard_enabled: true,
       chat_enabled: true,
       is_active: true,
-      theme: themeWithKind({ accent: "#E85D04" }, "form"),
+      theme: themeForNewFunnel("form", { accent: "#E85D04" }),
     })
     .select("*")
     .single();

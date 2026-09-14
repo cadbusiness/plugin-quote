@@ -4,7 +4,7 @@ import type { ScreenType } from "@/lib/wizard/types";
 import { uniqueSlug } from "@/lib/org/slug";
 import { CATALOG_FUNNEL_STEPS, getFunnelTemplate, type TemplateStep } from "@/lib/funnels/templates";
 import type { FunnelKind } from "@/lib/funnels/builder";
-import { funnelKindFlags, isFunnelKind, themeWithKind } from "@/lib/funnels/kind";
+import { funnelKindFlags, isFunnelKind, themeForNewFunnel } from "@/lib/funnels/kind";
 
 export type CreateFunnelInput = {
   name: string;
@@ -70,7 +70,7 @@ export async function insertFunnelFromTemplate(
       sector: template.id,
       wizard_enabled: input.wizardEnabled,
       chat_enabled: input.chatEnabled,
-      theme: themeWithKind({}, input.kind),
+      theme: themeForNewFunnel(input.kind),
     })
     .select("id")
     .single();

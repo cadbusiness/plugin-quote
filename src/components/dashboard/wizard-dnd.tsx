@@ -12,14 +12,8 @@ import {
 import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
+import { SCREEN_LABEL, isScreenType } from "@/lib/funnels/builder";
 import type { Tables } from "@/lib/db/database.types";
-
-const SCREEN_LABEL: Record<string, string> = {
-  questions: "Questions",
-  suggestions: "Catalogue",
-  customize: "Options",
-  contact: "Identité",
-};
 
 function SortableStep({
   step,
@@ -47,7 +41,7 @@ function SortableStep({
         </button>
         <div>
           <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
-            {SCREEN_LABEL[step.screen_type] ?? step.screen_type}
+            {isScreenType(step.screen_type) ? SCREEN_LABEL[step.screen_type] : step.screen_type}
           </p>
           <h2 className="text-base font-semibold text-slate-900">{step.title}</h2>
         </div>
