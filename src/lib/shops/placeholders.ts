@@ -70,6 +70,12 @@ export function shopPlaceholders(sector: string, templateId?: string | null): Sh
   return SETS[key];
 }
 
+export const SHOP_TEAM_PORTRAITS = [
+  { image: unsplash("photo-1573496359142-b8d87734a5a2", 800), hint: "Portrait professionnel femme" },
+  { image: unsplash("photo-1472099645785-5658abf4ff4e", 800), hint: "Portrait professionnel homme" },
+  { image: unsplash("photo-1580489944761-15a19d654956", 800), hint: "Portrait professionnel femme" },
+];
+
 export function placeholderCatalogForPrompt(sector: string, templateId?: string | null) {
   const set = shopPlaceholders(sector, templateId);
   return [

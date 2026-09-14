@@ -96,9 +96,9 @@ export function shopChatChips(selection?: ShopAgentSelection | null) {
   if (selection?.kind === "node") {
     return ["Réécris le titre", "Raccourcis le texte", "Change l’image", "Plus premium"];
   }
-  return ["Plus premium", "Ajoute une section à propos", "Raccourcis les textes", "Change l’image du bandeau", "Ajoute une FAQ", "Mets le CTA devis en avant"];
+  return ["Plus premium", "Ajoute une section à propos", "Présente l’équipe", "Raccourcis les textes", "Change l’image du bandeau", "Ajoute une FAQ"];
 }
 
 export function shopChatFollowUps() {
-  return ["Encore plus net", "Autre formulation", "Reviens en arrière"];
+  return ["Plus net", "Autre texte"];
 }

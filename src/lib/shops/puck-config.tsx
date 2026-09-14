@@ -158,7 +158,7 @@ export const shopPuckConfig = {
     shop: {
       title: "Boutique",
       defaultExpanded: true,
-      components: ["Catalog", "Categories", "QuoteCta", "Faq", "Features", "Legal"],
+      components: ["Catalog", "Categories", "QuoteCta", "Faq", "Features", "Team", "Legal"],
     },
   },
   components: {
@@ -606,6 +606,76 @@ export const shopPuckConfig = {
               <li key={item.title} className={cx(SHOP_CARD, "px-6 py-6")}>
                 <p className="font-semibold tracking-tight">{item.title}</p>
                 <p className={cx(SHOP_BODY, "mt-2")}>{item.text}</p>
+              </li>
+            ))}
+          </ul>
+        </ShopSection>
+      ),
+    },
+    Team: {
+      label: "Équipe",
+      fields: {
+        heading: { type: "text", label: "Titre" },
+        text: { type: "textarea", label: "Chapô" },
+        members: {
+          type: "array",
+          label: "Profils",
+          getItemSummary: (item: { name?: string }) => item.name || "Profil",
+          defaultItemProps: { name: "Nouveau profil", role: "", text: "", image: "", imageAlt: "" },
+          arrayFields: {
+            name: { type: "text", label: "Nom" },
+            role: { type: "text", label: "Rôle" },
+            text: { type: "textarea", label: "Présentation" },
+            image: { type: "text", label: "Photo (URL)" },
+            imageAlt: { type: "text", label: "Texte alternatif" },
+          },
+        },
+        ...boxFields,
+      },
+      defaultProps: {
+        heading: "L’équipe",
+        text: "Les interlocuteurs qui cadrent le brief et le devis.",
+        members: [],
+        padding: "64px 0",
+        position: "static",
+      },
+      render: ({
+        heading,
+        text,
+        members,
+        puck,
+        ...box
+      }: BoxStyleInput & {
+        heading?: string;
+        text?: string;
+        members?: { name?: string; role?: string; text?: string; image?: string; imageAlt?: string }[];
+        puck?: PuckBag;
+      }) => (
+        <ShopSection box={box} puck={puck}>
+          {heading ? <h2 className={headingClass(box, "h2")}>{heading}</h2> : null}
+          {text ? <p className={cx(SHOP_BODY, "mt-4")}>{text}</p> : null}
+          <ul className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {(members ?? []).map((member, index) => (
+              <li key={`${member.name || "profil"}-${index}`} className="min-w-0">
+                {member.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={member.image}
+                    alt={member.imageAlt || member.name || ""}
+                    className="aspect-[4/5] w-full rounded-2xl object-cover object-top"
+                  />
+                ) : (
+                  <div className="flex aspect-[4/5] items-center justify-center rounded-2xl bg-black/5 text-sm opacity-60">
+                    Photo
+                  </div>
+                )}
+                <h3 className={cx(headingClass(box, "h3"), "mt-5")}>{member.name}</h3>
+                {member.role ? (
+                  <p className="mt-1 text-sm font-medium text-[color-mix(in_srgb,var(--shop-text)_62%,var(--shop-bg))]">
+                    {member.role}
+                  </p>
+                ) : null}
+                {member.text ? <p className={cx(SHOP_BODY, "mt-3 max-w-none")}>{member.text}</p> : null}
               </li>
             ))}
           </ul>

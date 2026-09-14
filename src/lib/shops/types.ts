@@ -50,6 +50,7 @@ export type ShopLegal = {
 
 export type ShopFaqItem = { q: string; a: string };
 export type ShopFeatureItem = { title: string; text: string };
+export type ShopTeamMember = { name: string; role: string; text: string; image: string; imageAlt: string };
 
 export type ShopBlockType =
   | "hero"
@@ -96,6 +97,7 @@ export type ShopNodeTypeName =
   | "QuoteCta"
   | "Faq"
   | "Features"
+  | "Team"
   | "Legal";
 
 export type ShopNode = {

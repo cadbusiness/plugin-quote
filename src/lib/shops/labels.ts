@@ -11,6 +11,7 @@ export const SHOP_NODE_LABEL: Record<string, string> = {
   QuoteCta: "Demande de devis",
   Faq: "Questions fréquentes",
   Features: "Points forts",
+  Team: "Équipe",
   Legal: "Texte légal",
 };
 

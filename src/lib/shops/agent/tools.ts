@@ -13,7 +13,7 @@ export const SHOP_AGENT_TOOLS: Anthropic.Tool[] = [
   {
     name: "insert_node",
     description:
-      "Ajoute un nœud. Types : Section, Columns, Heading, Text, Image, Button, Hero, Catalog, Categories, QuoteCta, Faq, Features, Legal, about. type=about crée ou enrichit la section À propos (texte + image). parentId vide = racine. ids = valeur après id= dans get_tree, jamais Type:uuid. Heading/Text dans une Section, jamais dans un Hero.",
+      "Ajoute un nœud. Types : Section, Columns, Heading, Text, Image, Button, Hero, Catalog, Categories, QuoteCta, Faq, Features, Team, Legal, about, team. type=about = À propos. type=team = section Équipe (titre, chapô, profils name/role/text/image). Ne compose jamais une équipe avec 3 Image seules. ids = valeur après id=, jamais Type:uuid.",
     input_schema: {
       type: "object",
       properties: {
@@ -49,6 +49,20 @@ export const SHOP_AGENT_TOOLS: Anthropic.Tool[] = [
             type: "object",
             properties: { title: { type: "string" }, text: { type: "string" } },
             required: ["title", "text"],
+          },
+        },
+        members: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              name: { type: "string" },
+              role: { type: "string" },
+              text: { type: "string" },
+              image: { type: "string" },
+              imageAlt: { type: "string" },
+            },
+            required: ["name"],
           },
         },
       },
@@ -92,6 +106,20 @@ export const SHOP_AGENT_TOOLS: Anthropic.Tool[] = [
             type: "object",
             properties: { title: { type: "string" }, text: { type: "string" } },
             required: ["title", "text"],
+          },
+        },
+        members: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              name: { type: "string" },
+              role: { type: "string" },
+              text: { type: "string" },
+              image: { type: "string" },
+              imageAlt: { type: "string" },
+            },
+            required: ["name"],
           },
         },
       },

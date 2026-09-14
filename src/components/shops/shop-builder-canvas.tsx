@@ -28,6 +28,7 @@ import {
   Store,
   Tablet,
   Type,
+  Users,
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
@@ -75,13 +76,14 @@ const BLOCK_ICON: Record<string, LucideIcon> = {
   QuoteCta: MessageSquareQuote,
   Faq: CircleHelp,
   Features: ListChecks,
+  Team: Users,
   Legal: ScrollText,
 };
 
 const PALETTE: { id: string; title: string; icon: LucideIcon; items: string[] }[] = [
   { id: "layout", title: "Disposition", icon: LayoutTemplate, items: ["Section", "Columns"] },
   { id: "content", title: "Contenu", icon: AlignLeft, items: ["Heading", "Text", "Image", "Button", "Hero"] },
-  { id: "shop", title: "Boutique", icon: Store, items: ["Catalog", "Categories", "QuoteCta", "Faq", "Features", "Legal"] },
+  { id: "shop", title: "Boutique", icon: Store, items: ["Catalog", "Categories", "QuoteCta", "Faq", "Features", "Team", "Legal"] },
 ];
 
 function ShopDrawerItem({ name, children }: { name: string; children: ReactNode }) {
@@ -179,10 +181,10 @@ type DockTab = "blocks" | "structure" | "chat";
 export type ShopBuilderTab = DockTab;
 export type ShopBuilderChrome = "header" | "footer" | null;
 
-const DOCK_TABS: { id: DockTab; label: string; icon: typeof Boxes }[] = [
-  { id: "blocks", label: "Blocs", icon: Boxes },
-  { id: "structure", label: "Structure", icon: Layers },
-  { id: "chat", label: "Chat", icon: MessageSquare },
+const DOCK_TABS: { id: DockTab; label: string }[] = [
+  { id: "blocks", label: "Blocs" },
+  { id: "structure", label: "Structure" },
+  { id: "chat", label: "Chat" },
 ];
 
 function ViewportButtons() {
@@ -242,25 +244,24 @@ function ShopChrome({
         <ViewportButtons />
       </div>
       <div className="flex min-w-0 flex-1 justify-center">
-        <div className="flex rounded-md bg-white/10 p-0.5">
+        <nav aria-label="Panneau" className="flex items-center gap-4">
           {DOCK_TABS.map((item) => {
-            const Icon = item.icon;
             const active = tab === item.id;
             return (
               <button
                 key={item.id}
                 type="button"
                 onClick={() => onTab(item.id)}
-                className={`inline-flex h-7 items-center gap-1.5 rounded px-2.5 text-xs font-medium ${
-                  active ? "bg-white text-stone-900" : "text-white/70 hover:text-white"
+                className={`relative pb-0.5 text-[11px] font-medium tracking-wide ${
+                  active ? "text-white" : "text-white/45 hover:text-white/80"
                 }`}
               >
-                <Icon className="h-3.5 w-3.5" aria-hidden />
                 {item.label}
+                {active ? <span className="absolute inset-x-0 -bottom-1.5 h-px bg-white" /> : null}
               </button>
             );
           })}
-        </div>
+        </nav>
       </div>
       <div className="flex shrink-0 items-center justify-end gap-1.5">{trailing}</div>
     </div>

@@ -1,7 +1,7 @@
 import { getFunnelFamily } from "@/lib/funnels/families";
 import { slugify } from "@/lib/org/slug";
 import { newBlockId } from "@/lib/shops/blocks";
-import { buildAboutSection, findAboutSectionId } from "@/lib/shops/composition";
+import { buildAboutSection, buildTeamSection, findAboutSectionId } from "@/lib/shops/composition";
 import {
   emptyNode,
   firstNodeId,
@@ -63,6 +63,7 @@ function nodeProps(input: Record<string, unknown>) {
   if (typeof input.limit === "number") props.limit = input.limit;
   if (Array.isArray(input.faq)) props.faq = input.faq;
   if (Array.isArray(input.features)) props.features = input.features;
+  if (Array.isArray(input.members)) props.members = input.members;
   return props;
 }
 
@@ -123,6 +124,8 @@ const LEGACY_TYPE: Record<string, string> = {
   faq: "Faq",
   features: "Features",
   legal: "Legal",
+  team: "Team",
+  equipe: "Team",
 };
 
 function foldType(value: string) {
@@ -137,6 +140,11 @@ function foldType(value: string) {
 function isAboutType(type: string) {
   const folded = foldType(type);
   return folded === "about" || folded === "a-propos" || folded === "propos" || folded === "apropos";
+}
+
+function isTeamType(type: string) {
+  const folded = foldType(type);
+  return folded === "team" || folded === "equipe" || folded === "staff" || folded === "presentation";
 }
 
 function resolvePageSlug(doc: ShopDocument, slug: string) {
@@ -208,6 +216,33 @@ export function executeShopTool(doc: ShopDocument, name: string, input: Record<s
       if (!result.ok) return result;
       setPageLayout(doc, slug, result.layout);
       return { ok: true, summary: `Section à propos ajoutée sur ${slug} (${result.id})` };
+    }
+    if (isTeamType(type) || mappedType === "Team") {
+      const team = buildTeamSection({
+        heading: typeof input.heading === "string" ? input.heading : undefined,
+        text: typeof input.text === "string" ? input.text : undefined,
+        members: input.members,
+      });
+      const existing = !afterId && !parentId ? layout.content.find((node) => node.type === "Team") : null;
+      if (existing) {
+        const result = updateNode(layout, existing.props.id, {
+          heading: team.props.heading,
+          text: team.props.text,
+          members: team.props.members,
+        });
+        if (!result.ok) return result;
+        setPageLayout(doc, slug, result.layout);
+        return { ok: true, summary: `Section équipe mise à jour sur ${slug} (${existing.props.id})` };
+      }
+      const result = placeNode(layout, team, {
+        parentId,
+        slot,
+        index,
+        afterId: afterId || layout.content.find((node) => node.type === "Hero")?.props.id,
+      });
+      if (!result.ok) return result;
+      setPageLayout(doc, slug, result.layout);
+      return { ok: true, summary: `Section équipe ajoutée sur ${slug} (${result.id})` };
     }
     const result = insertNode(layout, {
       type: mappedType,

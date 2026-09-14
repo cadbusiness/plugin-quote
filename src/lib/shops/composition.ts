@@ -1,6 +1,6 @@
 import { getFunnelFamily, type FunnelFamilyId } from "@/lib/funnels/families";
 import { emptyNode } from "@/lib/shops/layout";
-import { shopPlaceholders } from "@/lib/shops/placeholders";
+import { SHOP_TEAM_PORTRAITS, shopPlaceholders } from "@/lib/shops/placeholders";
 import {
   DEFAULT_HOME_RHYTHM,
   homeRhythmFor,
@@ -8,7 +8,7 @@ import {
   resolveShopSectorTemplate,
   type HomeBlockId,
 } from "@/lib/shops/sector-templates";
-import type { ShopFaqItem, ShopFeatureItem, ShopLayout, ShopNode } from "@/lib/shops/types";
+import type { ShopFaqItem, ShopFeatureItem, ShopLayout, ShopNode, ShopTeamMember } from "@/lib/shops/types";
 
 const WASH = "#F6F1EA";
 
@@ -711,6 +711,64 @@ export const HOME_RHYTHM = homeTypeSequence(DEFAULT_HOME_RHYTHM);
 
 export function layoutTypeSequence(layout: ShopLayout): string[] {
   return layout.content.map((node) => node.type);
+}
+
+function parseTeamMembers(raw: unknown): ShopTeamMember[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === "object"))
+    .map((item, index) => {
+      const name = String(item.name ?? item.title ?? "").trim();
+      const role = String(item.role ?? item.job ?? "").trim();
+      const text = String(item.text ?? item.bio ?? "").trim();
+      const portrait = SHOP_TEAM_PORTRAITS[index % SHOP_TEAM_PORTRAITS.length]!;
+      const image = String(item.image ?? "").trim() || portrait.image;
+      return {
+        name: name || `Profil ${index + 1}`,
+        role,
+        text,
+        image,
+        imageAlt: String(item.imageAlt ?? "").trim() || name || portrait.hint,
+      };
+    })
+    .filter((item) => item.name);
+}
+
+export function buildTeamSection(input: {
+  heading?: string;
+  text?: string;
+  members?: unknown;
+}): ShopNode {
+  const members = parseTeamMembers(input.members);
+  return emptyNode("Team", {
+    heading: input.heading?.trim() || "L’équipe",
+    text: input.text?.trim() || "Les interlocuteurs qui cadrent le brief et le devis.",
+    members: members.length
+      ? members
+      : [
+          {
+            name: "Responsable commercial",
+            role: "Brief et devis",
+            text: "Recueille le besoin et prépare le chiffrage à partir du catalogue.",
+            image: SHOP_TEAM_PORTRAITS[0]!.image,
+            imageAlt: "Portrait du responsable commercial",
+          },
+          {
+            name: "Technicien",
+            role: "Étude",
+            text: "Vérifie les contraintes terrain avant le devis écrit.",
+            image: SHOP_TEAM_PORTRAITS[1]!.image,
+            imageAlt: "Portrait du technicien",
+          },
+          {
+            name: "Conseiller",
+            role: "Suivi",
+            text: "Reste l’interlocuteur jusqu’à la validation du devis.",
+            image: SHOP_TEAM_PORTRAITS[2]!.image,
+            imageAlt: "Portrait du conseiller",
+          },
+        ],
+  });
 }
 
 export function findAboutSectionId(layout: ShopLayout): string | null {

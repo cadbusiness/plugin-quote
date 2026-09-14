@@ -236,6 +236,23 @@ assert.equal(executeShopTool(doc, "update_node", { slug: "accueil", id: `Section
 assert.equal(executeShopTool(doc, "insert_node", { slug: "accueil", type: "about", heading: "Notre atelier bois" }).ok, true);
 assert.match(summarizeLayout(parseLayout(doc.pages[0]!.blocks)), /Notre atelier bois/);
 
+const team = executeShopTool(doc, "insert_node", {
+  slug: "accueil",
+  type: "equipe",
+  heading: "L’équipe",
+  text: "Trois interlocuteurs pour le brief et le devis.",
+  members: [
+    { name: "Sophie Laroche", role: "Responsable commerciale", text: "Cadre le brief et le devis." },
+    { name: "Marc Dubois", role: "Technicien logistique", text: "Vérifie les contraintes d’entrepôt." },
+    { name: "Léa Martin", role: "Conseillère technique", text: "Suit le dossier jusqu’au chiffrage." },
+  ],
+});
+assert.equal(team.ok, true);
+const teamNode = parseLayout(doc.pages[0]!.blocks).content.find((node) => node.type === "Team");
+assert.ok(teamNode);
+assert.equal((teamNode?.props.members as { name: string }[])[0]?.name, "Sophie Laroche");
+assert.match(summarizeLayout(parseLayout(doc.pages[0]!.blocks)), /Team id=/);
+
 const added = executeShopTool(doc, "insert_node", { slug: "accueil", type: "Text", text: "Notre atelier" });
 assert.equal(added.ok, true);
 const layout = parseLayout(doc.pages[0]!.blocks);

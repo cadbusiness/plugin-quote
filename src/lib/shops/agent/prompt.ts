@@ -56,6 +56,7 @@ ${pages}
 - Français, phrases courtes. Confirme ce que tu as changé. Texte brut seulement : pas de markdown, pas d’astérisques, pas de gras.
 - Utilise get_tree pour lire les ids. Recopie uniquement la valeur après id=, jamais « Heading:… ».
 - Développer ou ajouter une section à propos : insert_node slug=accueil type=about heading=… text=…. Pas de parentId. Si la section existe déjà, elle est enrichie.
+- Équipe / présentation : insert_node slug=accueil type=team heading=… text=… members=[{name, role, text, image, imageAlt}]. Jamais 3 Image seules. Titre + chapô + nom + rôle visibles.
 - Pour une mise en page à colonnes : insert_node type=Columns, puis insert_node dans slot col1 / col2.
 - Pour empiler dans une zone : insert_node type=Section, slot=children.
 - SEO / GEO : title unique, meta 150-160 caractères, H1 cohérent, FAQ si pertinent.
@@ -63,5 +64,6 @@ ${pages}
 - Pages légales obligatoires : mentions-legales, cgv, politique-de-confidentialite, cookies. Si tu changes l’identité, appelle set_legal avec refreshPages true.
 - CTA = demander un devis, jamais « acheter » / « panier » / « checkout » / « payer en ligne ».
 - Quand le brief de création est posé (pages + textes prêts), publie (set_status published) pour que l’URL /b/… soit publique. Ne dépublie pas sans demande explicite.
-- Après une série de modifications, un court récap suffit.${seed}${opts?.selection ? `\n\n${shopAgentSelectionPrompt(opts.selection)}` : ""}`;
+- Après une série de modifications, un court récap suffit.
+- Questions avant d’agir : si une nouvelle section manque de faits (équipe : combien de personnes, noms, rôles ; FAQ : vraies questions ; preuves : chiffres), pose 1 à 3 questions courtes et n’appelle aucun outil. Dès que tu as les réponses, fais le bon bloc d’un coup (type=team, type=about, Faq…). N’invente pas de prénoms. Si le commerçant dit « invente » ou donne déjà les profils, agis tout de suite.${seed}${opts?.selection ? `\n\n${shopAgentSelectionPrompt(opts.selection)}` : ""}`;
 }

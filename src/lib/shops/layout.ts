@@ -1,6 +1,6 @@
 import { parseBlocks, parseBlock } from "@/lib/shops/blocks";
 import type { Json } from "@/lib/db/database.types";
-import type { ShopBlock, ShopFaqItem, ShopLayout, ShopNode, ShopNodeTypeName } from "@/lib/shops/types";
+import type { ShopBlock, ShopFaqItem, ShopLayout, ShopNode, ShopNodeTypeName, ShopTeamMember } from "@/lib/shops/types";
 
 export const SHOP_NODE_TYPES = [
   "Section",
@@ -15,6 +15,7 @@ export const SHOP_NODE_TYPES = [
   "QuoteCta",
   "Faq",
   "Features",
+  "Team",
   "Legal",
 ] as const;
 
@@ -229,6 +230,41 @@ export function emptyNode(type: ShopNodeType, extra: Record<string, unknown> = {
             { title: "Devis, pas de caisse", text: "Le prospect demande un chiffrage, vous restez maître du prix." },
             { title: "Référencement", text: "Pages indexables, données structurées, mentions légales." },
           ],
+          padding: "64px 0",
+          ...extra,
+          id,
+        },
+      };
+    case "Team":
+      return {
+        type,
+        props: {
+          ...base,
+          heading: "L’équipe",
+          text: "Les interlocuteurs qui cadrent le brief et le devis.",
+          members: [
+            {
+              name: "Responsable commercial",
+              role: "Brief et devis",
+              text: "Recueille le besoin, relit le catalogue et prépare le chiffrage.",
+              image: "",
+              imageAlt: "Portrait du responsable commercial",
+            },
+            {
+              name: "Technicien",
+              role: "Étude",
+              text: "Vérifie les contraintes terrain avant le devis écrit.",
+              image: "",
+              imageAlt: "Portrait du technicien",
+            },
+            {
+              name: "Conseiller",
+              role: "Suivi",
+              text: "Reste l’interlocuteur jusqu’à la validation du devis.",
+              image: "",
+              imageAlt: "Portrait du conseiller",
+            },
+          ] as ShopTeamMember[],
           padding: "64px 0",
           ...extra,
           id,
