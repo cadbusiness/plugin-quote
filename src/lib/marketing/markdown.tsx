@@ -239,6 +239,58 @@ function SchematicFigure({ kind, label }: { kind: string; label: string }) {
     );
   }
 
+  if (kind === "assign-flow") {
+    return (
+      <div className="grid gap-3 sm:grid-cols-4">
+        {[
+          { t: "Entrée", d: "Mail, formulaire, WhatsApp." },
+          { t: "Score", d: "Hot / Warm / Cold avant d’assigner." },
+          { t: "Owner", d: "Une personne, jusqu’au transfert." },
+          { t: "SLA", d: "Première réponse + next step." },
+        ].map((item) => (
+          <div key={item.t} className="rounded-lg bg-mk-band px-4 py-4">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">{item.t}</p>
+            <p className="mt-2 text-sm leading-6 text-mk-muted">{item.d}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (kind === "assign-playbook") {
+    return (
+      <div className="grid gap-3 sm:grid-cols-3">
+        {[
+          { t: "Hot", d: "Senior dispo, première réponse courte, escalade si SLA raté." },
+          { t: "Warm", d: "Owner standard : compléter le brief, puis chiffrer ou RDV." },
+          { t: "Cold", d: "Junior ou créneau dédié. Qualification, pas Excel." },
+        ].map((item) => (
+          <div key={item.t} className="rounded-lg bg-mk-dark px-4 py-4 text-mk-on-dark">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">{item.t}</p>
+            <p className="mt-2 text-sm leading-6 text-mk-on-dark/70">{item.d}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (kind === "assign-dashboard") {
+    return (
+      <div className="grid gap-3 sm:grid-cols-3">
+        {[
+          { t: "Médiane", d: "Temps de première réponse par seau." },
+          { t: "% tenus", d: "SLA première réponse + next step." },
+          { t: "Orphelins", d: "> 24 h sans owner ou sans activité." },
+        ].map((item) => (
+          <div key={item.t} className="rounded-lg bg-mk-band px-4 py-4">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">{item.t}</p>
+            <p className="mt-2 text-sm leading-6 text-mk-muted">{item.d}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-[10rem] items-center justify-center text-sm text-mk-faint">
       {label}

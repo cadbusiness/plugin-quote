@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "assignation-sla-demande-devis-equipe": [
+    {
+      q: "C’est quoi un SLA sur une demande de devis ?",
+      a: "Un accord d’équipe sur le délai max de première réponse utile et de next step (chiffrage, RDV, ou demande de brief). Ce n’est pas un auto-mail vide.",
+    },
+    {
+      q: "Faut-il un owner unique même à deux commerciaux ?",
+      a: "Oui. À deux, le risque de double réponse et d’orphelins est déjà réel. L’owner évite les « je pensais que tu… ».",
+    },
+    {
+      q: "Comment choisir entre assignation par territoire et par score ?",
+      a: "Souvent les deux : territoire (ou métier) pour le routage de base, score pour la priorité et le SLA à l’intérieur de la file.",
+    },
+    {
+      q: "Que faire d’un Hot qui arrive hors horaires ?",
+      a: "Soit astreinte Hot uniquement, soit file lundi matin avec message clair au prospect. Décidez une règle, ne laissez pas le hasard choisir.",
+    },
+    {
+      q: "Comment éviter qu’un senior mange tous les Hot ?",
+      a: "Plafond de Hot ouverts + overflow automatique + revue de charge hebdo. Le meilleur closer ne doit pas devenir le goulot.",
+    },
+    {
+      q: "Les juniors peuvent-ils prendre des Warm et Cold ?",
+      a: "Oui, surtout les Cold et les Warm à brief incomplet. Les Hot à fort panier restent plutôt seniors, avec revue.",
+    },
+    {
+      q: "Que mesurer en premier si on n’a rien ?",
+      a: "Owner renseigné, temps de première réponse Hot, nombre d’orphelins > 24 h. Trois chiffres suffisent pour commencer.",
+    },
+    {
+      q: "Comment gérer les demandes qui arrivent sur WhatsApp / LinkedIn / téléphone ?",
+      a: "Même règle : créer le dossier dans le pipeline dans les 15 minutes, assigner un owner, coller le brief. Sinon ces canaux deviennent des silos invisibles.",
+    },
+    {
+      q: "Faut-il punir un SLA raté ?",
+      a: "Non. Regarder la cause : surcharge, brief pourri, règle absurde, outil inadapté. Ajuster capacité ou SLA. La punition crée des fausses données.",
+    },
+    {
+      q: "Un outil peut-il assigner tout seul ?",
+      a: "Il peut router selon des règles (territoire, score, charge) et alerter. La qualité reste humaine : brief, jugement, relation. L’outil réduit le chaos, il ne remplace pas le commercial.",
+    },
+  ],
   "qualifier-demande-devis-avant-chiffrage": [
     {
       q: "Faut-il toujours un budget chiffré pour qualifier ?",

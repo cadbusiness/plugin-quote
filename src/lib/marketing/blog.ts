@@ -79,6 +79,7 @@ export const BLOG_DEMO_SHOP = "/b/demo/vitrine";
 export const BLOG_TOOL_SEQUENCE = "/outils/generateur-sequence-relances";
 export const BLOG_TOOL_SCORE = "/outils/score-brief-devis";
 export const BLOG_TOOL_CONVERSION = "/outils/simulateur-taux-conversion-devis";
+export const BLOG_TOOL_CAPACITY = "/outils/calculateur-capacite-equipe-devis";
 
 export type BlogTool = {
   href: string;
@@ -112,9 +113,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Devis envoyés, panier, taux actuel et cible. CA mensuel, gain, option mix Hot / Warm / Cold.",
     tags: ["scoring", "funnel"],
   },
+  {
+    href: BLOG_TOOL_CAPACITY,
+    title: "Calculateur de capacité équipe devis",
+    text: "Commerciaux, heures dispo, minutes Hot / Warm / Cold. Charge vs capacité, taux d’utilisation.",
+    tags: ["scoring", "relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "assignation-sla-demande-devis-equipe",
+    path: "/blog/assignation-sla-demande-devis-equipe",
+    title: "Assignation et SLA des demandes de devis en équipe : owner, Hot/Warm/Cold, escalade",
+    description:
+      "Owner unique, SLA première réponse et chiffrage, playbook Hot/Warm/Cold, escalade week-end, charge équipe et erreurs classiques B2B.",
+    publishedAt: "2026-09-15",
+    readingMinutes: 11,
+    tags: ["scoring", "relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/relancer-devis-hot-depuis-dossier/04-devis-detail.png",
+    pinned: false,
+  },
   {
     slug: "qualifier-demande-devis-avant-chiffrage",
     path: "/blog/qualifier-demande-devis-avant-chiffrage",
