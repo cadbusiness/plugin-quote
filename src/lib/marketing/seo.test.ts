@@ -25,6 +25,7 @@ import { stripFrontmatter } from "./load-post";
 import { computeBriefScore } from "./brief-score";
 import { computeLostQuote } from "./lost-quote";
 import { computeConversionRate } from "./conversion-rate";
+import { applyTeamCapacityMix, computeTeamCapacity } from "./team-capacity";
 import { MARKETING_ROUTES } from "./routes";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
 import { CREAM_HEX, TAG_COVER } from "./theme";
@@ -72,11 +73,13 @@ for (const required of [
   "/outils/generateur-sequence-relances",
   "/outils/score-brief-devis",
   "/outils/simulateur-taux-conversion-devis",
+  "/outils/calculateur-capacite-equipe-devis",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
   "/secteurs/funnel-devis-agencement-bureau",
+  "/blog/assignation-sla-demande-devis-equipe",
   "/blog/qualifier-demande-devis-avant-chiffrage",
   "/blog/creer-devis-avec-claude-mcp",
   "/blog/visite-guidee-parcours-devis-b2b",
@@ -93,7 +96,23 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 13);
+assert.equal(BLOG_POSTS.length, 14);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "assignation-sla-demande-devis-equipe")?.tags, [
+  "scoring",
+  "relances",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "assignation-sla-demande-devis-equipe")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "assignation-sla-demande-devis-equipe")?.cover,
+  "/images/blog/relancer-devis-hot-depuis-dossier/04-devis-detail.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "assignation-sla-demande-devis-equipe")?.readingMinutes, 11);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "assignation-sla-demande-devis-equipe")?.publishedAt, "2026-09-15");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "assignation-sla-demande-devis-equipe")?.pinned, false);
+assert.equal(BLOG_FAQ["assignation-sla-demande-devis-equipe"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "qualifier-demande-devis-avant-chiffrage")?.tags, [
   "funnel",
   "scoring",
@@ -216,8 +235,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 7);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 7);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 8);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 8);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 4);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 3);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
@@ -370,6 +389,19 @@ const requiredSources = {
     "/b/demo/stock-pro-b2b/devis",
     "/signup?plan=free",
   ],
+  "assignation-sla-demande-devis-equipe.md": [
+    "figure:assign-flow",
+    "figure:assign-playbook",
+    "figure:assign-dashboard",
+    "/blog/score-demande-devis-b2b",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/delai-reponse-demande-devis-b2b",
+    "/blog/relancer-devis-hot-depuis-dossier",
+    "/outils/calculateur-capacite-equipe-devis",
+    "/outils/simulateur-taux-conversion-devis",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
   "qualifier-demande-devis-avant-chiffrage.md": [
     "figure:qualify-before",
     "figure:qualify-axes",
@@ -509,6 +541,17 @@ for (const file of blogFiles) {
 }
 
 {
+  const assignRaw = readFileSync(join(blogDir, "assignation-sla-demande-devis-equipe.md"), "utf8");
+  assert.ok(assignRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const assignBody = stripFrontmatter(assignRaw);
+  assert.ok(
+    assignBody.startsWith("# Assignation et SLA des demandes de devis en équipe"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(assignBody, /signup\?plan=free/);
+}
+
+{
   const qualifyRaw = readFileSync(join(blogDir, "qualifier-demande-devis-avant-chiffrage.md"), "utf8");
   assert.ok(qualifyRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
   const qualifyBody = stripFrontmatter(qualifyRaw);
@@ -605,6 +648,54 @@ assert.equal(conversionMix.mixTotal, 100);
 assert.equal(conversionMix.mixOk, true);
 assert.match(conversionMix.tip, /Mix correct/);
 
+const capacity = computeTeamCapacity({
+  reps: 3,
+  hoursPerWeek: 12,
+  weeksPerMonth: 4.3,
+  minHot: 45,
+  minWarm: 25,
+  minCold: 12,
+  volHot: 20,
+  volWarm: 45,
+  volCold: 35,
+});
+assert.equal(capacity.capacityHours, 3 * 12 * 4.3);
+assert.equal(capacity.chargeHours, (20 * 45 + 45 * 25 + 35 * 12) / 60);
+assert.equal(capacity.deltaHours, capacity.capacityHours - capacity.chargeHours);
+assert.ok(capacity.utilization < 55);
+assert.match(capacity.tip, /Surplus de capacité/);
+
+const capacityMix = applyTeamCapacityMix(100, 20, 45, 35);
+assert.deepEqual(capacityMix, { volHot: 20, volWarm: 45, volCold: 35 });
+assert.equal(applyTeamCapacityMix(100, 20, 45, 30), null);
+
+const capacityOver = computeTeamCapacity({
+  reps: 1,
+  hoursPerWeek: 8,
+  weeksPerMonth: 4,
+  minHot: 60,
+  minWarm: 40,
+  minCold: 20,
+  volHot: 30,
+  volWarm: 40,
+  volCold: 20,
+});
+assert.ok(capacityOver.deltaHours < -8);
+assert.match(capacityOver.tip, /Surcharge nette/);
+
+const capacityEmpty = computeTeamCapacity({
+  reps: 0,
+  hoursPerWeek: 12,
+  weeksPerMonth: 4.3,
+  minHot: 45,
+  minWarm: 25,
+  minCold: 12,
+  volHot: 20,
+  volWarm: 45,
+  volCold: 35,
+});
+assert.match(capacityEmpty.tip, /nombre de commerciaux/);
+
 const conversionFloor = computeConversionRate({
   quotesSent: 10,
   basket: 1000,
@@ -655,6 +746,7 @@ assert.equal(parkingBrief.total, 0);
 assert.equal(parkingBrief.band, "parking");
 
 const llmsPaths = [
+  "/blog/assignation-sla-demande-devis-equipe",
   "/blog/qualifier-demande-devis-avant-chiffrage",
   "/blog/creer-devis-avec-claude-mcp",
   "/blog/visite-guidee-parcours-devis-b2b",
@@ -666,6 +758,7 @@ const llmsPaths = [
   "/blog/configurateur-devis-vs-excel-pdf",
   "/outils/score-brief-devis",
   "/outils/simulateur-taux-conversion-devis",
+  "/outils/calculateur-capacite-equipe-devis",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
   "/secteurs/funnel-devis-agencement-bureau",
@@ -916,6 +1009,11 @@ assert.match(funnelMd, /figure:funnel-vs-form/);
 const qualifyMd = readFileSync(join(blogDir, "qualifier-demande-devis-avant-chiffrage.md"), "utf8");
 assert.match(qualifyMd, /figure:qualify-axes/);
 assert.match(qualifyMd, /figure:qualify-before/);
+const assignMd = readFileSync(join(blogDir, "assignation-sla-demande-devis-equipe.md"), "utf8");
+assert.match(assignMd, /figure:assign-flow/);
+assert.match(assignMd, /figure:assign-playbook/);
+assert.match(assignMd, /figure:assign-dashboard/);
+assert.equal(parseImageLine("![Schéma : file d’entrée, score, owner, SLA](figure:assign-flow)")?.src, "figure:assign-flow");
 
 const globals = readFileSync(new URL("../../../src/app/globals.css", import.meta.url), "utf8");
 assert.match(globals, /--color-mk-bg:\s*#f7f8fa/);
