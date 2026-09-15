@@ -7,7 +7,7 @@ import { ListPanel } from "@/components/ui/list-panel";
 import { Chip } from "@/components/ui/chip";
 import { LocalTabNav, replaceClientUrl } from "@/components/ui/local-tabs";
 import { CopyBlock } from "@/components/funnels/copy-block";
-import { FunnelAutomations, type FunnelWorkflowRow } from "@/components/funnels/funnel-automations";
+import { FunnelAutomations } from "@/components/funnels/funnel-automations";
 import { FunnelStatsPanel } from "@/components/funnels/funnel-stats-panel";
 import { ParcoursBuilder } from "@/components/funnels/parcours-builder";
 import type { PreviewProduct } from "@/components/funnels/parcours-preview";
@@ -15,6 +15,7 @@ import { renameFunnel, saveFunnelTracking, setFunnelActive } from "@/app/(app)/f
 import { FunnelRowActions } from "@/components/funnels/funnel-row-actions";
 import type { FunnelKind } from "@/lib/funnels/builder";
 import { funnelKindHint, funnelKindLabel, funnelKindTone } from "@/lib/funnels/kind";
+import type { FunnelAutomationBoard } from "@/lib/funnels/automations";
 import type { Tables } from "@/lib/db/database.types";
 import { FUNNEL_TABS, type FunnelTab } from "@/lib/funnels/tabs";
 import type { FunnelTracking } from "@/lib/funnels/tracking";
@@ -29,7 +30,7 @@ export function FunnelEditor({
   steps,
   questions,
   products,
-  workflows,
+  automations,
   funnels,
   statuses,
   tracking,
@@ -49,7 +50,7 @@ export function FunnelEditor({
   steps: Tables<"wizard_steps">[];
   questions: Tables<"wizard_questions">[];
   products: PreviewProduct[];
-  workflows: FunnelWorkflowRow[];
+  automations: FunnelAutomationBoard;
   funnels: { id: string; name: string }[];
   statuses: { slug: string; label: string }[];
   tracking: FunnelTracking;
@@ -160,7 +161,7 @@ export function FunnelEditor({
         <FunnelAutomations
           funnelId={funnel.id}
           funnelName={funnel.name}
-          workflows={workflows}
+          board={automations}
           funnels={funnels}
           statuses={statuses}
         />

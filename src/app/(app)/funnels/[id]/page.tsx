@@ -6,9 +6,8 @@ import { parseFunnelTab } from "@/lib/funnels/tabs";
 import { parseFunnelTracking } from "@/lib/funnels/tracking";
 import { parseFunnelKind } from "@/lib/funnels/kind";
 import { loadStatsDashboard } from "@/lib/stats/dashboard";
+import { loadFunnelAutomationBoard } from "@/lib/funnels/automations";
 import { getAppUrl } from "@/lib/supabase/env";
-import { nodeTitle } from "@/lib/workflows/labels";
-import { parseDefinition, parseTriggerConfig } from "@/lib/workflows/types";
 import type { WorkflowStatus, WorkflowTriggerType } from "@/lib/workflows/types";
 
 export default async function FunnelEditorPage({
@@ -67,6 +66,20 @@ export default async function FunnelEditorPage({
   const funnelQuestions = (questions ?? []).filter((question) => stepIds.has(question.step_id));
   const origin = getAppUrl();
   const publicUrl = `${origin}/c/${ctx.organization.slug}/${funnel.slug}`;
+  const kind = parseFunnelKind(funnel.theme, funnel.wizard_enabled, funnel.chat_enabled);
+  const automations = await loadFunnelAutomationBoard(supabase, {
+    orgId: ctx.organization.id,
+    funnelId: funnel.id,
+    kind,
+    workflows: (workflows ?? []).map((workflow) => ({
+      id: workflow.id,
+      name: workflow.name,
+      status: workflow.status as WorkflowStatus,
+      triggerType: workflow.trigger_type as WorkflowTriggerType,
+      triggerConfig: workflow.trigger_config,
+      definition: workflow.definition,
+    })),
+  });
 
   return (
     <FunnelEditor
@@ -74,7 +87,7 @@ export default async function FunnelEditorPage({
         id: funnel.id,
         name: funnel.name,
         slug: funnel.slug,
-        kind: parseFunnelKind(funnel.theme, funnel.wizard_enabled, funnel.chat_enabled),
+        kind,
         isActive: funnel.is_active,
       }}
       steps={steps ?? []}
@@ -92,20 +105,7 @@ export default async function FunnelEditorPage({
           category: product.category,
         }));
       })()}
-      workflows={(workflows ?? []).map((workflow) => {
-        const ids = parseTriggerConfig(workflow.trigger_config).configuratorIds ?? [];
-        const definition = parseDefinition(workflow.definition);
-        return {
-          id: workflow.id,
-          name: workflow.name,
-          status: workflow.status as WorkflowStatus,
-          triggerType: workflow.trigger_type as WorkflowTriggerType,
-          scope: !ids.length ? "all" : ids.includes(funnel.id) ? "this" : "other",
-          steps: definition.nodes
-            .filter((node) => node.type !== "trigger" && node.type !== "exit")
-            .map((node) => nodeTitle(node)),
-        };
-      })}
+      automations={automations}
       funnels={funnels ?? []}
       statuses={statuses ?? []}
       tracking={parseFunnelTracking(funnel.theme)}

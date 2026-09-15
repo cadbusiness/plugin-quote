@@ -18,13 +18,23 @@ export function CreateWorkflowDialog({
   statuses,
   presetFunnelId,
   addLabel = "Ajouter un parcours",
+  hideAddRow,
+  open: openProp,
+  onOpenChange,
+  presetTrigger,
+  presetStatusSlug,
 }: {
   funnels: { id: string; name: string }[];
   statuses: { slug: string; label: string }[];
   presetFunnelId?: string;
   addLabel?: string;
+  hideAddRow?: boolean;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  presetTrigger?: WorkflowTriggerType;
+  presetStatusSlug?: string;
 }) {
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
   const [step, setStep] = useState(0);
   const [trigger, setTrigger] = useState<WorkflowTriggerType>("quote.submitted");
   const [name, setName] = useState(defaultWorkflowName("quote.submitted"));
@@ -33,6 +43,12 @@ export function CreateWorkflowDialog({
   const [abandonHours, setAbandonHours] = useState(1);
   const [statusSlug, setStatusSlug] = useState(statuses[0]?.slug ?? "");
   const [pending, startTransition] = useTransition();
+  const open = openProp ?? internalOpen;
+
+  function setOpen(next: boolean) {
+    if (openProp === undefined) setInternalOpen(next);
+    onOpenChange?.(next);
+  }
 
   useEffect(() => {
     function openFromHash() {
@@ -45,6 +61,19 @@ export function CreateWorkflowDialog({
     window.addEventListener("hashchange", openFromHash);
     return () => window.removeEventListener("hashchange", openFromHash);
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    if (presetTrigger) {
+      setTrigger(presetTrigger);
+      setName(defaultWorkflowName(presetTrigger));
+      setStep(1);
+    } else {
+      setStep(0);
+    }
+    if (presetStatusSlug !== undefined) setStatusSlug(presetStatusSlug || statuses[0]?.slug || "");
+    else setStatusSlug(statuses[0]?.slug ?? "");
+  }, [open, presetTrigger, presetStatusSlug, statuses]);
 
   function pickTrigger(id: WorkflowTriggerType) {
     setTrigger(id);
@@ -73,7 +102,7 @@ export function CreateWorkflowDialog({
 
   return (
     <>
-      <ListAddRow onClick={() => setOpen(true)}>{addLabel}</ListAddRow>
+      {hideAddRow ? null : <ListAddRow onClick={() => setOpen(true)}>{addLabel}</ListAddRow>}
 
       {open ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">

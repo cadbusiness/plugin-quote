@@ -7,7 +7,8 @@ import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { defaultQuestion, defaultStepCopy, isQuestionType, isScreenType } from "@/lib/funnels/builder";
 import { mergeFunnelTracking } from "@/lib/funnels/tracking";
 import type { QuestionOptions, QuestionType, ScreenType } from "@/lib/wizard/types";
-import { parseTriggerConfig } from "@/lib/workflows/types";
+import { parseDefinition, parseTriggerConfig } from "@/lib/workflows/types";
+import { hoursFromMinutes, withAbandonWait } from "@/lib/funnels/automations";
 import type { Json } from "@/lib/db/database.types";
 
 async function requireAdmin() {
@@ -111,6 +112,34 @@ export async function saveFunnelTracking(formData: FormData) {
     .eq("id", id)
     .eq("organization_id", ctx.organization.id);
   revalidatePath(`/funnels/${id}`);
+}
+
+export async function setWorkflowAbandonWait(workflowId: string, funnelId: string, minutes: number) {
+  const ctx = await requireAdmin();
+  if (!workflowId || !funnelId || !Number.isFinite(minutes) || minutes < 0) return;
+  const supabase = await createClient();
+  const { data: workflow } = await supabase
+    .from("workflows")
+    .select("id, trigger_config, definition")
+    .eq("id", workflowId)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  if (!workflow) return;
+  const hours = hoursFromMinutes(minutes);
+  const config = parseTriggerConfig(workflow.trigger_config);
+  const definition = withAbandonWait(parseDefinition(workflow.definition), hours);
+  await supabase
+    .from("workflows")
+    .update({
+      trigger_config: { ...config, abandonHours: hours },
+      definition: definition as unknown as Json,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", workflowId)
+    .eq("organization_id", ctx.organization.id);
+  revalidatePath("/automations");
+  revalidatePath(`/automations/${workflowId}`);
+  revalidatePath(`/funnels/${funnelId}`);
 }
 
 export async function setWorkflowOnFunnel(workflowId: string, funnelId: string, mode: "all" | "only" | "add" | "remove") {
