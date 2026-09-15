@@ -12,14 +12,16 @@ export function LocalTabNav<T extends string>({
   active,
   onSelect,
   counts = {},
+  className = "flex items-end gap-6 overflow-x-auto border-b border-slate-200 px-4 lg:px-6",
 }: {
   items: readonly { id: T; label: string }[];
   active: T;
   onSelect: (id: T) => void;
   counts?: Partial<Record<T, number>>;
+  className?: string;
 }) {
   return (
-    <nav className="flex items-end gap-6 overflow-x-auto border-b border-slate-200 px-4 lg:px-6">
+    <nav className={className}>
       {items.map((item) => {
         const on = item.id === active;
         const count = counts[item.id];
@@ -29,7 +31,7 @@ export function LocalTabNav<T extends string>({
             type="button"
             aria-current={on ? "page" : undefined}
             onClick={() => onSelect(item.id)}
-            className={`relative flex shrink-0 items-center gap-1.5 py-2.5 text-sm ${
+            className={`relative flex h-full shrink-0 items-center gap-1.5 py-2.5 text-sm ${
               on ? "font-medium text-slate-900" : "text-slate-500 hover:text-slate-900"
             }`}
           >

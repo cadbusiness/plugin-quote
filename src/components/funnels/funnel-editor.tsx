@@ -76,65 +76,70 @@ export function FunnelEditor({
 
   return (
     <ListPanel className="min-h-0">
-      <div className="sticky top-0 z-20 bg-white">
-        <div className="flex items-center gap-2 border-b border-slate-200 px-4 py-2 lg:px-6">
-          <Link
-            href="/funnels"
-            aria-label="Retour aux funnels"
-            className="inline-flex h-8 shrink-0 items-center gap-1 rounded-md px-1.5 text-sm text-slate-500 hover:bg-slate-100 hover:text-slate-900"
-          >
-            <ChevronLeft className="h-4 w-4" aria-hidden />
-            Retour
-          </Link>
-          <input
-            defaultValue={funnel.name}
-            aria-label="Nom du funnel"
-            onBlur={(event) => commitName(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") (event.target as HTMLInputElement).blur();
+      <div className="sticky top-0 z-20 border-b border-slate-200 bg-white">
+        <div className="flex items-stretch gap-3 px-4 lg:px-6">
+          <div className="flex shrink-0 items-center gap-2 py-2">
+            <Link
+              href="/funnels"
+              aria-label="Retour aux funnels"
+              className="inline-flex h-8 shrink-0 items-center gap-1 rounded-md px-1.5 text-sm text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+            >
+              <ChevronLeft className="h-4 w-4" aria-hidden />
+              Retour
+            </Link>
+            <input
+              defaultValue={funnel.name}
+              aria-label="Nom du funnel"
+              onBlur={(event) => commitName(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") (event.target as HTMLInputElement).blur();
+              }}
+              className="w-40 min-w-0 bg-transparent text-sm font-semibold text-slate-900 outline-none sm:w-48"
+            />
+            <span title={funnelKindHint(funnel.kind)}>
+              <Chip tone={funnelKindTone(funnel.kind)}>{funnelKindLabel(funnel.kind)}</Chip>
+            </span>
+          </div>
+          <LocalTabNav
+            items={FUNNEL_TABS}
+            active={tab}
+            onSelect={(next) => {
+              setTab(next);
+              replaceClientUrl(tabHref(funnel.id, next));
             }}
-            className="min-w-0 flex-1 bg-transparent text-sm font-semibold text-slate-900 outline-none"
+            className="flex min-w-0 flex-1 items-stretch gap-5 overflow-x-auto"
           />
-          <span title={funnelKindHint(funnel.kind)}>
-            <Chip tone={funnelKindTone(funnel.kind)}>{funnelKindLabel(funnel.kind)}</Chip>
-          </span>
-          <Link
-            href={publicUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="shrink-0 rounded-full border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
-          >
-            Tester le parcours
-          </Link>
-          <button
-            type="button"
-            disabled={pending}
-            onClick={() => startTransition(() => void setFunnelActive(funnel.id, !funnel.isActive))}
-            className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-medium disabled:opacity-50 ${
-              funnel.isActive
-                ? "border border-emerald-200 bg-emerald-50 text-emerald-800"
-                : "bg-[#E85D04] text-white hover:bg-[#d35400]"
-            }`}
-          >
-            {funnel.isActive ? "Publié" : "Publier"}
-          </button>
-          <FunnelRowActions
-            funnelId={funnel.id}
-            name={funnel.name}
-            publicUrl={publicUrl}
-            isActive={funnel.isActive}
-            showArchive={false}
-            showPreview={false}
-          />
+          <div className="flex shrink-0 items-center gap-2 py-2">
+            <Link
+              href={publicUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="shrink-0 rounded-full border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+            >
+              Tester
+            </Link>
+            <button
+              type="button"
+              disabled={pending}
+              onClick={() => startTransition(() => void setFunnelActive(funnel.id, !funnel.isActive))}
+              className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-medium disabled:opacity-50 ${
+                funnel.isActive
+                  ? "border border-emerald-200 bg-emerald-50 text-emerald-800"
+                  : "bg-[#E85D04] text-white hover:bg-[#d35400]"
+              }`}
+            >
+              {funnel.isActive ? "Publié" : "Publier"}
+            </button>
+            <FunnelRowActions
+              funnelId={funnel.id}
+              name={funnel.name}
+              publicUrl={publicUrl}
+              isActive={funnel.isActive}
+              showArchive={false}
+              showPreview={false}
+            />
+          </div>
         </div>
-        <LocalTabNav
-          items={FUNNEL_TABS}
-          active={tab}
-          onSelect={(next) => {
-            setTab(next);
-            replaceClientUrl(tabHref(funnel.id, next));
-          }}
-        />
       </div>
 
       {tab === "parcours" ? (

@@ -13,7 +13,7 @@ import {
 import { SortableContext, arrayMove, horizontalListSortingStrategy, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Link from "next/link";
-import { ChevronRight, Plus, Trash2 } from "lucide-react";
+import { ChevronRight, LayoutGrid, ListChecks, MessageSquare, Plus, SlidersHorizontal, Trash2, UserRound, type LucideIcon } from "lucide-react";
 import {
   addFunnelQuestion,
   addFunnelStep,
@@ -34,9 +34,15 @@ import {
   screenRailKind,
   type FunnelKind,
 } from "@/lib/funnels/builder";
-import { funnelKindHint, funnelKindLabel } from "@/lib/funnels/kind";
 import type { QuestionOptions, QuestionType, ScreenType } from "@/lib/wizard/types";
 import type { Tables } from "@/lib/db/database.types";
+
+function screenIcon(type: ScreenType, kind: FunnelKind): LucideIcon {
+  if (type === "questions") return kind === "chat" ? MessageSquare : ListChecks;
+  if (type === "suggestions") return LayoutGrid;
+  if (type === "customize") return SlidersHorizontal;
+  return UserRound;
+}
 
 function asOptions(value: Tables<"wizard_questions">["options"]): QuestionOptions {
   if (value && typeof value === "object" && !Array.isArray(value)) {
@@ -193,65 +199,62 @@ export function ParcoursBuilder({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col bg-white">
-      <div className="border-b border-slate-200 px-4 py-3 lg:px-6">
-        <div className="flex items-end justify-between gap-3">
-          <div>
-            <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">Parcours du prospect</p>
-            <p className="mt-0.5 text-sm text-slate-500">
-              {funnelKindLabel(kind)} — {funnelKindHint(kind)}
-            </p>
-          </div>
-          <p className="hidden text-xs text-slate-400 sm:block">Glissez pour réordonner · cliquez pour éditer</p>
+      <div className="flex items-center gap-2 border-b border-slate-200 px-4 py-2 lg:px-6">
+        <div className="min-w-0 flex-1 overflow-x-auto">
+          {mounted ? (
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+              <SortableContext items={ordered.map((step) => step.id)} strategy={horizontalListSortingStrategy}>
+                {rail}
+              </SortableContext>
+            </DndContext>
+          ) : (
+            rail
+          )}
         </div>
-        <div className="mt-3 flex items-center gap-2">
-          <div className="min-w-0 flex-1 overflow-x-auto">
-            {mounted ? (
-              <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-                <SortableContext items={ordered.map((step) => step.id)} strategy={horizontalListSortingStrategy}>
-                  {rail}
-                </SortableContext>
-              </DndContext>
-            ) : (
-              rail
-            )}
-          </div>
-          <div ref={pickerRef} className="relative z-40 shrink-0">
-            <button
-              type="button"
-              disabled={pending}
-              aria-expanded={picker}
-              aria-haspopup="menu"
-              aria-label="Ajouter une étape"
-              onClick={togglePicker}
-              className="flex h-12 w-10 items-center justify-center rounded-lg border border-dashed border-slate-300 text-[#E85D04] hover:border-[#E85D04] hover:bg-orange-50 disabled:opacity-50"
-            >
-              <Plus className="h-4 w-4" aria-hidden />
-            </button>
-            {picker && mounted
-              ? createPortal(
-                  <div
-                    ref={pickerMenuRef}
-                    role="menu"
-                    className="fixed z-50 w-64 rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg"
-                    style={{ top: pickerPos?.top ?? 0, right: pickerPos?.right ?? 16 }}
-                  >
-                    {SCREEN_ADD.map((item) => (
+        <div ref={pickerRef} className="relative z-40 shrink-0">
+          <button
+            type="button"
+            disabled={pending}
+            aria-expanded={picker}
+            aria-haspopup="menu"
+            aria-label="Ajouter une étape"
+            onClick={togglePicker}
+            className="flex h-11 w-11 items-center justify-center rounded-lg border border-dashed border-slate-300 text-[#E85D04] hover:border-[#E85D04] hover:bg-orange-50 disabled:opacity-50"
+          >
+            <Plus className="h-4 w-4" aria-hidden />
+          </button>
+          {picker && mounted
+            ? createPortal(
+                <div
+                  ref={pickerMenuRef}
+                  role="menu"
+                  className="fixed z-50 w-72 rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg"
+                  style={{ top: pickerPos?.top ?? 0, right: pickerPos?.right ?? 16 }}
+                >
+                  {SCREEN_ADD.map((item) => {
+                    const Icon = screenIcon(item.type, kind);
+                    return (
                       <button
                         key={item.type}
                         type="button"
                         role="menuitem"
                         onClick={() => addScreen(item.type)}
-                        className="flex w-full flex-col rounded-md px-3 py-2 text-left hover:bg-orange-50"
+                        className="flex w-full items-start gap-2.5 rounded-md px-2 py-2 text-left hover:bg-orange-50"
                       >
-                        <span className="text-sm font-medium text-slate-900">{screenLabel(item.type, kind)}</span>
-                        <span className="text-xs text-slate-500">{item.hint}</span>
+                        <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-orange-50 text-[#E85D04]">
+                          <Icon className="h-4 w-4" aria-hidden />
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block text-sm font-medium text-slate-900">{screenLabel(item.type, kind)}</span>
+                          <span className="block text-xs text-slate-500">{item.hint}</span>
+                        </span>
                       </button>
-                    ))}
-                  </div>,
-                  document.body,
-                )
-              : null}
-          </div>
+                    );
+                  })}
+                </div>,
+                document.body,
+              )
+            : null}
         </div>
       </div>
 
@@ -296,7 +299,6 @@ export function ParcoursBuilder({
                   <FormScreenBody step={selectedPreview} products={products} kind={kind} />
                 )}
               </div>
-              <p className="mt-3 text-xs text-slate-400">Aperçu de l’étape. Tester le parcours ouvre le funnel public.</p>
             </div>
           </aside>
         </div>
@@ -356,22 +358,26 @@ function RailCard({
   handleProps?: React.HTMLAttributes<HTMLButtonElement>;
 }) {
   const type = step.screen_type as ScreenType;
+  const Icon = screenIcon(type, kind);
   return (
     <button
       type="button"
       {...handleProps}
       onClick={onSelect}
-      className={`flex h-12 w-40 shrink-0 flex-col justify-center rounded-lg border px-2.5 py-1.5 text-left ${
+      title={step.title}
+      className={`flex h-11 shrink-0 items-center gap-2 rounded-lg border px-2.5 text-left ${
         selected
           ? "border-slate-900 bg-slate-900 text-white shadow-sm"
           : "border-slate-200 bg-white text-slate-900 hover:border-slate-300"
       }`}
     >
-      <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">
-        {index + 1} · {screenRailKind(type, kind)}
-      </p>
-      <p className="truncate text-xs font-semibold leading-tight">{step.title}</p>
-      <p className={`truncate text-[10px] ${selected ? "text-slate-400" : "text-slate-500"}`}>{summary}</p>
+      <Icon className={`h-4 w-4 shrink-0 ${selected ? "text-white" : "text-slate-500"}`} aria-hidden />
+      <span className="min-w-0">
+        <span className="block max-w-[10.5rem] truncate text-sm font-medium leading-tight">{step.title}</span>
+        <span className={`block truncate text-[11px] ${selected ? "text-slate-400" : "text-slate-500"}`}>
+          {index + 1} · {summary}
+        </span>
+      </span>
     </button>
   );
 }
