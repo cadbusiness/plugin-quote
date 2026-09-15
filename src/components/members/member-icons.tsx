@@ -1,8 +1,10 @@
 import {
   FileText,
   Heading2,
+  Image as ImageIcon,
   Link2,
   MessageSquareQuote,
+  PlayCircle,
   Puzzle,
   Type,
   type LucideIcon,
@@ -16,6 +18,8 @@ export const MEMBER_BLOCK_ICON: Record<MemberBlockType, LucideIcon> = {
   documents: FileText,
   plugins: Puzzle,
   links: Link2,
+  image: ImageIcon,
+  video: PlayCircle,
 };
 
 export function resourceIcon(kind: MemberResourceKind): LucideIcon {

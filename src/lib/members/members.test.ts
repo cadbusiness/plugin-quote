@@ -16,6 +16,7 @@ import {
   isLockedMemberPage,
   MEMBER_PAGE_TEMPLATES,
 } from "./page-templates";
+import { memberImageSrc, memberVideoEmbed } from "./embed";
 import { memberPagePath, memberSpaceAbsoluteUrl, memberSpaceBasePath, uniqueMemberPageSlug } from "./urls";
 
 const blueprint = buildMemberSpaceBlueprint({
@@ -75,10 +76,23 @@ assert.equal(clientQuoteStageLabel("contacted"), "En étude");
 assert.equal(clientQuoteStageLabel("in_progress"), "Devis envoyé");
 assert.equal(clientQuoteStageLabel("won"), "Accepté");
 
-const theme = parseTheme({ accent: "#111111" });
+const theme = parseTheme({ accent: "#111111", headerBackground: "#111111" });
 assert.equal(theme.accent, "#111111");
 assert.equal(theme.background, DEFAULT_MEMBER_THEME.background);
+assert.equal(theme.headerBackground, "#111111");
 assert.equal(MEMBER_BLOCK_LABEL.quotes, "Mes devis");
+assert.equal(MEMBER_BLOCK_LABEL.image, "Image");
+assert.equal(emptyMemberBlock("image").type, "image");
+assert.equal(emptyMemberBlock("video").type, "video");
+assert.equal(parseBlock({ type: "image", src: "https://cdn.example.com/a.jpg", text: "Atelier" })?.src, "https://cdn.example.com/a.jpg");
+assert.equal(parseBlock({ type: "video", src: "https://youtu.be/abcdefghijk" })?.type, "video");
+assert.equal(memberImageSrc("http://insecure.example/a.jpg"), null);
+assert.equal(memberImageSrc("https://cdn.example.com/a.jpg"), "https://cdn.example.com/a.jpg");
+assert.equal(memberVideoEmbed("https://youtu.be/abcdefghijk")?.src, "https://www.youtube.com/embed/abcdefghijk");
+assert.equal(memberVideoEmbed("https://www.youtube.com/watch?v=abcdefghijk")?.mode, "iframe");
+assert.equal(memberVideoEmbed("https://vimeo.com/123456789")?.src, "https://player.vimeo.com/video/123456789");
+assert.equal(memberVideoEmbed("https://files.example.com/clip.mp4")?.mode, "video");
+assert.equal(memberVideoEmbed("https://evil.example/embed"), null);
 
 const docs = resourcesOfKind(
   [

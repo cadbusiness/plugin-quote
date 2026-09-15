@@ -9,13 +9,14 @@ export type MemberPageKind = (typeof MEMBER_PAGE_KINDS)[number];
 export const MEMBER_RESOURCE_KINDS = ["document", "plugin", "link"] as const;
 export type MemberResourceKind = (typeof MEMBER_RESOURCE_KINDS)[number];
 
-export const MEMBER_BLOCK_TYPES = ["hero", "text", "quotes", "documents", "plugins", "links"] as const;
+export const MEMBER_BLOCK_TYPES = ["hero", "text", "quotes", "documents", "plugins", "links", "image", "video"] as const;
 export type MemberBlockType = (typeof MEMBER_BLOCK_TYPES)[number];
 
 export type MemberTheme = {
   accent: string;
   background: string;
   text: string;
+  headerBackground: string;
   welcomeHeading: string;
   welcomeSub: string;
 };
@@ -29,6 +30,7 @@ export type MemberBlock = {
   sub?: string;
   text?: string;
   ctaLabel?: string;
+  src?: string;
   links?: MemberLinkItem[];
 };
 

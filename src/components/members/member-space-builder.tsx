@@ -17,8 +17,10 @@ import {
   FileText,
   GripVertical,
   Heading2,
+  Image as ImageIcon,
   Link2,
   MessageSquareQuote,
+  PlayCircle,
   Puzzle,
   Settings,
   Trash2,
@@ -38,6 +40,8 @@ type DockTab = "blocks" | "resources" | "settings";
 const PALETTE: { type: MemberBlockType; icon: LucideIcon }[] = [
   { type: "hero", icon: Heading2 },
   { type: "text", icon: Type },
+  { type: "image", icon: ImageIcon },
+  { type: "video", icon: PlayCircle },
   { type: "quotes", icon: MessageSquareQuote },
   { type: "documents", icon: FileText },
   { type: "plugins", icon: Puzzle },
@@ -161,6 +165,7 @@ export function MemberSpaceBuilder({
         <div className="min-h-0 flex-1 overflow-y-auto p-3">
           {tab === "blocks" && selected ? (
             <BlockInspector
+              spaceId={spaceId}
               block={selected}
               onBack={() => setSelectedId(null)}
               onChange={(patch) => updateBlock(selected.id, patch)}
@@ -300,17 +305,37 @@ function SortableBlockRow({
 }
 
 function BlockInspector({
+  spaceId,
   block,
   onBack,
   onChange,
   onRemove,
 }: {
+  spaceId: string;
   block: MemberPageDraft["blocks"][number];
   onBack: () => void;
   onChange: (patch: Partial<MemberPageDraft["blocks"][number]>) => void;
   onRemove: () => void;
 }) {
   const TypeIcon = MEMBER_BLOCK_ICON[block.type];
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+
+  async function uploadImage(file: File) {
+    setUploadError(null);
+    setUploading(true);
+    const data = new FormData();
+    data.set("spaceId", spaceId);
+    data.set("file", file);
+    const result = await uploadMemberResource(data);
+    setUploading(false);
+    if (result.error || !result.url) {
+      setUploadError(result.error ?? "Upload impossible.");
+      return;
+    }
+    onChange({ src: result.url });
+  }
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-2">
@@ -400,6 +425,50 @@ function BlockInspector({
           >
             Ajouter un lien
           </button>
+        </div>
+      ) : null}
+      {block.type === "image" || block.type === "video" ? (
+        <div className="space-y-2">
+          <label className="block text-sm">
+            <span className="text-slate-600">{block.type === "image" ? "URL de l’image" : "URL de la vidéo"}</span>
+            <input
+              value={block.src ?? ""}
+              onChange={(event) => onChange({ src: event.target.value })}
+              placeholder={block.type === "image" ? "https://" : "YouTube, Vimeo ou .mp4"}
+              className="mt-1 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
+            />
+          </label>
+          {block.type === "image" ? (
+            <>
+              <label className="block cursor-pointer text-xs font-medium text-[#C2410C]">
+                {uploading ? "Envoi…" : "Déposer une image"}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif"
+                  className="sr-only"
+                  disabled={uploading}
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
+                    event.target.value = "";
+                    if (file) void uploadImage(file);
+                  }}
+                />
+              </label>
+              <label className="block text-sm">
+                <span className="text-slate-600">Légende</span>
+                <input
+                  value={block.text ?? ""}
+                  onChange={(event) => onChange({ text: event.target.value })}
+                  className="mt-1 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
+                />
+              </label>
+            </>
+          ) : (
+            <p className="text-xs leading-5 text-slate-500">
+              Collez un lien YouTube, Vimeo ou un fichier .mp4 en https.
+            </p>
+          )}
+          {uploadError ? <p className="text-xs text-rose-700">{uploadError}</p> : null}
         </div>
       ) : null}
     </div>
@@ -575,15 +644,27 @@ function SettingsEditor({
           className="mt-1 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
         />
       </label>
-      <label className="block text-sm">
-        <span className="text-slate-600">Couleur d’accent</span>
-        <input
-          type="color"
-          value={theme.accent}
-          onChange={(event) => onTheme({ ...theme, accent: event.target.value })}
-          className="mt-1 h-9 w-full rounded-md border border-slate-200"
-        />
-      </label>
+      <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Couleurs</p>
+      <ColorField
+        label="Accent"
+        value={theme.accent}
+        onChange={(accent) => onTheme({ ...theme, accent })}
+      />
+      <ColorField
+        label="Fond"
+        value={theme.background}
+        onChange={(background) => onTheme({ ...theme, background })}
+      />
+      <ColorField
+        label="Texte"
+        value={theme.text}
+        onChange={(text) => onTheme({ ...theme, text })}
+      />
+      <ColorField
+        label="Barre d’en-tête"
+        value={theme.headerBackground || theme.background}
+        onChange={(headerBackground) => onTheme({ ...theme, headerBackground })}
+      />
       <label className="block text-sm">
         <span className="text-slate-600">Titre d’accueil</span>
         <input
@@ -677,5 +758,27 @@ function SettingsEditor({
         </button>
       </div>
     </div>
+  );
+}
+
+function ColorField({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="flex items-center justify-between gap-3 text-sm">
+      <span className="text-slate-600">{label}</span>
+      <input
+        type="color"
+        value={/^#[0-9a-fA-F]{6}$/.test(value) ? value : "#FFFFFF"}
+        onChange={(event) => onChange(event.target.value)}
+        className="h-8 w-16 cursor-pointer rounded-md border border-slate-200 bg-white"
+      />
+    </label>
   );
 }

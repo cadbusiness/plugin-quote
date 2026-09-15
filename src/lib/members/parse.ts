@@ -18,6 +18,7 @@ export const DEFAULT_MEMBER_THEME: MemberTheme = {
   accent: "#E85D04",
   background: "#FFFFFF",
   text: "#1A1510",
+  headerBackground: "",
   welcomeHeading: "Votre espace devis",
   welcomeSub: "Retrouvez vos demandes, documents et ressources au même endroit.",
 };
@@ -61,6 +62,7 @@ export function parseTheme(value: unknown): MemberTheme {
     accent: str(raw.accent, DEFAULT_MEMBER_THEME.accent) || DEFAULT_MEMBER_THEME.accent,
     background: str(raw.background, DEFAULT_MEMBER_THEME.background) || DEFAULT_MEMBER_THEME.background,
     text: str(raw.text, DEFAULT_MEMBER_THEME.text) || DEFAULT_MEMBER_THEME.text,
+    headerBackground: str(raw.headerBackground, DEFAULT_MEMBER_THEME.headerBackground),
     welcomeHeading: str(raw.welcomeHeading, DEFAULT_MEMBER_THEME.welcomeHeading) || DEFAULT_MEMBER_THEME.welcomeHeading,
     welcomeSub: str(raw.welcomeSub, DEFAULT_MEMBER_THEME.welcomeSub),
   };
@@ -90,6 +92,7 @@ export function parseBlock(value: unknown): MemberBlock | null {
     sub: str(raw.sub) || undefined,
     text: str(raw.text) || undefined,
     ctaLabel: str(raw.ctaLabel) || undefined,
+    src: type === "image" || type === "video" ? str(raw.src).trim() || undefined : undefined,
     links: type === "links" ? parseLinks(raw.links) : undefined,
   };
 }

@@ -7,6 +7,8 @@ export const MEMBER_BLOCK_LABEL: Record<MemberBlockType, string> = {
   documents: "Documents",
   plugins: "Plugins et liens",
   links: "Liste de liens",
+  image: "Image",
+  video: "Vidéo",
 };
 
 export function emptyMemberBlock(type: MemberBlockType): MemberBlock {
@@ -33,6 +35,8 @@ export function emptyMemberBlock(type: MemberBlockType): MemberBlock {
   }
   if (type === "quotes") return { id, type, heading: "Mes devis" };
   if (type === "documents") return { id, type, heading: "Documents" };
+  if (type === "image") return { id, type, heading: "Image", src: "", text: "" };
+  if (type === "video") return { id, type, heading: "Vidéo", src: "" };
   return { id, type, heading: "Plugins et ressources" };
 }
 

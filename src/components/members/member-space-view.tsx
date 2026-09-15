@@ -5,6 +5,7 @@ import { ArrowRight, Calendar, ChevronRight, ExternalLink } from "lucide-react";
 import { Chip, statusTone } from "@/components/ui/chip";
 import { IconWell, MEMBER_BLOCK_ICON, resourceIcon } from "@/components/members/member-icons";
 import { resourcesOfKind } from "@/lib/members/blocks";
+import { memberImageSrc, memberVideoEmbed } from "@/lib/members/embed";
 import { formatDate } from "@/lib/format";
 import { clientQuoteStageLabel } from "@/lib/members/parse";
 import { memberPagePath, memberSpaceBasePath } from "@/lib/members/urls";
@@ -40,9 +41,13 @@ export function MemberSpaceView({
   onOpenQuotes?: () => void;
 }) {
   const base = memberSpaceBasePath(orgSlug, spaceSlug);
+  const headerBackground = theme.headerBackground || theme.background;
   return (
     <div className="min-h-full" style={{ background: theme.background, color: theme.text }}>
-      <header className="border-b px-4 py-3 lg:px-8" style={{ borderColor: `${theme.text}14` }}>
+      <header
+        className="border-b px-4 py-3 lg:px-8"
+        style={{ background: headerBackground, borderColor: `${theme.text}14` }}
+      >
         <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3">
           <p className="text-sm font-semibold">{name}</p>
           <nav className="flex flex-wrap gap-1 text-sm">
@@ -243,6 +248,44 @@ function MemberBlockView({
         empty="Aucun plugin publié."
         accent={theme.accent}
       />
+    );
+  }
+  if (block.type === "image") {
+    const src = memberImageSrc(block.src ?? "");
+    return (
+      <section>
+        {block.heading ? <h2 className="text-lg font-semibold">{block.heading}</h2> : null}
+        {src ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={src} alt={block.text || block.heading || ""} className="mt-3 w-full rounded-xl object-cover" />
+        ) : (
+          <p className="mt-3 text-sm opacity-60">Ajoutez une image dans le constructeur.</p>
+        )}
+        {block.text ? <p className="mt-2 text-sm leading-6 opacity-70">{block.text}</p> : null}
+      </section>
+    );
+  }
+  if (block.type === "video") {
+    const embed = memberVideoEmbed(block.src ?? "");
+    return (
+      <section>
+        {block.heading ? <h2 className="text-lg font-semibold">{block.heading}</h2> : null}
+        {embed?.mode === "iframe" ? (
+          <div className="mt-3 aspect-video overflow-hidden rounded-xl bg-slate-900">
+            <iframe
+              src={embed.src}
+              title={block.heading || "Vidéo"}
+              className="h-full w-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        ) : null}
+        {embed?.mode === "video" ? (
+          <video src={embed.src} controls className="mt-3 w-full rounded-xl" />
+        ) : null}
+        {!embed ? <p className="mt-3 text-sm opacity-60">Collez un lien YouTube, Vimeo ou un fichier .mp4.</p> : null}
+      </section>
     );
   }
   const LinksIcon = MEMBER_BLOCK_ICON.links;
