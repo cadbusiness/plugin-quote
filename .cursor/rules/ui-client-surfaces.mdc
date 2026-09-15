@@ -1,0 +1,22 @@
+---
+description: Surfaces client (espace membres, suivi) : pas de score commercial, icônes Lucide, pas de lien texte destructif
+globs: src/components/members/**/*.tsx,src/app/(public)/**/*.tsx,src/lib/members/**/*.ts
+alwaysApply: false
+---
+
+# Surfaces client
+
+L’espace membres, le suivi `/suivi` et le constructeur (aperçu = ce que voit le client) ne sont pas le CRM.
+
+## Contenu
+
+- Jamais le score commercial (`hot` / `warm` / `cold`) ni le statut CRM (« Nouveau »).
+- Statut client : **Reçu**, **En étude**, **Devis envoyé**, **Accepté** (`clientQuoteStageLabel`).
+- Pastilles couleur OK ; pas de jargon interne.
+
+## Forme
+
+- Icônes **Lucide** (puits orange 40×40, titre, méta, CTA). Pas d’emoji.
+- Cartes devis / documents / plugins : icône + libellé + date ou description + action, pas une ligne de texte nu.
+- Action destructive : bouton icône (corbeille) avec `aria-label`, **pas** un lien rose « Retirer le bloc ».
+- CTA : bouton orange + icône (flèche), pas un texte seul souligné.

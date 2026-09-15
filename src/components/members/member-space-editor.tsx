@@ -1,11 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
-import { ChevronLeft, Eye } from "lucide-react";
+import { useEffect, useState, useTransition } from "react";
+import { ChevronLeft, Eye, Plus, Trash2 } from "lucide-react";
 import { saveMemberSpace } from "@/app/(app)/membres/actions";
+import {
+  CREATE_MEMBER_PAGE_EVENT,
+  CreateMemberPageDialog,
+} from "@/components/members/create-member-page-dialog";
 import { MemberSpaceBuilder } from "@/components/members/member-space-builder";
 import { ListPanel } from "@/components/ui/list-panel";
+import { isLockedMemberPage } from "@/lib/members/page-templates";
 import type { MemberPageDraft, MemberResourceDraft, MemberTheme } from "@/lib/members/types";
 
 export function MemberSpaceEditor({
@@ -27,7 +32,37 @@ export function MemberSpaceEditor({
   const [pages, setPages] = useState(initialPages);
   const [resources, setResources] = useState(initialResources);
   const [pageId, setPageId] = useState(initialPages[0]?.id ?? "");
+  const [addPageOpen, setAddPageOpen] = useState(false);
   const [pending, startTransition] = useTransition();
+  const currentPage = pages.find((item) => item.id === pageId) ?? pages[0] ?? null;
+  const canDeletePage = Boolean(currentPage && !isLockedMemberPage(currentPage) && pages.length > 1);
+
+  useEffect(() => {
+    function openAdd() {
+      setAddPageOpen(true);
+    }
+    function openFromHash() {
+      if (window.location.hash === "#nouvelle-page" || window.location.hash === "#nouveau") {
+        openAdd();
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+      }
+    }
+    openFromHash();
+    window.addEventListener(CREATE_MEMBER_PAGE_EVENT, openAdd);
+    window.addEventListener("hashchange", openFromHash);
+    return () => {
+      window.removeEventListener(CREATE_MEMBER_PAGE_EVENT, openAdd);
+      window.removeEventListener("hashchange", openFromHash);
+    };
+  }, []);
+
+  function deleteCurrentPage() {
+    if (!currentPage || !canDeletePage) return;
+    if (!confirm(`Supprimer « ${currentPage.title} » ?`)) return;
+    const next = pages.filter((item) => item.id !== currentPage.id);
+    setPages(next);
+    setPageId(next[0]?.id ?? "");
+  }
 
   function payload(nextStatus = status) {
     const data = new FormData();
@@ -41,6 +76,7 @@ export function MemberSpaceEditor({
   }
 
   return (
+    <>
     <ListPanel className="min-h-0 flex-1 overflow-hidden">
       <div className="flex h-12 shrink-0 items-center gap-2 border-b border-stone-800 bg-stone-900 px-2 text-white">
         <Link
@@ -63,6 +99,25 @@ export function MemberSpaceEditor({
             </option>
           ))}
         </select>
+        <button
+          type="button"
+          onClick={() => setAddPageOpen(true)}
+          aria-label="Ajouter une page"
+          title="Ajouter une page"
+          className="flex h-8 w-8 items-center justify-center rounded-md text-[#E85D04] hover:bg-white/10"
+        >
+          <Plus className="h-4 w-4" aria-hidden />
+        </button>
+        <button
+          type="button"
+          onClick={deleteCurrentPage}
+          disabled={!canDeletePage}
+          aria-label={canDeletePage ? `Supprimer ${currentPage?.title}` : "Cette page ne peut pas être supprimée"}
+          title={canDeletePage ? "Supprimer la page" : "Accueil et Mes devis restent"}
+          className="flex h-8 w-8 items-center justify-center rounded-md text-white/70 hover:bg-white/10 hover:text-rose-300 disabled:cursor-not-allowed disabled:opacity-30"
+        >
+          <Trash2 className="h-4 w-4" aria-hidden />
+        </button>
         <div className="ml-auto flex items-center gap-1.5">
           <a
             href={publicUrl}
@@ -110,7 +165,26 @@ export function MemberSpaceEditor({
         onPages={setPages}
         onResources={setResources}
         onPageId={setPageId}
+        onAddPage={() => setAddPageOpen(true)}
+        onDeletePage={(id) => {
+          const page = pages.find((item) => item.id === id);
+          if (!page || isLockedMemberPage(page) || pages.length <= 1) return;
+          if (!confirm(`Supprimer « ${page.title} » ?`)) return;
+          const next = pages.filter((item) => item.id !== id);
+          setPages(next);
+          if (pageId === id) setPageId(next[0]?.id ?? "");
+        }}
       />
     </ListPanel>
+    <CreateMemberPageDialog
+      open={addPageOpen}
+      pages={pages}
+      onClose={() => setAddPageOpen(false)}
+      onCreate={(page) => {
+        setPages((current) => [...current, { ...page, sortOrder: current.length }]);
+        setPageId(page.id);
+      }}
+    />
+    </>
   );
 }

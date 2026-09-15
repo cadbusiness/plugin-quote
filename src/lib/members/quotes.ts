@@ -1,5 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/service";
 import { appUrl } from "@/lib/prospect/access";
+import { clientQuoteStageLabel } from "@/lib/members/parse";
 import type { MemberQuoteCard } from "@/lib/members/types";
 
 export async function loadMemberQuotes(organizationId: string, email: string): Promise<MemberQuoteCard[]> {
@@ -7,7 +8,7 @@ export async function loadMemberQuotes(organizationId: string, email: string): P
   const [{ data: quotes }, { data: statuses }] = await Promise.all([
     supabase
       .from("quotes")
-      .select("id, created_at, contact_name, contact_company, score_label, status, status_id")
+      .select("id, created_at, contact_name, contact_company, status, status_id")
       .eq("organization_id", organizationId)
       .ilike("contact_email", email.trim().toLowerCase())
       .order("created_at", { ascending: false }),
@@ -36,8 +37,7 @@ export async function loadMemberQuotes(organizationId: string, email: string): P
       createdAt: quote.created_at,
       contactName: quote.contact_name,
       contactCompany: quote.contact_company,
-      scoreLabel: quote.score_label,
-      statusLabel: status?.label ?? quote.status,
+      statusLabel: clientQuoteStageLabel(status?.slug ?? quote.status),
       statusSlug: status?.slug ?? quote.status,
       suiviUrl: token ? `${appUrl()}/suivi/${token}` : null,
     };

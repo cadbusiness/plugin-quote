@@ -139,6 +139,14 @@ export function resourceFromRow(row: {
   };
 }
 
+export function clientQuoteStageLabel(slug: string) {
+  if (slug === "won") return "Accepté";
+  if (slug === "lost") return "Clôturé";
+  if (slug === "in_progress" || slug === "waiting") return "Devis envoyé";
+  if (slug === "contacted") return "En étude";
+  return "Reçu";
+}
+
 export function memberStatusAfterArchiveToggle(status: string, publishedAt: string | null): MemberSpaceStatus {
   if (status === "archived") return publishedAt ? "published" : "draft";
   return "archived";

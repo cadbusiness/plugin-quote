@@ -63,7 +63,6 @@ export type MemberQuoteCard = {
   createdAt: string;
   contactName: string;
   contactCompany: string | null;
-  scoreLabel: string | null;
   statusLabel: string;
   statusSlug: string;
   suiviUrl: string | null;

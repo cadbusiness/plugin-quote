@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { emptyMemberBlock, MEMBER_BLOCK_LABEL, resourcesOfKind } from "./blocks";
 import { buildMemberSpaceBlueprint, parseCreateMemberSpaceForm } from "./create";
 import {
+  clientQuoteStageLabel,
   DEFAULT_MEMBER_THEME,
   memberStatusAfterArchiveToggle,
   parseBlock,
@@ -10,6 +11,11 @@ import {
   parseStatus,
   parseTheme,
 } from "./parse";
+import {
+  buildMemberPageFromTemplate,
+  isLockedMemberPage,
+  MEMBER_PAGE_TEMPLATES,
+} from "./page-templates";
 import { memberPagePath, memberSpaceAbsoluteUrl, memberSpaceBasePath, uniqueMemberPageSlug } from "./urls";
 
 const blueprint = buildMemberSpaceBlueprint({
@@ -64,6 +70,10 @@ assert.equal(parseStatus("published"), "published");
 assert.equal(memberStatusAfterArchiveToggle("published", "2026-01-01"), "archived");
 assert.equal(memberStatusAfterArchiveToggle("archived", "2026-01-01"), "published");
 assert.equal(memberStatusAfterArchiveToggle("archived", null), "draft");
+assert.equal(clientQuoteStageLabel("new"), "Reçu");
+assert.equal(clientQuoteStageLabel("contacted"), "En étude");
+assert.equal(clientQuoteStageLabel("in_progress"), "Devis envoyé");
+assert.equal(clientQuoteStageLabel("won"), "Accepté");
 
 const theme = parseTheme({ accent: "#111111" });
 assert.equal(theme.accent, "#111111");
@@ -107,5 +117,34 @@ assert.equal(
   ),
   "nouvelle-page-2",
 );
+
+const existing = [
+  { id: "a", slug: "accueil" },
+  { id: "b", slug: "devis" },
+];
+const docsPage = buildMemberPageFromTemplate("documents", existing);
+assert.ok(docsPage);
+assert.equal(docsPage.kind, "documents");
+assert.equal(docsPage.slug, "documents");
+assert.ok(docsPage.blocks.some((block) => block.type === "documents"));
+assert.ok(docsPage.blocks.some((block) => block.type === "text"));
+const docsAgain = buildMemberPageFromTemplate("documents", [...existing, { id: docsPage.id, slug: docsPage.slug }]);
+assert.equal(docsAgain?.slug, "documents-2");
+const faq = buildMemberPageFromTemplate("faq", existing);
+assert.equal(faq?.kind, "custom");
+assert.ok(faq?.blocks.every((block) => block.type === "text"));
+const plugins = buildMemberPageFromTemplate("plugins", existing);
+assert.ok(plugins?.blocks.some((block) => block.type === "plugins"));
+const links = buildMemberPageFromTemplate("links", existing);
+assert.ok(links?.blocks.some((block) => block.type === "links"));
+const blank = buildMemberPageFromTemplate("blank", existing, "Salle de pause");
+assert.equal(blank?.title, "Salle de pause");
+assert.equal(blank?.slug, "salle-de-pause");
+assert.equal(blank?.blocks.length, 1);
+assert.equal(buildMemberPageFromTemplate("nope", existing), null);
+assert.equal(MEMBER_PAGE_TEMPLATES.length, 5);
+assert.equal(isLockedMemberPage({ kind: "home", slug: "accueil" }), true);
+assert.equal(isLockedMemberPage({ kind: "quotes", slug: "devis" }), true);
+assert.equal(isLockedMemberPage({ kind: "custom", slug: "faq" }), false);
 
 console.log("members ok");

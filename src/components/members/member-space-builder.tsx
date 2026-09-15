@@ -13,6 +13,7 @@ import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } 
 import { CSS } from "@dnd-kit/utilities";
 import {
   Boxes,
+  ChevronLeft,
   FileText,
   GripVertical,
   Heading2,
@@ -24,8 +25,10 @@ import {
   Type,
   type LucideIcon,
 } from "lucide-react";
+import { MEMBER_BLOCK_ICON } from "@/components/members/member-icons";
 import { MemberSpaceView } from "@/components/members/member-space-view";
 import { emptyMemberBlock, MEMBER_BLOCK_LABEL } from "@/lib/members/blocks";
+import { isLockedMemberPage } from "@/lib/members/page-templates";
 import { uniqueMemberPageSlug } from "@/lib/members/urls";
 import { newMemberId, type MemberBlockType, type MemberPageDraft, type MemberQuoteCard, type MemberResourceDraft, type MemberResourceKind, type MemberTheme } from "@/lib/members/types";
 import { uploadMemberResource } from "@/app/(app)/membres/actions";
@@ -47,8 +50,7 @@ const SAMPLE_QUOTES: MemberQuoteCard[] = [
     createdAt: new Date().toISOString(),
     contactName: "Claire Martin",
     contactCompany: "Dock Ouest",
-    scoreLabel: "hot",
-    statusLabel: "Nouveau",
+    statusLabel: "Reçu",
     statusSlug: "new",
     suiviUrl: null,
   },
@@ -68,6 +70,8 @@ export function MemberSpaceBuilder({
   onPages,
   onResources,
   onPageId,
+  onAddPage,
+  onDeletePage,
 }: {
   spaceId: string;
   name: string;
@@ -82,6 +86,8 @@ export function MemberSpaceBuilder({
   onPages: (pages: MemberPageDraft[]) => void;
   onResources: (resources: MemberResourceDraft[]) => void;
   onPageId: (id: string) => void;
+  onAddPage: () => void;
+  onDeletePage: (id: string) => void;
 }) {
   const [tab, setTab] = useState<DockTab>("blocks");
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -192,6 +198,7 @@ export function MemberSpaceBuilder({
                           <SortableBlockRow
                             key={block.id}
                             id={block.id}
+                            icon={MEMBER_BLOCK_ICON[block.type]}
                             label={block.heading || MEMBER_BLOCK_LABEL[block.type]}
                             onSelect={() => setSelectedId(block.id)}
                             onRemove={() => removeBlock(block.id)}
@@ -217,6 +224,8 @@ export function MemberSpaceBuilder({
               onTheme={onTheme}
               onPages={onPages}
               onPageId={onPageId}
+              onAddPage={onAddPage}
+              onDeletePage={onDeletePage}
             />
           ) : null}
         </div>
@@ -258,11 +267,13 @@ export function MemberSpaceBuilder({
 
 function SortableBlockRow({
   id,
+  icon: Icon,
   label,
   onSelect,
   onRemove,
 }: {
   id: string;
+  icon: LucideIcon;
   label: string;
   onSelect: () => void;
   onRemove: () => void;
@@ -277,8 +288,9 @@ function SortableBlockRow({
       <button type="button" className="px-1.5 text-slate-400" aria-label="Réordonner" {...attributes} {...listeners}>
         <GripVertical className="h-3.5 w-3.5" />
       </button>
-      <button type="button" onClick={onSelect} className="min-w-0 flex-1 truncate py-1.5 text-left text-sm text-slate-800">
-        {label}
+      <button type="button" onClick={onSelect} className="flex min-w-0 flex-1 items-center gap-1.5 truncate py-1.5 text-left text-sm text-slate-800">
+        <Icon className="h-3.5 w-3.5 shrink-0 text-[#E85D04]" aria-hidden />
+        <span className="truncate">{label}</span>
       </button>
       <button type="button" onClick={onRemove} className="px-1.5 text-slate-400 hover:text-rose-700" aria-label="Retirer">
         <Trash2 className="h-3.5 w-3.5" />
@@ -298,12 +310,32 @@ function BlockInspector({
   onChange: (patch: Partial<MemberPageDraft["blocks"][number]>) => void;
   onRemove: () => void;
 }) {
+  const TypeIcon = MEMBER_BLOCK_ICON[block.type];
   return (
     <div className="space-y-3">
-      <button type="button" onClick={onBack} className="text-xs text-slate-500 hover:text-slate-900">
-        Blocs
-      </button>
-      <p className="text-sm font-medium text-slate-900">{MEMBER_BLOCK_LABEL[block.type]}</p>
+      <div className="flex items-center justify-between gap-2">
+        <button
+          type="button"
+          onClick={onBack}
+          className="inline-flex items-center gap-0.5 text-xs text-slate-500 hover:text-slate-900"
+        >
+          <ChevronLeft className="h-3.5 w-3.5" aria-hidden />
+          Blocs
+        </button>
+        <button
+          type="button"
+          onClick={onRemove}
+          aria-label="Retirer le bloc"
+          title="Retirer le bloc"
+          className="inline-flex h-7 w-7 items-center justify-center rounded-md text-slate-400 hover:bg-rose-50 hover:text-rose-700"
+        >
+          <Trash2 className="h-3.5 w-3.5" aria-hidden />
+        </button>
+      </div>
+      <p className="flex items-center gap-2 text-sm font-medium text-slate-900">
+        <TypeIcon className="h-4 w-4 text-[#E85D04]" aria-hidden />
+        {MEMBER_BLOCK_LABEL[block.type]}
+      </p>
       <label className="block text-sm">
         <span className="text-slate-600">Titre</span>
         <input
@@ -370,9 +402,6 @@ function BlockInspector({
           </button>
         </div>
       ) : null}
-      <button type="button" onClick={onRemove} className="text-sm text-rose-700 hover:underline">
-        Retirer le bloc
-      </button>
     </div>
   );
 }
@@ -500,9 +529,10 @@ function ResourcesEditor({
               <button
                 type="button"
                 onClick={() => onChange(resources.filter((row) => row.id !== item.id))}
-                className="text-xs text-rose-700"
+                aria-label={`Retirer ${item.title}`}
+                className="inline-flex h-7 w-7 items-center justify-center rounded-md text-slate-400 hover:bg-rose-50 hover:text-rose-700"
               >
-                Retirer
+                <Trash2 className="h-3.5 w-3.5" aria-hidden />
               </button>
             </div>
           </li>
@@ -521,6 +551,8 @@ function SettingsEditor({
   onTheme,
   onPages,
   onPageId,
+  onAddPage,
+  onDeletePage,
 }: {
   name: string;
   theme: MemberTheme;
@@ -530,6 +562,8 @@ function SettingsEditor({
   onTheme: (theme: MemberTheme) => void;
   onPages: (pages: MemberPageDraft[]) => void;
   onPageId: (id: string) => void;
+  onAddPage: () => void;
+  onDeletePage: (id: string) => void;
 }) {
   return (
     <div className="space-y-3">
@@ -571,7 +605,7 @@ function SettingsEditor({
         <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Pages</p>
         <ul className="space-y-2">
           {pages.map((page) => {
-            const locked = page.kind === "home" || page.kind === "quotes";
+            const locked = isLockedMemberPage(page);
             const active = page.id === pageId;
             return (
               <li key={page.id} className={`space-y-1.5 rounded-md p-2 ${active ? "bg-orange-50" : "ring-1 ring-slate-200"}`}>
@@ -622,14 +656,11 @@ function SettingsEditor({
                   {!locked && pages.length > 1 ? (
                     <button
                       type="button"
-                      onClick={() => {
-                        const next = pages.filter((row) => row.id !== page.id);
-                        onPages(next);
-                        if (pageId === page.id) onPageId(next[0]?.id ?? "");
-                      }}
-                      className="text-xs text-rose-700"
+                      onClick={() => onDeletePage(page.id)}
+                      aria-label={`Supprimer ${page.title}`}
+                      className="inline-flex h-7 w-7 items-center justify-center rounded-md text-slate-400 hover:bg-rose-50 hover:text-rose-700"
                     >
-                      Retirer
+                      <Trash2 className="h-3.5 w-3.5" aria-hidden />
                     </button>
                   ) : null}
                 </div>
@@ -639,24 +670,8 @@ function SettingsEditor({
         </ul>
         <button
           type="button"
-          onClick={() => {
-            const id = newMemberId();
-            const title = "Nouvelle page";
-            onPages([
-              ...pages,
-              {
-                id,
-                kind: "custom",
-                slug: uniqueMemberPageSlug(pages, title),
-                title,
-                blocks: [emptyMemberBlock("text")],
-                isPublished: true,
-                sortOrder: pages.length,
-              },
-            ]);
-            onPageId(id);
-          }}
-          className="mt-2 text-sm text-[#C2410C]"
+          onClick={onAddPage}
+          className="mt-2 text-sm font-medium text-[#C2410C]"
         >
           Ajouter une page
         </button>
