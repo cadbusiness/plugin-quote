@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/db/database.types";
 import { appUrl } from "@/lib/prospect/access";
+import { publishedMemberSpaceUrl } from "@/lib/members/public";
 import type { BranchCondition, RunContext, SubjectContext, WorkflowSubjectType } from "@/lib/workflows/types";
 
 type Client = SupabaseClient<Database>;
@@ -44,6 +45,7 @@ export async function loadSubjectContext(
 
     const prices = (items ?? []).flatMap((item) => [item.price_min, item.price_max]).filter((n): n is number => n != null);
     const suiviUrl = access?.token ? `${appUrl()}/suivi/${access.token}` : input.stored?.suiviUrl ?? "";
+    const membresUrl = (await publishedMemberSpaceUrl(supabase, quote.organization_id)) ?? "";
 
     return {
       subjectType: "quote",
@@ -67,6 +69,7 @@ export async function loadSubjectContext(
       lastActivityAt: quote.created_at,
       resumeUrl: input.stored?.resumeUrl ?? "",
       suiviUrl,
+      membresUrl,
       pin: input.stored?.pin ?? "",
       salesEmail: org?.sales_email ?? null,
       salesName: org?.sales_name ?? "",
@@ -109,6 +112,7 @@ export async function loadSubjectContext(
     lastActivityAt: session.last_activity_at ?? session.updated_at,
     resumeUrl: `${appUrl()}/reprendre/${session.token}`,
     suiviUrl: "",
+    membresUrl: (await publishedMemberSpaceUrl(supabase, session.organization_id)) ?? "",
     pin: "",
     salesEmail: org?.sales_email ?? null,
     salesName: org?.sales_name ?? "",

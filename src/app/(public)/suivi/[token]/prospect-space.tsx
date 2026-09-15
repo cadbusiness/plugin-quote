@@ -29,7 +29,15 @@ function collaboratorTone(status: string): ChipTone {
   return "slate";
 }
 
-export function ProspectSpace({ token, bundle }: { token: string; bundle: ProspectBundle }) {
+export function ProspectSpace({
+  token,
+  bundle,
+  memberSpaceUrl,
+}: {
+  token: string;
+  bundle: ProspectBundle;
+  memberSpaceUrl?: string | null;
+}) {
   const router = useRouter();
   const isCollaborator = bundle.viewer.kind === "collaborator";
   const me = bundle.viewer.kind === "collaborator" ? bundle.viewer.collaborator : null;
@@ -118,6 +126,13 @@ export function ProspectSpace({ token, bundle }: { token: string; bundle: Prospe
       <p className="text-xs uppercase tracking-wide text-slate-400">
         {isCollaborator ? "Validation interne" : "Votre demande"}
       </p>
+      {memberSpaceUrl && !isCollaborator ? (
+        <p className="mt-3 text-sm">
+          <a href={`${memberSpaceUrl}?token=${token}`} className="font-medium text-[#E85D04] hover:underline">
+            Voir tous vos devis dans l’espace membres
+          </a>
+        </p>
+      ) : null}
       <h1 className="mt-1 text-2xl font-semibold">
         {isCollaborator ? me?.name : bundle.quote.contact_name}
       </h1>

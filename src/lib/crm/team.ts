@@ -170,6 +170,7 @@ type CapabilityDef = { id: string; area: string; hint: string; roles: readonly T
 export const TEAM_CAPABILITIES: CapabilityDef[] = [
   { id: "accueil", area: "Tableau de bord", hint: "KPI, pipeline, modules d’accueil", roles: ["owner", "admin", "sales"] },
   { id: "devis", area: "Demandes", hint: "Fiches, notes, assignation, statut", roles: ["owner", "admin", "sales"] },
+  { id: "membres", area: "Espace membres", hint: "Portail client, documents, plugins", roles: ["owner", "admin"] },
   { id: "sessions", area: "Abandons", hint: "Sessions inachevées à relancer", roles: ["owner", "admin", "sales"] },
   { id: "emails", area: "Emails marketing", hint: "Campagnes perso ou groupe", roles: ["owner", "admin", "sales"] },
   { id: "segments", area: "Segmentation", hint: "Listes B2B / hot / relance", roles: ["owner", "admin", "sales"] },

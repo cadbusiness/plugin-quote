@@ -8,6 +8,7 @@ import { quotesModule } from "@/lib/demo/modules/quotes";
 import { segmentsModule } from "@/lib/demo/modules/segments";
 import { sessionsModule } from "@/lib/demo/modules/sessions";
 import { shopModule } from "@/lib/demo/modules/shop";
+import { memberSpaceModule } from "@/lib/demo/modules/members";
 import type { SeedModule } from "@/lib/demo/types";
 import { WALKTHROUGH_SCREENS } from "@/lib/demo/walkthrough";
 
@@ -20,6 +21,7 @@ export const SEED_MODULES: SeedModule[] = [
   quotesModule,
   sessionsModule,
   shopModule,
+  memberSpaceModule,
   segmentsModule,
   analyticsModule,
 ];

@@ -133,6 +133,27 @@ export const WALKTHROUGH_SCREENS: WalkthroughScreen[] = [
     why: "Mini-site devis, pas de paiement.",
     seedModule: "shop",
   },
+  {
+    id: "membres",
+    label: "Espace membres",
+    path: "/membres",
+    why: "Liste des espaces, lien public /m/…",
+    seedModule: "members",
+  },
+  {
+    id: "member-builder",
+    label: "Constructeur espace membres",
+    path: "/membres/{memberSpaceId}",
+    why: "Blocs, documents, plugins, aperçu.",
+    seedModule: "members",
+  },
+  {
+    id: "public-members",
+    label: "Espace membres public",
+    path: "/m/demo/espace",
+    why: "Login email + PIN, tous les devis du contact.",
+    seedModule: "members",
+  },
 ];
 
 export function walkthroughPath(screen: WalkthroughScreen, ids: Record<string, string> = {}) {

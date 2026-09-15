@@ -256,13 +256,26 @@ function ClientTab({
           </Fact>
           <Fact label="Demandes">{detail.siblings.length}</Fact>
           <Fact label="Espace prospect">
-            {detail.suiviUrl ? (
-              <a href={detail.suiviUrl} target="_blank" rel="noreferrer" className="text-[#E85D04] hover:underline">
-                Ouvrir{detail.suiviLastAccess ? ` · vu ${detail.suiviLastAccess}` : ""}
+          {detail.suiviUrl ? (
+            <a href={detail.suiviUrl} target="_blank" rel="noreferrer" className="text-[#E85D04] hover:underline">
+              Ouvrir{detail.suiviLastAccess ? ` · vu ${detail.suiviLastAccess}` : ""}
+            </a>
+          ) : (
+            "Pas encore créé"
+          )}
+          {detail.memberSpaceUrl ? (
+            <>
+              {" · "}
+              <a
+                href={detail.memberSpaceUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="text-[#E85D04] hover:underline"
+              >
+                Espace membres
               </a>
-            ) : (
-              "Pas encore créé"
-            )}
+            </>
+          ) : null}
           </Fact>
         </dl>
       </section>

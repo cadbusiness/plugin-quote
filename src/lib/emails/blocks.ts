@@ -83,7 +83,7 @@ export function starterDesign(kind: CampaignKind, orgName: string): EmailDesign 
           text: "Nous avons préparé une proposition qui reprend vos choix. Répondez à cet email, on s’occupe du reste.",
         },
         { id: newBlockId(), type: "recap" },
-        { id: newBlockId(), type: "button", label: "Ouvrir mon espace", href: "{{suivi_url}}" },
+        { id: newBlockId(), type: "button", label: "Ouvrir mon espace", href: "{{membres_url}}" },
         { id: newBlockId(), type: "footer", text: `${orgName} · devis sur-mesure` },
       ],
     };

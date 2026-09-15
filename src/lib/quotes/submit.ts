@@ -9,6 +9,7 @@ import { renderQuotePdf } from "@/lib/pdf/render";
 import type { ContactPayload, Customization } from "@/lib/wizard/types";
 import type { Json } from "@/lib/db/database.types";
 import { createProspectAccess } from "@/lib/prospect/access";
+import { publishedMemberSpaceUrl } from "@/lib/members/public";
 
 export async function submitQuote(input: {
   sessionId: string;
@@ -218,6 +219,7 @@ export async function submitQuote(input: {
   } catch (error) {
     console.error("Prospect access failed", error);
   }
+  const membresUrl = (await publishedMemberSpaceUrl(supabase, session.organization_id)) ?? undefined;
 
   try {
     await cancelSessionRuns(session.organization_id, session.id);
@@ -244,6 +246,7 @@ export async function submitQuote(input: {
         pdf: pdfBuffer,
         suiviUrl: access?.url,
         pin: access?.pin,
+        membresUrl,
       });
     }
   } catch (error) {
@@ -259,6 +262,7 @@ export async function submitQuote(input: {
         pdf: pdfBuffer,
         suiviUrl: access?.url,
         pin: access?.pin,
+        membresUrl,
       });
     } catch (emailError) {
       console.error("Email send failed", emailError);

@@ -2,8 +2,20 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.17.0",
+    version: "1.17.0",
+    title: "Espace membres : un lien pour tous les devis",
+    items: [
+      "Créez un espace membres comme une boutique : constructeur, documents, plugins, lien public.",
+      "Après un devis, le client retrouve toutes ses demandes au même endroit (email + PIN).",
+      "Ajoutez des documents et des liens (plugin WordPress, notices) visibles une fois connecté.",
+    ],
+    releasedAt: "2026-09-14",
+    createdAt: "2026-09-14T00:00:00.000Z",
+  },
   {
     id: "seed-1.16.0",
     version: "1.16.0",

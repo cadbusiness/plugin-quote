@@ -22,6 +22,7 @@ assert.ok(confirm);
 assert.match(confirm.body, /\{\{contact_name\}\}/);
 assert.match(confirm.body, /récapitulatif/);
 assert.match(confirm.body, /\{\{suivi_url\}\}/);
+assert.match(confirm.body, /\{\{membres_url\}\}/);
 assert.match(confirm.body, /\{\{pin\}\}/);
 assert.match(confirm.subject, /récapitulatif/);
 

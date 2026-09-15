@@ -16,6 +16,7 @@ export const DEMO_FUNNEL_SLUG = "rayonnage";
 export const DEMO_FUNNEL_ALIASES = ["rayonnage", "principal", "funnel-rayonnage"] as const;
 export const DEMO_SHOP_SLUG = "vitrine";
 export const DEMO_SHOP_ALIASES = ["vitrine", "espace-demo", "vitrine-rayonnage"] as const;
+export const DEMO_MEMBER_SPACE_SLUG = "espace";
 
 export const DEMO_ACCOUNTS = [
   {

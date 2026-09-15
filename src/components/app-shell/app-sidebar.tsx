@@ -7,6 +7,7 @@ import {
   BarChart3,
   Clock,
   Filter,
+  IdCard,
   Inbox,
   LayoutDashboard,
   LogOut,
@@ -52,6 +53,7 @@ const GROUPS: { label: string; items: Item[] }[] = [
     label: "Commercial",
     items: [
       { href: "/devis", label: "Demandes", icon: Inbox },
+      { href: "/membres", label: "Espace membres", icon: IdCard, admin: true },
       { href: "/sessions", label: "Abandons", icon: Clock, exact: true },
       { href: "/automations", label: "Automatisations", icon: Zap, exact: true, admin: true },
       { href: "/emails", label: "Emails", icon: Mail },
@@ -149,7 +151,7 @@ export function AppSidebar({
 }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(initialCollapsed);
-  const builderLocked = pathname.startsWith("/integrations/shop/");
+  const builderLocked = pathname.startsWith("/integrations/shop/") || pathname.startsWith("/membres/");
   const collapsedUi = builderLocked || collapsed;
   const display = email?.split("@")[0] ?? "Compte";
 

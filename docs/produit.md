@@ -53,6 +53,7 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 
 ### Espace prospect
 - **Lien magique post-soumission**, Livré. `/suivi/[token]`.
+- **Espace membres (portail client constructible)**, Partiel. Création guidée, constructeur (blocs, documents, plugins), URL `/m/[org]/[slug]`, login email + PIN, liste de tous les devis du contact. PDF depuis l’espace encore via l’e-mail T+0.
 - **Code PIN 6 chiffres**, Livré.
 - **Barre de statut**, Partiel. Barre oui, pas de push temps réel.
 - **Récap configuration + PDF téléchargeable**, Partiel. Récap oui ; PDF envoyé par email, pas encore téléchargé depuis l’espace.

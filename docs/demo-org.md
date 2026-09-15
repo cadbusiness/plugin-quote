@@ -10,6 +10,7 @@ Espace dédié, namespacé, ré-ensemençable. Sert aux agents (captures, docs, 
 | Prod | https://www.quotebuilder.co |
 | Funnel public | `/c/demo/rayonnage` |
 | Boutique | `/b/demo/vitrine` |
+| Espace membres | `/m/demo/espace` |
 
 L’org `quickly` (migration SQL) reste le pilote métier. Ne pas y mélanger ce seed.
 
@@ -75,6 +76,7 @@ Modules (ordre, `src/lib/demo/registry.ts`) :
 | `quotes` | Demandes FR, scores, pipeline, notes, activité |
 | `sessions` | Abandons `qb-demo-abandon-*` |
 | `shop` | Boutique native `vitrine` |
+| `members` | Espace membres `espace` (constructeur, documents, `/m/demo/espace`) |
 | `segments` | Hot, B2B, entrepôt |
 | `analytics` | Événements 21 jours (skip si déjà là) |
 

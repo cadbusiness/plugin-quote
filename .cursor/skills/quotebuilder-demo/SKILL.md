@@ -42,13 +42,16 @@ Parcourir dans cet ordre. Toute la ligne ouvre le détail. Pas d’emoji. Shell 
 | 11 | Builder | `/funnels/{id}` | Steps, questions |
 | 12 | Boutiques | `/integrations` | Vitrine rayonnage publiée |
 | 13 | Builder boutique | `/integrations/shop/{id}` | Pages accueil / catalogue / légales |
-| 14 | Stats | `/stats` | Tunnel visites → devis |
-| 15 | Segments | `/segments` | Chauds, B2B, entrepôt |
-| 16 | Équipe | `/equipe` | Owner + commercial, ligne cliquable, stats |
-| 17 | Funnel public | `/c/demo/rayonnage` | Wizard prospect |
-| 18 | Boutique publique | `/b/demo/vitrine` | Mini-site devis, pas de paiement |
+| 14 | Espace membres | `/membres` | Portail client, lien `/m/demo/espace` |
+| 15 | Constructeur membres | `/membres/{id}` | Blocs, documents, plugins |
+| 16 | Stats | `/stats` | Tunnel visites → devis |
+| 17 | Segments | `/segments` | Chauds, B2B, entrepôt |
+| 18 | Équipe | `/equipe` | Owner + commercial, ligne cliquable, stats |
+| 19 | Funnel public | `/c/demo/rayonnage` | Wizard prospect |
+| 20 | Boutique publique | `/b/demo/vitrine` | Mini-site devis, pas de paiement |
+| 21 | Espace membres public | `/m/demo/espace` | Login email + PIN, tous les devis |
 
-IDs : première ligne de `/devis`, `/automations`, `/funnels`, `/integrations`.
+IDs : première ligne de `/devis`, `/automations`, `/funnels`, `/integrations`, `/membres`.
 
 Captures pour docs/blog : desktop d’abord ; mobile si le layout change. Ne pas montrer de secrets, ni de vraies clés API.
 

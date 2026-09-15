@@ -63,6 +63,7 @@ export async function executeSendEmail(
     suggestion_name: extras.suggestionName ?? "",
     price_range: formatPrice(ctx.priceMin, ctx.priceMax),
     suivi_url: ctx.suiviUrl,
+    membres_url: ctx.membresUrl,
     resume_url: ctx.resumeUrl,
     pin: ctx.pin,
   };

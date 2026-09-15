@@ -4,6 +4,7 @@ import { sendHtmlEmail } from "@/lib/email/send";
 import { parseDesign } from "@/lib/emails/blocks";
 import { renderEmailHtml, renderEmailText } from "@/lib/emails/render";
 import { applyPersonalization, campaignVars } from "@/lib/emails/vars";
+import { publishedMemberSpaceUrl } from "@/lib/members/public";
 import { recentlyContacted } from "@/lib/segments/match";
 import { resolveSegment } from "@/lib/segments/resolve";
 import type { SegmentContact } from "@/lib/segments/types";
@@ -63,6 +64,7 @@ export async function sendCampaign(
     ? `${input.orgName} <${input.fromAddress}>`
     : undefined;
   const mode = campaign.send_mode === "group" ? "group" : "personal";
+  const membresUrl = (await publishedMemberSpaceUrl(supabase, input.organizationId)) ?? "";
   let sent = 0;
   let skipped = 0;
   let failed = 0;
@@ -99,6 +101,7 @@ export async function sendCampaign(
     const vars = campaignVars(contact, {
       orgName: input.orgName,
       salesName: input.salesName,
+      membresUrl,
     });
     const merge = mode === "group" ? { ...vars, contact_name: "vous", answers_text: "" } : vars;
     const subject = applyPersonalization(campaign.subject, merge, mode);

@@ -887,6 +887,212 @@ export type Database = {
           },
         ]
       }
+      member_spaces: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          organization_id: string
+          published_at: string | null
+          slug: string
+          status: string
+          theme: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          organization_id: string
+          published_at?: string | null
+          slug: string
+          status?: string
+          theme?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          organization_id?: string
+          published_at?: string | null
+          slug?: string
+          status?: string
+          theme?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_spaces_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      member_space_pages: {
+        Row: {
+          blocks: Json
+          created_at: string
+          id: string
+          is_published: boolean
+          kind: string
+          organization_id: string
+          slug: string
+          sort_order: number
+          space_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          blocks?: Json
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          kind: string
+          organization_id: string
+          slug: string
+          sort_order?: number
+          space_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          blocks?: Json
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          kind?: string
+          organization_id?: string
+          slug?: string
+          sort_order?: number
+          space_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_space_pages_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "member_space_pages_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "member_spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      member_space_resources: {
+        Row: {
+          created_at: string
+          description: string
+          href: string
+          id: string
+          is_published: boolean
+          kind: string
+          organization_id: string
+          sort_order: number
+          space_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          href?: string
+          id?: string
+          is_published?: boolean
+          kind: string
+          organization_id: string
+          sort_order?: number
+          space_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          href?: string
+          id?: string
+          is_published?: boolean
+          kind?: string
+          organization_id?: string
+          sort_order?: number
+          space_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_space_resources_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "member_space_resources_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "member_spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      member_space_sessions: {
+        Row: {
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          last_accessed: string | null
+          organization_id: string
+          space_id: string
+          token: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          expires_at: string
+          id?: string
+          last_accessed?: string | null
+          organization_id: string
+          space_id: string
+          token: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          last_accessed?: string | null
+          organization_id?: string
+          space_id?: string
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_space_sessions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "member_space_sessions_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "member_spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       analytics_events: {
         Row: {
           configurator_id: string | null

@@ -81,5 +81,11 @@ export async function eraseContactByEmail(
     await supabase.from("prospect_messages").delete().in("quote_id", quoteIds);
   }
 
+  await supabase
+    .from("member_space_sessions")
+    .delete()
+    .eq("organization_id", input.organizationId)
+    .ilike("email", email);
+
   return { quotes: quoteIds.length, sessions: sessionIds.length };
 }

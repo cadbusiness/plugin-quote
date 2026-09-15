@@ -46,6 +46,7 @@ export async function middleware(request: NextRequest) {
     "/segments",
     "/integrations",
     "/acquisition",
+    "/membres",
     "/mises-a-jour",
   ];
   const isOAuthConsent = path === "/oauth/authorize";
@@ -160,6 +161,8 @@ export const config = {
     "/integrations/:path*",
     "/acquisition",
     "/acquisition/:path*",
+    "/membres",
+    "/membres/:path*",
     "/mises-a-jour",
     "/mises-a-jour/:path*",
     "/api/ads/:path*",

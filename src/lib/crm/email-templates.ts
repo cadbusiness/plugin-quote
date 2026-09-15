@@ -6,7 +6,7 @@ export const DEFAULT_EMAIL_TEMPLATES = [
   {
     kind: "prospect_confirm",
     subject: "Votre demande — récapitulatif",
-    body: "Bonjour {{contact_name}},\n\nMerci pour votre demande. Vous trouverez ci-joint le récapitulatif de votre configuration.\nNotre équipe vous recontacte sous 24h ouvrées.\n\nSuivez votre demande : {{suivi_url}}\nCode PIN : {{pin}}\n\n{{sales_name}}",
+    body: "Bonjour {{contact_name}},\n\nMerci pour votre demande. Vous trouverez ci-joint le récapitulatif de votre configuration.\nNotre équipe vous recontacte sous 24h ouvrées.\n\nSuivez votre demande : {{suivi_url}}\nTous vos devis : {{membres_url}}\nCode PIN : {{pin}}\n\n{{sales_name}}",
   },
   {
     kind: "sales_brief",

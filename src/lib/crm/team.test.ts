@@ -67,6 +67,7 @@ assert.equal(conversionRate(emptyMemberStats()), null);
 
 const salesCaps = capabilitiesForRole("sales");
 assert.ok(salesCaps.find((item) => item.id === "devis")?.allowed);
+assert.equal(salesCaps.find((item) => item.id === "membres")?.allowed, false);
 assert.equal(salesCaps.find((item) => item.id === "equipe")?.allowed, false);
 assert.ok(capabilitiesForRole("admin").find((item) => item.id === "equipe")?.allowed);
 assert.match(roleBlurb("sales"), /demandes/);

@@ -126,6 +126,7 @@ export type SubjectContext = {
   lastActivityAt: string;
   resumeUrl: string;
   suiviUrl: string;
+  membresUrl: string;
   pin: string;
   salesEmail: string | null;
   salesName: string;

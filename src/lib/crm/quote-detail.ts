@@ -7,6 +7,7 @@ import { parseDefinition, type WorkflowRunStatus, type WorkflowTriggerType } fro
 import { scoreReasons } from "@/lib/quotes/score";
 import { formatItemOptions, labelAnswers, type LabeledAnswer } from "@/lib/crm/answers";
 import { appUrl } from "@/lib/prospect/access";
+import { publishedMemberSpaceUrl } from "@/lib/members/public";
 import type { Answers, QuestionOptions } from "@/lib/wizard/types";
 
 export type QuoteMember = { userId: string; label: string };
@@ -82,6 +83,7 @@ export type QuoteDetail = {
   collaborators: Tables<"quote_collaborators">[];
   source: string;
   suiviUrl: string | null;
+  memberSpaceUrl: string | null;
   suiviLastAccess: string | null;
   received: { relative: string; exact: string };
   totals: { min: number | null; max: number | null; label: string; count: number };
@@ -411,6 +413,7 @@ export async function loadQuoteDetail(
     }),
     collaborators: collaborators ?? [],
     suiviUrl: suiviAlive ? `${appUrl()}/suivi/${access.token}` : null,
+    memberSpaceUrl: await publishedMemberSpaceUrl(supabase, orgId),
     suiviLastAccess: access?.last_accessed ? formatRelative(access.last_accessed) : null,
     totals: rangeTotal(items ?? []),
   };

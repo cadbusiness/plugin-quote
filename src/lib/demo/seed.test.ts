@@ -7,6 +7,7 @@ import {
   DEMO_SEED_VERSION,
   DEMO_SHOP_ALIASES,
   DEMO_SHOP_SLUG,
+  DEMO_MEMBER_SPACE_SLUG,
   requireDemoPassword,
 } from "./constants";
 import { DEMO_PRODUCTS, DEMO_RULES } from "./modules/catalog";
@@ -21,6 +22,7 @@ assert.equal(DEMO_ORG.slug, "demo");
 assert.equal(DEMO_SEED_VERSION >= 2, true);
 assert.equal(DEMO_FUNNEL_SLUG, "rayonnage");
 assert.equal(DEMO_SHOP_SLUG, "vitrine");
+assert.equal(DEMO_MEMBER_SPACE_SLUG, "espace");
 assert.ok(DEMO_FUNNEL_ALIASES.includes("principal"));
 assert.ok(DEMO_FUNNEL_ALIASES.includes("funnel-rayonnage"));
 assert.ok(DEMO_SHOP_ALIASES.includes("espace-demo"));
@@ -28,6 +30,7 @@ assert.ok(
   WALKTHROUGH_SCREENS.some((screen) => screen.path === `/c/${DEMO_ORG.slug}/${DEMO_FUNNEL_SLUG}`),
 );
 assert.ok(WALKTHROUGH_SCREENS.some((screen) => screen.path === `/b/${DEMO_ORG.slug}/${DEMO_SHOP_SLUG}`));
+assert.ok(WALKTHROUGH_SCREENS.some((screen) => screen.path === `/m/${DEMO_ORG.slug}/${DEMO_MEMBER_SPACE_SLUG}`));
 assert.ok(DEMO_ACCOUNTS.every((account) => account.email.endsWith("@quotebuilder.app")));
 assert.ok(!JSON.stringify(DEMO_ACCOUNTS).includes("password"));
 assert.ok(!JSON.stringify(DEMO_ACCOUNTS).toLowerCase().includes("demo2026"));
@@ -42,6 +45,7 @@ assert.deepEqual(ids, [
   "quotes",
   "sessions",
   "shop",
+  "members",
   "segments",
   "analytics",
 ]);
@@ -53,7 +57,7 @@ for (const moduleId of walkthroughIds) {
   assert.ok(ids.includes(moduleId), `écran walkthrough sans module seed: ${moduleId}`);
 }
 
-const requiredScreens = ["login", "devis", "dossier", "automations", "catalogue", "builder"];
+const requiredScreens = ["login", "devis", "dossier", "automations", "catalogue", "builder", "membres"];
 for (const id of requiredScreens) {
   assert.ok(WALKTHROUGH_SCREENS.some((screen) => screen.id === id), `écran manquant: ${id}`);
 }

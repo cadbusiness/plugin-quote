@@ -15,7 +15,7 @@ export function formatAnswersText(answers: Answers) {
 
 export function campaignVars(
   contact: Pick<SegmentContact, "contactName" | "contactEmail" | "contactCompany" | "scoreLabel" | "answers">,
-  extras: { suiviUrl?: string; orgName?: string; salesName?: string } = {},
+    extras: { suiviUrl?: string; orgName?: string; salesName?: string; membresUrl?: string } = {},
 ): Record<string, string> {
   return {
     contact_name: contact.contactName,
@@ -24,6 +24,7 @@ export function campaignVars(
     score_label: contact.scoreLabel ?? "",
     answers_text: formatAnswersText(asRecord(contact.answers)),
     suivi_url: extras.suiviUrl ?? "",
+    membres_url: extras.membresUrl ?? "",
     org_name: extras.orgName ?? "",
     sales_name: extras.salesName ?? "",
   };
@@ -38,6 +39,7 @@ export function applyPersonalization(value: string, vars: Record<string, string>
       score_label: "",
       answers_text: "",
       suivi_url: vars.suivi_url ?? "",
+      membres_url: vars.membres_url ?? "",
       org_name: vars.org_name ?? "",
       sales_name: vars.sales_name ?? "",
     });

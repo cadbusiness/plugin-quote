@@ -337,7 +337,7 @@ export function EmailBuilder({
                         className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
                       />
                     </Field>
-                    <Field label="Lien" hint="{{suivi_url}} pour l’espace prospect">
+                    <Field label="Lien" hint="{{suivi_url}} dossier · {{membres_url}} espace membres">
                       <input
                         value={selected.href ?? ""}
                         onChange={(event) => patchBlock(selected.id, { href: event.target.value })}
@@ -390,7 +390,7 @@ export function EmailBuilder({
                   Retirer le bloc
                 </button>
                 <p className="text-xs text-slate-500">
-                  Variables : {"{{contact_name}}"} {"{{contact_company}}"} {"{{suivi_url}}"}
+                  Variables : {"{{contact_name}}"} {"{{contact_company}}"} {"{{suivi_url}}"} {"{{membres_url}}"}
                 </p>
               </div>
             </>

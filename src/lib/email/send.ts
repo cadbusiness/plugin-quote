@@ -28,6 +28,7 @@ export async function sendQuoteEmails(input: {
   pdf: Buffer | null;
   suiviUrl?: string;
   pin?: string;
+  membresUrl?: string;
 }) {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
@@ -52,6 +53,7 @@ export async function sendQuoteEmails(input: {
     suggestion_name: input.suggestionName,
     price_range: formatPrice(input.priceMin, input.priceMax),
     suivi_url: input.suiviUrl ?? "",
+    membres_url: input.membresUrl ?? "",
     pin: input.pin ?? "",
   };
 
