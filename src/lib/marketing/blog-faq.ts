@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "qualifier-demande-devis-avant-chiffrage": [
+    {
+      q: "Faut-il toujours un budget chiffré pour qualifier ?",
+      a: "Non. Une bande budgétaire ou « enveloppe validée / non validée » suffit souvent. L’absence totale d’ordre de grandeur est un signal Cold, pas une fatalité.",
+    },
+    {
+      q: "Peut-on envoyer une estimation indicative sans devis complet ?",
+      a: "Oui. C’est même recommandé sur Warm / Cold. Clarifiez que ce n’est pas un devis atelier engageant.",
+    },
+    {
+      q: "Qui doit poser le score : commercial ou automatisme ?",
+      a: "Les deux. L’automatisme propose, le commercial confirme. Recalibrez avec le close rate réel.",
+    },
+    {
+      q: "Combien de questions dans le funnel de qualification ?",
+      a: "En pratique, 8 à 15 champs utiles battent 30 champs « au cas où ». Priorisez les axes qui changent le prix ou la décision.",
+    },
+    {
+      q: "La qualification remplace-t-elle la visite technique ?",
+      a: "Non. Elle décide quand y aller et avec quel brief. Voir aussi la visite guidée du parcours devis.",
+    },
+    {
+      q: "Comment traiter un appel d’offres formel ?",
+      a: "Branche dédiée : délais, pièces, critères, contacts. Ne forcez pas le même parcours qu’un devis express.",
+    },
+    {
+      q: "Que faire si le prospect refuse de donner un budget ?",
+      a: "Expliquez pourquoi la bande aide à proposer juste. S’il refuse toujours, scorez plus bas et limitez l’investissement chiffrage.",
+    },
+    {
+      q: "Peut-on qualifier depuis un configurateur plutôt qu’un formulaire ?",
+      a: "Oui. Un parcours configuré produit souvent un meilleur brief qu’un mail. Voir configurateur vs Excel PDF.",
+    },
+    {
+      q: "Quels secteurs gagnent le plus à qualifier avant chiffrage ?",
+      a: "Tous les métiers où une ligne oubliée change le prix : menuiserie, agencement, rayonnage, location événementielle, équipements techniques.",
+    },
+    {
+      q: "Par où commencer si l’équipe est solo ?",
+      a: "Grille 6 axes sur papier + 5 questions obligatoires à l’entrée + règle « pas de PDF lourd si 3 axes manquants ». Puis outiller.",
+    },
+  ],
   "creer-devis-avec-claude-mcp": [
     {
       q: "C’est quoi QuoteBuilder MCP ?",

@@ -78,6 +78,7 @@ export const BLOG_DEMO_FUNNEL = "/c/demo/rayonnage";
 export const BLOG_DEMO_SHOP = "/b/demo/vitrine";
 export const BLOG_TOOL_SEQUENCE = "/outils/generateur-sequence-relances";
 export const BLOG_TOOL_SCORE = "/outils/score-brief-devis";
+export const BLOG_TOOL_CONVERSION = "/outils/simulateur-taux-conversion-devis";
 
 export type BlogTool = {
   href: string;
@@ -105,9 +106,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Cinq questions pondérées. Score live et reco Hot / Warm / Cold / Parking avant de chiffrer.",
     tags: ["scoring", "funnel"],
   },
+  {
+    href: BLOG_TOOL_CONVERSION,
+    title: "Simulateur de taux de conversion devis",
+    text: "Devis envoyés, panier, taux actuel et cible. CA mensuel, gain, option mix Hot / Warm / Cold.",
+    tags: ["scoring", "funnel"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "qualifier-demande-devis-avant-chiffrage",
+    path: "/blog/qualifier-demande-devis-avant-chiffrage",
+    title: "Qualifier une demande de devis avant de chiffrer : grille, brief et score",
+    description:
+      "Pourquoi chiffrer trop tôt brûle des heures. Grille budget/délai/décideur/site, score Hot/Warm/Cold, brief minimum, process équipe et FAQ B2B.",
+    publishedAt: "2026-09-15",
+    readingMinutes: 11,
+    tags: ["funnel", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/score-demande-devis-b2b/04-devis-detail.png",
+    pinned: false,
+  },
   {
     slug: "creer-devis-avec-claude-mcp",
     path: "/blog/creer-devis-avec-claude-mcp",
