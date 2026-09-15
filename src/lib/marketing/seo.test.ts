@@ -24,6 +24,7 @@ import { BLOG_FAQ } from "./blog-faq";
 import { stripFrontmatter } from "./load-post";
 import { computeBriefScore } from "./brief-score";
 import { computeLostQuote } from "./lost-quote";
+import { computeConversionRate } from "./conversion-rate";
 import { MARKETING_ROUTES } from "./routes";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
 import { CREAM_HEX, TAG_COVER } from "./theme";
@@ -70,10 +71,13 @@ for (const required of [
   "/outils/cout-devis-non-relance",
   "/outils/generateur-sequence-relances",
   "/outils/score-brief-devis",
+  "/outils/simulateur-taux-conversion-devis",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
+  "/secteurs/funnel-devis-agencement-bureau",
+  "/blog/qualifier-demande-devis-avant-chiffrage",
   "/blog/creer-devis-avec-claude-mcp",
   "/blog/visite-guidee-parcours-devis-b2b",
   "/blog/relancer-devis-hot-depuis-dossier",
@@ -89,7 +93,23 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 12);
+assert.equal(BLOG_POSTS.length, 13);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "qualifier-demande-devis-avant-chiffrage")?.tags, [
+  "funnel",
+  "scoring",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "qualifier-demande-devis-avant-chiffrage")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "qualifier-demande-devis-avant-chiffrage")?.cover,
+  "/images/blog/score-demande-devis-b2b/04-devis-detail.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "qualifier-demande-devis-avant-chiffrage")?.readingMinutes, 11);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "qualifier-demande-devis-avant-chiffrage")?.publishedAt, "2026-09-15");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "qualifier-demande-devis-avant-chiffrage")?.pinned, false);
+assert.equal(BLOG_FAQ["qualifier-demande-devis-avant-chiffrage"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "creer-devis-avec-claude-mcp")?.tags, [
   "integrations",
   "scoring",
@@ -196,8 +216,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 6);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 6);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 7);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 7);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 4);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 3);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
@@ -350,6 +370,32 @@ const requiredSources = {
     "/b/demo/stock-pro-b2b/devis",
     "/signup?plan=free",
   ],
+  "qualifier-demande-devis-avant-chiffrage.md": [
+    "figure:qualify-before",
+    "figure:qualify-axes",
+    "figure:funnel-vs-form",
+    "figure:qualify-stack",
+    "figure:qualify-day",
+    "/blog/score-demande-devis-b2b",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/blog/formulaire-contact-vs-funnel-devis-b2b",
+    "/blog/delai-reponse-demande-devis-b2b",
+    "/outils/score-brief-devis",
+    "/outils/simulateur-taux-conversion-devis",
+    "/secteurs/funnel-devis-menuiserie-sur-mesure",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "funnel-devis-agencement-bureau.md": [
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/score-demande-devis-b2b",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/secteurs/funnel-devis-menuiserie-sur-mesure",
+    "/secteurs/funnel-devis-rayonnage-stockage",
+    "/outils/score-brief-devis",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
   "creer-devis-avec-claude-mcp.md": [
     "/images/blog/creer-devis-avec-claude-mcp/02-accueil.png",
     "/images/blog/creer-devis-avec-claude-mcp/03-devis.png",
@@ -462,6 +508,28 @@ for (const file of blogFiles) {
   assert.match(eventBody, /signup\?plan=free/);
 }
 
+{
+  const qualifyRaw = readFileSync(join(blogDir, "qualifier-demande-devis-avant-chiffrage.md"), "utf8");
+  assert.ok(qualifyRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const qualifyBody = stripFrontmatter(qualifyRaw);
+  assert.ok(
+    qualifyBody.startsWith("# Qualifier une demande de devis avant de chiffrer"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(qualifyBody, /signup\?plan=free/);
+}
+
+{
+  const agencementRaw = readFileSync(join(blogDir, "funnel-devis-agencement-bureau.md"), "utf8");
+  assert.ok(agencementRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const agencementBody = stripFrontmatter(agencementRaw);
+  assert.ok(
+    agencementBody.startsWith("# Funnel de devis agencement de bureau"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(agencementBody, /signup\?plan=free/);
+}
+
 for (const post of BLOG_POSTS) {
   assert.doesNotMatch(post.title, EM_DASH, `${post.slug} title has an em dash`);
   assert.doesNotMatch(post.description, EM_DASH, `${post.slug} description has an em dash`);
@@ -505,6 +573,47 @@ assert.equal(lost.monthlyCurrent, 40 * 3500 * 0.12);
 assert.equal(lost.monthlyGap, 40 * 3500 * 0.1);
 assert.equal(lost.annualGap, lost.monthlyGap * 12);
 
+const conversion = computeConversionRate({
+  quotesSent: 40,
+  basket: 5500,
+  currentRate: 18,
+  targetRate: 25,
+});
+assert.equal(conversion.monthlyCurrent, 40 * 5500 * 0.18);
+assert.equal(conversion.monthlyTarget, 40 * 5500 * 0.25);
+assert.equal(conversion.monthlyGain, conversion.monthlyTarget - conversion.monthlyCurrent);
+assert.equal(conversion.annualGain, conversion.monthlyGain * 12);
+assert.equal(conversion.weighted, null);
+assert.match(conversion.tip, /petit gain de conversion/);
+
+const conversionMix = computeConversionRate({
+  quotesSent: 40,
+  basket: 5500,
+  currentRate: 18,
+  targetRate: 25,
+  mix: {
+    hot: { mix: 20, win: 45 },
+    warm: { mix: 45, win: 20 },
+    cold: { mix: 35, win: 6 },
+  },
+});
+assert.equal(
+  conversionMix.weighted,
+  40 * 0.2 * 5500 * 0.45 + 40 * 0.45 * 5500 * 0.2 + 40 * 0.35 * 5500 * 0.06,
+);
+assert.equal(conversionMix.mixTotal, 100);
+assert.equal(conversionMix.mixOk, true);
+assert.match(conversionMix.tip, /Mix correct/);
+
+const conversionFloor = computeConversionRate({
+  quotesSent: 10,
+  basket: 1000,
+  currentRate: 20,
+  targetRate: 10,
+});
+assert.equal(conversionFloor.targetRate, 20);
+assert.equal(conversionFloor.monthlyGain, 0);
+
 const emptyBrief = computeBriefScore({
   products: null,
   constraints: null,
@@ -546,6 +655,7 @@ assert.equal(parkingBrief.total, 0);
 assert.equal(parkingBrief.band, "parking");
 
 const llmsPaths = [
+  "/blog/qualifier-demande-devis-avant-chiffrage",
   "/blog/creer-devis-avec-claude-mcp",
   "/blog/visite-guidee-parcours-devis-b2b",
   "/blog/relancer-devis-hot-depuis-dossier",
@@ -555,8 +665,10 @@ const llmsPaths = [
   "/blog/score-demande-devis-b2b",
   "/blog/configurateur-devis-vs-excel-pdf",
   "/outils/score-brief-devis",
+  "/outils/simulateur-taux-conversion-devis",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
+  "/secteurs/funnel-devis-agencement-bureau",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -801,6 +913,9 @@ assert.equal(figure?.src, "figure:score-grid");
 assert.match(scoreMd, /figure:score-grid/);
 const funnelMd = readFileSync(join(blogDir, "formulaire-contact-vs-funnel-devis-b2b.md"), "utf8");
 assert.match(funnelMd, /figure:funnel-vs-form/);
+const qualifyMd = readFileSync(join(blogDir, "qualifier-demande-devis-avant-chiffrage.md"), "utf8");
+assert.match(qualifyMd, /figure:qualify-axes/);
+assert.match(qualifyMd, /figure:qualify-before/);
 
 const globals = readFileSync(new URL("../../../src/app/globals.css", import.meta.url), "utf8");
 assert.match(globals, /--color-mk-bg:\s*#f7f8fa/);

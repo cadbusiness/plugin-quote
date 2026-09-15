@@ -172,6 +172,73 @@ function SchematicFigure({ kind, label }: { kind: string; label: string }) {
     );
   }
 
+  if (kind === "qualify-before") {
+    return (
+      <div className="grid gap-3 sm:grid-cols-3">
+        {[
+          { t: "Demande", d: "Mail vague ou formulaire court." },
+          { t: "Grille", d: "Budget, délai, décideur, site." },
+          { t: "Chiffrage", d: "Seulement si le brief tient." },
+        ].map((item) => (
+          <div key={item.t} className="rounded-lg bg-mk-band px-4 py-4">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">{item.t}</p>
+            <p className="mt-2 text-sm leading-6 text-mk-muted">{item.d}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (kind === "qualify-axes") {
+    const axes = ["Budget", "Délai", "Décideur", "Site", "Contraintes", "Maturité"];
+    return (
+      <div className="grid gap-2 sm:grid-cols-3">
+        {axes.map((axis) => (
+          <div key={axis} className="rounded-lg bg-mk-band px-3 py-3">
+            <p className="text-sm font-semibold text-mk-ink">{axis}</p>
+            <p className="mt-1 text-[12px] text-mk-muted">OK / partiel / manquant</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (kind === "qualify-stack") {
+    return (
+      <div className="grid gap-3 sm:grid-cols-3">
+        {[
+          { t: "Funnel", d: "Questions dans l’ordre, dossier en sortie." },
+          { t: "Score", d: "Hot / Warm / Cold avant le PDF." },
+          { t: "Espace", d: "Plans, photos, un lien unique." },
+        ].map((item) => (
+          <div key={item.t} className="rounded-lg bg-mk-dark px-4 py-4 text-mk-on-dark">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">{item.t}</p>
+            <p className="mt-2 text-sm leading-6 text-mk-on-dark/70">{item.d}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (kind === "qualify-day") {
+    return (
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div className="rounded-lg bg-mk-band px-4 py-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-faint">Avant</p>
+          <p className="mt-2 text-sm font-semibold text-mk-ink">Six mails, deux PDF à l’aveugle</p>
+          <p className="mt-1 text-sm leading-6 text-mk-muted">Le Hot attend. Un Cold occupe l’atelier.</p>
+        </div>
+        <div className="rounded-lg bg-mk-dark px-4 py-4 text-mk-on-dark">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">Après</p>
+          <p className="mt-2 text-sm font-semibold">Deux Hot chiffrés, Warm complétés</p>
+          <p className="mt-1 text-sm leading-6 text-mk-on-dark/65">
+            Cold clarifiés sans devis atelier. First response utile avant midi.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-[10rem] items-center justify-center text-sm text-mk-faint">
       {label}
