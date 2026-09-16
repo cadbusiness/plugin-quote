@@ -80,6 +80,7 @@ export const BLOG_TOOL_SEQUENCE = "/outils/generateur-sequence-relances";
 export const BLOG_TOOL_SCORE = "/outils/score-brief-devis";
 export const BLOG_TOOL_CONVERSION = "/outils/simulateur-taux-conversion-devis";
 export const BLOG_TOOL_CAPACITY = "/outils/calculateur-capacite-equipe-devis";
+export const BLOG_TOOL_QUOTING_TIME = "/outils/estimateur-temps-chiffrage-devis";
 
 export type BlogTool = {
   href: string;
@@ -119,9 +120,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Commerciaux, heures dispo, minutes Hot / Warm / Cold. Charge vs capacité, taux d’utilisation.",
     tags: ["scoring", "relances"],
   },
+  {
+    href: BLOG_TOOL_QUOTING_TIME,
+    title: "Estimateur de temps de chiffrage devis",
+    text: "Minutes Hot / Warm / Cold, qualification et revisions / versions. Charge vs capacité des personnes qui chiffrent.",
+    tags: ["funnel", "relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "versions-historique-devis-b2b",
+    path: "/blog/versions-historique-devis-b2b",
+    title: "Versions et historique des devis B2B : v1, v2, v3 sans perdre le fil",
+    description:
+      "Quand le prospect itère (options, remises, scope creep), versionner v1/v2/v3, garder l’historique, lier au dossier, comparer et relancer sur la bonne version.",
+    publishedAt: "2026-09-16",
+    readingMinutes: 11,
+    tags: ["funnel", "relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/relancer-devis-hot-depuis-dossier/04-devis-detail.png",
+    pinned: false,
+  },
   {
     slug: "assignation-sla-demande-devis-equipe",
     path: "/blog/assignation-sla-demande-devis-equipe",

@@ -291,6 +291,60 @@ function SchematicFigure({ kind, label }: { kind: string; label: string }) {
     );
   }
 
+  if (kind === "versions-flow") {
+    return (
+      <div className="grid gap-3 sm:grid-cols-4">
+        {[
+          { t: "Dossier", d: "Brief, score, owner. Une source." },
+          { t: "v1 / v2 / v3", d: "Instantanés datés, numérotés." },
+          { t: "Envoi", d: "Version, canal, destinataire, heure." },
+          { t: "Historique", d: "Remplacées visibles, une active." },
+        ].map((item) => (
+          <div key={item.t} className="rounded-lg bg-mk-band px-4 py-4">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">{item.t}</p>
+            <p className="mt-2 text-sm leading-6 text-mk-muted">{item.d}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (kind === "versions-timeline") {
+    return (
+      <div className="grid gap-3 sm:grid-cols-4">
+        {[
+          { t: "v1", d: "Envoyée. Scope initial." },
+          { t: "v2", d: "Remise accordée, tracée." },
+          { t: "v3", d: "Scope ajusté. Active." },
+          { t: "Relance", d: "Toujours sur la v3." },
+        ].map((item) => (
+          <div key={item.t} className="rounded-lg bg-mk-dark px-4 py-4 text-mk-on-dark">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">{item.t}</p>
+            <p className="mt-2 text-sm leading-6 text-mk-on-dark/70">{item.d}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (kind === "versions-checklist") {
+    return (
+      <div className="grid gap-3 sm:grid-cols-4">
+        {[
+          { t: "Active", d: "Une seule version côté prospect." },
+          { t: "Journal", d: "Quoi, qui, impact à chaque v+1." },
+          { t: "Envoi", d: "Tracé : version, date, canal." },
+          { t: "Relance", d: "Lien et message = version active." },
+        ].map((item) => (
+          <div key={item.t} className="rounded-lg bg-mk-band px-4 py-4">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">{item.t}</p>
+            <p className="mt-2 text-sm leading-6 text-mk-muted">{item.d}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-[10rem] items-center justify-center text-sm text-mk-faint">
       {label}
