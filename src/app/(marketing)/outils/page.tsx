@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/marketing/site";
 export const metadata: Metadata = pageMetadata({
   title: "Outils devis B2B",
   description:
-    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe. Outils gratuits QuoteBuilder.",
+    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage. Outils gratuits QuoteBuilder.",
   path: "/outils",
 });
 
@@ -41,6 +41,12 @@ const TOOLS = [
     title: "Calculateur de capacité équipe devis",
     text: "Commerciaux, heures dispo, minutes Hot / Warm / Cold. Charge vs capacité, taux d’utilisation.",
   },
+  {
+    href: "/outils/estimateur-temps-chiffrage-devis",
+    eyebrow: "Pilotage",
+    title: "Estimateur de temps de chiffrage devis",
+    text: "Minutes Hot / Warm / Cold, qualification et revisions / versions. Charge vs capacité des personnes qui chiffrent.",
+  },
 ] as const;
 
 export default function OutilsIndexPage() {
@@ -53,7 +59,7 @@ export default function OutilsIndexPage() {
             Chiffrer le trou. Rédiger les touches.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-mk-muted sm:text-lg">
-            Cinq outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
+            Six outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
           </p>
         </div>
       </section>

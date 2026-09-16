@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "versions-historique-devis-b2b": [
+    {
+      q: "Faut-il une nouvelle version pour une simple remise ?",
+      a: "Oui, si la remise change le total ou les conditions. Une remise orale non versionnée est une dette. Le prospect et l’atelier doivent voir le même chiffre.",
+    },
+    {
+      q: "Combien de versions avant de requalifier le brief ?",
+      a: "Pas de chiffre magique. Au-delà de 3–4 allers-retours majeurs de scope, arrêtez de patcher : requalifiez, puis repartez sur une v propre (parfois v1 d’un nouveau périmètre clairement nommé).",
+    },
+    {
+      q: "Le prospect doit-il voir tout l’historique ?",
+      a: "Pas forcément. Il doit voir la version active et, si utile, un récap des changements. L’historique complet (brouillons internes, notes marge) reste interne.",
+    },
+    {
+      q: "Comment gérer les options A / B / C ?",
+      a: "Deux approches : une version avec options explicites côte à côte, ou une version par scénario (v2-A, v2-B) si les totaux divergent fort. Dans les deux cas, une seule version recommandée ou active pour la relance.",
+    },
+    {
+      q: "Que faire si le client signe une ancienne version ?",
+      a: "Traitez-le comme un incident process. Vérifiez le contenu signé, confirmez l’écart par écrit, et alignez la production sur le document signé (sauf accord contraire écrit). Puis corrigez les liens pour que seule l’active soit signable.",
+    },
+    {
+      q: "PDF, lien magique, ou les deux ?",
+      a: "Le lien vers un espace prospect réduit le risque de mauvais fichier si l’espace n’expose que l’active. Le PDF reste utile pour archivage et signatures hors ligne. Les deux doivent porter le même numéro de version.",
+    },
+    {
+      q: "Comment versionner quand plusieurs commerciaux touchent le dossier ?",
+      a: "Owner unique pour les envois. Les coéquipiers commentent ou préparent un brouillon. Seul l’owner (ou un backup explicite) publie une version.",
+    },
+    {
+      q: "Les versions remplacent-elles le score Hot / Warm / Cold ?",
+      a: "Non. Le score priorise. Les versions documentent l’évolution du deal. Un Hot peut être en v1 ; un Warm en v4. Un Warm en v4 mérite souvent une revue de brief.",
+    },
+    {
+      q: "Faut-il archiver les versions refusées ?",
+      a: "Oui, au moins un temps. Elles servent aux litiges, à l’analyse marge, et à la formation. Marquez-les refusées / remplacées, ne les laissez pas actives.",
+    },
+    {
+      q: "Par où commencer si on est encore 100 % Excel + mail ?",
+      a: "Convention de nommage + dossier unique par affaire + journal une ligne par version + interdiction d’envoyer hors dossier. Ensuite, un outil qui lie demande, versions et relances.",
+    },
+  ],
   "assignation-sla-demande-devis-equipe": [
     {
       q: "C’est quoi un SLA sur une demande de devis ?",

@@ -26,6 +26,7 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/tarifs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/blog/versions-historique-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/assignation-sla-demande-devis-equipe", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/qualifier-demande-devis-avant-chiffrage", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/creer-devis-avec-claude-mcp", changeFrequency: "monthly", priority: 0.8 },
@@ -46,6 +47,7 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/outils/score-brief-devis", changeFrequency: "monthly", priority: 0.7 },
   { path: "/outils/simulateur-taux-conversion-devis", changeFrequency: "monthly", priority: 0.7 },
   { path: "/outils/calculateur-capacite-equipe-devis", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/outils/estimateur-temps-chiffrage-devis", changeFrequency: "monthly", priority: 0.7 },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },
 ];

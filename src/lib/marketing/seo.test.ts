@@ -26,6 +26,7 @@ import { computeBriefScore } from "./brief-score";
 import { computeLostQuote } from "./lost-quote";
 import { computeConversionRate } from "./conversion-rate";
 import { applyTeamCapacityMix, computeTeamCapacity } from "./team-capacity";
+import { computeQuotingTime, quotingTimeVolumes } from "./quoting-time";
 import { MARKETING_ROUTES } from "./routes";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
 import { CREAM_HEX, TAG_COVER } from "./theme";
@@ -74,11 +75,13 @@ for (const required of [
   "/outils/score-brief-devis",
   "/outils/simulateur-taux-conversion-devis",
   "/outils/calculateur-capacite-equipe-devis",
+  "/outils/estimateur-temps-chiffrage-devis",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
   "/secteurs/funnel-devis-agencement-bureau",
+  "/blog/versions-historique-devis-b2b",
   "/blog/assignation-sla-demande-devis-equipe",
   "/blog/qualifier-demande-devis-avant-chiffrage",
   "/blog/creer-devis-avec-claude-mcp",
@@ -96,7 +99,23 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 14);
+assert.equal(BLOG_POSTS.length, 15);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "versions-historique-devis-b2b")?.tags, [
+  "funnel",
+  "relances",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "versions-historique-devis-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "versions-historique-devis-b2b")?.cover,
+  "/images/blog/relancer-devis-hot-depuis-dossier/04-devis-detail.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "versions-historique-devis-b2b")?.readingMinutes, 11);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "versions-historique-devis-b2b")?.publishedAt, "2026-09-16");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "versions-historique-devis-b2b")?.pinned, false);
+assert.equal(BLOG_FAQ["versions-historique-devis-b2b"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "assignation-sla-demande-devis-equipe")?.tags, [
   "scoring",
   "relances",
@@ -389,6 +408,20 @@ const requiredSources = {
     "/b/demo/stock-pro-b2b/devis",
     "/signup?plan=free",
   ],
+  "versions-historique-devis-b2b.md": [
+    "figure:versions-flow",
+    "figure:versions-timeline",
+    "figure:versions-checklist",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/relancer-devis-hot-depuis-dossier",
+    "/blog/score-demande-devis-b2b",
+    "/blog/assignation-sla-demande-devis-equipe",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/outils/estimateur-temps-chiffrage-devis",
+    "/outils/calculateur-capacite-equipe-devis",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
   "assignation-sla-demande-devis-equipe.md": [
     "figure:assign-flow",
     "figure:assign-playbook",
@@ -538,6 +571,17 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(eventBody, /signup\?plan=free/);
+}
+
+{
+  const versionsRaw = readFileSync(join(blogDir, "versions-historique-devis-b2b.md"), "utf8");
+  assert.ok(versionsRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const versionsBody = stripFrontmatter(versionsRaw);
+  assert.ok(
+    versionsBody.startsWith("# Versions et historique des devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(versionsBody, /signup\?plan=free/);
 }
 
 {
@@ -696,6 +740,88 @@ const capacityEmpty = computeTeamCapacity({
 });
 assert.match(capacityEmpty.tip, /nombre de commerciaux/);
 
+const quotingDefault = computeQuotingTime({
+  volTotal: 80,
+  pctHot: 20,
+  pctWarm: 45,
+  pctCold: 35,
+  volHot: 16,
+  volWarm: 36,
+  volCold: 28,
+  useDirect: false,
+  minHot: 50,
+  minWarm: 30,
+  minCold: 15,
+  minQual: 8,
+  minRev: 12,
+  people: 2,
+  hoursPerMonth: 40,
+});
+assert.deepEqual(quotingDefault.volumes, { hot: 16, warm: 36, cold: 28 });
+assert.equal(quotingDefault.totalDemands, 80);
+assert.equal(quotingDefault.chiffrageHours, (16 * 50 + 36 * 30 + 28 * 15) / 60);
+assert.equal(quotingDefault.qualHours, (80 * 8) / 60);
+assert.equal(quotingDefault.revHours, (80 * 12) / 60);
+assert.equal(
+  quotingDefault.chargeHours,
+  quotingDefault.chiffrageHours + quotingDefault.qualHours + quotingDefault.revHours,
+);
+assert.equal(quotingDefault.capacityHours, 80);
+assert.equal(quotingDefault.deltaHours, quotingDefault.capacityHours - quotingDefault.chargeHours);
+assert.equal(quotingDefault.mixOk, true);
+assert.match(quotingDefault.mixWarn, /Mix à 100/);
+
+const quotingDirect = quotingTimeVolumes({
+  volTotal: 80,
+  pctHot: 20,
+  pctWarm: 45,
+  pctCold: 35,
+  volHot: 10,
+  volWarm: 10,
+  volCold: 5,
+  useDirect: true,
+});
+assert.deepEqual(quotingDirect, { hot: 10, warm: 10, cold: 5 });
+
+const quotingOver = computeQuotingTime({
+  volTotal: 200,
+  pctHot: 40,
+  pctWarm: 40,
+  pctCold: 20,
+  volHot: 0,
+  volWarm: 0,
+  volCold: 0,
+  useDirect: false,
+  minHot: 60,
+  minWarm: 40,
+  minCold: 20,
+  minQual: 10,
+  minRev: 20,
+  people: 1,
+  hoursPerMonth: 20,
+});
+assert.ok(quotingOver.deltaHours < -10);
+assert.match(quotingOver.tip, /Surcharge nette/);
+
+const quotingEmpty = computeQuotingTime({
+  volTotal: 80,
+  pctHot: 20,
+  pctWarm: 45,
+  pctCold: 35,
+  volHot: 16,
+  volWarm: 36,
+  volCold: 28,
+  useDirect: false,
+  minHot: 50,
+  minWarm: 30,
+  minCold: 15,
+  minQual: 8,
+  minRev: 12,
+  people: 0,
+  hoursPerMonth: 40,
+});
+assert.match(quotingEmpty.tip, /nombre de personnes qui chiffrent/);
+
 const conversionFloor = computeConversionRate({
   quotesSent: 10,
   basket: 1000,
@@ -746,6 +872,7 @@ assert.equal(parkingBrief.total, 0);
 assert.equal(parkingBrief.band, "parking");
 
 const llmsPaths = [
+  "/blog/versions-historique-devis-b2b",
   "/blog/assignation-sla-demande-devis-equipe",
   "/blog/qualifier-demande-devis-avant-chiffrage",
   "/blog/creer-devis-avec-claude-mcp",
@@ -759,6 +886,7 @@ const llmsPaths = [
   "/outils/score-brief-devis",
   "/outils/simulateur-taux-conversion-devis",
   "/outils/calculateur-capacite-equipe-devis",
+  "/outils/estimateur-temps-chiffrage-devis",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
   "/secteurs/funnel-devis-agencement-bureau",
@@ -1014,6 +1142,14 @@ assert.match(assignMd, /figure:assign-flow/);
 assert.match(assignMd, /figure:assign-playbook/);
 assert.match(assignMd, /figure:assign-dashboard/);
 assert.equal(parseImageLine("![Schéma : file d’entrée, score, owner, SLA](figure:assign-flow)")?.src, "figure:assign-flow");
+const versionsMd = readFileSync(join(blogDir, "versions-historique-devis-b2b.md"), "utf8");
+assert.match(versionsMd, /figure:versions-flow/);
+assert.match(versionsMd, /figure:versions-timeline/);
+assert.match(versionsMd, /figure:versions-checklist/);
+assert.equal(
+  parseImageLine("![Schéma : dossier, versions v1 v2 v3, envoi, historique](figure:versions-flow)")?.src,
+  "figure:versions-flow",
+);
 
 const globals = readFileSync(new URL("../../../src/app/globals.css", import.meta.url), "utf8");
 assert.match(globals, /--color-mk-bg:\s*#f7f8fa/);
