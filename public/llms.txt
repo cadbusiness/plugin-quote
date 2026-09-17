@@ -39,9 +39,11 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Funnel devis menuiserie sur mesure : https://www.quotebuilder.co/secteurs/funnel-devis-menuiserie-sur-mesure
 - Funnel devis location événementielle : https://www.quotebuilder.co/secteurs/funnel-devis-location-evenementiel
 - Funnel devis agencement de bureau : https://www.quotebuilder.co/secteurs/funnel-devis-agencement-bureau
+- Funnel devis stores et fermetures : https://www.quotebuilder.co/secteurs/funnel-devis-stores-fermetures
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Centraliser les demandes de devis multi-canaux : https://www.quotebuilder.co/blog/centraliser-demandes-devis-multi-canaux
 - Versions et historique des devis B2B : https://www.quotebuilder.co/blog/versions-historique-devis-b2b
 - Assignation et SLA des demandes de devis en équipe : https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe
 - Qualifier une demande de devis avant de chiffrer : https://www.quotebuilder.co/blog/qualifier-demande-devis-avant-chiffrage
@@ -64,6 +66,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Simulateur taux de conversion devis : https://www.quotebuilder.co/outils/simulateur-taux-conversion-devis
 - Calculateur capacité équipe devis : https://www.quotebuilder.co/outils/calculateur-capacite-equipe-devis
 - Estimateur temps de chiffrage devis : https://www.quotebuilder.co/outils/estimateur-temps-chiffrage-devis
+- Simulateur impact remise devis : https://www.quotebuilder.co/outils/simulateur-impact-remise-devis
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 

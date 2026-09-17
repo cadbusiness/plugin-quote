@@ -27,6 +27,7 @@ import { computeLostQuote } from "./lost-quote";
 import { computeConversionRate } from "./conversion-rate";
 import { applyTeamCapacityMix, computeTeamCapacity } from "./team-capacity";
 import { computeQuotingTime, quotingTimeVolumes } from "./quoting-time";
+import { computeDiscountImpact } from "./discount-impact";
 import { MARKETING_ROUTES } from "./routes";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
 import { CREAM_HEX, TAG_COVER } from "./theme";
@@ -76,11 +77,14 @@ for (const required of [
   "/outils/simulateur-taux-conversion-devis",
   "/outils/calculateur-capacite-equipe-devis",
   "/outils/estimateur-temps-chiffrage-devis",
+  "/outils/simulateur-impact-remise-devis",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
   "/secteurs/funnel-devis-agencement-bureau",
+  "/secteurs/funnel-devis-stores-fermetures",
+  "/blog/centraliser-demandes-devis-multi-canaux",
   "/blog/versions-historique-devis-b2b",
   "/blog/assignation-sla-demande-devis-equipe",
   "/blog/qualifier-demande-devis-avant-chiffrage",
@@ -99,7 +103,23 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 15);
+assert.equal(BLOG_POSTS.length, 16);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "centraliser-demandes-devis-multi-canaux")?.tags, [
+  "funnel",
+  "scoring",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "centraliser-demandes-devis-multi-canaux")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "centraliser-demandes-devis-multi-canaux")?.cover,
+  "/images/blog/relancer-devis-hot-depuis-dossier/03-devis.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "centraliser-demandes-devis-multi-canaux")?.readingMinutes, 11);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "centraliser-demandes-devis-multi-canaux")?.publishedAt, "2026-09-17");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "centraliser-demandes-devis-multi-canaux")?.pinned, false);
+assert.equal(BLOG_FAQ["centraliser-demandes-devis-multi-canaux"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "versions-historique-devis-b2b")?.tags, [
   "funnel",
   "relances",
@@ -254,8 +274,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 8);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 8);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 9);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 9);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 4);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 3);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
@@ -406,6 +426,31 @@ const requiredSources = {
     "/b/demo/atelier-peau-claire/devis",
     "/b/demo/atelier-bois-nord/devis",
     "/b/demo/stock-pro-b2b/devis",
+    "/signup?plan=free",
+  ],
+  "centraliser-demandes-devis-multi-canaux.md": [
+    "figure:multi-channel-pipeline",
+    "/blog/delai-reponse-demande-devis-b2b",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/blog/score-demande-devis-b2b",
+    "/blog/assignation-sla-demande-devis-equipe",
+    "/blog/versions-historique-devis-b2b",
+    "/secteurs/funnel-devis-stores-fermetures",
+    "/outils/calculateur-capacite-equipe-devis",
+    "/outils/simulateur-impact-remise-devis",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "funnel-devis-stores-fermetures.md": [
+    "/blog/centraliser-demandes-devis-multi-canaux",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/score-demande-devis-b2b",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/secteurs/funnel-devis-rayonnage-stockage",
+    "/secteurs/funnel-devis-menuiserie-sur-mesure",
+    "/outils/simulateur-impact-remise-devis",
+    "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
   "versions-historique-devis-b2b.md": [
@@ -571,6 +616,28 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(eventBody, /signup\?plan=free/);
+}
+
+{
+  const centralRaw = readFileSync(join(blogDir, "centraliser-demandes-devis-multi-canaux.md"), "utf8");
+  assert.ok(centralRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const centralBody = stripFrontmatter(centralRaw);
+  assert.ok(
+    centralBody.startsWith("# Centraliser les demandes de devis multi-canaux"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(centralBody, /signup\?plan=free/);
+}
+
+{
+  const storesRaw = readFileSync(join(blogDir, "funnel-devis-stores-fermetures.md"), "utf8");
+  assert.ok(storesRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const storesBody = stripFrontmatter(storesRaw);
+  assert.ok(
+    storesBody.startsWith("# Funnel de devis stores et fermetures"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(storesBody, /signup\?plan=free/);
 }
 
 {
@@ -822,6 +889,54 @@ const quotingEmpty = computeQuotingTime({
 });
 assert.match(quotingEmpty.tip, /nombre de personnes qui chiffrent/);
 
+const discountDefault = computeDiscountImpact({
+  ca: 8500,
+  cout: 5200,
+  remise: 8,
+  volume: 40,
+  txAvant: 28,
+  txApres: 34,
+});
+assert.equal(discountDefault.margeAvantE, 3300);
+assert.equal(discountDefault.caApres, 8500 * 0.92);
+assert.equal(discountDefault.margeApresE, 8500 * 0.92 - 5200);
+assert.equal(discountDefault.perteUnite, 3300 - (8500 * 0.92 - 5200));
+assert.ok(discountDefault.acceptUseful);
+assert.equal(discountDefault.wonSans, 40 * (28 / 34));
+assert.equal(discountDefault.impactNet, 40 * discountDefault.margeApresE - discountDefault.wonSans! * 3300);
+assert.match(discountDefault.tip, /Remise tenable/);
+
+const discountEmpty = computeDiscountImpact({
+  ca: 0,
+  cout: 5200,
+  remise: 8,
+  volume: 40,
+  txAvant: 28,
+  txApres: 34,
+});
+assert.match(discountEmpty.tip, /CA devis HT/);
+
+const discountCost = computeDiscountImpact({
+  ca: 4000,
+  cout: 5200,
+  remise: 8,
+  volume: 40,
+  txAvant: 28,
+  txApres: 34,
+});
+assert.match(discountCost.tip, /structure de coût/);
+
+const discountLoss = computeDiscountImpact({
+  ca: 8500,
+  cout: 8000,
+  remise: 12,
+  volume: 10,
+  txAvant: 20,
+  txApres: 22,
+});
+assert.ok(discountLoss.margeApresE < 0);
+assert.match(discountLoss.tip, /marge est négative/);
+
 const conversionFloor = computeConversionRate({
   quotesSent: 10,
   basket: 1000,
@@ -887,9 +1002,12 @@ const llmsPaths = [
   "/outils/simulateur-taux-conversion-devis",
   "/outils/calculateur-capacite-equipe-devis",
   "/outils/estimateur-temps-chiffrage-devis",
+  "/outils/simulateur-impact-remise-devis",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
   "/secteurs/funnel-devis-agencement-bureau",
+  "/secteurs/funnel-devis-stores-fermetures",
+  "/blog/centraliser-demandes-devis-multi-canaux",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -1149,6 +1267,13 @@ assert.match(versionsMd, /figure:versions-checklist/);
 assert.equal(
   parseImageLine("![Schéma : dossier, versions v1 v2 v3, envoi, historique](figure:versions-flow)")?.src,
   "figure:versions-flow",
+);
+const centralMd = readFileSync(join(blogDir, "centraliser-demandes-devis-multi-canaux.md"), "utf8");
+assert.match(centralMd, /figure:multi-channel-pipeline/);
+assert.doesNotMatch(centralMd, /img-1\.png/);
+assert.equal(
+  parseImageLine("![Schéma : canaux multiples vers un pipeline dossier unique](figure:multi-channel-pipeline)")?.src,
+  "figure:multi-channel-pipeline",
 );
 
 const globals = readFileSync(new URL("../../../src/app/globals.css", import.meta.url), "utf8");
