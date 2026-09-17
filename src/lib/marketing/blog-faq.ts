@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "revue-pipeline-devis-b2b": [
+    {
+      q: "Hebdo ou bi-hebdo ?",
+      a: "Hebdo si vous avez un flux continu de demandes et des Hot qui bougent vite. Bi-hebdo si les cycles sont longs et que la liste Hot est petite. Si la réunion dépasse souvent 45 minutes, c’est souvent un signe de mauvaise préparation ou de trop de Cold dans la liste, pas un besoin d’allonger.",
+    },
+    {
+      q: "Combien de dossiers passer en revue ?",
+      a: "Priorité : tous les Hot, puis Warm en risque, puis briefs bloqués. Pas les 200 lignes. Si Hot > capacité réaliste, recalibrez le score avant d’allonger la réunion.",
+    },
+    {
+      q: "Faut-il un CRM lourd ?",
+      a: "Non. Il faut une file de dossiers avec owner, score, brief, historique d’actions. Un CRM mal tenu est pire qu’un outil devis bien filtré. L’essentiel : une vérité partagée, pas un logiciel « enterprise » pour la forme.",
+    },
+    {
+      q: "Que faire si un commercial refuse d’abandonner ?",
+      a: "Demandez le motif et la prochaine action datée. Si les deux sont flous, le dossier descend. Le plafond de Hot aide : pour en ajouter un, il faut en sortir un.",
+    },
+    {
+      q: "Comment traiter les devis déjà envoyés ?",
+      a: "Ils restent dans le pipeline avec statut clair (envoyé, en négociation, relance due). La revue décide la relance, pas le « on attend ». Voir relancer depuis le dossier.",
+    },
+    {
+      q: "Les briefs incomplets doivent-ils être dans Hot ?",
+      a: "En général non. Un Hot sans brief crée de la pression inutile sur l’atelier. Classez Warm (ou « à qualifier ») jusqu’au minimum viable. Voir qualifier avant chiffrage.",
+    },
+    {
+      q: "Qui décide du score Hot/Warm/Cold ?",
+      a: "Règles écrites + owner propose + animateur tranche en cas de conflit. Pas de vote à main levée chaque semaine. Sinon le score devient politique.",
+    },
+    {
+      q: "Comment éviter que la revue redevienne une lecture Excel ?",
+      a: "Interdiction d’ouvrir un export pendant la réunion. Vue filtrée dans l’outil de dossiers. Si quelqu’un a besoin d’un tableur pour « mieux voir », c’est que les filtres et champs manquent. Corrigez le système, pas la réunion.",
+    },
+    {
+      q: "Que noter comme motif d’abandon ?",
+      a: "Court et utile : silence après N relances, budget, concurrent, hors zone, hors typologie, projet annulé. Assez pour apprendre. Pas un roman.",
+    },
+    {
+      q: "Comment lier revue et capacité équipe ?",
+      a: "Avant la séance (ou en flash en fin), regardez si le volume Hot + Warm à chiffrer dépasse la capacité. Le calculateur de capacité sert hors réunion ; en réunion, décidez de reporter ou de reclasser plutôt que de promettre l’impossible.",
+    },
+  ],
   "centraliser-demandes-devis-multi-canaux": [
     {
       q: "Faut-il fermer WhatsApp et LinkedIn pour centraliser ?",

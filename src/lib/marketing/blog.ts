@@ -82,6 +82,7 @@ export const BLOG_TOOL_CONVERSION = "/outils/simulateur-taux-conversion-devis";
 export const BLOG_TOOL_CAPACITY = "/outils/calculateur-capacite-equipe-devis";
 export const BLOG_TOOL_QUOTING_TIME = "/outils/estimateur-temps-chiffrage-devis";
 export const BLOG_TOOL_DISCOUNT = "/outils/simulateur-impact-remise-devis";
+export const BLOG_TOOL_ROI = "/outils/simulateur-roi-logiciel-devis";
 
 export type BlogTool = {
   href: string;
@@ -133,9 +134,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "CA HT, coût, remise %, volume annuel. Marge avant/après, perte unitaire, impact annuel, option taux d’acceptation.",
     tags: ["funnel", "scoring"],
   },
+  {
+    href: BLOG_TOOL_ROI,
+    title: "Simulateur ROI logiciel de devis",
+    text: "Demandes, temps de chiffrage, coût horaire, taux, panier, abonnement. Gain temps, marge, ROI net/mois et délai de retour.",
+    tags: ["scoring", "relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "revue-pipeline-devis-b2b",
+    path: "/blog/revue-pipeline-devis-b2b",
+    title: "Revue de pipeline devis B2B : animer la réunion hebdo sans Excel",
+    description:
+      "Animer une revue de pipeline devis B2B (hebdo) : Hot/Warm/Cold, relances vs abandon, briefs bloqués, sans Excel.",
+    publishedAt: "2026-09-17",
+    readingMinutes: 11,
+    tags: ["scoring", "relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/visite-guidee-parcours-devis-b2b/03-devis.png",
+    pinned: false,
+  },
   {
     slug: "centraliser-demandes-devis-multi-canaux",
     path: "/blog/centraliser-demandes-devis-multi-canaux",
