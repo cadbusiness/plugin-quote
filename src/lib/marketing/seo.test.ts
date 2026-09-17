@@ -28,6 +28,7 @@ import { computeConversionRate } from "./conversion-rate";
 import { applyTeamCapacityMix, computeTeamCapacity } from "./team-capacity";
 import { computeQuotingTime, quotingTimeVolumes } from "./quoting-time";
 import { computeDiscountImpact } from "./discount-impact";
+import { computeRoiLogicielDevis } from "./roi-logiciel-devis";
 import { MARKETING_ROUTES } from "./routes";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
 import { CREAM_HEX, TAG_COVER } from "./theme";
@@ -78,12 +79,14 @@ for (const required of [
   "/outils/calculateur-capacite-equipe-devis",
   "/outils/estimateur-temps-chiffrage-devis",
   "/outils/simulateur-impact-remise-devis",
+  "/outils/simulateur-roi-logiciel-devis",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
   "/secteurs/funnel-devis-agencement-bureau",
   "/secteurs/funnel-devis-stores-fermetures",
+  "/blog/revue-pipeline-devis-b2b",
   "/blog/centraliser-demandes-devis-multi-canaux",
   "/blog/versions-historique-devis-b2b",
   "/blog/assignation-sla-demande-devis-equipe",
@@ -103,7 +106,23 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 16);
+assert.equal(BLOG_POSTS.length, 17);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "revue-pipeline-devis-b2b")?.tags, [
+  "scoring",
+  "relances",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "revue-pipeline-devis-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "revue-pipeline-devis-b2b")?.cover,
+  "/images/blog/visite-guidee-parcours-devis-b2b/03-devis.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "revue-pipeline-devis-b2b")?.readingMinutes, 11);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "revue-pipeline-devis-b2b")?.publishedAt, "2026-09-17");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "revue-pipeline-devis-b2b")?.pinned, false);
+assert.equal(BLOG_FAQ["revue-pipeline-devis-b2b"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "centraliser-demandes-devis-multi-canaux")?.tags, [
   "funnel",
   "scoring",
@@ -274,8 +293,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 9);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 9);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 10);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 10);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 4);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 3);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
@@ -426,6 +445,25 @@ const requiredSources = {
     "/b/demo/atelier-peau-claire/devis",
     "/b/demo/atelier-bois-nord/devis",
     "/b/demo/stock-pro-b2b/devis",
+    "/signup?plan=free",
+  ],
+  "revue-pipeline-devis-b2b.md": [
+    "/images/blog/visite-guidee-parcours-devis-b2b/03-devis.png",
+    "/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png",
+    "/blog/score-demande-devis-b2b",
+    "/blog/centraliser-demandes-devis-multi-canaux",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/relancer-devis-hot-depuis-dossier",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/blog/assignation-sla-demande-devis-equipe",
+    "/blog/delai-reponse-demande-devis-b2b",
+    "/blog/versions-historique-devis-b2b",
+    "/outils/estimateur-valeur-pipeline-devis",
+    "/outils/calculateur-capacite-equipe-devis",
+    "/outils/cout-devis-non-relance",
+    "/outils/simulateur-taux-conversion-devis",
+    "/outils/generateur-sequence-relances",
+    "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
   "centraliser-demandes-devis-multi-canaux.md": [
@@ -616,6 +654,19 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(eventBody, /signup\?plan=free/);
+}
+
+{
+  const revueRaw = readFileSync(join(blogDir, "revue-pipeline-devis-b2b.md"), "utf8");
+  assert.ok(revueRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const revueBody = stripFrontmatter(revueRaw);
+  assert.ok(
+    revueBody.startsWith("# Revue de pipeline devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(revueBody, /signup\?plan=free/);
+  assert.doesNotMatch(revueBody, /img-1\.png/);
+  assert.doesNotMatch(revueBody, /img-2\.png/);
 }
 
 {
@@ -937,6 +988,103 @@ const discountLoss = computeDiscountImpact({
 assert.ok(discountLoss.margeApresE < 0);
 assert.match(discountLoss.tip, /marge est négative/);
 
+const roiDefault = computeRoiLogicielDevis({
+  demandes: 40,
+  tempsAvant: 45,
+  coutHoraire: 35,
+  tauxAvant: 28,
+  panier: 3500,
+  tempsApres: 15,
+  tauxApres: null,
+  abonnement: 79,
+  marge: 30,
+});
+assert.equal(roiDefault.heuresAvant, 30);
+assert.equal(roiDefault.heuresApres, 10);
+assert.equal(roiDefault.coutAvant, 1050);
+assert.equal(roiDefault.coutApres, 350);
+assert.equal(roiDefault.gainTemps, 700);
+assert.equal(roiDefault.tauxApres, 28);
+assert.equal(roiDefault.gainMarge, 0);
+assert.equal(roiDefault.roiNet, 621);
+assert.ok(roiDefault.paybackDays !== null);
+assert.ok(Math.abs((roiDefault.paybackDays ?? 0) - (79 / 700) * 30) < 1e-9);
+assert.match(roiDefault.tip, /retour est rapide/);
+
+const roiAccept = computeRoiLogicielDevis({
+  demandes: 40,
+  tempsAvant: 45,
+  coutHoraire: 35,
+  tauxAvant: 28,
+  panier: 3500,
+  tempsApres: 15,
+  tauxApres: 32,
+  abonnement: 79,
+  marge: 30,
+});
+assert.equal(roiAccept.deltaDeals, 1.6);
+assert.equal(roiAccept.gainMarge, 1680);
+assert.equal(roiAccept.roiNet, 2301);
+assert.match(roiAccept.tip, /retour est rapide/);
+
+const roiEmpty = computeRoiLogicielDevis({
+  demandes: 0,
+  tempsAvant: 45,
+  coutHoraire: 35,
+  tauxAvant: 28,
+  panier: 3500,
+  tempsApres: 15,
+  tauxApres: null,
+  abonnement: 79,
+  marge: 30,
+});
+assert.match(roiEmpty.tip, /volume de demandes/);
+
+const roiNeg = computeRoiLogicielDevis({
+  demandes: 40,
+  tempsAvant: 45,
+  coutHoraire: 35,
+  tauxAvant: 28,
+  panier: 3500,
+  tempsApres: 45,
+  tauxApres: null,
+  abonnement: 79,
+  marge: 30,
+});
+assert.equal(roiNeg.gainTemps, 0);
+assert.equal(roiNeg.roiNet, -79);
+assert.match(roiNeg.tip, /scénario reste négatif/);
+
+const roiLimited = computeRoiLogicielDevis({
+  demandes: 10,
+  tempsAvant: 20,
+  coutHoraire: 30,
+  tauxAvant: 20,
+  panier: 1000,
+  tempsApres: 10,
+  tauxApres: null,
+  abonnement: 79,
+  marge: 30,
+});
+assert.equal(roiLimited.gainTemps, 50);
+assert.equal(roiLimited.roiNet, -29);
+assert.match(roiLimited.tip, /scénario reste négatif/);
+
+const roiThin = computeRoiLogicielDevis({
+  demandes: 12,
+  tempsAvant: 30,
+  coutHoraire: 30,
+  tauxAvant: 20,
+  panier: 1000,
+  tempsApres: 10,
+  tauxApres: null,
+  abonnement: 79,
+  marge: 30,
+});
+assert.equal(roiThin.gainTemps, 120);
+assert.equal(roiThin.roiNet, 41);
+assert.match(roiThin.tip, /gain existe mais reste limité/);
+
 const conversionFloor = computeConversionRate({
   quotesSent: 10,
   basket: 1000,
@@ -987,6 +1135,7 @@ assert.equal(parkingBrief.total, 0);
 assert.equal(parkingBrief.band, "parking");
 
 const llmsPaths = [
+  "/blog/revue-pipeline-devis-b2b",
   "/blog/versions-historique-devis-b2b",
   "/blog/assignation-sla-demande-devis-equipe",
   "/blog/qualifier-demande-devis-avant-chiffrage",
@@ -1003,6 +1152,7 @@ const llmsPaths = [
   "/outils/calculateur-capacite-equipe-devis",
   "/outils/estimateur-temps-chiffrage-devis",
   "/outils/simulateur-impact-remise-devis",
+  "/outils/simulateur-roi-logiciel-devis",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
   "/secteurs/funnel-devis-agencement-bureau",
