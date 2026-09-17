@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "centraliser-demandes-devis-multi-canaux": [
+    {
+      q: "Faut-il fermer WhatsApp et LinkedIn pour centraliser ?",
+      a: "Non. Il faut interdire qu’ils soient le seul endroit où vit le deal. Conversation OK, stockage du brief et du devis dans le dossier commun.",
+    },
+    {
+      q: "Que faire des anciennes boîtes mail perso ?",
+      a: "Basculer progressivement vers devis@ ou une file partagée. Règle : tout nouveau devis hors boîte perso. Archiver l’historique, ne pas le laisser comme inbox active.",
+    },
+    {
+      q: "Comment traiter un doublon déjà chiffré deux fois ?",
+      a: "Fusionner les dossiers, garder la version active la plus récente, documenter l’écart de prix, contacter le prospect avec une seule voix. Mettre une alerte anti-doublon pour la suite.",
+    },
+    {
+      q: "Le score doit-il être posé dès la création du dossier ?",
+      a: "Idéalement oui, même provisoire (Cold par défaut). Affiner dès que le brief s’enrichit. Un dossier sans score tombe au fond de la file.",
+    },
+    {
+      q: "Marketplace et site doivent-ils avoir le même SLA ?",
+      a: "Le SLA porte sur le score, pas sur le canal. Un Hot marketplace = même urgence qu’un Hot site. Sinon vous discriminez un canal rentable par paresse d’intake.",
+    },
+    {
+      q: "Peut-on centraliser sans logiciel dédié au début ?",
+      a: "Oui, avec discipline (table partagée + IDs + owners). Ça casse vite à 3 commerciaux. Un pipeline devis évite que la table Excel redevienne un deuxième chaos.",
+    },
+    {
+      q: "Comment éviter que l’intake soit « le travail de personne » ?",
+      a: "Nommer un rôle Intake (même rotatif) + mesure du délai premier contact. Sans owner d’intake, la centralisation reste un slide.",
+    },
+    {
+      q: "Quid des demandes issues d’un salon ?",
+      a: "Batch saisie J+0 ou J+1 avec source « salon », photos badges, score. Les cartes de visite dans une poche ne sont pas un pipeline.",
+    },
+    {
+      q: "Faut-il un dossier par contact ou par projet ?",
+      a: "Par projet (opportunité). Un même contact peut avoir plusieurs projets. Rattacher les échanges au bon dossier évite de mélanger deux chantiers.",
+    },
+    {
+      q: "Par où commencer si tout est en silo aujourd’hui ?",
+      a: "(1) règle pas de devis hors dossier, (2) boîte / file unique, (3) saisie express téléphone et WhatsApp, (4) funnel site. Dans cet ordre. Le reste suit.",
+    },
+  ],
   "versions-historique-devis-b2b": [
     {
       q: "Faut-il une nouvelle version pour une simple remise ?",

@@ -81,6 +81,7 @@ export const BLOG_TOOL_SCORE = "/outils/score-brief-devis";
 export const BLOG_TOOL_CONVERSION = "/outils/simulateur-taux-conversion-devis";
 export const BLOG_TOOL_CAPACITY = "/outils/calculateur-capacite-equipe-devis";
 export const BLOG_TOOL_QUOTING_TIME = "/outils/estimateur-temps-chiffrage-devis";
+export const BLOG_TOOL_DISCOUNT = "/outils/simulateur-impact-remise-devis";
 
 export type BlogTool = {
   href: string;
@@ -126,9 +127,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Minutes Hot / Warm / Cold, qualification et revisions / versions. Charge vs capacité des personnes qui chiffrent.",
     tags: ["funnel", "relances"],
   },
+  {
+    href: BLOG_TOOL_DISCOUNT,
+    title: "Simulateur d’impact remise devis",
+    text: "CA HT, coût, remise %, volume annuel. Marge avant/après, perte unitaire, impact annuel, option taux d’acceptation.",
+    tags: ["funnel", "scoring"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "centraliser-demandes-devis-multi-canaux",
+    path: "/blog/centraliser-demandes-devis-multi-canaux",
+    title: "Centraliser les demandes de devis multi-canaux : un seul pipeline",
+    description:
+      "Formulaire site, email, téléphone, marketplace, WhatsApp, LinkedIn : un dossier scoré pour éviter leads orphelins et doubles chiffrages.",
+    publishedAt: "2026-09-17",
+    readingMinutes: 11,
+    tags: ["funnel", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/relancer-devis-hot-depuis-dossier/03-devis.png",
+    pinned: false,
+  },
   {
     slug: "versions-historique-devis-b2b",
     path: "/blog/versions-historique-devis-b2b",

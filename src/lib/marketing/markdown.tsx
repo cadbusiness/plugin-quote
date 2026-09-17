@@ -327,6 +327,24 @@ function SchematicFigure({ kind, label }: { kind: string; label: string }) {
     );
   }
 
+  if (kind === "multi-channel-pipeline") {
+    return (
+      <div className="grid gap-3 sm:grid-cols-4">
+        {[
+          { t: "Canaux", d: "Site, email, tel, WhatsApp, marketplace." },
+          { t: "Intake", d: "Un dossier, source attachée." },
+          { t: "Score", d: "Hot / Warm / Cold, owner, SLA." },
+          { t: "Pipeline", d: "Versions, relances, une file." },
+        ].map((item) => (
+          <div key={item.t} className="rounded-lg bg-mk-band px-4 py-4">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">{item.t}</p>
+            <p className="mt-2 text-sm leading-6 text-mk-muted">{item.d}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   if (kind === "versions-checklist") {
     return (
       <div className="grid gap-3 sm:grid-cols-4">
