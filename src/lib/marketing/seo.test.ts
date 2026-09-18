@@ -1333,7 +1333,7 @@ const briefCostTime = computeCoutBriefIncomplet({
   pctMorts: 0,
   panier: 0,
 });
-assert.equal(briefCostTime.coutTemps, 53 + 1 / 3);
+assert.ok(Math.abs(briefCostTime.coutTemps - (4 * 20 * 40) / 60) < 1e-9);
 assert.match(briefCostTime.tip, /coût temps est déjà visible/);
 
 const conversionFloor = computeConversionRate({
