@@ -15,8 +15,7 @@ import { pageMetadata } from "@/lib/marketing/site";
 
 type Props = { params: Promise<{ slug: string }> };
 
-// ISR/SSG of a single article OOMs the isolated ~2GB heap (build and runtime).
-// SSR stays indexable; sitemap and metadata are unchanged.
+// Kept off the marketing client shell (Sharp / next/image). SSR, indexable.
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

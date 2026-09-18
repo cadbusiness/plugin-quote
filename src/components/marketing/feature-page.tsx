@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MarketingCta } from "@/components/marketing/marketing-shell";
+import { MarketingCta } from "@/components/marketing/marketing-cta";
 import {
   FEATURE_MENU_GROUPS,
   FEATURES,
