@@ -506,8 +506,8 @@ export function midArticleHeadingIndex(headingCount: number) {
   return Math.max(2, Math.floor(headingCount / 2) - 1);
 }
 
-export function blogOgImagePath(post: Pick<BlogPost, "path">) {
-  return `${post.path}/opengraph-image`;
+export function blogOgImagePath(post: Pick<BlogPost, "slug">) {
+  return `/api/og/blog/${post.slug}`;
 }
 
 export function blogImageUrl(post: BlogPost) {

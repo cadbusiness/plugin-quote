@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
       dynamic: 30,
       static: 180,
     },
+    // Isolated 2GB workers accumulate if they render 25 pages × 8 concurrent.
+    // One page per process keeps marketing SSG under the default heap.
+    staticGenerationMaxConcurrency: 1,
+    staticGenerationMinPagesPerWorker: 1,
   },
   async redirects() {
     return [

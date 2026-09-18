@@ -890,7 +890,7 @@ const articleMeta = pageMetadata({
 assert.equal(articleMeta.alternates?.canonical, "https://www.quotebuilder.co/blog/score-demande-devis-b2b");
 const ogImages = articleMeta.openGraph?.images;
 assert.ok(Array.isArray(ogImages));
-assert.match(JSON.stringify(ogImages), /blog\/score-demande-devis-b2b\/opengraph-image/);
+assert.match(JSON.stringify(ogImages), /api\/og\/blog\/score-demande-devis-b2b/);
 assert.equal(articleMeta.openGraph?.title, "Scorer une demande · QuoteBuilder");
 
 const lost = computeLostQuote({

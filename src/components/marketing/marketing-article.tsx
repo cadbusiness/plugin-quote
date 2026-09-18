@@ -3,7 +3,7 @@ import { BlogCover } from "@/components/marketing/blog-cover";
 import { BlogMidCta } from "@/components/marketing/blog-mid-cta";
 import { BlogProgress } from "@/components/marketing/blog-progress";
 import { BlogToc } from "@/components/marketing/blog-toc";
-import { MarketingCta } from "@/components/marketing/marketing-shell";
+import { MarketingCta } from "@/components/marketing/marketing-cta";
 import { Markdown } from "@/lib/marketing/markdown";
 import { MarketingFaq, type FaqItem } from "@/components/marketing/marketing-faq";
 import { withResolvedCover } from "@/lib/marketing/blog-assets";
