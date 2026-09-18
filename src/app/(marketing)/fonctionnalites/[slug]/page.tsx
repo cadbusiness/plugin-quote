@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FeaturePage } from "@/components/marketing/feature-page";
-import { FEATURES, getFeature } from "@/lib/marketing/content";
+import { getFeature } from "@/lib/marketing/content";
 import { pageMetadata } from "@/lib/marketing/site";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return FEATURES.map((feature) => ({ slug: feature.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
