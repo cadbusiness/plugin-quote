@@ -1,8 +1,7 @@
 import { ImageResponse } from "next/og";
 import { getBlogPost, primaryTagLabel, trimMetaDescription } from "@/lib/marketing/blog";
 
-// Keep Satori off the Node static-export workers (2GB isolated heap).
-// HTML articles stay static; cards render on the Edge at request time.
+// Edge only — Satori on the Node isolate for /blog/[slug] OOMs (~2GB).
 export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
