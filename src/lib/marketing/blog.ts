@@ -83,6 +83,7 @@ export const BLOG_TOOL_CAPACITY = "/outils/calculateur-capacite-equipe-devis";
 export const BLOG_TOOL_QUOTING_TIME = "/outils/estimateur-temps-chiffrage-devis";
 export const BLOG_TOOL_DISCOUNT = "/outils/simulateur-impact-remise-devis";
 export const BLOG_TOOL_ROI = "/outils/simulateur-roi-logiciel-devis";
+export const BLOG_TOOL_ACCEPTANCE = "/outils/simulateur-taux-acceptation-devis";
 
 export type BlogTool = {
   href: string;
@@ -140,9 +141,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Demandes, temps de chiffrage, coût horaire, taux, panier, abonnement. Gain temps, marge, ROI net/mois et délai de retour.",
     tags: ["scoring", "relances"],
   },
+  {
+    href: BLOG_TOOL_ACCEPTANCE,
+    title: "Simulateur de taux d’acceptation de devis",
+    text: "Devis envoyés, taux actuel et cible, panier, délai. Acceptés en plus, CA, marge, coût d’attente (valeur coincée × délai).",
+    tags: ["funnel", "relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "signature-acceptation-devis-en-ligne-b2b",
+    path: "/blog/signature-acceptation-devis-en-ligne-b2b",
+    title: "Signature et acceptation de devis en ligne B2B : finir le ping-pong PDF",
+    description:
+      "Faire accepter et signer un devis B2B en ligne sans ping-pong PDF : friction envoi → vue → questions → acceptation, statut, versions.",
+    publishedAt: "2026-09-18",
+    readingMinutes: 12,
+    tags: ["funnel", "relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/relancer-devis-hot-depuis-dossier/04-devis-detail.png",
+    pinned: false,
+  },
   {
     slug: "revue-pipeline-devis-b2b",
     path: "/blog/revue-pipeline-devis-b2b",

@@ -29,6 +29,7 @@ import { applyTeamCapacityMix, computeTeamCapacity } from "./team-capacity";
 import { computeQuotingTime, quotingTimeVolumes } from "./quoting-time";
 import { computeDiscountImpact } from "./discount-impact";
 import { computeRoiLogicielDevis } from "./roi-logiciel-devis";
+import { computeAcceptanceRate } from "./acceptance-rate";
 import { MARKETING_ROUTES } from "./routes";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
 import { CREAM_HEX, TAG_COVER } from "./theme";
@@ -80,12 +81,15 @@ for (const required of [
   "/outils/estimateur-temps-chiffrage-devis",
   "/outils/simulateur-impact-remise-devis",
   "/outils/simulateur-roi-logiciel-devis",
+  "/outils/simulateur-taux-acceptation-devis",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
   "/secteurs/funnel-devis-agencement-bureau",
   "/secteurs/funnel-devis-stores-fermetures",
+  "/secteurs/funnel-devis-cuisine-equipee",
+  "/blog/signature-acceptation-devis-en-ligne-b2b",
   "/blog/revue-pipeline-devis-b2b",
   "/blog/centraliser-demandes-devis-multi-canaux",
   "/blog/versions-historique-devis-b2b",
@@ -106,7 +110,23 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 17);
+assert.equal(BLOG_POSTS.length, 18);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "signature-acceptation-devis-en-ligne-b2b")?.tags, [
+  "funnel",
+  "relances",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "signature-acceptation-devis-en-ligne-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "signature-acceptation-devis-en-ligne-b2b")?.cover,
+  "/images/blog/relancer-devis-hot-depuis-dossier/04-devis-detail.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "signature-acceptation-devis-en-ligne-b2b")?.readingMinutes, 12);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "signature-acceptation-devis-en-ligne-b2b")?.publishedAt, "2026-09-18");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "signature-acceptation-devis-en-ligne-b2b")?.pinned, false);
+assert.equal(BLOG_FAQ["signature-acceptation-devis-en-ligne-b2b"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "revue-pipeline-devis-b2b")?.tags, [
   "scoring",
   "relances",
@@ -491,6 +511,36 @@ const requiredSources = {
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
+  "signature-acceptation-devis-en-ligne-b2b.md": [
+    "/blog/versions-historique-devis-b2b",
+    "/blog/espace-prospect-devis-en-ligne",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/relancer-devis-hot-depuis-dossier",
+    "/blog/centraliser-demandes-devis-multi-canaux",
+    "/blog/revue-pipeline-devis-b2b",
+    "/outils/simulateur-impact-remise-devis",
+    "/outils/simulateur-taux-acceptation-devis",
+    "/outils/simulateur-roi-logiciel-devis",
+    "/outils/cout-devis-non-relance",
+    "/secteurs/funnel-devis-menuiserie-sur-mesure",
+    "/secteurs/funnel-devis-cuisine-equipee",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "funnel-devis-cuisine-equipee.md": [
+    "/blog/versions-historique-devis-b2b",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/score-demande-devis-b2b",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/blog/signature-acceptation-devis-en-ligne-b2b",
+    "/blog/revue-pipeline-devis-b2b",
+    "/secteurs/funnel-devis-menuiserie-sur-mesure",
+    "/secteurs/funnel-devis-agencement-bureau",
+    "/outils/simulateur-impact-remise-devis",
+    "/outils/simulateur-taux-acceptation-devis",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
   "versions-historique-devis-b2b.md": [
     "figure:versions-flow",
     "figure:versions-timeline",
@@ -689,6 +739,28 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(storesBody, /signup\?plan=free/);
+}
+
+{
+  const signatureRaw = readFileSync(join(blogDir, "signature-acceptation-devis-en-ligne-b2b.md"), "utf8");
+  assert.ok(signatureRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const signatureBody = stripFrontmatter(signatureRaw);
+  assert.ok(
+    signatureBody.startsWith("# Signature et acceptation de devis en ligne B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(signatureBody, /signup\?plan=free/);
+}
+
+{
+  const cuisineRaw = readFileSync(join(blogDir, "funnel-devis-cuisine-equipee.md"), "utf8");
+  assert.ok(cuisineRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const cuisineBody = stripFrontmatter(cuisineRaw);
+  assert.ok(
+    cuisineBody.startsWith("# Funnel de devis cuisine équipée"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(cuisineBody, /signup\?plan=free/);
 }
 
 {
@@ -1085,6 +1157,68 @@ assert.equal(roiThin.gainTemps, 120);
 assert.equal(roiThin.roiNet, 41);
 assert.match(roiThin.tip, /gain existe mais reste limité/);
 
+const acceptDefault = computeAcceptanceRate({
+  envoyes: 35,
+  tauxActuel: 28,
+  panier: 4200,
+  delai: 18,
+  tauxCible: 36,
+  marge: 30,
+});
+assert.ok(Math.abs(acceptDefault.acceptesActuel - 9.8) < 1e-9);
+assert.ok(Math.abs(acceptDefault.acceptesCible - 12.6) < 1e-9);
+assert.ok(Math.abs(acceptDefault.delta - 2.8) < 1e-9);
+assert.ok(Math.abs(acceptDefault.caGagne - 11760) < 1e-6);
+assert.ok(Math.abs(acceptDefault.margeGagnee - 3528) < 1e-6);
+assert.ok(Math.abs(acceptDefault.nonAcceptes - 25.2) < 1e-9);
+assert.ok(Math.abs(acceptDefault.pipeline - 105840) < 1e-6);
+assert.ok(Math.abs(acceptDefault.coutAttente - 63504) < 1e-6);
+assert.match(acceptDefault.tip, /scénario cible libère du CA/);
+
+const acceptEmpty = computeAcceptanceRate({
+  envoyes: 0,
+  tauxActuel: 28,
+  panier: 4200,
+  delai: 18,
+  tauxCible: 36,
+  marge: 30,
+});
+assert.equal(acceptEmpty.caGagne, 0);
+assert.match(acceptEmpty.tip, /volume de devis envoyés/);
+
+const acceptDown = computeAcceptanceRate({
+  envoyes: 35,
+  tauxActuel: 36,
+  panier: 4200,
+  delai: 18,
+  tauxCible: 28,
+  marge: 30,
+});
+assert.ok(acceptDown.delta < 0);
+assert.match(acceptDown.tip, /cible est inférieure/);
+
+const acceptSmall = computeAcceptanceRate({
+  envoyes: 5,
+  tauxActuel: 28,
+  panier: 4200,
+  delai: 18,
+  tauxCible: 36,
+  marge: 30,
+});
+assert.ok(acceptSmall.delta < 1);
+assert.match(acceptSmall.tip, /gain en nombre de devis reste faible/);
+
+const acceptWait = computeAcceptanceRate({
+  envoyes: 35,
+  tauxActuel: 28,
+  panier: 4200,
+  delai: 21,
+  tauxCible: 36,
+  marge: 30,
+});
+assert.ok(acceptWait.coutAttente > 0);
+assert.match(acceptWait.tip, /délai moyen est long/);
+
 const conversionFloor = computeConversionRate({
   quotesSent: 10,
   basket: 1000,
@@ -1153,10 +1287,13 @@ const llmsPaths = [
   "/outils/estimateur-temps-chiffrage-devis",
   "/outils/simulateur-impact-remise-devis",
   "/outils/simulateur-roi-logiciel-devis",
+  "/outils/simulateur-taux-acceptation-devis",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
   "/secteurs/funnel-devis-location-evenementiel",
   "/secteurs/funnel-devis-agencement-bureau",
   "/secteurs/funnel-devis-stores-fermetures",
+  "/secteurs/funnel-devis-cuisine-equipee",
+  "/blog/signature-acceptation-devis-en-ligne-b2b",
   "/blog/centraliser-demandes-devis-multi-canaux",
 ];
 for (const path of llmsPaths) {

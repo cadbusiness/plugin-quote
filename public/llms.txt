@@ -40,9 +40,11 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Funnel devis location événementielle : https://www.quotebuilder.co/secteurs/funnel-devis-location-evenementiel
 - Funnel devis agencement de bureau : https://www.quotebuilder.co/secteurs/funnel-devis-agencement-bureau
 - Funnel devis stores et fermetures : https://www.quotebuilder.co/secteurs/funnel-devis-stores-fermetures
+- Funnel devis cuisine équipée : https://www.quotebuilder.co/secteurs/funnel-devis-cuisine-equipee
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Signature et acceptation de devis en ligne B2B : https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b
 - Revue de pipeline devis B2B : https://www.quotebuilder.co/blog/revue-pipeline-devis-b2b
 - Centraliser les demandes de devis multi-canaux : https://www.quotebuilder.co/blog/centraliser-demandes-devis-multi-canaux
 - Versions et historique des devis B2B : https://www.quotebuilder.co/blog/versions-historique-devis-b2b
@@ -69,6 +71,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Estimateur temps de chiffrage devis : https://www.quotebuilder.co/outils/estimateur-temps-chiffrage-devis
 - Simulateur impact remise devis : https://www.quotebuilder.co/outils/simulateur-impact-remise-devis
 - Simulateur ROI logiciel de devis : https://www.quotebuilder.co/outils/simulateur-roi-logiciel-devis
+- Simulateur taux d’acceptation de devis : https://www.quotebuilder.co/outils/simulateur-taux-acceptation-devis
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 
