@@ -1,9 +1,10 @@
 import { ImageResponse } from "next/og";
-import { BLOG_POSTS, getBlogPost, primaryTagLabel, trimMetaDescription } from "@/lib/marketing/blog";
+import { getBlogPost, primaryTagLabel, trimMetaDescription } from "@/lib/marketing/blog";
 
-export function generateStaticParams() {
-  return BLOG_POSTS.map((post) => ({ slug: post.slug }));
-}
+// Keep Satori off the Node static-export workers (2GB isolated heap).
+// HTML articles stay static; cards render on the Edge at request time.
+export const runtime = "edge";
+export const dynamic = "force-dynamic";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { MarketingArticle } from "@/components/marketing/marketing-article";
 import { BLOG_FAQ } from "@/lib/marketing/blog-faq";
 import {
-  BLOG_POSTS,
   blogArticleJsonLd,
   blogBreadcrumbJsonLd,
   blogOgImagePath,
@@ -16,9 +15,10 @@ import { pageMetadata } from "@/lib/marketing/site";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return BLOG_POSTS.map((post) => ({ slug: post.slug }));
-}
+// Do not prerender the full catalog: isolated 2GB workers OOM on that tail.
+// ISR keeps every slug indexable (sitemap unchanged), including this sprint.
+export const revalidate = 86400;
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
