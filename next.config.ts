@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   transpilePackages: ["@puckeditor/core"],
+  // Default true: prerender workers load source maps and blow the isolated 2GB heap.
+  enablePrerenderSourceMaps: false,
   experimental: {
     staleTimes: {
       dynamic: 30,
