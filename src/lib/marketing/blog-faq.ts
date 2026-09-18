@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "signature-acceptation-devis-en-ligne-b2b": [
+    {
+      q: "Faut-il toujours une e-signature pour un devis B2B ?",
+      a: "Non. Souvent un bouton Accepter sur une version datée suffit pour démarrer opérationnellement. Gardez l’e-sign quand le risque, le montant ou la procédure client l’exigent.",
+    },
+    {
+      q: "Comment éviter que le client signe l’ancienne version ?",
+      a: "Une seule version active dans l’espace prospect. Les anciennes restent en historique, clairement marquées « remplacée ». Interdiction d’envoyer des PDF parallèles.",
+    },
+    {
+      q: "Que faire si le client accepte oralement au téléphone ?",
+      a: "Notez l’acceptation dans le dossier avec date, interlocuteur, version concernée, et envoyez immédiatement un lien de confirmation en ligne. L’oral seul disparaît.",
+    },
+    {
+      q: "Comment gérer plusieurs décideurs ?",
+      a: "Un lien partageable + rôles clairs (qui peut accepter). Évitez cinq transferts de PDF. L’espace prospect est conçu pour ça.",
+    },
+    {
+      q: "L’acceptation en ligne remplace-t-elle le bon de commande ?",
+      a: "Pas toujours. Certaines organisations exigent encore un BC. L’acceptation en ligne accélère le go interne (commande matière, planning) en attendant le formalisme client.",
+    },
+    {
+      q: "Que mesurer en premier pour améliorer le taux ?",
+      a: "Taux de vue, puis délai vue → acceptation, puis nombre de versions. Améliorer l’envoi sans mesurer la vue, c’est piloter à l’aveugle.",
+    },
+    {
+      q: "Comment traiter une demande de remise au moment d’accepter ?",
+      a: "Créez une nouvelle version avec le prix recalculé. Ne « corrigez » pas le PDF déjà accepté. Vérifiez la marge avant de valider.",
+    },
+    {
+      q: "Faut-il un PIN ou une authentification ?",
+      a: "Utile si les devis sont sensibles ou multi-destinataires. Pour beaucoup de PME, un lien magique + traçage d’ouverture est un bon premier cran. Voir l’article espace prospect.",
+    },
+    {
+      q: "Quel délai de validité mettre ?",
+      a: "Assez court pour forcer une décision (ex. 15–30 jours selon métier et volatilité matière), assez long pour le circuit de validation client. Affichez-le clairement sur le récap.",
+    },
+    {
+      q: "Par où commencer si on est encore 100 % PDF mail ?",
+      a: "Interdiction progressive : tout nouveau devis part via un lien dossier. Archivez les PDF dans le dossier, pas l’inverse. Formez l’équipe en une réunion de 45 minutes, puis tenez la règle en revue pipeline.",
+    },
+  ],
   "revue-pipeline-devis-b2b": [
     {
       q: "Hebdo ou bi-hebdo ?",
