@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "options-variantes-alternatives-devis-b2b": [
+    {
+      q: "Combien d’options maximum sur un devis B2B ?",
+      a: "En pratique, 2 variantes exclusives + 2 à 4 lignes optionnelles. Au-delà, le prospect compare mal et demande encore un PDF. Les besoins rares passent en « sur devis » ou phase 2.",
+    },
+    {
+      q: "Faut-il toujours proposer un pack premium ?",
+      a: "Non. Proposez-le quand le catalogue le justifie (confort, SAV, délai prioritaire). Sinon une variante A/B claire suffit. Le premium forcé ressemble à du remplissage.",
+    },
+    {
+      q: "Comment gérer une option demandée après envoi ?",
+      a: "Créez une nouvelle version (ou un amendement) avec l’option, conservez l’historique, et renvoyez un lien unique. Ne « écrasez » pas le PDF précédent sans trace.",
+    },
+    {
+      q: "Les options doivent-elles avoir la même marge que le corps du devis ?",
+      a: "Pas forcément. Fixez des règles par type (pose, accessoire, urgence). L’important est la cohérence entre commerciaux, pas une marge unique magique.",
+    },
+    {
+      q: "Option gratuite pour gagner le deal : bonne idée ?",
+      a: "Rarement. Une option « offerte » sans limite devient une norme. Préférez une variante moins chère avec périmètre réduit, ou une option à prix symbolique si politique commerciale l’autorise.",
+    },
+    {
+      q: "Comment présenter une alternative concurrente sans dénigrer ?",
+      a: "Comparez trois écarts factuels (délai, périmètre inclus, conditions SAV). Pas de tableau émotionnel. Documentez la variante dans le dossier.",
+    },
+    {
+      q: "Excel peut-il suffire pour les options ?",
+      a: "Pour un volume très faible, parfois. Dès que plusieurs personnes touchent le même devis, Excel multiplie les copies. Un outil structuré réduit les V3 fantômes. Voir configurateur vs Excel.",
+    },
+    {
+      q: "Que faire si le prospect veut « tout optionnel » ?",
+      a: "Recadrez : une base recommandée + options. Un devis 100 % optionnel n’est pas un devis, c’est un catalogue. Qualifiez le besoin avant de chiffrer.",
+    },
+    {
+      q: "Les options ralentissent-elles l’acceptation ?",
+      a: "Mal présentées, oui. Bien structurées (recommandation + totaux clairs + acceptation en ligne), elles accélèrent souvent la décision en évitant le ping-pong PDF.",
+    },
+    {
+      q: "Comment relier options et score Hot / Warm / Cold ?",
+      a: "Les Hot méritent un soin A/B soigné. Les Cold n’ont pas besoin de six variantes. Utilisez le score pour allouer le temps chiffrage. Voir score demande.",
+    },
+  ],
   "signature-acceptation-devis-en-ligne-b2b": [
     {
       q: "Faut-il toujours une e-signature pour un devis B2B ?",

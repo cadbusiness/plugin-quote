@@ -84,6 +84,7 @@ export const BLOG_TOOL_QUOTING_TIME = "/outils/estimateur-temps-chiffrage-devis"
 export const BLOG_TOOL_DISCOUNT = "/outils/simulateur-impact-remise-devis";
 export const BLOG_TOOL_ROI = "/outils/simulateur-roi-logiciel-devis";
 export const BLOG_TOOL_ACCEPTANCE = "/outils/simulateur-taux-acceptation-devis";
+export const BLOG_TOOL_INCOMPLETE_BRIEF = "/outils/estimateur-cout-brief-incomplet";
 
 export type BlogTool = {
   href: string;
@@ -147,9 +148,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Devis envoyés, taux actuel et cible, panier, délai. Acceptés en plus, CA, marge, coût d’attente (valeur coincée × délai).",
     tags: ["funnel", "relances"],
   },
+  {
+    href: BLOG_TOOL_INCOMPLETE_BRIEF,
+    title: "Estimateur du coût d’un brief devis incomplet",
+    text: "Demandes, % de briefs incomplets, minutes perdues, coût horaire. Heures, coût temps, CA potentiel perdu si des dossiers meurent.",
+    tags: ["funnel", "scoring"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "options-variantes-alternatives-devis-b2b",
+    path: "/blog/options-variantes-alternatives-devis-b2b",
+    title: "Options, variantes et alternatives sur un devis B2B : décider sans noyer le prospect",
+    description:
+      "Comment structurer un devis B2B avec options, variantes et alternatives (A vs B, lignes optionnelles, pack standard vs premium) pour que le prospect tranche sans pile de PDF V2.",
+    publishedAt: "2026-09-18",
+    readingMinutes: 12,
+    tags: ["funnel", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png",
+    pinned: false,
+  },
   {
     slug: "signature-acceptation-devis-en-ligne-b2b",
     path: "/blog/signature-acceptation-devis-en-ligne-b2b",

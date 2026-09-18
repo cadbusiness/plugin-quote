@@ -30,6 +30,7 @@ import { computeQuotingTime, quotingTimeVolumes } from "./quoting-time";
 import { computeDiscountImpact } from "./discount-impact";
 import { computeRoiLogicielDevis } from "./roi-logiciel-devis";
 import { computeAcceptanceRate } from "./acceptance-rate";
+import { computeCoutBriefIncomplet } from "./cout-brief-incomplet";
 import { MARKETING_ROUTES } from "./routes";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
 import { CREAM_HEX, TAG_COVER } from "./theme";
@@ -82,6 +83,7 @@ for (const required of [
   "/outils/simulateur-impact-remise-devis",
   "/outils/simulateur-roi-logiciel-devis",
   "/outils/simulateur-taux-acceptation-devis",
+  "/outils/estimateur-cout-brief-incomplet",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
@@ -89,6 +91,7 @@ for (const required of [
   "/secteurs/funnel-devis-agencement-bureau",
   "/secteurs/funnel-devis-stores-fermetures",
   "/secteurs/funnel-devis-cuisine-equipee",
+  "/blog/options-variantes-alternatives-devis-b2b",
   "/blog/signature-acceptation-devis-en-ligne-b2b",
   "/blog/revue-pipeline-devis-b2b",
   "/blog/centraliser-demandes-devis-multi-canaux",
@@ -110,7 +113,23 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 18);
+assert.equal(BLOG_POSTS.length, 19);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "options-variantes-alternatives-devis-b2b")?.tags, [
+  "funnel",
+  "scoring",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "options-variantes-alternatives-devis-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "options-variantes-alternatives-devis-b2b")?.cover,
+  "/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "options-variantes-alternatives-devis-b2b")?.readingMinutes, 12);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "options-variantes-alternatives-devis-b2b")?.publishedAt, "2026-09-18");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "options-variantes-alternatives-devis-b2b")?.pinned, false);
+assert.equal(BLOG_FAQ["options-variantes-alternatives-devis-b2b"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "signature-acceptation-devis-en-ligne-b2b")?.tags, [
   "funnel",
   "relances",
@@ -313,8 +332,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 10);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 10);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 11);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 11);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 4);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 3);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
@@ -508,6 +527,27 @@ const requiredSources = {
     "/secteurs/funnel-devis-rayonnage-stockage",
     "/secteurs/funnel-devis-menuiserie-sur-mesure",
     "/outils/simulateur-impact-remise-devis",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "options-variantes-alternatives-devis-b2b.md": [
+    "/images/blog/visite-guidee-parcours-devis-b2b/03-devis.png",
+    "/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png",
+    "/images/blog/visite-guidee-parcours-devis-b2b/09-public-funnel.png",
+    "/images/blog/relancer-devis-hot-depuis-dossier/05-automations.png",
+    "/images/blog/visite-guidee-parcours-devis-b2b/07-funnels.png",
+    "/blog/versions-historique-devis-b2b",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/score-demande-devis-b2b",
+    "/blog/signature-acceptation-devis-en-ligne-b2b",
+    "/blog/revue-pipeline-devis-b2b",
+    "/blog/configurateur-devis-vs-excel-pdf",
+    "/outils/simulateur-impact-remise-devis",
+    "/outils/score-brief-devis",
+    "/outils/estimateur-temps-chiffrage-devis",
+    "/outils/estimateur-cout-brief-incomplet",
+    "/outils/simulateur-taux-acceptation-devis",
+    "/secteurs/funnel-devis-cuisine-equipee",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -739,6 +779,19 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(storesBody, /signup\?plan=free/);
+}
+
+{
+  const optionsRaw = readFileSync(join(blogDir, "options-variantes-alternatives-devis-b2b.md"), "utf8");
+  assert.ok(optionsRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const optionsBody = stripFrontmatter(optionsRaw);
+  assert.ok(
+    optionsBody.startsWith("# Options, variantes et alternatives sur un devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(optionsBody, /signup\?plan=free/);
+  assert.doesNotMatch(optionsBody, /img-1\.png/);
+  assert.doesNotMatch(optionsBody, /img-2\.png/);
 }
 
 {
@@ -1219,6 +1272,70 @@ const acceptWait = computeAcceptanceRate({
 assert.ok(acceptWait.coutAttente > 0);
 assert.match(acceptWait.tip, /délai moyen est long/);
 
+const briefCostDefault = computeCoutBriefIncomplet({
+  demandes: 40,
+  pctIncomplets: 45,
+  minutes: 35,
+  coutHoraire: 45,
+  pctMorts: 12,
+  panier: 3800,
+});
+assert.equal(briefCostDefault.briefs, 18);
+assert.equal(briefCostDefault.heures, 10.5);
+assert.equal(briefCostDefault.coutTemps, 472.5);
+assert.equal(briefCostDefault.morts, 2.16);
+assert.equal(briefCostDefault.caPerdu, 8208);
+assert.equal(briefCostDefault.total, 8680.5);
+assert.equal(briefCostDefault.caEstime, true);
+assert.match(briefCostDefault.tip, /CA perdu dépasse le coût temps/);
+
+const briefCostEmpty = computeCoutBriefIncomplet({
+  demandes: 0,
+  pctIncomplets: 45,
+  minutes: 35,
+  coutHoraire: 45,
+  pctMorts: 12,
+  panier: 3800,
+});
+assert.equal(briefCostEmpty.briefs, 0);
+assert.match(briefCostEmpty.tip, /volume de demandes/);
+
+const briefCostHighIncomplete = computeCoutBriefIncomplet({
+  demandes: 40,
+  pctIncomplets: 60,
+  minutes: 40,
+  coutHoraire: 45,
+  pctMorts: 0,
+  panier: 0,
+});
+assert.equal(briefCostHighIncomplete.briefs, 24);
+assert.equal(briefCostHighIncomplete.heures, 16);
+assert.equal(briefCostHighIncomplete.caEstime, false);
+assert.equal(briefCostHighIncomplete.caPerdu, 0);
+assert.match(briefCostHighIncomplete.tip, /Plus de la moitié des briefs/);
+
+const briefCostMinutes = computeCoutBriefIncomplet({
+  demandes: 20,
+  pctIncomplets: 30,
+  minutes: 50,
+  coutHoraire: 40,
+  pctMorts: 0,
+  panier: 0,
+});
+assert.equal(briefCostMinutes.heures, 5);
+assert.match(briefCostMinutes.tip, /beaucoup de minutes/);
+
+const briefCostTime = computeCoutBriefIncomplet({
+  demandes: 20,
+  pctIncomplets: 20,
+  minutes: 20,
+  coutHoraire: 40,
+  pctMorts: 0,
+  panier: 0,
+});
+assert.equal(briefCostTime.coutTemps, 53 + 1 / 3);
+assert.match(briefCostTime.tip, /coût temps est déjà visible/);
+
 const conversionFloor = computeConversionRate({
   quotesSent: 10,
   basket: 1000,
@@ -1295,6 +1412,8 @@ const llmsPaths = [
   "/secteurs/funnel-devis-cuisine-equipee",
   "/blog/signature-acceptation-devis-en-ligne-b2b",
   "/blog/centraliser-demandes-devis-multi-canaux",
+  "/blog/options-variantes-alternatives-devis-b2b",
+  "/outils/estimateur-cout-brief-incomplet",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
