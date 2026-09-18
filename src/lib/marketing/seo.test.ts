@@ -1165,14 +1165,14 @@ const acceptDefault = computeAcceptanceRate({
   tauxCible: 36,
   marge: 30,
 });
-assert.equal(acceptDefault.acceptesActuel, 9.8);
-assert.equal(acceptDefault.acceptesCible, 12.6);
-assert.equal(acceptDefault.delta, 2.8);
-assert.equal(acceptDefault.caGagne, 11760);
-assert.equal(acceptDefault.margeGagnee, 3528);
-assert.equal(acceptDefault.nonAcceptes, 25.2);
-assert.equal(acceptDefault.pipeline, 105840);
-assert.equal(acceptDefault.coutAttente, 63504);
+assert.ok(Math.abs(acceptDefault.acceptesActuel - 9.8) < 1e-9);
+assert.ok(Math.abs(acceptDefault.acceptesCible - 12.6) < 1e-9);
+assert.ok(Math.abs(acceptDefault.delta - 2.8) < 1e-9);
+assert.ok(Math.abs(acceptDefault.caGagne - 11760) < 1e-6);
+assert.ok(Math.abs(acceptDefault.margeGagnee - 3528) < 1e-6);
+assert.ok(Math.abs(acceptDefault.nonAcceptes - 25.2) < 1e-9);
+assert.ok(Math.abs(acceptDefault.pipeline - 105840) < 1e-6);
+assert.ok(Math.abs(acceptDefault.coutAttente - 63504) < 1e-6);
 assert.match(acceptDefault.tip, /scénario cible libère du CA/);
 
 const acceptEmpty = computeAcceptanceRate({
