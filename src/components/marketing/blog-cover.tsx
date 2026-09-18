@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { blogTagLabel, normalizeCoverPath, primaryTag, type BlogPost } from "@/lib/marketing/blog";
 import { TAG_COVER } from "@/lib/marketing/theme";
 
@@ -54,13 +53,11 @@ export function BlogCoverPlaceholder({
 
 export function BlogCover({
   post,
-  sizes,
-  priority = false,
   compact = false,
   hero = false,
 }: {
   post: BlogPost;
-  sizes: string;
+  sizes?: string;
   priority?: boolean;
   compact?: boolean;
   hero?: boolean;
@@ -76,13 +73,10 @@ export function BlogCover({
       : "aspect-[16/10]";
   return (
     <div className={`relative overflow-hidden bg-mk-band ${frame}`}>
-      <Image
+      <img
         src={cover}
         alt=""
-        fill
-        sizes={sizes}
-        priority={priority}
-        className="object-cover object-top object-left"
+        className="absolute inset-0 h-full w-full object-cover object-top object-left"
       />
     </div>
   );

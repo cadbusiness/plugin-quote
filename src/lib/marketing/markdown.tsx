@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { BLOG_IMAGE_DIR, slugifyHeading, stripMarkdownInline } from "@/lib/marketing/blog";
 import {
@@ -466,12 +465,11 @@ export function Markdown({
             <SchematicFigure kind={schematic} label={label} />
           ) : src.startsWith("/") ? (
             <div className="relative aspect-[16/9] min-h-[14rem] overflow-hidden rounded-lg bg-mk-band sm:min-h-[18rem]">
-              <Image
+              {/* Native img: next/image Sharp buffers OOM the 2GB static workers. */}
+              <img
                 src={src}
                 alt={image.alt}
-                fill
-                sizes="(max-width: 768px) 100vw, 960px"
-                className="object-cover object-top object-left"
+                className="absolute inset-0 h-full w-full object-cover object-top object-left"
               />
             </div>
           ) : (
