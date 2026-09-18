@@ -1,8 +1,9 @@
 import { ImageResponse } from "next/og";
 import { getBlogPost, primaryTagLabel, trimMetaDescription } from "@/lib/marketing/blog";
 
-// Satori ImageResponse is too heavy to prerender for every post in a 2GB
-// static worker (OOM at ~96/128 routes). HTML articles stay static.
+// Keep Satori off the Node static-export workers (2GB isolated heap).
+// HTML articles stay static; cards render on the Edge at request time.
+export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {

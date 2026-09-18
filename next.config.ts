@@ -7,9 +7,6 @@ const nextConfig: NextConfig = {
       dynamic: 30,
       static: 180,
     },
-    // Next static workers isolate memory and strip --max-old-space-size.
-    // One page at a time keeps the ~2GB worker heap under Vercel's default.
-    staticGenerationMaxConcurrency: 1,
   },
   async redirects() {
     return [
