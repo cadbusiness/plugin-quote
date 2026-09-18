@@ -1,9 +1,9 @@
 import { ImageResponse } from "next/og";
-import { BLOG_POSTS, getBlogPost, primaryTagLabel, trimMetaDescription } from "@/lib/marketing/blog";
+import { getBlogPost, primaryTagLabel, trimMetaDescription } from "@/lib/marketing/blog";
 
-export function generateStaticParams() {
-  return BLOG_POSTS.map((post) => ({ slug: post.slug }));
-}
+// Satori ImageResponse is too heavy to prerender for every post in a 2GB
+// static worker (OOM at ~96/128 routes). HTML articles stay static.
+export const dynamic = "force-dynamic";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
