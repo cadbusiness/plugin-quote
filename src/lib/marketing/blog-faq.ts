@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "validite-expiration-devis-b2b": [
+    {
+      q: "Combien de jours de validité pour un devis B2B classique ?",
+      a: "Souvent 21 à 30 jours. Ajustez selon volatilité matière, charge atelier et cycle de décision client. Évitez 90 jours par défaut si vos coûts bougent.",
+    },
+    {
+      q: "Peut-on prolonger un devis expiré sans le recalculer ?",
+      a: "Oui si coûts et périmètre sont inchangés, et si la marge tient. Documentez la prolongation. Sinon créez une nouvelle version.",
+    },
+    {
+      q: "Que faire si le client veut « garder le prix » six mois ?",
+      a: "Expliquez la validité et proposez soit un acompte / réservation, soit une clause de révision, soit un re-chiffrage périodique. Un prix figé six mois sans filet est un risque marge.",
+    },
+    {
+      q: "Faut-il expirer automatiquement ou manuellement ?",
+      a: "L’automatisation évite les oublis. Gardez une action humaine pour prolonger ou re-chiffrer. Le statut change ; la décision commerciale reste humaine.",
+    },
+    {
+      q: "Comment gérer un devis avec plusieurs options et une seule date ?",
+      a: "Une date de validité pour la version complète. Si une option rare a une dispo courte, notez-le sur la ligne ou réduisez la validité globale.",
+    },
+    {
+      q: "L’expiration empêche-t-elle l’acceptation en ligne ?",
+      a: "Idéalement oui (ou warning fort). Accepter un devis expiré sans geste revient à signer un engagement ambigu.",
+    },
+    {
+      q: "Que mettre dans la relance J-5 ?",
+      a: "Date de fin, rappel du total / recommandation, question sur la décision, proposition de prolongation courte ou d’ajustement. Pas un pavé marketing.",
+    },
+    {
+      q: "Comment traiter les devis « ouverts » depuis 4 mois dans Excel ?",
+      a: "Clôturez-les (expiré / perdu / à re-chiffrer). Recalculez le vrai pipeline. Sinon vos specs mensuelles mentent.",
+    },
+    {
+      q: "La validité remplace-t-elle les CGV ?",
+      a: "Non. Elle complète le process. Les CGV / mentions légales restent du ressort juridique.",
+    },
+    {
+      q: "Quel outil pour estimer le coût des devis qui expirent ?",
+      a: "Le simulateur coût devis expirés donne un ordre de grandeur (CA, heures, re-chiffrage, gain si relance avant).",
+    },
+  ],
   "options-variantes-alternatives-devis-b2b": [
     {
       q: "Combien d’options maximum sur un devis B2B ?",

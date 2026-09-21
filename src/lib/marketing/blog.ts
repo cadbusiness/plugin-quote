@@ -85,6 +85,7 @@ export const BLOG_TOOL_DISCOUNT = "/outils/simulateur-impact-remise-devis";
 export const BLOG_TOOL_ROI = "/outils/simulateur-roi-logiciel-devis";
 export const BLOG_TOOL_ACCEPTANCE = "/outils/simulateur-taux-acceptation-devis";
 export const BLOG_TOOL_INCOMPLETE_BRIEF = "/outils/estimateur-cout-brief-incomplet";
+export const BLOG_TOOL_EXPIRED_QUOTES = "/outils/simulateur-cout-devis-expires";
 
 export type BlogTool = {
   href: string;
@@ -154,9 +155,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Demandes, % de briefs incomplets, minutes perdues, coût horaire. Heures, coût temps, CA potentiel perdu si des dossiers meurent.",
     tags: ["funnel", "scoring"],
   },
+  {
+    href: BLOG_TOOL_EXPIRED_QUOTES,
+    title: "Simulateur du coût des devis expirés",
+    text: "Devis ouverts, % qui expirent, panier, heures, re-chiffrage. CA potentiel, coûts de reprise, gain si relance avant expiration.",
+    tags: ["relances", "funnel"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "validite-expiration-devis-b2b",
+    path: "/blog/validite-expiration-devis-b2b",
+    title: "Validité et expiration des devis B2B : combien de jours, quand prolonger, quand re-chiffrer",
+    description:
+      "Durée de validité d’un devis B2B, statut expiré, prolongation, re-chiffrage, relances avant expiration et litiges sur prix figés. Process + indicateurs pour PME.",
+    publishedAt: "2026-09-21",
+    readingMinutes: 12,
+    tags: ["relances", "funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/visite-guidee-parcours-devis-b2b/03-devis.png",
+    pinned: false,
+  },
   {
     slug: "options-variantes-alternatives-devis-b2b",
     path: "/blog/options-variantes-alternatives-devis-b2b",

@@ -41,9 +41,11 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Funnel devis agencement de bureau : https://www.quotebuilder.co/secteurs/funnel-devis-agencement-bureau
 - Funnel devis stores et fermetures : https://www.quotebuilder.co/secteurs/funnel-devis-stores-fermetures
 - Funnel devis cuisine équipée : https://www.quotebuilder.co/secteurs/funnel-devis-cuisine-equipee
+- Funnel devis clôture et portail : https://www.quotebuilder.co/secteurs/funnel-devis-cloture-portail
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Validité et expiration des devis B2B : https://www.quotebuilder.co/blog/validite-expiration-devis-b2b
 - Options, variantes et alternatives sur un devis B2B : https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b
 - Signature et acceptation de devis en ligne B2B : https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b
 - Revue de pipeline devis B2B : https://www.quotebuilder.co/blog/revue-pipeline-devis-b2b
@@ -74,6 +76,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Simulateur ROI logiciel de devis : https://www.quotebuilder.co/outils/simulateur-roi-logiciel-devis
 - Simulateur taux d’acceptation de devis : https://www.quotebuilder.co/outils/simulateur-taux-acceptation-devis
 - Estimateur coût d’un brief devis incomplet : https://www.quotebuilder.co/outils/estimateur-cout-brief-incomplet
+- Simulateur coût des devis expirés : https://www.quotebuilder.co/outils/simulateur-cout-devis-expires
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 
