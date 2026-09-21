@@ -31,6 +31,7 @@ import { computeDiscountImpact } from "./discount-impact";
 import { computeRoiLogicielDevis } from "./roi-logiciel-devis";
 import { computeAcceptanceRate } from "./acceptance-rate";
 import { computeCoutBriefIncomplet } from "./cout-brief-incomplet";
+import { computeCoutDevisExpires } from "./cout-devis-expires";
 import { MARKETING_ROUTES } from "./routes";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
 import { CREAM_HEX, TAG_COVER } from "./theme";
@@ -84,6 +85,7 @@ for (const required of [
   "/outils/simulateur-roi-logiciel-devis",
   "/outils/simulateur-taux-acceptation-devis",
   "/outils/estimateur-cout-brief-incomplet",
+  "/outils/simulateur-cout-devis-expires",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
@@ -91,6 +93,8 @@ for (const required of [
   "/secteurs/funnel-devis-agencement-bureau",
   "/secteurs/funnel-devis-stores-fermetures",
   "/secteurs/funnel-devis-cuisine-equipee",
+  "/secteurs/funnel-devis-cloture-portail",
+  "/blog/validite-expiration-devis-b2b",
   "/blog/options-variantes-alternatives-devis-b2b",
   "/blog/signature-acceptation-devis-en-ligne-b2b",
   "/blog/revue-pipeline-devis-b2b",
@@ -113,7 +117,23 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 19);
+assert.equal(BLOG_POSTS.length, 20);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "validite-expiration-devis-b2b")?.tags, [
+  "relances",
+  "funnel",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "validite-expiration-devis-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "validite-expiration-devis-b2b")?.cover,
+  "/images/blog/visite-guidee-parcours-devis-b2b/03-devis.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "validite-expiration-devis-b2b")?.readingMinutes, 12);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "validite-expiration-devis-b2b")?.publishedAt, "2026-09-21");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "validite-expiration-devis-b2b")?.pinned, false);
+assert.equal(BLOG_FAQ["validite-expiration-devis-b2b"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "options-variantes-alternatives-devis-b2b")?.tags, [
   "funnel",
   "scoring",
@@ -530,6 +550,37 @@ const requiredSources = {
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
+  "validite-expiration-devis-b2b.md": [
+    "/blog/versions-historique-devis-b2b",
+    "/blog/signature-acceptation-devis-en-ligne-b2b",
+    "/blog/relancer-devis-hot-depuis-dossier",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/options-variantes-alternatives-devis-b2b",
+    "/blog/revue-pipeline-devis-b2b",
+    "/blog/score-demande-devis-b2b",
+    "/blog/assignation-sla-demande-devis-equipe",
+    "/outils/simulateur-cout-devis-expires",
+    "/outils/simulateur-taux-acceptation-devis",
+    "/outils/cout-devis-non-relance",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "funnel-devis-cloture-portail.md": [
+    "/blog/validite-expiration-devis-b2b",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/blog/formulaire-contact-vs-funnel-devis-b2b",
+    "/blog/centraliser-demandes-devis-multi-canaux",
+    "/blog/configurateur-devis-vs-excel-pdf",
+    "/blog/options-variantes-alternatives-devis-b2b",
+    "/blog/score-demande-devis-b2b",
+    "/blog/delai-reponse-demande-devis-b2b",
+    "/blog/assignation-sla-demande-devis-equipe",
+    "/secteurs/funnel-devis-stores-fermetures",
+    "/secteurs/funnel-devis-menuiserie-sur-mesure",
+    "/outils/simulateur-cout-devis-expires",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
   "options-variantes-alternatives-devis-b2b.md": [
     "/images/blog/visite-guidee-parcours-devis-b2b/03-devis.png",
     "/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png",
@@ -779,6 +830,28 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(storesBody, /signup\?plan=free/);
+}
+
+{
+  const validiteRaw = readFileSync(join(blogDir, "validite-expiration-devis-b2b.md"), "utf8");
+  assert.ok(validiteRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const validiteBody = stripFrontmatter(validiteRaw);
+  assert.ok(
+    validiteBody.startsWith("# Validité et expiration des devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(validiteBody, /signup\?plan=free/);
+}
+
+{
+  const clotureRaw = readFileSync(join(blogDir, "funnel-devis-cloture-portail.md"), "utf8");
+  assert.ok(clotureRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const clotureBody = stripFrontmatter(clotureRaw);
+  assert.ok(
+    clotureBody.startsWith("# Funnel de devis clôture et portail"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(clotureBody, /signup\?plan=free/);
 }
 
 {
@@ -1336,6 +1409,76 @@ const briefCostTime = computeCoutBriefIncomplet({
 assert.ok(Math.abs(briefCostTime.coutTemps - (4 * 20 * 40) / 60) < 1e-9);
 assert.match(briefCostTime.tip, /coût temps est déjà visible/);
 
+const expiredDefault = computeCoutDevisExpires({
+  ouverts: 40,
+  pctExpirent: 25,
+  panier: 4500,
+  coutChiffrage: 120,
+  heuresChiffrage: 2.5,
+  tauxReprise: 15,
+  coutRechiffrage: 80,
+  pctSauves: 35,
+});
+assert.equal(expiredDefault.nbExpires, 10);
+assert.equal(expiredDefault.caPerdu, 45000);
+assert.equal(expiredDefault.heuresPerdues, 25);
+assert.equal(expiredDefault.cout1, 1200);
+assert.equal(expiredDefault.nbReprises, 1.5);
+assert.equal(expiredDefault.coutRechiffrageTotal, 120);
+assert.equal(expiredDefault.nbSauves, 3.5);
+assert.equal(expiredDefault.gainCa, 15750);
+assert.equal(expiredDefault.gainCout, 462);
+assert.match(expiredDefault.tip, /avant expiration/);
+
+const expiredEmpty = computeCoutDevisExpires({
+  ouverts: 0,
+  pctExpirent: 25,
+  panier: 4500,
+  coutChiffrage: 120,
+  heuresChiffrage: 2.5,
+  tauxReprise: 15,
+  coutRechiffrage: 80,
+  pctSauves: 35,
+});
+assert.equal(expiredEmpty.nbExpires, 0);
+assert.match(expiredEmpty.tip, /volume de devis ouverts/);
+
+const expiredHigh = computeCoutDevisExpires({
+  ouverts: 40,
+  pctExpirent: 45,
+  panier: 4500,
+  coutChiffrage: 120,
+  heuresChiffrage: 2.5,
+  tauxReprise: 15,
+  coutRechiffrage: 80,
+  pctSauves: 35,
+});
+assert.match(expiredHigh.tip, /fort taux d’expiration/);
+
+const expiredReprise = computeCoutDevisExpires({
+  ouverts: 40,
+  pctExpirent: 20,
+  panier: 4500,
+  coutChiffrage: 120,
+  heuresChiffrage: 2.5,
+  tauxReprise: 35,
+  coutRechiffrage: 80,
+  pctSauves: 10,
+});
+assert.match(expiredReprise.tip, /Beaucoup de reprises/);
+
+const expiredAdjust = computeCoutDevisExpires({
+  ouverts: 40,
+  pctExpirent: 10,
+  panier: 4500,
+  coutChiffrage: 120,
+  heuresChiffrage: 2.5,
+  tauxReprise: 10,
+  coutRechiffrage: 80,
+  pctSauves: 10,
+});
+assert.match(expiredAdjust.tip, /Ajustez le % d’expiration/);
+
 const conversionFloor = computeConversionRate({
   quotesSent: 10,
   basket: 1000,
@@ -1414,6 +1557,9 @@ const llmsPaths = [
   "/blog/centraliser-demandes-devis-multi-canaux",
   "/blog/options-variantes-alternatives-devis-b2b",
   "/outils/estimateur-cout-brief-incomplet",
+  "/blog/validite-expiration-devis-b2b",
+  "/secteurs/funnel-devis-cloture-portail",
+  "/outils/simulateur-cout-devis-expires",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -1694,6 +1840,7 @@ const marketingRoots = [
   join(process.cwd(), "src/app/blog"),
 ];
 function walkTsx(dir: string): string[] {
+  if (!existsSync(dir)) return [];
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const full = join(dir, entry.name);
     if (entry.isDirectory()) return walkTsx(full);

@@ -118,6 +118,21 @@ export default function SecteursPage() {
               et relances.
             </p>
           </Link>
+          <Link
+            href="/secteurs/funnel-devis-cloture-portail"
+            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
+              Landing secteur
+            </p>
+            <p className="mt-2 text-lg font-semibold tracking-tight">
+              Funnel de devis clôture et portail
+            </p>
+            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
+              Linéaire, hauteur, motorisation, matériaux, pose. Brief chiffrable, score et
+              relances.
+            </p>
+          </Link>
         </div>
       </section>
 
