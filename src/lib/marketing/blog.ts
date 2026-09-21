@@ -86,6 +86,7 @@ export const BLOG_TOOL_ROI = "/outils/simulateur-roi-logiciel-devis";
 export const BLOG_TOOL_ACCEPTANCE = "/outils/simulateur-taux-acceptation-devis";
 export const BLOG_TOOL_INCOMPLETE_BRIEF = "/outils/estimateur-cout-brief-incomplet";
 export const BLOG_TOOL_EXPIRED_QUOTES = "/outils/simulateur-cout-devis-expires";
+export const BLOG_TOOL_ACOMPTE = "/outils/calculateur-acompte-devis";
 
 export type BlogTool = {
   href: string;
@@ -161,9 +162,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Devis ouverts, % qui expirent, panier, heures, re-chiffrage. CA potentiel, coûts de reprise, gain si relance avant expiration.",
     tags: ["relances", "funnel"],
   },
+  {
+    href: BLOG_TOOL_ACOMPTE,
+    title: "Calculateur d’acompte et d’échéances devis",
+    text: "HT, TVA, % ou montant fixe, 1 à 4 jalons. Acompte TTC, reste dû, répartition indicative et délai de démarrage.",
+    tags: ["funnel", "relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "acomptes-echeances-devis-b2b",
+    path: "/blog/acomptes-echeances-devis-b2b",
+    title: "Acomptes et échéances sur devis B2B : cadrer le cash avant le lancement atelier",
+    description:
+      "Acompte à la commande, échéancier en 2-4 jalons, reste dû, blocage atelier et indicateurs cash pour PME pose/fabrication. Process commercial + points à écrire clairement sur le devis.",
+    publishedAt: "2026-09-21",
+    readingMinutes: 14,
+    tags: ["funnel", "relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png",
+    pinned: false,
+  },
   {
     slug: "validite-expiration-devis-b2b",
     path: "/blog/validite-expiration-devis-b2b",

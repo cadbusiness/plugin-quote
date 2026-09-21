@@ -32,6 +32,7 @@ import { computeRoiLogicielDevis } from "./roi-logiciel-devis";
 import { computeAcceptanceRate } from "./acceptance-rate";
 import { computeCoutBriefIncomplet } from "./cout-brief-incomplet";
 import { computeCoutDevisExpires } from "./cout-devis-expires";
+import { computeAcompteDevis } from "./acompte-devis";
 import { MARKETING_ROUTES } from "./routes";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
 import { CREAM_HEX, TAG_COVER } from "./theme";
@@ -86,6 +87,7 @@ for (const required of [
   "/outils/simulateur-taux-acceptation-devis",
   "/outils/estimateur-cout-brief-incomplet",
   "/outils/simulateur-cout-devis-expires",
+  "/outils/calculateur-acompte-devis",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
@@ -94,6 +96,7 @@ for (const required of [
   "/secteurs/funnel-devis-stores-fermetures",
   "/secteurs/funnel-devis-cuisine-equipee",
   "/secteurs/funnel-devis-cloture-portail",
+  "/blog/acomptes-echeances-devis-b2b",
   "/blog/validite-expiration-devis-b2b",
   "/blog/options-variantes-alternatives-devis-b2b",
   "/blog/signature-acceptation-devis-en-ligne-b2b",
@@ -117,7 +120,23 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 20);
+assert.equal(BLOG_POSTS.length, 21);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "acomptes-echeances-devis-b2b")?.tags, [
+  "funnel",
+  "relances",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "acomptes-echeances-devis-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "acomptes-echeances-devis-b2b")?.cover,
+  "/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "acomptes-echeances-devis-b2b")?.readingMinutes, 14);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "acomptes-echeances-devis-b2b")?.publishedAt, "2026-09-21");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "acomptes-echeances-devis-b2b")?.pinned, false);
+assert.equal(BLOG_FAQ["acomptes-echeances-devis-b2b"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "validite-expiration-devis-b2b")?.tags, [
   "relances",
   "funnel",
@@ -550,6 +569,24 @@ const requiredSources = {
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
+  "acomptes-echeances-devis-b2b.md": [
+    "/blog/acomptes-echeances-devis-b2b/img-1.png",
+    "/blog/acomptes-echeances-devis-b2b/img-2.png",
+    "/blog/acomptes-echeances-devis-b2b/img-3.png",
+    "/blog/acomptes-echeances-devis-b2b/img-4.png",
+    "/blog/validite-expiration-devis-b2b",
+    "/blog/espace-prospect-devis-en-ligne",
+    "/blog/signature-acceptation-devis-en-ligne-b2b",
+    "/blog/options-variantes-alternatives-devis-b2b",
+    "/blog/versions-historique-devis-b2b",
+    "/blog/relancer-devis-hot-depuis-dossier",
+    "/blog/revue-pipeline-devis-b2b",
+    "/blog/assignation-sla-demande-devis-equipe",
+    "/outils/calculateur-acompte-devis",
+    "/outils/simulateur-cout-devis-expires",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
   "validite-expiration-devis-b2b.md": [
     "/blog/versions-historique-devis-b2b",
     "/blog/signature-acceptation-devis-en-ligne-b2b",
@@ -830,6 +867,17 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(storesBody, /signup\?plan=free/);
+}
+
+{
+  const acomptesRaw = readFileSync(join(blogDir, "acomptes-echeances-devis-b2b.md"), "utf8");
+  assert.ok(acomptesRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const acomptesBody = stripFrontmatter(acomptesRaw);
+  assert.ok(
+    acomptesBody.startsWith("# Acomptes et échéances sur devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(acomptesBody, /signup\?plan=free/);
 }
 
 {
@@ -1479,6 +1527,114 @@ const expiredAdjust = computeCoutDevisExpires({
 });
 assert.match(expiredAdjust.tip, /Ajustez le % d’expiration/);
 
+const acompteDefault = computeAcompteDevis({
+  ht: 12000,
+  tva: 20,
+  mode: "pct",
+  pct: 30,
+  fixe: 4000,
+  jalons: 3,
+  delai: 5,
+});
+assert.equal(acompteDefault.ttc, 14400);
+assert.equal(acompteDefault.acompte, 4320);
+assert.equal(acompteDefault.reste, 10080);
+assert.equal(acompteDefault.pctReel, 30);
+assert.equal(acompteDefault.demarrage, "sous 5 j après encaissement");
+assert.equal(acompteDefault.jalons.length, 3);
+assert.equal(acompteDefault.jalons[0]?.label, "Jalon 1 · signature / commande (acompte)");
+assert.equal(acompteDefault.jalons[0]?.amount, 4320);
+assert.equal(acompteDefault.jalons[1]?.amount, 5040);
+assert.equal(acompteDefault.jalons[2]?.label, "Jalon 3 · solde / réception");
+assert.equal(acompteDefault.jalons[2]?.amount, 5040);
+assert.match(acompteDefault.tip, /3 jalons/);
+assert.match(acompteDefault.recap, /Reste dû/);
+
+const acompteEmpty = computeAcompteDevis({
+  ht: 0,
+  tva: 20,
+  mode: "pct",
+  pct: 30,
+  fixe: 4000,
+  jalons: 3,
+  delai: 5,
+});
+assert.equal(acompteEmpty.ttc, 0);
+assert.match(acompteEmpty.tip, /montant HT/);
+
+const acompteLow = computeAcompteDevis({
+  ht: 10000,
+  tva: 20,
+  mode: "pct",
+  pct: 10,
+  fixe: 4000,
+  jalons: 2,
+  delai: 5,
+});
+assert.equal(acompteLow.ttc, 12000);
+assert.equal(acompteLow.acompte, 1200);
+assert.match(acompteLow.tip, /Sous 20 %/);
+
+const acompteHigh = computeAcompteDevis({
+  ht: 10000,
+  tva: 20,
+  mode: "pct",
+  pct: 60,
+  fixe: 4000,
+  jalons: 2,
+  delai: 0,
+});
+assert.equal(acompteHigh.demarrage, "dès encaissement (J0)");
+assert.match(acompteHigh.tip, /Acompte élevé/);
+assert.match(acompteHigh.recap, /dès encaissement/);
+
+const acompteFixe = computeAcompteDevis({
+  ht: 12000,
+  tva: 20,
+  mode: "fixe",
+  pct: 30,
+  fixe: 4000,
+  jalons: 2,
+  delai: 5,
+});
+assert.equal(acompteFixe.acompte, 4000);
+assert.equal(acompteFixe.reste, 10400);
+assert.ok(Math.abs(acompteFixe.pctReel - (4000 / 14400) * 100) < 1e-9);
+assert.equal(acompteFixe.jalons[1]?.label, "Jalon 2 · solde / réception");
+assert.match(acompteFixe.tip, /bloquez le lancement atelier/);
+
+const acompteCap = computeAcompteDevis({
+  ht: 1000,
+  tva: 20,
+  mode: "fixe",
+  pct: 30,
+  fixe: 5000,
+  jalons: 1,
+  delai: 5,
+});
+assert.equal(acompteCap.ttc, 1200);
+assert.equal(acompteCap.acompte, 1200);
+assert.equal(acompteCap.reste, 0);
+assert.equal(acompteCap.jalons.length, 1);
+
+const acompteCents = computeAcompteDevis({
+  ht: 100,
+  tva: 0,
+  mode: "pct",
+  pct: 33.33,
+  fixe: 0,
+  jalons: 3,
+  delai: 5,
+});
+assert.equal(acompteCents.ttc, 100);
+assert.equal(acompteCents.acompte, 33.33);
+assert.equal(acompteCents.jalons[1]?.amount, 33.34);
+assert.equal(acompteCents.jalons[2]?.amount, 33.33);
+assert.equal(
+  Math.round((acompteCents.jalons.reduce((sum, part) => sum + part.amount, 0) + Number.EPSILON) * 100) / 100,
+  100,
+);
+
 const conversionFloor = computeConversionRate({
   quotesSent: 10,
   basket: 1000,
@@ -1560,6 +1716,8 @@ const llmsPaths = [
   "/blog/validite-expiration-devis-b2b",
   "/secteurs/funnel-devis-cloture-portail",
   "/outils/simulateur-cout-devis-expires",
+  "/blog/acomptes-echeances-devis-b2b",
+  "/outils/calculateur-acompte-devis",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));

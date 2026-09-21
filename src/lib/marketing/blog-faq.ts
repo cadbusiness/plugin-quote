@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "acomptes-echeances-devis-b2b": [
+    {
+      q: "Quel pourcentage d’acompte demander sur un devis B2B de fabrication ?",
+      a: "Souvent 30 à 40 % à la commande quand il y a achat matière ou réservation de créneau. Moins si catalogue stable et client historique ; plus si matière spécifique ou nouveau compte. Alignez l’équipe sur une grille courte.",
+    },
+    {
+      q: "Faut-il l’acompte à la signature ou seulement à la commande matière ?",
+      a: "Si la signature déclenche déjà une commande non annulable ou un créneau rare, exigez dès la signature. Sinon vous pouvez séparer acceptation et acompte commande, à condition que l’atelier attende le second signal.",
+    },
+    {
+      q: "Combien de jalons mettre sur l’échéancier ?",
+      a: "Deux à quatre. Chaque jalon doit coller à un événement (signature, commande matière, livraison, réception). Au-delà, le suivi se complexifie sans toujours mieux protéger le cash.",
+    },
+    {
+      q: "Que faire si le client refuse tout acompte ?",
+      a: "Soit vous acceptez une dérogation écrite (qui, jusqu’à quel montant), soit vous ne lancez pas. Un refus systématique sur gros paniers est un signal de risque autant qu’une négociation.",
+    },
+    {
+      q: "L’acompte remplace-t-il la validité du devis ?",
+      a: "Non. La validité cadre le prix dans le temps. L’acompte cadre le démarrage et la trésorerie. Les deux se complètent.",
+    },
+    {
+      q: "Comment gérer un changement d’options après acompte ?",
+      a: "Nouvelle version ou avenant : total, acompte déjà versé, reste dû mis à jour. Ne modifiez pas silencieusement la même version.",
+    },
+    {
+      q: "Peut-on bloquer la signature en ligne tant que l’acompte n’est pas payé ?",
+      a: "Selon le tunnel : parfois signature d’abord puis paiement immédiat ; parfois paiement comme étape du parcours. L’essentiel est qu’il n’y ait pas de lancement atelier entre les deux sans statut clair.",
+    },
+    {
+      q: "Quels indicateurs regarder en comité commercial ?",
+      a: "% d’acceptés avec acompte, délai signature vers acompte, CA bloqué sans acompte, nombre de lancements atelier hors règle.",
+    },
+    {
+      q: "Comment estimer rapidement le montant d’acompte et le reste dû ?",
+      a: "Le calculateur acompte devis prend le HT, la TVA, un % ou un montant fixe, et des jalons optionnels. Calcul local, pour cadrer une discussion d’équipe.",
+    },
+    {
+      q: "Ce guide remplace-t-il les CGV ?",
+      a: "Non. C’est du process commercial. Mentions légales, qualification des paiements et litiges : faites valider votre cadre par un professionnel.",
+    },
+  ],
   "validite-expiration-devis-b2b": [
     {
       q: "Combien de jours de validité pour un devis B2B classique ?",
