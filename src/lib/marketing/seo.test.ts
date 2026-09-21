@@ -1840,6 +1840,7 @@ const marketingRoots = [
   join(process.cwd(), "src/app/blog"),
 ];
 function walkTsx(dir: string): string[] {
+  if (!existsSync(dir)) return [];
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const full = join(dir, entry.name);
     if (entry.isDirectory()) return walkTsx(full);
