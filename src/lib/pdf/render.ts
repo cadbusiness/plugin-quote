@@ -28,7 +28,7 @@ export async function renderQuotePdf(input: {
       salesPhone: input.organization.sales_phone,
       configuratorName: input.configurator.name,
       contactName: input.quote.contact_name,
-      contactEmail: input.quote.contact_email,
+      contactEmail: input.quote.contact_email ?? "",
       contactCompany: input.quote.contact_company,
       answers: input.answers,
       items: input.items,

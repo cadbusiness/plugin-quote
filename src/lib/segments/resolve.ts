@@ -43,18 +43,24 @@ export async function loadSegmentContacts(
     if (!lastByEmail.has(key)) lastByEmail.set(key, send.sent_at);
   }
 
-  return (quotes ?? []).map((quote) => ({
-    id: quote.id,
-    contactName: quote.contact_name,
-    contactEmail: quote.contact_email,
-    contactCompany: quote.contact_company,
-    scoreLabel: quote.score_label,
-    statusSlug: (quote.status_id ? slugById.get(quote.status_id) : null) ?? quote.status,
-    configuratorId: quote.configurator_id,
-    answers: asAnswers(quote.answers),
-    lastCampaignAt: lastByEmail.get(quote.contact_email.toLowerCase()) ?? null,
-    consentMarketing: Boolean(quote.consent_marketing),
-  }));
+  return (quotes ?? []).flatMap((quote) => {
+    const email = quote.contact_email?.trim();
+    if (!email) return [];
+    return [
+      {
+        id: quote.id,
+        contactName: quote.contact_name,
+        contactEmail: email,
+        contactCompany: quote.contact_company,
+        scoreLabel: quote.score_label,
+        statusSlug: (quote.status_id ? slugById.get(quote.status_id) : null) ?? quote.status,
+        configuratorId: quote.configurator_id,
+        answers: asAnswers(quote.answers),
+        lastCampaignAt: lastByEmail.get(email.toLowerCase()) ?? null,
+        consentMarketing: Boolean(quote.consent_marketing),
+      },
+    ];
+  });
 }
 
 export async function resolveSegment(

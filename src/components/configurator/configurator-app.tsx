@@ -20,6 +20,7 @@ import {
 } from "@/lib/configurator/theme";
 import { shopConfiguratorApiPath, shopSuggestionsApiPath } from "@/lib/shops/catalog-scope";
 import { isCatalogQuoteMode, isRfqQuoteMode, matchCatalogPrefill, scopeQuoteCatalog } from "@/lib/quotes/quote-mode";
+import { syncVisitorDraft } from "@/lib/visitor-requests/sync-client";
 import type {
   Answers,
   ConfiguratorDefinition,
@@ -331,6 +332,15 @@ export function ConfiguratorApp({
         ) {
           throw new Error("Ce catalogue n’appartient pas à cette boutique");
         }
+        if (quoteLineCount(sessionNext.customization) > 0) {
+          syncVisitorDraft({
+            orgSlug,
+            configuratorSlug,
+            shopSlug,
+            configuratorId: shopConfiguratorId ?? def.configurator.id,
+            customization: sessionNext.customization,
+          });
+        }
         localStorage.setItem(
           SESSION_KEY(orgSlug, configuratorSlug, shopSlug),
           JSON.stringify({ id: sessionNext.id, token: sessionNext.token }),
@@ -419,6 +429,15 @@ export function ConfiguratorApp({
     if (!session) return session;
     const optimistic = { ...session, ...patch };
     setSession(optimistic);
+    if (patch.customization) {
+      syncVisitorDraft({
+        orgSlug,
+        configuratorSlug,
+        shopSlug,
+        configuratorId: shopConfiguratorId ?? definition?.configurator.id,
+        customization: patch.customization,
+      });
+    }
     const req = api<QuoteSession>(`/api/public/sessions/${session.id}`, {
       method: "PATCH",
       token: session.token,

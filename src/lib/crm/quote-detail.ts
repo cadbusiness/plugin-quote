@@ -245,7 +245,7 @@ export async function loadQuoteDetail(
       .from("quotes")
       .select("id, contact_name, contact_company, score, score_label, status_id, status, created_at")
       .eq("organization_id", orgId)
-      .eq("contact_email", quote.contact_email)
+      .eq("contact_email", quote.contact_email ?? "")
       .order("created_at", { ascending: false }),
     supabase
       .from("workflow_runs")

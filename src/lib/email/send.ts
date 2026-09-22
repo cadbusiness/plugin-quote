@@ -44,9 +44,10 @@ export async function sendQuoteEmails(input: {
     .select("*")
     .eq("organization_id", input.organization.id);
 
+  const contactEmail = input.quote.contact_email?.trim() ?? "";
   const vars = {
     contact_name: input.quote.contact_name,
-    contact_email: input.quote.contact_email,
+    contact_email: contactEmail,
     contact_company: input.quote.contact_company ?? "",
     score: String(input.quote.score ?? ""),
     score_label: input.quote.score_label ?? "",
@@ -68,10 +69,10 @@ export async function sendQuoteEmails(input: {
     ? [{ filename: "recapitulatif.pdf", content: input.pdf }]
     : [];
 
-  if (prospect) {
+  if (prospect && contactEmail) {
     await resend.emails.send({
       from,
-      to: input.quote.contact_email,
+      to: contactEmail,
       subject: fill(prospect.subject, vars),
       text: fill(prospect.body, vars),
       attachments,
@@ -88,7 +89,7 @@ export async function sendQuoteEmails(input: {
     });
   }
 
-  if (prospect) {
+  if (prospect && contactEmail) {
     await supabase.from("quote_activities").insert({
       organization_id: input.organization.id,
       quote_id: input.quote.id,
