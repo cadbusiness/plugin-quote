@@ -6,6 +6,7 @@ import { parseAttribution, type Attribution } from "@/lib/stats/attribution";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 import { parseStorefrontCart, type StorefrontCartLine } from "@/lib/integrations/storefront";
 import { applyStorefrontCart, suggestionFromProducts } from "@/lib/wizard/storefront-cart";
+import { applyFunnelPrefill } from "@/lib/configurator/prefill";
 import { CatalogBrowse } from "@/components/configurator/catalog-browse";
 import { RfqForm } from "@/components/configurator/rfq-form";
 import { ProductHtml } from "@/components/catalog/product-html";
@@ -291,6 +292,33 @@ export function ConfiguratorApp({
               body: JSON.stringify({ customization: seeded }),
             }).catch(() => null);
             sessionNext = patched ?? { ...sessionNext, customization: seeded };
+          }
+        }
+        if (!sessionNext.submittedQuoteId) {
+          const prefilled = applyFunnelPrefill({
+            search: window.location.search,
+            steps: def.steps,
+            products: catalog,
+            answers: sessionNext.answers,
+            customization: sessionNext.customization,
+          });
+          if (prefilled.changed) {
+            const currentStep = prefilled.focusStep ?? sessionNext.currentStep;
+            const patched = await api<QuoteSession>(`/api/public/sessions/${sessionNext.id}`, {
+              method: "PATCH",
+              token: sessionNext.token,
+              body: JSON.stringify({
+                answers: prefilled.answers,
+                customization: prefilled.customization,
+                currentStep,
+              }),
+            }).catch(() => null);
+            sessionNext = patched ?? {
+              ...sessionNext,
+              answers: prefilled.answers,
+              customization: prefilled.customization,
+              currentStep,
+            };
           }
         }
         if (
