@@ -103,9 +103,10 @@ async function testLoadSnapshot() {
   const { BUNDLED_UPDATES } = await import("./seed");
   const bundled = await resolveProductUpdates(missing as never, "user-1", "1.7.0");
   assert.equal(bundled.source, "missing");
-  assert.equal(bundled.unread, 15);
-  assert.equal(bundled.latest, "1.18.0");
-  assert.ok(BUNDLED_UPDATES.some((entry) => entry.version === "1.18.0"));
+  assert.equal(bundled.unread, 18);
+  assert.equal(bundled.latest, "1.21.0");
+  assert.ok(BUNDLED_UPDATES.some((entry) => entry.version === "1.20.0"));
+  assert.ok(BUNDLED_UPDATES.some((entry) => entry.version === "1.21.0"));
 }
 
 testLoadSnapshot()

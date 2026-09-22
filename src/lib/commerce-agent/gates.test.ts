@@ -23,6 +23,7 @@ const products: Product[] = [
     tags: ["lourd", "palette"],
     category: "Rayonnage",
     options: [],
+    specs: [],
     stockStatus: "in_stock",
     externalId: null,
   },
@@ -38,6 +39,7 @@ const products: Product[] = [
     tags: ["leger"],
     category: "Rayonnage",
     options: [],
+    specs: [],
     stockStatus: "in_stock",
     externalId: null,
   },
@@ -66,13 +68,13 @@ const bySpec = searchCatalog(
       options: [],
       stockStatus: "in_stock",
       externalId: null,
-      specs: { charge: { label: "Charge", value: "1000", unit: "kg/niveau" } },
+      specs: [{ key: "charge", label: "Charge", value: "1000", unit: "kg/niveau" }],
     },
   ],
   { query: "1000 kg/niveau" },
 );
 assert.equal(bySpec.products[0]?.id, "p-spec");
-assert.equal(bySpec.products[0]?.specs.charge?.value, "1000");
+assert.equal(bySpec.products[0]?.specs[0]?.value, "1000");
 
 let provenance = emptyProvenance();
 assert.equal(canPresentConfigurations(provenance).ok, false);

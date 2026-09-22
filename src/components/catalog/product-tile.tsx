@@ -1,6 +1,7 @@
 import { SpecChips } from "@/components/catalog/spec-table";
 import { formatPrice } from "@/lib/format";
 import type { ProductSpecs } from "@/lib/catalog/specs";
+import type { ProductSpec } from "@/lib/wizard/types";
 
 export function ProductMedia({
   src,
@@ -40,7 +41,7 @@ export function ProductTile({
   priceMax: number | null;
   currency?: string | null;
   badge?: string;
-  specs?: ProductSpecs | null;
+  specs?: ProductSpec[] | ProductSpecs | null;
 }) {
   return (
     <div className="flex min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white text-left">

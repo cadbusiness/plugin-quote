@@ -1,8 +1,9 @@
 import { createHmac } from "node:crypto";
 import { parseRelated } from "@/lib/catalog/affinity";
+import { toProspectOptions } from "@/lib/catalog/attributes";
 import { sanitizeProductHtml } from "@/lib/catalog/html";
 import { classifyProductImage, mediaRoleMap, wooMediaRoleValue } from "@/lib/catalog/media-roles";
-import { mapWooProductSpecs, wooSpecsWrite } from "@/lib/catalog/specs";
+import { mapWooCatalogAttributes, mapWooProductSpecs, wooSpecsWrite, type WooSpecUnits } from "@/lib/catalog/specs";
 import { htmlToText, parsePrice } from "@/lib/integrations/html";
 import { safeEqual } from "@/lib/integrations/secrets";
 import {
@@ -14,14 +15,13 @@ import {
   type PushableProduct,
   type ResolvedConnection,
 } from "@/lib/integrations/types";
-import type { ProductOption } from "@/lib/wizard/types";
+import { pickLeafCategory, type WooCategoryNode } from "@/lib/integrations/woo-specs";
 
 const PER_PAGE = 50;
 const TIMEOUT_MS = 25_000;
 
 type WooImage = { id?: number; src?: string; alt?: string; name?: string };
 type WooTerm = { id?: number; name?: string; slug?: string };
-type WooMeta = { id?: number; key?: string; value?: unknown };
 type WooAttribute = {
   id?: number;
   name?: string;
@@ -30,6 +30,7 @@ type WooAttribute = {
   variation?: boolean;
   options?: string[];
 };
+type WooMeta = { id?: number; key?: string; value?: unknown };
 
 type WooProduct = {
   id: number;
@@ -51,6 +52,8 @@ type WooProduct = {
   tags?: WooTerm[];
   images?: WooImage[];
   attributes?: WooAttribute[];
+  dimensions?: { length?: string; width?: string; height?: string };
+  weight?: string;
   meta_data?: WooMeta[];
   variations?: number[];
   upsell_ids?: number[];
@@ -193,10 +196,7 @@ function mapImages(product: WooProduct): ProductImage[] {
   return (product.images ?? []).flatMap((img) => {
     const src = img.src?.trim() ?? "";
     if (!src) return [];
-    const classified = classifyProductImage(
-      { id: img.id, src, alt: img.alt, name: img.name },
-      roles,
-    );
+    const classified = classifyProductImage({ id: img.id, src, alt: img.alt, name: img.name }, roles);
     return [
       {
         src,
@@ -206,25 +206,6 @@ function mapImages(product: WooProduct): ProductImage[] {
       },
     ];
   });
-}
-
-function mapOptions(product: WooProduct): ProductOption[] {
-  return (product.attributes ?? [])
-    .filter((attr) => attr.variation && attr.name && (attr.options ?? []).length)
-    .map((attr) => ({
-      key: slugify(attr.name!),
-      label: attr.name!,
-      values: (attr.options ?? []).map((value) => ({ value: slugify(value), label: value })),
-    }));
-}
-
-function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
 }
 
 function mapVariants(variations: WooVariation[]): ProductVariant[] {
@@ -251,10 +232,75 @@ function mapVariants(variations: WooVariation[]): ProductVariant[] {
   }));
 }
 
+type WooSetting = { id?: string; value?: string };
+type WooCatalogContext = { currency: string; units: WooSpecUnits; categories: WooCategoryNode[] };
+
+const contextCache = new Map<string, Promise<WooCatalogContext>>();
+
+async function catalogContext(connection: ResolvedConnection): Promise<WooCatalogContext> {
+  const cached = contextCache.get(connection.id);
+  if (cached) return cached;
+  const pending = loadCatalogContext(connection);
+  contextCache.set(connection.id, pending);
+  return pending;
+}
+
+async function fetchCategoryTaxonomy(connection: ResolvedConnection): Promise<WooCategoryNode[]> {
+  const categories: WooCategoryNode[] = [];
+  try {
+    for (let page = 1; page <= 20; page += 1) {
+      const { data, headers } = await wooFetch<{ id?: number; name?: string; parent?: number }[]>(
+        connection,
+        "/products/categories",
+        { per_page: 100, page },
+      );
+      for (const row of data) {
+        if (!row.id || !row.name) continue;
+        categories.push({ id: row.id, name: row.name, parent: row.parent ?? 0 });
+      }
+      const total = Number(headers.get("x-wp-totalpages") ?? "1") || 1;
+      if (page >= total || !data.length) break;
+    }
+  } catch {
+    // Sans taxonomie, la catégorie retombe sur le dernier libellé assigné.
+  }
+  return categories;
+}
+
+function settingValue(rows: WooSetting[], id: string) {
+  const value = rows.find((row) => row.id === id)?.value;
+  return typeof value === "string" && value ? value : undefined;
+}
+
+async function loadCatalogContext(connection: ResolvedConnection): Promise<WooCatalogContext> {
+  const categories = await fetchCategoryTaxonomy(connection);
+  try {
+    const { data } = await wooFetch<WooSetting[]>(connection, "/settings/general");
+    let dimension = settingValue(data, "woocommerce_dimension_unit") ?? "cm";
+    let weight = settingValue(data, "woocommerce_weight_unit") ?? "kg";
+    try {
+      const { data: productSettings } = await wooFetch<WooSetting[]>(connection, "/settings/products");
+      dimension = settingValue(productSettings, "woocommerce_dimension_unit") ?? dimension;
+      weight = settingValue(productSettings, "woocommerce_weight_unit") ?? weight;
+    } catch {
+      // Les unités restent celles de /settings/general, sinon cm / kg.
+    }
+    return {
+      currency: settingValue(data, "woocommerce_currency") ?? "EUR",
+      units: { dimension, weight },
+      categories,
+    };
+  } catch {
+    return { currency: "EUR", units: { dimension: "cm", weight: "kg" }, categories };
+  }
+}
+
 function normalizeProduct(
   product: WooProduct,
   variations: WooVariation[],
   currency: string,
+  units: WooSpecUnits = {},
+  categories: WooCategoryNode[] = [],
 ): NormalizedProduct {
   const variants = mapVariants(variations);
   const variantPrices = variants.map((v) => v.price).filter((p): p is number => p !== null);
@@ -270,6 +316,18 @@ function normalizeProduct(
     htmlToText(product.short_description) ||
     null;
 
+  const attributes = mapWooCatalogAttributes(
+    {
+      attributes: product.attributes,
+      dimensions: product.dimensions,
+      weight: product.weight,
+      meta_data: product.meta_data,
+      description: product.description,
+      short_description: product.short_description,
+    },
+    units,
+  );
+
   return {
     externalId: String(product.id),
     name: product.name,
@@ -279,7 +337,7 @@ function normalizeProduct(
     priceMax,
     currency,
     images: mapImages(product),
-    category: product.categories?.[0]?.name ?? null,
+    category: pickLeafCategory(product.categories ?? [], categories),
     tags: [
       ...(product.categories ?? []).map((c) => c.name).filter((n): n is string => Boolean(n)),
       ...(product.tags ?? []).map((t) => t.name).filter((n): n is string => Boolean(n)),
@@ -292,7 +350,8 @@ function normalizeProduct(
       product.stock_status === "onbackorder"
         ? product.stock_status
         : null,
-    options: mapOptions(product),
+    attributes,
+    options: toProspectOptions(attributes),
     variants,
     related: parseRelated({
       upsellIds: product.upsell_ids ?? [],
@@ -335,7 +394,8 @@ export const wooAdapter: CatalogAdapter = {
 
   async fetchPage(connection, cursor) {
     const page = Number(cursor ?? "1") || 1;
-    const currency = connection.currency || (await fetchCurrency(connection));
+    const ctx = await catalogContext(connection);
+    const currency = connection.currency || ctx.currency;
     const { data, headers } = await wooFetch<WooProduct[]>(connection, "/products", {
       per_page: PER_PAGE,
       page,
@@ -347,7 +407,7 @@ export const wooAdapter: CatalogAdapter = {
     const products: NormalizedProduct[] = [];
     for (const product of data) {
       const variations = await loadVariations(connection, product);
-      products.push(normalizeProduct(product, variations, currency));
+      products.push(normalizeProduct(product, variations, currency, ctx.units, ctx.categories));
     }
 
     const totalPages = Number(headers.get("x-wp-totalpages") ?? "1") || 1;
@@ -356,10 +416,11 @@ export const wooAdapter: CatalogAdapter = {
 
   async fetchOne(connection, externalId) {
     try {
-      const currency = connection.currency || (await fetchCurrency(connection));
+      const ctx = await catalogContext(connection);
+      const currency = connection.currency || ctx.currency;
       const { data } = await wooFetch<WooProduct>(connection, `/products/${externalId}`);
       const variations = await loadVariations(connection, data);
-      return normalizeProduct(data, variations, currency);
+      return normalizeProduct(data, variations, currency, ctx.units, ctx.categories);
     } catch (error) {
       if (error instanceof IntegrationError && error.status === 404) return null;
       throw error;
@@ -406,7 +467,11 @@ async function pushWooProduct(connection: ResolvedConnection, product: PushableP
   const meta_data = [...(specsWrite?.meta_data ?? [])];
   if (mediaRoles) {
     const found = current?.meta_data?.find((meta) => meta.key === "_qb_media_role");
-    meta_data.push(found?.id != null ? { id: found.id, key: "_qb_media_role", value: mediaRoles } : { key: "_qb_media_role", value: mediaRoles });
+    meta_data.push(
+      found?.id != null
+        ? { id: found.id, key: "_qb_media_role", value: mediaRoles }
+        : { key: "_qb_media_role", value: mediaRoles },
+    );
   }
   await wooFetch(connection, `/products/${product.externalId}`, {}, {
     method: "PUT",

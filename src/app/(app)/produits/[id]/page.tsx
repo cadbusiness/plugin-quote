@@ -11,7 +11,7 @@ import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { normalizeAttributes } from "@/lib/catalog/attributes";
 import { parseGallery } from "@/lib/catalog/media";
-import { parseProductSpecs } from "@/lib/catalog/specs";
+import { parseColumnSpecs, specsFieldValue } from "@/lib/catalog/specs";
 import { priceModeOf } from "@/lib/catalog/product-form";
 import type { Json } from "@/lib/db/database.types";
 import { formatDate } from "@/lib/format";
@@ -125,6 +125,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
       <form action={updateProduct} className="border-b border-slate-100">
         <input type="hidden" name="id" value={product.id} />
         <input type="hidden" name="price_mode" value={priceMode === "quote" ? "range" : priceMode} />
+        <input type="hidden" name="specs" value={JSON.stringify(specsFieldValue(product.specs))} />
 
         <div className="grid gap-6 px-4 py-5 lg:grid-cols-[16rem_minmax(0,32rem)] lg:px-6">
           <ProductGallery productId={product.id} images={gallery} />
@@ -198,7 +199,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           <p className="mb-3 mt-1 text-xs text-slate-500">
             Charge, hauteur, profondeur, matériau, délai. Enregistrer conserve ces champs. La description n’est pas relue comme source.
           </p>
-          <SpecFields specs={parseProductSpecs(product.specs)} />
+          <SpecFields specs={parseColumnSpecs(product.specs)} />
         </div>
 
         <div className="px-4 py-4 lg:px-6">

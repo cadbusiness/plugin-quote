@@ -1,6 +1,6 @@
 # Contrat attributs Woo → `products.specs`
 
-QuoteBuilder stocke la fiche technique dans `public.products.specs` (jsonb), distincte des options / déclinaisons (`products.options`).
+QuoteBuilder stocke la fiche technique canonique dans `public.products.specs` (jsonb). Ce canal est distinct des choix prospect et des specs dérivées dans `products.options` (variations, dimensions, libellés de description).
 
 Forme :
 
@@ -16,7 +16,7 @@ Forme :
 
 Clés canoniques, dans cet ordre : `charge`, `hauteur`, `profondeur`, `materiau`, `delai`.
 
-## Hostinger / WooCommerce
+## WooCommerce
 
 Créer des **attributs globaux** (Produits → Attributs). Le slug WordPress est préfixé `pa_`. Une seule valeur par attribut (pas une déclinaison).
 
@@ -30,7 +30,7 @@ Créer des **attributs globaux** (Produits → Attributs). Le slug WordPress est
 
 La valeur Woo reste du texte. À l’import, QuoteBuilder sépare le nombre et l’unité (`1000` + `kg/niveau`). `1000kg/niveau` (collé) est accepté. Le matériau n’est pas découpé.
 
-## Priorité à la lecture
+## Priorité à la lecture de la colonne
 
 1. **Attribut** dont le slug ou le nom correspond à la clé (`pa_charge`, `charge`, `Charge`, `attribute_pa_charge`).
 2. Meta produit **`_qb_specs`** : l’objet JSON ci-dessus (objet ou chaîne JSON).
@@ -38,9 +38,9 @@ La valeur Woo reste du texte. À l’import, QuoteBuilder sépare le nombre et l
 
 Alias acceptés en plus des slugs : `capacite` / `load` → charge, `height` → hauteur, `depth` → profondeur, `material` / `matiere` → materiau, `delay` / `lead_time` → delai.
 
-Un attribut de **variation** avec plusieurs options (couleur, taille) n’est pas une spec. La **description** et la description courte ne sont jamais lues comme source.
+Un attribut de **variation** avec plusieurs options (couleur, taille) n’est pas une spec de colonne. La **description** et la description courte ne sont jamais lues pour remplir `products.specs`. Elles peuvent encore alimenter `products.options` lors de la synchro catalogue.
 
-Si Woo n’envoie aucune de ces clés, la sync **ne vide pas** `products.specs`. Si le texte affiché est le même (`1000 kg/niveau`), l’entrée déjà stockée reste (label, valeur et unité intacts) — un attribut libre ne dégrade pas la fiche Quickly. Si le texte change, cette clé est remplacée ; les autres restent.
+Si Woo n’envoie aucune de ces clés, la sync **ne vide pas** `products.specs`. Si le texte affiché est le même (`1000 kg/niveau`), l’entrée déjà stockée reste (label, valeur et unité intacts). Si le texte change, cette clé est remplacée ; les autres restent. Une clé hors contrat déjà en base (et `valueAlt`) n’est pas effacée.
 
 Enregistrer la fiche produit renvoie le JSON `specs` tel qu’il a été lu. Un corps illisible ne touche pas la colonne. `parse` → JSON → `parse` est identique pour la forme ci-dessus, y compris après un aller-retour Woo (`_qb_specs` + attributs).
 
@@ -55,6 +55,4 @@ Les attributs ne sont renvoyés que si le produit Woo a été relu avant le PUT,
 
 ## Hors de ce contrat
 
-Les pastilles / `SpecTable` du parcours devis lisent ce jsonb. Elles ne parsent pas le HTML produit.
-
-Les photos, plans et vues d’usage sont un autre contrat : `docs/product-media.md` (`products.images[].role`).
+Le payload public du configurateur expose `products[].specs` comme une liste `{ key, label, value, unit? }`, issue d’abord de `products.options`, puis des clés encore présentes seulement dans la colonne. La colonne `products.specs` elle-même suit l’objet ci-dessus. Le parcours devis affiche cette liste (tableau et pastilles). Les photos, plans et vues d’usage sont un autre contrat : `docs/product-media.md` (`products.images[].role`).

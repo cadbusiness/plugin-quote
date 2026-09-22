@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { parseProductSpecs } from "@/lib/catalog/specs";
 import type { Database } from "@/lib/db/database.types";
+import { parseColumnSpecs } from "@/lib/catalog/specs";
 import { asJson, type ShopDocument, type ShopProduct } from "@/lib/shops/types";
 import { parseLayout } from "@/lib/shops/layout";
 import { navFromRow, pageFromRow, parseLegal, parseNavLocation, parsePageKind, parsePageSeo, parseSeo, parseStatus, parseTheme } from "@/lib/shops/parse";
@@ -113,7 +113,7 @@ export async function loadShopProducts(
       currency: row.currency,
       category: row.category,
       sku: row.sku,
-      specs: parseProductSpecs(row.specs),
+      specs: parseColumnSpecs(row.specs),
     }),
   );
 }

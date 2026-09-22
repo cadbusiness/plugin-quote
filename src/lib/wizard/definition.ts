@@ -1,9 +1,9 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { parseRelated } from "@/lib/catalog/affinity";
-import { parseGallery, productCover } from "@/lib/catalog/media";
-import { parseProductSpecs } from "@/lib/catalog/specs";
 import type { Database, Json } from "@/lib/db/database.types";
 import { normalizeAttributes, toProspectOptions } from "@/lib/catalog/attributes";
+import { parseGallery, productCover } from "@/lib/catalog/media";
+import { publicProductSpecs } from "@/lib/catalog/specs";
 import { parseFunnelTracking, parseOrgGtm } from "@/lib/funnels/tracking";
 import { parseFunnelKind } from "@/lib/funnels/kind";
 import { resolveQuoteMode } from "@/lib/quotes/quote-mode";
@@ -26,7 +26,8 @@ function asRecord(value: Json): Record<string, unknown> {
 }
 
 function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Product {
-  const options = toProspectOptions(normalizeAttributes(row.options));
+  const attributes = normalizeAttributes(row.options);
+  const options = toProspectOptions(attributes);
   const gallery = parseGallery(row.images, row.image_url);
   return {
     id: row.id,
@@ -40,12 +41,12 @@ function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Produ
     tags: row.tags ?? [],
     category: row.category ?? null,
     options,
+    specs: publicProductSpecs(attributes, row.specs),
     stockStatus: row.stock_status ?? null,
     externalId: row.external_id,
     sku: row.sku,
     configuratorId: row.configurator_id,
     related: parseRelated(row.related),
-    specs: parseProductSpecs(row.specs),
   };
 }
 

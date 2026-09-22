@@ -2,8 +2,9 @@ import { createHash } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { parseRelated } from "@/lib/catalog/affinity";
 import { mergeImageRoles, parseGallery, productCover } from "@/lib/catalog/media";
-import { mergeProductSpecs, parseProductSpecs } from "@/lib/catalog/specs";
+import { parseColumnSpecs, storedSpecsForSync } from "@/lib/catalog/specs";
 import { shouldPushLocal, shouldSkipOverwrite } from "@/lib/catalog/sync-policy";
+import { staleSyncCutoff } from "@/lib/integrations/pairing-plan";
 import type { Database, Json, TablesInsert } from "@/lib/db/database.types";
 import { getAdapter, loadConnection, resolveConfiguratorId, resolveConnection } from "@/lib/integrations/connections";
 import type { NormalizedProduct, ResolvedConnection } from "@/lib/integrations/types";
@@ -51,11 +52,12 @@ export function buildProductRow(
   product: NormalizedProduct,
   connection: ResolvedConnection,
   configuratorId: string,
-  existing?: { specs?: unknown; images?: unknown },
+  existingSpecs?: unknown,
+  existingImages?: unknown,
 ): ProductRow & { content_hash: string } {
   const markup = 1 + connection.settings.markupPercent / 100;
   const price = (value: number | null) => (value === null ? null : round2(value * markup));
-  const images = mergeImageRoles(product.images, existing?.images);
+  const images = mergeImageRoles(product.images, existingImages);
 
   const row: ProductRow = {
     organization_id: connection.organizationId,
@@ -74,14 +76,14 @@ export function buildProductRow(
     image_url: productCover(images),
     images: images as unknown as Json,
     variants: product.variants as unknown as Json,
-    options: product.options as unknown as Json,
+    options: (product.attributes ?? product.options) as unknown as Json,
     category: product.category,
     tags: product.tags,
     stock_status: product.stockStatus,
     related: parseRelated(product.related) as unknown as Json,
   };
-  const specs = mergeProductSpecs(product.specs, existing?.specs);
-  if (Object.keys(specs).length) row.specs = specs as unknown as Json;
+  const specs = storedSpecsForSync(product.specs, existingSpecs);
+  if (specs) row.specs = specs as unknown as Json;
 
   const content_hash = createHash("sha1").update(JSON.stringify(row)).digest("hex");
   return { ...row, content_hash };
@@ -135,6 +137,27 @@ export async function runCatalogSync({
     return { ...result, error: "Créez d'abord un funnel : le catalogue s'y rattache." };
   }
 
+  await supabase
+    .from("catalog_sync_runs")
+    .update({
+      status: "error",
+      error: "Synchronisation interrompue (délai dépassé).",
+      finished_at: new Date().toISOString(),
+    })
+    .eq("connection_id", connection.id)
+    .eq("status", "running")
+    .lt("started_at", staleSyncCutoff());
+
+  const { data: running } = await supabase
+    .from("catalog_sync_runs")
+    .select("id")
+    .eq("connection_id", connection.id)
+    .eq("status", "running")
+    .limit(1);
+  if (running?.length) {
+    return { ...result, error: "Une synchronisation est déjà en cours." };
+  }
+
   const { data: run } = await supabase
     .from("catalog_sync_runs")
     .insert({
@@ -170,7 +193,7 @@ export async function runCatalogSync({
           if (!keeps(product, connection)) continue;
           seen.add(product.externalId);
           const previous = known.get(product.externalId);
-          const built = buildProductRow(product, connection, configuratorId, previous);
+          const built = buildProductRow(product, connection, configuratorId, previous?.specs, previous?.images);
           if (previous?.archived_by_sync) toReactivate.push(product.externalId);
           if (shouldSkipOverwrite(previous, connection.settings)) {
             result.skipped += 1;
@@ -231,7 +254,7 @@ export async function runCatalogSync({
             description: row.description,
             priceMin: row.price_min,
             images: parseGallery(row.images),
-            specs: parseProductSpecs(row.specs),
+            specs: parseColumnSpecs(row.specs),
           });
           result.pushed += 1;
           await supabase
@@ -356,7 +379,7 @@ export async function syncExternalProduct({
     return { ok: true as const, action: "archived" as const };
   }
 
-  const built = buildProductRow(product, connection, configuratorId, current ?? undefined);
+  const built = buildProductRow(product, connection, configuratorId, current?.specs, current?.images);
   await writeChunks(supabase, [built]);
   await supabase
     .from("products")

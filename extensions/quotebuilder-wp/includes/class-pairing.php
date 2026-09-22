@@ -291,7 +291,10 @@ class QuoteBuilder_Pairing {
         if (!QuoteBuilder_Settings::connected()) {
             return new WP_Error('quotebuilder_pair', 'Plugin non connecté.');
         }
-        $response = QuoteBuilder_Settings::request('/api/integrations/plugin', ['method' => 'GET']);
+        $response = QuoteBuilder_Settings::request(
+            '/api/integrations/plugin?site_url=' . rawurlencode(home_url()),
+            ['method' => 'GET']
+        );
         if (is_wp_error($response)) {
             return $response;
         }
@@ -311,7 +314,10 @@ class QuoteBuilder_Pairing {
         $response = QuoteBuilder_Settings::request('/api/integrations/plugin', [
             'method' => 'PATCH',
             'timeout' => 120,
-            'body' => wp_json_encode(['sync' => true]),
+            'body' => wp_json_encode([
+                'sync' => true,
+                'site_url' => home_url(),
+            ]),
         ]);
         if (is_wp_error($response)) {
             return $response;

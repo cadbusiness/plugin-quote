@@ -2,8 +2,46 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0046` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.21.0",
+    version: "1.21.0",
+    title: "URL WooCommerce sans doubler le catalogue",
+    items: [
+      "Sur Boutiques → fiche connexion WooCommerce, un champ URL permet de pointer une autre adresse (changement de domaine ou clone) sans créer une deuxième connexion.",
+      "Les clés REST déjà enregistrées sont testées avant le changement ; si elles ne répondent pas, l’URL actuelle reste en place avec un message clair.",
+      "Quand une organisation n’a qu’une connexion Woo, reconnecter le plugin WordPress depuis une autre URL met à jour cette connexion au lieu d’importer un second catalogue.",
+      "Une synchronisation restée « en cours » plus de 6 minutes est marquée interrompue, pour pouvoir relancer sans blocage.",
+    ],
+    releasedAt: "2026-09-22",
+    createdAt: "2026-09-22T00:00:00.000Z",
+  },
+  {
+    id: "seed-1.20.0",
+    version: "1.20.0",
+    title: "Sync Woo : catégories plus précises",
+    items: [
+      "À la synchro WooCommerce, chaque produit prend sa catégorie la plus précise (la feuille), plus le parent générique.",
+      "Les libellés trop vagues (« Divers », « Non classé ») sont ignorés s’il existe une catégorie métier.",
+      "Les unités de dimensions et de poids suivent les réglages produits de la boutique.",
+    ],
+    releasedAt: "2026-09-22",
+    createdAt: "2026-09-22T00:00:00.000Z",
+  },
+  {
+    id: "seed-1.19.0",
+    version: "1.19.0",
+    title: "Specs produit structurées",
+    items: [
+      "Dans le funnel et l’embed, le catalogue public expose des specs structurées (charge, hauteur, profondeur, matériau, délai), séparées des choix du prospect (couleur, largeur, niveaux…).",
+      "La synchro WooCommerce écrit ces specs depuis les attributs, dimensions et meta (charge, hauteur, profondeur, matériau, délai), sans mélanger avec les variations/choix.",
+      "Les specs déjà enregistrées en base complètent le payload quand la clé n’est pas déjà dans les options.",
+      "Un choix « Hauteur » côté Woo peut aussi alimenter la hauteur max affichée en spec.",
+    ],
+    releasedAt: "2026-09-22",
+    createdAt: "2026-09-22T00:00:00.000Z",
+  },
   {
     id: "seed-1.18.0",
     version: "1.18.0",
