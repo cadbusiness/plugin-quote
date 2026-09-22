@@ -2,8 +2,21 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.22.0",
+    version: "1.22.0",
+    title: "Titres commerçant sur les funnels publics et embeds",
+    items: [
+      "Sur /c/… et /embed/…, l’onglet et le partage Open Graph affichent le devis du commerçant (ex. « Devis rayonnage — Quickly International »), plus le slogan marketing QuoteBuilder.",
+      "Un nom de funnel déjà au nom du commerçant est conservé tel quel.",
+      "Les embeds restent noindex, canoniques vers /c/…, et n’embarquent plus le JSON-LD produit QuoteBuilder.",
+      "Le shortcode / widget.js titre l’iframe « Devis … » (ou data-title) et fixe une hauteur explicite (défaut 720px).",
+    ],
+    releasedAt: "2026-09-22",
+    createdAt: "2026-09-22T00:00:00.000Z",
+  },
   {
     id: "seed-1.21.0",
     version: "1.21.0",
