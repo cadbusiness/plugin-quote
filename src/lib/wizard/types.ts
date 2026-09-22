@@ -16,6 +16,8 @@ export type Choice = {
   value: string;
   label: string;
   description?: string;
+  /** Photo de carte, URL http(s) fournie par le catalogue. */
+  image?: string;
 };
 
 export type QuestionOptions = {

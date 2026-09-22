@@ -11,9 +11,22 @@ import { RfqForm } from "@/components/configurator/rfq-form";
 import { ProductHtml } from "@/components/catalog/product-html";
 import { quoteLineCount } from "@/lib/funnels/kind";
 import {
+  FunnelBrandHeader,
+  FunnelBrief,
+  FunnelContinueIcon,
+  FunnelCredit,
+  VisualChoiceGrid,
+  selectionStyle,
+} from "@/components/configurator/funnel-chrome";
+import {
   resolveConfiguratorTheme,
   type ConfiguratorThemeOverride,
 } from "@/lib/configurator/theme";
+import {
+  briefLines,
+  funnelDocumentTitle,
+  resolveFunnelChrome,
+} from "@/lib/configurator/public-funnel";
 import { shopConfiguratorApiPath, shopSuggestionsApiPath } from "@/lib/shops/catalog-scope";
 import { isCatalogQuoteMode, isRfqQuoteMode, matchCatalogPrefill, scopeQuoteCatalog } from "@/lib/quotes/quote-mode";
 import type {
@@ -363,6 +376,11 @@ export function ConfiguratorApp({
   }, [definition?.organization.gtmContainerId, definition?.organization.gaMeasurementId]);
 
   useEffect(() => {
+    if (!definition || embedded || shopSlug) return;
+    document.title = funnelDocumentTitle(definition.organization.name, definition.configurator.name);
+  }, [definition, embedded, shopSlug]);
+
+  useEffect(() => {
     if (!session || done) return;
     const onHide = () => {
       if (document.visibilityState === "hidden" && !done) {
@@ -584,12 +602,16 @@ export function ConfiguratorApp({
   }
 
   if (loading) {
-    return <div className="flex min-h-[28rem] items-center justify-center text-slate-500">Chargement…</div>;
+    return (
+      <div className="flex min-h-[28rem] items-center justify-center text-slate-500">
+        {shopSlug ? "Chargement…" : "Chargement du devis…"}
+      </div>
+    );
   }
   if (!definition) {
     return (
       <div className="p-8 text-center text-slate-500">
-        {shopSlug ? "Catalogue de cette boutique introuvable." : "Configurateur introuvable."}
+        {shopSlug ? "Catalogue de cette boutique introuvable." : "Ce parcours de devis est introuvable."}
       </div>
     );
   }
@@ -598,7 +620,27 @@ export function ConfiguratorApp({
   }
 
   const theme = resolveConfiguratorTheme(definition.configurator.theme.accent, themeOverride);
-  const accent = theme.accent;
+  const chrome = resolveFunnelChrome(
+    definition.configurator.theme,
+    definition.organization.branding,
+    themeOverride,
+  );
+  const premium = chrome.branded && !embedded && !themeOverride;
+  const accent = premium ? chrome.accent : theme.accent;
+  const cta = premium ? chrome.cta : accent;
+  const premiumStyle = premium
+    ? {
+        ...chrome.style,
+        fontFamily: "var(--font-funnel-display), var(--font-geist-sans), system-ui, sans-serif",
+      }
+    : undefined;
+  const recap = premium ? briefLines(definition.steps, answers, session.currentStep) : [];
+  const primaryButtonClass = premium
+    ? "inline-flex items-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-sm disabled:opacity-50"
+    : theme.themed
+      ? "rounded-lg px-5 py-2.5 text-sm font-medium text-white disabled:opacity-50"
+      : "rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50";
+  const primaryButtonStyle = premium || theme.themed ? { background: cta } : undefined;
   const isRfq = isRfqQuoteMode(definition.configurator.quoteMode);
   const rfqProducts = scopeQuoteCatalog(
     definition.products.map((product) => ({
@@ -626,23 +668,64 @@ export function ConfiguratorApp({
   const catalogBrowse = isCatalog && step?.screenType === "suggestions";
 
   if (done) {
-    return (
-      <div className={`mx-auto max-w-xl px-6 py-16 text-center ${embedded ? "" : ""}`}>
-        <p className="text-sm font-medium uppercase tracking-wide text-amber-600">Demande envoyée</p>
-        <h1 className="mt-2 text-3xl font-semibold">Merci, {contact.name || "nous avons bien reçu votre brief"}.</h1>
-        <p className="mt-3 text-slate-600">
-          Un récapitulatif PDF vous est envoyé. L’équipe {definition.organization.name} vous recontacte sous 24h.
+    const thanks = (
+      <div className="mx-auto max-w-xl px-6 py-16 text-center">
+        <p
+          className={premium ? "text-sm font-semibold uppercase tracking-[0.16em]" : "text-sm font-medium uppercase tracking-wide text-amber-600"}
+          style={premium ? { color: chrome.accent } : undefined}
+        >
+          Demande envoyée
         </p>
-        {done.label ? (
-          <p className="mt-6 text-sm text-slate-500">Référence interne · qualification {done.label}</p>
-        ) : null}
+        <h1 className="mt-2 text-3xl font-semibold">Merci, {contact.name || "nous avons bien reçu votre brief"}.</h1>
+        <p className="mt-3" style={premium ? { color: chrome.muted } : undefined}>
+          <span className={premium ? "" : "text-slate-600"}>
+            Un récapitulatif vous est envoyé par email. L’équipe {definition.organization.name} vous recontacte rapidement.
+          </span>
+        </p>
+      </div>
+    );
+    if (!premium) return thanks;
+    return (
+      <div className="min-h-full" style={premiumStyle} data-funnel="branded">
+        <FunnelBrandHeader
+          orgName={definition.organization.name}
+          logoText={chrome.logoText}
+          configuratorName={definition.configurator.name}
+          phone={definition.organization.salesPhone}
+          email={definition.organization.salesEmail}
+          accent={chrome.accent}
+          text={chrome.text}
+          muted={chrome.muted}
+          steps={[]}
+          currentStep={0}
+        />
+        {thanks}
+        <FunnelCredit muted={chrome.muted} />
       </div>
     );
   }
 
   if (isRfq) {
     return (
-      <div className={theme.themed ? "min-h-full" : "min-h-full bg-slate-50"} style={theme.style}>
+      <div
+        className={premium || theme.themed ? "min-h-full" : "min-h-full bg-slate-50"}
+        style={premium ? premiumStyle : theme.style}
+        data-funnel={premium ? "branded" : undefined}
+      >
+        {premium ? (
+          <FunnelBrandHeader
+            orgName={definition.organization.name}
+            logoText={chrome.logoText}
+            configuratorName={definition.configurator.name}
+            phone={definition.organization.salesPhone}
+            email={definition.organization.salesEmail}
+            accent={chrome.accent}
+            text={chrome.text}
+            muted={chrome.muted}
+            steps={[]}
+            currentStep={0}
+          />
+        ) : null}
         <RfqForm
           orgName={definition.organization.name}
           shopName={embedded ? undefined : definition.configurator.name}
@@ -650,8 +733,8 @@ export function ConfiguratorApp({
           customization={session.customization}
           contact={contact}
           need={need}
-          accent={accent}
-          themed={theme.themed}
+          accent={premium ? cta : accent}
+          themed={premium || theme.themed}
           embedded={embedded}
           busy={busy}
           errors={errors}
@@ -660,12 +743,36 @@ export function ConfiguratorApp({
           onCatalogChange={(customization) => void persist({ customization })}
           onSubmit={() => void submitRfq()}
         />
+        {premium ? <FunnelCredit muted={chrome.muted} /> : null}
       </div>
     );
   }
 
   return (
-    <div className={theme.themed ? "min-h-full" : "min-h-full bg-slate-50"} style={theme.style}>
+    <div
+      className={premium || theme.themed ? "min-h-full" : "min-h-full bg-slate-50"}
+      style={premium ? premiumStyle : theme.style}
+      data-funnel={premium ? "branded" : undefined}
+    >
+      {premium ? (
+        <FunnelBrandHeader
+          orgName={definition.organization.name}
+          logoText={chrome.logoText}
+          configuratorName={definition.configurator.name}
+          phone={definition.organization.salesPhone}
+          email={definition.organization.salesEmail}
+          accent={chrome.accent}
+          text={chrome.text}
+          muted={chrome.muted}
+          steps={definition.steps.map((item) => ({ id: item.id, title: item.title }))}
+          currentStep={session.currentStep}
+          showStepper={showWizard}
+          canSwitch={canSwitch}
+          mode={session.mode}
+          onMode={switchMode}
+          onJump={(index) => void persist({ currentStep: index })}
+        />
+      ) : (
       <header
         className={
           theme.themed
@@ -706,7 +813,7 @@ export function ConfiguratorApp({
                 }`}
                 style={theme.themed && session.mode === "wizard" ? { background: accent } : undefined}
               >
-                Funnel
+                Parcours
               </button>
               <button
                 type="button"
@@ -720,7 +827,7 @@ export function ConfiguratorApp({
                 }`}
                 style={theme.themed && session.mode === "chat" ? { background: accent } : undefined}
               >
-                Chat IA
+                Assistant
               </button>
             </div>
           ) : null}
@@ -749,14 +856,18 @@ export function ConfiguratorApp({
           </div>
         ) : null}
       </header>
+      )}
 
-      <main className="mx-auto max-w-5xl px-5 py-8">
+      <main className={premium ? "mx-auto max-w-6xl px-4 py-8 lg:px-6" : "mx-auto max-w-5xl px-5 py-8"}>
+        <div className={premium && showWizard ? "lg:grid lg:grid-cols-[minmax(0,1fr)_280px] lg:items-start lg:gap-10" : ""}>
+        <div>
         {session.currentStep >= 1 && !session.submittedQuoteId ? (
           <ContactCapture
             draft={session.contactDraft}
             firstName={contact.name}
-            accent={accent}
-            themed={theme.themed}
+            accent={cta}
+            themed={premium || theme.themed}
+            premium={premium}
             onSave={async (draft) => {
               const firstEmail = Boolean(draft.email && !session.contactDraft.email);
               setContact((c) => ({ ...c, ...draft }));
@@ -778,8 +889,8 @@ export function ConfiguratorApp({
               busy={busy}
               error={errors.chat}
               orgName={definition.organization.name}
-              accent={accent}
-              themed={theme.themed}
+              accent={cta}
+              themed={premium || theme.themed}
             />
             {showChatSuggestions ? (
               <SuggestionsPanel
@@ -787,6 +898,8 @@ export function ConfiguratorApp({
                 selectedId={session.selectedSuggestionId}
                 onSelect={(id) => persist({ selectedSuggestionId: id })}
                 onNeedLoad={() => loadSuggestions()}
+                accent={premium || theme.themed ? accent : undefined}
+                emphasis={premium}
               />
             ) : null}
           </div>
@@ -794,23 +907,49 @@ export function ConfiguratorApp({
 
         {showWizard && step ? (
           <section>
-            <h1 className="text-3xl font-semibold tracking-tight">{step.title}</h1>
-            {step.subtitle ? <p className="mt-2 text-slate-600">{step.subtitle}</p> : null}
+            {premium ? (
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em]" style={{ color: chrome.accent }}>
+                Étape {session.currentStep + 1} sur {definition.steps.length}
+              </p>
+            ) : null}
+            <h1 className={premium ? "mt-1 text-3xl font-semibold tracking-tight sm:text-4xl" : "text-3xl font-semibold tracking-tight"}>
+              {step.title}
+            </h1>
+            {step.subtitle ? (
+              <p className={premium ? "mt-2 max-w-2xl text-base" : "mt-2 text-slate-600"} style={premium ? { color: chrome.muted } : undefined}>
+                {step.subtitle}
+              </p>
+            ) : null}
+            {premium && recap.length ? (
+              <p className="mt-3 text-sm lg:hidden" style={{ color: chrome.muted }}>
+                {recap[recap.length - 1]?.label} · {recap[recap.length - 1]?.value}
+              </p>
+            ) : null}
 
             {step.screenType === "questions" ? (
-              <div className="mt-8 space-y-6">
+              <div className={premium ? "mt-8 grid gap-6 sm:grid-cols-2" : "mt-8 space-y-6"}>
                 {step.questions.map((q) => (
-                  <QuestionField
+                  <div
                     key={q.id}
+                    className={
+                      premium && q.type !== "number" && q.type !== "select" ? "sm:col-span-2" : undefined
+                    }
+                  >
+                  <QuestionField
                     question={q}
                     value={answers[q.key]}
                     error={errors[q.key]}
+                    accent={accent}
+                    premium={premium}
+                    text={premium ? chrome.text : undefined}
+                    muted={premium ? chrome.muted : undefined}
                     onChange={(value) =>
                       setSession((s) =>
                         s ? { ...s, answers: { ...s.answers, [q.key]: value } } : s,
                       )
                     }
                   />
+                  </div>
                 ))}
               </div>
             ) : null}
@@ -833,6 +972,8 @@ export function ConfiguratorApp({
                 selectedId={session.selectedSuggestionId}
                 onSelect={(id) => persist({ selectedSuggestionId: id })}
                 onNeedLoad={() => loadSuggestions()}
+                accent={premium || theme.themed ? accent : undefined}
+                emphasis={premium}
               />
             ) : null}
 
@@ -843,6 +984,7 @@ export function ConfiguratorApp({
                 selectedId={session.selectedSuggestionId}
                 customization={session.customization}
                 canRemove={isCatalog}
+                premium={premium}
                 onChange={(customization) => persist({ customization })}
                 onUpload={uploadPlan}
                 fileError={errors.file}
@@ -851,10 +993,10 @@ export function ConfiguratorApp({
 
             {step.screenType === "contact" ? (
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                <Field label="Nom" value={contact.name} onChange={(v) => setContact({ ...contact, name: v })} />
-                <Field label="Email" type="email" value={contact.email} onChange={(v) => setContact({ ...contact, email: v })} />
-                <Field label="Téléphone" value={contact.phone} onChange={(v) => setContact({ ...contact, phone: v })} />
-                <Field label="Société" value={contact.company} onChange={(v) => setContact({ ...contact, company: v })} />
+                <Field premium={premium} label="Nom" value={contact.name} onChange={(v) => setContact({ ...contact, name: v })} />
+                <Field premium={premium} label="Email" type="email" value={contact.email} onChange={(v) => setContact({ ...contact, email: v })} />
+                <Field premium={premium} label="Téléphone" value={contact.phone} onChange={(v) => setContact({ ...contact, phone: v })} />
+                <Field premium={premium} label="Société" value={contact.company} onChange={(v) => setContact({ ...contact, company: v })} />
                 <label className="sm:col-span-2 flex items-start gap-2 text-sm text-slate-600">
                   <input
                     type="checkbox"
@@ -872,12 +1014,19 @@ export function ConfiguratorApp({
             ) : null}
 
             {catalogBrowse ? null : (
-            <div className="mt-10 flex items-center justify-between">
+            <div
+              className={
+                premium
+                  ? "sticky bottom-0 z-20 -mx-4 mt-8 flex items-center justify-between border-t bg-white/95 px-4 py-3 backdrop-blur lg:static lg:mx-0 lg:mt-10 lg:border-0 lg:bg-transparent lg:px-0 lg:py-0"
+                  : "mt-10 flex items-center justify-between"
+              }
+              style={premium ? { borderColor: "#E1E7EC" } : undefined}
+            >
               <button
                 type="button"
                 onClick={goBack}
                 disabled={session.currentStep === 0}
-                className="text-sm text-slate-500 disabled:opacity-40"
+                className="text-sm font-medium text-slate-500 disabled:opacity-40"
               >
                 Retour
               </button>
@@ -886,34 +1035,40 @@ export function ConfiguratorApp({
                   type="button"
                   onClick={submit}
                   disabled={busy}
-                  className={
-                    theme.themed
-                      ? "rounded-lg px-5 py-2.5 text-sm font-medium text-white disabled:opacity-50"
-                      : "rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
-                  }
-                  style={theme.themed ? { background: accent } : undefined}
+                  className={primaryButtonClass}
+                  style={primaryButtonStyle}
                 >
-                  {busy ? "Envoi…" : isCatalog ? "Envoyer ma demande de devis" : "Envoyer ma demande"}
+                  {busy ? "Envoi…" : isCatalog ? "Envoyer ma demande de devis" : premium ? "Recevoir mon devis" : "Envoyer ma demande"}
+                  {premium && !busy ? <FunnelContinueIcon /> : null}
                 </button>
               ) : (
                 <button
                   type="button"
                   onClick={goNext}
-                  className={
-                    theme.themed
-                      ? "rounded-lg px-5 py-2.5 text-sm font-medium text-white"
-                      : "rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-medium text-white hover:bg-slate-800"
-                  }
-                  style={theme.themed ? { background: accent } : undefined}
+                  className={primaryButtonClass}
+                  style={primaryButtonStyle}
                 >
                   {isCatalog && step.screenType === "customize" ? "Demander un devis" : "Continuer"}
+                  {premium ? <FunnelContinueIcon /> : null}
                 </button>
               )}
             </div>
             )}
           </section>
         ) : null}
+        </div>
+        {premium && showWizard ? (
+          <FunnelBrief
+            lines={recap}
+            phone={definition.organization.salesPhone}
+            email={definition.organization.salesEmail}
+            accent={chrome.accent}
+            muted={chrome.muted}
+          />
+        ) : null}
+        </div>
       </main>
+      {premium ? <FunnelCredit muted={chrome.muted} /> : null}
     </div>
   );
 }
@@ -923,20 +1078,26 @@ function Field({
   value,
   onChange,
   type = "text",
+  premium,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   type?: string;
+  premium?: boolean;
 }) {
   return (
     <label className="block text-sm">
-      <span className="mb-1.5 block text-slate-600">{label}</span>
+      <span className="mb-1.5 block font-medium text-slate-600">{label}</span>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 outline-none ring-amber-500/30 focus:ring-4"
+        className={
+          premium
+            ? "w-full rounded-xl border border-[#E1E7EC] bg-white px-3 py-3 text-base outline-none"
+            : "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 outline-none ring-amber-500/30 focus:ring-4"
+        }
       />
     </label>
   );
@@ -947,39 +1108,38 @@ function QuestionField({
   value,
   error,
   onChange,
+  accent,
+  premium,
+  text,
+  muted,
 }: {
   question: WizardQuestion;
   value: unknown;
   error?: string;
   onChange: (value: Answers[string]) => void;
+  accent: string;
+  premium?: boolean;
+  text?: string;
+  muted?: string;
 }) {
   const choices = question.options.choices ?? [];
+  const controlClass = premium
+    ? "w-full rounded-xl border border-[#E1E7EC] bg-white px-3 py-3 text-base outline-none"
+    : "w-full rounded-lg border border-slate-200 bg-white px-3 py-2";
 
   if (question.type === "visual_choice") {
     return (
-      <div>
-        <p className="text-sm font-medium">{question.label}</p>
-        {question.helpText ? <p className="mt-1 text-sm text-slate-500">{question.helpText}</p> : null}
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          {choices.map((choice) => {
-            const selected = value === choice.value;
-            return (
-              <button
-                key={choice.value}
-                type="button"
-                onClick={() => onChange(choice.value)}
-                className={`rounded-xl border p-4 text-left transition ${
-                  selected ? "border-amber-500 bg-amber-50 ring-4 ring-amber-500/15" : "border-slate-200 bg-white hover:border-slate-300"
-                }`}
-              >
-                <p className="font-medium">{choice.label}</p>
-                {choice.description ? <p className="mt-1 text-sm text-slate-500">{choice.description}</p> : null}
-              </button>
-            );
-          })}
-        </div>
-        {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
-      </div>
+      <VisualChoiceGrid
+        label={question.label}
+        helpText={question.helpText}
+        choices={choices}
+        value={value}
+        error={error}
+        accent={accent}
+        text={text}
+        muted={muted}
+        onChange={(next) => onChange(next)}
+      />
     );
   }
 
@@ -995,12 +1155,16 @@ function QuestionField({
               <button
                 key={choice.value}
                 type="button"
+                aria-pressed={on}
                 onClick={() =>
                   onChange(on ? selected.filter((v) => v !== choice.value) : [...selected, choice.value])
                 }
-                className={`rounded-full border px-3 py-1.5 text-sm ${
-                  on ? "border-amber-500 bg-amber-50" : "border-slate-200 bg-white"
-                }`}
+                className="rounded-full border px-3 py-1.5 text-sm"
+                style={
+                  on
+                    ? { borderColor: accent, background: accent, color: "#fff" }
+                    : { borderColor: "#E1E7EC", background: "#fff", color: text }
+                }
               >
                 {choice.label}
               </button>
@@ -1019,7 +1183,7 @@ function QuestionField({
         <select
           value={typeof value === "string" ? value : ""}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2"
+          className={controlClass}
         >
           <option value="">Choisir…</option>
           {choices.map((choice) => (
@@ -1046,9 +1210,13 @@ function QuestionField({
             placeholder={question.options.placeholder}
             value={typeof value === "number" || typeof value === "string" ? String(value) : ""}
             onChange={(e) => onChange(e.target.value === "" ? null : Number(e.target.value))}
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2"
+            className={controlClass}
           />
-          {question.options.unit ? <span className="text-slate-500">{question.options.unit}</span> : null}
+          {question.options.unit ? (
+            <span className={premium ? "shrink-0 text-sm font-medium" : "text-slate-500"} style={premium ? { color: muted } : undefined}>
+              {question.options.unit}
+            </span>
+          ) : null}
         </div>
         {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
       </label>
@@ -1062,7 +1230,7 @@ function QuestionField({
         value={typeof value === "string" ? value : ""}
         placeholder={question.options.placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2"
+        className={controlClass}
       />
       {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
     </label>
@@ -1074,11 +1242,15 @@ function SuggestionsPanel({
   selectedId,
   onSelect,
   onNeedLoad,
+  accent,
+  emphasis,
 }: {
   suggestions: Suggestion[];
   selectedId: string | null;
   onSelect: (id: string) => void;
   onNeedLoad: () => void;
+  accent?: string;
+  emphasis?: boolean;
 }) {
   useEffect(() => {
     if (!suggestions.length) onNeedLoad();
@@ -1086,11 +1258,15 @@ function SuggestionsPanel({
   }, []);
 
   if (!suggestions.length) {
-    return <p className="mt-8 text-slate-500">Calcul des configurations…</p>;
+    return (
+      <p className="mt-8 text-slate-500">
+        {emphasis ? "Préparation des configurations adaptées à votre brief…" : "Calcul des configurations…"}
+      </p>
+    );
   }
 
   return (
-    <div className="mt-8 grid gap-4 md:grid-cols-3">
+    <div className={emphasis ? "mt-8 grid gap-4 sm:grid-cols-2" : "mt-8 grid gap-4 md:grid-cols-3"}>
       {suggestions.map((s) => {
         const selected = selectedId === s.id;
         return (
@@ -1098,11 +1274,18 @@ function SuggestionsPanel({
             key={s.id}
             type="button"
             onClick={() => onSelect(s.id)}
-            className={`rounded-xl border p-5 text-left ${
-              selected ? "border-amber-500 bg-amber-50 ring-4 ring-amber-500/15" : "border-slate-200 bg-white"
-            }`}
+            className={`overflow-hidden rounded-xl border text-left ${
+              selected && !accent ? "border-amber-500 bg-amber-50 ring-4 ring-amber-500/15" : "border-slate-200 bg-white"
+            } ${emphasis ? "" : "p-5"}`}
+            style={accent ? selectionStyle(accent, selected) : undefined}
           >
-            <p className="text-xs uppercase tracking-wide text-amber-700">Recommandé</p>
+            {emphasis ? (
+              <SuggestionCover src={s.imageUrl ?? s.products.find((product) => product.imageUrl)?.imageUrl ?? null} />
+            ) : null}
+            <span className={emphasis ? "block p-5" : "block"}>
+            <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: accent ?? "#b45309" }}>
+              Adapté à votre brief
+            </p>
             <h3 className="mt-1 text-lg font-semibold">{s.headline ?? s.name}</h3>
             <p className="mt-2 text-sm text-slate-600">{s.description}</p>
             <p className="mt-4 text-sm font-medium">{formatPrice(s.priceMin, s.priceMax)}</p>
@@ -1122,10 +1305,22 @@ function SuggestionsPanel({
                 </li>
               ))}
             </ul>
+            </span>
           </button>
         );
       })}
     </div>
+  );
+}
+
+function SuggestionCover({ src }: { src: string | null }) {
+  if (!src) return <span className="block aspect-[16/9] bg-[#E7EDF1]" />;
+  return (
+    <span className="block aspect-[16/9] overflow-hidden bg-[#E7EDF1]">
+      {/* Photos catalogue déjà hébergées par le marchand. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
+    </span>
   );
 }
 
@@ -1135,6 +1330,7 @@ function CustomizePanel({
   selectedId,
   customization,
   canRemove,
+  premium,
   onChange,
   onUpload,
   fileError,
@@ -1144,6 +1340,7 @@ function CustomizePanel({
   selectedId: string | null;
   customization: Customization;
   canRemove?: boolean;
+  premium?: boolean;
   onChange: (c: Customization) => void;
   onUpload: (file: File) => void;
   fileError?: string;
@@ -1272,7 +1469,7 @@ function CustomizePanel({
         <p className="text-sm text-slate-500">Aucun produit dans cette demande pour l’instant.</p>
       ) : null}
       <label className="block text-sm">
-        <span className="mb-1.5 block font-medium">Plan (PDF ou image)</span>
+        <span className="mb-1.5 block font-medium">{premium ? "Plan de masse (PDF ou image)" : "Plan (PDF ou image)"}</span>
         <input
           type="file"
           accept="application/pdf,image/jpeg,image/png,image/webp"
@@ -1317,8 +1514,7 @@ function ChatPanel({
               Bonjour, décrivez-moi votre projet{orgName ? ` pour ${orgName}` : ""}.
             </p>
             <p className="text-sm text-slate-500">
-              Une phrase suffit — surface, charges, hauteur, budget, délai. L’agent consulte le
-              catalogue et prépare votre brief devis.
+              Une phrase suffit — surface, charges, hauteur, délai. Nous préparons le brief à partir du catalogue.
             </p>
           </div>
         ) : (
@@ -1371,12 +1567,14 @@ function ContactCapture({
   onSave,
   accent,
   themed,
+  premium,
 }: {
   draft: ContactDraft;
   firstName: string;
   onSave: (draft: ContactDraft) => Promise<void>;
   accent: string;
   themed: boolean;
+  premium?: boolean;
 }) {
   const [name, setName] = useState(draft.name ?? firstName ?? "");
   const [email, setEmail] = useState(draft.email ?? "");
@@ -1384,7 +1582,12 @@ function ContactCapture({
 
   return (
     <form
-      className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3"
+      className={
+        premium
+          ? "mb-6 rounded-2xl border bg-white px-4 py-4"
+          : "mb-6 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3"
+      }
+      style={premium ? { borderColor: "#E1E7EC" } : undefined}
       onSubmit={async (e) => {
         e.preventDefault();
         if (!email.trim()) return;
