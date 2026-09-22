@@ -8,9 +8,10 @@ import { parseStorefrontCart, type StorefrontCartLine } from "@/lib/integrations
 import { applyStorefrontCart, suggestionFromProducts } from "@/lib/wizard/storefront-cart";
 import { applyFunnelPrefill } from "@/lib/configurator/prefill";
 import { CatalogBrowse } from "@/components/configurator/catalog-browse";
-import { SpecTable } from "@/components/configurator/spec-table";
 import { RfqForm } from "@/components/configurator/rfq-form";
 import { ProductHtml } from "@/components/catalog/product-html";
+import { QuoteProductMedia } from "@/components/catalog/quote-media";
+import { QuoteSpecSheets, SpecChips, SpecTable } from "@/components/catalog/spec-table";
 import { quoteLineCount } from "@/lib/funnels/kind";
 import {
   resolveConfiguratorTheme,
@@ -826,7 +827,7 @@ export function ConfiguratorApp({
             <h1 className="text-3xl font-semibold tracking-tight">{step.title}</h1>
             {step.subtitle ? <p className="mt-2 text-slate-600">{step.subtitle}</p> : null}
             {step.screenType !== "customize" ? (
-              <SpecTable
+              <QuoteSpecSheets
                 products={definition.products.filter(
                   (product) => (session.customization.quantities[product.id] ?? 0) > 0,
                 )}
@@ -1198,18 +1199,13 @@ function CustomizePanel({
         <div key={product.id} className="rounded-xl border border-slate-200 bg-white p-5">
           <div className="flex items-start justify-between gap-4">
             <div className="flex min-w-0 items-start gap-3">
-              {product.imageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={product.imageUrl}
-                  alt={product.name}
-                  loading="lazy"
-                  className="h-20 w-20 shrink-0 rounded-lg object-cover ring-1 ring-slate-200"
-                />
-              ) : null}
+              <QuoteProductMedia name={product.name} images={product.images} imageUrl={product.imageUrl} compact />
               <div className="min-w-0">
                 <p className="font-medium">{product.name}</p>
                 <p className="text-sm text-slate-500">{formatPrice(product.priceMin, product.priceMax)}</p>
+                <div className="mt-2">
+                  <SpecChips specs={product.specs} />
+                </div>
                 {product.description ? (
                   <ProductHtml html={product.description} className="mt-1 text-slate-500" clamp />
                 ) : null}
@@ -1251,21 +1247,7 @@ function CustomizePanel({
             ) : null}
             </div>
           </div>
-          {product.images.length > 1 ? (
-            <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
-              {product.images.slice(0, 6).map((image) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={image.src}
-                  src={image.src}
-                  alt={image.alt ?? ""}
-                  loading="lazy"
-                  className="h-16 w-16 shrink-0 rounded-md object-cover ring-1 ring-slate-200"
-                />
-              ))}
-            </div>
-          ) : null}
-          <SpecTable products={[product]} showName={false} />
+          <SpecTable specs={product.specs} />
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             {product.options.map((opt) => (
               <label key={opt.key} className="text-sm">

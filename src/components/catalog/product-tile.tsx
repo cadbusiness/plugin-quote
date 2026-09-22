@@ -1,4 +1,7 @@
+import { SpecChips } from "@/components/catalog/spec-table";
 import { formatPrice } from "@/lib/format";
+import type { ProductSpecs } from "@/lib/catalog/specs";
+import type { ProductSpec } from "@/lib/wizard/types";
 
 export function ProductMedia({
   src,
@@ -29,6 +32,7 @@ export function ProductTile({
   priceMax,
   currency,
   badge,
+  specs,
 }: {
   name: string;
   description?: string | null;
@@ -37,6 +41,7 @@ export function ProductTile({
   priceMax: number | null;
   currency?: string | null;
   badge?: string;
+  specs?: ProductSpec[] | ProductSpecs | null;
 }) {
   return (
     <div className="flex min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white text-left">
@@ -48,6 +53,7 @@ export function ProductTile({
           </span>
         ) : null}
         <p className="line-clamp-2 text-sm font-medium leading-snug text-slate-900">{name}</p>
+        <SpecChips specs={specs} limit={2} />
         {description ? <p className="line-clamp-2 text-[11px] leading-snug text-slate-500">{description}</p> : null}
         <p className="text-xs font-medium text-slate-600">{formatPrice(priceMin, priceMax, currency)}</p>
       </div>

@@ -2,6 +2,7 @@ import { createHmac } from "node:crypto";
 import { parseRelated } from "@/lib/catalog/affinity";
 import { toProspectOptions } from "@/lib/catalog/attributes";
 import { sanitizeProductHtml } from "@/lib/catalog/html";
+import { classifyProductImage, mediaRoleMap, wooMediaRoleValue } from "@/lib/catalog/media-roles";
 import { mapWooCatalogAttributes, mapWooProductSpecs, wooSpecsWrite, type WooSpecUnits } from "@/lib/catalog/specs";
 import { htmlToText, parsePrice } from "@/lib/integrations/html";
 import { safeEqual } from "@/lib/integrations/secrets";
@@ -191,9 +192,20 @@ async function fetchCurrency(connection: ResolvedConnection) {
 }
 
 function mapImages(product: WooProduct): ProductImage[] {
-  return (product.images ?? [])
-    .map((img) => ({ src: img.src ?? "", alt: img.alt || img.name || null }))
-    .filter((img) => Boolean(img.src));
+  const roles = mediaRoleMap(product.meta_data);
+  return (product.images ?? []).flatMap((img) => {
+    const src = img.src?.trim() ?? "";
+    if (!src) return [];
+    const classified = classifyProductImage({ id: img.id, src, alt: img.alt, name: img.name }, roles);
+    return [
+      {
+        src,
+        alt: img.alt || img.name || null,
+        role: classified.role,
+        roleExplicit: classified.explicit,
+      },
+    ];
+  });
 }
 
 function mapVariants(variations: WooVariation[]): ProductVariant[] {
@@ -451,6 +463,16 @@ async function pushWooProduct(connection: ResolvedConnection, product: PushableP
     current = null;
   }
   const specsWrite = product.specs ? wooSpecsWrite(product.specs, current ?? undefined) : null;
+  const mediaRoles = wooMediaRoleValue(product.images);
+  const meta_data = [...(specsWrite?.meta_data ?? [])];
+  if (mediaRoles) {
+    const found = current?.meta_data?.find((meta) => meta.key === "_qb_media_role");
+    meta_data.push(
+      found?.id != null
+        ? { id: found.id, key: "_qb_media_role", value: mediaRoles }
+        : { key: "_qb_media_role", value: mediaRoles },
+    );
+  }
   await wooFetch(connection, `/products/${product.externalId}`, {}, {
     method: "PUT",
     body: {
@@ -459,7 +481,7 @@ async function pushWooProduct(connection: ResolvedConnection, product: PushableP
       description: product.description ?? "",
       ...(price != null ? { regular_price: price } : {}),
       images: product.images.map((image) => ({ src: image.src, alt: image.alt ?? "" })),
-      ...(specsWrite?.meta_data.length ? { meta_data: specsWrite.meta_data } : {}),
+      ...(meta_data.length ? { meta_data } : {}),
       ...(specsWrite?.attributes ? { attributes: specsWrite.attributes } : {}),
     },
   });

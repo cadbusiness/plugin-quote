@@ -6,6 +6,7 @@ import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { parseProductCsv, type CsvProductRow } from "@/lib/catalog/csv";
 import { sanitizeProductHtml } from "@/lib/catalog/html";
 import { parseGallery, withCover, withoutImage } from "@/lib/catalog/media";
+import { parseMediaRole } from "@/lib/catalog/media-roles";
 import { parseConditions } from "@/lib/catalog/rules";
 import { parseProductAttributes } from "@/lib/catalog/attributes";
 import { readPriceRange } from "@/lib/catalog/product-form";
@@ -269,6 +270,24 @@ async function saveGallery(
   revalidatePath("/produits");
   revalidatePath(`/produits/${productId}`);
   return { images };
+}
+
+export async function setProductImageRole(
+  productId: string,
+  src: string,
+  role: string,
+): Promise<{ images?: ProductImage[]; error?: string }> {
+  const ctx = await requireAdmin();
+  const nextRole = parseMediaRole(role);
+  if (!nextRole) return { error: "Rôle d’image invalide." };
+  const { supabase, images } = await loadGallery(productId, ctx.organization.id);
+  if (!images.some((image) => image.src === src)) return { error: "Image introuvable." };
+  return saveGallery(
+    supabase,
+    productId,
+    ctx.organization.id,
+    images.map((image) => (image.src === src ? { ...image, role: nextRole } : image)),
+  );
 }
 
 export async function addProductImages(formData: FormData): Promise<{ images?: ProductImage[]; error?: string }> {

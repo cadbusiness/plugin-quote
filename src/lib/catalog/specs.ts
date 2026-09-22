@@ -671,12 +671,7 @@ export function specsFieldValue(raw: unknown): Record<string, unknown> {
   return columnSpecsPayload(raw);
 }
 
-/**
- * Champ formulaire `specs` (JSON). Absent ou illisible → null : la colonne n’est pas touchée.
- * `{}` est une écriture explicite.
- */
-export function readSpecsField(formData: FormData): Record<string, unknown> | null {
-  const raw = formData.get("specs");
+function readJsonSpecs(raw: FormDataEntryValue | null): Record<string, unknown> | null {
   if (typeof raw !== "string" || !raw.trim()) return null;
   try {
     const parsed = JSON.parse(raw) as unknown;
@@ -685,4 +680,33 @@ export function readSpecsField(formData: FormData): Record<string, unknown> | nu
   } catch {
     return null;
   }
+}
+
+/**
+ * Champ formulaire `specs` (JSON) et, s’ils sont présents, les champs `spec_value_*`.
+ * Absent ou illisible → null : la colonne n’est pas touchée.
+ * Les champs visibles recouvrent les cinq clés canoniques et conservent le reste du JSON
+ * (clés hors contrat, `valueAlt`).
+ */
+export function readSpecsField(formData: FormData): Record<string, unknown> | null {
+  const hasFields = PRODUCT_SPEC_KEYS.some((key) => formData.has(`spec_value_${key}`));
+  const base = readJsonSpecs(formData.get("specs"));
+  if (!hasFields) return base;
+  const next: Record<string, unknown> = { ...(base ?? {}) };
+  for (const key of PRODUCT_SPEC_KEYS) {
+    const value = String(formData.get(`spec_value_${key}`) ?? "").trim();
+    if (!value) {
+      delete next[key];
+      continue;
+    }
+    const label = String(formData.get(`spec_label_${key}`) ?? "").trim() || PRODUCT_SPEC_LABELS[key];
+    const unit = String(formData.get(`spec_unit_${key}`) ?? "").trim();
+    const prev = next[key];
+    const valueAlt =
+      prev && typeof prev === "object" && !Array.isArray(prev) && typeof (prev as { valueAlt?: unknown }).valueAlt === "string"
+        ? (prev as { valueAlt: string }).valueAlt
+        : undefined;
+    next[key] = { label, value, ...(unit ? { unit } : {}), ...(valueAlt ? { valueAlt } : {}) };
+  }
+  return next;
 }

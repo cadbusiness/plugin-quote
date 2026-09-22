@@ -33,7 +33,7 @@ Statuts : **Livré** · **Partiel** · **Ensuite** · **Vision**
 - **Activation / désactivation produits**, Livré. Toggle sur la fiche produit, statut en liste.
 - **Si/Alors réponses → suggestions produits**, Livré.
 - **Page suggestions visuelles côté prospect**, Livré.
-- **Sync WooCommerce (import + sync)**, Livré. `/integrations` : produits, descriptions, photos, prix, déclinaisons ; sync manuelle, planifiée et webhook. Fiche technique `products.specs` (charge, hauteur, profondeur, matériau, délai) depuis les attributs `pa_*` — `docs/woo-product-specs.md`.
+- **Sync WooCommerce (import + sync)**, Livré. `/integrations` : produits, descriptions, photos, prix, déclinaisons ; sync manuelle, planifiée et webhook. Fiche technique `products.specs` (charge, hauteur, profondeur, matériau, délai) depuis les attributs `pa_*` — `docs/woo-product-specs.md`. Rôles photo / plan / usage — `docs/product-media.md`.
 - **Sync Shopify (import + sync)**, Livré. Admin GraphQL, app personnalisée `read_products`, mêmes réglages que Woo.
 - **Boutique native QuoteBuilder (mini-site devis)**, Partiel. `/integrations` : création par template ou chat IA, pages (accueil, catalogue, légales), menus, builder drag-and-drop, URL `/b/[org]/[slug]`, SEO / GEO (JSON-LD, sitemap, robots, llms.txt). Pas de paiement. Woo / Shopify restent des catalogues branchés.
 

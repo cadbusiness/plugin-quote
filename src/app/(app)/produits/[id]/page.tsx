@@ -4,13 +4,14 @@ import { deleteProduct, toggleProduct, updateProduct } from "@/app/(app)/produit
 import { CurrencyFields } from "@/components/catalog/currency-fields";
 import { ProductEditorFields } from "@/components/catalog/product-editor-fields";
 import { ProductGallery } from "@/components/catalog/product-gallery";
+import { SpecFields } from "@/components/catalog/spec-fields";
 import { RichTextEditor } from "@/components/catalog/rich-text-editor";
 import { Chip, type ChipTone } from "@/components/ui/chip";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { normalizeAttributes } from "@/lib/catalog/attributes";
-import { specsFieldValue } from "@/lib/catalog/specs";
 import { parseGallery } from "@/lib/catalog/media";
+import { parseColumnSpecs, specsFieldValue } from "@/lib/catalog/specs";
 import { priceModeOf } from "@/lib/catalog/product-form";
 import type { Json } from "@/lib/db/database.types";
 import { formatDate } from "@/lib/format";
@@ -191,6 +192,14 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           <div className="mt-1">
             <RichTextEditor name="description" defaultValue={product.description} productId={product.id} />
           </div>
+        </div>
+
+        <div className="border-t border-slate-100 px-4 py-4 lg:px-6">
+          <p className="text-sm font-medium text-slate-900">Fiche technique</p>
+          <p className="mb-3 mt-1 text-xs text-slate-500">
+            Charge, hauteur, profondeur, matériau, délai. Enregistrer conserve ces champs. La description n’est pas relue comme source.
+          </p>
+          <SpecFields specs={parseColumnSpecs(product.specs)} />
         </div>
 
         <div className="px-4 py-4 lg:px-6">

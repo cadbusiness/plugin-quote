@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { ProductHtml } from "@/components/catalog/product-html";
-import { SpecTable } from "@/components/configurator/spec-table";
+import { quoteCoverSrc, QuoteProductMedia } from "@/components/catalog/quote-media";
+import { SpecTable } from "@/components/catalog/spec-table";
 import { ProductMedia, ProductTile } from "@/components/catalog/product-tile";
 import { formatPrice } from "@/lib/format";
 import { groupProductsByCategory } from "@/lib/catalog/group";
@@ -87,7 +88,7 @@ export function CatalogBrowse({
         groups.length ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {groups.map((group) => {
-              const cover = group.products.find((item) => item.imageUrl)?.imageUrl;
+              const cover = group.products.map((item) => quoteCoverSrc(item)).find(Boolean) ?? null;
               return (
                 <button
                   key={group.key}
@@ -127,10 +128,11 @@ export function CatalogBrowse({
                 >
                   <ProductTile
                     name={item.name}
-                    imageUrl={item.imageUrl}
+                    imageUrl={quoteCoverSrc(item)}
                     priceMin={item.priceMin}
                     priceMax={item.priceMax}
                     currency={item.currency}
+                    specs={item.specs}
                     badge={inQuote ? "Dans le devis" : undefined}
                   />
                 </button>
@@ -145,15 +147,15 @@ export function CatalogBrowse({
       {view.name === "product" && product ? (
         <article className="rounded-xl border border-slate-200 bg-white p-5">
           <div className="grid gap-6 lg:grid-cols-[minmax(0,18rem)_1fr]">
-            <ProductShot product={product} />
+            <QuoteProductMedia name={product.name} images={product.images} imageUrl={product.imageUrl} />
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-slate-400">{view.category}</p>
               <h2 className="mt-1 text-2xl font-semibold">{product.name}</h2>
               <p className="mt-2 text-sm font-medium">{formatPrice(product.priceMin, product.priceMax, product.currency)}</p>
+              <SpecTable specs={product.specs} />
               {product.description ? (
                 <ProductHtml html={product.description} className="mt-3" />
               ) : null}
-              <SpecTable products={[product]} showName={false} />
               {product.options.length ? (
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   {product.options.map((opt) => (
@@ -278,33 +280,3 @@ export function CatalogBrowsePreview({
   );
 }
 
-function ProductShot({ product }: { product: Product }) {
-  const gallery = product.images.length ? product.images : product.imageUrl ? [{ src: product.imageUrl, alt: null }] : [];
-  const [current, setCurrent] = useState(gallery[0]?.src ?? null);
-  return (
-    <div>
-      {current ? (
-        <ProductMedia src={current} alt={product.name} className="aspect-[4/3] rounded-lg p-3 ring-1 ring-slate-200" />
-      ) : (
-        <div className="aspect-[4/3] rounded-lg bg-slate-100" />
-      )}
-      {gallery.length > 1 ? (
-        <div className="mt-3 flex gap-2 overflow-x-auto">
-          {gallery.slice(0, 8).map((image) => (
-            <button
-              key={image.src}
-              type="button"
-              onClick={() => setCurrent(image.src)}
-              className={`shrink-0 overflow-hidden rounded-md ring-1 ${
-                current === image.src ? "ring-[#E85D04]" : "ring-slate-200"
-              }`}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={image.src} alt={image.alt ?? ""} className="h-14 w-14 object-contain bg-slate-50" />
-            </button>
-          ))}
-        </div>
-      ) : null}
-    </div>
-  );
-}

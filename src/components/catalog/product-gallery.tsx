@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { addProductImages, removeProductImage, setProductCover } from "@/app/(app)/produits/actions";
+import { addProductImages, removeProductImage, setProductCover, setProductImageRole } from "@/app/(app)/produits/actions";
+import type { ProductMediaRole } from "@/lib/catalog/media-roles";
 import { GaugeBar } from "@/components/ui/gauge";
 import type { ProductImage } from "@/lib/integrations/types";
 
@@ -45,7 +46,7 @@ export function ProductGallery({
 
       <div className="mt-2 flex flex-wrap gap-1.5">
         {items.map((image, index) => (
-          <div key={image.src} className="relative">
+          <div key={image.src} className="relative flex w-14 flex-col gap-1">
             <button
               type="button"
               onClick={() =>
@@ -74,6 +75,23 @@ export function ProductGallery({
             >
               ×
             </button>
+            <select
+              aria-label="Rôle de l’image"
+              value={image.role ?? "product"}
+              onChange={(event) => {
+                const role = event.target.value as ProductMediaRole;
+                start(async () => {
+                  const result = await setProductImageRole(productId, image.src, role);
+                  if (result.error) setError(result.error);
+                  if (result.images) setItems(result.images);
+                });
+              }}
+              className="w-14 rounded border border-slate-200 bg-white px-0.5 text-[10px] text-slate-700"
+            >
+              <option value="product">Photo</option>
+              <option value="plan">Plan</option>
+              <option value="usage">Usage</option>
+            </select>
           </div>
         ))}
         <button
@@ -99,7 +117,7 @@ export function ProductGallery({
       {pending ? <div className="mt-2"><GaugeBar pct={0.55} /></div> : null}
       {error ? <p className="mt-2 text-xs text-rose-700">{error}</p> : null}
       <p className="mt-2 text-xs leading-5 text-slate-500">
-        Cliquez une vignette pour en faire la miniature. JPG, PNG ou WebP, 8 Mo max.
+        Cliquez une vignette pour en faire la miniature. Photo, plan ou usage : le devis affiche la photo en carte. JPG, PNG ou WebP, 8 Mo max.
       </p>
     </div>
   );
