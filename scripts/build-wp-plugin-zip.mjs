@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>Shortcode et bloc « chat devis » pour poser l’agent catalogue sur une page.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>quotebuilder_submit() envoie une demande du site vers QuoteBuilder.</li></ul>`,
     },
     null,
     2,

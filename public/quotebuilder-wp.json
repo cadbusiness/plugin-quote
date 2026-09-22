@@ -1,10 +1,10 @@
 {
   "slug": "quotebuilder-wp",
   "name": "QuoteBuilder",
-  "version": "2.3.14",
+  "version": "2.3.15",
   "requires": "6.0",
   "requires_php": "7.4",
   "tested": "6.8",
   "author": "QuoteBuilder",
-  "changelog": "<h4>2.3.14</h4><ul><li>Shortcode et bloc « chat devis » pour poser l’agent catalogue sur une page.</li></ul>"
+  "changelog": "<h4>2.3.15</h4><ul><li>quotebuilder_submit() envoie une demande du site vers QuoteBuilder.</li></ul>"
 }

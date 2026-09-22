@@ -2,7 +2,7 @@
 /**
  * Plugin Name: QuoteBuilder
  * Description: Transforme WooCommerce en boutique devis : masquer les prix, liste de devis, funnel QuoteBuilder.
- * Version: 2.3.14
+ * Version: 2.3.15
  * Author: QuoteBuilder
  * Author URI: https://quotebuilder-weld.vercel.app
  * Requires at least: 6.0
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('QUOTEBUILDER_VERSION', '2.3.14');
+define('QUOTEBUILDER_VERSION', '2.3.15');
 define('QUOTEBUILDER_FILE', __FILE__);
 define('QUOTEBUILDER_DIR', plugin_dir_path(__FILE__));
 define('QUOTEBUILDER_URL', plugin_dir_url(__FILE__));
@@ -113,6 +113,10 @@ function quotebuilder_render_agent($atts = []) {
     return QuoteBuilder_Storefront::render_funnel($atts);
 }
 add_shortcode('quotebuilder_agent', 'quotebuilder_render_agent');
+
+function quotebuilder_submit($data) {
+    return QuoteBuilder_Pairing::submit($data);
+}
 
 function quotebuilder_register_block() {
     if (!function_exists('register_block_type')) {

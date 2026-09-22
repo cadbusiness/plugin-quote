@@ -341,6 +341,82 @@ class QuoteBuilder_Pairing {
         ]);
     }
 
+    /**
+     * Envoie une demande déjà saisie sur le site.
+     * Retourne ['quoteId' => string, 'alreadySubmitted' => bool] ou WP_Error.
+     * Le même externalId ne crée pas un second dossier.
+     */
+    public static function submit($data) {
+        if (!QuoteBuilder_Settings::connected()) {
+            return new WP_Error('quotebuilder_submit', 'Plugin non connecté.');
+        }
+        if (!is_array($data)) {
+            return new WP_Error('quotebuilder_submit', 'Demande invalide.');
+        }
+
+        $payload = self::submit_payload($data);
+        $last = null;
+        for ($attempt = 0; $attempt < 3; $attempt++) {
+            if ($attempt > 0) {
+                sleep($attempt);
+            }
+            $response = QuoteBuilder_Settings::request('/api/integrations/plugin/quotes', [
+                'method' => 'POST',
+                'timeout' => 30,
+                'body' => wp_json_encode($payload),
+            ]);
+            if (is_wp_error($response)) {
+                $last = $response;
+                continue;
+            }
+            $code = (int) wp_remote_retrieve_response_code($response);
+            $body = json_decode(wp_remote_retrieve_body($response), true);
+            if ($code >= 200 && $code < 300 && is_array($body) && !empty($body['quoteId'])) {
+                return [
+                    'quoteId' => (string) $body['quoteId'],
+                    'alreadySubmitted' => !empty($body['alreadySubmitted']),
+                ];
+            }
+            $message = is_array($body) && !empty($body['error']) ? (string) $body['error'] : 'Envoi impossible.';
+            $error = new WP_Error('quotebuilder_submit', $message, [
+                'status' => $code,
+                'expected' => is_array($body) ? ($body['expected'] ?? null) : null,
+            ]);
+            if ($code >= 500 || $code === 429) {
+                $last = $error;
+                continue;
+            }
+            return $error;
+        }
+        return $last instanceof WP_Error ? $last : new WP_Error('quotebuilder_submit', 'Envoi impossible.');
+    }
+
+    private static function submit_payload($data) {
+        $contact = isset($data['contact']) && is_array($data['contact']) ? $data['contact'] : [];
+        $pick = static function ($keys) use ($data, $contact) {
+            foreach ($keys as $key) {
+                if (isset($data[$key]) && !is_array($data[$key]) && trim((string) $data[$key]) !== '') {
+                    return trim((string) $data[$key]);
+                }
+            }
+            foreach ($keys as $key) {
+                if (isset($contact[$key]) && !is_array($contact[$key]) && trim((string) $contact[$key]) !== '') {
+                    return trim((string) $contact[$key]);
+                }
+            }
+            return '';
+        };
+        return [
+            'need' => $pick(['need', 'message', 'brief', 'request', 'demande']),
+            'name' => $pick(['name', 'contactName', 'contact_name']),
+            'email' => $pick(['email', 'contactEmail', 'contact_email']),
+            'phone' => $pick(['phone', 'contactPhone', 'contact_phone']),
+            'company' => $pick(['company', 'contactCompany', 'contact_company']),
+            'externalId' => $pick(['externalId', 'external_id', 'wpId', 'wp_id']),
+            'page' => $pick(['page', 'url', 'landingPath']),
+        ];
+    }
+
     public static function quotes() {
         if (!QuoteBuilder_Settings::connected()) {
             return [];
