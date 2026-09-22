@@ -1,3 +1,4 @@
+import type { ProductSheet } from "@/lib/catalog/sheet";
 import type { ProductSpecs } from "@/lib/catalog/specs";
 import type { Json, Tables } from "@/lib/db/database.types";
 import type { FunnelFamilyId } from "@/lib/funnels/families";
@@ -159,6 +160,7 @@ export type ShopProduct = {
   category: string | null;
   sku: string | null;
   specs?: ProductSpecs;
+  sheet?: ProductSheet;
 };
 
 export type StorefrontModel = {

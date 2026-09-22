@@ -10,10 +10,11 @@ const ROLE_LABEL: Record<ProductMediaRole, string> = {
   product: "Produit",
   plan: "Plan",
   usage: "Usage",
+  manual: "Notice",
 };
 
 function groupMedia(images: ProductImage[]) {
-  const groups: Record<ProductMediaRole, ProductImage[]> = { product: [], plan: [], usage: [] };
+  const groups: Record<ProductMediaRole, ProductImage[]> = { product: [], plan: [], usage: [], manual: [] };
   for (const image of images) {
     const role = image.role ?? "product";
     groups[role].push(image);
@@ -38,9 +39,15 @@ export function QuoteProductMedia({
 }) {
   const gallery = images.length ? images : imageUrl ? [{ src: imageUrl, alt: null }] : [];
   const groups = groupMedia(gallery);
-  const main = groups.product.length ? groups.product : groups.plan.length ? groups.plan : groups.usage;
+  const main = groups.product.length
+    ? groups.product
+    : groups.plan.length
+      ? groups.plan
+      : groups.usage.length
+        ? groups.usage
+        : groups.manual;
   const [current, setCurrent] = useState(main[0]?.src ?? null);
-  const extras = (["plan", "usage"] as const).filter((role) => groups[role].length && groups[role] !== main);
+  const extras = (["plan", "usage", "manual"] as const).filter((role) => groups[role].length && groups[role] !== main);
 
   if (!current) return <div className={compact ? "h-20 w-20 rounded-lg bg-slate-100" : "aspect-[4/3] rounded-lg bg-slate-100"} />;
 

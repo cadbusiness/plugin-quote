@@ -86,11 +86,12 @@ export function ProductGallery({
                   if (result.images) setItems(result.images);
                 });
               }}
-              className="w-14 rounded border border-slate-200 bg-white px-0.5 text-[10px] text-slate-700"
+              className="w-16 rounded border border-slate-200 bg-white px-0.5 text-[10px] text-slate-700"
             >
               <option value="product">Photo</option>
               <option value="plan">Plan</option>
               <option value="usage">Usage</option>
+              <option value="manual">Notice</option>
             </select>
           </div>
         ))}
@@ -117,7 +118,7 @@ export function ProductGallery({
       {pending ? <div className="mt-2"><GaugeBar pct={0.55} /></div> : null}
       {error ? <p className="mt-2 text-xs text-rose-700">{error}</p> : null}
       <p className="mt-2 text-xs leading-5 text-slate-500">
-        Cliquez une vignette pour en faire la miniature. Photo, plan ou usage : le devis affiche la photo en carte. JPG, PNG ou WebP, 8 Mo max.
+        Cliquez une vignette pour en faire la miniature. Photo, plan, usage ou notice. Le devis affiche la photo en carte. JPG, PNG ou WebP, 8 Mo max.
       </p>
     </div>
   );

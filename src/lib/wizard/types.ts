@@ -1,5 +1,6 @@
 import type { ProductRelated } from "@/lib/catalog/affinity";
 import type { ProductMediaRole } from "@/lib/catalog/media-roles";
+import type { ProductSheet } from "@/lib/catalog/sheet";
 import type { Json } from "@/lib/db/database.types";
 import type { QuoteMode } from "@/lib/quotes/quote-mode";
 
@@ -85,6 +86,8 @@ export type Product = {
   options: ProductOption[];
   /** Caractéristiques figées (charge, hauteur, profondeur, matériau, délai). */
   specs: ProductSpec[];
+  /** Mode d'emploi, conformité, garantie. Absent si la fiche n'en a pas. */
+  sheet?: ProductSheet;
   stockStatus: string | null;
   /** Identifiant boutique (Woo / Shopify) pour préremplir depuis la vitrine. */
   externalId: string | null;

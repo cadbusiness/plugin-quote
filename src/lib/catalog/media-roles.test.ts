@@ -9,7 +9,9 @@ import {
 
 assert.equal(guessMediaRole("Rayonnage Unirack vue studio"), null);
 assert.equal(guessMediaRole("plan-technique-unirack.jpg"), "plan");
-assert.equal(guessMediaRole("Photo chantier installation entrepôt"), "usage");
+assert.equal(guessMediaRole("Photo chantier installation entrepôt"), "manual");
+assert.equal(guessMediaRole("Photo pose entrepôt"), "usage");
+assert.equal(guessMediaRole("notice d'emploi Unirack"), "manual");
 assert.equal(guessMediaRole("schéma de cote 2500"), "plan");
 
 const roles = mediaRoleMap([
@@ -37,6 +39,12 @@ const roles = mediaRoleMap([
   assert.deepEqual(photo, { role: "product", explicit: false });
   const marked = classifyProductImage({ src: "https://cdn.example/a.jpg", alt: "[plan] élévation" });
   assert.deepEqual(marked, { role: "plan", explicit: true });
+  const notice = classifyProductImage({
+    src: "https://cdn.example/notice-montage.jpg",
+    alt: "Unirack",
+    name: "notice-montage.jpg",
+  });
+  assert.deepEqual(notice, { role: "manual", explicit: true });
 }
 
 {

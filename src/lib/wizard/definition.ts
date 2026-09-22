@@ -3,6 +3,7 @@ import { parseRelated } from "@/lib/catalog/affinity";
 import type { Database, Json } from "@/lib/db/database.types";
 import { normalizeAttributes, toProspectOptions } from "@/lib/catalog/attributes";
 import { parseGallery, productCover } from "@/lib/catalog/media";
+import { parseProductSheet } from "@/lib/catalog/sheet";
 import { publicProductSpecs } from "@/lib/catalog/specs";
 import { parseFunnelTracking, parseOrgGtm } from "@/lib/funnels/tracking";
 import { parseFunnelKind } from "@/lib/funnels/kind";
@@ -42,6 +43,7 @@ function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Produ
     category: row.category ?? null,
     options,
     specs: publicProductSpecs(attributes, row.specs),
+    sheet: parseProductSheet(row.sheet),
     stockStatus: row.stock_status ?? null,
     externalId: row.external_id,
     sku: row.sku,

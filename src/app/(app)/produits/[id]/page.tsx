@@ -4,6 +4,7 @@ import { deleteProduct, toggleProduct, updateProduct } from "@/app/(app)/produit
 import { CurrencyFields } from "@/components/catalog/currency-fields";
 import { ProductEditorFields } from "@/components/catalog/product-editor-fields";
 import { ProductGallery } from "@/components/catalog/product-gallery";
+import { SheetFields } from "@/components/catalog/sheet-fields";
 import { SpecFields } from "@/components/catalog/spec-fields";
 import { RichTextEditor } from "@/components/catalog/rich-text-editor";
 import { Chip, type ChipTone } from "@/components/ui/chip";
@@ -11,6 +12,7 @@ import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { normalizeAttributes } from "@/lib/catalog/attributes";
 import { parseGallery } from "@/lib/catalog/media";
+import { parseProductSheet } from "@/lib/catalog/sheet";
 import { parseColumnSpecs, specsFieldValue } from "@/lib/catalog/specs";
 import { priceModeOf } from "@/lib/catalog/product-form";
 import type { Json } from "@/lib/db/database.types";
@@ -47,7 +49,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const { data: product } = await supabase
     .from("products")
     .select(
-      "id, name, sku, category, tags, description, price_min, price_max, currency, is_active, source, connection_id, external_url, archived_by_sync, synced_at, sync_lock, image_url, images, options, variants, specs",
+      "id, name, sku, category, tags, description, price_min, price_max, currency, is_active, source, connection_id, external_url, archived_by_sync, synced_at, sync_lock, image_url, images, options, variants, specs, sheet",
     )
     .eq("id", id)
     .eq("organization_id", ctx.organization.id)
@@ -200,6 +202,14 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             Charge, hauteur, profondeur, matériau, délai. Enregistrer conserve ces champs. La description n’est pas relue comme source.
           </p>
           <SpecFields specs={parseColumnSpecs(product.specs)} />
+        </div>
+
+        <div className="border-t border-slate-100 px-4 py-4 lg:px-6">
+          <p className="text-sm font-medium text-slate-900">Mode d’emploi</p>
+          <p className="mb-3 mt-1 text-xs text-slate-500">
+            Notice, conformité et garantie. Un lien ou un texte court. La description du produit n’est pas recopiée ici.
+          </p>
+          <SheetFields sheet={parseProductSheet(product.sheet)} />
         </div>
 
         <div className="px-4 py-4 lg:px-6">

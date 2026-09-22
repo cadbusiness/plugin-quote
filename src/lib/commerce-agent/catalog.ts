@@ -19,6 +19,8 @@ function scoreProduct(product: Product, tokens: string[]): number {
       product.category ?? "",
       ...(product.tags ?? []),
       ...(product.specs ?? []).flatMap((spec) => [spec.label, spec.value, spec.unit ?? ""]),
+      product.sheet?.manualText ?? "",
+      ...(product.sheet?.documents ?? []).map((doc) => doc.label),
     ].join(
       " ",
     ),

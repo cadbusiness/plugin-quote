@@ -1,6 +1,7 @@
 import type { ProductRelated } from "@/lib/catalog/affinity";
 import type { ProductMediaRole } from "@/lib/catalog/media-roles";
 import type { ProductAttribute } from "@/lib/catalog/attributes";
+import type { ProductSheet } from "@/lib/catalog/sheet";
 import type { ProductSpecs } from "@/lib/catalog/specs";
 import type { ProductOption } from "@/lib/wizard/types";
 import { DEFAULT_STOREFRONT, parseStorefront, type StorefrontSettings } from "@/lib/integrations/storefront";
@@ -58,6 +59,8 @@ export type NormalizedProduct = {
   related: ProductRelated;
   /** Fiche technique canonique (colonne products.specs). Absente chez Shopify. */
   specs?: ProductSpecs;
+  /** Mode d'emploi et documents (colonne products.sheet). */
+  sheet?: ProductSheet;
   externalUpdatedAt: string | null;
 };
 
@@ -167,6 +170,7 @@ export type PushableProduct = {
   priceMin: number | null;
   images: ProductImage[];
   specs?: ProductSpecs;
+  sheet?: ProductSheet;
 };
 
 export class IntegrationError extends Error {

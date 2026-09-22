@@ -55,4 +55,4 @@ Les attributs ne sont renvoyés que si le produit Woo a été relu avant le PUT,
 
 ## Hors de ce contrat
 
-Le payload public du configurateur expose `products[].specs` comme une liste `{ key, label, value, unit? }`, issue d’abord de `products.options`, puis des clés encore présentes seulement dans la colonne. La colonne `products.specs` elle-même suit l’objet ci-dessus. Le parcours devis affiche cette liste (tableau et pastilles). Les photos, plans et vues d’usage sont un autre contrat : `docs/product-media.md` (`products.images[].role`).
+Le payload public du configurateur expose `products[].specs` comme une liste `{ key, label, value, unit? }`, issue d’abord de `products.options`, puis des clés encore présentes seulement dans la colonne. La colonne `products.specs` elle-même suit l’objet ci-dessus. Le parcours devis affiche cette liste (tableau et pastilles). Les photos, plans, vues d’usage et le mode d’emploi sont un autre contrat : `docs/product-media.md` (`products.images[].role`, `products.sheet`).

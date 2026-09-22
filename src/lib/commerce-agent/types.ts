@@ -43,6 +43,7 @@ export type CompactProduct = {
   stockStatus: string | null;
   description: string | null;
   specs: { label: string; value: string; unit?: string }[];
+  manual?: { text: string | null; links: { label: string; href: string }[] };
 };
 
 export function emptyProvenance(): ProvenanceState {
@@ -67,5 +68,16 @@ export function compactProduct(product: Product): CompactProduct {
       value: spec.value,
       ...(spec.unit ? { unit: spec.unit } : {}),
     })),
+    ...manualOf(product),
   };
+}
+
+function manualOf(product: Product): Pick<CompactProduct, "manual"> {
+  const text = product.sheet?.manualText.trim() ?? "";
+  const links = (product.sheet?.documents ?? []).slice(0, 4).map((doc) => ({
+    label: doc.label,
+    href: doc.src,
+  }));
+  if (!text && !links.length) return {};
+  return { manual: { text: text ? text.slice(0, 500) : null, links } };
 }

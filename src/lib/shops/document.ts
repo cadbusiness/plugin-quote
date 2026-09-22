@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/db/database.types";
+import { parseProductSheet } from "@/lib/catalog/sheet";
 import { parseColumnSpecs } from "@/lib/catalog/specs";
 import { asJson, type ShopDocument, type ShopProduct } from "@/lib/shops/types";
 import { parseLayout } from "@/lib/shops/layout";
@@ -97,7 +98,7 @@ export async function loadShopProducts(
   if (!configuratorId) return [];
   const { data } = await supabase
     .from("products")
-    .select("id, name, description, image_url, price_min, price_max, currency, category, sku, specs")
+    .select("id, name, description, image_url, price_min, price_max, currency, category, sku, specs, sheet")
     .eq("organization_id", organizationId)
     .eq("configurator_id", configuratorId)
     .eq("is_active", true)
@@ -114,6 +115,7 @@ export async function loadShopProducts(
       category: row.category,
       sku: row.sku,
       specs: parseColumnSpecs(row.specs),
+      sheet: parseProductSheet(row.sheet),
     }),
   );
 }

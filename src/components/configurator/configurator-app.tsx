@@ -10,6 +10,7 @@ import { applyFunnelPrefill } from "@/lib/configurator/prefill";
 import { CatalogBrowse } from "@/components/configurator/catalog-browse";
 import { RfqForm } from "@/components/configurator/rfq-form";
 import { ProductHtml } from "@/components/catalog/product-html";
+import { ProductSheetLinks } from "@/components/catalog/product-sheet";
 import { QuoteProductMedia } from "@/components/catalog/quote-media";
 import { QuoteSpecSheets, SpecChips, SpecTable } from "@/components/catalog/spec-table";
 import { quoteLineCount } from "@/lib/funnels/kind";
@@ -1205,6 +1206,7 @@ function CustomizePanel({
                 <p className="text-sm text-slate-500">{formatPrice(product.priceMin, product.priceMax)}</p>
                 <div className="mt-2">
                   <SpecChips specs={product.specs} />
+                  <ProductSheetLinks sheet={product.sheet} compact />
                 </div>
                 {product.description ? (
                   <ProductHtml html={product.description} className="mt-1 text-slate-500" clamp />
