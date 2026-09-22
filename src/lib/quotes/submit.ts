@@ -60,10 +60,13 @@ export async function submitQuote(input: {
   const suggestions = evaluateSuggestions(answers, rules ?? [], products);
   const selected =
     suggestions.find((s) => s.id === session.selected_suggestion_id) ?? suggestions[0];
-  const customization = (session.customization ?? {
-    quantities: {},
-    options: {},
-  }) as Customization;
+  const storedCustomization = (session.customization ?? {}) as Partial<Customization>;
+  const customization: Customization = {
+    quantities: storedCustomization.quantities ?? {},
+    options: storedCustomization.options ?? {},
+    notes: storedCustomization.notes,
+    storefrontLines: storedCustomization.storefrontLines,
+  };
 
   const { data: defaultStatus } = await supabase
     .from("quote_statuses")
@@ -105,6 +108,7 @@ export async function submitQuote(input: {
     throw new Error(quoteError?.message ?? "Impossible de créer le devis");
   }
 
+  try {
   await supabase.from("quote_activities").insert({
     organization_id: session.organization_id,
     quote_id: quote.id,
@@ -285,4 +289,10 @@ export async function submitQuote(input: {
   }
 
   return { quoteId: quote.id, alreadySubmitted: false, score, label, suiviUrl: access?.url, pin: access?.pin };
+  } catch (error) {
+    await supabase.from("quote_sessions").update({ submitted_quote_id: null }).eq("submitted_quote_id", quote.id);
+    const { error: deleteError } = await supabase.from("quotes").delete().eq("id", quote.id);
+    if (deleteError) console.error("Quote rollback failed", deleteError);
+    throw error;
+  }
 }
