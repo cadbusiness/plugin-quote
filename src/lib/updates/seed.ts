@@ -2,8 +2,21 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.25.0",
+    version: "1.25.0",
+    title: "Mode d'emploi sur la fiche produit B2B",
+    items: [
+      "La fiche produit a un emplacement dédié mode d'emploi : notice courte, documents (manuel, conformité, garantie) et photos d'instruction, à côté des rôles photo / plan / usage.",
+      "Sync Woo intelligente : métas _qb_manual / certificat / garantie, téléchargements et indices de nom de fichier — sans copier la description HTML, sans effacer une notice déjà saisie.",
+      "Dans l'admin produit, vous éditez la notice, les liens et le rôle Notice sur chaque image.",
+      "Le funnel public, l'embed, le brief devis et la page boutique affichent un bloc « Mode d'emploi » compact dès qu'il y a quelque chose à montrer.",
+    ],
+    releasedAt: "2026-09-22",
+    createdAt: "2026-09-22T00:00:00.000Z",
+  },
   {
     id: "seed-1.24.0",
     version: "1.24.0",
