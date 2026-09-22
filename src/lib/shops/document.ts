@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/db/database.types";
+import { parseColumnSpecs } from "@/lib/catalog/specs";
 import { asJson, type ShopDocument, type ShopProduct } from "@/lib/shops/types";
 import { parseLayout } from "@/lib/shops/layout";
 import { navFromRow, pageFromRow, parseLegal, parseNavLocation, parsePageKind, parsePageSeo, parseSeo, parseStatus, parseTheme } from "@/lib/shops/parse";
@@ -96,12 +97,25 @@ export async function loadShopProducts(
   if (!configuratorId) return [];
   const { data } = await supabase
     .from("products")
-    .select("id, name, description, image_url, price_min, price_max, currency, category, sku")
+    .select("id, name, description, image_url, price_min, price_max, currency, category, sku, specs")
     .eq("organization_id", organizationId)
     .eq("configurator_id", configuratorId)
     .eq("is_active", true)
     .order("name");
-  return (data ?? []) as ShopProduct[];
+  return (data ?? []).map(
+    (row): ShopProduct => ({
+      id: row.id,
+      name: row.name,
+      description: row.description,
+      image_url: row.image_url,
+      price_min: row.price_min,
+      price_max: row.price_max,
+      currency: row.currency,
+      category: row.category,
+      sku: row.sku,
+      specs: parseColumnSpecs(row.specs),
+    }),
+  );
 }
 
 export { pageFromRow, navFromRow };
