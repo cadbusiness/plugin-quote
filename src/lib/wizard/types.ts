@@ -1,4 +1,5 @@
 import type { ProductRelated } from "@/lib/catalog/affinity";
+import type { ProductMediaRole } from "@/lib/catalog/media-roles";
 import type { Json } from "@/lib/db/database.types";
 import type { QuoteMode } from "@/lib/quotes/quote-mode";
 
@@ -66,6 +67,7 @@ export type WizardStep = {
 export type ProductImage = {
   src: string;
   alt: string | null;
+  role?: ProductMediaRole;
 };
 
 export type Product = {

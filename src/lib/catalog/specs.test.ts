@@ -275,4 +275,26 @@ const quickly: ProductSpecs = {
   assert.equal(storedSpecsForSync({}, { finition: { label: "Finition", value: "Époxy" } }), null);
 }
 
+{
+  const fields = new FormData();
+  fields.set(
+    "specs",
+    JSON.stringify({
+      charge: { label: "Charge", value: "1", unit: "kg" },
+      finition: { label: "Finition", value: "Époxy", valueAlt: "Epoxy" },
+    }),
+  );
+  fields.set("spec_value_charge", "1000");
+  fields.set("spec_label_charge", "Charge utile");
+  fields.set("spec_unit_charge", "kg/niveau");
+  fields.set("spec_value_hauteur", "");
+  const saved = readSpecsField(fields);
+  const charge = saved?.charge as { label: string; value: string; unit: string };
+  assert.equal(charge.value, "1000");
+  assert.equal(charge.unit, "kg/niveau");
+  assert.equal(charge.label, "Charge utile");
+  assert.equal(saved?.hauteur, undefined);
+  assert.equal((saved?.finition as { valueAlt: string }).valueAlt, "Epoxy");
+}
+
 console.log("specs.test.ts ok");

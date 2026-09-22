@@ -51,6 +51,31 @@ assert.equal(clampSearchLimit(0), 1);
 const found = searchCatalog(products, { query: "palette 800kg 6m" });
 assert.equal(found.products[0]?.id, "p-heavy");
 
+const bySpec = searchCatalog(
+  [
+    ...products,
+    {
+      id: "p-spec",
+      name: "Tablette",
+      description: "Tablette nue",
+      imageUrl: null,
+      images: [],
+      priceMin: 40,
+      priceMax: 80,
+      currency: "EUR",
+      tags: [],
+      category: "Accessoire",
+      options: [],
+      stockStatus: "in_stock",
+      externalId: null,
+      specs: [{ key: "charge", label: "Charge", value: "1000", unit: "kg/niveau" }],
+    },
+  ],
+  { query: "1000 kg/niveau" },
+);
+assert.equal(bySpec.products[0]?.id, "p-spec");
+assert.equal(bySpec.products[0]?.specs[0]?.value, "1000");
+
 let provenance = emptyProvenance();
 assert.equal(canPresentConfigurations(provenance).ok, false);
 provenance = rememberIds(provenance, ["p-heavy"]);

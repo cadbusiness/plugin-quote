@@ -1,4 +1,5 @@
 import type { ProductRelated } from "@/lib/catalog/affinity";
+import type { ProductMediaRole } from "@/lib/catalog/media-roles";
 import type { ProductAttribute } from "@/lib/catalog/attributes";
 import type { ProductSpecs } from "@/lib/catalog/specs";
 import type { ProductOption } from "@/lib/wizard/types";
@@ -14,6 +15,9 @@ export const PROVIDER_LABELS: Record<CatalogProvider, string> = {
 export type ProductImage = {
   src: string;
   alt: string | null;
+  role?: ProductMediaRole;
+  /** Présent seulement le temps du mapping Woo. Jamais persisté. */
+  roleExplicit?: boolean;
 };
 
 export type ProductVariant = {
