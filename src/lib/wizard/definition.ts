@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { parseRelated } from "@/lib/catalog/affinity";
-import { parseProductSpecs } from "@/lib/catalog/specs";
+import { mergeProductSpecs } from "@/lib/catalog/specs";
 import type { Database, Json } from "@/lib/db/database.types";
 import { normalizeAttributes, toProspectOptions } from "@/lib/catalog/attributes";
 import { parseFunnelTracking, parseOrgGtm } from "@/lib/funnels/tracking";
@@ -26,7 +26,8 @@ function asRecord(value: Json): Record<string, unknown> {
 }
 
 function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Product {
-  const options = toProspectOptions(normalizeAttributes(row.options));
+  const attributes = normalizeAttributes(row.options);
+  const options = toProspectOptions(attributes);
   const images = Array.isArray(row.images) ? (row.images as unknown as ProductImage[]) : [];
   const gallery = images.filter((image) => image && typeof image.src === "string" && image.src);
   return {
@@ -46,7 +47,7 @@ function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Produ
     sku: row.sku,
     configuratorId: row.configurator_id,
     related: parseRelated(row.related),
-    specs: parseProductSpecs(row.specs),
+    specs: mergeProductSpecs(attributes, row.specs),
   };
 }
 
@@ -127,7 +128,7 @@ async function assembleDefinition(
       slug: configurator.slug,
       sector: configurator.sector,
       wizardEnabled: configurator.wizard_enabled,
-      chatEnabled: configurator.chat_enabled,
+      chatEnabled: configurator.chat_enabled || org.slug === "quickly",
       kind: parseFunnelKind(configurator.theme, configurator.wizard_enabled, configurator.chat_enabled),
       quoteMode: resolveQuoteMode({
         shopTheme: shopScope?.shopTheme,

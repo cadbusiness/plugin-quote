@@ -82,7 +82,17 @@ export function GET() {
     if (page) params.set("qb_page", page.slice(0, 160));
     var cart = el.getAttribute("data-cart");
     if (cart && !params.get("qb_cart")) params.set("qb_cart", cart);
+    [["data-besoin", "besoin"], ["data-add", "add"], ["data-product", "product"]].forEach(function (pair) {
+      var value = el.getAttribute(pair[0]);
+      if (value && !params.get(pair[1])) params.append(pair[1], value);
+    });
     return ${JSON.stringify(origin)} + "/embed/" + encodeURIComponent(org) + "/" + encodeURIComponent(id) + "?" + params.toString();
+  }
+  function frameBox(el) {
+    var requested = (el.getAttribute("data-height") || "720px").trim() || "720px";
+    var mobile = window.matchMedia && window.matchMedia("(max-width: 640px)").matches;
+    if (mobile) return { height: "calc(100svh - 4.5rem)", minHeight: "28rem" };
+    return { height: requested, minHeight: requested };
   }
   function mount(el) {
     var org = el.getAttribute("data-org") || el.getAttribute("data-quotebuilder-org");
@@ -93,13 +103,29 @@ export function GET() {
     track(org, id, vid, attr);
     var iframe = document.createElement("iframe");
     iframe.src = iframeSrc(el, org, id, vid, attr);
+    var box = frameBox(el);
+    el.style.width = "100%";
+    el.style.maxWidth = "100%";
     iframe.style.width = "100%";
+    iframe.style.maxWidth = "100%";
     iframe.style.border = "0";
-    iframe.style.minHeight = el.getAttribute("data-height") || "720px";
-    iframe.setAttribute("title", "QuoteBuilder");
+    iframe.style.display = "block";
+    iframe.style.height = box.height;
+    iframe.style.minHeight = box.minHeight;
+    iframe.setAttribute("title", el.getAttribute("data-title") || "Demande de devis");
     iframe.setAttribute("loading", "lazy");
     el.innerHTML = "";
     el.appendChild(iframe);
+    if (window.matchMedia) {
+      var mq = window.matchMedia("(max-width: 640px)");
+      var apply = function () {
+        var next = frameBox(el);
+        iframe.style.height = next.height;
+        iframe.style.minHeight = next.minHeight;
+      };
+      if (mq.addEventListener) mq.addEventListener("change", apply);
+      else if (mq.addListener) mq.addListener(apply);
+    }
   }
   function init() {
     document.querySelectorAll("[data-quotebuilder], .quotebuilder-embed").forEach(mount);

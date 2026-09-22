@@ -24,7 +24,11 @@ const products: Product[] = [
     category: "Rayonnage",
     options: [],
     stockStatus: "in_stock",
-    externalId: null,
+    externalId: "woo-1",
+    sku: "PAL-1",
+    specs: {
+      charge: { label: "Charge", value: "800", unit: "kg/niveau" },
+    },
   },
   {
     id: "p-light",
@@ -48,6 +52,11 @@ assert.equal(clampSearchLimit(0), 1);
 
 const found = searchCatalog(products, { query: "palette 800kg 6m" });
 assert.equal(found.products[0]?.id, "p-heavy");
+assert.equal(found.products[0]?.sku, "PAL-1");
+assert.equal(found.products[0]?.specs[0]?.value, "800 kg/niveau");
+
+const bySpec = searchCatalog(products, { query: "charge niveau" });
+assert.equal(bySpec.products[0]?.id, "p-heavy");
 
 let provenance = emptyProvenance();
 assert.equal(canPresentConfigurations(provenance).ok, false);

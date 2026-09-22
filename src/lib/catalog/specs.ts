@@ -1,3 +1,5 @@
+import type { ProductAttribute } from "@/lib/catalog/attributes";
+
 export type ProductSpec = {
   label: string;
   value: string;
@@ -21,4 +23,25 @@ export function parseProductSpecs(value: unknown): Record<string, ProductSpec> {
     specs[key] = spec;
   }
   return specs;
+}
+
+/** Woo dimensions live on `products.options` (kind number/text), not only `products.specs`. */
+export function attributesToSpecs(attributes: ProductAttribute[]): Record<string, ProductSpec> {
+  const specs: Record<string, ProductSpec> = {};
+  for (const attribute of attributes) {
+    if (attribute.kind === "choices") continue;
+    const value = attribute.value?.trim() ?? "";
+    if (!attribute.label.trim() || !value) continue;
+    const spec: ProductSpec = { label: attribute.label, value };
+    if (attribute.unit?.trim()) spec.unit = attribute.unit.trim();
+    specs[attribute.key] = spec;
+  }
+  return specs;
+}
+
+export function mergeProductSpecs(
+  attributes: ProductAttribute[],
+  stored: unknown,
+): Record<string, ProductSpec> {
+  return { ...attributesToSpecs(attributes), ...parseProductSpecs(stored) };
 }
