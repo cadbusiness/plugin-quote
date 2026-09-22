@@ -1,4 +1,5 @@
 import type { Json } from "@/lib/db/database.types";
+import { formatQuoteSpecs } from "@/lib/configurator/prefill";
 import type { Answers, Choice, QuestionOptions } from "@/lib/wizard/types";
 
 const SKIP_KEYS = new Set([
@@ -25,6 +26,12 @@ const KEY_LABELS: Record<string, string> = {
   notes: "Précisions",
   need: "Besoin",
   besoin: "Besoin",
+  specs: "Fiche technique",
+  charge: "Charge",
+  hauteur: "Hauteur",
+  profondeur: "Profondeur",
+  materiau: "Matériau",
+  delai: "Délai",
   precision: "Précisions",
   added: "Ajouté au devis",
   quote_mode: "Mode devis",
@@ -52,6 +59,7 @@ const KEY_ORDER = [
   "upkeep",
   "need",
   "besoin",
+  "specs",
   "precision",
   "added",
   "notes",
@@ -176,10 +184,11 @@ export function labelAnswers(answers: Answers, questions: QuestionMeta[] = []): 
     .filter(([key]) => !SKIP_KEYS.has(key))
     .map(([key, value]) => {
       const meta = byKey.get(key) ?? { key, label: KEY_LABELS[key] || humanize(key) };
+      const specText = key === "specs" ? formatQuoteSpecs(value) : null;
       return {
         key,
         label: meta.label || KEY_LABELS[key] || humanize(key),
-        value: formatOne(value, meta),
+        value: specText ?? formatOne(value, meta),
       };
     })
     .filter((row) => row.value !== "-")

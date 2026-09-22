@@ -1,4 +1,5 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { formatQuoteSpecs } from "@/lib/configurator/prefill";
 import type { Answers } from "@/lib/wizard/types";
 
 const styles = StyleSheet.create({
@@ -23,9 +24,11 @@ function formatPrice(min: number | null, max: number | null) {
   return fmt((min ?? max) as number);
 }
 
-function answerLabel(value: unknown): string {
+function answerLabel(key: string, value: unknown): string {
+  if (key === "specs") return formatQuoteSpecs(value) ?? "-";
   if (Array.isArray(value)) return value.map(String).join(", ");
   if (value == null) return "-";
+  if (typeof value === "object") return JSON.stringify(value);
   return String(value);
 }
 
@@ -80,7 +83,7 @@ export function QuotePdf(props: {
           {Object.entries(props.answers).map(([key, value]) => (
             <View key={key} style={styles.row}>
               <Text style={styles.label}>{key}</Text>
-              <Text style={styles.value}>{answerLabel(value)}</Text>
+              <Text style={styles.value}>{answerLabel(key, value)}</Text>
             </View>
           ))}
         </View>

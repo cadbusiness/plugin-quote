@@ -2,8 +2,47 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.24.0",
+    version: "1.24.0",
+    title: "Fiche technique dans le brief et le devis",
+    items: [
+      "Sur /c/… et /embed/…, les produits déjà au devis affichent leur fiche (charge, hauteur, profondeur, matériau, délai) dans le brief ; l’étape personnaliser montre le même tableau.",
+      "Les valeurs et unités sont en police monospace ; un produit sans specs n’affiche rien.",
+      "Avec ?add= / ?product=, les specs du produit sont copiées sur le devis (et la chip de gamme est sélectionnée quand le nom ou les tags le permettent).",
+      "Le dossier commercial et le PDF reprennent cette fiche sous « Fiche technique ».",
+    ],
+    releasedAt: "2026-09-22",
+    createdAt: "2026-09-22T00:00:00.000Z",
+  },
+  {
+    id: "seed-1.23.0",
+    version: "1.23.0",
+    title: "Fiche produit B2B : specs et médias classés",
+    items: [
+      "Sur la fiche produit du catalogue, charge, hauteur, profondeur, matériau et délai s’éditent en champs dédiés.",
+      "Les images de la galerie se classent en photo produit, plan ou usage ; la carte garde la photo produit, plan et usage apparaissent en miniatures.",
+      "Dans le funnel public, l’embed et la page boutique, le tableau ou les puces de specs s’affichent depuis la fiche produit.",
+      "La sync WooCommerce lit le rôle de chaque média (_qb_media_role, sinon alt / titre / nom de fichier) sans écraser un rôle déjà enregistré.",
+    ],
+    releasedAt: "2026-09-22",
+    createdAt: "2026-09-22T00:00:00.000Z",
+  },
+  {
+    id: "seed-1.22.0",
+    version: "1.22.0",
+    title: "Titres commerçant sur les funnels publics et embeds",
+    items: [
+      "Sur /c/… et /embed/…, l’onglet et le partage Open Graph affichent le devis du commerçant (ex. « Devis rayonnage — Quickly International »), plus le slogan marketing QuoteBuilder.",
+      "Un nom de funnel déjà au nom du commerçant est conservé tel quel.",
+      "Les embeds restent noindex, canoniques vers /c/…, et n’embarquent plus le JSON-LD produit QuoteBuilder.",
+      "Le shortcode / widget.js titre l’iframe « Devis … » (ou data-title) et fixe une hauteur explicite (défaut 720px).",
+    ],
+    releasedAt: "2026-09-22",
+    createdAt: "2026-09-22T00:00:00.000Z",
+  },
   {
     id: "seed-1.21.0",
     version: "1.21.0",
