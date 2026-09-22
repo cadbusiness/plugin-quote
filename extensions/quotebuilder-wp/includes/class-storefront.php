@@ -373,6 +373,8 @@ class QuoteBuilder_Storefront {
             'id' => $funnel['id'],
             'height' => '720px',
             'cart' => '',
+            'besoin' => '',
+            'add' => '',
         ], $atts, 'quotebuilder');
 
         $origin = esc_url(QuoteBuilder_Settings::origin());
@@ -389,12 +391,23 @@ class QuoteBuilder_Storefront {
 
         $cart = $atts['cart'] ?: (QuoteBuilder_Quote::items() ? wp_json_encode(QuoteBuilder_Quote::cart_payload()) : '');
 
+        $extra = '';
+        if ($cart) {
+            $extra .= ' data-cart="' . esc_attr($cart) . '"';
+        }
+        if ($atts['besoin'] !== '') {
+            $extra .= ' data-besoin="' . esc_attr($atts['besoin']) . '"';
+        }
+        if ($atts['add'] !== '') {
+            $extra .= ' data-add="' . esc_attr($atts['add']) . '"';
+        }
+
         return sprintf(
             '<div class="quotebuilder-embed" data-quotebuilder data-org="%s" data-id="%s" data-height="%s"%s></div>',
             esc_attr($atts['org']),
             esc_attr($atts['id']),
             esc_attr($atts['height']),
-            $cart ? ' data-cart="' . esc_attr($cart) . '"' : ''
+            $extra
         );
     }
 }

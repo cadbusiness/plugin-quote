@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { formatPrice } from "@/lib/format";
 import { parseAttribution, type Attribution } from "@/lib/stats/attribution";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
@@ -10,6 +10,7 @@ import { applyFunnelPrefill } from "@/lib/configurator/prefill";
 import { CatalogBrowse } from "@/components/configurator/catalog-browse";
 import { RfqForm } from "@/components/configurator/rfq-form";
 import { ProductHtml } from "@/components/catalog/product-html";
+import { ProductSpecs } from "@/components/catalog/product-specs";
 import { quoteLineCount } from "@/lib/funnels/kind";
 import {
   resolveConfiguratorTheme,
@@ -197,6 +198,7 @@ export function ConfiguratorApp({
   const [chatInput, setChatInput] = useState("");
   const [contact, setContact] = useState({ name: "", email: "", phone: "", company: "", consentMarketing: false });
   const [need, setNeed] = useState("");
+  const embedChatOpened = useRef(false);
 
   const step = definition?.steps[session?.currentStep ?? 0];
   const answers = useMemo(
@@ -359,6 +361,23 @@ export function ConfiguratorApp({
       cancelled = true;
     };
   }, [orgSlug, configuratorSlug, shopSlug, shopConfiguratorId, embedded, productPrefill, initialCart]);
+
+  useEffect(() => {
+    if (!embedded || orgSlug !== "quickly" || !session || !definition?.configurator.chatEnabled) return;
+    if (embedChatOpened.current || session.mode === "chat") {
+      embedChatOpened.current = true;
+      return;
+    }
+    embedChatOpened.current = true;
+    const current = session;
+    void api<QuoteSession>(`/api/public/sessions/${current.id}`, {
+      method: "PATCH",
+      token: current.token,
+      body: JSON.stringify({ mode: "chat" }),
+    })
+      .then((next) => setSession(next))
+      .catch(() => setSession({ ...current, mode: "chat" }));
+  }, [embedded, orgSlug, session, definition?.configurator.chatEnabled]);
 
   useEffect(() => {
     const gtm = definition?.organization.gtmContainerId?.trim();
@@ -612,7 +631,11 @@ export function ConfiguratorApp({
   }
 
   if (loading) {
-    return <div className="flex min-h-[28rem] items-center justify-center text-slate-500">Chargement…</div>;
+    return (
+      <div className={`flex items-center justify-center text-slate-500 ${embedded ? "h-full min-h-0" : "min-h-[28rem]"}`}>
+        Chargement…
+      </div>
+    );
   }
   if (!definition) {
     return (
@@ -659,7 +682,9 @@ export function ConfiguratorApp({
         <p className="text-sm font-medium uppercase tracking-wide text-amber-600">Demande envoyée</p>
         <h1 className="mt-2 text-3xl font-semibold">Merci, {contact.name || "nous avons bien reçu votre brief"}.</h1>
         <p className="mt-3 text-slate-600">
-          Un récapitulatif PDF vous est envoyé. L’équipe {definition.organization.name} vous recontacte sous 24h.
+          {orgSlug === "quickly"
+            ? `Votre demande est enregistrée. L’équipe ${definition.organization.name} la traite directement.`
+            : `Un récapitulatif PDF vous est envoyé. L’équipe ${definition.organization.name} vous recontacte sous 24h.`}
         </p>
         {done.label ? (
           <p className="mt-6 text-sm text-slate-500">Référence interne · qualification {done.label}</p>
@@ -692,16 +717,27 @@ export function ConfiguratorApp({
     );
   }
 
+  const embedChat = Boolean(embedded && showChat && !showWizard);
+
   return (
-    <div className={theme.themed ? "min-h-full" : "min-h-full bg-slate-50"} style={theme.style}>
+    <div
+      className={
+        embedded
+          ? `flex h-full min-h-0 flex-col overflow-hidden ${theme.themed ? "" : "bg-slate-50"}`
+          : theme.themed
+            ? "min-h-full"
+            : "min-h-full bg-slate-50"
+      }
+      style={theme.style}
+    >
       <header
         className={
           theme.themed
-            ? "border-b border-black/10"
-            : "border-b border-slate-200 bg-slate-950 text-white"
+            ? "shrink-0 border-b border-black/10"
+            : "shrink-0 border-b border-slate-200 bg-slate-950 text-white"
         }
       >
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-4">
+        <div className={`mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 ${embedded ? "px-4 py-2.5" : "px-5 py-4"}`}>
           <div>
             <p
               className={
@@ -713,7 +749,9 @@ export function ConfiguratorApp({
             >
               {definition.organization.name}
             </p>
-            <p className="text-lg font-medium">{definition.configurator.name}</p>
+            <p className={embedded ? "text-base font-medium leading-tight" : "text-lg font-medium"}>
+              {definition.configurator.name}
+            </p>
           </div>
           {isCatalog && !done ? (
             <p className={`rounded-full px-3 py-1 text-sm ${theme.themed ? "bg-black/5" : "bg-white/10"}`}>
@@ -778,7 +816,13 @@ export function ConfiguratorApp({
         ) : null}
       </header>
 
-      <main className="mx-auto max-w-5xl px-5 py-8">
+      <main
+        className={
+          embedded
+            ? `mx-auto flex w-full max-w-5xl min-h-0 flex-1 flex-col px-4 py-3 ${embedChat ? "overflow-hidden" : "overflow-y-auto"}`
+            : "mx-auto max-w-5xl px-5 py-8"
+        }
+      >
         {session.currentStep >= 1 && !session.submittedQuoteId ? (
           <ContactCapture
             draft={session.contactDraft}
@@ -797,7 +841,7 @@ export function ConfiguratorApp({
           />
         ) : null}
         {showChat ? (
-          <div className="space-y-6">
+          <div className={embedded ? "flex min-h-0 flex-1 flex-col gap-4" : "space-y-6"}>
             <ChatPanel
               messages={session.chatMessages}
               value={chatInput}
@@ -808,6 +852,7 @@ export function ConfiguratorApp({
               orgName={definition.organization.name}
               accent={accent}
               themed={theme.themed}
+              embedded={embedded}
             />
             {showChatSuggestions ? (
               <SuggestionsPanel
@@ -1205,6 +1250,7 @@ function CustomizePanel({
                 {product.description ? (
                   <ProductHtml html={product.description} className="mt-1 text-slate-500" clamp />
                 ) : null}
+                <ProductSpecs specs={product.specs} />
               </div>
             </div>
             <div className="flex shrink-0 items-center gap-2">
@@ -1325,6 +1371,7 @@ function ChatPanel({
   orgName,
   accent,
   themed,
+  embedded,
 }: {
   messages: { role: "user" | "assistant"; content: string }[];
   value: string;
@@ -1335,10 +1382,15 @@ function ChatPanel({
   orgName: string;
   accent: string;
   themed: boolean;
+  embedded?: boolean;
 }) {
   return (
-    <section className="mx-auto max-w-2xl">
-      <div className="min-h-[22rem] space-y-3 rounded-2xl border border-slate-200 bg-white p-5">
+    <section className={embedded ? "flex min-h-0 flex-1 flex-col" : "mx-auto max-w-2xl"}>
+      <div
+        className={`space-y-3 rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 ${
+          embedded ? "min-h-0 flex-1 overflow-y-auto" : "min-h-[22rem]"
+        }`}
+      >
         {messages.length === 0 ? (
           <div className="space-y-2 text-slate-600">
             <p className="font-medium text-slate-900">
@@ -1363,7 +1415,7 @@ function ChatPanel({
         )}
       </div>
       <form
-        className="mt-4 flex gap-2"
+        className={`flex gap-2 ${embedded ? "mt-3 shrink-0" : "mt-4"}`}
         onSubmit={(e) => {
           e.preventDefault();
           onSend();
@@ -1373,7 +1425,7 @@ function ChatPanel({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="Décrivez votre besoin…"
-          className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2"
+          className="min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-base"
         />
         <button
           type="submit"

@@ -128,7 +128,7 @@ async function assembleDefinition(
       slug: configurator.slug,
       sector: configurator.sector,
       wizardEnabled: configurator.wizard_enabled,
-      chatEnabled: configurator.chat_enabled,
+      chatEnabled: configurator.chat_enabled || org.slug === "quickly",
       kind: parseFunnelKind(configurator.theme, configurator.wizard_enabled, configurator.chat_enabled),
       quoteMode: resolveQuoteMode({
         shopTheme: shopScope?.shopTheme,

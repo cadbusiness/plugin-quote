@@ -17,11 +17,11 @@ function scoreProduct(product: Product, tokens: string[]): number {
       product.name,
       product.description ?? "",
       product.category ?? "",
+      product.sku ?? "",
+      product.externalId ?? "",
       ...(product.tags ?? []),
       ...(product.specs ?? []).flatMap((spec) => [spec.label, spec.value, spec.unit ?? ""]),
-    ].join(
-      " ",
-    ),
+    ].join(" "),
   );
   let score = 0;
   for (const token of tokens) {

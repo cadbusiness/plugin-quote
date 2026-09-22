@@ -10,6 +10,7 @@ import type { ContactPayload, Customization } from "@/lib/wizard/types";
 import type { Json } from "@/lib/db/database.types";
 import { createProspectAccess } from "@/lib/prospect/access";
 import { publishedMemberSpaceUrl } from "@/lib/members/public";
+import { shouldSendQuoteFallback } from "@/lib/workflows/quickly-drafts";
 
 export async function submitQuote(input: {
   sessionId: string;
@@ -235,7 +236,7 @@ export async function submitQuote(input: {
       priceMax: selected?.priceMax ?? null,
       pdf: pdfBuffer,
     });
-    if (started.started === 0) {
+    if (shouldSendQuoteFallback({ orgSlug: org?.slug, workflowsStarted: started.started })) {
       await sendQuoteEmails({
         organization: org!,
         quote,
@@ -251,21 +252,23 @@ export async function submitQuote(input: {
     }
   } catch (error) {
     console.error("Workflow start failed", error);
-    try {
-      await sendQuoteEmails({
-        organization: org!,
-        quote,
-        answers,
-        suggestionName: requestName,
-        priceMin: selected?.priceMin ?? null,
-        priceMax: selected?.priceMax ?? null,
-        pdf: pdfBuffer,
-        suiviUrl: access?.url,
-        pin: access?.pin,
-        membresUrl,
-      });
-    } catch (emailError) {
-      console.error("Email send failed", emailError);
+    if (shouldSendQuoteFallback({ orgSlug: org?.slug, workflowsStarted: 0 })) {
+      try {
+        await sendQuoteEmails({
+          organization: org!,
+          quote,
+          answers,
+          suggestionName: requestName,
+          priceMin: selected?.priceMin ?? null,
+          priceMax: selected?.priceMax ?? null,
+          pdf: pdfBuffer,
+          suiviUrl: access?.url,
+          pin: access?.pin,
+          membresUrl,
+        });
+      } catch (emailError) {
+        console.error("Email send failed", emailError);
+      }
     }
   }
 

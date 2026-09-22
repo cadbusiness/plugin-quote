@@ -91,12 +91,16 @@ function quotebuilder_register_block() {
                 'org' => $attributes['org'] ?? '',
                 'id' => $attributes['id'] ?? '',
                 'height' => $attributes['height'] ?? '720px',
+                'besoin' => $attributes['besoin'] ?? '',
+                'add' => $attributes['add'] ?? '',
             ]);
         },
         'attributes' => [
             'org' => ['type' => 'string', 'default' => ''],
             'id' => ['type' => 'string', 'default' => ''],
             'height' => ['type' => 'string', 'default' => '720px'],
+            'besoin' => ['type' => 'string', 'default' => ''],
+            'add' => ['type' => 'string', 'default' => ''],
         ],
     ]);
 }
