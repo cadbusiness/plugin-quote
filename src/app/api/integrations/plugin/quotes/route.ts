@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { authenticatePlugin, unauthorized } from "@/lib/integrations/plugin";
+import { ingestPluginQuote, pluginQuoteErrorBody } from "@/lib/integrations/plugin-quote";
 import { createServiceClient } from "@/lib/supabase/service";
+import { clientIp, rateLimit, rateLimitResponse } from "@/lib/security/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -30,4 +32,27 @@ export async function GET(req: Request) {
       createdAt: quote.created_at,
     })),
   });
+}
+
+/** WordPress pushes a stored request. Same Bearer token as GET. No HMAC. */
+export async function POST(req: Request) {
+  const limited = rateLimit(`plugin:quotes:${clientIp(req)}`, 30, 60000);
+  if (!limited.ok) return rateLimitResponse(limited.retryAfterSec);
+
+  const row = await authenticatePlugin(req);
+  if (!row) return unauthorized();
+
+  const body = await req.json().catch(() => null);
+  try {
+    const result = await ingestPluginQuote(row, body);
+    if (!result.ok) {
+      return NextResponse.json(pluginQuoteErrorBody(result.error, "expected" in result ? result.expected : undefined), {
+        status: result.status,
+      });
+    }
+    return NextResponse.json({ ok: true, quoteId: result.quoteId, alreadySubmitted: result.alreadySubmitted });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Demande impossible";
+    return NextResponse.json({ error: message }, { status: 400 });
+  }
 }
