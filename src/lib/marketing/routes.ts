@@ -2,6 +2,8 @@ export type MarketingRoute = {
   path: string;
   changeFrequency: "weekly" | "monthly" | "yearly";
   priority: number;
+  /** Date ISO si la route n’est pas un article (les articles prennent `publishedAt`). */
+  lastModified?: string;
 };
 
 /** Public marketing URLs that return 200 and should be indexed. */
@@ -32,6 +34,8 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   { path: "/blog/bibliotheque-lignes-kits-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/remise-commerciale-marge-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/blog/preremplir-devis-url-parametres", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/blog/fiche-produit-b2b-devis-unifie", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/acomptes-echeances-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/validite-expiration-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/options-variantes-alternatives-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
@@ -68,6 +72,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/outils/calculateur-acompte-devis", changeFrequency: "monthly", priority: 0.7 },
   { path: "/outils/estimateur-gain-temps-catalogue-devis", changeFrequency: "monthly", priority: 0.7 },
   { path: "/outils/calculateur-seuil-remise-marge", changeFrequency: "monthly", priority: 0.7 },
+  {
+    path: "/outils/generateur-url-prefill-devis",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-09-22",
+  },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },
 ];

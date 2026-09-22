@@ -35,6 +35,7 @@ import { computeCoutDevisExpires } from "./cout-devis-expires";
 import { computeAcompteDevis } from "./acompte-devis";
 import { computeGainTempsCatalogue } from "./gain-temps-catalogue";
 import { computeSeuilRemiseMarge } from "./seuil-remise-marge";
+import { buildPrefillUrl } from "./prefill-url";
 import { MARKETING_ROUTES } from "./routes";
 import sitemap from "../../app/sitemap";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
@@ -93,6 +94,7 @@ for (const required of [
   "/outils/calculateur-acompte-devis",
   "/outils/estimateur-gain-temps-catalogue-devis",
   "/outils/calculateur-seuil-remise-marge",
+  "/outils/generateur-url-prefill-devis",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
@@ -104,6 +106,8 @@ for (const required of [
   "/secteurs/funnel-devis-pergola-terrasse",
   "/blog/bibliotheque-lignes-kits-devis-b2b",
   "/blog/remise-commerciale-marge-devis-b2b",
+  "/blog/preremplir-devis-url-parametres",
+  "/blog/fiche-produit-b2b-devis-unifie",
   "/blog/acomptes-echeances-devis-b2b",
   "/blog/validite-expiration-devis-b2b",
   "/blog/options-variantes-alternatives-devis-b2b",
@@ -128,7 +132,7 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 23);
+assert.equal(BLOG_POSTS.length, 25);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "bibliotheque-lignes-kits-devis-b2b")?.tags, [
   "catalogue",
   "funnel",
@@ -161,6 +165,40 @@ assert.equal(BLOG_POSTS.find((post) => post.slug === "remise-commerciale-marge-d
 assert.equal(BLOG_POSTS.find((post) => post.slug === "remise-commerciale-marge-devis-b2b")?.publishedAt, "2026-09-22");
 assert.equal(BLOG_POSTS.find((post) => post.slug === "remise-commerciale-marge-devis-b2b")?.pinned, false);
 assert.equal(BLOG_FAQ["remise-commerciale-marge-devis-b2b"]?.length, 10);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "preremplir-devis-url-parametres")?.tags, [
+  "funnel",
+  "integrations",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "preremplir-devis-url-parametres")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "preremplir-devis-url-parametres")?.cover,
+  "/images/blog/installer-widget-devis-wordpress-javascript/08-integrations.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "preremplir-devis-url-parametres")?.readingMinutes, 12);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "preremplir-devis-url-parametres")?.publishedAt, "2026-09-22");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "preremplir-devis-url-parametres")?.pinned, false);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "preremplir-devis-url-parametres")?.path, "/blog/preremplir-devis-url-parametres");
+assert.equal(BLOG_FAQ["preremplir-devis-url-parametres"]?.length, 10);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "fiche-produit-b2b-devis-unifie")?.tags, [
+  "catalogue",
+  "integrations",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "fiche-produit-b2b-devis-unifie")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "fiche-produit-b2b-devis-unifie")?.cover,
+  "/images/blog/sync-catalogue-woocommerce-shopify-parcours-devis/06-produits.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "fiche-produit-b2b-devis-unifie")?.readingMinutes, 11);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "fiche-produit-b2b-devis-unifie")?.publishedAt, "2026-09-22");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "fiche-produit-b2b-devis-unifie")?.pinned, false);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "fiche-produit-b2b-devis-unifie")?.path, "/blog/fiche-produit-b2b-devis-unifie");
+assert.equal(BLOG_FAQ["fiche-produit-b2b-devis-unifie"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "acomptes-echeances-devis-b2b")?.tags, [
   "funnel",
   "relances",
@@ -413,9 +451,9 @@ assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tag
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 12);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 12);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 4);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 4);
-assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 6);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 5);
+assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);
 assert.equal(midArticleHeadingIndex(12), 5);
 assert.ok(trimMetaDescription(BLOG_POSTS[0]!.description).length <= 155);
 assert.equal(BLOG_UI.tryFree, "Essayer gratuitement");
@@ -643,6 +681,34 @@ const requiredSources = {
     "/blog/revue-pipeline-devis-b2b",
     "/outils/calculateur-seuil-remise-marge",
     "/outils/simulateur-impact-remise-devis",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "preremplir-devis-url-parametres.md": [
+    "/blog/preremplir-devis-url-parametres/img-1.png",
+    "/blog/preremplir-devis-url-parametres/img-2.png",
+    "/blog/preremplir-devis-url-parametres/img-3.png",
+    "/blog/preremplir-devis-url-parametres/img-4.png",
+    "/blog/preremplir-devis-url-parametres/img-5.png",
+    "/blog/preremplir-devis-url-parametres/img-6.png",
+    "/blog/preremplir-devis-url-parametres/img-7.png",
+    "/outils/generateur-url-prefill-devis",
+    "/blog/fiche-produit-b2b-devis-unifie",
+    "/blog/installer-widget-devis-wordpress-javascript",
+    "/c/demo/rayonnage",
+    "/c/quickly/rayonnage?besoin=rayonnages",
+    "/signup?plan=free",
+  ],
+  "fiche-produit-b2b-devis-unifie.md": [
+    "/blog/fiche-produit-b2b-devis-unifie/img-1.png",
+    "/blog/fiche-produit-b2b-devis-unifie/img-2.png",
+    "/blog/fiche-produit-b2b-devis-unifie/img-3.png",
+    "/blog/fiche-produit-b2b-devis-unifie/img-4.png",
+    "/blog/fiche-produit-b2b-devis-unifie/img-5.png",
+    "/blog/fiche-produit-b2b-devis-unifie/img-6.png",
+    "/blog/fiche-produit-b2b-devis-unifie/img-7.png",
+    "/blog/preremplir-devis-url-parametres",
+    "/blog/sync-catalogue-woocommerce-shopify-parcours-devis",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -993,6 +1059,33 @@ for (const file of blogFiles) {
     );
   }
   assert.doesNotMatch(remiseBody, EM_DASH);
+}
+
+{
+  const prefillRaw = readFileSync(join(blogDir, "preremplir-devis-url-parametres.md"), "utf8");
+  assert.ok(prefillRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const prefillBody = stripFrontmatter(prefillRaw);
+  assert.ok(
+    prefillBody.startsWith("# Préremplir un devis via l’URL"),
+    "frontmatter must be stripped before render",
+  );
+  assert.ok(prefillBody.split(/\s+/).filter(Boolean).length >= 1800, "prefill article body too short");
+  assert.match(prefillBody, /signup\?plan=free/);
+  assert.match(prefillBody, /\/c\/demo\/rayonnage/);
+  assert.match(prefillBody, /\/c\/quickly\/rayonnage\?besoin=rayonnages/);
+}
+
+{
+  const ficheRaw = readFileSync(join(blogDir, "fiche-produit-b2b-devis-unifie.md"), "utf8");
+  assert.ok(ficheRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const ficheBody = stripFrontmatter(ficheRaw);
+  assert.ok(
+    ficheBody.startsWith("# Fiche produit B2B unifiée pour le devis"),
+    "frontmatter must be stripped before render",
+  );
+  assert.ok(ficheBody.split(/\s+/).filter(Boolean).length >= 1800, "fiche article body too short");
+  assert.match(ficheBody, /signup\?plan=free/);
+  assert.match(ficheBody, /\/c\/demo\/rayonnage/);
 }
 
 {
@@ -1653,6 +1746,56 @@ const expiredAdjust = computeCoutDevisExpires({
 });
 assert.match(expiredAdjust.tip, /Ajustez le % d’expiration/);
 
+const prefillEmpty = buildPrefillUrl({
+  baseUrl: "https://www.quotebuilder.co/c/quickly/rayonnage",
+  besoin: "",
+  add: "",
+  product: "",
+});
+assert.equal(prefillEmpty.url, "https://www.quotebuilder.co/c/quickly/rayonnage");
+assert.equal(prefillEmpty.query, "");
+assert.equal(prefillEmpty.shortcode, '[quotebuilder org="quickly" id="rayonnage"]');
+assert.match(prefillEmpty.tip, /au moins un token/);
+
+const prefillCombo = buildPrefillUrl({
+  baseUrl: "https://www.quotebuilder.co/c/quickly/rayonnage/?utm_source=ads",
+  besoin: "rayonnages, cantilever",
+  add: "SKU-RAY-200",
+  product: "",
+});
+assert.equal(
+  prefillCombo.url,
+  "https://www.quotebuilder.co/c/quickly/rayonnage?besoin=rayonnages%2Ccantilever&add=SKU-RAY-200",
+);
+assert.equal(prefillCombo.query, "?besoin=rayonnages%2Ccantilever&add=SKU-RAY-200");
+assert.match(prefillCombo.tip, /Combinaison gamme/);
+
+const prefillEmbed = buildPrefillUrl({
+  baseUrl: "https://www.quotebuilder.co/embed/demo/rayonnage",
+  besoin: "",
+  add: "",
+  product: "SKU-PACK-200",
+});
+assert.equal(
+  prefillEmbed.url,
+  "https://www.quotebuilder.co/embed/demo/rayonnage?product=SKU-PACK-200",
+);
+assert.equal(prefillEmbed.shortcode, '[quotebuilder org="demo" id="rayonnage"]');
+assert.match(prefillEmbed.tip, /catalogue synchronisé/);
+
+const sitemapEntries = sitemap();
+for (const expected of [
+  { path: "/blog/preremplir-devis-url-parametres", priority: 0.8, lastmod: "2026-09-22" },
+  { path: "/blog/fiche-produit-b2b-devis-unifie", priority: 0.8, lastmod: "2026-09-22" },
+  { path: "/outils/generateur-url-prefill-devis", priority: 0.7, lastmod: "2026-09-22" },
+]) {
+  const entry = sitemapEntries.find((item) => item.url === `https://www.quotebuilder.co${expected.path}`);
+  assert.ok(entry, `sitemap missing ${expected.path}`);
+  assert.equal(entry?.priority, expected.priority);
+  assert.equal(entry?.lastModified, expected.lastmod);
+}
+assert.ok(paths.includes("/outils/generateur-url-prefill-devis"));
+
 const acompteDefault = computeAcompteDevis({
   ht: 12000,
   tva: 20,
@@ -2011,6 +2154,9 @@ const llmsPaths = [
   "/outils/estimateur-gain-temps-catalogue-devis",
   "/blog/remise-commerciale-marge-devis-b2b",
   "/outils/calculateur-seuil-remise-marge",
+  "/blog/preremplir-devis-url-parametres",
+  "/blog/fiche-produit-b2b-devis-unifie",
+  "/outils/generateur-url-prefill-devis",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -2307,13 +2453,15 @@ for (const root of marketingRoots) {
 }
 assert.equal(CREAM_HEX, "#F6F0E8");
 
-const sitemapEntries = sitemap();
 for (const [path, lastmod] of [
   ["/blog/bibliotheque-lignes-kits-devis-b2b", "2026-09-23"],
   ["/secteurs/funnel-devis-pergola-terrasse", "2026-09-23"],
   ["/outils/estimateur-gain-temps-catalogue-devis", "2026-09-23"],
   ["/blog/remise-commerciale-marge-devis-b2b", "2026-09-22"],
   ["/outils/calculateur-seuil-remise-marge", "2026-09-22"],
+  ["/blog/preremplir-devis-url-parametres", "2026-09-22"],
+  ["/blog/fiche-produit-b2b-devis-unifie", "2026-09-22"],
+  ["/outils/generateur-url-prefill-devis", "2026-09-22"],
 ] as const) {
   const entry = sitemapEntries.find((item) => item.url === `https://www.quotebuilder.co${path}`);
   assert.ok(entry, `sitemap missing ${path}`);

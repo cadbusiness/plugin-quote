@@ -89,6 +89,7 @@ export const BLOG_TOOL_EXPIRED_QUOTES = "/outils/simulateur-cout-devis-expires";
 export const BLOG_TOOL_ACOMPTE = "/outils/calculateur-acompte-devis";
 export const BLOG_TOOL_CATALOG_GAIN = "/outils/estimateur-gain-temps-catalogue-devis";
 export const BLOG_TOOL_SEUIL_REMISE = "/outils/calculateur-seuil-remise-marge";
+export const BLOG_TOOL_PREFILL_URL = "/outils/generateur-url-prefill-devis";
 
 export type BlogTool = {
   href: string;
@@ -182,6 +183,12 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Prix catalogue HT, coût ou marge actuelle, plancher cible, TVA. Remise max, prix plancher HT/TTC, marge restante, alerte OK/KO.",
     tags: ["funnel", "scoring"],
   },
+  {
+    href: BLOG_TOOL_PREFILL_URL,
+    title: "Générateur d’URL de préremplissage devis",
+    text: "URL de funnel avec ?besoin=, ?add= et ?product=, query seule et shortcode WordPress. Assemblage 100 % local.",
+    tags: ["funnel", "integrations"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -209,6 +216,32 @@ export const BLOG_POSTS: BlogPost[] = [
     tags: ["funnel", "scoring"],
     ctaHref: "https://www.quotebuilder.co/signup?plan=free",
     cover: "/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png",
+    pinned: false,
+  },
+  {
+    slug: "preremplir-devis-url-parametres",
+    path: "/blog/preremplir-devis-url-parametres",
+    title: "Préremplir un devis via l’URL : paramètres query, CTA WordPress et funnel embarqué",
+    description:
+      "Comment préremplir un funnel devis avec ?besoin=, ?add= et ?product= sur /c/ et /embed/, y compris depuis un shortcode WordPress. Tableau des params, règles de session, cas e-commerce et checklist QA.",
+    publishedAt: "2026-09-22",
+    readingMinutes: 12,
+    tags: ["funnel", "integrations"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/installer-widget-devis-wordpress-javascript/08-integrations.png",
+    pinned: false,
+  },
+  {
+    slug: "fiche-produit-b2b-devis-unifie",
+    path: "/blog/fiche-produit-b2b-devis-unifie",
+    title: "Fiche produit B2B unifiée pour le devis : specs, médias, mode d’emploi et sync Woo non destructive",
+    description:
+      "Structurer une fiche produit B2B pour le parcours devis : specs éditables, médias photo/plan/usage, notice et PDF (manuel, conformité, garantie), sync WooCommerce qui n’écrase pas le vide. Process commercial et checklist.",
+    publishedAt: "2026-09-22",
+    readingMinutes: 11,
+    tags: ["catalogue", "integrations"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/sync-catalogue-woocommerce-shopify-parcours-devis/06-produits.png",
     pinned: false,
   },
   {
