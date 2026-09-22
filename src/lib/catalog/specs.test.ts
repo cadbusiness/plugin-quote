@@ -14,6 +14,7 @@ assert.equal(specs.skip, undefined);
 assert.equal(specs.bad, undefined);
 assert.deepEqual(parseProductSpecs(null), {});
 assert.deepEqual(parseProductSpecs([]), {});
+assert.deepEqual(parseProductSpecs("Charge 1000 kg/niveau. Hauteur 12 m. Acier peint."), {});
 assert.deepEqual(
   orderedSpecRows(specs).map((row) => row.display),
   ["400 kg/niveau", "Acier époxy"],

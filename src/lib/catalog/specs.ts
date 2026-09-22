@@ -29,10 +29,13 @@ export type SpecSnapshot = {
 export type SpecRow = {
   key: string;
   label: string;
+  value: string;
+  unit?: string;
+  valueAlt?: string;
   display: string;
 };
 
-/** Catalogue `products.specs` jsonb: `{ charge: { label, value, unit? } }`. */
+/** Catalogue `products.specs` jsonb. Description HTML is never a source. */
 export function parseProductSpecs(value: unknown): Record<string, ProductSpec> {
   if (!value || typeof value !== "object" || Array.isArray(value)) return {};
   const specs: Record<string, ProductSpec> = {};
@@ -63,11 +66,17 @@ export function orderedSpecRows(specs: Record<string, ProductSpec>): SpecRow[] {
     ...SPEC_KEYS.filter((key) => specs[key]),
     ...Object.keys(specs).filter((key) => !preferred.has(key)),
   ];
-  return keys.map((key) => ({
-    key,
-    label: specs[key].label,
-    display: formatSpecDisplay(specs[key]),
-  }));
+  return keys.map((key) => {
+    const spec = specs[key];
+    return {
+      key,
+      label: spec.label,
+      value: spec.value,
+      unit: spec.unit,
+      valueAlt: spec.valueAlt,
+      display: formatSpecDisplay(spec),
+    };
+  });
 }
 
 export function specOptionStrings(specs: Record<string, ProductSpec>): Record<string, string> {

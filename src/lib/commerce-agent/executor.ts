@@ -102,6 +102,7 @@ export function executeQuoteTool(input: {
           priceMin: p.priceMin,
           priceMax: p.priceMax,
           category: p.category,
+          specs: p.specs ?? {},
         })),
       }));
       return {

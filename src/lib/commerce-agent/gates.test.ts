@@ -48,6 +48,20 @@ assert.equal(clampSearchLimit(0), 1);
 
 const found = searchCatalog(products, { query: "palette 800kg 6m" });
 assert.equal(found.products[0]?.id, "p-heavy");
+assert.deepEqual(found.products[0]?.specs, {});
+
+const withSpecs = searchCatalog(
+  [
+    {
+      ...products[0],
+      specs: { charge: { label: "Charge", value: "1000", unit: "kg/niveau" } },
+    },
+  ],
+  { query: "unirack" },
+);
+assert.deepEqual(withSpecs.products[0]?.specs, {
+  charge: { label: "Charge", value: "1000", unit: "kg/niveau" },
+});
 
 let provenance = emptyProvenance();
 assert.equal(canPresentConfigurations(provenance).ok, false);

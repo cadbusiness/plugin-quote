@@ -44,9 +44,11 @@ export function SpecTable({ products }: { products: SpecTableProduct[] }) {
                 className="inline-flex items-center gap-2 border border-[#e4ddd2] bg-[#f7f5f1] px-3 py-1.5 text-sm"
                 style={{ borderRadius: 999 }}
               >
-                <span style={{ color: "#0a5236" }}>{spec.label}</span>
+                <span style={{ color: "#0a5236", fontFamily: uiFont }}>{spec.label}</span>
                 <span style={{ color: "#0e6b45", fontFamily: monoFont }}>
-                  {spec.display}
+                  {spec.value}
+                  {spec.unit ? ` ${spec.unit}` : ""}
+                  {spec.valueAlt ? ` (${spec.valueAlt})` : ""}
                 </span>
               </li>
             ))}
@@ -55,11 +57,17 @@ export function SpecTable({ products }: { products: SpecTableProduct[] }) {
             <tbody>
               {product.specs.map((spec) => (
                 <tr key={spec.key} className="border-t border-[#efeae3]">
-                  <th scope="row" className="py-2 pr-4 text-left font-medium" style={{ color: "#12161a" }}>
+                  <th
+                    scope="row"
+                    className="py-2 pr-4 text-left font-medium"
+                    style={{ color: "#12161a", fontFamily: uiFont }}
+                  >
                     {spec.label}
                   </th>
                   <td className="py-2 text-right" style={{ color: "#0e6b45", fontFamily: monoFont }}>
-                    {spec.display}
+                    {spec.value}
+                    {spec.unit ? ` ${spec.unit}` : ""}
+                    {spec.valueAlt ? ` (${spec.valueAlt})` : ""}
                   </td>
                 </tr>
               ))}

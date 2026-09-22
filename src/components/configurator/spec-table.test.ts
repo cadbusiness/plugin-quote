@@ -25,7 +25,8 @@ const html = renderToStaticMarkup(
 assert.match(html, /Rayonnage palettes lourd/);
 assert.match(html, /1000 kg\/niveau/);
 assert.match(html, /1100 mm/);
-assert.match(html, /IBM Plex Mono/);
+assert.match(html, /Plus Jakarta Sans[^>]*>Charge</);
+assert.match(html, /IBM Plex Mono[^>]*>1000 kg\/niveau</);
 assert.match(html, /Space Grotesk/);
 assert.doesNotMatch(html, /font-family:[^"]*IBM Plex Mono[^"]*Plus Jakarta/);
 assert.match(html, /<table/);

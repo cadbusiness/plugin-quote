@@ -45,7 +45,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const { data: product } = await supabase
     .from("products")
     .select(
-      "id, name, sku, category, tags, description, price_min, price_max, currency, is_active, source, connection_id, external_url, archived_by_sync, synced_at, sync_lock, image_url, images, options, variants",
+      "id, name, sku, category, tags, description, price_min, price_max, currency, is_active, source, connection_id, external_url, archived_by_sync, synced_at, sync_lock, image_url, images, options, variants, specs",
     )
     .eq("id", id)
     .eq("organization_id", ctx.organization.id)
