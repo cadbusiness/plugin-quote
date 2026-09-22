@@ -2,8 +2,21 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.19.0",
+    version: "1.19.0",
+    title: "Specs produit structurées",
+    items: [
+      "Dans le funnel et l’embed, le catalogue public expose des specs structurées (charge, hauteur, profondeur, matériau, délai), séparées des choix du prospect (couleur, largeur, niveaux…).",
+      "La synchro WooCommerce écrit ces specs depuis les attributs, dimensions et meta (charge, hauteur, profondeur, matériau, délai), sans mélanger avec les variations/choix.",
+      "Les specs déjà enregistrées en base complètent le payload quand la clé n’est pas déjà dans les options.",
+      "Un choix « Hauteur » côté Woo peut aussi alimenter la hauteur max affichée en spec.",
+    ],
+    releasedAt: "2026-09-22",
+    createdAt: "2026-09-22T00:00:00.000Z",
+  },
   {
     id: "seed-1.18.0",
     version: "1.18.0",
