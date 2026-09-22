@@ -14,6 +14,8 @@ import {
   type PushableProduct,
   type ResolvedConnection,
 } from "@/lib/integrations/types";
+import { pickLeafCategory, type WooCategoryNode } from "@/lib/integrations/woo-specs";
+
 const PER_PAGE = 50;
 const TIMEOUT_MS = 25_000;
 
@@ -211,7 +213,8 @@ function mapVariants(variations: WooVariation[]): ProductVariant[] {
   }));
 }
 
-type WooCatalogContext = { currency: string; units: WooSpecUnits };
+type WooSetting = { id?: string; value?: string };
+type WooCatalogContext = { currency: string; units: WooSpecUnits; categories: WooCategoryNode[] };
 
 const contextCache = new Map<string, Promise<WooCatalogContext>>();
 
@@ -223,22 +226,53 @@ async function catalogContext(connection: ResolvedConnection): Promise<WooCatalo
   return pending;
 }
 
-async function loadCatalogContext(connection: ResolvedConnection): Promise<WooCatalogContext> {
+async function fetchCategoryTaxonomy(connection: ResolvedConnection): Promise<WooCategoryNode[]> {
+  const categories: WooCategoryNode[] = [];
   try {
-    const { data } = await wooFetch<{ id: string; value?: string }[]>(connection, "/settings/general");
-    const read = (id: string, fallback: string) => {
-      const value = data.find((row) => row.id === id)?.value;
-      return typeof value === "string" && value ? value : fallback;
-    };
+    for (let page = 1; page <= 20; page += 1) {
+      const { data, headers } = await wooFetch<{ id?: number; name?: string; parent?: number }[]>(
+        connection,
+        "/products/categories",
+        { per_page: 100, page },
+      );
+      for (const row of data) {
+        if (!row.id || !row.name) continue;
+        categories.push({ id: row.id, name: row.name, parent: row.parent ?? 0 });
+      }
+      const total = Number(headers.get("x-wp-totalpages") ?? "1") || 1;
+      if (page >= total || !data.length) break;
+    }
+  } catch {
+    // Sans taxonomie, la catégorie retombe sur le dernier libellé assigné.
+  }
+  return categories;
+}
+
+function settingValue(rows: WooSetting[], id: string) {
+  const value = rows.find((row) => row.id === id)?.value;
+  return typeof value === "string" && value ? value : undefined;
+}
+
+async function loadCatalogContext(connection: ResolvedConnection): Promise<WooCatalogContext> {
+  const categories = await fetchCategoryTaxonomy(connection);
+  try {
+    const { data } = await wooFetch<WooSetting[]>(connection, "/settings/general");
+    let dimension = settingValue(data, "woocommerce_dimension_unit") ?? "cm";
+    let weight = settingValue(data, "woocommerce_weight_unit") ?? "kg";
+    try {
+      const { data: productSettings } = await wooFetch<WooSetting[]>(connection, "/settings/products");
+      dimension = settingValue(productSettings, "woocommerce_dimension_unit") ?? dimension;
+      weight = settingValue(productSettings, "woocommerce_weight_unit") ?? weight;
+    } catch {
+      // Les unités restent celles de /settings/general, sinon cm / kg.
+    }
     return {
-      currency: read("woocommerce_currency", "EUR"),
-      units: {
-        dimension: read("woocommerce_dimension_unit", "cm"),
-        weight: read("woocommerce_weight_unit", "kg"),
-      },
+      currency: settingValue(data, "woocommerce_currency") ?? "EUR",
+      units: { dimension, weight },
+      categories,
     };
   } catch {
-    return { currency: "EUR", units: { dimension: "cm", weight: "kg" } };
+    return { currency: "EUR", units: { dimension: "cm", weight: "kg" }, categories };
   }
 }
 
@@ -247,6 +281,7 @@ function normalizeProduct(
   variations: WooVariation[],
   currency: string,
   units: WooSpecUnits = {},
+  categories: WooCategoryNode[] = [],
 ): NormalizedProduct {
   const variants = mapVariants(variations);
   const variantPrices = variants.map((v) => v.price).filter((p): p is number => p !== null);
@@ -283,7 +318,7 @@ function normalizeProduct(
     priceMax,
     currency,
     images: mapImages(product),
-    category: product.categories?.[0]?.name ?? null,
+    category: pickLeafCategory(product.categories ?? [], categories),
     tags: [
       ...(product.categories ?? []).map((c) => c.name).filter((n): n is string => Boolean(n)),
       ...(product.tags ?? []).map((t) => t.name).filter((n): n is string => Boolean(n)),
@@ -352,7 +387,7 @@ export const wooAdapter: CatalogAdapter = {
     const products: NormalizedProduct[] = [];
     for (const product of data) {
       const variations = await loadVariations(connection, product);
-      products.push(normalizeProduct(product, variations, currency, ctx.units));
+      products.push(normalizeProduct(product, variations, currency, ctx.units, ctx.categories));
     }
 
     const totalPages = Number(headers.get("x-wp-totalpages") ?? "1") || 1;
@@ -365,7 +400,7 @@ export const wooAdapter: CatalogAdapter = {
       const currency = connection.currency || ctx.currency;
       const { data } = await wooFetch<WooProduct>(connection, `/products/${externalId}`);
       const variations = await loadVariations(connection, data);
-      return normalizeProduct(data, variations, currency, ctx.units);
+      return normalizeProduct(data, variations, currency, ctx.units, ctx.categories);
     } catch (error) {
       if (error instanceof IntegrationError && error.status === 404) return null;
       throw error;
