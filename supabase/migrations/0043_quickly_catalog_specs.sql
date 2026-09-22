@@ -1,5 +1,5 @@
 -- Catalogue Quickly : gammes publiées, specs structurées dans products.options.
--- 0041_product_specs.sql ajoute déjà la colonne products.specs ; ce fichier est 0042.
+-- 0041 ajoute products.specs, 0042 est le changelog 1.18.0 ; ce fichier est 0043.
 -- N’efface aucun produit Woo : upsert de 3 SKU (sync_lock) et désactivation
 -- des seules fiches sans SKU listées plus bas. Aucun e-mail.
 
