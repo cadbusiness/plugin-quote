@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { MarketingJsonLd } from "@/components/marketing/marketing-jsonld";
 
 /** Server-only chrome: no next/image, no client shell, no Sharp. */
 export default function MarketingLiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="marketing-root min-h-dvh bg-mk-bg text-mk-ink">
+      <MarketingJsonLd />
       <header className="border-b border-mk-border bg-mk-surface">
         <div className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between gap-4 px-6">
           <Link href="/" className="text-sm font-semibold tracking-tight">
