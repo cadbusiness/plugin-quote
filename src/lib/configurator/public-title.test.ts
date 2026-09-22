@@ -50,7 +50,7 @@ const embed = funnelPageMetadata({
 assert.ok(embed);
 assert.deepEqual(embed?.title, { absolute: "Devis rayonnage — Quickly International" });
 assert.equal(embed?.openGraph && "title" in embed.openGraph ? embed.openGraph.title : null, quickly);
-assert.equal(embed?.robots && "index" in embed.robots ? embed.robots.index : null, false);
+assert.deepEqual(embed?.robots, { index: false, follow: false });
 assert.equal(embed?.alternates && "canonical" in embed.alternates ? embed.alternates.canonical : null, "https://www.quotebuilder.co/c/quickly/rayonnage");
 assert.equal(embed?.applicationName, "Quickly International");
 const serialized = JSON.stringify(embed);
