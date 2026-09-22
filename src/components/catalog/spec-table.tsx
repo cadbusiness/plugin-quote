@@ -1,4 +1,6 @@
+import { ProductSheetLinks } from "@/components/catalog/product-sheet";
 import { PRODUCT_SPEC_KEYS, type ProductSpecs } from "@/lib/catalog/specs";
+import { sheetIsEmpty, type ProductSheet } from "@/lib/catalog/sheet";
 import type { ProductSpec } from "@/lib/wizard/types";
 
 const monoFont = '"IBM Plex Mono", ui-monospace, monospace';
@@ -114,9 +116,16 @@ export function SpecTable({ specs }: { specs?: ProductSpec[] | ProductSpecs | nu
 export function QuoteSpecSheets({
   products,
 }: {
-  products: { id: string; name: string; specs?: ProductSpec[] | ProductSpecs | null }[];
+  products: {
+    id: string;
+    name: string;
+    specs?: ProductSpec[] | ProductSpecs | null;
+    sheet?: ProductSheet | null;
+  }[];
 }) {
-  const rows = products.filter((product) => specRows(product.specs).length);
+  const rows = products.filter(
+    (product) => specRows(product.specs).length > 0 || (product.sheet != null && !sheetIsEmpty(product.sheet)),
+  );
   if (!rows.length) return null;
   return (
     <div className="mt-6 space-y-4" aria-label="Fiche technique">
@@ -124,6 +133,7 @@ export function QuoteSpecSheets({
         <section key={product.id}>
           <h2 className="text-lg font-medium text-slate-950">{product.name}</h2>
           <SpecTable specs={product.specs} />
+          <ProductSheetLinks sheet={product.sheet} compact />
         </section>
       ))}
     </div>

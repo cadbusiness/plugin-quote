@@ -16,6 +16,15 @@ const html = renderToStaticMarkup(
         ],
       },
       { id: "empty", name: "Sans fiche", specs: [] },
+      {
+        id: "notice",
+        name: "Notice seule",
+        specs: [],
+        sheet: {
+          manualText: "Assembler les échelles avant les lisses.",
+          documents: [{ role: "manual", src: "https://cdn.example/notice.pdf", label: "Notice PDF" }],
+        },
+      },
     ],
   }),
 );
@@ -25,6 +34,9 @@ assert.match(html, /1000 kg\/niveau/);
 assert.match(html, /font-family:inherit[^>]*>Charge</);
 assert.match(html, /IBM Plex Mono[^>]*>1000 kg\/niveau</);
 assert.doesNotMatch(html, /Sans fiche/);
+assert.match(html, /Notice seule/);
+assert.match(html, /Notice PDF/);
+assert.match(html, /Assembler les échelles/);
 assert.ok(html.indexOf("Charge") < html.indexOf("Délai indicatif"));
 
 const alt = renderToStaticMarkup(
