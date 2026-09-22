@@ -227,11 +227,11 @@ function DisconnectedBanner({
 }) {
   return (
     <div className="flex flex-wrap items-start justify-between gap-4 bg-slate-900 px-4 py-5 text-white lg:px-6">
-      <div className="min-w-0 max-w-3xl">
+      <div className="min-w-0 flex-1">
         <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-400">
           Google Ads · non connecté
         </p>
-        <p className="mt-1.5 text-xl font-semibold tracking-tight sm:text-2xl">{title}</p>
+        <p className="mt-1.5 text-base font-semibold tracking-tight lg:whitespace-nowrap lg:text-lg">{title}</p>
         <p className="mt-1.5 text-sm text-slate-300">{detail}</p>
       </div>
       <div className="flex shrink-0 flex-col items-end gap-2">

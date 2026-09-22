@@ -41,37 +41,37 @@ export function RfqForm({
   const title = shopName ? `Demander un devis — ${shopName}` : "Demander un devis";
 
   return (
-    <div className="mx-auto max-w-3xl px-5 py-8">
+    <div className="mx-auto max-w-3xl px-5 py-10">
       {!embedded ? (
         <p
           className={
             themed
-              ? "text-xs uppercase tracking-[0.16em]"
-              : "text-xs uppercase tracking-[0.16em] text-amber-600"
+              ? "text-[11px] font-semibold uppercase tracking-[0.16em]"
+              : "text-[11px] font-semibold uppercase tracking-[0.16em] text-mk-accent"
           }
           style={themed ? { color: accent } : undefined}
         >
           {orgName}
         </p>
       ) : null}
-      <h1 className="mt-2 text-3xl font-semibold tracking-tight">{title}</h1>
-      <p className={themed ? "mt-2 opacity-70" : "mt-2 text-slate-600"}>
+      <h1 className="mt-2 text-3xl font-semibold tracking-tight text-mk-ink">{title}</h1>
+      <p className={themed ? "mt-2 opacity-70" : "mt-2 text-mk-faint"}>
         Décrivez le besoin. Les produits du catalogue sont facultatifs. Même dossier côté vendeur.
       </p>
 
-      <label className="mt-8 block text-sm">
-        <span className="mb-1.5 block font-medium">Votre besoin</span>
+      <label className="mt-9 block text-sm">
+        <span className="mb-1.5 block font-semibold text-mk-ink">Votre besoin</span>
         <textarea
           value={need}
           onChange={(event) => onNeedChange(event.target.value)}
           rows={5}
           placeholder="Quantités, contraintes, délai, usage…"
-          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 outline-none ring-amber-500/30 focus:ring-4"
+          className="w-full rounded-xl border border-mk-border bg-white px-3.5 py-2.5 text-mk-ink outline-none transition focus:border-mk-accent focus:ring-4 focus:ring-mk-accent/15"
         />
         {errors.need ? <p className="mt-2 text-sm text-red-600">{errors.need}</p> : null}
       </label>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+      <div className="mt-9 grid gap-5 sm:grid-cols-2">
         <RfqField
           label="Nom"
           value={contact.name ?? ""}
@@ -95,7 +95,7 @@ export function RfqForm({
           value={contact.company ?? ""}
           onChange={(value) => onContactChange({ company: value })}
         />
-        <label className="sm:col-span-2 flex items-start gap-2 text-sm text-slate-600">
+        <label className="sm:col-span-2 flex items-start gap-2.5 text-sm text-mk-faint">
           <input
             type="checkbox"
             className="mt-1"
@@ -110,9 +110,9 @@ export function RfqForm({
       </div>
 
       {products.length ? (
-        <section className="mt-10">
-          <h2 className="text-lg font-medium">Produits (optionnel)</h2>
-          <p className={themed ? "mt-1 text-sm opacity-70" : "mt-1 text-sm text-slate-600"}>
+        <section className="mt-12 border-t border-mk-border pt-8">
+          <h2 className="text-lg font-semibold tracking-tight text-mk-ink">Produits (optionnel)</h2>
+          <p className={themed ? "mt-1 text-sm opacity-70" : "mt-1 text-sm text-mk-faint"}>
             Le catalogue affiché est celui de cette boutique.
           </p>
           <CatalogBrowse
@@ -128,8 +128,8 @@ export function RfqForm({
 
       {errors.submit ? <p className="mt-6 text-sm text-red-600">{errors.submit}</p> : null}
 
-      <div className="mt-8 flex items-center justify-between gap-4">
-        <p className="text-sm text-slate-500">
+      <div className="mt-9 flex items-center justify-between gap-4 border-t border-mk-border pt-6">
+        <p className="text-sm text-mk-faint">
           {lines ? `${lines} article${lines > 1 ? "s" : ""} dans la demande` : "Sans ligne catalogue"}
         </p>
         <button
@@ -138,8 +138,8 @@ export function RfqForm({
           disabled={busy}
           className={
             themed
-              ? "rounded-lg px-5 py-2.5 text-sm font-medium text-white disabled:opacity-50"
-              : "rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
+              ? "rounded-full px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 disabled:opacity-50"
+              : "rounded-full bg-mk-accent px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-mk-accent-hover disabled:opacity-50"
           }
           style={themed ? { background: accent } : undefined}
         >
@@ -165,12 +165,12 @@ function RfqField({
 }) {
   return (
     <label className="block text-sm">
-      <span className="mb-1.5 block text-slate-600">{label}</span>
+      <span className="mb-1.5 block font-medium text-mk-ink">{label}</span>
       <input
         type={type}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 outline-none ring-amber-500/30 focus:ring-4"
+        className="w-full rounded-xl border border-mk-border bg-white px-3.5 py-2.5 text-mk-ink outline-none transition focus:border-mk-accent focus:ring-4 focus:ring-mk-accent/15"
       />
       {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
     </label>

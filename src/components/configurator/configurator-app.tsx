@@ -615,17 +615,24 @@ export function ConfiguratorApp({
   }
 
   if (loading) {
-    return <div className="flex min-h-[28rem] items-center justify-center text-slate-500">Chargement…</div>;
+    return (
+      <div className="flex min-h-[28rem] items-center justify-center">
+        <div className="flex items-center gap-2.5 text-sm text-mk-faint">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-mk-accent" />
+          Chargement…
+        </div>
+      </div>
+    );
   }
   if (!definition) {
     return (
-      <div className="p-8 text-center text-slate-500">
+      <div className="p-8 text-center text-mk-faint">
         {shopSlug ? "Catalogue de cette boutique introuvable." : "Configurateur introuvable."}
       </div>
     );
   }
   if (!session) {
-    return <div className="p-8 text-center text-slate-500">Impossible de démarrer la session.</div>;
+    return <div className="p-8 text-center text-mk-faint">Impossible de démarrer la session.</div>;
   }
 
   const theme = resolveConfiguratorTheme(definition.configurator.theme.accent, themeOverride);
@@ -658,14 +665,19 @@ export function ConfiguratorApp({
 
   if (done) {
     return (
-      <div className={`mx-auto max-w-xl px-6 py-16 text-center ${embedded ? "" : ""}`}>
-        <p className="text-sm font-medium uppercase tracking-wide text-amber-600">Demande envoyée</p>
-        <h1 className="mt-2 text-3xl font-semibold">Merci, {contact.name || "nous avons bien reçu votre brief"}.</h1>
-        <p className="mt-3 text-slate-600">
+      <div className={`mx-auto max-w-xl px-6 py-20 text-center ${embedded ? "" : ""}`}>
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        </div>
+        <p className="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-mk-accent">Demande envoyée</p>
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-mk-ink">Merci, {contact.name || "nous avons bien reçu votre brief"}.</h1>
+        <p className="mt-3 text-mk-faint">
           Un récapitulatif PDF vous est envoyé. L’équipe {definition.organization.name} vous recontacte sous 24h.
         </p>
         {done.label ? (
-          <p className="mt-6 text-sm text-slate-500">Référence interne · qualification {done.label}</p>
+          <p className="mt-6 text-sm text-mk-faint">Référence interne · qualification {done.label}</p>
         ) : null}
       </div>
     );
@@ -673,7 +685,7 @@ export function ConfiguratorApp({
 
   if (isRfq) {
     return (
-      <div className={theme.themed ? "min-h-full" : "min-h-full bg-slate-50"} style={theme.style}>
+      <div className={theme.themed ? "min-h-full" : "min-h-full bg-mk-bg"} style={theme.style}>
         <RfqForm
           orgName={definition.organization.name}
           shopName={embedded ? undefined : definition.configurator.name}
@@ -696,30 +708,30 @@ export function ConfiguratorApp({
   }
 
   return (
-    <div className={theme.themed ? "min-h-full" : "min-h-full bg-slate-50"} style={theme.style}>
+    <div className={theme.themed ? "min-h-full" : "min-h-full bg-mk-bg"} style={theme.style}>
       <header
         className={
           theme.themed
             ? "border-b border-black/10"
-            : "border-b border-slate-200 bg-slate-950 text-white"
+            : "border-b border-white/5 bg-mk-dark text-white"
         }
       >
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-4">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-5">
           <div>
             <p
               className={
                 theme.themed
-                  ? "text-xs uppercase tracking-[0.16em]"
-                  : "text-xs uppercase tracking-[0.16em] text-amber-400"
+                  ? "text-[11px] font-semibold uppercase tracking-[0.16em]"
+                  : "text-[11px] font-semibold uppercase tracking-[0.16em] text-mk-accent"
               }
               style={theme.themed ? { color: accent } : undefined}
             >
               {definition.organization.name}
             </p>
-            <p className="text-lg font-medium">{definition.configurator.name}</p>
+            <p className="mt-0.5 text-lg font-medium tracking-tight">{definition.configurator.name}</p>
           </div>
           {isCatalog && !done ? (
-            <p className={`rounded-full px-3 py-1 text-sm ${theme.themed ? "bg-black/5" : "bg-white/10"}`}>
+            <p className={`rounded-full px-3.5 py-1.5 text-sm font-medium ${theme.themed ? "bg-black/5" : "bg-white/10"}`}>
               {quoteLineCount(session.customization)} au devis
             </p>
           ) : null}
@@ -728,12 +740,12 @@ export function ConfiguratorApp({
               <button
                 type="button"
                 onClick={() => switchMode("wizard")}
-                className={`rounded-full px-3 py-1 ${
+                className={`rounded-full px-3.5 py-1.5 font-medium transition ${
                   session.mode === "wizard"
                     ? theme.themed
                       ? "text-white"
-                      : "bg-white text-slate-950"
-                    : ""
+                      : "bg-white text-mk-ink shadow-sm"
+                    : "text-white/70 hover:text-white"
                 }`}
                 style={theme.themed && session.mode === "wizard" ? { background: accent } : undefined}
               >
@@ -742,12 +754,12 @@ export function ConfiguratorApp({
               <button
                 type="button"
                 onClick={() => switchMode("chat")}
-                className={`rounded-full px-3 py-1 ${
+                className={`rounded-full px-3.5 py-1.5 font-medium transition ${
                   session.mode === "chat"
                     ? theme.themed
                       ? "text-white"
-                      : "bg-white text-slate-950"
-                    : ""
+                      : "bg-white text-mk-ink shadow-sm"
+                    : "text-white/70 hover:text-white"
                 }`}
                 style={theme.themed && session.mode === "chat" ? { background: accent } : undefined}
               >
@@ -757,15 +769,15 @@ export function ConfiguratorApp({
           ) : null}
         </div>
         {showWizard ? (
-          <div className="mx-auto max-w-5xl px-5 pb-4">
-            <div className="flex gap-2">
+          <div className="mx-auto max-w-5xl px-5 pb-5">
+            <div className="flex gap-1.5">
               {definition.steps.map((s, i) => (
                 <div
                   key={s.id}
-                  className={`h-1 flex-1 rounded-full ${theme.themed ? "bg-black/10" : "bg-white/15"}`}
+                  className={`h-1.5 flex-1 overflow-hidden rounded-full ${theme.themed ? "bg-black/10" : "bg-white/10"}`}
                 >
                   <div
-                    className="h-1 rounded-full"
+                    className="h-full rounded-full transition-all duration-500 ease-out"
                     style={{
                       width: i < session.currentStep ? "100%" : i === session.currentStep ? "55%" : "0%",
                       background: accent,
@@ -774,14 +786,14 @@ export function ConfiguratorApp({
                 </div>
               ))}
             </div>
-            <p className={theme.themed ? "mt-2 text-xs opacity-70" : "mt-2 text-xs text-slate-300"}>
-              Étape {(session.currentStep ?? 0) + 1} / {definition.steps.length}, {step?.title}
+            <p className={theme.themed ? "mt-2.5 text-xs opacity-70" : "mt-2.5 text-xs font-medium text-white/50"}>
+              Étape {(session.currentStep ?? 0) + 1} / {definition.steps.length} · {step?.title}
             </p>
           </div>
         ) : null}
       </header>
 
-      <main className="mx-auto max-w-5xl px-5 py-8">
+      <main className="mx-auto max-w-5xl px-5 py-10">
         {session.currentStep >= 1 && !session.submittedQuoteId ? (
           <ContactCapture
             draft={session.contactDraft}
@@ -825,8 +837,8 @@ export function ConfiguratorApp({
 
         {showWizard && step ? (
           <section>
-            <h1 className="text-3xl font-semibold tracking-tight">{step.title}</h1>
-            {step.subtitle ? <p className="mt-2 text-slate-600">{step.subtitle}</p> : null}
+            <h1 className="text-3xl font-semibold tracking-tight text-mk-ink">{step.title}</h1>
+            {step.subtitle ? <p className="mt-2.5 text-mk-faint">{step.subtitle}</p> : null}
             {step.screenType !== "customize" ? (
               <QuoteSpecSheets
                 products={definition.products.filter(
@@ -836,7 +848,7 @@ export function ConfiguratorApp({
             ) : null}
 
             {step.screenType === "questions" ? (
-              <div className="mt-8 space-y-6">
+              <div className="mt-9 space-y-7">
                 {step.questions.map((q) => (
                   <QuestionField
                     key={q.id}
@@ -888,12 +900,12 @@ export function ConfiguratorApp({
             ) : null}
 
             {step.screenType === "contact" ? (
-              <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              <div className="mt-9 grid gap-5 sm:grid-cols-2">
                 <Field label="Nom" value={contact.name} onChange={(v) => setContact({ ...contact, name: v })} />
                 <Field label="Email" type="email" value={contact.email} onChange={(v) => setContact({ ...contact, email: v })} />
                 <Field label="Téléphone" value={contact.phone} onChange={(v) => setContact({ ...contact, phone: v })} />
                 <Field label="Société" value={contact.company} onChange={(v) => setContact({ ...contact, company: v })} />
-                <label className="sm:col-span-2 flex items-start gap-2 text-sm text-slate-600">
+                <label className="sm:col-span-2 flex items-start gap-2.5 text-sm text-mk-faint">
                   <input
                     type="checkbox"
                     className="mt-1"
@@ -910,13 +922,16 @@ export function ConfiguratorApp({
             ) : null}
 
             {catalogBrowse ? null : (
-            <div className="mt-10 flex items-center justify-between">
+            <div className="mt-12 flex items-center justify-between border-t border-mk-border pt-6">
               <button
                 type="button"
                 onClick={goBack}
                 disabled={session.currentStep === 0}
-                className="text-sm text-slate-500 disabled:opacity-40"
+                className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-mk-faint transition hover:bg-mk-bg hover:text-mk-ink disabled:pointer-events-none disabled:opacity-30"
               >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
                 Retour
               </button>
               {step.screenType === "contact" ? (
@@ -926,8 +941,8 @@ export function ConfiguratorApp({
                   disabled={busy}
                   className={
                     theme.themed
-                      ? "rounded-lg px-5 py-2.5 text-sm font-medium text-white disabled:opacity-50"
-                      : "rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
+                      ? "rounded-full px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 disabled:opacity-50"
+                      : "rounded-full bg-mk-accent px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-mk-accent-hover disabled:opacity-50"
                   }
                   style={theme.themed ? { background: accent } : undefined}
                 >
@@ -939,8 +954,8 @@ export function ConfiguratorApp({
                   onClick={goNext}
                   className={
                     theme.themed
-                      ? "rounded-lg px-5 py-2.5 text-sm font-medium text-white"
-                      : "rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-medium text-white hover:bg-slate-800"
+                      ? "rounded-full px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
+                      : "rounded-full bg-mk-accent px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-mk-accent-hover"
                   }
                   style={theme.themed ? { background: accent } : undefined}
                 >
@@ -969,14 +984,22 @@ function Field({
 }) {
   return (
     <label className="block text-sm">
-      <span className="mb-1.5 block text-slate-600">{label}</span>
+      <span className="mb-1.5 block font-medium text-mk-ink">{label}</span>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 outline-none ring-amber-500/30 focus:ring-4"
+        className="w-full rounded-xl border border-mk-border bg-white px-3.5 py-2.5 text-mk-ink outline-none transition focus:border-mk-accent focus:ring-4 focus:ring-mk-accent/15"
       />
     </label>
+  );
+}
+
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
   );
 }
 
@@ -996,8 +1019,8 @@ function QuestionField({
   if (question.type === "visual_choice") {
     return (
       <div>
-        <p className="text-sm font-medium">{question.label}</p>
-        {question.helpText ? <p className="mt-1 text-sm text-slate-500">{question.helpText}</p> : null}
+        <p className="text-sm font-semibold text-mk-ink">{question.label}</p>
+        {question.helpText ? <p className="mt-1 text-sm text-mk-faint">{question.helpText}</p> : null}
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {choices.map((choice) => {
             const selected = value === choice.value;
@@ -1006,12 +1029,19 @@ function QuestionField({
                 key={choice.value}
                 type="button"
                 onClick={() => onChange(choice.value)}
-                className={`rounded-xl border p-4 text-left transition ${
-                  selected ? "border-amber-500 bg-amber-50 ring-4 ring-amber-500/15" : "border-slate-200 bg-white hover:border-slate-300"
+                className={`relative rounded-2xl border p-4 text-left shadow-sm transition-all duration-150 ${
+                  selected
+                    ? "border-mk-accent bg-mk-accent-soft ring-2 ring-mk-accent/20"
+                    : "border-mk-border bg-white hover:-translate-y-0.5 hover:border-mk-ink/20 hover:shadow-md"
                 }`}
               >
-                <p className="font-medium">{choice.label}</p>
-                {choice.description ? <p className="mt-1 text-sm text-slate-500">{choice.description}</p> : null}
+                {selected ? (
+                  <span className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-mk-accent text-white">
+                    <CheckIcon />
+                  </span>
+                ) : null}
+                <p className="pr-6 font-medium text-mk-ink">{choice.label}</p>
+                {choice.description ? <p className="mt-1 text-sm text-mk-faint">{choice.description}</p> : null}
               </button>
             );
           })}
@@ -1025,7 +1055,7 @@ function QuestionField({
     const selected = Array.isArray(value) ? value.map(String) : [];
     return (
       <div>
-        <p className="text-sm font-medium">{question.label}</p>
+        <p className="text-sm font-semibold text-mk-ink">{question.label}</p>
         <div className="mt-3 flex flex-wrap gap-2">
           {choices.map((choice) => {
             const on = selected.includes(choice.value);
@@ -1036,10 +1066,13 @@ function QuestionField({
                 onClick={() =>
                   onChange(on ? selected.filter((v) => v !== choice.value) : [...selected, choice.value])
                 }
-                className={`rounded-full border px-3 py-1.5 text-sm ${
-                  on ? "border-amber-500 bg-amber-50" : "border-slate-200 bg-white"
+                className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium shadow-sm transition-all duration-150 ${
+                  on
+                    ? "border-mk-accent bg-mk-accent-soft text-mk-accent ring-2 ring-mk-accent/15"
+                    : "border-mk-border bg-white text-mk-ink hover:border-mk-ink/25 hover:-translate-y-0.5"
                 }`}
               >
+                {on ? <CheckIcon className="-ml-0.5" /> : null}
                 {choice.label}
               </button>
             );
@@ -1053,11 +1086,11 @@ function QuestionField({
   if (question.type === "select") {
     return (
       <label className="block text-sm">
-        <span className="mb-1.5 block font-medium">{question.label}</span>
+        <span className="mb-1.5 block font-semibold text-mk-ink">{question.label}</span>
         <select
           value={typeof value === "string" ? value : ""}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2"
+          className="w-full rounded-xl border border-mk-border bg-white px-3.5 py-2.5 text-mk-ink outline-none transition focus:border-mk-accent focus:ring-4 focus:ring-mk-accent/15"
         >
           <option value="">Choisir…</option>
           {choices.map((choice) => (
@@ -1074,7 +1107,7 @@ function QuestionField({
   if (question.type === "number") {
     return (
       <label className="block text-sm">
-        <span className="mb-1.5 block font-medium">{question.label}</span>
+        <span className="mb-1.5 block font-semibold text-mk-ink">{question.label}</span>
         <div className="flex items-center gap-2">
           <input
             type="number"
@@ -1084,9 +1117,9 @@ function QuestionField({
             placeholder={question.options.placeholder}
             value={typeof value === "number" || typeof value === "string" ? String(value) : ""}
             onChange={(e) => onChange(e.target.value === "" ? null : Number(e.target.value))}
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2"
+            className="w-full rounded-xl border border-mk-border bg-white px-3.5 py-2.5 text-mk-ink outline-none transition focus:border-mk-accent focus:ring-4 focus:ring-mk-accent/15"
           />
-          {question.options.unit ? <span className="text-slate-500">{question.options.unit}</span> : null}
+          {question.options.unit ? <span className="text-mk-faint">{question.options.unit}</span> : null}
         </div>
         {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
       </label>
@@ -1095,12 +1128,12 @@ function QuestionField({
 
   return (
     <label className="block text-sm">
-      <span className="mb-1.5 block font-medium">{question.label}</span>
+      <span className="mb-1.5 block font-semibold text-mk-ink">{question.label}</span>
       <input
         value={typeof value === "string" ? value : ""}
         placeholder={question.options.placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2"
+        className="w-full rounded-xl border border-mk-border bg-white px-3.5 py-2.5 text-mk-ink outline-none transition focus:border-mk-accent focus:ring-4 focus:ring-mk-accent/15"
       />
       {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
     </label>
@@ -1124,7 +1157,12 @@ function SuggestionsPanel({
   }, []);
 
   if (!suggestions.length) {
-    return <p className="mt-8 text-slate-500">Calcul des configurations…</p>;
+    return (
+      <div className="mt-8 flex items-center gap-2.5 text-sm text-mk-faint">
+        <span className="h-2 w-2 animate-pulse rounded-full bg-mk-accent" />
+        Calcul des configurations…
+      </div>
+    );
   }
 
   return (
@@ -1136,15 +1174,19 @@ function SuggestionsPanel({
             key={s.id}
             type="button"
             onClick={() => onSelect(s.id)}
-            className={`rounded-xl border p-5 text-left ${
-              selected ? "border-amber-500 bg-amber-50 ring-4 ring-amber-500/15" : "border-slate-200 bg-white"
+            className={`rounded-2xl border p-5 text-left shadow-sm transition-all duration-150 ${
+              selected
+                ? "border-mk-accent bg-mk-accent-soft ring-2 ring-mk-accent/20"
+                : "border-mk-border bg-white hover:-translate-y-0.5 hover:shadow-md"
             }`}
           >
-            <p className="text-xs uppercase tracking-wide text-amber-700">Recommandé</p>
-            <h3 className="mt-1 text-lg font-semibold">{s.headline ?? s.name}</h3>
-            <p className="mt-2 text-sm text-slate-600">{s.description}</p>
-            <p className="mt-4 text-sm font-medium">{formatPrice(s.priceMin, s.priceMax)}</p>
-            <ul className="mt-3 space-y-2 text-sm text-slate-500">
+            <span className="inline-flex rounded-full bg-mk-accent-soft px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-mk-accent">
+              Recommandé
+            </span>
+            <h3 className="mt-3 text-lg font-semibold tracking-tight text-mk-ink">{s.headline ?? s.name}</h3>
+            <p className="mt-2 text-sm text-mk-faint">{s.description}</p>
+            <p className="mt-4 text-sm font-semibold text-mk-ink">{formatPrice(s.priceMin, s.priceMax)}</p>
+            <ul className="mt-3 space-y-2 text-sm text-mk-faint">
               {s.products.map((p) => (
                 <li key={p.id} className="flex items-center gap-2">
                   {p.imageUrl ? (
@@ -1153,7 +1195,7 @@ function SuggestionsPanel({
                       src={p.imageUrl}
                       alt=""
                       loading="lazy"
-                      className="h-9 w-9 shrink-0 rounded-md object-cover ring-1 ring-slate-200"
+                      className="h-9 w-9 shrink-0 rounded-md object-cover ring-1 ring-mk-border"
                     />
                   ) : null}
                   <span className="min-w-0 flex-1 truncate">{p.name}</span>
@@ -1195,31 +1237,31 @@ function CustomizePanel({
   const extraLines = customization.storefrontLines ?? [];
 
   return (
-    <div className="mt-8 space-y-6">
+    <div className="mt-8 space-y-4">
       {products.map((product) => (
-        <div key={product.id} className="rounded-xl border border-slate-200 bg-white p-5">
+        <div key={product.id} className="rounded-2xl border border-mk-border bg-white p-5 shadow-sm">
           <div className="flex items-start justify-between gap-4">
             <div className="flex min-w-0 items-start gap-3">
               <QuoteProductMedia name={product.name} images={product.images} imageUrl={product.imageUrl} compact />
               <div className="min-w-0">
-                <p className="font-medium">{product.name}</p>
-                <p className="text-sm text-slate-500">{formatPrice(product.priceMin, product.priceMax)}</p>
+                <p className="font-medium text-mk-ink">{product.name}</p>
+                <p className="text-sm text-mk-faint">{formatPrice(product.priceMin, product.priceMax)}</p>
                 <div className="mt-2">
                   <SpecChips specs={product.specs} />
                   <ProductSheetLinks sheet={product.sheet} compact />
                 </div>
                 {product.description ? (
-                  <ProductHtml html={product.description} className="mt-1 text-slate-500" clamp />
+                  <ProductHtml html={product.description} className="mt-1 text-mk-faint" clamp />
                 ) : null}
               </div>
             </div>
-            <div className="flex shrink-0 items-center gap-2">
-            <label className="text-sm">
+            <div className="flex shrink-0 items-center gap-3">
+            <label className="text-sm text-mk-faint">
               Qté
               <input
                 type="number"
                 min={1}
-                className="ml-2 w-20 rounded-lg border border-slate-200 px-2 py-1"
+                className="ml-2 w-20 rounded-xl border border-mk-border px-2 py-1.5 text-mk-ink outline-none focus:border-mk-accent focus:ring-4 focus:ring-mk-accent/15"
                 value={customization.quantities[product.id] ?? 1}
                 onChange={(e) =>
                   onChange({
@@ -1242,7 +1284,7 @@ function CustomizePanel({
                   delete options[product.id];
                   onChange({ ...customization, quantities, options });
                 }}
-                className="text-xs text-slate-400 hover:text-rose-700"
+                className="text-xs font-medium text-mk-faint transition hover:text-rose-600"
               >
                 Retirer
               </button>
@@ -1253,9 +1295,9 @@ function CustomizePanel({
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             {product.options.map((opt) => (
               <label key={opt.key} className="text-sm">
-                <span className="mb-1 block text-slate-600">{opt.label}</span>
+                <span className="mb-1 block text-mk-faint">{opt.label}</span>
                 <select
-                  className="w-full rounded-lg border border-slate-200 px-2 py-1.5"
+                  className="w-full rounded-xl border border-mk-border px-2.5 py-2 text-mk-ink outline-none focus:border-mk-accent focus:ring-4 focus:ring-mk-accent/15"
                   value={customization.options[product.id]?.[opt.key] ?? ""}
                   onChange={(e) =>
                     onChange({
@@ -1283,26 +1325,28 @@ function CustomizePanel({
         </div>
       ))}
       {extraLines.map((line) => (
-        <div key={line.externalId} className="rounded-xl border border-dashed border-slate-200 bg-white p-5">
-          <p className="font-medium">{line.name}</p>
-          {line.variation ? <p className="mt-1 text-sm text-slate-500">{line.variation}</p> : null}
-          <p className="mt-2 text-sm text-slate-500">Quantité {line.quantity}</p>
+        <div key={line.externalId} className="rounded-2xl border border-dashed border-mk-border bg-white p-5">
+          <p className="font-medium text-mk-ink">{line.name}</p>
+          {line.variation ? <p className="mt-1 text-sm text-mk-faint">{line.variation}</p> : null}
+          <p className="mt-2 text-sm text-mk-faint">Quantité {line.quantity}</p>
         </div>
       ))}
       {!products.length && !extraLines.length ? (
-        <p className="text-sm text-slate-500">Aucun produit dans cette demande pour l’instant.</p>
+        <p className="text-sm text-mk-faint">Aucun produit dans cette demande pour l’instant.</p>
       ) : null}
-      <label className="block text-sm">
-        <span className="mb-1.5 block font-medium">Plan (PDF ou image)</span>
+      <label className="block cursor-pointer rounded-2xl border-2 border-dashed border-mk-border bg-white px-5 py-4 text-center text-sm transition hover:border-mk-accent">
+        <span className="block font-medium text-mk-ink">Plan (PDF ou image)</span>
+        <span className="mt-1 block text-mk-faint">Glissez un fichier ou cliquez pour choisir</span>
         <input
           type="file"
           accept="application/pdf,image/jpeg,image/png,image/webp"
+          className="hidden"
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) onUpload(file);
           }}
         />
-        {fileError ? <p className="mt-2 text-red-600">{fileError}</p> : null}
+        {fileError ? <span className="mt-2 block text-red-600">{fileError}</span> : null}
       </label>
     </div>
   );
@@ -1331,13 +1375,13 @@ function ChatPanel({
 }) {
   return (
     <section className="mx-auto max-w-2xl">
-      <div className="min-h-[22rem] space-y-3 rounded-2xl border border-slate-200 bg-white p-5">
+      <div className="min-h-[22rem] space-y-3 rounded-2xl border border-mk-border bg-white p-5 shadow-sm">
         {messages.length === 0 ? (
-          <div className="space-y-2 text-slate-600">
-            <p className="font-medium text-slate-900">
+          <div className="space-y-2">
+            <p className="font-medium text-mk-ink">
               Bonjour, décrivez-moi votre projet{orgName ? ` pour ${orgName}` : ""}.
             </p>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-mk-faint">
               Une phrase suffit — surface, charges, hauteur, budget, délai. L’agent consulte le
               catalogue et prépare votre brief devis.
             </p>
@@ -1347,7 +1391,7 @@ function ChatPanel({
             <div
               key={`${m.role}-${i}`}
               className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
-                m.role === "user" ? "ml-auto bg-slate-950 text-white" : "bg-slate-100 text-slate-800"
+                m.role === "user" ? "ml-auto bg-mk-dark text-white" : "bg-mk-bg text-mk-ink"
               }`}
             >
               {m.content}
@@ -1366,15 +1410,15 @@ function ChatPanel({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="Décrivez votre besoin…"
-          className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2"
+          className="flex-1 rounded-full border border-mk-border bg-white px-4 py-2.5 text-mk-ink outline-none transition focus:border-mk-accent focus:ring-4 focus:ring-mk-accent/15"
         />
         <button
           type="submit"
           disabled={busy}
           className={
             themed
-              ? "rounded-lg px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-              : "rounded-lg bg-[#E85D04] px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+              ? "rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 disabled:opacity-50"
+              : "rounded-full bg-mk-accent px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-mk-accent-hover disabled:opacity-50"
           }
           style={themed ? { background: accent } : undefined}
         >
@@ -1405,7 +1449,7 @@ function ContactCapture({
 
   return (
     <form
-      className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3"
+      className="mb-8 rounded-2xl border border-mk-border bg-mk-accent-soft/60 px-5 py-4"
       onSubmit={async (e) => {
         e.preventDefault();
         if (!email.trim()) return;
@@ -1413,36 +1457,39 @@ function ContactCapture({
       }}
     >
       {saved ? (
-        <p className="text-sm text-slate-700">
+        <p className="flex items-center gap-2 text-sm text-mk-ink">
+          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+            <CheckIcon />
+          </span>
           {draft.name ? `Merci ${draft.name}, ` : "Merci, "}votre configuration est sauvegardée
           {draft.email ? ` (${draft.email})` : ""}. Vous pourrez la reprendre même si vous fermez l’onglet.
         </p>
       ) : (
-        <div className="grid gap-2 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
+        <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
           <label className="text-sm">
-            Prénom
+            <span className="mb-1 block font-medium text-mk-ink">Prénom</span>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-200 bg-white px-2 py-1.5"
+              className="w-full rounded-xl border border-mk-border bg-white px-3 py-2 text-mk-ink outline-none transition focus:border-mk-accent focus:ring-4 focus:ring-mk-accent/15"
             />
           </label>
           <label className="text-sm">
-            Email pour recevoir le récap
+            <span className="mb-1 block font-medium text-mk-ink">Email pour recevoir le récap</span>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-200 bg-white px-2 py-1.5"
+              className="w-full rounded-xl border border-mk-border bg-white px-3 py-2 text-mk-ink outline-none transition focus:border-mk-accent focus:ring-4 focus:ring-mk-accent/15"
             />
           </label>
           <button
             type="submit"
             className={
               themed
-                ? "rounded-md px-3 py-2 text-sm text-white"
-                : "rounded-md bg-slate-950 px-3 py-2 text-sm text-white"
+                ? "rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
+                : "rounded-full bg-mk-accent px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-mk-accent-hover"
             }
             style={themed ? { background: accent } : undefined}
           >

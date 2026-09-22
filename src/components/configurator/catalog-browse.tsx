@@ -79,8 +79,11 @@ export function CatalogBrowse({
               ? setView({ name: "products", category: view.category })
               : setView({ name: "categories" })
           }
-          className="mb-5 text-sm text-slate-500 hover:text-slate-900"
+          className="mb-5 inline-flex items-center gap-1.5 text-sm font-medium text-mk-faint transition hover:text-mk-ink"
         >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m15 18-6-6 6-6" />
+          </svg>
           {view.name === "product" ? "Retour aux produits" : "Toutes les catégories"}
         </button>
       ) : null}
@@ -95,15 +98,15 @@ export function CatalogBrowse({
                   key={group.key}
                   type="button"
                   onClick={() => setView({ name: "products", category: group.key })}
-                  className="rounded-xl border border-slate-200 bg-white p-4 text-left hover:border-slate-300"
+                  className="rounded-2xl border border-mk-border bg-white p-4 text-left shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-mk-ink/15 hover:shadow-md"
                 >
                   {cover ? (
-                    <ProductMedia src={cover} className="mb-3 aspect-[4/3] rounded-lg p-2" />
+                    <ProductMedia src={cover} className="mb-3 aspect-[4/3] rounded-xl p-2" />
                   ) : (
-                    <div className="mb-3 aspect-[4/3] rounded-lg bg-slate-100" />
+                    <div className="mb-3 aspect-[4/3] rounded-xl bg-mk-bg" />
                   )}
-                  <p className="line-clamp-2 text-sm font-medium leading-snug text-slate-900">{group.label}</p>
-                  <p className="mt-1 text-sm text-slate-500">
+                  <p className="line-clamp-2 text-sm font-medium leading-snug text-mk-ink">{group.label}</p>
+                  <p className="mt-1 text-sm text-mk-faint">
                     {group.products.length} produit{group.products.length > 1 ? "s" : ""}
                   </p>
                 </button>
@@ -111,7 +114,7 @@ export function CatalogBrowse({
             })}
           </div>
         ) : (
-          <p className="text-sm text-slate-500">Aucun produit publié sur ce catalogue pour l’instant.</p>
+          <p className="text-sm text-mk-faint">Aucun produit publié sur ce catalogue pour l’instant.</p>
         )
       ) : null}
 
@@ -125,7 +128,7 @@ export function CatalogBrowse({
                   key={item.id}
                   type="button"
                   onClick={() => openProduct(item, view.category)}
-                  className="rounded-xl text-left hover:opacity-95"
+                  className="rounded-2xl text-left transition-all duration-150 hover:-translate-y-0.5"
                 >
                   <ProductTile
                     name={item.name}
@@ -141,18 +144,18 @@ export function CatalogBrowse({
             })}
           </div>
         ) : (
-          <p className="text-sm text-slate-500">Aucun produit dans cette catégorie.</p>
+          <p className="text-sm text-mk-faint">Aucun produit dans cette catégorie.</p>
         )
       ) : null}
 
       {view.name === "product" && product ? (
-        <article className="rounded-xl border border-slate-200 bg-white p-5">
+        <article className="rounded-2xl border border-mk-border bg-white p-5 shadow-sm">
           <div className="grid gap-6 lg:grid-cols-[minmax(0,18rem)_1fr]">
             <QuoteProductMedia name={product.name} images={product.images} imageUrl={product.imageUrl} />
             <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-slate-400">{view.category}</p>
-              <h2 className="mt-1 text-2xl font-semibold">{product.name}</h2>
-              <p className="mt-2 text-sm font-medium">{formatPrice(product.priceMin, product.priceMax, product.currency)}</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-mk-faint">{view.category}</p>
+              <h2 className="mt-1 text-2xl font-semibold tracking-tight text-mk-ink">{product.name}</h2>
+              <p className="mt-2 text-sm font-semibold text-mk-ink">{formatPrice(product.priceMin, product.priceMax, product.currency)}</p>
               <SpecTable specs={product.specs} />
               <ProductSheetLinks sheet={product.sheet} />
               {product.description ? (
@@ -162,9 +165,9 @@ export function CatalogBrowse({
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   {product.options.map((opt) => (
                     <label key={opt.key} className="text-sm">
-                      <span className="mb-1 block text-slate-600">{opt.label}</span>
+                      <span className="mb-1 block text-mk-faint">{opt.label}</span>
                       <select
-                        className="w-full rounded-lg border border-slate-200 px-2 py-1.5"
+                        className="w-full rounded-xl border border-mk-border px-2.5 py-2 text-mk-ink outline-none focus:border-mk-accent focus:ring-4 focus:ring-mk-accent/15"
                         value={options[opt.key] ?? ""}
                         onChange={(event) => setOptions((current) => ({ ...current, [opt.key]: event.target.value }))}
                       >
@@ -180,36 +183,43 @@ export function CatalogBrowse({
                 </div>
               ) : null}
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                <label className="text-sm">
+                <label className="text-sm text-mk-faint">
                   Qté
                   <input
                     type="number"
                     min={1}
                     value={qty}
                     onChange={(event) => setQty(Number(event.target.value) || 1)}
-                    className="ml-2 w-20 rounded-lg border border-slate-200 px-2 py-1.5"
+                    className="ml-2 w-20 rounded-xl border border-mk-border px-2.5 py-2 text-mk-ink outline-none focus:border-mk-accent focus:ring-4 focus:ring-mk-accent/15"
                   />
                 </label>
                 <button
                   type="button"
                   onClick={() => addProduct(product)}
-                  className="rounded-lg px-4 py-2.5 text-sm font-medium text-white"
+                  className="rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
                   style={{ background: accent }}
                 >
                   {added ? "Mettre à jour le devis" : "Ajouter au devis"}
                 </button>
               </div>
-              {added ? <p className="mt-3 text-sm text-emerald-700">Ajouté au devis.</p> : null}
+              {added ? (
+                <p className="mt-3 flex items-center gap-1.5 text-sm font-medium text-emerald-600">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                  Ajouté au devis.
+                </p>
+              ) : null}
             </div>
           </div>
         </article>
       ) : null}
 
       {hideContinue ? (
-        <p className="mt-6 text-sm text-slate-600">
+        <p className="mt-6 text-sm text-mk-faint">
           {count ? (
             <>
-              <span className="font-medium text-slate-900">{count}</span> article{count > 1 ? "s" : ""} dans la demande
+              <span className="font-semibold text-mk-ink">{count}</span> article{count > 1 ? "s" : ""} dans la demande
               (facultatif).
             </>
           ) : (
@@ -217,11 +227,11 @@ export function CatalogBrowse({
           )}
         </p>
       ) : (
-        <div className="sticky bottom-4 z-10 mt-8 flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
-          <p className="text-sm text-slate-600">
+        <div className="sticky bottom-4 z-10 mt-8 flex items-center justify-between gap-3 rounded-2xl border border-mk-border bg-white/95 px-4 py-3 shadow-lg backdrop-blur">
+          <p className="text-sm text-mk-faint">
             {count ? (
               <>
-                <span className="font-medium text-slate-900">{count}</span> article{count > 1 ? "s" : ""} au devis
+                <span className="font-semibold text-mk-ink">{count}</span> article{count > 1 ? "s" : ""} au devis
               </>
             ) : (
               "Ajoutez des produits, puis envoyez une demande globale."
@@ -232,8 +242,8 @@ export function CatalogBrowse({
             onClick={onContinue}
             className={
               themed
-                ? "rounded-lg px-4 py-2 text-sm font-medium text-white"
-                : "rounded-lg bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+                ? "rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
+                : "rounded-full bg-mk-accent px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-mk-accent-hover"
             }
             style={themed ? { background: accent } : undefined}
           >
@@ -253,15 +263,15 @@ export function CatalogBrowsePreview({
 }) {
   const groups = groupProductsByCategory(products);
   if (!products.length) {
-    return <p className="text-sm text-slate-500">Les rayons s’affichent une fois le catalogue renseigné.</p>;
+    return <p className="text-sm text-mk-faint">Les rayons s’affichent une fois le catalogue renseigné.</p>;
   }
   if (groups.length > 1) {
     return (
       <div className="grid gap-3 sm:grid-cols-2">
         {groups.slice(0, 4).map((group) => (
-          <div key={group.key} className="rounded-xl border border-slate-200 bg-white p-3">
-            <p className="text-sm font-medium text-slate-900">{group.label}</p>
-            <p className="mt-1 text-xs text-slate-500">{group.products.length} produit{group.products.length > 1 ? "s" : ""}</p>
+          <div key={group.key} className="rounded-2xl border border-mk-border bg-white p-3">
+            <p className="text-sm font-medium text-mk-ink">{group.label}</p>
+            <p className="mt-1 text-xs text-mk-faint">{group.products.length} produit{group.products.length > 1 ? "s" : ""}</p>
           </div>
         ))}
       </div>
