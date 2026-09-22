@@ -29,6 +29,8 @@ export async function sendQuoteEmails(input: {
   suiviUrl?: string;
   pin?: string;
   membresUrl?: string;
+  /** Funnel submissions email the prospect. Plugin inbound leaves this false. */
+  includeProspect?: boolean;
 }) {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
@@ -59,7 +61,8 @@ export async function sendQuoteEmails(input: {
 
   const resend = new Resend(apiKey);
   const from = process.env.RESEND_FROM || "QuoteBuilder <devis@localhost>";
-  const prospect = templates?.find((t) => t.kind === "prospect_confirm");
+  const includeProspect = input.includeProspect !== false;
+  const prospect = includeProspect ? templates?.find((t) => t.kind === "prospect_confirm") : undefined;
   const sales = templates?.find((t) => t.kind === "sales_brief");
   const attachments = input.pdf
     ? [{ filename: "recapitulatif.pdf", content: input.pdf }]

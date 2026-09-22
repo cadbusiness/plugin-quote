@@ -1582,6 +1582,55 @@ export type Database = {
           },
         ]
       }
+      plugin_quote_receipts: {
+        Row: {
+          connection_id: string
+          created_at: string
+          external_id: string
+          id: string
+          organization_id: string
+          quote_id: string
+        }
+        Insert: {
+          connection_id: string
+          created_at?: string
+          external_id: string
+          id?: string
+          organization_id: string
+          quote_id: string
+        }
+        Update: {
+          connection_id?: string
+          created_at?: string
+          external_id?: string
+          id?: string
+          organization_id?: string
+          quote_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "plugin_quote_receipts_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "catalog_connections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "plugin_quote_receipts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "plugin_quote_receipts_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           archived_by_sync: boolean
