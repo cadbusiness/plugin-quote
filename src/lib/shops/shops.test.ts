@@ -163,7 +163,6 @@ const product = {
   currency: "EUR",
   category: "Rayonnage",
   sku: "R-1",
-  specs: {},
 };
 assert.ok(productSlug(product).startsWith("rayonnage-lourd--"));
 assert.equal(findProductBySlug([product], productSlug(product))?.id, product.id);
