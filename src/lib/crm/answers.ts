@@ -25,6 +25,8 @@ const KEY_LABELS: Record<string, string> = {
   notes: "Précisions",
   need: "Besoin",
   besoin: "Besoin",
+  precision: "Précisions",
+  added: "Ajouté au devis",
   quote_mode: "Mode devis",
   usage: "Usage",
   essence: "Essence / finition",
@@ -50,6 +52,8 @@ const KEY_ORDER = [
   "upkeep",
   "need",
   "besoin",
+  "precision",
+  "added",
   "notes",
   "quote_mode",
 ];

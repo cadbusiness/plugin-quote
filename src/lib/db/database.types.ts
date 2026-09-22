@@ -1614,6 +1614,7 @@ export type Database = {
           updated_at: string
           variants: Json
           related: Json
+          specs: Json
         }
         Insert: {
           archived_by_sync?: boolean
@@ -1646,6 +1647,7 @@ export type Database = {
           updated_at?: string
           variants?: Json
           related?: Json
+          specs?: Json
         }
         Update: {
           archived_by_sync?: boolean
@@ -1678,6 +1680,7 @@ export type Database = {
           updated_at?: string
           variants?: Json
           related?: Json
+          specs?: Json
         }
         Relationships: [
           {
