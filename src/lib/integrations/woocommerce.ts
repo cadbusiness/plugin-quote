@@ -2,7 +2,15 @@ import { createHmac } from "node:crypto";
 import { parseRelated } from "@/lib/catalog/affinity";
 import { toProspectOptions } from "@/lib/catalog/attributes";
 import { sanitizeProductHtml } from "@/lib/catalog/html";
-import { classifyProductImage, mediaRoleMap, wooMediaRoleValue } from "@/lib/catalog/media-roles";
+import { classifyProductImage, fileNameOf, mediaRoleMap, wooMediaRoleValue } from "@/lib/catalog/media-roles";
+import {
+  httpDocumentUrl,
+  isSheetFile,
+  mapWooProductSheet,
+  sheetRoleFromText,
+  wooSheetMeta,
+  type SheetDocument,
+} from "@/lib/catalog/sheet";
 import { mapWooCatalogAttributes, mapWooProductSpecs, wooSpecsWrite, type WooSpecUnits } from "@/lib/catalog/specs";
 import { htmlToText, parsePrice } from "@/lib/integrations/html";
 import { safeEqual } from "@/lib/integrations/secrets";
@@ -55,6 +63,7 @@ type WooProduct = {
   dimensions?: { length?: string; width?: string; height?: string };
   weight?: string;
   meta_data?: WooMeta[];
+  downloads?: Array<{ id?: string; name?: string; file?: string }>;
   variations?: number[];
   upsell_ids?: number[];
   cross_sell_ids?: number[];
@@ -191,6 +200,24 @@ async function fetchCurrency(connection: ResolvedConnection) {
   }
 }
 
+function splitSheetFiles(images: ProductImage[]) {
+  const photos: ProductImage[] = [];
+  const documents: SheetDocument[] = [];
+  for (const image of images) {
+    if (!isSheetFile(image.src)) {
+      photos.push(image);
+      continue;
+    }
+    const src = httpDocumentUrl(image.src);
+    const named = sheetRoleFromText([image.alt, fileNameOf(image.src)].filter(Boolean).join(" "));
+    const role = named ?? (image.role === "plan" || image.role === "usage" ? null : "manual");
+    if (src && role) {
+      documents.push({ role, src, label: image.alt?.trim() || "" });
+    }
+  }
+  return { images: photos, documents };
+}
+
 function mapImages(product: WooProduct): ProductImage[] {
   const roles = mediaRoleMap(product.meta_data);
   return (product.images ?? []).flatMap((img) => {
@@ -316,6 +343,15 @@ function normalizeProduct(
     htmlToText(product.short_description) ||
     null;
 
+  const split = splitSheetFiles(mapImages(product));
+  const sheet = mapWooProductSheet({
+    description: product.description,
+    short_description: product.short_description,
+    meta_data: product.meta_data,
+    downloads: product.downloads,
+    documents: split.documents,
+  });
+
   const attributes = mapWooCatalogAttributes(
     {
       attributes: product.attributes,
@@ -336,7 +372,7 @@ function normalizeProduct(
     priceMin,
     priceMax,
     currency,
-    images: mapImages(product),
+    images: split.images,
     category: pickLeafCategory(product.categories ?? [], categories),
     tags: [
       ...(product.categories ?? []).map((c) => c.name).filter((n): n is string => Boolean(n)),
@@ -358,6 +394,7 @@ function normalizeProduct(
       crossSellIds: product.cross_sell_ids ?? [],
     }),
     specs: mapWooProductSpecs(product),
+    sheet,
     externalUpdatedAt: product.date_modified_gmt ? `${product.date_modified_gmt}Z` : null,
   };
 }
@@ -472,6 +509,10 @@ async function pushWooProduct(connection: ResolvedConnection, product: PushableP
         ? { id: found.id, key: "_qb_media_role", value: mediaRoles }
         : { key: "_qb_media_role", value: mediaRoles },
     );
+  }
+  for (const entry of wooSheetMeta(product.sheet ?? { manualText: "", documents: [] })) {
+    const found = current?.meta_data?.find((meta) => meta.key === entry.key);
+    meta_data.push(found?.id != null ? { id: found.id, key: entry.key, value: entry.value } : entry);
   }
   await wooFetch(connection, `/products/${product.externalId}`, {}, {
     method: "PUT",

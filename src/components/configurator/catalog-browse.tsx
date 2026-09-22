@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { ProductHtml } from "@/components/catalog/product-html";
 import { quoteCoverSrc, QuoteProductMedia } from "@/components/catalog/quote-media";
+import { ProductSheetLinks } from "@/components/catalog/product-sheet";
 import { SpecTable } from "@/components/catalog/spec-table";
 import { ProductMedia, ProductTile } from "@/components/catalog/product-tile";
 import { formatPrice } from "@/lib/format";
@@ -153,6 +154,7 @@ export function CatalogBrowse({
               <h2 className="mt-1 text-2xl font-semibold">{product.name}</h2>
               <p className="mt-2 text-sm font-medium">{formatPrice(product.priceMin, product.priceMax, product.currency)}</p>
               <SpecTable specs={product.specs} />
+              <ProductSheetLinks sheet={product.sheet} />
               {product.description ? (
                 <ProductHtml html={product.description} className="mt-3" />
               ) : null}

@@ -4,7 +4,7 @@
  * du nom de fichier, ou de la meta Woo `_qb_media_role`.
  */
 
-export const PRODUCT_MEDIA_ROLES = ["product", "plan", "usage"] as const;
+export const PRODUCT_MEDIA_ROLES = ["product", "plan", "usage", "manual"] as const;
 
 export type ProductMediaRole = (typeof PRODUCT_MEDIA_ROLES)[number];
 
@@ -47,13 +47,29 @@ const USAGE_TOKENS = new Set([
   "realisations",
   "chantier",
   "chantiers",
-  "installation",
-  "installations",
   "pose",
   "application",
   "applications",
   "ambiance",
   "contexte",
+]);
+
+const MANUAL_TOKENS = new Set([
+  "notice",
+  "notices",
+  "emploi",
+  "manuel",
+  "manual",
+  "manuals",
+  "montage",
+  "assemblage",
+  "assembly",
+  "installation",
+  "installations",
+  "instruction",
+  "instructions",
+  "guide",
+  "guides",
 ]);
 
 export function parseMediaRole(value: unknown): ProductMediaRole | null {
@@ -62,6 +78,7 @@ export function parseMediaRole(value: unknown): ProductMediaRole | null {
   if (token === "product" || token === "produit" || token === "photo") return "product";
   if (token === "plan" || token === "schema" || token === "drawing") return "plan";
   if (token === "usage" || token === "situation" || token === "lifestyle") return "usage";
+  if (token === "manual" || token === "mode_emploi" || token === "notice" || token === "manuel") return "manual";
   return null;
 }
 
@@ -108,14 +125,19 @@ function countHits(text: string, vocabulary: Set<string>) {
 export function guessMediaRole(text: string): ProductMediaRole | null {
   const plan = countHits(text, PLAN_TOKENS);
   const usage = countHits(text, USAGE_TOKENS);
-  if (!plan && !usage) return null;
-  if (plan === usage) return "plan";
-  return plan > usage ? "plan" : "usage";
+  const manual = countHits(text, MANUAL_TOKENS);
+  const best = Math.max(plan, usage, manual);
+  if (!best) return null;
+  if (manual === best) return "manual";
+  if (plan === best) return "plan";
+  return "usage";
 }
 
 function bracketRole(text: string | null | undefined) {
   if (!text) return null;
-  const match = text.match(/^\s*[\[(](product|produit|photo|plan|schema|schéma|usage|situation)[\])]\s*/i);
+  const match = text.match(
+    /^\s*[\[(](product|produit|photo|plan|schema|schéma|usage|situation|manual|notice|manuel|mode_emploi)[\])]\s*/i,
+  );
   return match ? parseMediaRole(match[1]) : null;
 }
 

@@ -10,6 +10,7 @@ import { parseMediaRole } from "@/lib/catalog/media-roles";
 import { parseConditions } from "@/lib/catalog/rules";
 import { parseProductAttributes } from "@/lib/catalog/attributes";
 import { readPriceRange } from "@/lib/catalog/product-form";
+import { readSheetField } from "@/lib/catalog/sheet";
 import { readSpecsField } from "@/lib/catalog/specs";
 import { uploadCatalogImage } from "@/lib/catalog/upload";
 import type { Json } from "@/lib/db/database.types";
@@ -62,6 +63,7 @@ export async function createProduct(
   const { priceMin, priceMax } = readPriceRange(formData);
   const imageUrl = String(formData.get("image_url") ?? "").trim() || null;
   const specs = readSpecsField(formData);
+  const sheet = readSheetField(formData);
 
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -81,6 +83,7 @@ export async function createProduct(
       images: (imageUrl ? [{ src: imageUrl, alt: null }] : []) as unknown as Json,
       tags: readTags(formData),
       ...(specs ? { specs: specs as unknown as Json } : {}),
+      ...(sheet ? { sheet: sheet as unknown as Json } : {}),
     })
     .select("id")
     .single();
@@ -114,6 +117,7 @@ export async function updateProduct(formData: FormData) {
 
   const { priceMin, priceMax } = readPriceRange(formData);
   const specs = readSpecsField(formData);
+  const sheet = readSheetField(formData);
   const supabase = await createClient();
 
   await supabase
@@ -129,6 +133,7 @@ export async function updateProduct(formData: FormData) {
       tags: readTags(formData),
       options: parseProductAttributes(formData) as unknown as Json,
       ...(specs ? { specs: specs as unknown as Json } : {}),
+      ...(sheet ? { sheet: sheet as unknown as Json } : {}),
       is_active: formData.get("is_active") === "on",
       sync_lock: formData.get("sync_lock") === "on",
       updated_at: new Date().toISOString(),
