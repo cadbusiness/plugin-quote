@@ -1,6 +1,7 @@
 -- Catalogue Quickly : gammes publiées, specs structurées dans products.options.
--- Les cinq fiches génériques du seed initial (sans SKU) passent inactives.
--- Aucun e-mail.
+-- 0041_product_specs.sql ajoute déjà la colonne products.specs ; ce fichier est 0042.
+-- N’efface aucun produit Woo : upsert de 3 SKU (sync_lock) et désactivation
+-- des seules fiches sans SKU listées plus bas. Aucun e-mail.
 
 create temporary table quickly_catalog_seed (
   sku text primary key,
