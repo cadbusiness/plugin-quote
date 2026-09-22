@@ -13,7 +13,13 @@ function normalize(s: string): string {
 function scoreProduct(product: Product, tokens: string[]): number {
   if (tokens.length === 0) return 1;
   const hay = normalize(
-    [product.name, product.description ?? "", product.category ?? "", ...(product.tags ?? [])].join(
+    [
+      product.name,
+      product.description ?? "",
+      product.category ?? "",
+      ...(product.tags ?? []),
+      ...(product.specs ?? []).flatMap((spec) => [spec.label, spec.value, spec.unit ?? ""]),
+    ].join(
       " ",
     ),
   );

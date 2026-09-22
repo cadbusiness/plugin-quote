@@ -1,6 +1,8 @@
 import { createHmac } from "node:crypto";
 import { parseRelated } from "@/lib/catalog/affinity";
+import { toProspectOptions } from "@/lib/catalog/attributes";
 import { sanitizeProductHtml } from "@/lib/catalog/html";
+import { mapWooCatalogAttributes, type WooSpecUnits } from "@/lib/catalog/specs";
 import { htmlToText, parsePrice } from "@/lib/integrations/html";
 import { safeEqual } from "@/lib/integrations/secrets";
 import {
@@ -12,14 +14,13 @@ import {
   type PushableProduct,
   type ResolvedConnection,
 } from "@/lib/integrations/types";
-import type { ProductOption } from "@/lib/wizard/types";
-
 const PER_PAGE = 50;
 const TIMEOUT_MS = 25_000;
 
 type WooImage = { id?: number; src?: string; alt?: string; name?: string };
 type WooTerm = { id?: number; name?: string; slug?: string };
 type WooAttribute = { id?: number; name?: string; options?: string[]; variation?: boolean };
+type WooMeta = { key?: string; value?: unknown };
 
 type WooProduct = {
   id: number;
@@ -41,6 +42,9 @@ type WooProduct = {
   tags?: WooTerm[];
   images?: WooImage[];
   attributes?: WooAttribute[];
+  dimensions?: { length?: string; width?: string; height?: string };
+  weight?: string;
+  meta_data?: WooMeta[];
   variations?: number[];
   upsell_ids?: number[];
   cross_sell_ids?: number[];
@@ -183,25 +187,6 @@ function mapImages(product: WooProduct): ProductImage[] {
     .filter((img) => Boolean(img.src));
 }
 
-function mapOptions(product: WooProduct): ProductOption[] {
-  return (product.attributes ?? [])
-    .filter((attr) => attr.variation && attr.name && (attr.options ?? []).length)
-    .map((attr) => ({
-      key: slugify(attr.name!),
-      label: attr.name!,
-      values: (attr.options ?? []).map((value) => ({ value: slugify(value), label: value })),
-    }));
-}
-
-function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
-
 function mapVariants(variations: WooVariation[]): ProductVariant[] {
   return variations.map((variation) => ({
     externalId: String(variation.id),
@@ -226,10 +211,42 @@ function mapVariants(variations: WooVariation[]): ProductVariant[] {
   }));
 }
 
+type WooCatalogContext = { currency: string; units: WooSpecUnits };
+
+const contextCache = new Map<string, Promise<WooCatalogContext>>();
+
+async function catalogContext(connection: ResolvedConnection): Promise<WooCatalogContext> {
+  const cached = contextCache.get(connection.id);
+  if (cached) return cached;
+  const pending = loadCatalogContext(connection);
+  contextCache.set(connection.id, pending);
+  return pending;
+}
+
+async function loadCatalogContext(connection: ResolvedConnection): Promise<WooCatalogContext> {
+  try {
+    const { data } = await wooFetch<{ id: string; value?: string }[]>(connection, "/settings/general");
+    const read = (id: string, fallback: string) => {
+      const value = data.find((row) => row.id === id)?.value;
+      return typeof value === "string" && value ? value : fallback;
+    };
+    return {
+      currency: read("woocommerce_currency", "EUR"),
+      units: {
+        dimension: read("woocommerce_dimension_unit", "cm"),
+        weight: read("woocommerce_weight_unit", "kg"),
+      },
+    };
+  } catch {
+    return { currency: "EUR", units: { dimension: "cm", weight: "kg" } };
+  }
+}
+
 function normalizeProduct(
   product: WooProduct,
   variations: WooVariation[],
   currency: string,
+  units: WooSpecUnits = {},
 ): NormalizedProduct {
   const variants = mapVariants(variations);
   const variantPrices = variants.map((v) => v.price).filter((p): p is number => p !== null);
@@ -244,6 +261,18 @@ function normalizeProduct(
     htmlToText(product.description) ||
     htmlToText(product.short_description) ||
     null;
+
+  const attributes = mapWooCatalogAttributes(
+    {
+      attributes: product.attributes,
+      dimensions: product.dimensions,
+      weight: product.weight,
+      meta_data: product.meta_data,
+      description: product.description,
+      short_description: product.short_description,
+    },
+    units,
+  );
 
   return {
     externalId: String(product.id),
@@ -267,7 +296,8 @@ function normalizeProduct(
       product.stock_status === "onbackorder"
         ? product.stock_status
         : null,
-    options: mapOptions(product),
+    attributes,
+    options: toProspectOptions(attributes),
     variants,
     related: parseRelated({
       upsellIds: product.upsell_ids ?? [],
@@ -309,7 +339,8 @@ export const wooAdapter: CatalogAdapter = {
 
   async fetchPage(connection, cursor) {
     const page = Number(cursor ?? "1") || 1;
-    const currency = connection.currency || (await fetchCurrency(connection));
+    const ctx = await catalogContext(connection);
+    const currency = connection.currency || ctx.currency;
     const { data, headers } = await wooFetch<WooProduct[]>(connection, "/products", {
       per_page: PER_PAGE,
       page,
@@ -321,7 +352,7 @@ export const wooAdapter: CatalogAdapter = {
     const products: NormalizedProduct[] = [];
     for (const product of data) {
       const variations = await loadVariations(connection, product);
-      products.push(normalizeProduct(product, variations, currency));
+      products.push(normalizeProduct(product, variations, currency, ctx.units));
     }
 
     const totalPages = Number(headers.get("x-wp-totalpages") ?? "1") || 1;
@@ -330,10 +361,11 @@ export const wooAdapter: CatalogAdapter = {
 
   async fetchOne(connection, externalId) {
     try {
-      const currency = connection.currency || (await fetchCurrency(connection));
+      const ctx = await catalogContext(connection);
+      const currency = connection.currency || ctx.currency;
       const { data } = await wooFetch<WooProduct>(connection, `/products/${externalId}`);
       const variations = await loadVariations(connection, data);
-      return normalizeProduct(data, variations, currency);
+      return normalizeProduct(data, variations, currency, ctx.units);
     } catch (error) {
       if (error instanceof IntegrationError && error.status === 404) return null;
       throw error;

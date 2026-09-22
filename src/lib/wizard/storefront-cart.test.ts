@@ -13,6 +13,7 @@ function product(partial: Partial<Product> & Pick<Product, "id" | "name">): Prod
     tags: [],
     category: null,
     options: [],
+    specs: [],
     stockStatus: null,
     externalId: null,
     sku: null,
