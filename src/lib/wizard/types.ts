@@ -1,4 +1,5 @@
 import type { ProductRelated } from "@/lib/catalog/affinity";
+import type { ProductSpec } from "@/lib/catalog/specs";
 import type { Json } from "@/lib/db/database.types";
 import type { QuoteMode } from "@/lib/quotes/quote-mode";
 
@@ -77,6 +78,8 @@ export type Product = {
   sku?: string | null;
   configuratorId?: string;
   related?: ProductRelated;
+  /** Fiche technique (`products.specs`). Absent des fixtures qui ne la portent pas. */
+  specs?: Record<string, ProductSpec>;
 };
 
 export type Suggestion = {
