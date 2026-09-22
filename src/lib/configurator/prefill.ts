@@ -1,4 +1,9 @@
 import type { Json } from "@/lib/db/database.types";
+import {
+  readSpecSnapshots,
+  specOptionStrings,
+  type ProductSpec,
+} from "@/lib/catalog/specs";
 import type { Answers, Customization, WizardQuestion, WizardStep } from "@/lib/wizard/types";
 
 /**
@@ -10,8 +15,9 @@ import type { Answers, Customization, WizardQuestion, WizardStep } from "@/lib/w
  *
  * `add` — same chip tokens, or a catalogue product id / sku / external id / exact
  * name. A matching chip is selected. A matching product is added to the quote
- * (quantity 1) and named in the existing free-text answer (or `added` when the
- * funnel has no text question). Repeatable, comma-separated.
+ * (quantity 1), mapped onto a besoin chip when the name or tags allow it, and
+ * its `products.specs` snapshot is stored on `answers.specs` plus the line
+ * options. Repeatable, comma-separated.
  *
  * `product` — alias of a single `add` token (product id).
  *
@@ -25,7 +31,39 @@ export type PrefillProduct = {
   name: string;
   sku?: string | null;
   externalId?: string | null;
+  tags?: string[] | null;
+  category?: string | null;
+  specs?: Record<string, ProductSpec> | null;
 };
+
+const BESOIN_HINTS: [string, string][] = [
+  ["rack_a_palettes", "rack_palettes"],
+  ["rack_palettes", "rack_palettes"],
+  ["cantilever", "cantilever"],
+  ["mezzanine", "mezzanine"],
+  ["plateforme", "plateformes"],
+  ["rayonnage_leger", "leger"],
+  ["picking", "leger"],
+  ["leger", "leger"],
+  ["palette", "rack_palettes"],
+  ["rayonnage", "rayonnages"],
+];
+
+export function besoinForProduct(
+  product: { name: string; tags?: string[] | null; category?: string | null },
+  choices: PrefillChoice[],
+): string | null {
+  const blobs = [product.name, product.category ?? "", ...(product.tags ?? [])];
+  for (const blob of blobs) {
+    const direct = matchChoice(blob, choices);
+    if (direct) return direct;
+  }
+  const hay = normalizePrefillToken(blobs.filter(Boolean).join(" "));
+  for (const [needle, value] of BESOIN_HINTS) {
+    if (hay.includes(needle) && choices.some((choice) => choice.value === value)) return value;
+  }
+  return null;
+}
 
 const CHOICE_ALIASES: Record<string, string> = {
   rayonnage: "rayonnages",
@@ -160,14 +198,13 @@ export function applyFunnelPrefill(input: {
 
   const take = (token: string) => {
     const choice = choices.length ? matchChoice(token, choices) : null;
-    if (choice) {
-      selected.add(choice);
-      return;
-    }
+    if (choice) selected.add(choice);
     const product = matchProduct(token, input.products);
     if (!product) return;
     if (!productIds.includes(product.id)) productIds.push(product.id);
     if (!productNames.includes(product.name)) productNames.push(product.name);
+    const inferred = choices.length ? besoinForProduct(product, choices) : null;
+    if (inferred) selected.add(inferred);
   };
 
   for (const token of besoinTokens) take(token);
@@ -207,12 +244,16 @@ export function applyFunnelPrefill(input: {
     }
   }
 
-  if (productNames.length) {
+  const namedWithoutSpecs = productNames.filter((name) => {
+    const product = input.products.find((item) => item.name === name);
+    return !product?.specs || !Object.keys(product.specs).length;
+  });
+  if (namedWithoutSpecs.length) {
     const note = textQuestion(input.steps);
     if (note) {
       const currentNote = answers[note.key];
       const existing = typeof currentNote === "string" ? currentNote.trim() : "";
-      const missing = productNames.filter(
+      const missing = namedWithoutSpecs.filter(
         (name) => !existing.toLocaleLowerCase("fr").includes(name.toLocaleLowerCase("fr")),
       );
       if (missing.length) {
@@ -223,7 +264,7 @@ export function applyFunnelPrefill(input: {
     } else {
       const previousAdded = asStrings(answers.added);
       const merged = [...previousAdded];
-      for (const name of productNames) {
+      for (const name of namedWithoutSpecs) {
         if (!merged.includes(name)) merged.push(name);
       }
       if (merged.length !== previousAdded.length) {
@@ -233,10 +274,33 @@ export function applyFunnelPrefill(input: {
     }
   }
 
+  const options = { ...input.customization.options };
+  const snapshots = readSpecSnapshots(answers.specs);
+  for (const id of productIds) {
+    const product = input.products.find((item) => item.id === id);
+    const specs = product?.specs ?? {};
+    if (!product || !Object.keys(specs).length) continue;
+    const line = { ...(options[id] ?? {}), ...specOptionStrings(specs) };
+    if (JSON.stringify(options[id] ?? {}) !== JSON.stringify(line)) {
+      options[id] = line;
+      changed = true;
+    }
+    const snapshot = { productId: product.id, name: product.name, specs };
+    const index = snapshots.findIndex((item) => item.productId === id);
+    if (index === -1) {
+      snapshots.push(snapshot);
+      changed = true;
+    } else if (JSON.stringify(snapshots[index]) !== JSON.stringify(snapshot)) {
+      snapshots[index] = snapshot;
+      changed = true;
+    }
+  }
+  if (snapshots.length) answers.specs = snapshots as unknown as Json;
+
   const visibleBesoin = question?.type === "multi_select" ? nextBesoin : asStrings(answers[key]);
   return {
     answers,
-    customization: changed ? { ...input.customization, quantities } : input.customization,
+    customization: changed ? { ...input.customization, quantities, options } : input.customization,
     changed,
     focusStep: besoinGrew && focusIndex >= 0 ? focusIndex : null,
     besoin: visibleBesoin,

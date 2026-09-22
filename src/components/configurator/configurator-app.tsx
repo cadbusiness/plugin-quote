@@ -8,6 +8,7 @@ import { parseStorefrontCart, type StorefrontCartLine } from "@/lib/integrations
 import { applyStorefrontCart, suggestionFromProducts } from "@/lib/wizard/storefront-cart";
 import { applyFunnelPrefill } from "@/lib/configurator/prefill";
 import { CatalogBrowse } from "@/components/configurator/catalog-browse";
+import { SpecTable } from "@/components/configurator/spec-table";
 import { RfqForm } from "@/components/configurator/rfq-form";
 import { ProductHtml } from "@/components/catalog/product-html";
 import { quoteLineCount } from "@/lib/funnels/kind";
@@ -824,6 +825,11 @@ export function ConfiguratorApp({
           <section>
             <h1 className="text-3xl font-semibold tracking-tight">{step.title}</h1>
             {step.subtitle ? <p className="mt-2 text-slate-600">{step.subtitle}</p> : null}
+            <SpecTable
+              products={definition.products.filter(
+                (product) => (session.customization.quantities[product.id] ?? 0) > 0,
+              )}
+            />
 
             {step.screenType === "questions" ? (
               <div className="mt-8 space-y-6">
