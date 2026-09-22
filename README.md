@@ -48,7 +48,7 @@ Secours : `GET /api/public/wp-plugin` (Vercel) si le bucket n’est pas encore p
 `Boutiques` (`/integrations`) gère deux choses : une **boutique native** (mini-site devis, URL `/b/[org]/[slug]`) et les **catalogues Woo / Shopify**.
 
 - Boutique native : template sectoriel ou chat IA, pages (accueil, catalogue, mentions, CGV, confidentialité, cookies), menus, builder drag-and-drop, SEO / GEO. CTA = demander un devis, pas de paiement.
-- **WooCommerce** : URL du site + clé API REST en lecture seule (`/wp-json/wc/v3`). Le plugin WordPress se connecte en un clic : il ouvre QuoteBuilder, crée la clé et les webhooks produits, puis importe le catalogue.
+- **WooCommerce** : URL du site + clé API REST en lecture seule (`/wp-json/wc/v3`). Le plugin WordPress se connecte en un clic : il ouvre QuoteBuilder, crée la clé et les webhooks produits, puis importe le catalogue. Une org qui n’a qu’une connexion Woo la réutilise si l’URL change (pas de second catalogue). Runbook Quickly : `docs/runbooks/woo-catalog-quickly.md`. Le cron exige `CRON_SECRET` sur Vercel.
 - **Shopify** : domaine `*.myshopify.com` + jeton d’une app personnalisée avec la portée `read_products` (Admin GraphQL, version pilotée par `SHOPIFY_API_VERSION`).
 - Sync manuelle, planifiée (`/api/cron/catalog-sync`, 4h30) et temps réel par webhook signé (`/api/integrations/<id>/webhook`).
 - Les accès boutique connectée sont chiffrés en AES-256-GCM avec `INTEGRATIONS_SECRET_KEY` (à défaut `SUPABASE_SERVICE_ROLE_KEY`).

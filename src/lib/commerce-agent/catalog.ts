@@ -10,12 +10,6 @@ function normalize(s: string): string {
     .toLowerCase();
 }
 
-function specHaystack(product: Product) {
-  return Object.values(product.specs ?? {})
-    .map((spec) => [spec.label, spec.value, spec.unit, spec.valueAlt].filter(Boolean).join(" "))
-    .join(" ");
-}
-
 function scoreProduct(product: Product, tokens: string[]): number {
   if (tokens.length === 0) return 1;
   const hay = normalize(
@@ -25,8 +19,8 @@ function scoreProduct(product: Product, tokens: string[]): number {
       product.category ?? "",
       product.sku ?? "",
       product.externalId ?? "",
-      specHaystack(product),
       ...(product.tags ?? []),
+      ...(product.specs ?? []).flatMap((spec) => [spec.label, spec.value, spec.unit ?? ""]),
     ].join(" "),
   );
   let score = 0;

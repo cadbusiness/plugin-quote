@@ -6,7 +6,7 @@ Les relances (abandon et après demande) existent en **brouillon**. Le moteur n�
 
 ## Shortcode
 
-Sur le site de test Hostinger (domaine temporaire **mintcream**, `*.hostingersite.com`) :
+Sur le site de test Hostinger `https://mintcream-mosquito-831101.hostingersite.com` :
 
 ```
 [quotebuilder org="quickly" id="rayonnage" height="720px"]
@@ -44,11 +44,11 @@ Le plugin 2.3.11 peut aussi poser ces valeurs sur le shortcode (elles ne remplac
 
 Le chat interroge le catalogue Woo du funnel `rayonnage`. Les mesures déjà stockées sur les produits (hauteur, largeur, longueur, unité) et la colonne `products.specs` sont envoyées à l’agent et affichées sur la fiche. L’embed ouvre le chat ; le parcours formulaire reste disponible via le bouton Funnel.
 
-Tant que la migration n’est pas appliquée, l’API publique force quand même `chat` pour l’org `quickly`.
+La migration `0046_quickly_silent_drafts.sql` active le chat du funnel `rayonnage`. L’API publique force aussi `chat` pour l’org `quickly` si cette colonne est encore fausse.
 
 ## Connecter le site mintcream
 
-1. WordPress admin du site mintcream → **Extensions** → installer ou mettre à jour QuoteBuilder (zip `/quotebuilder-wp.zip`, ou la mise à jour proposée dans Extensions). WooCommerce doit être actif.
+1. WordPress admin de `https://mintcream-mosquito-831101.hostingersite.com` → **Extensions** → installer ou mettre à jour QuoteBuilder (zip `/quotebuilder-wp.zip`, ou la mise à jour proposée dans Extensions). WooCommerce doit être actif. Le plugin y est déjà actif ; le catalogue Woo est la connexion Quickly (voir `docs/runbooks/woo-catalog-quickly.md`).
 2. Menu **QuoteBuilder**.
 3. **J’ai déjà un compte** (pas « Créer un compte »). Cela ouvre `https://www.quotebuilder.co/integrations/plugin/connect` avec l’URL du site.
 4. Se connecter à l’espace **Quickly** (`slug` `quickly`) et choisir le funnel **rayonnage**.

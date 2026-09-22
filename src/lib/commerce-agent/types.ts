@@ -45,7 +45,7 @@ export type CompactProduct = {
   /** Woo / Shopify id and SKU so the agent can match a prefilled line. */
   sku: string | null;
   externalId: string | null;
-  specs: { label: string; value: string }[];
+  specs: { label: string; value: string; unit?: string }[];
 };
 
 export function emptyProvenance(): ProvenanceState {
@@ -67,11 +67,10 @@ export function compactProduct(product: Product): CompactProduct {
       : null,
     sku: product.sku ?? null,
     externalId: product.externalId ?? null,
-    specs: Object.values(product.specs ?? {})
-      .slice(0, 12)
-      .map((spec) => ({
-        label: spec.label,
-        value: spec.unit ? `${spec.value} ${spec.unit}` : spec.value,
-      })),
+    specs: (product.specs ?? []).slice(0, 12).map((spec) => ({
+      label: spec.label,
+      value: spec.value,
+      ...(spec.unit ? { unit: spec.unit } : {}),
+    })),
   };
 }

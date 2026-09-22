@@ -1,8 +1,8 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { parseRelated } from "@/lib/catalog/affinity";
-import { mergeProductSpecs } from "@/lib/catalog/specs";
 import type { Database, Json } from "@/lib/db/database.types";
 import { normalizeAttributes, toProspectOptions } from "@/lib/catalog/attributes";
+import { publicProductSpecs } from "@/lib/catalog/specs";
 import { parseFunnelTracking, parseOrgGtm } from "@/lib/funnels/tracking";
 import { parseFunnelKind } from "@/lib/funnels/kind";
 import { resolveQuoteMode } from "@/lib/quotes/quote-mode";
@@ -42,12 +42,12 @@ function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Produ
     tags: row.tags ?? [],
     category: row.category ?? null,
     options,
+    specs: publicProductSpecs(attributes, row.specs),
     stockStatus: row.stock_status ?? null,
     externalId: row.external_id,
     sku: row.sku,
     configuratorId: row.configurator_id,
     related: parseRelated(row.related),
-    specs: mergeProductSpecs(attributes, row.specs),
   };
 }
 

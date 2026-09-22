@@ -11,6 +11,7 @@ import {
   randomToken,
 } from "@/lib/integrations/secrets";
 import { normalizeShopDomain } from "@/lib/integrations/shopify";
+import { retargetWooConnection } from "@/lib/integrations/retarget-woo";
 import { runCatalogSync } from "@/lib/integrations/sync";
 import {
   parseSettings,
@@ -190,15 +191,26 @@ export async function updateConnection(formData: FormData) {
   const supabase = await createClient();
   const { data: existing } = await supabase
     .from("catalog_connections")
-    .select("settings")
+    .select("*")
     .eq("id", id)
     .eq("organization_id", ctx.organization.id)
     .maybeSingle();
-  const current = parseSettings(existing?.settings);
+  if (!existing) return;
+  const current = parseSettings(existing.settings);
   const settings: ConnectionSettings = {
     ...readSettings(formData, current),
     storefront: current.storefront,
   };
+  const requestedSite = String(formData.get("store_domain") ?? "").trim();
+  let target = existing;
+  if (requestedSite && existing.provider === "woocommerce") {
+    const aligned = await retargetWooConnection(supabase, existing, requestedSite);
+    if (aligned.error) {
+      revalidatePath(`/integrations/${id}`);
+      return;
+    }
+    target = aligned.row;
+  }
   await supabase
     .from("catalog_connections")
     .update({
@@ -209,6 +221,9 @@ export async function updateConnection(formData: FormData) {
     })
     .eq("id", id)
     .eq("organization_id", ctx.organization.id);
+  if (target.store_domain !== existing.store_domain) {
+    await runCatalogSync({ connectionId: id, trigger: "manual" });
+  }
   revalidatePath(`/integrations/${id}`);
   revalidatePath("/integrations");
   revalidatePath("/produits");

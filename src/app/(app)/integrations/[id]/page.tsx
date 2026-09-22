@@ -108,6 +108,19 @@ export default async function ConnectionPage({
       <form action={updateConnection} className="grid gap-4 border-b border-slate-100 px-4 py-6 lg:px-6">
         <input type="hidden" name="id" value={connection.id} />
         <div className="grid gap-4 sm:grid-cols-2">
+          <label className="text-sm sm:col-span-2">
+            <span className="font-medium text-slate-900">URL WooCommerce</span>
+            <input
+              name="store_domain"
+              defaultValue={connection.store_domain}
+              readOnly={provider !== "woocommerce"}
+              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm read-only:bg-slate-50"
+            />
+            <span className="mt-1 block text-xs text-slate-500">
+              Une URL différente est testée avec les clés REST, puis le catalogue est importé sur
+              la même connexion. Les fiches manuelles sans identifiant boutique restent en place.
+            </span>
+          </label>
           <label className="text-sm">
             <span className="font-medium text-slate-900">Nom affiché</span>
             <input
