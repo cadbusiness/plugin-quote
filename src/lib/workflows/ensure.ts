@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/db/database.types";
 import { ensureDefaultEmailTemplates } from "@/lib/crm/email-templates";
 import { defaultDefinition, defaultWorkflowName } from "@/lib/workflows/defaults";
+import { ensureQuicklyDraftWorkflows, QUICKLY_ORG_SLUG } from "@/lib/workflows/quickly-drafts";
 import type { WorkflowTriggerType } from "@/lib/workflows/types";
 
 const SEEDED: WorkflowTriggerType[] = ["quote.submitted", "session.abandoned"];
@@ -11,6 +12,16 @@ export async function ensureDefaultWorkflows(
   organizationId: string,
 ) {
   await ensureDefaultEmailTemplates(supabase, organizationId);
+
+  const { data: org } = await supabase
+    .from("organizations")
+    .select("slug")
+    .eq("id", organizationId)
+    .maybeSingle();
+  if (org?.slug === QUICKLY_ORG_SLUG) {
+    await ensureQuicklyDraftWorkflows(supabase, organizationId);
+    return;
+  }
 
   const { count } = await supabase
     .from("workflows")

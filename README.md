@@ -24,7 +24,7 @@ npm run dev
 <script src="https://VOTRE_DOMAINE/widget.js"></script>
 ```
 
-WordPress : plugin dans `extensions/quotebuilder-wp/`. Shortcode `[quotebuilder org="quickly" id="rayonnage"]`. Dans WordPress, **Connecter** ouvre QuoteBuilder (login + choix du funnel) puis importe le catalogue WooCommerce. Le zip et la version sont générés au build (`/quotebuilder-wp.zip`, `/api/public/plugin/wordpress`). Les sites en 2.1+ voient les mises à jour dans Extensions.
+WordPress : plugin dans `extensions/quotebuilder-wp/`. Shortcode pitch Quickly : `[quotebuilder org="quickly" id="rayonnage" height="720px"]`. Connexion du site mintcream et relances en brouillon : `docs/quickly-wordpress.md`. Dans WordPress, **J’ai déjà un compte** ouvre QuoteBuilder (login + choix du funnel) puis importe le catalogue WooCommerce. Le zip et la version sont générés au build (`/quotebuilder-wp.zip`, `/api/public/plugin/wordpress`). Les sites en 2.1+ voient les mises à jour dans Extensions.
 
 MCP (Claude / ChatGPT) : serveur HTTP `/api/mcp` + package `quotebuilder-mcp/` — voir `docs/mcp.md`. Clés API dans **Paramètres → API & webhooks**.
 
