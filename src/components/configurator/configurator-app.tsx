@@ -11,7 +11,7 @@ import { CatalogBrowse } from "@/components/configurator/catalog-browse";
 import { RfqForm } from "@/components/configurator/rfq-form";
 import { ProductHtml } from "@/components/catalog/product-html";
 import { QuoteProductMedia } from "@/components/catalog/quote-media";
-import { SpecChips } from "@/components/catalog/spec-table";
+import { QuoteSpecSheets, SpecChips, SpecTable } from "@/components/catalog/spec-table";
 import { quoteLineCount } from "@/lib/funnels/kind";
 import {
   resolveConfiguratorTheme,
@@ -826,6 +826,13 @@ export function ConfiguratorApp({
           <section>
             <h1 className="text-3xl font-semibold tracking-tight">{step.title}</h1>
             {step.subtitle ? <p className="mt-2 text-slate-600">{step.subtitle}</p> : null}
+            {step.screenType !== "customize" ? (
+              <QuoteSpecSheets
+                products={definition.products.filter(
+                  (product) => (session.customization.quantities[product.id] ?? 0) > 0,
+                )}
+              />
+            ) : null}
 
             {step.screenType === "questions" ? (
               <div className="mt-8 space-y-6">
@@ -1240,6 +1247,7 @@ function CustomizePanel({
             ) : null}
             </div>
           </div>
+          <SpecTable specs={product.specs} />
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             {product.options.map((opt) => (
               <label key={opt.key} className="text-sm">
