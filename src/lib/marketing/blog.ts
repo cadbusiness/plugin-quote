@@ -88,6 +88,7 @@ export const BLOG_TOOL_INCOMPLETE_BRIEF = "/outils/estimateur-cout-brief-incompl
 export const BLOG_TOOL_EXPIRED_QUOTES = "/outils/simulateur-cout-devis-expires";
 export const BLOG_TOOL_ACOMPTE = "/outils/calculateur-acompte-devis";
 export const BLOG_TOOL_CATALOG_GAIN = "/outils/estimateur-gain-temps-catalogue-devis";
+export const BLOG_TOOL_SEUIL_REMISE = "/outils/calculateur-seuil-remise-marge";
 
 export type BlogTool = {
   href: string;
@@ -175,6 +176,12 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Devis par mois, minutes manuelles, part bibliothèque, minutes gagnées, taux horaire. Heures et euros par mois et par an.",
     tags: ["catalogue", "funnel"],
   },
+  {
+    href: BLOG_TOOL_SEUIL_REMISE,
+    title: "Calculateur seuil de remise et plancher de marge",
+    text: "Prix catalogue HT, coût ou marge actuelle, plancher cible, TVA. Remise max, prix plancher HT/TTC, marge restante, alerte OK/KO.",
+    tags: ["funnel", "scoring"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -189,6 +196,19 @@ export const BLOG_POSTS: BlogPost[] = [
     tags: ["catalogue", "funnel"],
     ctaHref: "https://www.quotebuilder.co/signup?plan=free",
     cover: "/images/blog/sync-catalogue-woocommerce-shopify-parcours-devis/06-produits.png",
+    pinned: false,
+  },
+  {
+    slug: "remise-commerciale-marge-devis-b2b",
+    path: "/blog/remise-commerciale-marge-devis-b2b",
+    title: "Remise commerciale et marge sur devis B2B : protéger le plancher avant de négocier",
+    description:
+      "Remise devis B2B, plancher de marge, seuils auto/manager/directeur, alternatives (options, phasage, validité, acompte) et KPIs pour PME pose/fabrication. Process commercial clair.",
+    publishedAt: "2026-09-22",
+    readingMinutes: 13,
+    tags: ["funnel", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png",
     pinned: false,
   },
   {

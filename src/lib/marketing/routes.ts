@@ -31,6 +31,7 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   { path: "/blog/bibliotheque-lignes-kits-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/blog/remise-commerciale-marge-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/acomptes-echeances-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/validite-expiration-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog/options-variantes-alternatives-devis-b2b", changeFrequency: "monthly", priority: 0.8 },
@@ -66,6 +67,7 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/outils/simulateur-cout-devis-expires", changeFrequency: "monthly", priority: 0.7 },
   { path: "/outils/calculateur-acompte-devis", changeFrequency: "monthly", priority: 0.7 },
   { path: "/outils/estimateur-gain-temps-catalogue-devis", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/outils/calculateur-seuil-remise-marge", changeFrequency: "monthly", priority: 0.7 },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },
 ];

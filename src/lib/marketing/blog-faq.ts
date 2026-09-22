@@ -43,6 +43,48 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
       a: "Sur la fonctionnalité catalogue, reliée au funnel et aux demandes. Compte Free ou démo publique pour tester le principe. L’estimateur gain temps catalogue chiffre l’ordre de grandeur.",
     },
   ],
+  "remise-commerciale-marge-devis-b2b": [
+    {
+      q: "Quelle remise maximale accepter sur un devis B2B sans tuer la marge ?",
+      a: "Il n’y a pas de % universel. Calculez la remise max qui laisse votre marge au-dessus du plancher. Sur un dossier à 28 % de marge avec plancher à 22 %, la remise max est souvent autour de 7-8 % (ordre de grandeur). Vérifiez avec le calculateur seuil remise / marge.",
+    },
+    {
+      q: "Faut-il plafonner en % de remise ou en plancher de marge ?",
+      a: "Les deux aident, mais le plancher de marge est le garde-fou réel. Un plafond de remise seul ignore les dossiers déjà justes.",
+    },
+    {
+      q: "Comment présenter une remise sans donner l’impression que le prix était gonflé ?",
+      a: "Ancrez le catalogue, affichez le geste clairement, limitez la validité, évitez le vocabulaire « exceptionnel » à répétition. Une variante moins chère est souvent plus crédible qu’un rabais opaque.",
+    },
+    {
+      q: "Que répondre à « il me faut 15 % » ?",
+      a: "Recalculez le plancher. Proposez une variante −15 % de périmètre, ou une remise partielle sous seuil avec validation. Demandez ce qui bloque vraiment (budget, concurrent, timing).",
+    },
+    {
+      q: "Les options doivent-elles être remisées comme le corps du devis ?",
+      a: "Pas forcément. Pose, SAV, urgence ont souvent des règles distinctes. Cohérence entre commerciaux > formule unique.",
+    },
+    {
+      q: "Une remise remplace-t-elle un acompte ?",
+      a: "Non. Remise = prix. Acompte = trésorerie et démarrage. Cumuler remise forte et acompte faible = double exposition. Voir acomptes et échéances sur devis B2B.",
+    },
+    {
+      q: "Qui doit valider une remise sous le plancher ?",
+      a: "En pratique : directeur ou COMEX métier, motif écrit, version figée. Sans ça, le plancher n’existe pas.",
+    },
+    {
+      q: "Quels KPIs regarder en comité commercial ?",
+      a: "Remise moyenne, marge nette sur acceptés, taux d’acceptation par palier de remise, % d’exceptions sous plancher, délai de validation.",
+    },
+    {
+      q: "Comment simuler l’impact d’une remise déjà envisagée ?",
+      a: "Le simulateur impact remise montre l’effet d’un % sur le résultat. Le calculateur seuil remise / marge répond à l’autre question : jusqu’où descendre avant de casser le plancher.",
+    },
+    {
+      q: "Ce guide remplace-t-il une politique tarifaire validée ?",
+      a: "Non. C’est du process commercial. Grilles, CGV et exceptions sensibles : faites valider en interne (et juridiquement si besoin).",
+    },
+  ],
   "acomptes-echeances-devis-b2b": [
     {
       q: "Quel pourcentage d’acompte demander sur un devis B2B de fabrication ?",

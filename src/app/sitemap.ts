@@ -7,6 +7,7 @@ import { SITE_URL } from "@/lib/marketing/site";
 const CONTENT_LASTMOD: Record<string, string> = {
   "/secteurs/funnel-devis-pergola-terrasse": "2026-09-23",
   "/outils/estimateur-gain-temps-catalogue-devis": "2026-09-23",
+  "/outils/calculateur-seuil-remise-marge": "2026-09-22",
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {
