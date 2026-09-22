@@ -2,7 +2,9 @@ import { createHash } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { parseRelated } from "@/lib/catalog/affinity";
 import { parseGallery } from "@/lib/catalog/media";
+import { parseColumnSpecs, storedSpecsForSync } from "@/lib/catalog/specs";
 import { shouldPushLocal, shouldSkipOverwrite } from "@/lib/catalog/sync-policy";
+import { staleSyncCutoff } from "@/lib/integrations/pairing-plan";
 import type { Database, Json, TablesInsert } from "@/lib/db/database.types";
 import { getAdapter, loadConnection, resolveConfiguratorId, resolveConnection } from "@/lib/integrations/connections";
 import type { NormalizedProduct, ResolvedConnection } from "@/lib/integrations/types";
@@ -50,6 +52,7 @@ export function buildProductRow(
   product: NormalizedProduct,
   connection: ResolvedConnection,
   configuratorId: string,
+  existingSpecs?: unknown,
 ): ProductRow & { content_hash: string } {
   const markup = 1 + connection.settings.markupPercent / 100;
   const price = (value: number | null) => (value === null ? null : round2(value * markup));
@@ -71,12 +74,14 @@ export function buildProductRow(
     image_url: product.images[0]?.src ?? null,
     images: product.images as unknown as Json,
     variants: product.variants as unknown as Json,
-    options: product.options as unknown as Json,
+    options: (product.attributes ?? product.options) as unknown as Json,
     category: product.category,
     tags: product.tags,
     stock_status: product.stockStatus,
     related: parseRelated(product.related) as unknown as Json,
   };
+  const specs = storedSpecsForSync(product.specs, existingSpecs);
+  if (specs) row.specs = specs as unknown as Json;
 
   const content_hash = createHash("sha1").update(JSON.stringify(row)).digest("hex");
   return { ...row, content_hash };
@@ -130,6 +135,27 @@ export async function runCatalogSync({
     return { ...result, error: "Créez d'abord un funnel : le catalogue s'y rattache." };
   }
 
+  await supabase
+    .from("catalog_sync_runs")
+    .update({
+      status: "error",
+      error: "Synchronisation interrompue (délai dépassé).",
+      finished_at: new Date().toISOString(),
+    })
+    .eq("connection_id", connection.id)
+    .eq("status", "running")
+    .lt("started_at", staleSyncCutoff());
+
+  const { data: running } = await supabase
+    .from("catalog_sync_runs")
+    .select("id")
+    .eq("connection_id", connection.id)
+    .eq("status", "running")
+    .limit(1);
+  if (running?.length) {
+    return { ...result, error: "Une synchronisation est déjà en cours." };
+  }
+
   const { data: run } = await supabase
     .from("catalog_sync_runs")
     .insert({
@@ -144,7 +170,7 @@ export async function runCatalogSync({
   try {
     const { data: existing } = await supabase
       .from("products")
-      .select("id, external_id, content_hash, is_active, archived_by_sync, updated_at, synced_at, sync_lock")
+      .select("id, external_id, content_hash, is_active, archived_by_sync, updated_at, synced_at, sync_lock, specs")
       .eq("connection_id", connection.id);
     const known = new Map(
       (existing ?? [])
@@ -164,8 +190,8 @@ export async function runCatalogSync({
         for (const product of batch.products) {
           if (!keeps(product, connection)) continue;
           seen.add(product.externalId);
-          const built = buildProductRow(product, connection, configuratorId);
           const previous = known.get(product.externalId);
+          const built = buildProductRow(product, connection, configuratorId, previous?.specs);
           if (previous?.archived_by_sync) toReactivate.push(product.externalId);
           if (shouldSkipOverwrite(previous, connection.settings)) {
             result.skipped += 1;
@@ -213,7 +239,7 @@ export async function runCatalogSync({
     if (connection.settings.pushToStore && adapter.pushProduct) {
       const { data: outbound } = await supabase
         .from("products")
-        .select("id, external_id, name, sku, description, price_min, images, updated_at, synced_at, sync_lock")
+        .select("id, external_id, name, sku, description, price_min, images, specs, updated_at, synced_at, sync_lock")
         .eq("connection_id", connection.id)
         .not("external_id", "is", null);
       for (const row of outbound ?? []) {
@@ -226,6 +252,7 @@ export async function runCatalogSync({
             description: row.description,
             priceMin: row.price_min,
             images: parseGallery(row.images),
+            specs: parseColumnSpecs(row.specs),
           });
           result.pushed += 1;
           await supabase
@@ -316,7 +343,7 @@ export async function syncExternalProduct({
 
   const { data: current } = await supabase
     .from("products")
-    .select("updated_at, synced_at, sync_lock")
+    .select("updated_at, synced_at, sync_lock, specs")
     .eq("connection_id", connection.id)
     .eq("external_id", externalId)
     .maybeSingle();
@@ -350,7 +377,7 @@ export async function syncExternalProduct({
     return { ok: true as const, action: "archived" as const };
   }
 
-  const built = buildProductRow(product, connection, configuratorId);
+  const built = buildProductRow(product, connection, configuratorId, current?.specs);
   await writeChunks(supabase, [built]);
   await supabase
     .from("products")

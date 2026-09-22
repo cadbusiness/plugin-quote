@@ -1,5 +1,5 @@
 import type { Json } from "@/lib/db/database.types";
-import { formatQuoteSpecs } from "@/lib/catalog/specs";
+import { formatQuoteSpecs } from "@/lib/configurator/prefill";
 import type { Answers, Choice, QuestionOptions } from "@/lib/wizard/types";
 
 const SKIP_KEYS = new Set([

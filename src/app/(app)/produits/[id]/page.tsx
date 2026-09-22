@@ -9,6 +9,7 @@ import { Chip, type ChipTone } from "@/components/ui/chip";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { normalizeAttributes } from "@/lib/catalog/attributes";
+import { specsFieldValue } from "@/lib/catalog/specs";
 import { parseGallery } from "@/lib/catalog/media";
 import { priceModeOf } from "@/lib/catalog/product-form";
 import type { Json } from "@/lib/db/database.types";
@@ -123,6 +124,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
       <form action={updateProduct} className="border-b border-slate-100">
         <input type="hidden" name="id" value={product.id} />
         <input type="hidden" name="price_mode" value={priceMode === "quote" ? "range" : priceMode} />
+        <input type="hidden" name="specs" value={JSON.stringify(specsFieldValue(product.specs))} />
 
         <div className="grid gap-6 px-4 py-5 lg:grid-cols-[16rem_minmax(0,32rem)] lg:px-6">
           <ProductGallery productId={product.id} images={gallery} />

@@ -1,4 +1,3 @@
-import type { ProductSpec } from "@/lib/catalog/specs";
 import type { Answers, ContactDraft, Product, Suggestion } from "@/lib/wizard/types";
 
 export type AgentToolName =
@@ -43,7 +42,7 @@ export type CompactProduct = {
   currency: string;
   stockStatus: string | null;
   description: string | null;
-  specs: Record<string, ProductSpec>;
+  specs: { label: string; value: string; unit?: string }[];
 };
 
 export function emptyProvenance(): ProvenanceState {
@@ -60,7 +59,13 @@ export function compactProduct(product: Product): CompactProduct {
     priceMax: product.priceMax,
     currency: product.currency,
     stockStatus: product.stockStatus,
-    description: product.description ? product.description.slice(0, 280) : null,
-    specs: product.specs ?? {},
+    description: product.description
+      ? product.description.slice(0, 280)
+      : null,
+    specs: (product.specs ?? []).map((spec) => ({
+      label: spec.label,
+      value: spec.value,
+      ...(spec.unit ? { unit: spec.unit } : {}),
+    })),
   };
 }

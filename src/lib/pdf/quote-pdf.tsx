@@ -1,5 +1,5 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
-import { formatQuoteSpecs } from "@/lib/catalog/specs";
+import { formatQuoteSpecs } from "@/lib/configurator/prefill";
 import type { Answers } from "@/lib/wizard/types";
 
 const styles = StyleSheet.create({

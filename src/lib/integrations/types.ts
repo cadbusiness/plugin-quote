@@ -1,4 +1,6 @@
 import type { ProductRelated } from "@/lib/catalog/affinity";
+import type { ProductAttribute } from "@/lib/catalog/attributes";
+import type { ProductSpecs } from "@/lib/catalog/specs";
 import type { ProductOption } from "@/lib/wizard/types";
 import { DEFAULT_STOREFRONT, parseStorefront, type StorefrontSettings } from "@/lib/integrations/storefront";
 
@@ -44,9 +46,14 @@ export type NormalizedProduct = {
   url: string | null;
   status: "active" | "draft" | "archived";
   stockStatus: "instock" | "outofstock" | "onbackorder" | null;
+  /** Choix prospect (variations). */
   options: ProductOption[];
+  /** Choix + specs persistés dans products.options. Absent chez Shopify. */
+  attributes?: ProductAttribute[];
   variants: ProductVariant[];
   related: ProductRelated;
+  /** Fiche technique canonique (colonne products.specs). Absente chez Shopify. */
+  specs?: ProductSpecs;
   externalUpdatedAt: string | null;
 };
 
@@ -155,6 +162,7 @@ export type PushableProduct = {
   description: string | null;
   priceMin: number | null;
   images: ProductImage[];
+  specs?: ProductSpecs;
 };
 
 export class IntegrationError extends Error {

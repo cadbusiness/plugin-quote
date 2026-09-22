@@ -53,13 +53,13 @@ const steps = [
   },
 ] satisfies WizardStep[];
 
-const paletteSpecs = {
-  charge: { label: "Charge", value: "1000", unit: "kg/niveau" },
-  hauteur: { label: "Hauteur max", value: "12", unit: "m" },
-  profondeur: { label: "Profondeur", value: "1100", unit: "mm" },
-  materiau: { label: "Matériau", value: "Acier peint / galva" },
-  delai: { label: "Délai indicatif", value: "2–4", unit: "semaines" },
-};
+const paletteSpecs = [
+  { key: "charge", label: "Charge", value: "1000", unit: "kg/niveau" },
+  { key: "hauteur", label: "Hauteur max", value: "12", unit: "m" },
+  { key: "profondeur", label: "Profondeur", value: "1100", unit: "mm" },
+  { key: "materiau", label: "Matériau", value: "Acier peint / galva" },
+  { key: "delai", label: "Délai indicatif", value: "2–4", unit: "semaines" },
+];
 
 const products = [
   {
@@ -75,13 +75,13 @@ const products = [
     name: "Cantilever",
     sku: null,
     externalId: null,
-    specs: {
-      charge: { label: "Charge bras", value: "500", unit: "kg", valueAlt: "par bras" },
-      hauteur: { label: "Hauteur colonne", value: "6", unit: "m" },
-      profondeur: { label: "Portée bras", value: "1200", unit: "mm" },
-      materiau: { label: "Matériau", value: "Acier / galva" },
-      delai: { label: "Délai indicatif", value: "3–5", unit: "semaines" },
-    },
+    specs: [
+      { key: "charge", label: "Charge bras", value: "500", unit: "kg", valueAlt: "par bras" },
+      { key: "hauteur", label: "Hauteur colonne", value: "6", unit: "m" },
+      { key: "profondeur", label: "Portée bras", value: "1200", unit: "mm" },
+      { key: "materiau", label: "Matériau", value: "Acier / galva" },
+      { key: "delai", label: "Délai indicatif", value: "3–5", unit: "semaines" },
+    ],
   },
 ];
 

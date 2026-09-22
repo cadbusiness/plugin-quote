@@ -3,6 +3,7 @@ import { z } from "zod";
 import { encryptCredentials, maskHint, randomToken } from "@/lib/integrations/secrets";
 import { runCatalogSync } from "@/lib/integrations/sync";
 import { DEFAULT_SETTINGS, parseSettings } from "@/lib/integrations/types";
+import { planWooPairing } from "@/lib/integrations/pairing-plan";
 import { pluginPayload } from "@/lib/integrations/plugin";
 import { normalizeSiteUrl } from "@/lib/integrations/woocommerce";
 import type { Json } from "@/lib/db/database.types";
@@ -58,41 +59,52 @@ export async function POST(req: Request) {
   }
 
   const webhookSecret = randomToken(24);
-  const { data: existing } = await supabase
+  const { data: wooRows } = await supabase
     .from("catalog_connections")
-    .select("settings")
+    .select("id, store_domain, settings")
     .eq("organization_id", pairing.organization_id)
-    .eq("provider", "woocommerce")
-    .eq("store_domain", siteUrl)
-    .maybeSingle();
+    .eq("provider", "woocommerce");
+  const plan = planWooPairing(wooRows ?? [], siteUrl);
+  const source =
+    plan.action === "update"
+      ? wooRows?.find((row) => row.id === plan.connectionId)
+      : wooRows?.find((row) => row.store_domain === siteUrl);
   const settings = {
     ...DEFAULT_SETTINGS,
-    storefront: parseSettings(existing?.settings).storefront,
+    storefront: parseSettings(source?.settings).storefront,
   };
-  const { data: connection, error } = await supabase
-    .from("catalog_connections")
-    .upsert(
-      {
-        organization_id: pairing.organization_id,
-        configurator_id: pairing.configurator_id,
-        provider: "woocommerce",
-        label: body.site_name?.trim() || new URL(siteUrl).hostname,
-        store_domain: siteUrl,
-        credentials: encryptCredentials({
-          consumer_key: body.consumer_key,
-          consumer_secret: body.consumer_secret,
-        }) as unknown as Json,
-        credentials_hint: maskHint(body.consumer_key),
-        settings: settings as unknown as Json,
-        webhook_secret: webhookSecret,
-        status: "active",
-        last_error: null,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "organization_id,provider,store_domain" },
-    )
-    .select("*")
-    .single();
+  const record = {
+    organization_id: pairing.organization_id,
+    configurator_id: pairing.configurator_id,
+    provider: "woocommerce" as const,
+    label: body.site_name?.trim() || new URL(siteUrl).hostname,
+    store_domain: siteUrl,
+    credentials: encryptCredentials({
+      consumer_key: body.consumer_key,
+      consumer_secret: body.consumer_secret,
+    }) as unknown as Json,
+    credentials_hint: maskHint(body.consumer_key),
+    settings: settings as unknown as Json,
+    webhook_secret: webhookSecret,
+    status: "active" as const,
+    last_error: null,
+    updated_at: new Date().toISOString(),
+  };
+  const written =
+    plan.action === "update"
+      ? await supabase
+          .from("catalog_connections")
+          .update(record)
+          .eq("id", plan.connectionId)
+          .select("*")
+          .single()
+      : await supabase
+          .from("catalog_connections")
+          .upsert(record, { onConflict: "organization_id,provider,store_domain" })
+          .select("*")
+          .single();
+  const connection = written.data;
+  const error = written.error;
 
   if (error || !connection) {
     return NextResponse.json({ error: "Enregistrement impossible" }, { status: 500 });

@@ -1,10 +1,5 @@
 import type { Json } from "@/lib/db/database.types";
-import {
-  readSpecSnapshots,
-  specOptionStrings,
-  type ProductSpec,
-} from "@/lib/catalog/specs";
-import type { Answers, Customization, WizardQuestion, WizardStep } from "@/lib/wizard/types";
+import type { Answers, Customization, ProductSpec, WizardQuestion, WizardStep } from "@/lib/wizard/types";
 
 /**
  * Query contract for the public funnel (`/c/:org/:slug` and `/embed/:org/:slug`).
@@ -33,8 +28,68 @@ export type PrefillProduct = {
   externalId?: string | null;
   tags?: string[] | null;
   category?: string | null;
-  specs?: Record<string, ProductSpec> | null;
+  /** Fiche déjà normalisée par le catalogue public (`Product.specs`). */
+  specs?: ProductSpec[] | null;
 };
+
+export type SpecSnapshot = {
+  productId: string;
+  name: string;
+  specs: ProductSpec[];
+};
+
+function specDisplay(spec: Pick<ProductSpec, "value" | "unit" | "valueAlt">): string {
+  const unit = spec.unit?.trim();
+  const alt = spec.valueAlt?.trim();
+  const core = unit ? `${spec.value} ${unit}` : spec.value;
+  return alt ? `${core} (${alt})` : core;
+}
+
+export function specOptionStrings(specs: ProductSpec[]): Record<string, string> {
+  return Object.fromEntries(
+    specs.filter((spec) => spec.key.trim() && spec.value.trim()).map((spec) => [spec.key, specDisplay(spec)]),
+  );
+}
+
+export function readSpecSnapshots(value: unknown): SpecSnapshot[] {
+  if (!Array.isArray(value)) return [];
+  const snapshots: SpecSnapshot[] = [];
+  for (const item of value) {
+    if (!item || typeof item !== "object" || Array.isArray(item)) continue;
+    const row = item as Record<string, unknown>;
+    const productId = typeof row.productId === "string" ? row.productId.trim() : "";
+    const name = typeof row.name === "string" ? row.name.trim() : "";
+    const specs = Array.isArray(row.specs)
+      ? row.specs.flatMap((spec) => {
+          if (!spec || typeof spec !== "object" || Array.isArray(spec)) return [];
+          const entry = spec as Record<string, unknown>;
+          const key = typeof entry.key === "string" ? entry.key.trim() : "";
+          const label = typeof entry.label === "string" ? entry.label.trim() : "";
+          const specValue = entry.value == null ? "" : String(entry.value).trim();
+          if (!key || !label || !specValue) return [];
+          const parsed: ProductSpec = { key, label, value: specValue };
+          if (typeof entry.unit === "string" && entry.unit.trim()) parsed.unit = entry.unit.trim();
+          if (typeof entry.valueAlt === "string" && entry.valueAlt.trim()) parsed.valueAlt = entry.valueAlt.trim();
+          return [parsed];
+        })
+      : [];
+    if (!productId || !name || !specs.length) continue;
+    snapshots.push({ productId, name, specs });
+  }
+  return snapshots;
+}
+
+/** Readable fiche for the dossier and the PDF. The stored payload stays structured. */
+export function formatQuoteSpecs(value: unknown): string | null {
+  const snapshots = readSpecSnapshots(value);
+  if (!snapshots.length) return null;
+  return snapshots
+    .map((snapshot) => {
+      const rows = snapshot.specs.map((spec) => `${spec.label} ${specDisplay(spec)}`).join(", ");
+      return `${snapshot.name} — ${rows}`;
+    })
+    .join(" · ");
+}
 
 const BESOIN_HINTS: [string, string][] = [
   ["rack_a_palettes", "rack_palettes"],
@@ -246,7 +301,7 @@ export function applyFunnelPrefill(input: {
 
   const namedWithoutSpecs = productNames.filter((name) => {
     const product = input.products.find((item) => item.name === name);
-    return !product?.specs || !Object.keys(product.specs).length;
+    return !product?.specs?.some((spec) => spec.value.trim());
   });
   if (namedWithoutSpecs.length) {
     const note = textQuestion(input.steps);
@@ -278,8 +333,8 @@ export function applyFunnelPrefill(input: {
   const snapshots = readSpecSnapshots(answers.specs);
   for (const id of productIds) {
     const product = input.products.find((item) => item.id === id);
-    const specs = product?.specs ?? {};
-    if (!product || !Object.keys(specs).length) continue;
+    const specs = product?.specs?.filter((spec) => spec.value.trim()) ?? [];
+    if (!product || !specs.length) continue;
     const line = { ...(options[id] ?? {}), ...specOptionStrings(specs) };
     if (JSON.stringify(options[id] ?? {}) !== JSON.stringify(line)) {
       options[id] = line;

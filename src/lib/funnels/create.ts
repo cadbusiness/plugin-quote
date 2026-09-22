@@ -112,7 +112,7 @@ export async function insertFunnelFromTemplate(
   if (input.catalogFromId) {
     const { data: products } = await supabase
       .from("products")
-      .select("name, description, image_url, price_min, price_max, currency, tags, options, specs, sku, category, is_active")
+      .select("name, description, image_url, price_min, price_max, currency, tags, options, sku, category, is_active, specs")
       .eq("organization_id", organizationId)
       .eq("configurator_id", input.catalogFromId);
     if (products?.length) {

@@ -1,5 +1,4 @@
 import type { ProductRelated } from "@/lib/catalog/affinity";
-import type { ProductSpec } from "@/lib/catalog/specs";
 import type { Json } from "@/lib/db/database.types";
 import type { QuoteMode } from "@/lib/quotes/quote-mode";
 
@@ -32,6 +31,16 @@ export type ProductOption = {
   key: string;
   label: string;
   values: { value: string; label: string }[];
+};
+
+/** Ligne SpecTable. `options` reste réservé aux choix du prospect. */
+export type ProductSpec = {
+  key: string;
+  label: string;
+  value: string;
+  unit?: string;
+  /** Variante déjà stockée dans `products.specs` (colonne jsonb). */
+  valueAlt?: string;
 };
 
 export type WizardQuestion = {
@@ -72,14 +81,14 @@ export type Product = {
   tags: string[];
   category: string | null;
   options: ProductOption[];
+  /** Caractéristiques figées (charge, hauteur, profondeur, matériau, délai). */
+  specs: ProductSpec[];
   stockStatus: string | null;
   /** Identifiant boutique (Woo / Shopify) pour préremplir depuis la vitrine. */
   externalId: string | null;
   sku?: string | null;
   configuratorId?: string;
   related?: ProductRelated;
-  /** Fiche technique (`products.specs`). Absent des fixtures qui ne la portent pas. */
-  specs?: Record<string, ProductSpec>;
 };
 
 export type Suggestion = {
