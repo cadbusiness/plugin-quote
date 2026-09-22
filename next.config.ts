@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Non-JS clients (WebFetch, social cards, WordPress previews) must see the
+  // merchant title in <head>. Streaming metadata would leave the marketing default.
+  htmlLimitedBots: /.*/,
   transpilePackages: ["@puckeditor/core"],
   // Default true: prerender workers load source maps and blow the isolated 2GB heap.
   enablePrerenderSourceMaps: false,
@@ -37,6 +40,7 @@ const nextConfig: NextConfig = {
         source: "/embed/:path*",
         headers: [
           { key: "X-Frame-Options", value: "ALLOWALL" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
           {
             key: "Content-Security-Policy",
             value: "frame-ancestors *",
