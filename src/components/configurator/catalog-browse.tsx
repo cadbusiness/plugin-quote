@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ProductHtml } from "@/components/catalog/product-html";
+import { SpecTable } from "@/components/configurator/spec-table";
 import { ProductMedia, ProductTile } from "@/components/catalog/product-tile";
 import { formatPrice } from "@/lib/format";
 import { groupProductsByCategory } from "@/lib/catalog/group";
@@ -152,6 +153,7 @@ export function CatalogBrowse({
               {product.description ? (
                 <ProductHtml html={product.description} className="mt-3" />
               ) : null}
+              <SpecTable products={[product]} showName={false} />
               {product.options.length ? (
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   {product.options.map((opt) => (
