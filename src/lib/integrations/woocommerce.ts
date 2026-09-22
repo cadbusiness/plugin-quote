@@ -2,7 +2,7 @@ import { createHmac } from "node:crypto";
 import { parseRelated } from "@/lib/catalog/affinity";
 import { toProspectOptions } from "@/lib/catalog/attributes";
 import { sanitizeProductHtml } from "@/lib/catalog/html";
-import { mapWooCatalogAttributes, type WooSpecUnits } from "@/lib/catalog/specs";
+import { mapWooCatalogAttributes, mapWooProductSpecs, wooSpecsWrite, type WooSpecUnits } from "@/lib/catalog/specs";
 import { htmlToText, parsePrice } from "@/lib/integrations/html";
 import { safeEqual } from "@/lib/integrations/secrets";
 import {
@@ -21,8 +21,15 @@ const TIMEOUT_MS = 25_000;
 
 type WooImage = { id?: number; src?: string; alt?: string; name?: string };
 type WooTerm = { id?: number; name?: string; slug?: string };
-type WooAttribute = { id?: number; name?: string; options?: string[]; variation?: boolean };
-type WooMeta = { key?: string; value?: unknown };
+type WooAttribute = {
+  id?: number;
+  name?: string;
+  slug?: string;
+  visible?: boolean;
+  variation?: boolean;
+  options?: string[];
+};
+type WooMeta = { id?: number; key?: string; value?: unknown };
 
 type WooProduct = {
   id: number;
@@ -338,6 +345,7 @@ function normalizeProduct(
       upsellIds: product.upsell_ids ?? [],
       crossSellIds: product.cross_sell_ids ?? [],
     }),
+    specs: mapWooProductSpecs(product),
     externalUpdatedAt: product.date_modified_gmt ? `${product.date_modified_gmt}Z` : null,
   };
 }
@@ -435,6 +443,14 @@ async function pushWooProduct(connection: ResolvedConnection, product: PushableP
   const markup = 1 + connection.settings.markupPercent / 100;
   const price =
     product.priceMin == null ? undefined : String(Math.round((product.priceMin / markup) * 100) / 100);
+  let current: WooProduct | null = null;
+  try {
+    const { data } = await wooFetch<WooProduct>(connection, `/products/${product.externalId}`);
+    current = data;
+  } catch {
+    current = null;
+  }
+  const specsWrite = product.specs ? wooSpecsWrite(product.specs, current ?? undefined) : null;
   await wooFetch(connection, `/products/${product.externalId}`, {}, {
     method: "PUT",
     body: {
@@ -443,6 +459,8 @@ async function pushWooProduct(connection: ResolvedConnection, product: PushableP
       description: product.description ?? "",
       ...(price != null ? { regular_price: price } : {}),
       images: product.images.map((image) => ({ src: image.src, alt: image.alt ?? "" })),
+      ...(specsWrite?.meta_data.length ? { meta_data: specsWrite.meta_data } : {}),
+      ...(specsWrite?.attributes ? { attributes: specsWrite.attributes } : {}),
     },
   });
 }
