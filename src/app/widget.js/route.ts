@@ -93,10 +93,15 @@ export function GET() {
     track(org, id, vid, attr);
     var iframe = document.createElement("iframe");
     iframe.src = iframeSrc(el, org, id, vid, attr);
+    var height = el.getAttribute("data-height") || "720px";
     iframe.style.width = "100%";
+    iframe.style.maxWidth = "100%";
+    iframe.style.display = "block";
     iframe.style.border = "0";
-    iframe.style.minHeight = el.getAttribute("data-height") || "720px";
-    iframe.setAttribute("title", "QuoteBuilder");
+    iframe.style.height = height;
+    iframe.style.minHeight = height;
+    var accessible = (el.getAttribute("data-title") || ("Devis " + String(id || "").replace(/[-_]+/g, " "))).trim();
+    iframe.setAttribute("title", accessible || "Devis");
     iframe.setAttribute("loading", "lazy");
     el.innerHTML = "";
     el.appendChild(iframe);

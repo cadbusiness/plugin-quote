@@ -8,7 +8,6 @@ import {
   OG_IMAGE,
   SITE_URL,
   absoluteUrl,
-  rootJsonLd,
 } from "@/lib/marketing/site";
 
 const geistSans = Geist({
@@ -68,16 +67,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = rootJsonLd();
   return (
     <html lang="fr" className={`${geistSans.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}>
-      <body className="min-h-full">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        {children}
-      </body>
+      <body className="min-h-full">{children}</body>
     </html>
   );
 }
