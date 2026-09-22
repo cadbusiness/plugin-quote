@@ -71,7 +71,7 @@ export function buildProductRow(
     image_url: product.images[0]?.src ?? null,
     images: product.images as unknown as Json,
     variants: product.variants as unknown as Json,
-    options: product.options as unknown as Json,
+    options: (product.attributes ?? product.options) as unknown as Json,
     category: product.category,
     tags: product.tags,
     stock_status: product.stockStatus,

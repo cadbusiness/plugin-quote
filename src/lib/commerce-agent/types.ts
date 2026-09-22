@@ -42,6 +42,7 @@ export type CompactProduct = {
   currency: string;
   stockStatus: string | null;
   description: string | null;
+  specs: { label: string; value: string; unit?: string }[];
 };
 
 export function emptyProvenance(): ProvenanceState {
@@ -61,5 +62,10 @@ export function compactProduct(product: Product): CompactProduct {
     description: product.description
       ? product.description.slice(0, 280)
       : null,
+    specs: (product.specs ?? []).map((spec) => ({
+      label: spec.label,
+      value: spec.value,
+      ...(spec.unit ? { unit: spec.unit } : {}),
+    })),
   };
 }
