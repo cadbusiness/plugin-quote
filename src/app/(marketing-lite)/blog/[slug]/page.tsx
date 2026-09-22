@@ -8,6 +8,7 @@ import {
   trimMetaDescription,
 } from "@/lib/marketing/blog";
 import { loadPostBody } from "@/lib/marketing/load-post";
+import { parseImageLine } from "@/lib/marketing/markdown-parse";
 import { pageMetadata } from "@/lib/marketing/site";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -28,6 +29,38 @@ function inlineHtml(text: string) {
     .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+|\/[^)]+)\)/g, '<a href="$2">$1</a>');
 }
 
+function tableHtml(block: string): string | null {
+  const lines = block.split("\n").map((line) => line.trim()).filter(Boolean);
+  if (lines.length < 3 || !lines.every((line) => line.startsWith("|") && line.endsWith("|"))) return null;
+  const cells = (line: string) =>
+    line
+      .replace(/^\|/, "")
+      .replace(/\|$/, "")
+      .split("|")
+      .map((cell) => cell.trim());
+  const header = cells(lines[0] ?? "");
+  const separator = cells(lines[1] ?? "");
+  if (!separator.every((cell) => /^:?-{3,}:?$/.test(cell))) return null;
+  const rows = lines.slice(2).map(cells);
+  const head = header.map((cell) => `<th class="px-3 py-2 font-semibold">${inlineHtml(cell)}</th>`).join("");
+  const body = rows
+    .map(
+      (row) =>
+        `<tr class="border-t border-mk-border">${row
+          .map((cell) => `<td class="px-3 py-2 align-top">${inlineHtml(cell)}</td>`)
+          .join("")}</tr>`,
+    )
+    .join("");
+  return `<div class="mt-6 overflow-x-auto rounded-xl bg-white ring-1 ring-mk-border"><table class="w-full min-w-[28rem] border-collapse text-left text-[14px] leading-6"><thead class="bg-mk-band"><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+
+function imageHtml(block: string): string | null {
+  if (block.includes("\n")) return null;
+  const image = parseImageLine(block);
+  if (!image?.src.startsWith("/images/")) return null;
+  return `<figure class="mt-8"><img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" class="w-full rounded-xl bg-mk-band object-cover object-top" /></figure>`;
+}
+
 /** String HTML — no React markdown tree, no Sharp, no Satori. */
 function articleHtml(source: string) {
   const blocks: string[] = [];
@@ -40,6 +73,16 @@ function articleHtml(source: string) {
     }
     if (block.startsWith("### ")) {
       blocks.push(`<h3 class="mt-8 text-lg font-semibold">${inlineHtml(block.slice(4))}</h3>`);
+      continue;
+    }
+    const image = imageHtml(block);
+    if (image) {
+      blocks.push(image);
+      continue;
+    }
+    const table = tableHtml(block);
+    if (table) {
+      blocks.push(table);
       continue;
     }
     if (/^[-*]\s/m.test(block) || /^\d+\.\s/m.test(block)) {
