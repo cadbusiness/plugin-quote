@@ -6,7 +6,7 @@ import { ChevronLeft } from "lucide-react";
 import { ListPanel } from "@/components/ui/list-panel";
 import { Chip } from "@/components/ui/chip";
 import { LocalTabNav, replaceClientUrl } from "@/components/ui/local-tabs";
-import { captureShortcode, captureWidgetSnippet } from "@/lib/configurator/capture-embed";
+import { agentShortcode, agentWidgetSnippet, captureShortcode, captureWidgetSnippet } from "@/lib/configurator/capture-embed";
 import { CopyBlock } from "@/components/funnels/copy-block";
 import { FunnelAutomations } from "@/components/funnels/funnel-automations";
 import { FunnelStatsPanel } from "@/components/funnels/funnel-stats-panel";
@@ -67,9 +67,11 @@ export function FunnelEditor({
   const widgetOrigin = new URL("/widget.js", publicUrl).origin;
   const widget = `<div data-quotebuilder data-org="${orgSlug}" data-id="${funnel.slug}"></div>\n<script src="${widgetOrigin}/widget.js" async></script>`;
   const capture = captureWidgetSnippet(widgetOrigin, orgSlug, funnel.slug);
+  const agent = agentWidgetSnippet(widgetOrigin, orgSlug, funnel.slug);
   const iframe = `<iframe src="${embedUrl}" title="${funnel.name}" style="width:100%;min-height:720px;border:0"></iframe>`;
   const shortcode = `[quotebuilder org="${orgSlug}" id="${funnel.slug}"]`;
   const captureCode = captureShortcode(orgSlug, funnel.slug);
+  const agentCode = agentShortcode(orgSlug, funnel.slug);
 
   function commitName(value: string) {
     const next = value.trim();
@@ -176,15 +178,17 @@ export function FunnelEditor({
           <div className="border-b border-slate-100 px-4 py-3 lg:px-6">
             <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Diffusion</p>
             <p className="mt-0.5 text-sm text-slate-500">
-              Page publique, funnel complet, et module « une question » à poser dans une colonne de page.
+              Page publique, funnel complet, carte « une question », et bloc chat agent.
             </p>
           </div>
           <CopyBlock label="Lien public" value={publicUrl} />
           <CopyBlock label="Widget JS" value={widget} />
           <CopyBlock label="Module question" value={capture} />
+          <CopyBlock label="Module agent" value={agent} />
           <CopyBlock label="Iframe" value={iframe} />
           <CopyBlock label="Shortcode WordPress" value={shortcode} />
           <CopyBlock label="Shortcode question" value={captureCode} />
+          <CopyBlock label="Shortcode agent" value={agentCode} />
         </>
       ) : null}
 

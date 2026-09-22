@@ -4,12 +4,18 @@ import { useEffect, useRef, useState } from "react";
 import { captureAnswerPatch, planCaptureFollow, type CaptureComplement, type CaptureFollow } from "@/lib/configurator/capture-follow";
 import { parseAttribution, type Attribution } from "@/lib/stats/attribution";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
-import type { ConfiguratorDefinition, QuoteSession } from "@/lib/wizard/types";
+import type { ChatMessage, ConfiguratorDefinition, ContactDraft, QuoteSession } from "@/lib/wizard/types";
 
 const DEFAULT_PLACEHOLDER = "Ex. : dimensions, quantités, contraintes, délai.";
 const DEFAULT_PROMISE = "Réponse sous 24h";
 
-type Phase = "brief" | "qualify" | "complement" | "contact" | "done";
+type Phase = "brief" | "talk" | "qualify" | "complement" | "contact" | "done";
+
+type AgentReply = {
+  session: QuoteSession;
+  message: string;
+  goContact: boolean;
+};
 
 type Contact = { name: string; email: string; phone: string; company: string };
 
@@ -78,6 +84,9 @@ export function CaptureCard({
   const [follow, setFollow] = useState<CaptureFollow | null>(null);
   const [clarification, setClarification] = useState("");
   const [accepted, setAccepted] = useState<CaptureComplement | null>(null);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [answer, setAnswer] = useState("");
+  const [agentOn, setAgentOn] = useState(false);
   const [need, setNeed] = useState("");
   const [contact, setContact] = useState<Contact>({ name: "", email: "", phone: "", company: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -113,7 +122,7 @@ export function CaptureCard({
     const observer = new ResizeObserver(send);
     observer.observe(node);
     return () => observer.disconnect();
-  }, [phase, loading, missing, need, errors, busy]);
+  }, [phase, loading, missing, need, errors, busy, messages, answer]);
 
   const accent =
     typeof definition?.configurator.theme.accent === "string" && definition.configurator.theme.accent.trim()
@@ -123,19 +132,94 @@ export function CaptureCard({
   const reply = promise?.trim() || DEFAULT_PROMISE;
   const replyPhone = phone?.trim() || definition?.organization.salesPhone?.trim() || "";
 
-  function advanceAfterBrief() {
+  function applyDraft(draft: ContactDraft) {
+    setContact((current) => ({
+      name: draft.name?.trim() || current.name,
+      email: draft.email?.trim() || current.email,
+      phone: draft.phone?.trim() || current.phone,
+      company: draft.company?.trim() || current.company,
+    }));
+  }
+
+  function useHeuristic() {
+    const next = definition ? planCaptureFollow(need, definition.products) : { anchorId: null, question: null, complement: null };
+    setFollow(next);
+    setClarification("");
+    setAccepted(null);
+    setAgentOn(false);
+    if (next.question) setPhase("qualify");
+    else if (next.complement) setPhase("complement");
+    else setPhase("contact");
+  }
+
+  async function ensureSession() {
+    if (session) return session;
+    const attr = readAttribution();
+    const created = await api<QuoteSession>("/api/public/sessions", {
+      method: "POST",
+      body: JSON.stringify({
+        orgSlug,
+        configuratorSlug,
+        ...attributionBody(attr),
+      }),
+    });
+    setSession(created);
+    await fetch(`/api/public/sessions/${created.id}/events`, {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-session-token": created.token },
+      body: JSON.stringify({ eventType: ANALYTICS_EVENTS.started, step: 0, visitorId: attr.visitorId }),
+    }).catch(() => undefined);
+    return created;
+  }
+
+  async function askAgent(current: QuoteSession, message: string) {
+    return api<AgentReply>(`/api/public/sessions/${current.id}/agent`, {
+      method: "POST",
+      token: current.token,
+      body: JSON.stringify({ message }),
+    });
+  }
+
+  function openFromAgent(turn: AgentReply) {
+    setSession(turn.session);
+    setMessages(turn.session.chatMessages);
+    setAgentOn(true);
+    applyDraft(turn.session.contactDraft);
+    setAnswer("");
+    setPhase(turn.goContact ? "contact" : "talk");
+  }
+
+  async function advanceAfterBrief() {
     if (!need.trim()) {
       setErrors({ need: "Décrivez votre besoin" });
       return;
     }
     setErrors({});
-    const next = definition ? planCaptureFollow(need, definition.products) : { anchorId: null, question: null, complement: null };
-    setFollow(next);
-    setClarification("");
-    setAccepted(null);
-    if (next.question) setPhase("qualify");
-    else if (next.complement) setPhase("complement");
-    else setPhase("contact");
+    setBusy(true);
+    try {
+      const current = await ensureSession();
+      openFromAgent(await askAgent(current, need.trim()));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "";
+      if (/ANTHROPIC|indisponible|désactivé/i.test(message) || !message) useHeuristic();
+      else setErrors({ need: message });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function sendReply() {
+    const text = answer.trim();
+    if (!text || !session) return;
+    setBusy(true);
+    setErrors({});
+    try {
+      openFromAgent(await askAgent(session, text));
+    } catch (error) {
+      setErrors({ reply: error instanceof Error ? error.message : "Réponse impossible" });
+    } finally {
+      setBusy(false);
+    }
   }
 
   function continueAfterQuestion() {
@@ -162,23 +246,7 @@ export function CaptureCard({
     setErrors({});
     try {
       const attr = readAttribution();
-      let current = session;
-      if (!current) {
-        current = await api<QuoteSession>("/api/public/sessions", {
-          method: "POST",
-          body: JSON.stringify({
-            orgSlug,
-            configuratorSlug,
-            ...attributionBody(attr),
-          }),
-        });
-        setSession(current);
-        await fetch(`/api/public/sessions/${current.id}/events`, {
-          method: "POST",
-          headers: { "content-type": "application/json", "x-session-token": current.token },
-          body: JSON.stringify({ eventType: ANALYTICS_EVENTS.started, step: 0, visitorId: attr.visitorId }),
-        }).catch(() => undefined);
-      }
+      const current = await ensureSession();
       await api(`/api/public/sessions/${current.id}`, {
         method: "PATCH",
         token: current.token,
@@ -283,14 +351,58 @@ export function CaptureCard({
           <button
             type="button"
             onClick={advanceAfterBrief}
-            className="shrink-0 self-center rounded-full px-3.5 py-2 text-sm font-semibold text-white"
+            disabled={busy}
+            className="shrink-0 self-center rounded-full px-3.5 py-2 text-sm font-semibold text-white disabled:opacity-60"
             style={{ background: accent }}
           >
-            Devis →
+            {busy ? "…" : "Devis →"}
           </button>
         ) : null}
       </div>
       {errors.need ? <p className="mt-1.5 text-xs text-red-600">{errors.need}</p> : null}
+
+      {phase === "talk" ? (
+        <div className="mt-4 space-y-2">
+          {messages.slice(1).map((message, index) => (
+            <p
+              key={`${message.role}-${index}`}
+              className={
+                message.role === "assistant"
+                  ? "rounded-xl bg-mk-band px-3 py-2 text-sm text-mk-ink"
+                  : "text-sm text-mk-faint"
+              }
+            >
+              {message.content}
+            </p>
+          ))}
+          <textarea
+            value={answer}
+            rows={2}
+            placeholder="Votre réponse"
+            onChange={(event) => setAnswer(event.target.value)}
+            className="w-full resize-none rounded-xl border border-mk-border px-3 py-2 text-sm text-mk-ink outline-none focus:border-emerald-700"
+          />
+          {errors.reply ? <p className="text-xs text-red-600">{errors.reply}</p> : null}
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={sendReply}
+              disabled={busy || !answer.trim()}
+              className="rounded-full px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+              style={{ background: accent }}
+            >
+              {busy ? "…" : "Répondre"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setPhase("contact")}
+              className="text-sm font-semibold text-emerald-700"
+            >
+              Passer aux coordonnées
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       {phase === "qualify" && follow?.question ? (
         <div className="mt-4">
@@ -392,7 +504,7 @@ export function CaptureCard({
               type="button"
               onClick={() => {
                 setErrors({});
-                setPhase("brief");
+                setPhase(agentOn ? "talk" : "brief");
               }}
               className="text-sm font-semibold text-emerald-700"
             >

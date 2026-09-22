@@ -45,7 +45,9 @@
 }
 
 html:has(.qb-capture),
-html:has(.qb-capture) body {
+html:has(.qb-capture) body,
+html:has(.qb-agent),
+html:has(.qb-agent) body {
   background: transparent;
 }
 

@@ -95,4 +95,34 @@
       return null;
     },
   });
+
+  blocks.registerBlockType("quotebuilder/agent", {
+    title: "Chat devis",
+    icon: "format-chat",
+    category: "widgets",
+    attributes: {
+      org: { type: "string", default: "" },
+      id: { type: "string", default: "" },
+    },
+    edit: function (props) {
+      return el("div", { className: "quotebuilder-block-editor" }, [
+        el("p", { key: "hint", className: "components-placeholder__instructions" }, "Conversation avec l’agent catalogue. Vide = funnel appairé."),
+        el(TextControl, {
+          key: "org",
+          label: "Organisation",
+          value: props.attributes.org,
+          onChange: function (value) { props.setAttributes({ org: value }); },
+        }),
+        el(TextControl, {
+          key: "id",
+          label: "Funnel",
+          value: props.attributes.id,
+          onChange: function (value) { props.setAttributes({ id: value }); },
+        }),
+      ]);
+    },
+    save: function () {
+      return null;
+    },
+  });
 })(window.wp.blocks, window.wp.element, window.wp.components);

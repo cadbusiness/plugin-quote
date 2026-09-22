@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>La page demande de devis affiche le formulaire même si la liste est vide.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>Shortcode et bloc « chat devis » pour poser l’agent catalogue sur une page.</li></ul>`,
     },
     null,
     2,

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: QuoteBuilder
  * Description: Transforme WooCommerce en boutique devis : masquer les prix, liste de devis, funnel QuoteBuilder.
- * Version: 2.3.13
+ * Version: 2.3.14
  * Author: QuoteBuilder
  * Author URI: https://quotebuilder-weld.vercel.app
  * Requires at least: 6.0
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('QUOTEBUILDER_VERSION', '2.3.13');
+define('QUOTEBUILDER_VERSION', '2.3.14');
 define('QUOTEBUILDER_FILE', __FILE__);
 define('QUOTEBUILDER_DIR', plugin_dir_path(__FILE__));
 define('QUOTEBUILDER_URL', plugin_dir_url(__FILE__));
@@ -102,6 +102,18 @@ function quotebuilder_render_capture($atts = []) {
 }
 add_shortcode('quotebuilder_capture', 'quotebuilder_render_capture');
 
+function quotebuilder_render_agent($atts = []) {
+    if (!is_array($atts)) {
+        $atts = [];
+    }
+    $atts['module'] = 'agent';
+    if (empty($atts['height'])) {
+        $atts['height'] = '420px';
+    }
+    return QuoteBuilder_Storefront::render_funnel($atts);
+}
+add_shortcode('quotebuilder_agent', 'quotebuilder_render_agent');
+
 function quotebuilder_register_block() {
     if (!function_exists('register_block_type')) {
         return;
@@ -147,6 +159,21 @@ function quotebuilder_register_block() {
             'placeholder' => ['type' => 'string', 'default' => ''],
             'promise' => ['type' => 'string', 'default' => ''],
             'phone' => ['type' => 'string', 'default' => ''],
+        ],
+    ]);
+    register_block_type('quotebuilder/agent', [
+        'editor_script' => 'quotebuilder-block',
+        'render_callback' => function ($attributes) {
+            return QuoteBuilder_Storefront::render_funnel([
+                'org' => $attributes['org'] ?? '',
+                'id' => $attributes['id'] ?? '',
+                'height' => '420px',
+                'module' => 'agent',
+            ]);
+        },
+        'attributes' => [
+            'org' => ['type' => 'string', 'default' => ''],
+            'id' => ['type' => 'string', 'default' => ''],
         ],
     ]);
 }

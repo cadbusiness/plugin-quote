@@ -6,11 +6,12 @@ import { clientIp, rateLimit, rateLimitResponse } from "@/lib/security/rate-limi
 
 const schema = z.object({ message: z.string().min(1).max(4000) });
 
+/** Site card and chat block. Does not require the public funnel to be in Chat IA mode. */
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const limited = rateLimit(`sessions:chat:${clientIp(req)}`, 20, 60000);
+  const limited = rateLimit(`sessions:agent:${clientIp(req)}`, 20, 60000);
   if (!limited.ok) return rateLimitResponse(limited.retryAfterSec);
 
   const { id } = await params;
@@ -28,12 +29,13 @@ export async function POST(
       sessionId: id,
       token,
       message: parsed.data.message,
-      requireChat: true,
+      requireChat: false,
     });
     if (!result.ok) return NextResponse.json({ error: result.error }, { status: result.status });
     return NextResponse.json(result.turn);
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Chat indisponible";
+    const raw = error instanceof Error ? error.message : "";
+    const message = /ANTHROPIC_API_KEY/.test(raw) || !raw ? "Agent indisponible" : raw;
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

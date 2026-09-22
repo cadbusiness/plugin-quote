@@ -82,7 +82,9 @@ export function GET() {
     if (page) params.set("qb_page", page.slice(0, 160));
     var cart = el.getAttribute("data-cart");
     if (cart && !params.get("qb_cart")) params.set("qb_cart", cart);
-    var capture = el.getAttribute("data-module") === "capture";
+    var moduleName = el.getAttribute("data-module");
+    var capture = moduleName === "capture";
+    var agent = moduleName === "agent";
     if (capture) {
       var placeholder = el.getAttribute("data-placeholder");
       var promise = el.getAttribute("data-promise");
@@ -91,31 +93,36 @@ export function GET() {
       if (promise) params.set("qb_promise", promise.slice(0, 120));
       if (phone) params.set("qb_phone", phone.slice(0, 40));
     }
-    var path = capture ? "/embed/" + encodeURIComponent(org) + "/" + encodeURIComponent(id) + "/capture" : "/embed/" + encodeURIComponent(org) + "/" + encodeURIComponent(id);
+    var path = "/embed/" + encodeURIComponent(org) + "/" + encodeURIComponent(id);
+    if (capture) path += "/capture";
+    else if (agent) path += "/agent";
     return ${JSON.stringify(origin)} + path + "?" + params.toString();
   }
   function mount(el) {
     var org = el.getAttribute("data-org") || el.getAttribute("data-quotebuilder-org");
     var id = el.getAttribute("data-id") || el.getAttribute("data-quotebuilder-id");
     if (!org || !id) return;
-    var capture = el.getAttribute("data-module") === "capture";
+    var moduleName = el.getAttribute("data-module");
+    var capture = moduleName === "capture";
+    var agent = moduleName === "agent";
+    var compact = capture || agent;
     var vid = visitorId();
     var attr = firstTouch();
     track(org, id, vid, attr);
     var iframe = document.createElement("iframe");
     iframe.src = iframeSrc(el, org, id, vid, attr);
-    var height = el.getAttribute("data-height") || (capture ? "240px" : "720px");
+    var height = el.getAttribute("data-height") || (capture ? "240px" : agent ? "420px" : "720px");
     iframe.style.width = "100%";
     iframe.style.maxWidth = "100%";
     iframe.style.display = "block";
     iframe.style.border = "0";
     iframe.style.height = height;
     iframe.style.minHeight = height;
-    if (capture) iframe.style.background = "transparent";
-    var accessible = (el.getAttribute("data-title") || (capture ? "Une question sur votre projet" : "Devis " + String(id || "").replace(/[-_]+/g, " "))).trim();
+    if (compact) iframe.style.background = "transparent";
+    var accessible = (el.getAttribute("data-title") || (capture ? "Une question sur votre projet" : agent ? "Discuter de votre projet" : "Devis " + String(id || "").replace(/[-_]+/g, " "))).trim();
     iframe.setAttribute("title", accessible || "Devis");
     iframe.setAttribute("loading", "lazy");
-    if (capture) iframe.setAttribute("scrolling", "no");
+    if (compact) iframe.setAttribute("scrolling", "no");
     el.innerHTML = "";
     el.appendChild(iframe);
   }

@@ -394,8 +394,8 @@ class QuoteBuilder_Storefront {
         $cart = $atts['cart'] ?: (QuoteBuilder_Quote::items() ? wp_json_encode(QuoteBuilder_Quote::cart_payload()) : '');
 
         $extra = '';
-        if ($atts['module'] === 'capture') {
-            $extra .= ' data-module="capture"';
+        if ($atts['module'] === 'capture' || $atts['module'] === 'agent') {
+            $extra .= ' data-module="' . esc_attr($atts['module']) . '"';
         }
         if ($atts['placeholder'] !== '') {
             $extra .= ' data-placeholder="' . esc_attr($atts['placeholder']) . '"';
