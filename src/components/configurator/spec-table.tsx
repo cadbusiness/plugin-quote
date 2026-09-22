@@ -42,7 +42,7 @@ export function SpecTable({ products }: { products: SpecTableProduct[] }) {
               <li
                 key={spec.key}
                 className="inline-flex items-center gap-2 border border-[#e4ddd2] bg-[#f7f5f1] px-3 py-1.5 text-sm"
-                style={{ borderRadius: 999 }}
+                style={{ borderRadius: 999, display: "inline-flex", alignItems: "center", gap: "0.5rem" }}
               >
                 <span style={{ color: "#0a5236", fontFamily: uiFont }}>{spec.label}</span>
                 <span style={{ color: "#0e6b45", fontFamily: monoFont }}>
@@ -60,7 +60,7 @@ export function SpecTable({ products }: { products: SpecTableProduct[] }) {
                   <th
                     scope="row"
                     className="py-2 pr-4 text-left font-medium"
-                    style={{ color: "#12161a", fontFamily: uiFont }}
+                    style={{ color: "#12161a", fontFamily: uiFont, paddingRight: "1rem" }}
                   >
                     {spec.label}
                   </th>
