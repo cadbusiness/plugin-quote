@@ -3,6 +3,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { parseRelated } from "@/lib/catalog/affinity";
 import { parseGallery } from "@/lib/catalog/media";
 import { shouldPushLocal, shouldSkipOverwrite } from "@/lib/catalog/sync-policy";
+import { staleSyncCutoff } from "@/lib/integrations/pairing-plan";
 import type { Database, Json, TablesInsert } from "@/lib/db/database.types";
 import { getAdapter, loadConnection, resolveConfiguratorId, resolveConnection } from "@/lib/integrations/connections";
 import type { NormalizedProduct, ResolvedConnection } from "@/lib/integrations/types";
@@ -128,6 +129,27 @@ export async function runCatalogSync({
   const configuratorId = await resolveConfiguratorId(supabase, connection);
   if (!configuratorId) {
     return { ...result, error: "Créez d'abord un funnel : le catalogue s'y rattache." };
+  }
+
+  await supabase
+    .from("catalog_sync_runs")
+    .update({
+      status: "error",
+      error: "Synchronisation interrompue (délai dépassé).",
+      finished_at: new Date().toISOString(),
+    })
+    .eq("connection_id", connection.id)
+    .eq("status", "running")
+    .lt("started_at", staleSyncCutoff());
+
+  const { data: running } = await supabase
+    .from("catalog_sync_runs")
+    .select("id")
+    .eq("connection_id", connection.id)
+    .eq("status", "running")
+    .limit(1);
+  if (running?.length) {
+    return { ...result, error: "Une synchronisation est déjà en cours." };
   }
 
   const { data: run } = await supabase
