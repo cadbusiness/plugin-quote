@@ -2183,6 +2183,7 @@ export type Database = {
           answers: Json
           configurator_id: string
           connection_id: string | null
+          contact_channel: string | null
           contact_company: string | null
           contact_email: string | null
           contact_name: string | null
@@ -2201,6 +2202,7 @@ export type Database = {
           answers?: Json
           configurator_id: string
           connection_id?: string | null
+          contact_channel?: string | null
           contact_company?: string | null
           contact_email?: string | null
           contact_name?: string | null
@@ -2219,6 +2221,7 @@ export type Database = {
           answers?: Json
           configurator_id?: string
           connection_id?: string | null
+          contact_channel?: string | null
           contact_company?: string | null
           contact_email?: string | null
           contact_name?: string | null

@@ -38,6 +38,7 @@ const mutationSchema = scopeSchema
     lines: z.array(lineSchema).max(40).optional(),
     ops: z.array(opSchema).max(40).optional(),
     answers: z.unknown().optional(),
+    channel: z.enum(["email", "phone"]).optional(),
     email: z.string().optional(),
     phone: z.string().optional(),
     name: z.string().optional(),
@@ -104,6 +105,7 @@ function commandFrom(data: z.infer<typeof mutationSchema>): DraftCommand {
     lines: data.lines,
     ops: data.ops,
     answers: data.answers,
+    channel: data.channel,
     contact: {
       email: data.email,
       phone: data.phone,

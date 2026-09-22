@@ -1,5 +1,5 @@
 import type { Json } from "@/lib/db/database.types";
-import { channelOf, type VisitorContact } from "@/lib/visitor-requests/types";
+import { channelOf, type ChosenChannel, type VisitorContact } from "@/lib/visitor-requests/types";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -61,6 +61,45 @@ export function mergeContact(
     return { ok: false, message: "Le canal de contact déjà indiqué reste requis" };
   }
   return { ok: true, contact: next };
+}
+
+/**
+ * Persist the field for the channel they chose. « Par e-mail » keeps the email;
+ * the phone channel keeps the phone. A field already stored is not dropped when
+ * a later call omits it.
+ */
+export function applyChannelChoice(
+  current: VisitorContact,
+  currentChannel: ChosenChannel | null,
+  patch: ContactPatch,
+  chosen?: ChosenChannel | null,
+):
+  | { ok: true; contact: VisitorContact; contactChannel: ChosenChannel | null }
+  | { ok: false; message: string } {
+  const merged = mergeContact(current, patch);
+  if (!merged.ok) return merged;
+
+  if (chosen === "email" && !merged.contact.email) {
+    return { ok: false, message: "Email requis pour le canal e-mail" };
+  }
+  if (chosen === "phone" && !merged.contact.phone) {
+    return { ok: false, message: "Téléphone requis pour le canal téléphone" };
+  }
+
+  let contactChannel = currentChannel;
+  if (chosen === "email" || chosen === "phone") {
+    contactChannel = chosen;
+  } else if (patch.email !== undefined && merged.contact.email && patch.phone === undefined) {
+    contactChannel = "email";
+  } else if (patch.phone !== undefined && merged.contact.phone && patch.email === undefined) {
+    contactChannel = "phone";
+  } else if (!contactChannel && merged.contact.email) {
+    contactChannel = "email";
+  } else if (!contactChannel && merged.contact.phone) {
+    contactChannel = "phone";
+  }
+
+  return { ok: true, contact: merged.contact, contactChannel };
 }
 
 export function sanitizeAnswers(value: unknown): { ok: true; answers: Record<string, Json> } | { ok: false } {

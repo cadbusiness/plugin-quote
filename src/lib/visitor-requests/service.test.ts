@@ -187,11 +187,81 @@ async function main() {
   assert.equal(added.request.quoteId, emailed.request.quoteId);
   assert.equal(added.request.lines[0]?.quantity, 3);
   assert.equal(added.request.needsChannel, false);
+  assert.equal(added.request.channel, "email");
   assert.equal(added.request.contact.email, "buyer@example.test");
   assert.equal(draft.notices.length, 1);
   assert.equal(draft.store.quotes.length, 1);
   assert.equal(draft.store.quotes[0]?.lines[0]?.quantity, 3);
   assert.equal(draft.store.quotes[0]?.contactEmail, "buyer@example.test");
+
+  const emailedDraft = harness();
+  const storedEmail = await upsertVisitorRequest(
+    emailedDraft.deps,
+    scope,
+    { presentedToken: null, strict: false },
+    { lines: [line], channel: "email", contact: { email: "buyer@example.test" } },
+  );
+  assert.equal(storedEmail.ok, true);
+  if (!storedEmail.ok || storedEmail.skipped) throw new Error("email must be stored on the draft");
+  assert.equal(storedEmail.request.status, "draft");
+  assert.equal(storedEmail.request.channel, "email");
+  assert.equal(storedEmail.request.contact.email, "buyer@example.test");
+  assert.equal(storedEmail.request.contact.phone, null);
+  assert.equal(storedEmail.request.needsChannel, false);
+  assert.equal(emailedDraft.store.quotes.length, 0);
+  assert.equal(emailedDraft.notices.length, 0);
+  assert.equal(emailedDraft.store.requests[0]?.contact.email, "buyer@example.test");
+  assert.equal(emailedDraft.store.requests[0]?.contactChannel, "email");
+  const submittedFromDraft = await submitVisitorRequest(
+    emailedDraft.deps,
+    scope,
+    { presentedToken: storedEmail.token, strict: false },
+    { contact: {} },
+  );
+  assert.equal(submittedFromDraft.ok, true);
+  if (!submittedFromDraft.ok || submittedFromDraft.skipped) throw new Error("submit keeps stored email");
+  assert.equal(submittedFromDraft.request.contact.email, "buyer@example.test");
+  assert.equal(submittedFromDraft.request.channel, "email");
+  assert.equal(emailedDraft.notices.length, 1);
+  assert.equal(emailedDraft.notices[0]?.to, "sales@example.test");
+
+  const phoneOnDraft = harness();
+  const storedPhone = await upsertVisitorRequest(
+    phoneOnDraft.deps,
+    scope,
+    { presentedToken: null, strict: false },
+    { lines: [line], channel: "phone", contact: { phone: "+33 6 12 34 56 78" } },
+  );
+  assert.equal(storedPhone.ok, true);
+  if (!storedPhone.ok || storedPhone.skipped) throw new Error("phone must be stored on the draft");
+  assert.equal(storedPhone.request.status, "draft");
+  assert.equal(storedPhone.request.channel, "phone");
+  assert.equal(storedPhone.request.contact.phone, "+33612345678");
+  assert.equal(storedPhone.request.contact.email, null);
+  assert.equal(storedPhone.request.needsChannel, false);
+  assert.equal(phoneOnDraft.store.quotes.length, 0);
+  assert.equal(phoneOnDraft.notices.length, 0);
+  assert.equal(phoneOnDraft.store.requests[0]?.contactChannel, "phone");
+
+  const emailRequired = await upsertVisitorRequest(
+    harness().deps,
+    scope,
+    { presentedToken: null, strict: false },
+    { lines: [line], channel: "email" },
+  );
+  assert.equal(emailRequired.ok, false);
+  if (emailRequired.ok) throw new Error("email channel requires an email");
+  assert.equal(emailRequired.code, "invalid_contact");
+
+  const phoneRequired = await upsertVisitorRequest(
+    harness().deps,
+    scope,
+    { presentedToken: null, strict: false },
+    { lines: [line], channel: "phone" },
+  );
+  assert.equal(phoneRequired.ok, false);
+  if (phoneRequired.ok) throw new Error("phone channel requires a phone");
+  assert.equal(phoneRequired.code, "invalid_contact");
 
   const phone = harness();
   const phoneDraft = await upsertVisitorRequest(phone.deps, scope, { presentedToken: null, strict: false }, { lines: [line] });

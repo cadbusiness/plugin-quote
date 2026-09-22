@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { mergeContact, sanitizeAnswers, type ContactPatch } from "@/lib/visitor-requests/channel";
+import { applyChannelChoice, sanitizeAnswers, type ContactPatch } from "@/lib/visitor-requests/channel";
 import { buildSalesBrief, salesRecipientDecision } from "@/lib/visitor-requests/brief";
 import { applyLineOps } from "@/lib/visitor-requests/lines";
 import type { VisitorRequestStore } from "@/lib/visitor-requests/store";
@@ -8,6 +8,7 @@ import {
   displayName,
   emptyContact,
   toPublicRequest,
+  type ChosenChannel,
   type LineCommand,
   type PublicVisitorRequest,
   type SalesNotice,
@@ -31,6 +32,8 @@ export type DraftCommand = {
   ops?: LineCommand[] | null;
   answers?: unknown;
   contact?: ContactPatch;
+  /** « Par e-mail » requires the email field; phone requires the phone field. */
+  channel?: ChosenChannel | null;
 };
 
 export type ServiceOk = {
@@ -86,6 +89,7 @@ function blankRequest(scope: VisitorScope, identityId: string): VisitorRequestRe
     status: "draft",
     quoteId: null,
     contact: emptyContact(),
+    contactChannel: null,
     answers: {},
     salesNotifiedAt: null,
     submittedAt: null,
@@ -125,6 +129,18 @@ async function resolveIdentity(
     tokenHash: hashVisitorToken(token),
   });
   return { ok: true, identityId: created.id, token };
+}
+
+function contactWasSent(input: DraftCommand) {
+  if (input.channel === "email" || input.channel === "phone") return true;
+  const contact = input.contact;
+  if (!contact) return false;
+  return (
+    contact.email !== undefined ||
+    contact.phone !== undefined ||
+    contact.name !== undefined ||
+    contact.company !== undefined
+  );
 }
 
 function commandOf(input: DraftCommand): { mode: "merge" | "replace"; ops: LineCommand[] } | null {
@@ -273,7 +289,13 @@ export async function upsertVisitorRequest(
 ): Promise<ServiceResult> {
   const command = commandOf(input);
   const hasAnswers = input.answers !== undefined;
-  if (!access.presentedToken && !access.strict && !hasAnswers && (!command || command.ops.length === 0)) {
+  if (
+    !access.presentedToken &&
+    !access.strict &&
+    !hasAnswers &&
+    !contactWasSent(input) &&
+    (!command || command.ops.length === 0)
+  ) {
     return { ok: true, skipped: true, token: null, request: null };
   }
 
@@ -288,6 +310,11 @@ export async function upsertVisitorRequest(
   const applied = await applyCommand(deps, request, input);
   if (!applied.ok) return { ...applied, token: identity.token };
   request = applied.request;
+  if (contactWasSent(input)) {
+    const contact = applyChannelChoice(request.contact, request.contactChannel, input.contact ?? {}, input.channel);
+    if (!contact.ok) return failure("invalid_contact", contact.message, identity.token, request);
+    request = { ...request, contact: contact.contact, contactChannel: contact.contactChannel };
+  }
   if (request.status === "submitted") request = await persistQuote(deps, request);
   request = await deps.store.saveRequest(request);
   return { ok: true, token: identity.token, request: toPublicRequest(request) };
@@ -311,9 +338,9 @@ export async function submitVisitorRequest(
   if (!applied.ok) return { ...applied, token: identity.token };
   request = applied.request;
 
-  const contact = mergeContact(request.contact, input.contact ?? {});
+  const contact = applyChannelChoice(request.contact, request.contactChannel, input.contact ?? {}, input.channel);
   if (!contact.ok) return failure("invalid_contact", contact.message, identity.token, request);
-  request = { ...request, contact: contact.contact };
+  request = { ...request, contact: contact.contact, contactChannel: contact.contactChannel };
 
   if (!request.contact.email && !request.contact.phone) {
     request = await deps.store.saveRequest(request);

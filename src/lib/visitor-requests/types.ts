@@ -4,6 +4,9 @@ export type VisitorRequestStatus = "draft" | "submitted";
 
 export type VisitorChannel = "email" | "phone" | "both";
 
+/** Channel the visitor picked. Email stores `contact.email`; phone stores `contact.phone`. */
+export type ChosenChannel = "email" | "phone";
+
 export type VisitorContact = {
   name: string | null;
   email: string | null;
@@ -29,6 +32,8 @@ export type VisitorRequestRecord = {
   status: VisitorRequestStatus;
   quoteId: string | null;
   contact: VisitorContact;
+  /** Set when the visitor chooses « Par e-mail » or the phone channel. */
+  contactChannel: ChosenChannel | null;
   answers: Record<string, Json>;
   salesNotifiedAt: string | null;
   submittedAt: string | null;
@@ -79,7 +84,13 @@ export function emptyContact(): VisitorContact {
 }
 
 export function toPublicRequest(record: VisitorRequestRecord): PublicVisitorRequest {
-  const channel = channelOf(record.contact);
+  const channel = record.contactChannel ?? channelOf(record.contact);
+  const needsChannel =
+    record.contactChannel === "email"
+      ? !record.contact.email
+      : record.contactChannel === "phone"
+        ? !record.contact.phone
+        : channel == null;
   return {
     id: record.id,
     status: record.status,
@@ -88,8 +99,8 @@ export function toPublicRequest(record: VisitorRequestRecord): PublicVisitorRequ
       name: line.name,
       quantity: line.quantity,
     })),
-    needsChannel: channel == null,
-    channel,
+    needsChannel,
+    channel: record.contactChannel ?? (channel === "both" ? null : channel),
     recognized: true,
     contact: record.contact,
     quoteId: record.quoteId,

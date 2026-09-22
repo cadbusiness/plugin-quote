@@ -2,7 +2,11 @@
 -- One open request per visitor identity (org, and catalog connection when present).
 -- Draft lines stay off the CRM until the first submit. After submit, the same
 -- visitor can append lines without sending another contact channel.
--- No reminder email for unsent drafts (RGPD). Sales brief only, on first submit.
+-- contact_email / contact_phone / contact_channel are stored on the draft so a
+-- later job can read them. Abandoned-draft reminders are not sent by this
+-- migration. A later org setting abandoned_request_email (default off) will
+-- gate that mail. While the setting is off, Quickly sends nothing to the
+-- visitor. No reminder cron here. Sales brief only, on first submit.
 
 alter table public.quotes alter column contact_email drop not null;
 
@@ -52,6 +56,7 @@ create table public.visitor_requests (
   contact_email text,
   contact_phone text,
   contact_company text,
+  contact_channel text check (contact_channel is null or contact_channel in ('email', 'phone')),
   answers jsonb not null default '{}'::jsonb,
   sales_notified_at timestamptz,
   submitted_at timestamptz,
