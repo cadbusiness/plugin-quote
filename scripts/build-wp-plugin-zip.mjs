@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>La page devis WordPress envoie son URL à QuoteBuilder, pour une campagne Ads vers ce site.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>La synchro envoie l'URL du site pour réutiliser la connexion WooCommerce existante.</li></ul>`,
     },
     null,
     2,
