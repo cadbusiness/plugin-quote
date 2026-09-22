@@ -1,4 +1,6 @@
 import type { ProductRelated } from "@/lib/catalog/affinity";
+import type { ProductMediaRole } from "@/lib/catalog/media-roles";
+import type { ProductSpecs } from "@/lib/catalog/specs";
 import type { ProductOption } from "@/lib/wizard/types";
 import { DEFAULT_STOREFRONT, parseStorefront, type StorefrontSettings } from "@/lib/integrations/storefront";
 
@@ -12,6 +14,9 @@ export const PROVIDER_LABELS: Record<CatalogProvider, string> = {
 export type ProductImage = {
   src: string;
   alt: string | null;
+  role?: ProductMediaRole;
+  /** Présent seulement le temps du mapping Woo. Jamais persisté. */
+  roleExplicit?: boolean;
 };
 
 export type ProductVariant = {
@@ -47,6 +52,8 @@ export type NormalizedProduct = {
   options: ProductOption[];
   variants: ProductVariant[];
   related: ProductRelated;
+  /** Fiche technique structurée (charge, hauteur, profondeur, materiau, delai). */
+  specs: ProductSpecs;
   externalUpdatedAt: string | null;
 };
 
@@ -155,6 +162,7 @@ export type PushableProduct = {
   description: string | null;
   priceMin: number | null;
   images: ProductImage[];
+  specs?: ProductSpecs;
 };
 
 export class IntegrationError extends Error {

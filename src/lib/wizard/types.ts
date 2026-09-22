@@ -1,5 +1,6 @@
 import type { ProductRelated } from "@/lib/catalog/affinity";
-import type { ProductSpec } from "@/lib/catalog/specs";
+import type { ProductMediaRole } from "@/lib/catalog/media-roles";
+import type { ProductSpecs } from "@/lib/catalog/specs";
 import type { Json } from "@/lib/db/database.types";
 import type { QuoteMode } from "@/lib/quotes/quote-mode";
 
@@ -57,6 +58,7 @@ export type WizardStep = {
 export type ProductImage = {
   src: string;
   alt: string | null;
+  role?: ProductMediaRole;
 };
 
 export type Product = {
@@ -78,8 +80,8 @@ export type Product = {
   sku?: string | null;
   configuratorId?: string;
   related?: ProductRelated;
-  /** Fiche technique (`products.specs`). Absent des fixtures qui ne la portent pas. */
-  specs?: Record<string, ProductSpec>;
+  /** Fiche technique (`products.specs`). Absente des fixtures qui ne la portent pas. */
+  specs?: ProductSpecs;
 };
 
 export type Suggestion = {

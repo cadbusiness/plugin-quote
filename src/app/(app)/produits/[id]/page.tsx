@@ -4,12 +4,14 @@ import { deleteProduct, toggleProduct, updateProduct } from "@/app/(app)/produit
 import { CurrencyFields } from "@/components/catalog/currency-fields";
 import { ProductEditorFields } from "@/components/catalog/product-editor-fields";
 import { ProductGallery } from "@/components/catalog/product-gallery";
+import { SpecFields } from "@/components/catalog/spec-fields";
 import { RichTextEditor } from "@/components/catalog/rich-text-editor";
 import { Chip, type ChipTone } from "@/components/ui/chip";
 import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { normalizeAttributes } from "@/lib/catalog/attributes";
 import { parseGallery } from "@/lib/catalog/media";
+import { parseProductSpecs } from "@/lib/catalog/specs";
 import { priceModeOf } from "@/lib/catalog/product-form";
 import type { Json } from "@/lib/db/database.types";
 import { formatDate } from "@/lib/format";
@@ -45,7 +47,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const { data: product } = await supabase
     .from("products")
     .select(
-      "id, name, sku, category, tags, description, price_min, price_max, currency, is_active, source, connection_id, external_url, archived_by_sync, synced_at, sync_lock, image_url, images, options, variants",
+      "id, name, sku, category, tags, description, price_min, price_max, currency, is_active, source, connection_id, external_url, archived_by_sync, synced_at, sync_lock, image_url, images, options, variants, specs",
     )
     .eq("id", id)
     .eq("organization_id", ctx.organization.id)
@@ -189,6 +191,14 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           <div className="mt-1">
             <RichTextEditor name="description" defaultValue={product.description} productId={product.id} />
           </div>
+        </div>
+
+        <div className="border-t border-slate-100 px-4 py-4 lg:px-6">
+          <p className="text-sm font-medium text-slate-900">Fiche technique</p>
+          <p className="mb-3 mt-1 text-xs text-slate-500">
+            Charge, hauteur, profondeur, matériau, délai. Enregistrer conserve ces champs. La description n’est pas relue comme source.
+          </p>
+          <SpecFields specs={parseProductSpecs(product.specs)} />
         </div>
 
         <div className="px-4 py-4 lg:px-6">

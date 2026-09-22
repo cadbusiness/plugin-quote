@@ -1,3 +1,4 @@
+import type { ProductSpecs } from "@/lib/catalog/specs";
 import type { Json, Tables } from "@/lib/db/database.types";
 import type { FunnelFamilyId } from "@/lib/funnels/families";
 import type { QuoteMode } from "@/lib/quotes/quote-mode";
@@ -157,6 +158,7 @@ export type ShopProduct = {
   currency: string;
   category: string | null;
   sku: string | null;
+  specs?: ProductSpecs;
 };
 
 export type StorefrontModel = {

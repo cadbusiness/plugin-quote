@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { parseRelated } from "@/lib/catalog/affinity";
+import { parseGallery, productCover } from "@/lib/catalog/media";
 import { parseProductSpecs } from "@/lib/catalog/specs";
 import type { Database, Json } from "@/lib/db/database.types";
 import { normalizeAttributes, toProspectOptions } from "@/lib/catalog/attributes";
@@ -11,7 +12,6 @@ import type { ShopCatalogScope } from "@/lib/shops/catalog-scope";
 import type {
   ConfiguratorDefinition,
   Product,
-  ProductImage,
   QuestionOptions,
   QuestionType,
   ScreenType,
@@ -27,13 +27,12 @@ function asRecord(value: Json): Record<string, unknown> {
 
 function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Product {
   const options = toProspectOptions(normalizeAttributes(row.options));
-  const images = Array.isArray(row.images) ? (row.images as unknown as ProductImage[]) : [];
-  const gallery = images.filter((image) => image && typeof image.src === "string" && image.src);
+  const gallery = parseGallery(row.images, row.image_url);
   return {
     id: row.id,
     name: row.name,
     description: row.description,
-    imageUrl: row.image_url ?? gallery[0]?.src ?? null,
+    imageUrl: productCover(gallery, row.image_url),
     images: gallery,
     priceMin: row.price_min,
     priceMax: row.price_max,

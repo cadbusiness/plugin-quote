@@ -9,6 +9,8 @@ import { parseGallery, withCover, withoutImage } from "@/lib/catalog/media";
 import { parseConditions } from "@/lib/catalog/rules";
 import { parseProductAttributes } from "@/lib/catalog/attributes";
 import { readPriceRange } from "@/lib/catalog/product-form";
+import { parseMediaRole } from "@/lib/catalog/media-roles";
+import { readSpecsField } from "@/lib/catalog/specs";
 import { uploadCatalogImage } from "@/lib/catalog/upload";
 import type { Json } from "@/lib/db/database.types";
 import type { ProductImage } from "@/lib/integrations/types";
@@ -59,6 +61,7 @@ export async function createProduct(
 
   const { priceMin, priceMax } = readPriceRange(formData);
   const imageUrl = String(formData.get("image_url") ?? "").trim() || null;
+  const specs = readSpecsField(formData);
 
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -77,6 +80,7 @@ export async function createProduct(
       image_url: imageUrl,
       images: (imageUrl ? [{ src: imageUrl, alt: null }] : []) as unknown as Json,
       tags: readTags(formData),
+      ...(specs ? { specs: specs as unknown as Json } : {}),
     })
     .select("id")
     .single();
@@ -109,6 +113,7 @@ export async function updateProduct(formData: FormData) {
   if (!id) return;
 
   const { priceMin, priceMax } = readPriceRange(formData);
+  const specs = readSpecsField(formData);
   const supabase = await createClient();
 
   await supabase
@@ -123,6 +128,7 @@ export async function updateProduct(formData: FormData) {
       currency: String(formData.get("currency") ?? "EUR").trim() || "EUR",
       tags: readTags(formData),
       options: parseProductAttributes(formData) as unknown as Json,
+      ...(specs ? { specs: specs as unknown as Json } : {}),
       is_active: formData.get("is_active") === "on",
       sync_lock: formData.get("sync_lock") === "on",
       updated_at: new Date().toISOString(),
@@ -264,6 +270,24 @@ async function saveGallery(
   revalidatePath("/produits");
   revalidatePath(`/produits/${productId}`);
   return { images };
+}
+
+export async function setProductImageRole(
+  productId: string,
+  src: string,
+  role: string,
+): Promise<{ images?: ProductImage[]; error?: string }> {
+  const ctx = await requireAdmin();
+  const nextRole = parseMediaRole(role);
+  if (!nextRole) return { error: "Rôle d’image invalide." };
+  const { supabase, images } = await loadGallery(productId, ctx.organization.id);
+  if (!images.some((image) => image.src === src)) return { error: "Image introuvable." };
+  return saveGallery(
+    supabase,
+    productId,
+    ctx.organization.id,
+    images.map((image) => (image.src === src ? { ...image, role: nextRole } : image)),
+  );
 }
 
 export async function addProductImages(formData: FormData): Promise<{ images?: ProductImage[]; error?: string }> {

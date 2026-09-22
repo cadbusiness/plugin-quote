@@ -2,6 +2,7 @@ import { Render } from "@puckeditor/core/rsc";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ProductHtml } from "@/components/catalog/product-html";
+import { SpecTable } from "@/components/catalog/spec-table";
 import { AddToQuoteButton } from "@/components/storefront/add-to-quote-button";
 import { ShopQuoteDraftProvider } from "@/components/storefront/shop-quote-draft";
 import { StorefrontHeader } from "@/components/storefront/storefront-header";
@@ -116,6 +117,7 @@ export function ProductDetail({
         <p className="mt-4 text-xl font-semibold" style={{ color: "var(--shop-accent)" }}>
           {formatPrice(product.price_min, product.price_max, product.currency)}
         </p>
+        <SpecTable specs={product.specs} />
         <div className={cx("mt-6", SHOP_BODY)}>
           <ProductHtml html={product.description} />
         </div>

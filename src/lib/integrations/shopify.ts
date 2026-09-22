@@ -295,6 +295,7 @@ function normalizeProduct(product: ShopifyProduct, fallbackCurrency: string): No
     options: mapOptions(product),
     variants,
     related: parseRelated(null),
+    specs: {},
     externalUpdatedAt: product.updatedAt,
   };
 }

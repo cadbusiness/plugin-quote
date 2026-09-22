@@ -1,6 +1,8 @@
 import { createHmac } from "node:crypto";
 import { parseRelated } from "@/lib/catalog/affinity";
 import { sanitizeProductHtml } from "@/lib/catalog/html";
+import { classifyProductImage, mediaRoleMap, wooMediaRoleValue } from "@/lib/catalog/media-roles";
+import { mapWooProductSpecs, wooSpecsWrite } from "@/lib/catalog/specs";
 import { htmlToText, parsePrice } from "@/lib/integrations/html";
 import { safeEqual } from "@/lib/integrations/secrets";
 import {
@@ -19,7 +21,15 @@ const TIMEOUT_MS = 25_000;
 
 type WooImage = { id?: number; src?: string; alt?: string; name?: string };
 type WooTerm = { id?: number; name?: string; slug?: string };
-type WooAttribute = { id?: number; name?: string; options?: string[]; variation?: boolean };
+type WooMeta = { id?: number; key?: string; value?: unknown };
+type WooAttribute = {
+  id?: number;
+  name?: string;
+  slug?: string;
+  visible?: boolean;
+  variation?: boolean;
+  options?: string[];
+};
 
 type WooProduct = {
   id: number;
@@ -41,6 +51,7 @@ type WooProduct = {
   tags?: WooTerm[];
   images?: WooImage[];
   attributes?: WooAttribute[];
+  meta_data?: WooMeta[];
   variations?: number[];
   upsell_ids?: number[];
   cross_sell_ids?: number[];
@@ -178,9 +189,23 @@ async function fetchCurrency(connection: ResolvedConnection) {
 }
 
 function mapImages(product: WooProduct): ProductImage[] {
-  return (product.images ?? [])
-    .map((img) => ({ src: img.src ?? "", alt: img.alt || img.name || null }))
-    .filter((img) => Boolean(img.src));
+  const roles = mediaRoleMap(product.meta_data);
+  return (product.images ?? []).flatMap((img) => {
+    const src = img.src?.trim() ?? "";
+    if (!src) return [];
+    const classified = classifyProductImage(
+      { id: img.id, src, alt: img.alt, name: img.name },
+      roles,
+    );
+    return [
+      {
+        src,
+        alt: img.alt || img.name || null,
+        role: classified.role,
+        roleExplicit: classified.explicit,
+      },
+    ];
+  });
 }
 
 function mapOptions(product: WooProduct): ProductOption[] {
@@ -273,6 +298,7 @@ function normalizeProduct(
       upsellIds: product.upsell_ids ?? [],
       crossSellIds: product.cross_sell_ids ?? [],
     }),
+    specs: mapWooProductSpecs(product),
     externalUpdatedAt: product.date_modified_gmt ? `${product.date_modified_gmt}Z` : null,
   };
 }
@@ -368,6 +394,20 @@ async function pushWooProduct(connection: ResolvedConnection, product: PushableP
   const markup = 1 + connection.settings.markupPercent / 100;
   const price =
     product.priceMin == null ? undefined : String(Math.round((product.priceMin / markup) * 100) / 100);
+  let current: WooProduct | null = null;
+  try {
+    const { data } = await wooFetch<WooProduct>(connection, `/products/${product.externalId}`);
+    current = data;
+  } catch {
+    current = null;
+  }
+  const specsWrite = product.specs ? wooSpecsWrite(product.specs, current ?? undefined) : null;
+  const mediaRoles = wooMediaRoleValue(product.images);
+  const meta_data = [...(specsWrite?.meta_data ?? [])];
+  if (mediaRoles) {
+    const found = current?.meta_data?.find((meta) => meta.key === "_qb_media_role");
+    meta_data.push(found?.id != null ? { id: found.id, key: "_qb_media_role", value: mediaRoles } : { key: "_qb_media_role", value: mediaRoles });
+  }
   await wooFetch(connection, `/products/${product.externalId}`, {}, {
     method: "PUT",
     body: {
@@ -376,6 +416,8 @@ async function pushWooProduct(connection: ResolvedConnection, product: PushableP
       description: product.description ?? "",
       ...(price != null ? { regular_price: price } : {}),
       images: product.images.map((image) => ({ src: image.src, alt: image.alt ?? "" })),
+      ...(meta_data.length ? { meta_data } : {}),
+      ...(specsWrite?.attributes ? { attributes: specsWrite.attributes } : {}),
     },
   });
 }
