@@ -82,30 +82,54 @@ export function GET() {
     if (page) params.set("qb_page", page.slice(0, 160));
     var cart = el.getAttribute("data-cart");
     if (cart && !params.get("qb_cart")) params.set("qb_cart", cart);
-    return ${JSON.stringify(origin)} + "/embed/" + encodeURIComponent(org) + "/" + encodeURIComponent(id) + "?" + params.toString();
+    var capture = el.getAttribute("data-module") === "capture";
+    if (capture) {
+      var placeholder = el.getAttribute("data-placeholder");
+      var promise = el.getAttribute("data-promise");
+      var phone = el.getAttribute("data-phone");
+      if (placeholder) params.set("qb_placeholder", placeholder.slice(0, 240));
+      if (promise) params.set("qb_promise", promise.slice(0, 120));
+      if (phone) params.set("qb_phone", phone.slice(0, 40));
+    }
+    var path = capture ? "/embed/" + encodeURIComponent(org) + "/" + encodeURIComponent(id) + "/capture" : "/embed/" + encodeURIComponent(org) + "/" + encodeURIComponent(id);
+    return ${JSON.stringify(origin)} + path + "?" + params.toString();
   }
   function mount(el) {
     var org = el.getAttribute("data-org") || el.getAttribute("data-quotebuilder-org");
     var id = el.getAttribute("data-id") || el.getAttribute("data-quotebuilder-id");
     if (!org || !id) return;
+    var capture = el.getAttribute("data-module") === "capture";
     var vid = visitorId();
     var attr = firstTouch();
     track(org, id, vid, attr);
     var iframe = document.createElement("iframe");
     iframe.src = iframeSrc(el, org, id, vid, attr);
-    var height = el.getAttribute("data-height") || "720px";
+    var height = el.getAttribute("data-height") || (capture ? "240px" : "720px");
     iframe.style.width = "100%";
     iframe.style.maxWidth = "100%";
     iframe.style.display = "block";
     iframe.style.border = "0";
     iframe.style.height = height;
     iframe.style.minHeight = height;
-    var accessible = (el.getAttribute("data-title") || ("Devis " + String(id || "").replace(/[-_]+/g, " "))).trim();
+    if (capture) iframe.style.background = "transparent";
+    var accessible = (el.getAttribute("data-title") || (capture ? "Une question sur votre projet" : "Devis " + String(id || "").replace(/[-_]+/g, " "))).trim();
     iframe.setAttribute("title", accessible || "Devis");
     iframe.setAttribute("loading", "lazy");
+    if (capture) iframe.setAttribute("scrolling", "no");
     el.innerHTML = "";
     el.appendChild(iframe);
   }
+  window.addEventListener("message", function (event) {
+    var data = event.data;
+    if (!data || data.source !== "quotebuilder" || data.type !== "resize") return;
+    var next = Number(data.height);
+    if (!next || next < 160 || next > 900) return;
+    document.querySelectorAll("[data-quotebuilder] iframe, .quotebuilder-embed iframe").forEach(function (frame) {
+      if (frame.contentWindow !== event.source) return;
+      frame.style.height = Math.ceil(next) + "px";
+      frame.style.minHeight = Math.ceil(next) + "px";
+    });
+  });
   function init() {
     document.querySelectorAll("[data-quotebuilder], .quotebuilder-embed").forEach(mount);
   }

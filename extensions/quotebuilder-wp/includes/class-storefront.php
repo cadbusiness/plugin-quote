@@ -373,6 +373,10 @@ class QuoteBuilder_Storefront {
             'id' => $funnel['id'],
             'height' => '720px',
             'cart' => '',
+            'module' => '',
+            'placeholder' => '',
+            'promise' => '',
+            'phone' => '',
         ], $atts, 'quotebuilder');
 
         $origin = esc_url(QuoteBuilder_Settings::origin());
@@ -389,12 +393,29 @@ class QuoteBuilder_Storefront {
 
         $cart = $atts['cart'] ?: (QuoteBuilder_Quote::items() ? wp_json_encode(QuoteBuilder_Quote::cart_payload()) : '');
 
+        $extra = '';
+        if ($atts['module'] === 'capture') {
+            $extra .= ' data-module="capture"';
+        }
+        if ($atts['placeholder'] !== '') {
+            $extra .= ' data-placeholder="' . esc_attr($atts['placeholder']) . '"';
+        }
+        if ($atts['promise'] !== '') {
+            $extra .= ' data-promise="' . esc_attr($atts['promise']) . '"';
+        }
+        if ($atts['phone'] !== '') {
+            $extra .= ' data-phone="' . esc_attr($atts['phone']) . '"';
+        }
+        if ($cart) {
+            $extra .= ' data-cart="' . esc_attr($cart) . '"';
+        }
+
         return sprintf(
             '<div class="quotebuilder-embed" data-quotebuilder data-org="%s" data-id="%s" data-height="%s"%s></div>',
             esc_attr($atts['org']),
             esc_attr($atts['id']),
             esc_attr($atts['height']),
-            $cart ? ' data-cart="' . esc_attr($cart) . '"' : ''
+            $extra
         );
     }
 }

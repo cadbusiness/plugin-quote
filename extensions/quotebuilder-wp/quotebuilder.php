@@ -2,7 +2,7 @@
 /**
  * Plugin Name: QuoteBuilder
  * Description: Transforme WooCommerce en boutique devis : masquer les prix, liste de devis, funnel QuoteBuilder.
- * Version: 2.3.11
+ * Version: 2.3.12
  * Author: QuoteBuilder
  * Author URI: https://quotebuilder-weld.vercel.app
  * Requires at least: 6.0
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('QUOTEBUILDER_VERSION', '2.3.11');
+define('QUOTEBUILDER_VERSION', '2.3.12');
 define('QUOTEBUILDER_FILE', __FILE__);
 define('QUOTEBUILDER_DIR', plugin_dir_path(__FILE__));
 define('QUOTEBUILDER_URL', plugin_dir_url(__FILE__));
@@ -73,6 +73,18 @@ function quotebuilder_render($atts = []) {
 }
 add_shortcode('quotebuilder', 'quotebuilder_render');
 
+function quotebuilder_render_capture($atts = []) {
+    if (!is_array($atts)) {
+        $atts = [];
+    }
+    $atts['module'] = 'capture';
+    if (empty($atts['height'])) {
+        $atts['height'] = '240px';
+    }
+    return QuoteBuilder_Storefront::render_funnel($atts);
+}
+add_shortcode('quotebuilder_capture', 'quotebuilder_render_capture');
+
 function quotebuilder_register_block() {
     if (!function_exists('register_block_type')) {
         return;
@@ -97,6 +109,27 @@ function quotebuilder_register_block() {
             'org' => ['type' => 'string', 'default' => ''],
             'id' => ['type' => 'string', 'default' => ''],
             'height' => ['type' => 'string', 'default' => '720px'],
+        ],
+    ]);
+    register_block_type('quotebuilder/capture', [
+        'editor_script' => 'quotebuilder-block',
+        'render_callback' => function ($attributes) {
+            return QuoteBuilder_Storefront::render_funnel([
+                'org' => $attributes['org'] ?? '',
+                'id' => $attributes['id'] ?? '',
+                'height' => '240px',
+                'module' => 'capture',
+                'placeholder' => $attributes['placeholder'] ?? '',
+                'promise' => $attributes['promise'] ?? '',
+                'phone' => $attributes['phone'] ?? '',
+            ]);
+        },
+        'attributes' => [
+            'org' => ['type' => 'string', 'default' => ''],
+            'id' => ['type' => 'string', 'default' => ''],
+            'placeholder' => ['type' => 'string', 'default' => ''],
+            'promise' => ['type' => 'string', 'default' => ''],
+            'phone' => ['type' => 'string', 'default' => ''],
         ],
     ]);
 }

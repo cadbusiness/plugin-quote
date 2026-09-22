@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>La synchro envoie l'URL du site pour réutiliser la connexion WooCommerce existante.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>Shortcode et bloc « Question devis » : carte besoin puis coordonnées, même dossier que le funnel.</li></ul>`,
     },
     null,
     2,

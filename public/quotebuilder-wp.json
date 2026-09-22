@@ -1,10 +1,10 @@
 {
   "slug": "quotebuilder-wp",
   "name": "QuoteBuilder",
-  "version": "2.3.11",
+  "version": "2.3.12",
   "requires": "6.0",
   "requires_php": "7.4",
   "tested": "6.8",
   "author": "QuoteBuilder",
-  "changelog": "<h4>2.3.11</h4><ul><li>La synchro envoie l'URL du site pour réutiliser la connexion WooCommerce existante.</li></ul>"
+  "changelog": "<h4>2.3.12</h4><ul><li>Shortcode et bloc « Question devis » : carte besoin puis coordonnées, même dossier que le funnel.</li></ul>"
 }
