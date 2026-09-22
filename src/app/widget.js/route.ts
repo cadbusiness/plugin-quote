@@ -123,7 +123,7 @@ export function GET() {
     var data = event.data;
     if (!data || data.source !== "quotebuilder" || data.type !== "resize") return;
     var next = Number(data.height);
-    if (!next || next < 160 || next > 900) return;
+    if (!next || next < 160 || next > 1200) return;
     document.querySelectorAll("[data-quotebuilder] iframe, .quotebuilder-embed iframe").forEach(function (frame) {
       if (frame.contentWindow !== event.source) return;
       frame.style.height = Math.ceil(next) + "px";

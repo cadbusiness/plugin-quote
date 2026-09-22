@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { captureAnswerPatch, planCaptureFollow, type CaptureComplement, type CaptureFollow } from "@/lib/configurator/capture-follow";
 import { parseAttribution, type Attribution } from "@/lib/stats/attribution";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 import type { ConfiguratorDefinition, QuoteSession } from "@/lib/wizard/types";
@@ -8,7 +9,7 @@ import type { ConfiguratorDefinition, QuoteSession } from "@/lib/wizard/types";
 const DEFAULT_PLACEHOLDER = "Ex. : dimensions, quantités, contraintes, délai.";
 const DEFAULT_PROMISE = "Réponse sous 24h";
 
-type Phase = "brief" | "contact" | "done";
+type Phase = "brief" | "qualify" | "complement" | "contact" | "done";
 
 type Contact = { name: string; email: string; phone: string; company: string };
 
@@ -74,6 +75,9 @@ export function CaptureCard({
   const [definition, setDefinition] = useState<ConfiguratorDefinition | null>(null);
   const [session, setSession] = useState<QuoteSession | null>(null);
   const [phase, setPhase] = useState<Phase>("brief");
+  const [follow, setFollow] = useState<CaptureFollow | null>(null);
+  const [clarification, setClarification] = useState("");
+  const [accepted, setAccepted] = useState<CaptureComplement | null>(null);
   const [need, setNeed] = useState("");
   const [contact, setContact] = useState<Contact>({ name: "", email: "", phone: "", company: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -119,13 +123,29 @@ export function CaptureCard({
   const reply = promise?.trim() || DEFAULT_PROMISE;
   const replyPhone = phone?.trim() || definition?.organization.salesPhone?.trim() || "";
 
-  function openContact() {
+  function advanceAfterBrief() {
     if (!need.trim()) {
       setErrors({ need: "Décrivez votre besoin" });
       return;
     }
     setErrors({});
-    setPhase("contact");
+    const next = definition ? planCaptureFollow(need, definition.products) : { anchorId: null, question: null, complement: null };
+    setFollow(next);
+    setClarification("");
+    setAccepted(null);
+    if (next.question) setPhase("qualify");
+    else if (next.complement) setPhase("complement");
+    else setPhase("contact");
+  }
+
+  function continueAfterQuestion() {
+    if (!clarification.trim()) {
+      setErrors({ clarify: "Précisez pour qu’on puisse chiffrer" });
+      return;
+    }
+    setErrors({});
+    if (follow?.complement) setPhase("complement");
+    else setPhase("contact");
   }
 
   async function submit() {
@@ -163,7 +183,17 @@ export function CaptureCard({
         method: "PATCH",
         token: current.token,
         body: JSON.stringify({
-          answers: { need: need.trim(), quote_mode: "rfq" },
+          answers: {
+            need: need.trim(),
+            quote_mode: "rfq",
+            ...(follow?.question && clarification.trim()
+              ? captureAnswerPatch(follow.question, clarification)
+              : {}),
+            ...(accepted ? { added: accepted.name } : {}),
+          },
+          ...(accepted
+            ? { customization: { quantities: { [accepted.id]: 1 }, options: {} } }
+            : {}),
           contactDraft: {
             name: contact.name.trim(),
             email: contact.email.trim(),
@@ -252,7 +282,7 @@ export function CaptureCard({
         {phase === "brief" ? (
           <button
             type="button"
-            onClick={openContact}
+            onClick={advanceAfterBrief}
             className="shrink-0 self-center rounded-full px-3.5 py-2 text-sm font-semibold text-white"
             style={{ background: accent }}
           >
@@ -261,6 +291,59 @@ export function CaptureCard({
         ) : null}
       </div>
       {errors.need ? <p className="mt-1.5 text-xs text-red-600">{errors.need}</p> : null}
+
+      {phase === "qualify" && follow?.question ? (
+        <div className="mt-4">
+          <p className="text-sm font-semibold text-mk-ink">{follow.question.label}</p>
+          <input
+            value={clarification}
+            onChange={(event) => {
+              setClarification(event.target.value);
+              if (errors.clarify) setErrors((current) => ({ ...current, clarify: "" }));
+            }}
+            className="mt-2 w-full rounded-xl border border-mk-border px-3 py-2 text-sm text-mk-ink outline-none focus:border-emerald-700"
+          />
+          {errors.clarify ? <p className="mt-1.5 text-xs text-red-600">{errors.clarify}</p> : null}
+          <button
+            type="button"
+            onClick={continueAfterQuestion}
+            className="mt-3 rounded-full px-4 py-2 text-sm font-semibold text-white"
+            style={{ background: accent }}
+          >
+            Continuer
+          </button>
+        </div>
+      ) : null}
+
+      {phase === "complement" && follow?.complement ? (
+        <div className="mt-4 rounded-xl border border-mk-border p-3">
+          <p className="text-xs font-medium text-emerald-700">{follow.complement.reason}</p>
+          <p className="mt-1 text-sm font-semibold text-mk-ink">{follow.complement.name}</p>
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                setAccepted(follow.complement);
+                setPhase("contact");
+              }}
+              className="rounded-full px-4 py-2 text-sm font-semibold text-white"
+              style={{ background: accent }}
+            >
+              Ajouter au devis
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setAccepted(null);
+                setPhase("contact");
+              }}
+              className="text-sm font-semibold text-emerald-700"
+            >
+              Non, c’est tout
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       {phase === "contact" ? (
         <div className="mt-4">

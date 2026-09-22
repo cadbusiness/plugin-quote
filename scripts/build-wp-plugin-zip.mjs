@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>Shortcode et bloc « Question devis » : carte besoin puis coordonnées, même dossier que le funnel.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>La page demande de devis affiche le formulaire même si la liste est vide.</li></ul>`,
     },
     null,
     2,

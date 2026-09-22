@@ -223,7 +223,9 @@ class QuoteBuilder_Quote {
                 <p class="qb-kicker">Votre liste</p>
                 <h2><?php echo esc_html($settings['listTitle']); ?></h2>
                 <?php if (!$items) : ?>
-                    <p class="qb-empty"><?php echo esc_html($settings['emptyMessage']); ?></p>
+                    <p class="qb-empty"><?php echo esc_html($show_funnel
+                        ? 'Aucun produit dans la liste. Décrivez le besoin dans le formulaire, ou ajoutez des produits depuis la boutique.'
+                        : $settings['emptyMessage']); ?></p>
                     <?php if ($settings['showBackToShop']) : ?>
                         <a class="qb-atq" href="<?php echo esc_url(self::shop_url()); ?>"><?php echo esc_html($settings['continueShoppingLabel']); ?></a>
                     <?php endif; ?>
