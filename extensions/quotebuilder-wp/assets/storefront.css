@@ -515,8 +515,148 @@ html.qb-drawer-open {
   font-size: 13px;
 }
 
+.qb-request {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(240px, 0.8fr);
+  gap: 28px;
+  margin: 24px 0;
+}
+
+.qb-request-progress {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.qb-request-bar {
+  height: 4px;
+  border-radius: 999px;
+  background: #efe7de;
+  margin-bottom: 16px;
+}
+
+.qb-request-bar span {
+  display: block;
+  height: 100%;
+  width: 33%;
+  border-radius: inherit;
+  background: #e85d04;
+}
+
+.qb-request-step {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.qb-request-step legend {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.qb-request-hint,
+.qb-request-error {
+  color: #5c5348;
+  font-size: 14px;
+}
+
+.qb-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.qb-tile {
+  display: grid;
+  gap: 2px;
+  padding: 12px;
+  border: 1px solid #efe7de;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.qb-tile input {
+  position: absolute;
+  opacity: 0;
+}
+
+.qb-tile:has(input:checked) {
+  border-color: #15803d;
+  background: #f0fdf4;
+}
+
+.qb-tile em {
+  color: #5c5348;
+  font-style: normal;
+  font-size: 13px;
+}
+
+.qb-ico svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+.qb-space {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.qb-field,
+.qb-space label {
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.qb-request input,
+.qb-request textarea {
+  font: inherit;
+  font-weight: 400;
+  padding: 8px 10px;
+  border: 1px solid #efe7de;
+  border-radius: 8px;
+}
+
+.qb-request-nav {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.qb-guarantees,
+.qb-after,
+.qb-request-lines {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: #5c5348;
+  font-size: 14px;
+}
+
+.qb-request-side h2 {
+  margin: 18px 0 8px;
+  font-size: 16px;
+}
+
+.qb-request-done {
+  padding: 8px 0 16px;
+}
+
+.qb-hp {
+  position: absolute;
+  left: -9999px;
+}
+
 @media (max-width: 860px) {
-  .qb-quote-page {
+  .qb-quote-page,
+  .qb-request {
     grid-template-columns: 1fr;
   }
 }

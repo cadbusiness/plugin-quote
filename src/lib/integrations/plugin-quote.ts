@@ -3,7 +3,7 @@ import { PLUGIN_QUOTE_EXAMPLE, parsePluginQuote } from "@/lib/integrations/plugi
 import { createSession, updateSession } from "@/lib/public/session";
 import { submitQuote } from "@/lib/quotes/submit";
 import { createServiceClient } from "@/lib/supabase/service";
-import type { Answers } from "@/lib/wizard/types";
+import type { Answers, StorefrontLine } from "@/lib/wizard/types";
 
 export { PLUGIN_QUOTE_EXAMPLE, parsePluginQuote };
 
@@ -12,12 +12,33 @@ async function findExisting(organizationId: string, externalId: string) {
   const supabase = createServiceClient();
   const { data } = await supabase
     .from("quotes")
-    .select("id")
+    .select("id, answers")
     .eq("organization_id", organizationId)
     .contains("answers", { external_id: externalId })
     .limit(1)
     .maybeSingle();
-  return data?.id ?? null;
+  if (!data?.id) return null;
+  const answers = data.answers && typeof data.answers === "object" ? (data.answers as Record<string, unknown>) : {};
+  return { id: data.id, reference: typeof answers.reference === "string" ? answers.reference : "" };
+}
+
+async function assignReference(organizationId: string, quoteId: string) {
+  const supabase = createServiceClient();
+  const year = new Date().getUTCFullYear();
+  const start = `${year}-01-01T00:00:00.000Z`;
+  const { count } = await supabase
+    .from("quotes")
+    .select("id", { count: "exact", head: true })
+    .eq("organization_id", organizationId)
+    .gte("created_at", start);
+  const reference = `Q-${year}-${String(Math.max(1, count ?? 1)).padStart(4, "0")}`;
+  const { data: quote } = await supabase.from("quotes").select("answers").eq("id", quoteId).maybeSingle();
+  const answers =
+    quote?.answers && typeof quote.answers === "object" && !Array.isArray(quote.answers)
+      ? { ...(quote.answers as Record<string, unknown>), reference }
+      : { reference };
+  await supabase.from("quotes").update({ answers }).eq("id", quoteId).eq("organization_id", organizationId);
+  return reference;
 }
 
 export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
@@ -29,9 +50,14 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
     return { ok: false as const, status: 409, error: "Aucun funnel appairé", code: "no_funnel" };
   }
 
-  const existingId = await findExisting(row.organization_id, parsed.quote.externalId);
-  if (existingId) {
-    return { ok: true as const, quoteId: existingId, alreadySubmitted: true };
+  const existing = await findExisting(row.organization_id, parsed.quote.externalId);
+  if (existing) {
+    return {
+      ok: true as const,
+      quoteId: existing.id,
+      alreadySubmitted: true,
+      reference: existing.reference,
+    };
   }
 
   const supabase = createServiceClient();
@@ -51,14 +77,27 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
   });
   if (!session) return { ok: false as const, status: 404, error: "Funnel introuvable", code: "funnel_missing" };
 
+  const lines: StorefrontLine[] = parsed.quote.products.map((line) => ({
+    externalId: line.id || line.sku || line.name,
+    name: line.name,
+    quantity: line.qty,
+    sku: line.sku || null,
+    variation: [line.variation, line.note].filter(Boolean).join(" · "),
+  }));
   const answers: Answers = {
     ...parsed.quote.answers,
     need: parsed.quote.need,
     quote_mode: "rfq",
+    ...(parsed.quote.needs.length ? { needs: parsed.quote.needs } : {}),
+    ...(Object.keys(parsed.quote.space).length ? { space: parsed.quote.space } : {}),
+    ...(parsed.quote.city ? { city: parsed.quote.city } : {}),
     ...(parsed.quote.externalId ? { external_id: parsed.quote.externalId } : {}),
   };
   const updated = await updateSession(session.id, session.token, {
     answers,
+    ...(lines.length
+      ? { customization: { quantities: {}, options: {}, storefrontLines: lines } }
+      : {}),
     contactDraft: {
       name: parsed.quote.name,
       email: parsed.quote.email,
@@ -79,7 +118,18 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
       consentMarketing: false,
     },
   });
-  return { ok: true as const, quoteId: result.quoteId, alreadySubmitted: Boolean(result.alreadySubmitted) };
+  let reference = "";
+  try {
+    reference = await assignReference(row.organization_id, result.quoteId);
+  } catch (error) {
+    console.error("plugin quote reference", error);
+  }
+  return {
+    ok: true as const,
+    quoteId: result.quoteId,
+    alreadySubmitted: Boolean(result.alreadySubmitted),
+    reference,
+  };
 }
 
 export function pluginQuoteErrorBody(

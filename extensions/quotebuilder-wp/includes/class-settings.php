@@ -110,6 +110,20 @@ class QuoteBuilder_Settings {
             'drawerCtaHint' => 'Il ne reste que vos coordonnées',
             'drawerReassure' => 'Aucun paiement à cette étape.',
             'drawerEmpty' => 'Votre liste est vide. Ajoutez des produits depuis la boutique.',
+            'quotePageMode' => 'native',
+            'opensAt' => '08:00',
+            'weekdayClose' => '16:45',
+            'fridayClose' => '13:00',
+            'responseOpen' => "dans l'heure",
+            'guarantee1' => 'Gratuit',
+            'guarantee2' => "Réponse dans l'heure aux heures d'ouverture",
+            'guarantee3' => 'Données protégées',
+            'after1Title' => 'Un technicien lit votre demande',
+            'after1Text' => "Réponse dans l'heure aux heures d'ouverture, par téléphone ou par e-mail.",
+            'after2Title' => 'Prix direct ou visite gratuite',
+            'after2Text' => 'Prix immédiat pour le catalogue ; visite technique gratuite pour le sur-mesure.',
+            'after3Title' => 'Devis détaillé',
+            'after3Text' => 'Sans engagement, avec délai et montage.',
             'emptyMessage' => 'Aucun produit dans la liste. Décrivez le besoin dans le formulaire, ou ajoutez des produits depuis la boutique.',
             'funnelCta' => 'Envoyer ma demande',
             'formTitle' => 'Envoyer la demande',
@@ -133,10 +147,95 @@ class QuoteBuilder_Settings {
             'clearListLabel' => 'Effacer la liste',
             'quotePageId' => '',
             'quotePageUrl' => '',
+            'quoteNeeds' => self::default_needs(),
             'showComplements' => true,
             'complementsTitle' => 'Souvent demandé avec',
             'complementsLimit' => 4,
         ];
+    }
+
+    public static function default_needs() {
+        return [
+            ['value' => 'catalogue', 'label' => 'Des produits du catalogue', 'hint' => 'Bacs, étagères, armoires', 'icon' => 'box', 'custom' => false, 'example' => 'Ex. : 40 bacs pour visserie, couleur bleue, à accrocher sur panneau mural.'],
+            ['value' => 'rack', 'label' => 'Rack à palettes', 'hint' => 'Palettes, charges lourdes', 'icon' => 'rack', 'custom' => true, 'example' => 'Ex. : palettes de 120 × 80 cm, 800 kg chacune, hauteur 4,50 m, 3 niveaux de lisses, 4 travées accolées.'],
+            ['value' => 'rayonnage', 'label' => 'Rayonnages', 'hint' => 'Atelier, archives, réserve', 'icon' => 'shelf', 'custom' => true, 'example' => 'Ex. : mur de 6 m, hauteur 2,50 m, cartons de 15 kg, 5 niveaux, profondeur 50 cm.'],
+            ['value' => 'mezzanine', 'label' => 'Mezzanine / plateforme', 'hint' => 'Gagner un étage', 'icon' => 'floor', 'custom' => true, 'example' => 'Ex. : mezzanine de 8 × 5 m, hauteur sous plafond 6 m, stockage de cartons, escalier sur le côté.'],
+            ['value' => 'longueurs', 'label' => 'Stockage de longueurs', 'hint' => 'Tubes, profilés, bois', 'icon' => 'length', 'custom' => true, 'example' => 'Ex. : tubes de 6 m, 2 tonnes au total, accès des deux côtés, en extérieur.'],
+            ['value' => 'magasin', 'label' => 'Aménagement de magasin', 'hint' => 'Gondoles, comptoirs', 'icon' => 'shop', 'custom' => true, 'example' => 'Ex. : 12 m de gondoles centrales, hauteur 1,60 m, 4 niveaux, avec têtes de gondole.'],
+            ['value' => 'autre', 'label' => 'Autre / je ne sais pas', 'hint' => 'On vous oriente', 'icon' => 'help', 'custom' => true, 'example' => 'Ex. : dimensions de ce que vous stockez, poids, hauteur disponible, nombre d’exemplaires.'],
+        ];
+    }
+
+    public static function needs_text($needs) {
+        $lines = [];
+        foreach ((array) $needs as $need) {
+            if (!is_array($need)) {
+                continue;
+            }
+            $lines[] = implode('|', [
+                $need['value'] ?? '',
+                $need['label'] ?? '',
+                $need['hint'] ?? '',
+                $need['icon'] ?? 'help',
+                !empty($need['custom']) ? '1' : '0',
+                $need['example'] ?? '',
+            ]);
+        }
+        return implode("\n", $lines);
+    }
+
+    public static function parse_needs_text($text) {
+        $needs = [];
+        foreach (preg_split('/\r\n|\r|\n/', (string) $text) as $line) {
+            $line = trim($line);
+            if ($line === '' || strpos($line, '|') === false) {
+                continue;
+            }
+            $parts = array_map('trim', explode('|', $line));
+            $label = sanitize_text_field($parts[1] ?? '');
+            if ($label === '') {
+                continue;
+            }
+            $value = sanitize_title($parts[0] ?? $label);
+            $needs[] = [
+                'value' => $value !== '' ? $value : sanitize_title($label),
+                'label' => $label,
+                'hint' => sanitize_text_field($parts[2] ?? ''),
+                'icon' => sanitize_key($parts[3] ?? 'help') ?: 'help',
+                'custom' => ($parts[4] ?? '1') === '1',
+                'example' => sanitize_text_field($parts[5] ?? ''),
+            ];
+            if (count($needs) >= 12) {
+                break;
+            }
+        }
+        return $needs;
+    }
+
+    public static function clean_needs($needs) {
+        $clean = [];
+        foreach ((array) $needs as $need) {
+            if (!is_array($need)) {
+                continue;
+            }
+            $label = sanitize_text_field((string) ($need['label'] ?? ''));
+            if ($label === '') {
+                continue;
+            }
+            $value = sanitize_title((string) ($need['value'] ?? $label));
+            $clean[] = [
+                'value' => $value !== '' ? $value : sanitize_title($label),
+                'label' => $label,
+                'hint' => sanitize_text_field((string) ($need['hint'] ?? '')),
+                'icon' => sanitize_key((string) ($need['icon'] ?? 'help')) ?: 'help',
+                'custom' => !empty($need['custom']) && $need['custom'] !== '0',
+                'example' => sanitize_text_field((string) ($need['example'] ?? '')),
+            ];
+            if (count($clean) >= 12) {
+                break;
+            }
+        }
+        return $clean ?: self::default_needs();
     }
 
     public static function storefront() {
@@ -179,6 +278,10 @@ class QuoteBuilder_Settings {
         if ($settings['floatingLabel'] === '') {
             $settings['floatingLabel'] = 'Devis';
         }
+        if ($settings['quotePageMode'] !== 'funnel') {
+            $settings['quotePageMode'] = 'native';
+        }
+        $settings['quoteNeeds'] = self::clean_needs($settings['quoteNeeds'] ?? []);
         if ($settings['pageLayout'] !== 'stack') {
             $settings['pageLayout'] = 'split';
         }
@@ -231,6 +334,9 @@ class QuoteBuilder_Settings {
             'priceLabel', 'buttonLabel', 'requestQuoteLabel', 'floatingLabel', 'addedLabel', 'alreadyInListLabel',
             'browseListLabel', 'listTitle', 'emptyMessage', 'funnelCta', 'formTitle',
             'drawerCta', 'drawerCtaHint', 'drawerReassure', 'drawerEmpty',
+            'opensAt', 'weekdayClose', 'fridayClose', 'responseOpen',
+            'guarantee1', 'guarantee2', 'guarantee3',
+            'after1Title', 'after1Text', 'after2Title', 'after2Text', 'after3Title', 'after3Text',
             'continueShoppingLabel', 'updateListLabel', 'clearListLabel', 'quotePageId',
             'complementsTitle',
         ];
@@ -256,6 +362,15 @@ class QuoteBuilder_Settings {
         if ($next['drawerEmpty'] === '') {
             $next['drawerEmpty'] = 'Votre liste est vide. Ajoutez des produits depuis la boutique.';
         }
+        $next['quotePageMode'] = ($next['quotePageMode'] ?? '') === 'funnel' ? 'funnel' : 'native';
+        if (isset($incoming['quoteNeedsText'])) {
+            $parsed = self::parse_needs_text(wp_unslash($incoming['quoteNeedsText']));
+            if ($parsed) {
+                $next['quoteNeeds'] = $parsed;
+            }
+        }
+        $next['quoteNeeds'] = self::clean_needs($next['quoteNeeds'] ?? []);
+        unset($next['quoteNeedsText']);
         $next['pageLayout'] = $next['pageLayout'] === 'stack' ? 'stack' : 'split';
         $next['continueShoppingUrlMode'] = $next['continueShoppingUrlMode'] === 'custom' ? 'custom' : 'shop';
         $limit = (int) ($next['complementsLimit'] ?? 4);

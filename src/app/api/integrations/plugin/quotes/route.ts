@@ -51,7 +51,12 @@ export async function POST(req: Request) {
         { status: result.status },
       );
     }
-    return NextResponse.json({ ok: true, quoteId: result.quoteId, alreadySubmitted: result.alreadySubmitted });
+    return NextResponse.json({
+      ok: true,
+      quoteId: result.quoteId,
+      alreadySubmitted: result.alreadySubmitted,
+      reference: result.reference,
+    });
   } catch (error) {
     console.error("plugin quote failed", error);
     return NextResponse.json(

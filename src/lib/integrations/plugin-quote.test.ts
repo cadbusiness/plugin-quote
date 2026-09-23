@@ -22,6 +22,25 @@ if (nested.ok) {
   assert.equal(nested.quote.answers.load, "800 kg");
 }
 
+const structured = parsePluginQuote({
+  description: "Palettes de 800 kg",
+  name: "Paul Martin",
+  email: "paul@exemple.com",
+  needs: ["rack", "rayonnage"],
+  space: { length: "12 m", height: "4,5 m" },
+  city: "Grâce-Hollogne",
+  products: [{ id: "42", name: "Rayonnage super", qty: 2, variation: "Largeur 100 cm" }],
+});
+assert.equal(structured.ok, true);
+if (structured.ok) {
+  assert.equal(structured.quote.need, "Palettes de 800 kg");
+  assert.deepEqual(structured.quote.needs, ["rack", "rayonnage"]);
+  assert.equal(structured.quote.space.length, "12 m");
+  assert.equal(structured.quote.space.city, "Grâce-Hollogne");
+  assert.equal(structured.quote.products[0].name, "Rayonnage super");
+  assert.equal(structured.quote.products[0].qty, 2);
+}
+
 const missingEmail = parsePluginQuote({ need: "Un rack", name: "Marie" });
 assert.equal(missingEmail.ok, false);
 

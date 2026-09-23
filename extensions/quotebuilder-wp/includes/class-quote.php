@@ -255,12 +255,151 @@ class QuoteBuilder_Quote {
         return number_format_i18n((float) $amount, 2);
     }
 
+    public static function response_when() {
+        $settings = QuoteBuilder_Settings::storefront();
+        $now = current_time('timestamp');
+        $day = (int) wp_date('N', $now);
+        $minutes = ((int) wp_date('G', $now)) * 60 + (int) wp_date('i', $now);
+        $open = self::clock_minutes($settings['opensAt'] ?? '08:00');
+        $close = self::clock_minutes($day === 5 ? ($settings['fridayClose'] ?? '13:00') : ($settings['weekdayClose'] ?? '16:45'));
+        $open_label = self::clock_label($settings['opensAt'] ?? '08:00');
+        if ($day <= 5 && $minutes >= $open && $minutes < $close) {
+            return $settings['responseOpen'] ?: "dans l'heure";
+        }
+        if ($day <= 5 && $minutes < $open) {
+            return 'aujourd’hui dès ' . $open_label;
+        }
+        if ($day === 5 || $day >= 6) {
+            return 'lundi dès ' . $open_label;
+        }
+        return 'demain dès ' . $open_label;
+    }
+
+    private static function clock_minutes($value) {
+        $parts = explode(':', (string) $value);
+        return ((int) ($parts[0] ?? 0)) * 60 + (int) ($parts[1] ?? 0);
+    }
+
+    private static function clock_label($value) {
+        $parts = explode(':', (string) $value);
+        $hour = (int) ($parts[0] ?? 0);
+        $minute = (int) ($parts[1] ?? 0);
+        return $minute > 0 ? $hour . 'h' . str_pad((string) $minute, 2, '0', STR_PAD_LEFT) : $hour . 'h';
+    }
+
+    public static function render_native($settings) {
+        $items = self::items();
+        $needs = $settings['quoteNeeds'];
+        $external = 'wp-' . wp_generate_password(12, false, false);
+        ob_start();
+        ?>
+        <div class="qb-request">
+            <form class="qb-request-form" data-qb-request data-start="0">
+                <input type="hidden" name="external_id" value="<?php echo esc_attr($external); ?>">
+                <p class="qb-hp" aria-hidden="true"><label>Site web<input type="text" name="qb_website" tabindex="-1" autocomplete="off"></label></p>
+                <p class="qb-request-progress"><span data-step-num>1</span> sur 3 · <span data-step-name>Votre projet</span></p>
+                <div class="qb-request-bar" aria-hidden="true"><span data-step-bar></span></div>
+                <fieldset class="qb-request-step" data-name="Votre projet">
+                    <legend>Que voulez-vous équiper ?</legend>
+                    <p class="qb-request-hint">Plusieurs choix possibles.</p>
+                    <div class="qb-tiles">
+                        <?php foreach ($needs as $need) : ?>
+                            <label class="qb-tile">
+                                <input type="checkbox" name="need[]" value="<?php echo esc_attr($need['value']); ?>" data-custom="<?php echo !empty($need['custom']) ? '1' : '0'; ?>" data-example="<?php echo esc_attr($need['example']); ?>">
+                                <span><?php echo self::need_icon($need['icon']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+                                <strong><?php echo esc_html($need['label']); ?></strong>
+                                <?php if ($need['hint'] !== '') : ?><em><?php echo esc_html($need['hint']); ?></em><?php endif; ?>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <button type="button" class="qb-atq" data-next>Continuer</button>
+                </fieldset>
+                <fieldset class="qb-request-step" data-name="Votre projet" hidden>
+                    <legend>Parlez-nous de votre projet</legend>
+                    <label class="qb-field">Le projet
+                        <textarea name="description" id="qb-request-text" required rows="5" data-default-placeholder="Dimensions, poids, nombre d’exemplaires." placeholder="Dimensions, poids, nombre d’exemplaires."></textarea>
+                    </label>
+                    <div data-space>
+                        <p class="qb-request-hint">Votre espace (une estimation suffit, on mesure lors de la visite)</p>
+                        <div class="qb-space">
+                            <label>Longueur <input name="length" inputmode="decimal"></label>
+                            <label>Largeur <input name="width" inputmode="decimal"></label>
+                            <label>Hauteur <input name="height" inputmode="decimal"></label>
+                        </div>
+                    </div>
+                    <div class="qb-request-nav">
+                        <button type="button" class="qb-ghost" data-prev>Retour</button>
+                        <button type="button" class="qb-atq" data-next>Continuer</button>
+                    </div>
+                </fieldset>
+                <fieldset class="qb-request-step" data-name="Vos coordonnées" hidden>
+                    <legend>Où vous envoyer le devis ?</legend>
+                    <p class="qb-request-hint">Pas de compte à créer.</p>
+                    <div class="qb-space">
+                        <label>Nom <input name="name" required autocomplete="name"></label>
+                        <label>Téléphone <input name="phone" required autocomplete="tel"></label>
+                        <label>E-mail <input name="email" type="email" required autocomplete="email"></label>
+                        <label>Entreprise <input name="company" autocomplete="organization"></label>
+                        <label>Ville <input name="city" autocomplete="address-level2"></label>
+                    </div>
+                    <p class="qb-request-error" data-error hidden></p>
+                    <div class="qb-request-nav">
+                        <button type="button" class="qb-ghost" data-prev>Retour</button>
+                        <button type="submit" class="qb-atq" data-submit>Recevoir mon devis</button>
+                    </div>
+                    <ul class="qb-guarantees">
+                        <li><?php echo esc_html($settings['guarantee1']); ?></li>
+                        <li><?php echo esc_html($settings['guarantee2']); ?></li>
+                        <li><?php echo esc_html($settings['guarantee3']); ?></li>
+                    </ul>
+                </fieldset>
+            </form>
+            <aside class="qb-request-side">
+                <h2>Votre sélection</h2>
+                <?php if (!$items) : ?>
+                    <p class="qb-empty">Ajoutez-les depuis le catalogue avec « Ajouter au devis ». Sinon, décrivez simplement votre besoin.</p>
+                <?php else : ?>
+                    <ul class="qb-request-lines">
+                        <?php foreach ($items as $item) : ?>
+                            <li><?php echo esc_html(self::product_label($item['name'] ?? '')); ?> · ×<?php echo esc_html((int) ($item['qty'] ?? 1)); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+                <h2>Après l’envoi</h2>
+                <ol class="qb-after">
+                    <li><strong><?php echo esc_html($settings['after1Title']); ?></strong> <?php echo esc_html($settings['after1Text']); ?></li>
+                    <li><strong><?php echo esc_html($settings['after2Title']); ?></strong> <?php echo esc_html($settings['after2Text']); ?></li>
+                    <li><strong><?php echo esc_html($settings['after3Title']); ?></strong> <?php echo esc_html($settings['after3Text']); ?></li>
+                </ol>
+            </aside>
+        </div>
+        <?php
+        return ob_get_clean();
+    }
+
+    private static function need_icon($name) {
+        $icons = [
+            'box' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5-9 4.5L3 7.5Z"/><path d="M3 7.5V16.5L12 21l9-4.5V7.5"/><path d="M12 12v9"/></svg>',
+            'rack' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3v18M19 3v18M5 8h14M5 13h14M5 18h14"/></svg>',
+            'shelf' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16M4 12h16M4 20h16M8 4v16M16 4v16"/></svg>',
+            'floor' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 16h18M6 16V8h12v8M9 8V5h6v3"/></svg>',
+            'length' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M7 9l-3 3 3 3M17 9l3 3-3 3"/></svg>',
+            'shop' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h16l-1 10H5L4 10Z"/><path d="M4 10 6 4h12l2 6M9 14h6"/></svg>',
+            'help' => '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 1-1 1.7V14"/><path d="M12 17h.01"/></svg>',
+        ];
+        $svg = $icons[$name] ?? $icons['help'];
+        return '<i class="qb-ico">' . $svg . '</i>';
+    }
+
     public static function render_page() {
         if (!QuoteBuilder_Settings::connected()) {
             return '<p class="qb-empty">Connectez QuoteBuilder dans WordPress pour collecter les demandes.</p>';
         }
         $settings = QuoteBuilder_Settings::storefront();
         $funnel = QuoteBuilder_Settings::funnel();
+        if (($settings['quotePageMode'] ?? 'native') === 'native') {
+            return self::render_native($settings);
+        }
         $items = self::items();
         $show_prices = $settings['showPrice'] && !$settings['hidePrices'];
         $unique = count($items);
@@ -379,9 +518,70 @@ class QuoteBuilder_Quote {
         return ob_get_clean();
     }
 
+    public static function ajax_submit_lead() {
+        if (trim((string) wp_unslash($_POST['qb_website'] ?? '')) !== '') {
+            wp_send_json_error(['message' => 'Envoi impossible.'], 400);
+        }
+        $needs = [];
+        foreach ((array) ($_POST['need'] ?? []) as $need) {
+            $text = sanitize_text_field(wp_unslash($need));
+            if ($text !== '') {
+                $needs[] = $text;
+            }
+        }
+        $description = sanitize_textarea_field(wp_unslash($_POST['description'] ?? ''));
+        $name = sanitize_text_field(wp_unslash($_POST['name'] ?? ''));
+        $email = sanitize_email(wp_unslash($_POST['email'] ?? ''));
+        $phone = sanitize_text_field(wp_unslash($_POST['phone'] ?? ''));
+        if (strlen($description) < 2 || strlen($name) < 2 || !is_email($email) || $phone === '') {
+            wp_send_json_error(['message' => 'Il manque le projet, votre nom, un e-mail valide ou votre téléphone.'], 400);
+        }
+        $products = [];
+        foreach (self::items() as $item) {
+            $products[] = [
+                'id' => (string) ($item['id'] ?? ''),
+                'name' => (string) ($item['name'] ?? ''),
+                'qty' => max(1, (int) ($item['qty'] ?? 1)),
+                'sku' => (string) ($item['sku'] ?? ''),
+                'variation' => (string) ($item['variation'] ?? ''),
+                'note' => (string) ($item['note'] ?? ''),
+            ];
+        }
+        $result = QuoteBuilder_Pairing::submit([
+            'need' => $description,
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone,
+            'company' => sanitize_text_field(wp_unslash($_POST['company'] ?? '')),
+            'city' => sanitize_text_field(wp_unslash($_POST['city'] ?? '')),
+            'externalId' => sanitize_text_field(wp_unslash($_POST['external_id'] ?? '')),
+            'page' => wp_get_referer() ? wp_get_referer() : self::page_url(),
+            'needs' => $needs,
+            'length' => sanitize_text_field(wp_unslash($_POST['length'] ?? '')),
+            'width' => sanitize_text_field(wp_unslash($_POST['width'] ?? '')),
+            'height' => sanitize_text_field(wp_unslash($_POST['height'] ?? '')),
+            'products' => $products,
+        ]);
+        if (is_wp_error($result)) {
+            $message = $result->get_error_message();
+            wp_send_json_error(['message' => $message !== '' ? $message : 'Envoi impossible.'], 400);
+        }
+        wp_send_json_success([
+            'reference' => (string) ($result['reference'] ?? ''),
+            'quoteId' => (string) ($result['quoteId'] ?? ''),
+            'when' => self::response_when(),
+            'phone' => $phone,
+            'name' => $name,
+        ]);
+    }
+
     public static function ajax() {
         check_ajax_referer('quotebuilder_storefront', 'nonce');
         $action = sanitize_key($_POST['quote_action'] ?? '');
+        if ($action === 'submit_lead') {
+            self::ajax_submit_lead();
+            return;
+        }
         $already = false;
         if ($action === 'add') {
             $product_id = (int) ($_POST['product_id'] ?? 0);

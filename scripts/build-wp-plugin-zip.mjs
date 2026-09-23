@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>Le tiroir affiche la photo, la variante et le lien produit.</li><li>La quantité se change avec − et +, et un retrait s’annule pendant 5 secondes.</li><li>Le bouton du tiroir dit qu’il reste les coordonnées, il n’envoie pas la demande.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>La page devis du plugin est un formulaire en trois étapes, réglable sans code.</li><li>Les besoins, l’espace et les produits restent dans le dossier, avec une référence Q-année-numéro.</li><li>Le formulaire émet quotebuilder:step et quotebuilder:submitted.</li></ul>`,
     },
     null,
     2,

@@ -559,6 +559,28 @@ body.toplevel_page_quotebuilder .qb-settings{width:auto!important;max-width:none
                 self::row('Tiroir vide', '', function () use ($settings) {
                     self::input('drawerEmpty', $settings['drawerEmpty']);
                 });
+                self::row('Page devis', 'Formulaire du plugin, ou le funnel en iframe.', function () use ($settings) {
+                    self::pills('quotePageMode', [
+                        'native' => 'Formulaire',
+                        'funnel' => 'Funnel',
+                    ], $settings['quotePageMode']);
+                });
+                ?>
+                <div class="qb-set-row">
+                    <div class="qb-set-label"><strong>Besoins</strong><span>Une ligne : identifiant|libellé|indice|icône|sur-mesure 1 ou 0|exemple. Icônes : box, rack, shelf, floor, length, shop, help.</span></div>
+                    <div class="qb-set-control">
+                        <textarea name="quoteNeedsText" rows="8"><?php echo esc_textarea(QuoteBuilder_Settings::needs_text($settings['quoteNeeds'])); ?></textarea>
+                    </div>
+                </div>
+                <?php
+                self::row('Ouverture', 'Heure d’ouverture, fermeture en semaine, fermeture le vendredi.', function () use ($settings) {
+                    echo '<input name="opensAt" value="' . esc_attr($settings['opensAt']) . '" placeholder="08:00"> ';
+                    echo '<input name="weekdayClose" value="' . esc_attr($settings['weekdayClose']) . '" placeholder="16:45"> ';
+                    echo '<input name="fridayClose" value="' . esc_attr($settings['fridayClose']) . '" placeholder="13:00">';
+                });
+                self::row('Réponse si ouvert', '', function () use ($settings) {
+                    self::input('responseOpen', $settings['responseOpen']);
+                });
                 self::row('Message liste vide', '', function () use ($settings) {
                     self::input('emptyMessage', $settings['emptyMessage']);
                 });

@@ -378,6 +378,7 @@ class QuoteBuilder_Pairing {
                 $result = [
                     'quoteId' => (string) $body['quoteId'],
                     'alreadySubmitted' => !empty($body['alreadySubmitted']),
+                    'reference' => (string) ($body['reference'] ?? ''),
                 ];
                 self::remember_submit($payload, $result);
                 do_action('quotebuilder_quote_submitted', $result, $data);
@@ -434,6 +435,76 @@ class QuoteBuilder_Pairing {
         self::refresh();
     }
 
+    private static function string_list($value) {
+        if (is_string($value)) {
+            $value = preg_split('/[,;]+/', $value);
+        }
+        if (!is_array($value)) {
+            return [];
+        }
+        $out = [];
+        foreach ($value as $item) {
+            if (is_array($item)) {
+                $item = $item['label'] ?? $item['name'] ?? $item['value'] ?? '';
+            }
+            $text = sanitize_text_field((string) $item);
+            if ($text !== '') {
+                $out[] = $text;
+            }
+            if (count($out) >= 12) {
+                break;
+            }
+        }
+        return $out;
+    }
+
+    private static function scalar_map($value) {
+        if (!is_array($value)) {
+            return [];
+        }
+        $out = [];
+        foreach ($value as $key => $item) {
+            if (is_array($item)) {
+                continue;
+            }
+            $clean = preg_replace('/[^\w.-]/', '', (string) $key);
+            $text = sanitize_text_field((string) $item);
+            if ($clean !== '' && $text !== '') {
+                $out[$clean] = $text;
+            }
+        }
+        return $out;
+    }
+
+    private static function product_lines($value) {
+        if (!is_array($value)) {
+            return [];
+        }
+        $out = [];
+        foreach ($value as $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+            $name = sanitize_text_field((string) ($row['name'] ?? $row['title'] ?? ''));
+            $id = sanitize_text_field((string) ($row['id'] ?? $row['externalId'] ?? ''));
+            if ($name === '' && $id === '') {
+                continue;
+            }
+            $out[] = [
+                'id' => $id,
+                'name' => $name !== '' ? $name : $id,
+                'qty' => max(1, (int) ($row['qty'] ?? $row['quantity'] ?? 1)),
+                'sku' => sanitize_text_field((string) ($row['sku'] ?? '')),
+                'variation' => sanitize_text_field((string) ($row['variation'] ?? $row['variant'] ?? '')),
+                'note' => sanitize_text_field((string) ($row['note'] ?? '')),
+            ];
+            if (count($out) >= 40) {
+                break;
+            }
+        }
+        return $out;
+    }
+
     private static function submit_payload($data) {
         $contact = isset($data['contact']) && is_array($data['contact']) ? $data['contact'] : [];
         $pick = static function ($keys) use ($data, $contact) {
@@ -449,8 +520,8 @@ class QuoteBuilder_Pairing {
             }
             return '';
         };
-        return [
-            'need' => $pick(['need', 'message', 'brief', 'request', 'demande']),
+        $payload = [
+            'need' => $pick(['need', 'message', 'brief', 'request', 'demande', 'description']),
             'name' => $pick(['name', 'contactName', 'contact_name']),
             'email' => $pick(['email', 'contactEmail', 'contact_email']),
             'phone' => $pick(['phone', 'contactPhone', 'contact_phone']),
@@ -458,6 +529,40 @@ class QuoteBuilder_Pairing {
             'externalId' => $pick(['externalId', 'external_id', 'wpId', 'wp_id']),
             'page' => $pick(['page', 'url', 'landingPath']),
         ];
+        $city = $pick(['city', 'ville']);
+        if ($city !== '') {
+            $payload['city'] = $city;
+        }
+        $needs = [];
+        if (isset($data['needs']) || isset($data['besoins'])) {
+            $needs = self::string_list($data['needs'] ?? $data['besoins']);
+        } elseif (isset($data['need']) && is_array($data['need'])) {
+            $needs = self::string_list($data['need']);
+        }
+        if ($needs) {
+            $payload['needs'] = $needs;
+        }
+        $space = self::scalar_map($data['space'] ?? $data['espace'] ?? []);
+        foreach (['length', 'width', 'height'] as $key) {
+            $value = $pick([$key]);
+            if ($value !== '' && empty($space[$key])) {
+                $space[$key] = $value;
+            }
+        }
+        if ($city !== '' && empty($space['city'])) {
+            $space['city'] = $city;
+        }
+        if ($space) {
+            $payload['space'] = $space;
+        }
+        $products = self::product_lines($data['products'] ?? $data['produits'] ?? $data['lines'] ?? $data['items'] ?? []);
+        if ($products) {
+            $payload['products'] = $products;
+        }
+        if ($payload['need'] === '' && $needs) {
+            $payload['need'] = implode(' · ', $needs);
+        }
+        return $payload;
     }
 
     public static function quotes() {

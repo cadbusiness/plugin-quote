@@ -25,6 +25,12 @@ const KEY_LABELS: Record<string, string> = {
   timeline: "Délai souhaité",
   notes: "Précisions",
   need: "Besoin",
+  needs: "Besoins",
+  space: "Espace",
+  city: "Ville",
+  length: "Longueur",
+  width: "Largeur",
+  reference: "Référence",
   besoin: "Besoin",
   specs: "Fiche technique",
   charge: "Charge",
@@ -43,6 +49,10 @@ const KEY_LABELS: Record<string, string> = {
 };
 
 const KEY_ORDER = [
+  "reference",
+  "needs",
+  "space",
+  "city",
   "project_type",
   "usage",
   "category",
@@ -170,7 +180,12 @@ function formatOne(value: unknown, meta?: QuestionMeta): string {
     return `${new Intl.NumberFormat("fr-FR").format(value)}${suffix}`;
   }
   if (typeof value === "boolean") return value ? "Oui" : "Non";
-  if (typeof value === "object") return JSON.stringify(value);
+  if (typeof value === "object") {
+    const parts = Object.entries(value as Record<string, unknown>)
+      .filter(([, item]) => item != null && item !== "" && (typeof item === "string" || typeof item === "number" || typeof item === "boolean"))
+      .map(([key, item]) => `${KEY_LABELS[key] ?? humanize(key)} : ${formatOne(item)}`);
+    return parts.length ? parts.join(" · ") : "-";
+  }
   const text = String(value);
   if (meta?.type === "number" && Number.isFinite(Number(text))) {
     return formatOne(Number(text), meta);

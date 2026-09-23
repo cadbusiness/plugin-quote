@@ -317,6 +317,88 @@
     }
   }
 
+  document.querySelectorAll("[data-qb-request]").forEach(function (form) {
+    var steps = form.querySelectorAll(".qb-request-step");
+    var num = form.querySelector("[data-step-num]");
+    var name = form.querySelector("[data-step-name]");
+    var bar = form.querySelector("[data-step-bar]");
+    var space = form.querySelector("[data-space]");
+    var area = form.querySelector("#qb-request-text");
+    var errorBox = form.querySelector("[data-error]");
+    var current = 0;
+
+    function adapt() {
+      var checked = form.querySelectorAll('input[name="need[]"]:checked');
+      var custom = !checked.length;
+      checked.forEach(function (box) {
+        if (box.getAttribute("data-custom") === "1") custom = true;
+      });
+      if (space) space.hidden = !custom;
+      if (area) {
+        area.placeholder = checked.length
+          ? checked[0].getAttribute("data-example") || area.getAttribute("data-default-placeholder")
+          : area.getAttribute("data-default-placeholder");
+      }
+    }
+
+    function show(index) {
+      current = index;
+      steps.forEach(function (step, i) {
+        step.hidden = i !== index;
+      });
+      if (num) num.textContent = String(index + 1);
+      if (name) name.textContent = steps[index].getAttribute("data-name") || "";
+      if (bar) bar.style.width = Math.round(((index + 1) / steps.length) * 100) + "%";
+      document.dispatchEvent(new CustomEvent("quotebuilder:step", { detail: { step: index + 1, name: steps[index].getAttribute("data-name") || "" } }));
+    }
+
+    form.addEventListener("change", function (event) {
+      if (event.target.name === "need[]") adapt();
+    });
+    form.addEventListener("click", function (event) {
+      if (event.target.closest("[data-next]")) show(Math.min(current + 1, steps.length - 1));
+      if (event.target.closest("[data-prev]")) show(Math.max(current - 1, 0));
+    });
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var body = new FormData(form);
+      body.append("action", "quotebuilder_quote");
+      body.append("nonce", cfg.nonce);
+      body.append("quote_action", "submit_lead");
+      var button = form.querySelector("[data-submit]");
+      if (button) button.disabled = true;
+      fetch(cfg.ajax, { method: "POST", body: body, credentials: "same-origin" })
+        .then(function (res) { return res.json(); })
+        .then(function (json) {
+          if (!json.success) throw new Error((json.data && json.data.message) || "");
+          var data = json.data || {};
+          var first = String(body.get("name") || "").trim().split(" ")[0];
+          form.innerHTML =
+            '<div class="qb-request-done" role="status" tabindex="-1"><p>Merci' +
+            (first ? " " + escapeHtml(first) : "") +
+            ", c'est envoyé.</p><p>Un technicien vous rappelle " +
+            escapeHtml(data.when || "dans l'heure") +
+            " au " +
+            escapeHtml(data.phone || body.get("phone") || "") +
+            ".</p>" +
+            (data.reference ? "<p>Votre référence : <strong>" + escapeHtml(data.reference) + "</strong></p>" : "") +
+            "</div>";
+          var done = form.querySelector(".qb-request-done");
+          if (done) done.focus();
+          document.dispatchEvent(new CustomEvent("quotebuilder:submitted", { detail: { reference: data.reference || "", quoteId: data.quoteId || "" } }));
+        })
+        .catch(function (error) {
+          if (button) button.disabled = false;
+          if (errorBox) {
+            errorBox.hidden = false;
+            errorBox.textContent = (error && error.message) || "L'envoi a échoué. Réessayez dans un instant.";
+          }
+        });
+    });
+    adapt();
+    show(0);
+  });
+
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") closeDrawer();
   });
