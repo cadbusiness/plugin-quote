@@ -33,7 +33,9 @@ import { computeAcceptanceRate } from "./acceptance-rate";
 import { computeCoutBriefIncomplet } from "./cout-brief-incomplet";
 import { computeCoutDevisExpires } from "./cout-devis-expires";
 import { computeAcompteDevis } from "./acompte-devis";
+import { computeGainTempsCatalogue } from "./gain-temps-catalogue";
 import { MARKETING_ROUTES } from "./routes";
+import sitemap from "../../app/sitemap";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
 import { CREAM_HEX, TAG_COVER } from "./theme";
 import { calloutKind, calloutLabel, paragraphCalloutKind, parseImageLine, stripCalloutPrefix } from "./markdown-parse";
@@ -88,6 +90,7 @@ for (const required of [
   "/outils/estimateur-cout-brief-incomplet",
   "/outils/simulateur-cout-devis-expires",
   "/outils/calculateur-acompte-devis",
+  "/outils/estimateur-gain-temps-catalogue-devis",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
@@ -96,6 +99,8 @@ for (const required of [
   "/secteurs/funnel-devis-stores-fermetures",
   "/secteurs/funnel-devis-cuisine-equipee",
   "/secteurs/funnel-devis-cloture-portail",
+  "/secteurs/funnel-devis-pergola-terrasse",
+  "/blog/bibliotheque-lignes-kits-devis-b2b",
   "/blog/acomptes-echeances-devis-b2b",
   "/blog/validite-expiration-devis-b2b",
   "/blog/options-variantes-alternatives-devis-b2b",
@@ -120,7 +125,23 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 21);
+assert.equal(BLOG_POSTS.length, 22);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "bibliotheque-lignes-kits-devis-b2b")?.tags, [
+  "catalogue",
+  "funnel",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "bibliotheque-lignes-kits-devis-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "bibliotheque-lignes-kits-devis-b2b")?.cover,
+  "/images/blog/sync-catalogue-woocommerce-shopify-parcours-devis/06-produits.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "bibliotheque-lignes-kits-devis-b2b")?.readingMinutes, 12);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "bibliotheque-lignes-kits-devis-b2b")?.publishedAt, "2026-09-23");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "bibliotheque-lignes-kits-devis-b2b")?.pinned, false);
+assert.equal(BLOG_FAQ["bibliotheque-lignes-kits-devis-b2b"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "acomptes-echeances-devis-b2b")?.tags, [
   "funnel",
   "relances",
@@ -374,7 +395,7 @@ assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meuren
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 11);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 11);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 4);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 3);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 4);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
 assert.equal(midArticleHeadingIndex(12), 5);
 assert.ok(trimMetaDescription(BLOG_POSTS[0]!.description).length <= 155);
@@ -566,6 +587,28 @@ const requiredSources = {
     "/secteurs/funnel-devis-rayonnage-stockage",
     "/secteurs/funnel-devis-menuiserie-sur-mesure",
     "/outils/simulateur-impact-remise-devis",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "bibliotheque-lignes-kits-devis-b2b.md": [
+    "/blog/configurateur-devis-vs-excel-pdf",
+    "/blog/sync-catalogue-woocommerce-shopify-parcours-devis",
+    "/blog/options-variantes-alternatives-devis-b2b",
+    "/outils/estimateur-temps-chiffrage-devis",
+    "/outils/estimateur-gain-temps-catalogue-devis",
+    "/fonctionnalites/catalogue",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "funnel-devis-pergola-terrasse.md": [
+    "/blog/bibliotheque-lignes-kits-devis-b2b",
+    "/blog/options-variantes-alternatives-devis-b2b",
+    "/blog/validite-expiration-devis-b2b",
+    "/blog/signature-acceptation-devis-en-ligne-b2b",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/secteurs/funnel-devis-stores-fermetures",
+    "/secteurs/funnel-devis-cloture-portail",
+    "/outils/estimateur-gain-temps-catalogue-devis",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -867,6 +910,34 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(storesBody, /signup\?plan=free/);
+}
+
+{
+  const biblioRaw = readFileSync(join(blogDir, "bibliotheque-lignes-kits-devis-b2b.md"), "utf8");
+  assert.ok(biblioRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const biblioBody = stripFrontmatter(biblioRaw);
+  assert.ok(
+    biblioBody.startsWith("# Bibliothèque de lignes et kits pour devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(biblioBody, /signup\?plan=free/);
+  assert.doesNotMatch(biblioBody, EM_DASH);
+  const biblioWords = biblioBody.split(/\s+/).filter(Boolean).length;
+  assert.equal(biblioWords, 2264);
+}
+
+{
+  const pergolaRaw = readFileSync(join(blogDir, "funnel-devis-pergola-terrasse.md"), "utf8");
+  assert.ok(pergolaRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const pergolaBody = stripFrontmatter(pergolaRaw);
+  assert.ok(
+    pergolaBody.startsWith("# Funnel de devis pergola et terrasse sur mesure"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(pergolaBody, /signup\?plan=free/);
+  assert.doesNotMatch(pergolaBody, EM_DASH);
+  const pergolaWords = pergolaBody.split(/\s+/).filter(Boolean).length;
+  assert.equal(pergolaWords, 2150);
 }
 
 {
@@ -1635,6 +1706,55 @@ assert.equal(
   100,
 );
 
+const catalogGain = computeGainTempsCatalogue({
+  nbDevis: 40,
+  minManuel: 45,
+  pctBiblio: 70,
+  minGagnees: 18,
+  taux: 55,
+});
+assert.equal(catalogGain.minMois, 720);
+assert.equal(catalogGain.hMois, 12);
+assert.equal(catalogGain.euroMois, 660);
+assert.equal(catalogGain.hAn, 144);
+assert.equal(catalogGain.euroAn, 7920);
+assert.equal(catalogGain.minApres, 27);
+assert.equal(catalogGain.tone, "gain");
+assert.match(catalogGain.alert, /12 h \/ mois/);
+assert.match(catalogGain.recap, /Devis \/ mois : 40/);
+assert.match(catalogGain.recap, /5 à 10 kits/);
+
+const catalogGainCapped = computeGainTempsCatalogue({
+  nbDevis: 10,
+  minManuel: 20,
+  pctBiblio: 80,
+  minGagnees: 40,
+  taux: 50,
+});
+assert.equal(catalogGainCapped.minGagnees, 20);
+assert.equal(catalogGainCapped.minApres, 0);
+assert.equal(catalogGainCapped.minMois, 200);
+
+const catalogGainEmpty = computeGainTempsCatalogue({
+  nbDevis: 0,
+  minManuel: 45,
+  pctBiblio: 70,
+  minGagnees: 18,
+  taux: 55,
+});
+assert.equal(catalogGainEmpty.tone, "neutral");
+assert.match(catalogGainEmpty.alert, /volume et un temps/);
+
+const catalogGainZero = computeGainTempsCatalogue({
+  nbDevis: 12,
+  minManuel: 30,
+  pctBiblio: 0,
+  minGagnees: 0,
+  taux: 40,
+});
+assert.match(catalogGainZero.alert, /Aucune minute gagnée/);
+assert.match(catalogGainZero.tip, /5 kits/);
+
 const conversionFloor = computeConversionRate({
   quotesSent: 10,
   basket: 1000,
@@ -1718,6 +1838,9 @@ const llmsPaths = [
   "/outils/simulateur-cout-devis-expires",
   "/blog/acomptes-echeances-devis-b2b",
   "/outils/calculateur-acompte-devis",
+  "/blog/bibliotheque-lignes-kits-devis-b2b",
+  "/secteurs/funnel-devis-pergola-terrasse",
+  "/outils/estimateur-gain-temps-catalogue-devis",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -2013,5 +2136,16 @@ for (const root of marketingRoots) {
   }
 }
 assert.equal(CREAM_HEX, "#F6F0E8");
+
+const sitemapEntries = sitemap();
+for (const path of [
+  "/blog/bibliotheque-lignes-kits-devis-b2b",
+  "/secteurs/funnel-devis-pergola-terrasse",
+  "/outils/estimateur-gain-temps-catalogue-devis",
+]) {
+  const entry = sitemapEntries.find((item) => item.url === `https://www.quotebuilder.co${path}`);
+  assert.ok(entry, `sitemap missing ${path}`);
+  assert.equal(String(entry.lastModified).slice(0, 10), "2026-09-23");
+}
 
 console.log("marketing seo tests ok");

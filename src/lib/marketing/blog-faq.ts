@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "bibliotheque-lignes-kits-devis-b2b": [
+    {
+      q: "Quelle différence entre catalogue boutique et bibliothèque de devis ?",
+      a: "La boutique sert l’achat en ligne et le SEO produit. La bibliothèque de devis sert le chiffrage : kits pose, options métier, prix HT B2B, lignes hors web. Les deux peuvent se synchroniser, mais leurs priorités diffèrent.",
+    },
+    {
+      q: "Faut-il tout mettre en kits ?",
+      a: "Non. Kits pour les assemblages fréquents, articles unitaires pour le reste. Trop de kits = maintenance. Trop peu = chiffrage lent.",
+    },
+    {
+      q: "Comment gérer les prix qui changent souvent (matière) ?",
+      a: "Versionnez ou datez les prix catalogue. Ne laissez pas chaque commercial ajuster au feeling. Documentez qui peut modifier le prix de référence.",
+    },
+    {
+      q: "Un commercial peut-il créer une ligne hors biblio ?",
+      a: "Oui, pour l’exception. Mais mesurez le volume d’exceptions. Si 40 % des lignes sont hors biblio, la bibliothèque est incomplète ou mal adoptée.",
+    },
+    {
+      q: "Comment lier le funnel web au catalogue ?",
+      a: "Le parcours guidé doit proposer les mêmes familles / options que le catalogue devis. Sinon vous requalifiez à la main. Le préremplissage URL et la fiche produit unifiée réduisent la double saisie.",
+    },
+    {
+      q: "Que faire des anciens modèles Excel ?",
+      a: "Archivez-les en lecture seule après migration des kits critiques. Garder Excel « au cas où » prolonge la double vérité.",
+    },
+    {
+      q: "Quels métiers en profitent le plus ?",
+      a: "Tous les métiers à lignes récurrentes + options : pose, fabrication légère, location événementielle, agencement, fermetures. Moins pertinent si chaque devis est 100 % ingénierie unique, même si les forfaits se répètent.",
+    },
+    {
+      q: "Comment convaincre l’équipe d’abandonner le copier-coller ?",
+      a: "Par le temps gagné sur 2 semaines pilote et par la baisse d’erreurs atelier, pas par un discours digital. Montrez un devis assemblé en 12 minutes vs 35.",
+    },
+    {
+      q: "La bibliothèque remplace-t-elle l’estimateur ?",
+      a: "Non. Elle accélère l’assemblage. Le jugement métier (contraintes site, risque, marge) reste humain. Le logiciel structure ; il ne remplace pas le métier.",
+    },
+    {
+      q: "Où voir ça concrètement dans QuoteBuilder ?",
+      a: "Sur la fonctionnalité catalogue, reliée au funnel et aux demandes. Compte Free ou démo publique pour tester le principe. L’estimateur gain temps catalogue chiffre l’ordre de grandeur.",
+    },
+  ],
   "acomptes-echeances-devis-b2b": [
     {
       q: "Quel pourcentage d’acompte demander sur un devis B2B de fabrication ?",
