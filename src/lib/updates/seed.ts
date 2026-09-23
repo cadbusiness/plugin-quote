@@ -2,8 +2,21 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` + `0059` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` + `0059` + `0060` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.29.0",
+    version: "1.29.0",
+    title: "Widget devis dual-mode (catalogue + besoin libre)",
+    items: [
+      "Sur la fiche boutique, vous choisissez le mode du widget : catalogue (lignes WooCommerce connues) ou besoin libre (texte du visiteur).",
+      "Option IA sur le besoin libre : un brief commercial court est ajouté au dossier ; une ligne catalogue n’est attachée que si le modèle existe déjà — pas de faux SKU inventé.",
+      "Un snippet d’embed (clé site) est prêt à coller ; le shortcode WordPress est dans le repo pour le prochain zip (version plugin inchangée).",
+      "Même réception qu’avant : devis Nouveau, notification et brief commercial, sans mail au prospect ; un même envoi n’est pas créé deux fois.",
+    ],
+    releasedAt: "2026-09-23",
+    createdAt: "2026-09-23T00:00:00.000Z",
+  },
   {
     id: "seed-1.28.0",
     version: "1.28.0",
