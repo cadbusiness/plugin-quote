@@ -11,6 +11,7 @@ import {
   type WidgetLine,
 } from "@/lib/integrations/quote-widget-bind";
 import type { PluginConnection } from "@/lib/integrations/plugin";
+import { publicSiteChatPath } from "@/lib/chat-agent/http";
 import { openPublicSite, publicSiteQuotePath } from "@/lib/integrations/public-site-quote";
 import { parseQuoteWidget, widgetPairing } from "@/lib/integrations/quote-widget-settings";
 import { clientIp, rateLimit } from "@/lib/security/rate-limit";
@@ -269,6 +270,11 @@ export function publicWidgetConfig(connection: PluginConnection) {
           path: `/api/public/sites/${connection.public_key}/assist`,
         }
       : null,
+    chat: {
+      method: "POST" as const,
+      path: publicSiteChatPath(connection.public_key),
+      auth: "X-QuoteBuilder-Site-Key",
+    },
   };
 }
 
