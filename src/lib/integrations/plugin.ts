@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { loadConnection } from "@/lib/integrations/connections";
 import { PLUGIN_QUOTE_EXAMPLE } from "@/lib/integrations/plugin-quote-body";
+import { publicSiteQuotePath } from "@/lib/integrations/public-site-quote";
 import { PLUGIN_CAPTURE_CONTRACT } from "@/lib/integrations/started-quote";
 import { parseSettings } from "@/lib/integrations/types";
 import { safeEqual } from "@/lib/integrations/secrets";
@@ -69,6 +70,13 @@ export async function pluginPayload(row: PluginConnection) {
       auth: "Authorization: Bearer, X-QuoteBuilder-Connection",
       body: PLUGIN_QUOTE_EXAMPLE,
       consentAds: "true seulement si le visiteur a accepté les cookies publicitaires, et seulement à l'envoi",
+    },
+    site_key: row.public_key,
+    public_submit: {
+      method: "POST",
+      path: publicSiteQuotePath(row.public_key),
+      auth: "X-QuoteBuilder-Site-Key",
+      cors: "Origin de la boutique, ou une entrée de allowed_origins",
     },
     capture: PLUGIN_CAPTURE_CONTRACT,
   };

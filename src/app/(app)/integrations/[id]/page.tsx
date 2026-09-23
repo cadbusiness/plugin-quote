@@ -13,6 +13,7 @@ import { DataTable, ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { SyncButton } from "@/components/integrations/sync-button";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { formatDate } from "@/lib/format";
+import { canonicalOrigin, publicSiteQuotePath } from "@/lib/integrations/public-site-quote";
 import { parseSettings, PROVIDER_LABELS, type CatalogProvider } from "@/lib/integrations/types";
 import { createClient } from "@/lib/supabase/server";
 
@@ -69,6 +70,8 @@ export default async function ConnectionPage({
   const status = STATUS[connection.status] ?? STATUS.active;
   const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "").replace(/\/$/, "");
   const webhookUrl = `${appUrl}/api/integrations/${connection.id}/webhook`;
+  const shopOrigin = canonicalOrigin(connection.store_domain);
+  const publicQuoteUrl = appUrl ? `${appUrl}${publicSiteQuotePath(connection.public_key)}` : publicSiteQuotePath(connection.public_key);
 
   const enabled = connection.status !== "disabled";
   const toggle = toggleConnection.bind(null, connection.id, !enabled);
@@ -181,6 +184,21 @@ export default async function ConnectionPage({
               placeholder="Vide = tout le catalogue"
               className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
             />
+          </label>
+          <label className="text-sm sm:col-span-2">
+            <span className="font-medium text-slate-900">Origines navigateur supplémentaires</span>
+            <textarea
+              name="allowed_origins"
+              defaultValue={(connection.allowed_origins ?? []).join("\n")}
+              rows={3}
+              placeholder="https://exemple.hostingersite.com"
+              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 font-mono text-xs"
+            />
+            <span className="mt-1 block text-xs text-slate-500">
+              {shopOrigin
+                ? `La boutique (${shopOrigin}) est toujours autorisée pour le devis navigateur. Une origine par ligne pour un domaine de préproduction.`
+                : "Une origine par ligne (https://…)."}
+            </span>
           </label>
         </div>
 
@@ -322,6 +340,24 @@ export default async function ConnectionPage({
           </div>
         </div>
       </form>
+
+      <section className="border-b border-slate-100 px-4 py-6 lg:px-6">
+        <h2 className="text-sm font-medium text-slate-900">Devis depuis le site</h2>
+        <p className="mt-1 text-sm text-slate-500">
+          Clé publique pour le navigateur. Ce n’est pas le secret du plugin. Le navigateur envoie
+          la clé dans l’en-tête X-QuoteBuilder-Site-Key, et seulement depuis une origine autorisée.
+        </p>
+        <dl className="mt-3 grid gap-2 text-sm">
+          <div className="flex flex-wrap items-baseline gap-2">
+            <dt className="w-24 shrink-0 text-slate-500">Clé site</dt>
+            <dd className="break-all font-mono text-xs text-slate-900">{connection.public_key}</dd>
+          </div>
+          <div className="flex flex-wrap items-baseline gap-2">
+            <dt className="w-24 shrink-0 text-slate-500">POST</dt>
+            <dd className="break-all font-mono text-xs text-slate-900">{publicQuoteUrl}</dd>
+          </div>
+        </dl>
+      </section>
 
       <section className="border-b border-slate-100 px-4 py-6 lg:px-6">
         <h2 className="text-sm font-medium text-slate-900">Mise à jour en temps réel</h2>
