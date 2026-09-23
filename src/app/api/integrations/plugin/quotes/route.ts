@@ -1,12 +1,27 @@
 import { NextResponse } from "next/server";
 import { authenticatePlugin, unauthorized } from "@/lib/integrations/plugin";
 import { ingestPluginQuote, pluginQuoteErrorBody } from "@/lib/integrations/plugin-quote";
+import { receivePluginQuote } from "@/lib/integrations/plugin-quotes";
 import { createServiceClient } from "@/lib/supabase/service";
 import { clientIp, rateLimit, rateLimitResponse } from "@/lib/security/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+/**
+ * Plugin quotes.
+ *
+ * GET — latest quotes for the connection’s org (and funnel, when set).
+ *
+ * POST — two WordPress bodies, same Bearer token as GET. No HMAC.
+ *
+ * Receipt body (`source: "wordpress"` plus `contact`): creates a quote in the
+ * connection’s org, attaches Woo lines to the synced catalog, and notifies sales
+ * without emailing the contact. Idempotence is `plugin_quote_receipts`
+ * (connection_id, external_id). 201 { id, url } created, 200 { id, url } replay.
+ *
+ * Flat plugin body: the installed plugin’s one-call submit. 200 { quoteId, alreadySubmitted, reference }.
+ */
 export async function GET(req: Request) {
   const row = await authenticatePlugin(req);
   if (!row) return unauthorized();
@@ -44,6 +59,14 @@ export async function POST(req: Request) {
 
   const body = await req.json().catch(() => null);
   try {
+    if (isConnectionReceipt(body)) {
+      const result = await receivePluginQuote(row, body);
+      if (!result.ok) {
+        return NextResponse.json({ error: result.error }, { status: result.status });
+      }
+      return NextResponse.json({ id: result.id, url: result.url }, { status: result.status });
+    }
+
     const result = await ingestPluginQuote(row, body);
     if (!result.ok) {
       return NextResponse.json(
@@ -67,4 +90,12 @@ export async function POST(req: Request) {
       { status: 500 },
     );
   }
+}
+
+/** Structured inbound quote. The flat plugin payload has no `source` and no `contact` object. */
+function isConnectionReceipt(body: unknown) {
+  if (!body || typeof body !== "object" || Array.isArray(body)) return false;
+  const raw = body as Record<string, unknown>;
+  const source = typeof raw.source === "string" ? raw.source.trim().toLowerCase() : "";
+  return source === "wordpress" && !!raw.contact && typeof raw.contact === "object" && !Array.isArray(raw.contact);
 }

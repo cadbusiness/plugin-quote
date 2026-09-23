@@ -50,9 +50,12 @@ class QuoteBuilder_Quote {
         return $total;
     }
 
+    /**
+     * Simple products arrive as 0 / "0". The list stores "".
+     */
     public static function variation_key($value) {
         $number = (int) $value;
-        return $number > 0 ? (string) $number : '0';
+        return $number > 0 ? (string) $number : '';
     }
 
     public static function has_item($product_id, $variation_id = 0) {
@@ -138,7 +141,7 @@ class QuoteBuilder_Quote {
         $items = self::items();
         $found = false;
         foreach ($items as &$item) {
-            if ((string) $item['id'] === (string) $product_id && (string) ($item['variation_id'] ?? '') === (string) $variation_id) {
+            if ((string) $item['id'] === (string) $product_id && self::variation_key($item['variation_id'] ?? '') === self::variation_key($variation_id)) {
                 $item['qty'] = max(1, (int) $item['qty'] + $qty);
                 $found = true;
                 break;
@@ -148,7 +151,7 @@ class QuoteBuilder_Quote {
         if (!$found) {
             $items[] = [
                 'id' => (string) $product_id,
-                'variation_id' => $variation_id ? (string) $variation_id : '',
+                'variation_id' => self::variation_key($variation_id),
                 'qty' => max(1, (int) $qty),
                 'name' => $name,
                 'sku' => $product ? $product->get_sku() : '',
@@ -650,11 +653,11 @@ class QuoteBuilder_Quote {
             }
         } elseif ($action === 'update') {
             $id = sanitize_text_field(wp_unslash($_POST['product_id'] ?? ''));
-            $variation = sanitize_text_field(wp_unslash($_POST['variation_id'] ?? ''));
+            $variation = self::variation_key(sanitize_text_field(wp_unslash($_POST['variation_id'] ?? '')));
             $qty = max(1, (int) ($_POST['qty'] ?? 1));
             $items = [];
             foreach (self::items() as $item) {
-                if ((string) $item['id'] === $id && (string) ($item['variation_id'] ?? '') === $variation) {
+                if ((string) $item['id'] === $id && self::variation_key($item['variation_id'] ?? '') === $variation) {
                     $item['qty'] = $qty;
                 }
                 $items[] = $item;
@@ -668,13 +671,13 @@ class QuoteBuilder_Quote {
                     if (!is_array($row)) {
                         continue;
                     }
-                    $key = (string) ($row['id'] ?? '') . '|' . (string) ($row['variation_id'] ?? '');
+                    $key = (string) ($row['id'] ?? '') . '|' . self::variation_key($row['variation_id'] ?? '');
                     $map[$key] = max(1, (int) ($row['qty'] ?? 1));
                 }
             }
             $items = [];
             foreach (self::items() as $item) {
-                $key = (string) $item['id'] . '|' . (string) ($item['variation_id'] ?? '');
+                $key = (string) $item['id'] . '|' . self::variation_key($item['variation_id'] ?? '');
                 if (isset($map[$key])) {
                     $item['qty'] = $map[$key];
                 }
@@ -683,9 +686,9 @@ class QuoteBuilder_Quote {
             $items = self::persist($items);
         } elseif ($action === 'remove') {
             $id = sanitize_text_field(wp_unslash($_POST['product_id'] ?? ''));
-            $variation = sanitize_text_field(wp_unslash($_POST['variation_id'] ?? ''));
+            $variation = self::variation_key(sanitize_text_field(wp_unslash($_POST['variation_id'] ?? '')));
             $items = array_values(array_filter(self::items(), function ($item) use ($id, $variation) {
-                return !((string) $item['id'] === $id && (string) ($item['variation_id'] ?? '') === $variation);
+                return !((string) $item['id'] === $id && self::variation_key($item['variation_id'] ?? '') === $variation);
             }));
             $items = self::persist($items);
         } elseif ($action === 'from_cart') {
