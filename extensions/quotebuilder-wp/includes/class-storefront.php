@@ -56,6 +56,7 @@ class QuoteBuilder_Storefront {
             'addedLabel' => $settings['addedLabel'],
             'alreadyInListLabel' => $settings['alreadyInListLabel'],
             'browseListLabel' => $settings['browseListLabel'],
+            'showFloatingWhenEmpty' => $settings['showFloatingWhenEmpty'] ? 1 : 0,
             'origin' => QuoteBuilder_Settings::origin(),
             'org' => $funnel['org'],
             'funnel' => $funnel['id'],
@@ -305,6 +306,25 @@ class QuoteBuilder_Storefront {
         );
     }
 
+    public static function drawer_item($item) {
+        $qty = max(1, (int) ($item['qty'] ?? 1));
+        $html = sprintf(
+            '<li data-id="%s" data-variation="%s"><span>%s</span><input type="number" min="1" class="qb-qty" value="%d" aria-label="Quantité"><button type="button" class="qb-remove" aria-label="Retirer">Retirer</button></li>',
+            esc_attr($item['id'] ?? ''),
+            esc_attr($item['variation_id'] ?? ''),
+            esc_html($item['name'] ?? ''),
+            $qty
+        );
+        return apply_filters('quotebuilder_drawer_item_html', $html, $item);
+    }
+
+    public static function floating_style($floating) {
+        $bg = sanitize_hex_color($floating['bg'] ?? '') ?: '#16110D';
+        $color = sanitize_hex_color($floating['color'] ?? '') ?: '#FFFFFF';
+        $badge = sanitize_hex_color($floating['badge'] ?? '') ?: '#E85D04';
+        return '--qb-fab-bg:' . $bg . ';--qb-fab-color:' . $color . ';--qb-fab-badge:' . $badge . ';';
+    }
+
     public static function request_button() {
         return self::button(null, 'request');
     }
@@ -341,26 +361,37 @@ class QuoteBuilder_Storefront {
         $count = QuoteBuilder_Quote::count();
         $items = QuoteBuilder_Quote::items();
         $settings = QuoteBuilder_Settings::storefront();
+        $defaults = [
+            'label' => $settings['floatingLabel'],
+            'position' => $settings['floatingPosition'] === 'left' ? 'left' : 'right',
+            'enabled' => (bool) $settings['showFloatingButton'],
+            'bg' => $settings['floatingBg'],
+            'color' => $settings['floatingColor'],
+            'badge' => $settings['floatingBadge'],
+        ];
+        $filtered = apply_filters('quotebuilder_floating_button', $defaults, $count);
+        $floating = array_merge($defaults, is_array($filtered) ? $filtered : []);
+        $position = ($floating['position'] ?? 'right') === 'left' ? 'left' : 'right';
+        $side = $position === 'left' ? ' is-left' : '';
+        $visible = $count || !empty($settings['showFloatingWhenEmpty']);
         ?>
-        <aside class="qb-drawer" hidden>
+        <aside class="qb-drawer<?php echo esc_attr($side); ?>" hidden>
             <button type="button" class="qb-drawer-close" aria-label="Fermer">×</button>
             <p class="qb-kicker">Liste de devis</p>
             <h2><?php echo esc_html($settings['listTitle']); ?></h2>
+            <p class="qb-drawer-empty" <?php echo $items ? 'hidden' : ''; ?>>Aucun produit dans la liste.</p>
             <ul class="qb-drawer-items">
                 <?php foreach ($items as $item) : ?>
-                    <li>
-                        <span><?php echo esc_html($item['name']); ?></span>
-                        <em>×<?php echo esc_html((int) $item['qty']); ?></em>
-                    </li>
+                    <?php echo self::drawer_item($item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                 <?php endforeach; ?>
             </ul>
             <a class="qb-atq" href="<?php echo esc_url(QuoteBuilder_Quote::page_url()); ?>"><?php echo esc_html($settings['funnelCta']); ?></a>
         </aside>
         <div class="qb-toast" hidden></div>
-        <?php if ($settings['showFloatingButton']) : ?>
-        <button type="button" class="qb-fab" data-count="<?php echo esc_attr($count); ?>" <?php echo $count ? '' : 'hidden'; ?>>
+        <?php if (!empty($floating['enabled'])) : ?>
+        <button type="button" class="qb-fab<?php echo esc_attr($side); ?>" data-count="<?php echo esc_attr($count); ?>" data-position="<?php echo esc_attr($position); ?>" style="<?php echo esc_attr(self::floating_style($floating)); ?>" <?php echo $visible ? '' : 'hidden'; ?>>
             <span><?php echo esc_html($count); ?></span>
-            Devis
+            <?php echo esc_html($floating['label'] ?? 'Devis'); ?>
         </button>
         <?php endif; ?>
         <?php

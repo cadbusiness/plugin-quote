@@ -213,6 +213,24 @@ export default async function ConnectionPage({
           <Check name="showOnCart" defaultChecked={sf.showOnCart} label="Page panier" />
           <Check name="showOnCheckout" defaultChecked={sf.showOnCheckout} label="Page paiement" />
           <Check name="showFloatingButton" defaultChecked={sf.showFloatingButton} label="Bouton flottant" />
+          <Check name="showFloatingWhenEmpty" defaultChecked={sf.showFloatingWhenEmpty} label="Flottant même si la liste est vide" />
+          <Text name="floatingLabel" label="Libellé du bouton flottant" defaultValue={sf.floatingLabel} />
+          <Field name="floatingPosition" label="Côté du bouton flottant" defaultValue={sf.floatingPosition}>
+            <option value="right">En bas à droite</option>
+            <option value="left">En bas à gauche</option>
+          </Field>
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Fond du bouton flottant</span>
+            <input name="floatingBg" type="color" defaultValue={sf.floatingBg} className="mt-1 h-10 w-full rounded-md border border-slate-200 px-2 py-1" />
+          </label>
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Texte du bouton flottant</span>
+            <input name="floatingColor" type="color" defaultValue={sf.floatingColor} className="mt-1 h-10 w-full rounded-md border border-slate-200 px-2 py-1" />
+          </label>
+          <label className="text-sm">
+            <span className="font-medium text-slate-900">Pastille du compteur</span>
+            <input name="floatingBadge" type="color" defaultValue={sf.floatingBadge} className="mt-1 h-10 w-full rounded-md border border-slate-200 px-2 py-1" />
+          </label>
           <Field name="audience" label="Visible pour" defaultValue={sf.audience}>
             <option value="all">Tous</option>
             <option value="logged_in">Connectés</option>

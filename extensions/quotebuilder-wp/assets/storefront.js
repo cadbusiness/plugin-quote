@@ -17,19 +17,33 @@
   function paint(data) {
     var fab = document.querySelector(".qb-fab");
     if (fab) {
-      fab.hidden = !data.count;
+      fab.hidden = !data.count && !cfg.showFloatingWhenEmpty;
       var badge = fab.querySelector("span");
       if (badge) badge.textContent = data.count;
       fab.setAttribute("data-count", data.count);
     }
     var list = document.querySelector(".qb-drawer-items");
     if (list && data.items) {
-      list.innerHTML = data.items
-        .map(function (item) {
-          return "<li><span>" + escapeHtml(item.name) + "</span><em>×" + item.qty + "</em></li>";
-        })
-        .join("");
+      list.innerHTML = data.items.map(itemHtml).join("");
     }
+    var empty = document.querySelector(".qb-drawer-empty");
+    if (empty) empty.hidden = !!(data.items && data.items.length);
+    document.dispatchEvent(new CustomEvent("quotebuilder:list", { detail: data || {} }));
+  }
+
+  function itemHtml(item) {
+    var qty = item.qty || 1;
+    return (
+      '<li data-id="' +
+      escapeAttr(item.id) +
+      '" data-variation="' +
+      escapeAttr(item.variation_id || "") +
+      '"><span>' +
+      escapeHtml(item.name) +
+      '</span><input type="number" min="1" class="qb-qty" value="' +
+      qty +
+      '" aria-label="Quantité"><button type="button" class="qb-remove" aria-label="Retirer">Retirer</button></li>'
+    );
   }
 
   function escapeHtml(value) {
@@ -37,6 +51,10 @@
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
+  }
+
+  function escapeAttr(value) {
+    return escapeHtml(value).replace(/"/g, "&quot;");
   }
 
   function toast(message, withLink) {
@@ -124,11 +142,17 @@
     var remove = event.target.closest(".qb-remove");
     if (remove) {
       var row = remove.closest("li");
+      var inDrawer = !!remove.closest(".qb-drawer");
       post("remove", {
         product_id: row.getAttribute("data-id"),
         variation_id: row.getAttribute("data-variation") || "",
       }).then(function (json) {
-        if (json.success) window.location.reload();
+        if (!json.success) return;
+        if (inDrawer) {
+          paint(json.data);
+          return;
+        }
+        window.location.reload();
       });
     }
 
@@ -160,10 +184,13 @@
     if (!event.target.classList.contains("qb-qty")) return;
     var row = event.target.closest("li");
     if (!row) return;
+    var inDrawerQty = !!event.target.closest(".qb-drawer");
     post("update", {
       product_id: row.getAttribute("data-id"),
       variation_id: row.getAttribute("data-variation") || "",
       qty: event.target.value,
+    }).then(function (json) {
+      if (json.success && inDrawerQty) paint(json.data);
     });
   });
 

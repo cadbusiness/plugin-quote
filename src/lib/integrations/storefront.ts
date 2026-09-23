@@ -13,6 +13,7 @@ export type StorefrontStockMode = "all" | "oos_only" | "hide_oos";
 export type StorefrontProductPosition = "inline" | "below";
 export type StorefrontPageLayout = "split" | "stack";
 export type StorefrontShopUrlMode = "shop" | "custom";
+export type StorefrontFloatingPosition = "right" | "left";
 
 export type StorefrontSettings = {
   hidePrices: boolean;
@@ -41,6 +42,12 @@ export type StorefrontSettings = {
   alreadyInListLabel: string;
   browseListLabel: string;
   showFloatingButton: boolean;
+  floatingLabel: string;
+  floatingPosition: StorefrontFloatingPosition;
+  showFloatingWhenEmpty: boolean;
+  floatingBg: string;
+  floatingColor: string;
+  floatingBadge: string;
   showOnShop: boolean;
   showOnProduct: boolean;
   showOnBlocks: boolean;
@@ -117,6 +124,12 @@ export const DEFAULT_STOREFRONT: StorefrontSettings = {
   alreadyInListLabel: "Ce produit figure déjà dans votre liste de devis.",
   browseListLabel: "Consulter la liste",
   showFloatingButton: true,
+  floatingLabel: "Devis",
+  floatingPosition: "right",
+  showFloatingWhenEmpty: false,
+  floatingBg: "#16110D",
+  floatingColor: WHITE,
+  floatingBadge: ORANGE,
   showOnShop: true,
   showOnProduct: true,
   showOnBlocks: true,
@@ -214,6 +227,7 @@ export function parseStorefront(value: unknown): StorefrontSettings {
   const pageLayout: StorefrontPageLayout = raw.pageLayout === "stack" ? "stack" : "split";
   const continueShoppingUrlMode: StorefrontShopUrlMode =
     raw.continueShoppingUrlMode === "custom" ? "custom" : "shop";
+  const floatingPosition: StorefrontFloatingPosition = raw.floatingPosition === "left" ? "left" : "right";
 
   return {
     hidePrices: asBool(raw.hidePrices, DEFAULT_STOREFRONT.hidePrices),
@@ -245,6 +259,12 @@ export function parseStorefront(value: unknown): StorefrontSettings {
     alreadyInListLabel: asText(raw.alreadyInListLabel, DEFAULT_STOREFRONT.alreadyInListLabel),
     browseListLabel: asText(raw.browseListLabel, DEFAULT_STOREFRONT.browseListLabel),
     showFloatingButton: asBool(raw.showFloatingButton, DEFAULT_STOREFRONT.showFloatingButton),
+    floatingLabel: asText(raw.floatingLabel, DEFAULT_STOREFRONT.floatingLabel),
+    floatingPosition,
+    showFloatingWhenEmpty: asBool(raw.showFloatingWhenEmpty, DEFAULT_STOREFRONT.showFloatingWhenEmpty),
+    floatingBg: asText(raw.floatingBg, DEFAULT_STOREFRONT.floatingBg),
+    floatingColor: asText(raw.floatingColor, DEFAULT_STOREFRONT.floatingColor),
+    floatingBadge: asText(raw.floatingBadge, DEFAULT_STOREFRONT.floatingBadge),
     showOnShop: asBool(raw.showOnShop, DEFAULT_STOREFRONT.showOnShop),
     showOnProduct: asBool(raw.showOnProduct, DEFAULT_STOREFRONT.showOnProduct),
     showOnBlocks: asBool(raw.showOnBlocks, DEFAULT_STOREFRONT.showOnBlocks),

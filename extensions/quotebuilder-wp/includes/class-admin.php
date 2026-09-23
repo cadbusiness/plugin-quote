@@ -441,6 +441,25 @@ body.toplevel_page_quotebuilder .qb-settings{width:auto!important;max-width:none
                     self::check('showFloatingButton', 'Bouton flottant', $settings['showFloatingButton']);
                     echo '</div>';
                 });
+                self::row('Bouton flottant', 'Libellé, côté de l’écran, couleurs.', function () use ($settings) {
+                    self::input('floatingLabel', $settings['floatingLabel']);
+                });
+                self::row('Côté', 'Le tiroir s’ouvre du même côté.', function () use ($settings) {
+                    self::pills('floatingPosition', [
+                        'right' => 'En bas à droite',
+                        'left' => 'En bas à gauche',
+                    ], $settings['floatingPosition']);
+                });
+                ?>
+                <div class="qb-colors">
+                    <?php self::color('floatingBg', 'Fond', $settings['floatingBg']); ?>
+                    <?php self::color('floatingColor', 'Texte', $settings['floatingColor']); ?>
+                    <?php self::color('floatingBadge', 'Pastille', $settings['floatingBadge']); ?>
+                </div>
+                <div class="qb-switches">
+                    <?php self::switch_row('showFloatingWhenEmpty', 'Afficher le bouton même si la liste est vide', $settings['showFloatingWhenEmpty']); ?>
+                </div>
+                <?php
                 self::row('Position sur la fiche', 'À côté ou sous « Ajouter au panier ».', function () use ($settings) {
                     self::pills('productButtonPosition', [
                         'inline' => 'En ligne',

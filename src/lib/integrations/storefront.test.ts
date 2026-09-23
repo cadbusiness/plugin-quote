@@ -51,5 +51,9 @@ assert.equal(empty.complementsTitle, "Souvent demandé avec");
 assert.equal(empty.complementsLimit, 4);
 assert.equal(parseStorefront({ complementsLimit: "2", showComplements: false }).complementsLimit, 2);
 assert.equal(parseStorefront({ complementsLimit: 99 }).complementsLimit, 8);
+assert.equal(empty.floatingLabel, "Devis");
+assert.equal(empty.floatingPosition, "right");
+assert.equal(empty.showFloatingWhenEmpty, false);
+assert.equal(parseStorefront({ floatingPosition: "left", floatingLabel: "Ma liste", showFloatingWhenEmpty: true }).floatingPosition, "left");
 
 console.log("integrations/storefront ok");

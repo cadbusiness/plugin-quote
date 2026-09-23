@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>Une mise à jour manuelle réactive le plugin.</li><li>Les erreurs d'envoi ont un code stable, sans message technique.</li><li>Un produit simple déjà dans la liste n'est plus ajouté en double.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>Le bouton flottant a un libellé, un côté et des couleurs.</li><li>Le tiroir permet de changer la quantité et de retirer un produit.</li></ul>`,
     },
     null,
     2,

@@ -34,6 +34,7 @@ class QuoteBuilder_Settings {
             'hideSaleFlash',
             'hideCheckout',
             'showFloatingButton',
+            'showFloatingWhenEmpty',
             'showOnShop',
             'showOnProduct',
             'showOnBlocks',
@@ -84,6 +85,12 @@ class QuoteBuilder_Settings {
             'alreadyInListLabel' => 'Ce produit figure déjà dans votre liste de devis.',
             'browseListLabel' => 'Consulter la liste',
             'showFloatingButton' => true,
+            'floatingLabel' => 'Devis',
+            'floatingPosition' => 'right',
+            'showFloatingWhenEmpty' => false,
+            'floatingBg' => '#16110D',
+            'floatingColor' => '#FFFFFF',
+            'floatingBadge' => '#E85D04',
             'showOnShop' => true,
             'showOnProduct' => true,
             'showOnBlocks' => true,
@@ -162,6 +169,12 @@ class QuoteBuilder_Settings {
         if ($settings['productButtonPosition'] !== 'below') {
             $settings['productButtonPosition'] = 'inline';
         }
+        if ($settings['floatingPosition'] !== 'left') {
+            $settings['floatingPosition'] = 'right';
+        }
+        if ($settings['floatingLabel'] === '') {
+            $settings['floatingLabel'] = 'Devis';
+        }
         if ($settings['pageLayout'] !== 'stack') {
             $settings['pageLayout'] = 'split';
         }
@@ -211,7 +224,7 @@ class QuoteBuilder_Settings {
             }
         }
         $text_keys = [
-            'priceLabel', 'buttonLabel', 'requestQuoteLabel', 'addedLabel', 'alreadyInListLabel',
+            'priceLabel', 'buttonLabel', 'requestQuoteLabel', 'floatingLabel', 'addedLabel', 'alreadyInListLabel',
             'browseListLabel', 'listTitle', 'emptyMessage', 'funnelCta', 'formTitle',
             'continueShoppingLabel', 'updateListLabel', 'clearListLabel', 'quotePageId',
             'complementsTitle',
@@ -228,6 +241,10 @@ class QuoteBuilder_Settings {
         $next['stockMode'] = in_array($next['stockMode'], ['all', 'oos_only', 'hide_oos'], true) ? $next['stockMode'] : 'all';
         $next['outOfStockOnly'] = $next['stockMode'] === 'oos_only';
         $next['productButtonPosition'] = $next['productButtonPosition'] === 'below' ? 'below' : 'inline';
+        $next['floatingPosition'] = $next['floatingPosition'] === 'left' ? 'left' : 'right';
+        if ($next['floatingLabel'] === '') {
+            $next['floatingLabel'] = 'Devis';
+        }
         $next['pageLayout'] = $next['pageLayout'] === 'stack' ? 'stack' : 'split';
         $next['continueShoppingUrlMode'] = $next['continueShoppingUrlMode'] === 'custom' ? 'custom' : 'shop';
         $limit = (int) ($next['complementsLimit'] ?? 4);
@@ -251,6 +268,9 @@ class QuoteBuilder_Settings {
             'requestBorderHover' => '#C2410C',
             'requestColor' => '#FFFFFF',
             'requestColorHover' => '#FFFFFF',
+            'floatingBg' => '#16110D',
+            'floatingColor' => '#FFFFFF',
+            'floatingBadge' => '#E85D04',
         ];
         foreach ($colors as $key => $fallback) {
             $next[$key] = sanitize_hex_color($next[$key] ?? '') ?: $fallback;
