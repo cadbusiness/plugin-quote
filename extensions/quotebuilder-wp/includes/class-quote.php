@@ -50,9 +50,18 @@ class QuoteBuilder_Quote {
         return $total;
     }
 
+    public static function variation_key($value) {
+        $number = (int) $value;
+        return $number > 0 ? (string) $number : '0';
+    }
+
     public static function has_item($product_id, $variation_id = 0) {
+        $wanted = self::variation_key($variation_id);
         foreach (self::items() as $item) {
-            if ((string) $item['id'] === (string) $product_id && (string) ($item['variation_id'] ?? '') === (string) $variation_id) {
+            if ((string) ($item['id'] ?? '') !== (string) $product_id) {
+                continue;
+            }
+            if (self::variation_key($item['variation_id'] ?? 0) === $wanted) {
                 return true;
             }
         }

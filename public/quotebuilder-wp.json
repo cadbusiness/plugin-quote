@@ -1,10 +1,10 @@
 {
   "slug": "quotebuilder-wp",
   "name": "QuoteBuilder",
-  "version": "2.3.15",
+  "version": "2.3.16",
   "requires": "6.0",
   "requires_php": "7.4",
   "tested": "6.8",
   "author": "QuoteBuilder",
-  "changelog": "<h4>2.3.15</h4><ul><li>quotebuilder_submit() envoie une demande du site vers QuoteBuilder.</li></ul>"
+  "changelog": "<h4>2.3.16</h4><ul><li>Une mise à jour manuelle réactive le plugin.</li><li>Les erreurs d'envoi ont un code stable, sans message technique.</li><li>Un produit simple déjà dans la liste n'est plus ajouté en double.</li></ul>"
 }

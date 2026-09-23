@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { loadConnection } from "@/lib/integrations/connections";
+import { PLUGIN_QUOTE_EXAMPLE } from "@/lib/integrations/plugin-quote-body";
 import { parseSettings } from "@/lib/integrations/types";
 import { safeEqual } from "@/lib/integrations/secrets";
 import { createServiceClient } from "@/lib/supabase/service";
@@ -60,6 +61,13 @@ export async function pluginPayload(row: PluginConnection) {
     product_count: row.product_count,
     last_sync_at: row.last_sync_at,
     storefront: settings.storefront,
+    submit: {
+      method: "POST",
+      path: "/api/integrations/plugin/quotes",
+      function: "quotebuilder_submit",
+      auth: "Authorization: Bearer, X-QuoteBuilder-Connection",
+      body: PLUGIN_QUOTE_EXAMPLE,
+    },
   };
 }
 

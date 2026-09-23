@@ -10,6 +10,48 @@ class QuoteBuilder_Updater {
         add_filter('site_transient_update_plugins', [self::class, 'decorate']);
         add_filter('plugins_api', [self::class, 'info'], 10, 3);
         add_action('upgrader_process_complete', [self::class, 'clear_cache'], 10, 2);
+        add_filter('upgrader_pre_install', [self::class, 'remember_active'], 1, 2);
+        add_action('upgrader_process_complete', [self::class, 'restore_active'], 20, 2);
+    }
+
+    /** WordPress désactive le plugin avant une mise à jour manuelle et ne le réactive pas toujours. */
+    public static function remember_active($response, $extra) {
+        if (is_wp_error($response) || !is_array($extra)) {
+            return $response;
+        }
+        $plugin = isset($extra['plugin']) ? (string) $extra['plugin'] : '';
+        if ($plugin !== self::plugin_file() || !is_plugin_active($plugin)) {
+            return $response;
+        }
+        update_option('quotebuilder_reactivate', '1', false);
+        return $response;
+    }
+
+    public static function restore_active($upgrader, $options) {
+        if (!is_array($options) || ($options['type'] ?? '') !== 'plugin') {
+            return;
+        }
+        if (($options['action'] ?? '') !== 'update') {
+            return;
+        }
+        $plugins = isset($options['plugins']) && is_array($options['plugins']) ? $options['plugins'] : [];
+        $single = isset($options['plugin']) ? (string) $options['plugin'] : '';
+        $file = self::plugin_file();
+        if ($plugins && !in_array($file, $plugins, true) && $single !== $file) {
+            return;
+        }
+        if (get_option('quotebuilder_reactivate') !== '1') {
+            return;
+        }
+        if (!function_exists('activate_plugin')) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+        if (!is_plugin_active($file)) {
+            activate_plugin($file, '', false, true);
+        }
+        if (is_plugin_active($file)) {
+            delete_option('quotebuilder_reactivate');
+        }
     }
 
     public static function plugin_file() {

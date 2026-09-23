@@ -356,6 +356,32 @@ body.toplevel_page_quotebuilder .qb-settings{width:auto!important;max-width:none
                     </tbody>
                 </table>
             <?php endif; ?>
+            <?php
+            $send_log = QuoteBuilder_Pairing::submit_log();
+            if ($send_log) :
+            ?>
+                <p class="qb-kicker">Envois du site</p>
+                <table class="qb-table">
+                    <thead>
+                        <tr><th>Quand</th><th>E-mail</th><th>Résultat</th></tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach (array_slice($send_log, 0, 8) as $entry) : ?>
+                            <tr>
+                                <td><?php echo esc_html(isset($entry['at']) ? $entry['at'] : ''); ?></td>
+                                <td><?php echo esc_html(isset($entry['email']) ? $entry['email'] : ''); ?></td>
+                                <td>
+                                    <?php if (!empty($entry['ok'])) : ?>
+                                        <?php echo esc_html($entry['quoteId'] ?? ''); ?>
+                                    <?php else : ?>
+                                        <?php echo esc_html(trim(($entry['code'] ?? '') . ' ' . ($entry['error'] ?? ''))); ?>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
         </section>
         <?php
     }

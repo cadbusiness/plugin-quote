@@ -82,6 +82,7 @@
       }).then(function (json) {
         if (!json.success) return;
         paint(json.data);
+        document.dispatchEvent(new CustomEvent("quotebuilder:added", { detail: json.data || {} }));
         if (json.data.already) {
           toast(cfg.alreadyInListLabel || "Ce produit figure déjà dans votre liste de devis.", true);
           return;

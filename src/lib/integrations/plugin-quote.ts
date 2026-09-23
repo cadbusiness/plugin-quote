@@ -22,9 +22,11 @@ async function findExisting(organizationId: string, externalId: string) {
 
 export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
   const parsed = parsePluginQuote(body);
-  if (!parsed.ok) return { ok: false as const, status: 400, error: parsed.error, expected: parsed.expected };
+  if (!parsed.ok) {
+    return { ok: false as const, status: 400, error: parsed.error, code: "invalid_quote", expected: parsed.expected };
+  }
   if (!row.configurator_id) {
-    return { ok: false as const, status: 409, error: "Aucun funnel appairé" };
+    return { ok: false as const, status: 409, error: "Aucun funnel appairé", code: "no_funnel" };
   }
 
   const existingId = await findExisting(row.organization_id, parsed.quote.externalId);
@@ -38,7 +40,7 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
     supabase.from("configurators").select("slug").eq("id", row.configurator_id).maybeSingle(),
   ]);
   if (!org?.slug || !funnel?.slug) {
-    return { ok: false as const, status: 404, error: "Funnel introuvable" };
+    return { ok: false as const, status: 404, error: "Funnel introuvable", code: "funnel_missing" };
   }
 
   const session = await createSession(org.slug, funnel.slug, {
@@ -47,7 +49,7 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
     referrer: parsed.quote.page || null,
     landingPath: parsed.quote.page || null,
   });
-  if (!session) return { ok: false as const, status: 404, error: "Funnel introuvable" };
+  if (!session) return { ok: false as const, status: 404, error: "Funnel introuvable", code: "funnel_missing" };
 
   const answers: Answers = {
     ...parsed.quote.answers,
@@ -64,7 +66,7 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
       company: parsed.quote.company || undefined,
     },
   });
-  if (!updated) return { ok: false as const, status: 500, error: "Session impossible" };
+  if (!updated) return { ok: false as const, status: 500, error: "Session impossible", code: "session_failed" };
 
   const result = await submitQuote({
     sessionId: session.id,
@@ -80,6 +82,10 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
   return { ok: true as const, quoteId: result.quoteId, alreadySubmitted: Boolean(result.alreadySubmitted) };
 }
 
-export function pluginQuoteErrorBody(error: string, expected?: typeof PLUGIN_QUOTE_EXAMPLE) {
-  return expected ? { error, expected } : { error };
+export function pluginQuoteErrorBody(
+  error: string,
+  code = "invalid_quote",
+  expected?: typeof PLUGIN_QUOTE_EXAMPLE,
+) {
+  return expected ? { error, code, expected } : { error, code };
 }

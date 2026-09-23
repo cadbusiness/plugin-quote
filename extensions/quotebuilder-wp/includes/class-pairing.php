@@ -354,7 +354,10 @@ class QuoteBuilder_Pairing {
             return new WP_Error('quotebuilder_submit', 'Demande invalide.');
         }
 
-        $payload = self::submit_payload($data);
+        $payload = apply_filters('quotebuilder_submit_payload', self::submit_payload($data), $data);
+        if (!is_array($payload)) {
+            $payload = self::submit_payload($data);
+        }
         $last = null;
         for ($attempt = 0; $attempt < 3; $attempt++) {
             if ($attempt > 0) {
@@ -372,23 +375,63 @@ class QuoteBuilder_Pairing {
             $code = (int) wp_remote_retrieve_response_code($response);
             $body = json_decode(wp_remote_retrieve_body($response), true);
             if ($code >= 200 && $code < 300 && is_array($body) && !empty($body['quoteId'])) {
-                return [
+                $result = [
                     'quoteId' => (string) $body['quoteId'],
                     'alreadySubmitted' => !empty($body['alreadySubmitted']),
                 ];
+                self::remember_submit($payload, $result);
+                do_action('quotebuilder_quote_submitted', $result, $data);
+                return $result;
             }
             $message = is_array($body) && !empty($body['error']) ? (string) $body['error'] : 'Envoi impossible.';
             $error = new WP_Error('quotebuilder_submit', $message, [
                 'status' => $code,
+                'code' => is_array($body) && !empty($body['code']) ? (string) $body['code'] : 'submit_failed',
                 'expected' => is_array($body) ? ($body['expected'] ?? null) : null,
             ]);
             if ($code >= 500 || $code === 429) {
                 $last = $error;
                 continue;
             }
+            self::remember_submit($payload, $error);
+            do_action('quotebuilder_quote_failed', $error, $data);
             return $error;
         }
-        return $last instanceof WP_Error ? $last : new WP_Error('quotebuilder_submit', 'Envoi impossible.');
+        $failed = $last instanceof WP_Error ? $last : new WP_Error('quotebuilder_submit', 'Envoi impossible.');
+        self::remember_submit($payload, $failed);
+        do_action('quotebuilder_quote_failed', $failed, $data);
+        return $failed;
+    }
+
+    public static function submit_log() {
+        $log = get_option('quotebuilder_submit_log', []);
+        return is_array($log) ? $log : [];
+    }
+
+    private static function remember_submit($payload, $result) {
+        $data = is_wp_error($result) ? $result->get_error_data() : [];
+        if (!is_array($data)) {
+            $data = [];
+        }
+        $log = self::submit_log();
+        array_unshift($log, [
+            'at' => gmdate('c'),
+            'email' => isset($payload['email']) ? (string) $payload['email'] : '',
+            'externalId' => isset($payload['externalId']) ? (string) $payload['externalId'] : '',
+            'ok' => !is_wp_error($result),
+            'quoteId' => is_wp_error($result) ? '' : (string) ($result['quoteId'] ?? ''),
+            'error' => is_wp_error($result) ? $result->get_error_message() : '',
+            'code' => is_wp_error($result) ? (string) ($data['code'] ?? '') : '',
+        ]);
+        update_option('quotebuilder_submit_log', array_slice($log, 0, 20), false);
+    }
+
+    public static function maybe_refresh_labels() {
+        if (!QuoteBuilder_Settings::connected() || get_transient('quotebuilder_labels_fresh')) {
+            return;
+        }
+        set_transient('quotebuilder_labels_fresh', '1', 12 * HOUR_IN_SECONDS);
+        self::refresh();
     }
 
     private static function submit_payload($data) {

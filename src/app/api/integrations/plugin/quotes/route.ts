@@ -46,13 +46,20 @@ export async function POST(req: Request) {
   try {
     const result = await ingestPluginQuote(row, body);
     if (!result.ok) {
-      return NextResponse.json(pluginQuoteErrorBody(result.error, "expected" in result ? result.expected : undefined), {
-        status: result.status,
-      });
+      return NextResponse.json(
+        pluginQuoteErrorBody(result.error, result.code, "expected" in result ? result.expected : undefined),
+        { status: result.status },
+      );
     }
     return NextResponse.json({ ok: true, quoteId: result.quoteId, alreadySubmitted: result.alreadySubmitted });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Demande impossible";
-    return NextResponse.json({ error: message }, { status: 400 });
+    console.error("plugin quote failed", error);
+    return NextResponse.json(
+      {
+        error: "La demande n'a pas pu être enregistrée. Réessayez dans un moment.",
+        code: "submit_failed",
+      },
+      { status: 500 },
+    );
   }
 }
