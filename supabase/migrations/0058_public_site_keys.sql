@@ -1,7 +1,7 @@
 -- Publishable site key for POST /api/public/sites/{key}/quotes.
 -- Distinct from webhook_secret (plugin Bearer on /api/integrations/plugin/quotes).
 -- allowed_origins: extra browser origins. The shop URL origin is always allowed in app code.
--- Numbered 0055: 0054 is plugin_quote_receipts.
+-- Numbered 0058: 0057 is product_update_1_27_0.
 
 alter table public.catalog_connections
   add column if not exists public_key text;
