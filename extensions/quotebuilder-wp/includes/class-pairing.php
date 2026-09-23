@@ -404,6 +404,70 @@ class QuoteBuilder_Pairing {
         return $failed;
     }
 
+    /**
+     * Enregistre l'e-mail dès qu'il est saisi, sans créer une seconde demande à l'envoi.
+     * Retourne quoteId, status started, resumeUrl. Ne transmet pas l'e-mail à Analytics.
+     */
+    public static function start($data) {
+        if (!QuoteBuilder_Settings::connected()) {
+            return new WP_Error('quotebuilder_start', 'Plugin non connecté.');
+        }
+        if (!is_array($data)) {
+            return new WP_Error('quotebuilder_start', 'Demande invalide.');
+        }
+        $payload = self::submit_payload($data);
+        unset($payload['consentAds']);
+        $response = QuoteBuilder_Settings::request('/api/integrations/plugin/quotes/started', [
+            'method' => 'POST',
+            'timeout' => 20,
+            'body' => wp_json_encode($payload),
+        ]);
+        if (is_wp_error($response)) {
+            return $response;
+        }
+        $code = (int) wp_remote_retrieve_response_code($response);
+        $body = json_decode(wp_remote_retrieve_body($response), true);
+        if ($code >= 200 && $code < 300 && is_array($body) && !empty($body['quoteId'])) {
+            return [
+                'quoteId' => (string) $body['quoteId'],
+                'status' => (string) ($body['status'] ?? 'started'),
+                'alreadyStarted' => !empty($body['alreadyStarted']),
+                'alreadySubmitted' => !empty($body['alreadySubmitted']),
+                'externalId' => (string) ($body['externalId'] ?? ''),
+                'resumeUrl' => (string) ($body['resumeUrl'] ?? ''),
+            ];
+        }
+        $message = is_array($body) && !empty($body['error']) ? (string) $body['error'] : 'Enregistrement impossible.';
+        return new WP_Error('quotebuilder_start', $message, [
+            'status' => $code,
+            'code' => is_array($body) && !empty($body['code']) ? (string) $body['code'] : 'start_failed',
+        ]);
+    }
+
+    public static function resume($token) {
+        $token = preg_replace('/[^a-f0-9]/', '', (string) $token);
+        if (strlen($token) < 32) {
+            return new WP_Error('quotebuilder_resume', 'Lien de reprise invalide.');
+        }
+        $response = QuoteBuilder_Settings::request('/api/integrations/plugin/quotes/started?token=' . $token, [
+            'method' => 'GET',
+            'timeout' => 20,
+        ]);
+        if (is_wp_error($response)) {
+            return $response;
+        }
+        $code = (int) wp_remote_retrieve_response_code($response);
+        $body = json_decode(wp_remote_retrieve_body($response), true);
+        if ($code >= 200 && $code < 300 && is_array($body) && !empty($body['ok'])) {
+            return $body;
+        }
+        $message = is_array($body) && !empty($body['error']) ? (string) $body['error'] : 'Reprise impossible.';
+        return new WP_Error('quotebuilder_resume', $message, [
+            'status' => $code,
+            'code' => is_array($body) && !empty($body['code']) ? (string) $body['code'] : 'resume_failed',
+        ]);
+    }
+
     public static function submit_log() {
         $log = get_option('quotebuilder_submit_log', []);
         return is_array($log) ? $log : [];
@@ -554,6 +618,9 @@ class QuoteBuilder_Pairing {
         }
         if ($space) {
             $payload['space'] = $space;
+        }
+        if (!empty($data['consentAds']) || !empty($data['consent_ads'])) {
+            $payload['consentAds'] = true;
         }
         $products = self::product_lines($data['products'] ?? $data['produits'] ?? $data['lines'] ?? $data['items'] ?? []);
         if ($products) {

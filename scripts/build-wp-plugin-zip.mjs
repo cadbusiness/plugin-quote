@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>La page devis du plugin est un formulaire en trois étapes, réglable sans code.</li><li>Les besoins, l’espace et les produits restent dans le dossier, avec une référence Q-année-numéro.</li><li>Le formulaire émet quotebuilder:step et quotebuilder:submitted.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>Le formulaire enregistre l’e-mail dès qu’on quitte le champ, avec une mention visible, au statut Commencée.</li><li>L’envoi complète le même dossier. Une seule relance avec lien de reprise, suppression après 30 jours.</li><li>Les événements Google Tag Manager restent anonymes. L’e-mail crypté ne part vers Google Ads qu’à l’envoi, si les cookies publicitaires sont acceptés.</li></ul>`,
     },
     null,
     2,

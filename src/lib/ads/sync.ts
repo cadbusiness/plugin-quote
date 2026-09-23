@@ -133,6 +133,7 @@ export async function reportAdsConversion(input: {
   wbraid?: string | null;
   occurredAt: string;
   value?: number | null;
+  hashedEmail?: string;
 }) {
   if (!input.gclid && !input.gbraid && !input.wbraid) {
     await input.supabase.from("ads_conversion_uploads").upsert(
@@ -164,6 +165,7 @@ export async function reportAdsConversion(input: {
       wbraid: input.wbraid,
       conversionDateTime: adsDateTime(input.occurredAt),
       value: input.value,
+      hashedEmail: input.hashedEmail,
     });
     await input.supabase.from("ads_conversion_uploads").upsert(
       {

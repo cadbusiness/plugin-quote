@@ -4,6 +4,7 @@ import { ensureDefaultEmailTemplates } from "@/lib/crm/email-templates";
 import { ensureDefaultWorkflows } from "@/lib/workflows/ensure";
 
 export const QUOTE_STATUSES = [
+  { slug: "started", label: "Commencée", color: "#d97706", position: -1, is_default: false, is_closed: false },
   { slug: "new", label: "Nouveau", color: "#2563eb", position: 0, is_default: true, is_closed: false },
   { slug: "contacted", label: "Contacté", color: "#d97706", position: 1, is_default: false, is_closed: false },
   { slug: "in_progress", label: "En cours", color: "#7c3aed", position: 2, is_default: false, is_closed: false },

@@ -338,7 +338,10 @@ class QuoteBuilder_Quote {
                     <div class="qb-space">
                         <label>Nom <input name="name" required autocomplete="name"></label>
                         <label>Téléphone <input name="phone" required autocomplete="tel"></label>
-                        <label>E-mail <input name="email" type="email" required autocomplete="email"></label>
+                        <label>E-mail
+                            <input name="email" type="email" required autocomplete="email">
+                            <small class="qb-email-note"><?php echo esc_html($settings['emailNotice']); ?></small>
+                        </label>
                         <label>Entreprise <input name="company" autocomplete="organization"></label>
                         <label>Ville <input name="city" autocomplete="address-level2"></label>
                     </div>
@@ -518,23 +521,13 @@ class QuoteBuilder_Quote {
         return ob_get_clean();
     }
 
-    public static function ajax_submit_lead() {
-        if (trim((string) wp_unslash($_POST['qb_website'] ?? '')) !== '') {
-            wp_send_json_error(['message' => 'Envoi impossible.'], 400);
-        }
+    private static function request_payload($consent_ads) {
         $needs = [];
         foreach ((array) ($_POST['need'] ?? []) as $need) {
             $text = sanitize_text_field(wp_unslash($need));
             if ($text !== '') {
                 $needs[] = $text;
             }
-        }
-        $description = sanitize_textarea_field(wp_unslash($_POST['description'] ?? ''));
-        $name = sanitize_text_field(wp_unslash($_POST['name'] ?? ''));
-        $email = sanitize_email(wp_unslash($_POST['email'] ?? ''));
-        $phone = sanitize_text_field(wp_unslash($_POST['phone'] ?? ''));
-        if (strlen($description) < 2 || strlen($name) < 2 || !is_email($email) || $phone === '') {
-            wp_send_json_error(['message' => 'Il manque le projet, votre nom, un e-mail valide ou votre téléphone.'], 400);
         }
         $products = [];
         foreach (self::items() as $item) {
@@ -547,11 +540,11 @@ class QuoteBuilder_Quote {
                 'note' => (string) ($item['note'] ?? ''),
             ];
         }
-        $result = QuoteBuilder_Pairing::submit([
-            'need' => $description,
-            'name' => $name,
-            'email' => $email,
-            'phone' => $phone,
+        $payload = [
+            'need' => sanitize_textarea_field(wp_unslash($_POST['description'] ?? '')),
+            'name' => sanitize_text_field(wp_unslash($_POST['name'] ?? '')),
+            'email' => sanitize_email(wp_unslash($_POST['email'] ?? '')),
+            'phone' => sanitize_text_field(wp_unslash($_POST['phone'] ?? '')),
             'company' => sanitize_text_field(wp_unslash($_POST['company'] ?? '')),
             'city' => sanitize_text_field(wp_unslash($_POST['city'] ?? '')),
             'externalId' => sanitize_text_field(wp_unslash($_POST['external_id'] ?? '')),
@@ -561,7 +554,62 @@ class QuoteBuilder_Quote {
             'width' => sanitize_text_field(wp_unslash($_POST['width'] ?? '')),
             'height' => sanitize_text_field(wp_unslash($_POST['height'] ?? '')),
             'products' => $products,
+        ];
+        if ($consent_ads) {
+            $payload['consentAds'] = true;
+        }
+        return $payload;
+    }
+
+    public static function ajax_start_lead() {
+        if (trim((string) wp_unslash($_POST['qb_website'] ?? '')) !== '') {
+            wp_send_json_error(['message' => 'Envoi impossible.'], 400);
+        }
+        $payload = self::request_payload(false);
+        if (!is_email($payload['email'])) {
+            wp_send_json_error(['message' => 'L\'e-mail est requis.'], 400);
+        }
+        $result = QuoteBuilder_Pairing::start($payload);
+        if (is_wp_error($result)) {
+            $message = $result->get_error_message();
+            wp_send_json_error(['message' => $message !== '' ? $message : 'Enregistrement impossible.'], 400);
+        }
+        wp_send_json_success([
+            'quoteId' => (string) ($result['quoteId'] ?? ''),
+            'externalId' => (string) ($result['externalId'] ?? ''),
+            'status' => (string) ($result['status'] ?? 'started'),
         ]);
+    }
+
+    public static function ajax_resume_lead() {
+        $token = preg_replace('/[^a-f0-9]/', '', (string) wp_unslash($_POST['token'] ?? ''));
+        $result = QuoteBuilder_Pairing::resume($token);
+        if (is_wp_error($result)) {
+            wp_send_json_error(['message' => $result->get_error_message()], 400);
+        }
+        wp_send_json_success([
+            'email' => (string) ($result['email'] ?? ''),
+            'name' => (string) ($result['name'] ?? ''),
+            'phone' => (string) ($result['phone'] ?? ''),
+            'company' => (string) ($result['company'] ?? ''),
+            'city' => (string) ($result['city'] ?? ''),
+            'need' => (string) ($result['need'] ?? ''),
+            'needs' => is_array($result['needs'] ?? null) ? array_values($result['needs']) : [],
+            'length' => (string) ($result['length'] ?? ''),
+            'width' => (string) ($result['width'] ?? ''),
+            'height' => (string) ($result['height'] ?? ''),
+        ]);
+    }
+
+    public static function ajax_submit_lead() {
+        if (trim((string) wp_unslash($_POST['qb_website'] ?? '')) !== '') {
+            wp_send_json_error(['message' => 'Envoi impossible.'], 400);
+        }
+        $payload = self::request_payload(isset($_POST['consent_ads']) && (string) wp_unslash($_POST['consent_ads']) === '1');
+        if (strlen($payload['need']) < 2 || strlen($payload['name']) < 2 || !is_email($payload['email']) || $payload['phone'] === '') {
+            wp_send_json_error(['message' => 'Il manque le projet, votre nom, un e-mail valide ou votre téléphone.'], 400);
+        }
+        $result = QuoteBuilder_Pairing::submit($payload);
         if (is_wp_error($result)) {
             $message = $result->get_error_message();
             wp_send_json_error(['message' => $message !== '' ? $message : 'Envoi impossible.'], 400);
@@ -570,8 +618,8 @@ class QuoteBuilder_Quote {
             'reference' => (string) ($result['reference'] ?? ''),
             'quoteId' => (string) ($result['quoteId'] ?? ''),
             'when' => self::response_when(),
-            'phone' => $phone,
-            'name' => $name,
+            'phone' => $payload['phone'],
+            'name' => $payload['name'],
         ]);
     }
 
@@ -580,6 +628,14 @@ class QuoteBuilder_Quote {
         $action = sanitize_key($_POST['quote_action'] ?? '');
         if ($action === 'submit_lead') {
             self::ajax_submit_lead();
+            return;
+        }
+        if ($action === 'start_lead') {
+            self::ajax_start_lead();
+            return;
+        }
+        if ($action === 'resume_lead') {
+            self::ajax_resume_lead();
             return;
         }
         $already = false;

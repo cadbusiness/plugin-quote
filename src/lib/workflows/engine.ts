@@ -165,9 +165,11 @@ export async function exitActiveQuoteRuns(
 export async function runAutomations() {
   const supabase = service();
   const abandoned = await startAbandonedRuns(supabase);
+  const { remindAndPurgeStartedQuotes } = await import("@/lib/integrations/plugin-started");
+  const started = await remindAndPurgeStartedQuotes();
   const closed = await exitStaleRunsOnClosedQuotes(supabase);
   const resumed = await resumeDueRuns(supabase);
-  return { started: abandoned, closed, resumed };
+  return { started: abandoned, closed, resumed, reminded: started.reminded, purged: started.purged };
 }
 
 async function startAbandonedRuns(supabase: Client) {
@@ -187,7 +189,7 @@ async function startAbandonedRuns(supabase: Client) {
   const cutoffHours = minAbandonHours(configs);
   let sessionQuery = supabase
     .from("quote_sessions")
-    .select("id, organization_id, configurator_id, contact_draft, submitted_quote_id, last_activity_at, updated_at")
+    .select("id, organization_id, configurator_id, contact_draft, submitted_quote_id, last_activity_at, updated_at, answers")
     .is("submitted_quote_id", null);
   if (cutoffHours > 0) {
     const cutoff = new Date(Date.now() - cutoffHours * 3600_000).toISOString();
@@ -208,6 +210,8 @@ async function startAbandonedRuns(supabase: Client) {
   for (const session of sessions ?? []) {
     if (!orgIds.has(session.organization_id)) continue;
     const draft = (session.contact_draft ?? {}) as { email?: string };
+    const answers = (session.answers ?? {}) as { started?: boolean };
+    if (answers.started === true) continue;
     if (!draft.email) continue;
     const lastActivity = session.last_activity_at ?? session.updated_at;
     const hasOpen = workflows.some((workflow) => {

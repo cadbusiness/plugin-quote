@@ -81,6 +81,7 @@ const quoteEmails = DEMO_QUOTES.map((quote) => quote.contact_email);
 assert.equal(new Set(quoteEmails).size, quoteEmails.length);
 const pipeline = new Set(DEMO_QUOTES.map((quote) => quote.status_slug));
 for (const status of QUOTE_STATUSES) {
+  if (status.slug === "started") continue;
   assert.ok(pipeline.has(status.slug), `aucune demande seedée au statut ${status.slug}`);
 }
 assert.ok(DEMO_QUOTES.some((quote) => quote.score_label === "hot"));

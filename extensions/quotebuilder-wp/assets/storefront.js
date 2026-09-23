@@ -317,6 +317,53 @@
     }
   }
 
+  function trackAnonymous(name, params) {
+    var detail = {};
+    var payload = { event: name };
+    Object.keys(params || {}).forEach(function (key) {
+      if (key === "email" || key === "phone" || key === "name" || key === "sha256_email" || key === "hashedEmail") return;
+      var value = params[key];
+      if (typeof value === "string" && value.indexOf("@") !== -1) return;
+      detail[key] = value;
+      payload[key] = value;
+    });
+    document.dispatchEvent(new CustomEvent(name.replace("quotebuilder_", "quotebuilder:"), {
+      detail: payload.step_name ? Object.assign({ name: payload.step_name }, detail) : detail,
+    }));
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(payload);
+  }
+
+  function adsConsent() {
+    try {
+      if (window.qbAdsConsent === true) return true;
+      if (window.Cookiebot && window.Cookiebot.consent && window.Cookiebot.consent.marketing === true) return true;
+      if (/cookieyes-consent=[^;]*advertisement:yes/.test(document.cookie || "")) return true;
+      var layer = window.dataLayer || [];
+      for (var i = layer.length - 1; i >= 0; i--) {
+        var item = layer[i];
+        if (item && item[0] === "consent" && item[1] === "update" && item[2] && item[2].ad_storage === "granted") return true;
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  function sha256Email(email) {
+    var value = String(email || "").trim().toLowerCase();
+    var at = value.lastIndexOf("@");
+    if (at > 0) {
+      var local = value.slice(0, at);
+      var domain = value.slice(at + 1);
+      if (domain === "gmail.com" || domain === "googlemail.com") {
+        value = local.split("+")[0].replace(/\./g, "") + "@gmail.com";
+      }
+    }
+    if (!window.crypto || !window.crypto.subtle) return Promise.resolve("");
+    return window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(value)).then(function (buf) {
+      return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, "0"); }).join("");
+    });
+  }
+
   document.querySelectorAll("[data-qb-request]").forEach(function (form) {
     var steps = form.querySelectorAll(".qb-request-step");
     var num = form.querySelector("[data-step-num]");
@@ -325,7 +372,9 @@
     var space = form.querySelector("[data-space]");
     var area = form.querySelector("#qb-request-text");
     var errorBox = form.querySelector("[data-error]");
+    var emailInput = form.querySelector('input[name="email"]');
     var current = 0;
+    var emailTracked = false;
 
     function adapt() {
       var checked = form.querySelectorAll('input[name="need[]"]:checked');
@@ -349,7 +398,34 @@
       if (num) num.textContent = String(index + 1);
       if (name) name.textContent = steps[index].getAttribute("data-name") || "";
       if (bar) bar.style.width = Math.round(((index + 1) / steps.length) * 100) + "%";
-      document.dispatchEvent(new CustomEvent("quotebuilder:step", { detail: { step: index + 1, name: steps[index].getAttribute("data-name") || "" } }));
+      trackAnonymous("quotebuilder_step", { step: index + 1, step_name: steps[index].getAttribute("data-name") || "" });
+    }
+
+    function fill(field, value) {
+      var input = form.querySelector('[name="' + field + '"]');
+      if (input && value) input.value = value;
+    }
+
+    if (emailInput) {
+      emailInput.addEventListener("blur", function () {
+        if (!emailInput.checkValidity()) return;
+        if (form.querySelector('[name="qb_website"]') && form.querySelector('[name="qb_website"]').value) return;
+        if (!emailTracked) {
+          emailTracked = true;
+          trackAnonymous("quotebuilder_email", {});
+        }
+        var body = new FormData(form);
+        body.append("action", "quotebuilder_quote");
+        body.append("nonce", cfg.nonce);
+        body.append("quote_action", "start_lead");
+        fetch(cfg.ajax, { method: "POST", body: body, credentials: "same-origin" })
+          .then(function (res) { return res.json(); })
+          .then(function (json) {
+            var hidden = form.querySelector('input[name="external_id"]');
+            if (hidden && json && json.data && json.data.externalId) hidden.value = json.data.externalId;
+          })
+          .catch(function () {});
+      });
     }
 
     form.addEventListener("change", function (event) {
@@ -362,9 +438,12 @@
     form.addEventListener("submit", function (event) {
       event.preventDefault();
       var body = new FormData(form);
+      var email = String(body.get("email") || "");
+      var allowedAds = adsConsent();
       body.append("action", "quotebuilder_quote");
       body.append("nonce", cfg.nonce);
       body.append("quote_action", "submit_lead");
+      if (allowedAds) body.append("consent_ads", "1");
       var button = form.querySelector("[data-submit]");
       if (button) button.disabled = true;
       fetch(cfg.ajax, { method: "POST", body: body, credentials: "same-origin" })
@@ -385,7 +464,14 @@
             "</div>";
           var done = form.querySelector(".qb-request-done");
           if (done) done.focus();
+          trackAnonymous("quotebuilder_submit", { reference: data.reference || "" });
           document.dispatchEvent(new CustomEvent("quotebuilder:submitted", { detail: { reference: data.reference || "", quoteId: data.quoteId || "" } }));
+          if (!allowedAds) return null;
+          return sha256Email(email).then(function (hash) {
+            if (!hash) return;
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ event: "quotebuilder_ads", sha256_email: hash });
+          });
         })
         .catch(function (error) {
           if (button) button.disabled = false;
@@ -396,7 +482,43 @@
         });
     });
     adapt();
-    show(0);
+    trackAnonymous("quotebuilder_start", {});
+    var resume = "";
+    try { resume = new URLSearchParams(window.location.search).get("qb_resume") || ""; } catch (e) {}
+    if (resume) {
+      var resumeBody = new FormData();
+      resumeBody.append("action", "quotebuilder_quote");
+      resumeBody.append("nonce", cfg.nonce);
+      resumeBody.append("quote_action", "resume_lead");
+      resumeBody.append("token", resume);
+      fetch(cfg.ajax, { method: "POST", body: resumeBody, credentials: "same-origin" })
+        .then(function (res) { return res.json(); })
+        .then(function (json) {
+          if (!json.success || !json.data) {
+            show(0);
+            return;
+          }
+          var data = json.data;
+          fill("name", data.name);
+          fill("email", data.email);
+          fill("phone", data.phone);
+          fill("company", data.company);
+          fill("city", data.city);
+          fill("description", data.need);
+          fill("length", data.length);
+          fill("width", data.width);
+          fill("height", data.height);
+          (data.needs || []).forEach(function (value) {
+            var box = form.querySelector('input[name="need[]"][value="' + String(value).replace(/["\\]/g, "") + '"]');
+            if (box) box.checked = true;
+          });
+          adapt();
+          show(steps.length - 1);
+        })
+        .catch(function () { show(0); });
+    } else {
+      show(0);
+    }
   });
 
   document.addEventListener("keydown", function (event) {

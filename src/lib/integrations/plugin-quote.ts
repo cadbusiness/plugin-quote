@@ -12,14 +12,19 @@ async function findExisting(organizationId: string, externalId: string) {
   const supabase = createServiceClient();
   const { data } = await supabase
     .from("quotes")
-    .select("id, answers")
+    .select("id, status, answers, session_id")
     .eq("organization_id", organizationId)
     .contains("answers", { external_id: externalId })
     .limit(1)
     .maybeSingle();
   if (!data?.id) return null;
   const answers = data.answers && typeof data.answers === "object" ? (data.answers as Record<string, unknown>) : {};
-  return { id: data.id, reference: typeof answers.reference === "string" ? answers.reference : "" };
+  return {
+    id: data.id,
+    status: data.status,
+    sessionId: data.session_id,
+    reference: typeof answers.reference === "string" ? answers.reference : "",
+  };
 }
 
 async function assignReference(organizationId: string, quoteId: string) {
@@ -51,7 +56,7 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
   }
 
   const existing = await findExisting(row.organization_id, parsed.quote.externalId);
-  if (existing) {
+  if (existing && existing.status !== "started") {
     return {
       ok: true as const,
       quoteId: existing.id,
@@ -61,21 +66,32 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
   }
 
   const supabase = createServiceClient();
-  const [{ data: org }, { data: funnel }] = await Promise.all([
-    supabase.from("organizations").select("slug").eq("id", row.organization_id).maybeSingle(),
-    supabase.from("configurators").select("slug").eq("id", row.configurator_id).maybeSingle(),
-  ]);
-  if (!org?.slug || !funnel?.slug) {
-    return { ok: false as const, status: 404, error: "Funnel introuvable", code: "funnel_missing" };
+  let session: { id: string; token: string } | null = null;
+  if (existing?.status === "started" && existing.sessionId) {
+    const { data: priorSession } = await supabase
+      .from("quote_sessions")
+      .select("id, token")
+      .eq("id", existing.sessionId)
+      .maybeSingle();
+    if (priorSession?.token) session = { id: priorSession.id, token: priorSession.token };
   }
-
-  const session = await createSession(org.slug, funnel.slug, {
-    utmSource: "wordpress",
-    utmMedium: "plugin",
-    referrer: parsed.quote.page || null,
-    landingPath: parsed.quote.page || null,
-  });
-  if (!session) return { ok: false as const, status: 404, error: "Funnel introuvable", code: "funnel_missing" };
+  if (!session) {
+    const [{ data: org }, { data: funnel }] = await Promise.all([
+      supabase.from("organizations").select("slug").eq("id", row.organization_id).maybeSingle(),
+      supabase.from("configurators").select("slug").eq("id", row.configurator_id).maybeSingle(),
+    ]);
+    if (!org?.slug || !funnel?.slug) {
+      return { ok: false as const, status: 404, error: "Funnel introuvable", code: "funnel_missing" };
+    }
+    const created = await createSession(org.slug, funnel.slug, {
+      utmSource: "wordpress",
+      utmMedium: "plugin",
+      referrer: parsed.quote.page || null,
+      landingPath: parsed.quote.page || null,
+    });
+    if (!created) return { ok: false as const, status: 404, error: "Funnel introuvable", code: "funnel_missing" };
+    session = { id: created.id, token: created.token };
+  }
 
   const lines: StorefrontLine[] = parsed.quote.products.map((line) => ({
     externalId: line.id || line.sku || line.name,
@@ -92,6 +108,7 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
     ...(Object.keys(parsed.quote.space).length ? { space: parsed.quote.space } : {}),
     ...(parsed.quote.city ? { city: parsed.quote.city } : {}),
     ...(parsed.quote.externalId ? { external_id: parsed.quote.externalId } : {}),
+    ...(existing?.status === "started" ? { started: true } : {}),
   };
   const updated = await updateSession(session.id, session.token, {
     answers,
@@ -110,6 +127,8 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
   const result = await submitQuote({
     sessionId: session.id,
     token: session.token,
+    promoteQuoteId: existing?.status === "started" ? existing.id : undefined,
+    consentAds: parsed.quote.consentAds,
     contact: {
       name: parsed.quote.name,
       email: parsed.quote.email,

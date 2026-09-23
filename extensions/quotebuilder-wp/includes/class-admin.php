@@ -559,6 +559,9 @@ body.toplevel_page_quotebuilder .qb-settings{width:auto!important;max-width:none
                 self::row('Tiroir vide', '', function () use ($settings) {
                     self::input('drawerEmpty', $settings['drawerEmpty']);
                 });
+                self::row('Mention sous l’e-mail', 'Visible avant d’enregistrer l’adresse. À faire valider avant la mise en production.', function () use ($settings) {
+                    self::input('emailNotice', $settings['emailNotice']);
+                });
                 self::row('Page devis', 'Formulaire du plugin, ou le funnel en iframe.', function () use ($settings) {
                     self::pills('quotePageMode', [
                         'native' => 'Formulaire',

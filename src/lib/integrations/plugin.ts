@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { loadConnection } from "@/lib/integrations/connections";
 import { PLUGIN_QUOTE_EXAMPLE } from "@/lib/integrations/plugin-quote-body";
+import { PLUGIN_CAPTURE_CONTRACT } from "@/lib/integrations/started-quote";
 import { parseSettings } from "@/lib/integrations/types";
 import { safeEqual } from "@/lib/integrations/secrets";
 import { createServiceClient } from "@/lib/supabase/service";
@@ -67,7 +68,9 @@ export async function pluginPayload(row: PluginConnection) {
       function: "quotebuilder_submit",
       auth: "Authorization: Bearer, X-QuoteBuilder-Connection",
       body: PLUGIN_QUOTE_EXAMPLE,
+      consentAds: "true seulement si le visiteur a accepté les cookies publicitaires, et seulement à l'envoi",
     },
+    capture: PLUGIN_CAPTURE_CONTRACT,
   };
 }
 

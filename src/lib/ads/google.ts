@@ -308,6 +308,7 @@ export async function uploadClickConversion(input: {
   wbraid?: string | null;
   conversionDateTime: string;
   value?: number | null;
+  hashedEmail?: string | null;
 }) {
   const conversion: AdsJson = {
     conversionAction: input.conversionAction,
@@ -319,6 +320,9 @@ export async function uploadClickConversion(input: {
   else if (input.gbraid) conversion.gbraid = input.gbraid;
   else if (input.wbraid) conversion.wbraid = input.wbraid;
   else throw new Error("Pas de gclid à envoyer.");
+  if (input.hashedEmail && /^[a-f0-9]{64}$/.test(input.hashedEmail)) {
+    conversion.userIdentifiers = [{ hashedEmail: input.hashedEmail }];
+  }
 
   await adsFetch(`customers/${input.customerId}:uploadClickConversions`, input.accessToken, {
     method: "POST",

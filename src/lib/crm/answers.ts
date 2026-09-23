@@ -11,6 +11,12 @@ const SKIP_KEYS = new Set([
   "contact_email",
   "contact_phone",
   "contact_company",
+  "started",
+  "resume_token",
+  "resume_page",
+  "captured_at",
+  "reminder_sent_at",
+  "external_id",
 ]);
 
 const KEY_LABELS: Record<string, string> = {
@@ -31,6 +37,7 @@ const KEY_LABELS: Record<string, string> = {
   length: "Longueur",
   width: "Largeur",
   reference: "Référence",
+  products: "Produits",
   besoin: "Besoin",
   specs: "Fiche technique",
   charge: "Charge",

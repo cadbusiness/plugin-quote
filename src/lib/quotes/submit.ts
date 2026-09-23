@@ -7,14 +7,19 @@ import { cancelSessionRuns, startWorkflows } from "@/lib/workflows/engine";
 import { dispatchQuoteWebhooks } from "@/lib/webhooks/dispatch";
 import { renderQuotePdf } from "@/lib/pdf/render";
 import type { ContactPayload, Customization } from "@/lib/wizard/types";
-import type { Json } from "@/lib/db/database.types";
+import type { Json, Tables } from "@/lib/db/database.types";
 import { createProspectAccess } from "@/lib/prospect/access";
 import { publishedMemberSpaceUrl } from "@/lib/members/public";
+import { hashEmailForAds } from "@/lib/integrations/started-quote";
 
 export async function submitQuote(input: {
   sessionId: string;
   token: string;
   contact: ContactPayload;
+  /** Completes a dossier already stored as Commencée. Does not insert a second row. */
+  promoteQuoteId?: string;
+  /** Hashed e-mail may go to Google Ads only when this is true. Never to Analytics. */
+  consentAds?: boolean;
 }) {
   const supabase = createServiceClient();
 
@@ -75,40 +80,73 @@ export async function submitQuote(input: {
     .eq("is_default", true)
     .maybeSingle();
 
-  const { data: quote, error: quoteError } = await supabase
-    .from("quotes")
-    .insert({
-      organization_id: session.organization_id,
-      configurator_id: session.configurator_id,
-      session_id: session.id,
-      contact_name: input.contact.name,
-      contact_email: input.contact.email,
-      contact_phone: input.contact.phone ?? null,
-      contact_company: input.contact.company ?? null,
-      consent_marketing: Boolean(input.contact.consentMarketing),
-      answers,
-      extracted_params: session.extracted_params,
-      score,
-      score_label: label,
-      status: defaultStatus?.slug ?? "new",
-      status_id: defaultStatus?.id ?? null,
-      utm_source: session.utm_source,
-      utm_medium: session.utm_medium,
-      utm_campaign: session.utm_campaign,
-      utm_content: session.utm_content,
-      utm_term: session.utm_term,
-      referrer: session.referrer,
-      gclid: session.gclid,
-      gbraid: session.gbraid,
-      wbraid: session.wbraid,
-    })
-    .select("*")
-    .single();
-  if (quoteError || !quote) {
-    throw new Error(quoteError?.message ?? "Impossible de créer le devis");
+  const quoteFields = {
+    contact_name: input.contact.name,
+    contact_email: input.contact.email,
+    contact_phone: input.contact.phone ?? null,
+    contact_company: input.contact.company ?? null,
+    consent_marketing: Boolean(input.contact.consentMarketing),
+    answers,
+    extracted_params: session.extracted_params,
+    score,
+    score_label: label,
+    status: defaultStatus?.slug ?? "new",
+    status_id: defaultStatus?.id ?? null,
+    session_id: session.id,
+  };
+  let promoted = false;
+  let quote: Tables<"quotes">;
+  if (input.promoteQuoteId) {
+    const { data: prior } = await supabase
+      .from("quotes")
+      .select("id, status")
+      .eq("id", input.promoteQuoteId)
+      .eq("organization_id", session.organization_id)
+      .maybeSingle();
+    if (!prior || prior.status !== "started") {
+      throw new Error("La demande commencée est introuvable");
+    }
+    promoted = true;
+    const { data: updated, error: updateError } = await supabase
+      .from("quotes")
+      .update(quoteFields)
+      .eq("id", prior.id)
+      .eq("status", "started")
+      .select("*")
+      .single();
+    if (updateError || !updated) {
+      throw new Error(updateError?.message ?? "Impossible de compléter la demande");
+    }
+    quote = updated;
+  } else {
+    const { data: inserted, error: quoteError } = await supabase
+      .from("quotes")
+      .insert({
+        organization_id: session.organization_id,
+        configurator_id: session.configurator_id,
+        ...quoteFields,
+        utm_source: session.utm_source,
+        utm_medium: session.utm_medium,
+        utm_campaign: session.utm_campaign,
+        utm_content: session.utm_content,
+        utm_term: session.utm_term,
+        referrer: session.referrer,
+        gclid: session.gclid,
+        gbraid: session.gbraid,
+        wbraid: session.wbraid,
+      })
+      .select("*")
+      .single();
+    if (quoteError || !inserted) {
+      throw new Error(quoteError?.message ?? "Impossible de créer le devis");
+    }
+    quote = inserted;
   }
 
   try {
+  if (promoted) {
+    await supabase.from("quote_items").delete().eq("quote_id", quote.id);
+  }
   await supabase.from("quote_activities").insert({
     organization_id: session.organization_id,
     quote_id: quote.id,
@@ -133,6 +171,7 @@ export async function submitQuote(input: {
       gbraid: session.gbraid,
       wbraid: session.wbraid,
       occurredAt: quote.created_at,
+      hashedEmail: input.consentAds ? hashEmailForAds(input.contact.email) : undefined,
     });
   } catch (error) {
     console.error("Ads conversion upload failed", error);
@@ -290,9 +329,24 @@ export async function submitQuote(input: {
 
   return { quoteId: quote.id, alreadySubmitted: false, score, label, suiviUrl: access?.url, pin: access?.pin };
   } catch (error) {
-    await supabase.from("quote_sessions").update({ submitted_quote_id: null }).eq("submitted_quote_id", quote.id);
-    const { error: deleteError } = await supabase.from("quotes").delete().eq("id", quote.id);
-    if (deleteError) console.error("Quote rollback failed", deleteError);
+    await supabase.from("quote_sessions").update({ submitted_quote_id: null }).eq("id", session.id);
+    if (promoted) {
+      const { data: startedStatus } = await supabase
+        .from("quote_statuses")
+        .select("id")
+        .eq("organization_id", session.organization_id)
+        .eq("slug", "started")
+        .limit(1)
+        .maybeSingle();
+      const { error: restoreError } = await supabase
+        .from("quotes")
+        .update({ status: "started", status_id: startedStatus?.id ?? null })
+        .eq("id", quote.id);
+      if (restoreError) console.error("Quote rollback failed", restoreError);
+    } else {
+      const { error: deleteError } = await supabase.from("quotes").delete().eq("id", quote.id);
+      if (deleteError) console.error("Quote rollback failed", deleteError);
+    }
     throw error;
   }
 }

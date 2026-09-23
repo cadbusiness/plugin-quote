@@ -112,6 +112,8 @@ export type ParsedPluginQuote = {
   space: Record<string, string>;
   products: PluginQuoteLine[];
   answers: Answers;
+  /** True only when the visitor accepted advertising cookies. Never implied. */
+  consentAds: boolean;
 };
 
 export function parsePluginQuote(
@@ -138,6 +140,13 @@ export function parsePluginQuote(
     if (value && !space[key]) space[key] = value.slice(0, 80);
   }
   const products = productLines(record.products ?? record.produits ?? record.lines ?? record.items);
+  const consentAds =
+    record.consentAds === true ||
+    record.consentAds === 1 ||
+    record.consentAds === "1" ||
+    record.consent_ads === true ||
+    record.consent_ads === 1 ||
+    record.consent_ads === "1";
 
   const needText = need.length >= 2 ? need : needs.join(" · ");
   if (needText.length < 2) {
@@ -165,6 +174,7 @@ export function parsePluginQuote(
       space,
       products,
       answers: extraAnswers(record),
+      consentAds,
     },
   };
 }

@@ -34,6 +34,7 @@ export function scoreTone(label: string | null | undefined): ChipTone {
 
 export function statusTone(slug: string | null | undefined): ChipTone {
   if (slug === "new") return "sky";
+  if (slug === "started") return "amber";
   if (slug === "contacted") return "amber";
   if (slug === "in_progress") return "violet";
   if (slug === "won") return "emerald";

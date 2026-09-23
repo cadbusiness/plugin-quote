@@ -144,6 +144,7 @@ export function resourceFromRow(row: {
 
 export function clientQuoteStageLabel(slug: string) {
   if (slug === "won") return "Accepté";
+  if (slug === "started") return "Commencée";
   if (slug === "lost") return "Clôturé";
   if (slug === "in_progress" || slug === "waiting") return "Devis envoyé";
   if (slug === "contacted") return "En étude";
