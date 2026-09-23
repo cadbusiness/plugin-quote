@@ -51,6 +51,8 @@ assert.equal(empty.complementsTitle, "Souvent demandé avec");
 assert.equal(empty.complementsLimit, 4);
 assert.equal(parseStorefront({ complementsLimit: "2", showComplements: false }).complementsLimit, 2);
 assert.equal(parseStorefront({ complementsLimit: 99 }).complementsLimit, 8);
+assert.equal(empty.drawerCta, "Finaliser ma demande");
+assert.equal(empty.drawerCtaHint, "Il ne reste que vos coordonnées");
 assert.equal(empty.floatingLabel, "Devis");
 assert.equal(empty.floatingPosition, "right");
 assert.equal(empty.showFloatingWhenEmpty, false);

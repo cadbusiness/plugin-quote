@@ -14,6 +14,8 @@
     });
   }
 
+  var pendingRemove = {};
+
   function paint(data) {
     var fab = document.querySelector(".qb-fab");
     if (fab) {
@@ -22,28 +24,73 @@
       if (badge) badge.textContent = data.count;
       fab.setAttribute("data-count", data.count);
     }
-    var list = document.querySelector(".qb-drawer-items");
-    if (list && data.items) {
-      list.innerHTML = data.items.map(itemHtml).join("");
+    var body = document.querySelector("[data-qb-drawer-body]");
+    if (body && typeof data.drawer === "string") {
+      body.innerHTML = data.drawer;
+      Object.keys(pendingRemove).forEach(function (key) {
+        var row = drawerRow(key);
+        if (row) markPending(row);
+      });
     }
-    var empty = document.querySelector(".qb-drawer-empty");
-    if (empty) empty.hidden = !!(data.items && data.items.length);
     document.dispatchEvent(new CustomEvent("quotebuilder:list", { detail: data || {} }));
   }
 
-  function itemHtml(item) {
-    var qty = item.qty || 1;
-    return (
-      '<li data-id="' +
-      escapeAttr(item.id) +
-      '" data-variation="' +
-      escapeAttr(item.variation_id || "") +
-      '"><span>' +
-      escapeHtml(item.name) +
-      '</span><input type="number" min="1" class="qb-qty" value="' +
-      qty +
-      '" aria-label="Quantité"><button type="button" class="qb-remove" aria-label="Retirer">Retirer</button></li>'
-    );
+  function rowKey(row) {
+    return row.getAttribute("data-id") + "|" + (row.getAttribute("data-variation") || "");
+  }
+
+  function drawerRow(key) {
+    var found = null;
+    document.querySelectorAll(".qb-drawer .qb-line").forEach(function (row) {
+      if (rowKey(row) === key) found = row;
+    });
+    return found;
+  }
+
+  function markPending(row) {
+    row.classList.add("is-pending");
+    var undo = row.querySelector(".qb-undo");
+    if (undo) undo.hidden = false;
+  }
+
+  function openDrawer() {
+    var drawer = document.querySelector(".qb-drawer");
+    var backdrop = document.querySelector(".qb-backdrop");
+    if (drawer) drawer.hidden = false;
+    if (backdrop) backdrop.hidden = false;
+    document.documentElement.classList.add("qb-drawer-open");
+  }
+
+  function closeDrawer() {
+    var drawer = document.querySelector(".qb-drawer");
+    var backdrop = document.querySelector(".qb-backdrop");
+    if (drawer) drawer.hidden = true;
+    if (backdrop) backdrop.hidden = true;
+    document.documentElement.classList.remove("qb-drawer-open");
+  }
+
+  function scheduleRemove(row) {
+    var key = rowKey(row);
+    markPending(row);
+    clearTimeout(pendingRemove[key]);
+    pendingRemove[key] = setTimeout(function () {
+      delete pendingRemove[key];
+      post("remove", {
+        product_id: row.getAttribute("data-id"),
+        variation_id: row.getAttribute("data-variation") || "",
+      }).then(function (json) {
+        if (json.success) paint(json.data);
+      });
+    }, 5000);
+  }
+
+  function cancelRemove(row) {
+    var key = rowKey(row);
+    clearTimeout(pendingRemove[key]);
+    delete pendingRemove[key];
+    row.classList.remove("is-pending");
+    var undo = row.querySelector(".qb-undo");
+    if (undo) undo.hidden = true;
   }
 
   function escapeHtml(value) {
@@ -117,8 +164,7 @@
           toast(cfg.addedLabel || "Produit ajouté à la liste", cfg.afterAdd === "notice");
           return;
         }
-        var drawer = document.querySelector(".qb-drawer");
-        if (drawer) drawer.hidden = false;
+        openDrawer();
       });
     }
 
@@ -131,28 +177,53 @@
 
     if (event.target.closest(".qb-fab")) {
       var drawer = document.querySelector(".qb-drawer");
-      if (drawer) drawer.hidden = !drawer.hidden;
+      if (drawer && drawer.hidden) openDrawer();
+      else closeDrawer();
     }
 
-    if (event.target.closest(".qb-drawer-close")) {
-      var drawerClose = document.querySelector(".qb-drawer");
-      if (drawerClose) drawerClose.hidden = true;
+    if (event.target.closest(".qb-drawer-close") || event.target.closest(".qb-backdrop")) {
+      closeDrawer();
+    }
+
+    var undo = event.target.closest(".qb-undo-cancel");
+    if (undo) {
+      event.preventDefault();
+      var undoRow = undo.closest(".qb-line");
+      if (undoRow) cancelRemove(undoRow);
+    }
+
+    var plus = event.target.closest(".qb-qty-plus, .qb-qty-minus");
+    if (plus) {
+      event.preventDefault();
+      var stepRow = plus.closest(".qb-line");
+      if (!stepRow || stepRow.classList.contains("is-pending")) return;
+      var current = parseInt(stepRow.getAttribute("data-qty") || "1", 10) || 1;
+      if (plus.classList.contains("qb-qty-minus") && current <= 1) {
+        scheduleRemove(stepRow);
+        return;
+      }
+      var nextQty = plus.classList.contains("qb-qty-plus") ? current + 1 : current - 1;
+      post("update", {
+        product_id: stepRow.getAttribute("data-id"),
+        variation_id: stepRow.getAttribute("data-variation") || "",
+        qty: nextQty,
+      }).then(function (json) {
+        if (json.success) paint(json.data);
+      });
     }
 
     var remove = event.target.closest(".qb-remove");
     if (remove) {
       var row = remove.closest("li");
-      var inDrawer = !!remove.closest(".qb-drawer");
+      if (remove.closest(".qb-drawer")) {
+        if (row) scheduleRemove(row);
+        return;
+      }
       post("remove", {
         product_id: row.getAttribute("data-id"),
         variation_id: row.getAttribute("data-variation") || "",
       }).then(function (json) {
-        if (!json.success) return;
-        if (inDrawer) {
-          paint(json.data);
-          return;
-        }
-        window.location.reload();
+        if (json.success) window.location.reload();
       });
     }
 
@@ -184,13 +255,10 @@
     if (!event.target.classList.contains("qb-qty")) return;
     var row = event.target.closest("li");
     if (!row) return;
-    var inDrawerQty = !!event.target.closest(".qb-drawer");
     post("update", {
       product_id: row.getAttribute("data-id"),
       variation_id: row.getAttribute("data-variation") || "",
       qty: event.target.value,
-    }).then(function (json) {
-      if (json.success && inDrawerQty) paint(json.data);
     });
   });
 
@@ -248,6 +316,10 @@
       fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: payload, keepalive: true }).catch(function () {});
     }
   }
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") closeDrawer();
+  });
 
   if (window.requestIdleCallback) {
     window.requestIdleCallback(trackVisit, { timeout: 2500 });

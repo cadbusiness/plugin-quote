@@ -544,8 +544,20 @@ body.toplevel_page_quotebuilder .qb-settings{width:auto!important;max-width:none
                         'stack' => 'Liste au-dessus, formulaire en dessous',
                     ], $settings['pageLayout']);
                 });
-                self::row('Titre de la liste', '', function () use ($settings) {
+                self::row('Titre de la liste', 'Un seul titre, dans la page et dans le tiroir.', function () use ($settings) {
                     self::input('listTitle', $settings['listTitle']);
+                });
+                self::row('Bouton du tiroir', 'Il ouvre la page des coordonnées, il n’envoie pas la demande.', function () use ($settings) {
+                    self::input('drawerCta', $settings['drawerCta']);
+                });
+                self::row('Précision sous le bouton', '', function () use ($settings) {
+                    self::input('drawerCtaHint', $settings['drawerCtaHint']);
+                });
+                self::row('Réassurance', 'Sous la liste, dans le tiroir.', function () use ($settings) {
+                    self::input('drawerReassure', $settings['drawerReassure']);
+                });
+                self::row('Tiroir vide', '', function () use ($settings) {
+                    self::input('drawerEmpty', $settings['drawerEmpty']);
                 });
                 self::row('Message liste vide', '', function () use ($settings) {
                     self::input('emptyMessage', $settings['emptyMessage']);

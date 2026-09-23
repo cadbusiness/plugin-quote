@@ -282,6 +282,10 @@ export default async function ConnectionPage({
             <option value="stack">Liste au-dessus</option>
           </Field>
           <Text name="listTitle" label="Titre de la liste" defaultValue={sf.listTitle} />
+          <Text name="drawerCta" label="Bouton du tiroir" defaultValue={sf.drawerCta} />
+          <Text name="drawerCtaHint" label="Précision du tiroir" defaultValue={sf.drawerCtaHint} />
+          <Text name="drawerReassure" label="Réassurance du tiroir" defaultValue={sf.drawerReassure} />
+          <Text name="drawerEmpty" label="Tiroir vide" defaultValue={sf.drawerEmpty} />
           <Text name="formTitle" label="Titre avant le formulaire" defaultValue={sf.formTitle} />
           <Text name="funnelCta" label="Bouton d’envoi" defaultValue={sf.funnelCta} />
           <Text name="emptyMessage" label="Liste vide" defaultValue={sf.emptyMessage} />

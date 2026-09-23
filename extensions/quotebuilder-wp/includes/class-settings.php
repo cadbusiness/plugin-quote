@@ -106,6 +106,10 @@ class QuoteBuilder_Settings {
             'categoryIds' => [],
             'tagIds' => [],
             'listTitle' => 'Demande de devis',
+            'drawerCta' => 'Finaliser ma demande',
+            'drawerCtaHint' => 'Il ne reste que vos coordonnées',
+            'drawerReassure' => 'Aucun paiement à cette étape.',
+            'drawerEmpty' => 'Votre liste est vide. Ajoutez des produits depuis la boutique.',
             'emptyMessage' => 'Aucun produit dans la liste. Décrivez le besoin dans le formulaire, ou ajoutez des produits depuis la boutique.',
             'funnelCta' => 'Envoyer ma demande',
             'formTitle' => 'Envoyer la demande',
@@ -226,6 +230,7 @@ class QuoteBuilder_Settings {
         $text_keys = [
             'priceLabel', 'buttonLabel', 'requestQuoteLabel', 'floatingLabel', 'addedLabel', 'alreadyInListLabel',
             'browseListLabel', 'listTitle', 'emptyMessage', 'funnelCta', 'formTitle',
+            'drawerCta', 'drawerCtaHint', 'drawerReassure', 'drawerEmpty',
             'continueShoppingLabel', 'updateListLabel', 'clearListLabel', 'quotePageId',
             'complementsTitle',
         ];
@@ -244,6 +249,12 @@ class QuoteBuilder_Settings {
         $next['floatingPosition'] = $next['floatingPosition'] === 'left' ? 'left' : 'right';
         if ($next['floatingLabel'] === '') {
             $next['floatingLabel'] = 'Devis';
+        }
+        if ($next['drawerCta'] === '') {
+            $next['drawerCta'] = 'Finaliser ma demande';
+        }
+        if ($next['drawerEmpty'] === '') {
+            $next['drawerEmpty'] = 'Votre liste est vide. Ajoutez des produits depuis la boutique.';
         }
         $next['pageLayout'] = $next['pageLayout'] === 'stack' ? 'stack' : 'split';
         $next['continueShoppingUrlMode'] = $next['continueShoppingUrlMode'] === 'custom' ? 'custom' : 'shop';

@@ -199,6 +199,55 @@ class QuoteBuilder_Quote {
         return $lines;
     }
 
+    public static function product_label($name) {
+        $name = trim((string) $name);
+        if ($name === '') {
+            return '';
+        }
+        $letters = preg_replace('/[^\p{L}]/u', '', $name);
+        if (!is_string($letters) || $letters === '') {
+            return $name;
+        }
+        if (mb_strtoupper($letters, 'UTF-8') !== $letters || mb_strtolower($letters, 'UTF-8') === $letters) {
+            return $name;
+        }
+        $lower = mb_strtolower($name, 'UTF-8');
+        return mb_strtoupper(mb_substr($lower, 0, 1, 'UTF-8'), 'UTF-8') . mb_substr($lower, 1, null, 'UTF-8');
+    }
+
+    public static function variant_text($item) {
+        $text = trim(wp_strip_all_tags((string) ($item['variation'] ?? '')));
+        if ($text !== '') {
+            return str_replace(', ', ' · ', $text);
+        }
+        $options = $item['options'] ?? [];
+        if (!is_array($options)) {
+            return '';
+        }
+        $parts = [];
+        foreach ($options as $key => $value) {
+            if (!is_scalar($value) || (string) $value === '') {
+                continue;
+            }
+            $label = is_string($key)
+                ? trim(str_replace(['attribute_pa_', 'attribute_', '_', '-'], ['', '', ' ', ' '], $key))
+                : '';
+            $parts[] = $label !== '' ? ucfirst($label) . ' : ' . $value : (string) $value;
+        }
+        return implode(' · ', $parts);
+    }
+
+    public static function line_note($item) {
+        $note = trim((string) ($item['note'] ?? ''));
+        return $note;
+    }
+
+    public static function tally_label($unique, $qty) {
+        $products = sprintf(_n('%s produit', '%s produits', $unique, 'quotebuilder'), number_format_i18n($unique));
+        $articles = sprintf(_n('%s article', '%s articles', $qty, 'quotebuilder'), number_format_i18n($qty));
+        return $products . ' · ' . $articles;
+    }
+
     public static function money($amount) {
         if (function_exists('wc_price')) {
             return wc_price((float) $amount);
@@ -251,7 +300,7 @@ class QuoteBuilder_Quote {
                                     <img src="<?php echo esc_url($item['image']); ?>" alt="">
                                 <?php endif; ?>
                                 <div>
-                                    <strong><?php echo esc_html($item['name']); ?></strong>
+                                    <strong><?php echo esc_html(self::product_label($item['name'])); ?></strong>
                                     <?php if (!empty($item['variation'])) : ?>
                                         <span><?php echo esc_html($item['variation']); ?></span>
                                     <?php endif; ?>
@@ -396,6 +445,7 @@ class QuoteBuilder_Quote {
             'cart' => self::cart_payload(),
             'url' => self::page_url(),
             'already' => $already,
+            'drawer' => class_exists('QuoteBuilder_Storefront') ? QuoteBuilder_Storefront::drawer_body() : '',
         ]);
     }
 }

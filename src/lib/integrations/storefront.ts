@@ -64,6 +64,10 @@ export type StorefrontSettings = {
   categoryIds: string[];
   tagIds: string[];
   listTitle: string;
+  drawerCta: string;
+  drawerCtaHint: string;
+  drawerReassure: string;
+  drawerEmpty: string;
   emptyMessage: string;
   funnelCta: string;
   formTitle: string;
@@ -145,6 +149,10 @@ export const DEFAULT_STOREFRONT: StorefrontSettings = {
   categoryIds: [],
   tagIds: [],
   listTitle: "Demande de devis",
+  drawerCta: "Finaliser ma demande",
+  drawerCtaHint: "Il ne reste que vos coordonnées",
+  drawerReassure: "Aucun paiement à cette étape.",
+  drawerEmpty: "Votre liste est vide. Ajoutez des produits depuis la boutique.",
   emptyMessage: "Aucun produit dans la liste. Décrivez le besoin dans le formulaire, ou ajoutez des produits depuis la boutique.",
   funnelCta: "Envoyer ma demande",
   formTitle: "Envoyer la demande",
@@ -280,6 +288,10 @@ export function parseStorefront(value: unknown): StorefrontSettings {
     categoryIds: asList(raw.categoryIds),
     tagIds: asList(raw.tagIds),
     listTitle: asText(raw.listTitle, DEFAULT_STOREFRONT.listTitle),
+    drawerCta: asText(raw.drawerCta, DEFAULT_STOREFRONT.drawerCta),
+    drawerCtaHint: asOptionalText(raw.drawerCtaHint, DEFAULT_STOREFRONT.drawerCtaHint),
+    drawerReassure: asOptionalText(raw.drawerReassure, DEFAULT_STOREFRONT.drawerReassure),
+    drawerEmpty: asText(raw.drawerEmpty, DEFAULT_STOREFRONT.drawerEmpty),
     emptyMessage: asText(raw.emptyMessage, DEFAULT_STOREFRONT.emptyMessage),
     funnelCta: asText(raw.funnelCta, DEFAULT_STOREFRONT.funnelCta),
     formTitle: asOptionalText(raw.formTitle, DEFAULT_STOREFRONT.formTitle),

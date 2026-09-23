@@ -308,14 +308,86 @@ class QuoteBuilder_Storefront {
 
     public static function drawer_item($item) {
         $qty = max(1, (int) ($item['qty'] ?? 1));
-        $html = sprintf(
-            '<li data-id="%s" data-variation="%s"><span>%s</span><input type="number" min="1" class="qb-qty" value="%d" aria-label="Quantité"><button type="button" class="qb-remove" aria-label="Retirer">Retirer</button></li>',
-            esc_attr($item['id'] ?? ''),
-            esc_attr($item['variation_id'] ?? ''),
-            esc_html($item['name'] ?? ''),
-            $qty
-        );
-        return apply_filters('quotebuilder_drawer_item_html', $html, $item);
+        $name = QuoteBuilder_Quote::product_label($item['name'] ?? '');
+        $variant = QuoteBuilder_Quote::variant_text($item);
+        $note = QuoteBuilder_Quote::line_note($item);
+        $url = $item['url'] ?? '';
+        $image = $item['image'] ?? '';
+        ob_start();
+        ?>
+        <li class="qb-line" data-id="<?php echo esc_attr($item['id'] ?? ''); ?>" data-variation="<?php echo esc_attr($item['variation_id'] ?? ''); ?>" data-qty="<?php echo esc_attr($qty); ?>">
+            <div class="qb-line-main">
+                <?php if ($image) : ?>
+                    <a class="qb-line-photo" href="<?php echo esc_url($url); ?>">
+                        <img src="<?php echo esc_url($image); ?>" alt="">
+                    </a>
+                <?php endif; ?>
+                <div class="qb-line-copy">
+                    <a class="qb-line-name" href="<?php echo esc_url($url); ?>"><?php echo esc_html($name); ?></a>
+                    <?php if ($variant !== '') : ?>
+                        <p class="qb-line-variant"><?php echo esc_html($variant); ?></p>
+                    <?php endif; ?>
+                    <?php if ($note !== '') : ?>
+                        <p class="qb-line-note"><?php echo esc_html($note); ?></p>
+                    <?php endif; ?>
+                    <div class="qb-stepper">
+                        <button type="button" class="qb-qty-minus" aria-label="Diminuer">−</button>
+                        <span class="qb-qty-value"><?php echo esc_html($qty); ?></span>
+                        <button type="button" class="qb-qty-plus" aria-label="Augmenter">+</button>
+                    </div>
+                </div>
+                <button type="button" class="qb-remove">Retirer</button>
+            </div>
+            <div class="qb-undo" hidden>
+                <span>Retiré de la liste</span>
+                <button type="button" class="qb-undo-cancel">Annuler</button>
+            </div>
+        </li>
+        <?php
+        return apply_filters('quotebuilder_drawer_item_html', ob_get_clean(), $item);
+    }
+
+    public static function drawer_body($items = null) {
+        if ($items === null) {
+            $items = QuoteBuilder_Quote::items();
+        }
+        $settings = QuoteBuilder_Settings::storefront();
+        $unique = count($items);
+        $qty = 0;
+        foreach ($items as $item) {
+            $qty += max(1, (int) ($item['qty'] ?? 1));
+        }
+        ob_start();
+        ?>
+        <header class="qb-drawer-head">
+            <h2><?php echo esc_html($settings['listTitle']); ?></h2>
+            <?php if ($unique) : ?>
+                <p class="qb-drawer-summary"><?php echo esc_html(QuoteBuilder_Quote::tally_label($unique, $qty)); ?></p>
+            <?php endif; ?>
+        </header>
+        <?php if (!$unique) : ?>
+            <p class="qb-drawer-empty"><?php echo esc_html($settings['drawerEmpty']); ?></p>
+            <a class="qb-drawer-quiet" href="<?php echo esc_url(QuoteBuilder_Quote::page_url()); ?>">Décrire mon besoin</a>
+        <?php else : ?>
+            <ul class="qb-drawer-items">
+                <?php foreach ($items as $item) : ?>
+                    <?php echo self::drawer_item($item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                <?php endforeach; ?>
+            </ul>
+            <footer class="qb-drawer-foot">
+                <?php if ($settings['drawerReassure'] !== '') : ?>
+                    <p class="qb-drawer-reassure"><?php echo esc_html($settings['drawerReassure']); ?></p>
+                <?php endif; ?>
+                <a class="qb-drawer-go" href="<?php echo esc_url(QuoteBuilder_Quote::page_url()); ?>">
+                    <strong><?php echo esc_html($settings['drawerCta']); ?></strong>
+                    <?php if ($settings['drawerCtaHint'] !== '') : ?>
+                        <span><?php echo esc_html($settings['drawerCtaHint']); ?></span>
+                    <?php endif; ?>
+                </a>
+            </footer>
+        <?php endif; ?>
+        <?php
+        return apply_filters('quotebuilder_drawer_html', ob_get_clean(), $items, $settings);
     }
 
     public static function floating_style($floating) {
@@ -375,17 +447,12 @@ class QuoteBuilder_Storefront {
         $side = $position === 'left' ? ' is-left' : '';
         $visible = $count || !empty($settings['showFloatingWhenEmpty']);
         ?>
+        <div class="qb-backdrop" hidden></div>
         <aside class="qb-drawer<?php echo esc_attr($side); ?>" hidden>
             <button type="button" class="qb-drawer-close" aria-label="Fermer">×</button>
-            <p class="qb-kicker">Liste de devis</p>
-            <h2><?php echo esc_html($settings['listTitle']); ?></h2>
-            <p class="qb-drawer-empty" <?php echo $items ? 'hidden' : ''; ?>>Aucun produit dans la liste.</p>
-            <ul class="qb-drawer-items">
-                <?php foreach ($items as $item) : ?>
-                    <?php echo self::drawer_item($item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                <?php endforeach; ?>
-            </ul>
-            <a class="qb-atq" href="<?php echo esc_url(QuoteBuilder_Quote::page_url()); ?>"><?php echo esc_html($settings['funnelCta']); ?></a>
+            <div data-qb-drawer-body>
+                <?php echo self::drawer_body($items); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+            </div>
         </aside>
         <div class="qb-toast" hidden></div>
         <?php if (!empty($floating['enabled'])) : ?>

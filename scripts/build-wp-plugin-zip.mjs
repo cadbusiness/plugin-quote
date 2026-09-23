@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>Le bouton flottant a un libellé, un côté et des couleurs.</li><li>Le tiroir permet de changer la quantité et de retirer un produit.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>Le tiroir affiche la photo, la variante et le lien produit.</li><li>La quantité se change avec − et +, et un retrait s’annule pendant 5 secondes.</li><li>Le bouton du tiroir dit qu’il reste les coordonnées, il n’envoie pas la demande.</li></ul>`,
     },
     null,
     2,
