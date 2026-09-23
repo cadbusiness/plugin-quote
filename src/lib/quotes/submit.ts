@@ -1,6 +1,7 @@
 import { createServiceClient } from "@/lib/supabase/service";
 import { scoreQuote } from "@/lib/quotes/score";
 import { evaluateSuggestions, mergeAnswers } from "@/lib/wizard/suggestions";
+import { quoteSelectionForProduct } from "@/lib/catalog/variant-matrix";
 import { mapProductRow } from "@/lib/wizard/definition";
 import { sendQuoteEmails } from "@/lib/email/send";
 import { cancelSessionRuns, startWorkflows } from "@/lib/workflows/engine";
@@ -186,16 +187,19 @@ export async function submitQuote(input: {
     return true;
   });
   const items = [
-    ...catalogItems.map((product) => ({
-      organization_id: session.organization_id,
-      quote_id: quote.id,
-      product_id: product.id,
-      name: product.name,
-      quantity: customization.quantities[product.id] ?? 1,
-      options: customization.options[product.id] ?? {},
-      price_min: product.priceMin,
-      price_max: product.priceMax,
-    })),
+    ...catalogItems.map((product) => {
+      const line = quoteSelectionForProduct(product, customization.options[product.id] ?? {});
+      return {
+        organization_id: session.organization_id,
+        quote_id: quote.id,
+        product_id: product.id,
+        name: line.name,
+        quantity: customization.quantities[product.id] ?? 1,
+        options: line.options,
+        price_min: line.priceMin,
+        price_max: line.priceMax,
+      };
+    }),
     ...(customization.storefrontLines ?? []).map((line) => ({
       organization_id: session.organization_id,
       quote_id: quote.id,

@@ -2,7 +2,14 @@ import Anthropic from "@anthropic-ai/sdk";
 import { COMMERCE_AGENT_CONFIG } from "@/lib/commerce-agent/config";
 import { searchCatalog } from "@/lib/commerce-agent/catalog";
 import type { Json } from "@/lib/db/database.types";
-import { normalizeVariationId, parsePluginQuoteBody } from "@/lib/integrations/plugin-quotes";
+import { toWidgetMatrixProduct, type WidgetMatrixProduct } from "@/lib/catalog/variant-matrix";
+import { parsePluginQuoteBody } from "@/lib/integrations/plugin-quotes";
+import {
+  bindQuoteBody,
+  bindWidgetLines,
+  widgetLinesFromUnknown,
+  type WidgetLine,
+} from "@/lib/integrations/quote-widget-bind";
 import type { PluginConnection } from "@/lib/integrations/plugin";
 import { openPublicSite, publicSiteQuotePath } from "@/lib/integrations/public-site-quote";
 import { parseQuoteWidget, widgetPairing } from "@/lib/integrations/quote-widget-settings";
@@ -20,15 +27,8 @@ export type WidgetCatalogRow = {
   name: string;
 };
 
-export type WidgetLine = {
-  productId: string;
-  variationId: string;
-  name: string;
-  qty: number;
-  sku: string;
-  variation: string;
-  url: string;
-};
+export type { WidgetLine, WidgetMatrixProduct };
+export { bindQuoteBody, bindWidgetLines, widgetLinesFromUnknown };
 
 export type AssistModelOutput = {
   brief?: string;
@@ -72,29 +72,6 @@ function widgetFromSettings(settings: Json) {
       ? (settings as Record<string, unknown>).widget
       : undefined;
   return parseQuoteWidget(raw);
-}
-
-/** Woo cart rows (`id`, `variation_id`) and explicit productId rows. Drops lines without a product id. */
-export function widgetLinesFromUnknown(value: unknown): WidgetLine[] {
-  if (!Array.isArray(value)) return [];
-  const lines: WidgetLine[] = [];
-  for (const entry of value) {
-    if (!entry || typeof entry !== "object" || Array.isArray(entry)) continue;
-    const row = entry as Record<string, unknown>;
-    const productId = text(row.productId ?? row.id, 64);
-    if (!productId || productId === "0") continue;
-    lines.push({
-      productId,
-      variationId: normalizeVariationId(row.variationId ?? row.variation_id),
-      name: text(row.name, 300),
-      qty: clampQty(row.qty ?? row.quantity),
-      sku: text(row.sku, 80),
-      variation: text(row.variation, 300),
-      url: text(row.url, 2000),
-    });
-    if (lines.length >= 100) break;
-  }
-  return lines;
 }
 
 /**
@@ -320,15 +297,48 @@ async function loadConnectionCatalog(connection: PluginConnection): Promise<Widg
   });
 }
 
+export async function loadWidgetCatalog(connection: PluginConnection): Promise<WidgetMatrixProduct[]> {
+  const supabase = createServiceClient();
+  const { data } = await supabase
+    .from("products")
+    .select("external_id, name, sku, options, variants")
+    .eq("organization_id", connection.organization_id)
+    .eq("connection_id", connection.id)
+    .eq("is_active", true)
+    .not("external_id", "is", null)
+    .order("name", { ascending: true })
+    .limit(200);
+  return (data ?? []).flatMap((row) => {
+    const product = toWidgetMatrixProduct({
+      externalId: row.external_id ?? "",
+      name: row.name,
+      sku: row.sku,
+      options: row.options,
+      variants: row.variants,
+    });
+    return product ? [product] : [];
+  });
+}
+
 type WidgetDeps = {
   load?: (publicKey: string) => Promise<PluginConnection | null>;
+  loadMatrices?: (connection: PluginConnection) => Promise<WidgetMatrixProduct[]>;
 };
 
 /** Public config for the embed. The site key is already in the path; no Bearer secret. */
 export async function handlePublicSiteWidget(req: Request, siteKey: string, deps: WidgetDeps = {}) {
   const opened = await openPublicSite(req, siteKey, { load: deps.load, methods: PUBLIC_SITE_WIDGET_METHODS });
   if (!opened.ok) return opened.response;
-  return json(publicWidgetConfig(opened.access.connection), 200, opened.access.cors);
+  const { connection, cors } = opened.access;
+  const loadMatrices = deps.loadMatrices ?? loadWidgetCatalog;
+  let catalog: WidgetMatrixProduct[] = [];
+  try {
+    catalog = await loadMatrices(connection);
+  } catch (error) {
+    console.error("quote widget catalog failed", error);
+    catalog = [];
+  }
+  return json({ ...publicWidgetConfig(connection), catalog }, 200, cors);
 }
 
 type AssistDeps = WidgetDeps & {

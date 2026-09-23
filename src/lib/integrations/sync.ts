@@ -4,6 +4,7 @@ import { parseRelated } from "@/lib/catalog/affinity";
 import { mergeImageRoles, parseGallery, productCover } from "@/lib/catalog/media";
 import { parseProductSheet, storedSheetForSync } from "@/lib/catalog/sheet";
 import { parseColumnSpecs, storedSpecsForSync } from "@/lib/catalog/specs";
+import { storedOptionsForSync, storedVariantsForSync } from "@/lib/catalog/variant-matrix";
 import { shouldPushLocal, shouldSkipOverwrite } from "@/lib/catalog/sync-policy";
 import { staleSyncCutoff } from "@/lib/integrations/pairing-plan";
 import type { Database, Json, TablesInsert } from "@/lib/db/database.types";
@@ -56,10 +57,21 @@ export function buildProductRow(
   existingSpecs?: unknown,
   existingImages?: unknown,
   existingSheet?: unknown,
+  existingOptions?: unknown,
+  existingVariants?: unknown,
 ): ProductRow & { content_hash: string } {
   const markup = 1 + connection.settings.markupPercent / 100;
   const price = (value: number | null) => (value === null ? null : round2(value * markup));
   const images = mergeImageRoles(product.images, existingImages);
+  const variants = storedVariantsForSync(
+    product.variants.map((variant) => ({
+      ...variant,
+      price: price(variant.price),
+      compareAtPrice: price(variant.compareAtPrice),
+    })),
+    existingVariants,
+    product.variantsComplete !== false,
+  );
 
   const row: ProductRow = {
     organization_id: connection.organizationId,
@@ -77,8 +89,8 @@ export function buildProductRow(
     currency: product.currency || "EUR",
     image_url: productCover(images),
     images: images as unknown as Json,
-    variants: product.variants as unknown as Json,
-    options: (product.attributes ?? product.options) as unknown as Json,
+    variants: variants as unknown as Json,
+    options: storedOptionsForSync(product.attributes ?? product.options, existingOptions) as unknown as Json,
     category: product.category,
     tags: product.tags,
     stock_status: product.stockStatus,
@@ -176,7 +188,7 @@ export async function runCatalogSync({
   try {
     const { data: existing } = await supabase
       .from("products")
-      .select("id, external_id, content_hash, is_active, archived_by_sync, updated_at, synced_at, sync_lock, specs, images, sheet")
+      .select("id, external_id, content_hash, is_active, archived_by_sync, updated_at, synced_at, sync_lock, specs, images, sheet, options, variants")
       .eq("connection_id", connection.id);
     const known = new Map(
       (existing ?? [])
@@ -204,6 +216,8 @@ export async function runCatalogSync({
             previous?.specs,
             previous?.images,
             previous?.sheet,
+            previous?.options,
+            previous?.variants,
           );
           if (previous?.archived_by_sync) toReactivate.push(product.externalId);
           if (shouldSkipOverwrite(previous, connection.settings)) {
@@ -357,7 +371,7 @@ export async function syncExternalProduct({
 
   const { data: current } = await supabase
     .from("products")
-    .select("updated_at, synced_at, sync_lock, specs, images, sheet")
+    .select("updated_at, synced_at, sync_lock, specs, images, sheet, options, variants")
     .eq("connection_id", connection.id)
     .eq("external_id", externalId)
     .maybeSingle();
@@ -391,7 +405,16 @@ export async function syncExternalProduct({
     return { ok: true as const, action: "archived" as const };
   }
 
-  const built = buildProductRow(product, connection, configuratorId, current?.specs, current?.images, current?.sheet);
+  const built = buildProductRow(
+    product,
+    connection,
+    configuratorId,
+    current?.specs,
+    current?.images,
+    current?.sheet,
+    current?.options,
+    current?.variants,
+  );
   await writeChunks(supabase, [built]);
   await supabase
     .from("products")

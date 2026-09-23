@@ -1,4 +1,5 @@
 import { normalizeAttributes, type ProductAttribute } from "@/lib/catalog/attributes";
+import { wooAxisKey } from "@/lib/catalog/variant-matrix";
 import type { ProductSpec } from "@/lib/wizard/types";
 
 /** Ligne déjà stockée dans `products.specs` (jsonb prod). */
@@ -145,9 +146,9 @@ function numericOptions(options: string[]) {
   return { numbers, unit: parsed[0]?.unit };
 }
 
-function choiceAttribute(name: string, options: string[]): ProductAttribute {
+function choiceAttribute(name: string, options: string[], key?: string): ProductAttribute {
   return {
-    key: slugify(name) || "choix",
+    key: key || slugify(name) || "choix",
     label: name.trim(),
     kind: "choices",
     values: options.map((option) => ({ value: slugify(option) || option, label: option.trim() })),
@@ -192,7 +193,7 @@ export function mapWooCatalogAttributes(source: WooSpecSource, units: WooSpecUni
     const options = (attr.options ?? []).map((option) => String(option).trim()).filter(Boolean);
     if (!name || !options.length) continue;
     if (attr.variation) {
-      choices.push(choiceAttribute(name, options));
+      choices.push(choiceAttribute(name, options, wooAxisKey(attr.name, attr.slug)));
       if (canonFor(name)) pushSpec(specs, specFromAttribute(name, options, units.dimension));
       continue;
     }

@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { parseRelated } from "@/lib/catalog/affinity";
 import type { Database, Json } from "@/lib/db/database.types";
 import { normalizeAttributes, toProspectOptions } from "@/lib/catalog/attributes";
+import { parseStoredVariants } from "@/lib/catalog/variant-matrix";
 import { parseGallery, productCover } from "@/lib/catalog/media";
 import { parseProductSheet } from "@/lib/catalog/sheet";
 import { publicProductSpecs } from "@/lib/catalog/specs";
@@ -42,6 +43,14 @@ function mapProduct(row: Database["public"]["Tables"]["products"]["Row"]): Produ
     tags: row.tags ?? [],
     category: row.category ?? null,
     options,
+    variants: parseStoredVariants(row.variants).map((variant) => ({
+      externalId: variant.externalId,
+      title: variant.title,
+      sku: variant.sku,
+      price: variant.price,
+      available: variant.available,
+      selected: variant.selected,
+    })),
     specs: publicProductSpecs(attributes, row.specs),
     sheet: parseProductSheet(row.sheet),
     stockStatus: row.stock_status ?? null,

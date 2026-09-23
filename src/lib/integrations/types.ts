@@ -34,8 +34,10 @@ export type ProductVariant = {
   compareAtPrice: number | null;
   available: boolean;
   imageSrc: string | null;
-  /** Valeurs d'options : { "Couleur": "Noir", "Taille": "L" } */
+  /** Valeurs d'options, clé d'axe → slug : { "couleur": "noir", "taille": "l" } */
   selected: Record<string, string>;
+  stockStatus?: "instock" | "outofstock" | "onbackorder" | null;
+  stockQuantity?: number | null;
 };
 
 /**
@@ -61,6 +63,8 @@ export type NormalizedProduct = {
   /** Choix + specs persistés dans products.options. Absent chez Shopify. */
   attributes?: ProductAttribute[];
   variants: ProductVariant[];
+  /** False quand la pagination des variations s'est arrêtée avant la fin. */
+  variantsComplete?: boolean;
   related: ProductRelated;
   /** Fiche technique canonique (colonne products.specs). Absente chez Shopify. */
   specs?: ProductSpecs;
