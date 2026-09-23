@@ -34,6 +34,7 @@ import { computeCoutBriefIncomplet } from "./cout-brief-incomplet";
 import { computeCoutDevisExpires } from "./cout-devis-expires";
 import { computeAcompteDevis } from "./acompte-devis";
 import { computeGainTempsCatalogue } from "./gain-temps-catalogue";
+import { computeSeuilRemiseMarge } from "./seuil-remise-marge";
 import { MARKETING_ROUTES } from "./routes";
 import sitemap from "../../app/sitemap";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
@@ -91,6 +92,7 @@ for (const required of [
   "/outils/simulateur-cout-devis-expires",
   "/outils/calculateur-acompte-devis",
   "/outils/estimateur-gain-temps-catalogue-devis",
+  "/outils/calculateur-seuil-remise-marge",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
@@ -101,6 +103,7 @@ for (const required of [
   "/secteurs/funnel-devis-cloture-portail",
   "/secteurs/funnel-devis-pergola-terrasse",
   "/blog/bibliotheque-lignes-kits-devis-b2b",
+  "/blog/remise-commerciale-marge-devis-b2b",
   "/blog/acomptes-echeances-devis-b2b",
   "/blog/validite-expiration-devis-b2b",
   "/blog/options-variantes-alternatives-devis-b2b",
@@ -125,7 +128,7 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 22);
+assert.equal(BLOG_POSTS.length, 23);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "bibliotheque-lignes-kits-devis-b2b")?.tags, [
   "catalogue",
   "funnel",
@@ -142,6 +145,22 @@ assert.equal(BLOG_POSTS.find((post) => post.slug === "bibliotheque-lignes-kits-d
 assert.equal(BLOG_POSTS.find((post) => post.slug === "bibliotheque-lignes-kits-devis-b2b")?.publishedAt, "2026-09-23");
 assert.equal(BLOG_POSTS.find((post) => post.slug === "bibliotheque-lignes-kits-devis-b2b")?.pinned, false);
 assert.equal(BLOG_FAQ["bibliotheque-lignes-kits-devis-b2b"]?.length, 10);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "remise-commerciale-marge-devis-b2b")?.tags, [
+  "funnel",
+  "scoring",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "remise-commerciale-marge-devis-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "remise-commerciale-marge-devis-b2b")?.cover,
+  "/images/blog/visite-guidee-parcours-devis-b2b/04-devis-detail.png",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "remise-commerciale-marge-devis-b2b")?.readingMinutes, 13);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "remise-commerciale-marge-devis-b2b")?.publishedAt, "2026-09-22");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "remise-commerciale-marge-devis-b2b")?.pinned, false);
+assert.equal(BLOG_FAQ["remise-commerciale-marge-devis-b2b"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "acomptes-echeances-devis-b2b")?.tags, [
   "funnel",
   "relances",
@@ -392,8 +411,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 11);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 11);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 12);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 12);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 4);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 4);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 1);
@@ -609,6 +628,21 @@ const requiredSources = {
     "/secteurs/funnel-devis-stores-fermetures",
     "/secteurs/funnel-devis-cloture-portail",
     "/outils/estimateur-gain-temps-catalogue-devis",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "remise-commerciale-marge-devis-b2b.md": [
+    "/images/blog/remise-commerciale-marge-devis-b2b/04-devis-detail.png",
+    "/images/blog/remise-commerciale-marge-devis-b2b/05-automations.png",
+    "/images/blog/remise-commerciale-marge-devis-b2b/03-devis.png",
+    "/blog/options-variantes-alternatives-devis-b2b",
+    "/blog/versions-historique-devis-b2b",
+    "/blog/validite-expiration-devis-b2b",
+    "/blog/acomptes-echeances-devis-b2b",
+    "/blog/signature-acceptation-devis-en-ligne-b2b",
+    "/blog/revue-pipeline-devis-b2b",
+    "/outils/calculateur-seuil-remise-marge",
+    "/outils/simulateur-impact-remise-devis",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -938,6 +972,27 @@ for (const file of blogFiles) {
   assert.doesNotMatch(pergolaBody, EM_DASH);
   const pergolaWords = pergolaBody.split(/\s+/).filter(Boolean).length;
   assert.equal(pergolaWords, 2150);
+}
+
+{
+  const remiseRaw = readFileSync(join(blogDir, "remise-commerciale-marge-devis-b2b.md"), "utf8");
+  assert.ok(remiseRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const remiseBody = stripFrontmatter(remiseRaw);
+  assert.ok(
+    remiseBody.startsWith("# Remise commerciale et marge sur devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(remiseBody, /signup\?plan=free/);
+  assert.doesNotMatch(remiseBody, /img-1\.png/);
+  assert.doesNotMatch(remiseBody, /img-2\.png/);
+  assert.doesNotMatch(remiseBody, /img-3\.png/);
+  for (const name of ["03-devis.png", "04-devis-detail.png", "05-automations.png", "06-produits.png", "07-funnels.png"]) {
+    assert.ok(
+      existsSync(join(process.cwd(), "public/images/blog/remise-commerciale-marge-devis-b2b", name)),
+      `missing blog image ${name}`,
+    );
+  }
+  assert.doesNotMatch(remiseBody, EM_DASH);
 }
 
 {
@@ -1701,6 +1756,119 @@ assert.equal(acompteCents.ttc, 100);
 assert.equal(acompteCents.acompte, 33.33);
 assert.equal(acompteCents.jalons[1]?.amount, 33.34);
 assert.equal(acompteCents.jalons[2]?.amount, 33.33);
+
+const seuilDefault = computeSeuilRemiseMarge({
+  prix: 10000,
+  mode: "cout",
+  cout: 7200,
+  margeActuelle: 28,
+  tva: 20,
+  plancher: 22,
+  remise: 12,
+});
+assert.equal(seuilDefault.margeEuro, 2800);
+assert.ok(Math.abs(seuilDefault.margePct - 28) < 1e-9);
+assert.equal(seuilDefault.prixPlancher, 9230.77);
+assert.equal(seuilDefault.remiseMaxEuro, 769.23);
+assert.ok(Math.abs(seuilDefault.remiseMaxPct - 7.6923) < 0.001);
+assert.equal(seuilDefault.prixApresRemise, 8800);
+assert.equal(seuilDefault.margeApresEuro, 1600);
+assert.ok(Math.abs(seuilDefault.margeApresPct - (1600 / 8800) * 100) < 1e-9);
+assert.equal(seuilDefault.prixPlancherTtc, 11076.92);
+assert.equal(seuilDefault.alert, "bad");
+assert.match(seuilDefault.alertText, /passe sous le plancher/);
+assert.match(seuilDefault.recap, /Checklist rapide/);
+assert.doesNotMatch(seuilDefault.recap, /\u2014/);
+assert.doesNotMatch(seuilDefault.tip, /\u2014/);
+
+const seuilFromMarge = computeSeuilRemiseMarge({
+  prix: 10000,
+  mode: "marge",
+  cout: 0,
+  margeActuelle: 28,
+  tva: 20,
+  plancher: 22,
+  remise: 12,
+});
+assert.equal(seuilFromMarge.cout, 7200);
+assert.equal(seuilFromMarge.prixPlancher, seuilDefault.prixPlancher);
+assert.equal(seuilFromMarge.alert, "bad");
+
+const seuilEmpty = computeSeuilRemiseMarge({
+  prix: 0,
+  mode: "cout",
+  cout: 7200,
+  margeActuelle: 28,
+  tva: 20,
+  plancher: 22,
+  remise: 12,
+});
+assert.equal(seuilEmpty.alert, "neutral");
+assert.match(seuilEmpty.alertText, /prix catalogue HT/);
+
+const seuilCost = computeSeuilRemiseMarge({
+  prix: 7000,
+  mode: "cout",
+  cout: 7200,
+  margeActuelle: 28,
+  tva: 20,
+  plancher: 22,
+  remise: 0,
+});
+assert.equal(seuilCost.alert, "bad");
+assert.match(seuilCost.alertText, /dépasse déjà le prix catalogue/);
+
+const seuilUnderFloor = computeSeuilRemiseMarge({
+  prix: 10000,
+  mode: "cout",
+  cout: 8500,
+  margeActuelle: 28,
+  tva: 20,
+  plancher: 22,
+  remise: 0,
+});
+assert.equal(seuilUnderFloor.alert, "bad");
+assert.match(seuilUnderFloor.alertText, /Même sans remise/);
+
+const seuilOk = computeSeuilRemiseMarge({
+  prix: 10000,
+  mode: "cout",
+  cout: 7200,
+  margeActuelle: 28,
+  tva: 20,
+  plancher: 22,
+  remise: 5,
+});
+assert.equal(seuilOk.alert, "ok");
+assert.equal(seuilOk.prixApresRemise, 9500);
+assert.equal(seuilOk.margeApresEuro, 2300);
+assert.match(seuilOk.alertText, /compatible avec le plancher/);
+
+const seuilNoDiscount = computeSeuilRemiseMarge({
+  prix: 10000,
+  mode: "cout",
+  cout: 7200,
+  margeActuelle: 28,
+  tva: 20,
+  plancher: 22,
+  remise: 0,
+});
+assert.equal(seuilNoDiscount.alert, "ok");
+assert.match(seuilNoDiscount.alertText, /aucune remise saisie/);
+
+const seuilZeroCost = computeSeuilRemiseMarge({
+  prix: 10000,
+  mode: "cout",
+  cout: 0,
+  margeActuelle: 0,
+  tva: 20,
+  plancher: 22,
+  remise: 0,
+});
+assert.equal(seuilZeroCost.remiseMaxPct, 78);
+assert.equal(seuilZeroCost.remiseMaxEuro, 7800);
+assert.equal(seuilZeroCost.prixPlancher, 2200);
+assert.equal(seuilZeroCost.alert, "ok");
 assert.equal(
   Math.round((acompteCents.jalons.reduce((sum, part) => sum + part.amount, 0) + Number.EPSILON) * 100) / 100,
   100,
@@ -1841,6 +2009,8 @@ const llmsPaths = [
   "/blog/bibliotheque-lignes-kits-devis-b2b",
   "/secteurs/funnel-devis-pergola-terrasse",
   "/outils/estimateur-gain-temps-catalogue-devis",
+  "/blog/remise-commerciale-marge-devis-b2b",
+  "/outils/calculateur-seuil-remise-marge",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -2138,14 +2308,16 @@ for (const root of marketingRoots) {
 assert.equal(CREAM_HEX, "#F6F0E8");
 
 const sitemapEntries = sitemap();
-for (const path of [
-  "/blog/bibliotheque-lignes-kits-devis-b2b",
-  "/secteurs/funnel-devis-pergola-terrasse",
-  "/outils/estimateur-gain-temps-catalogue-devis",
-]) {
+for (const [path, lastmod] of [
+  ["/blog/bibliotheque-lignes-kits-devis-b2b", "2026-09-23"],
+  ["/secteurs/funnel-devis-pergola-terrasse", "2026-09-23"],
+  ["/outils/estimateur-gain-temps-catalogue-devis", "2026-09-23"],
+  ["/blog/remise-commerciale-marge-devis-b2b", "2026-09-22"],
+  ["/outils/calculateur-seuil-remise-marge", "2026-09-22"],
+] as const) {
   const entry = sitemapEntries.find((item) => item.url === `https://www.quotebuilder.co${path}`);
   assert.ok(entry, `sitemap missing ${path}`);
-  assert.equal(String(entry.lastModified).slice(0, 10), "2026-09-23");
+  assert.equal(String(entry.lastModified).slice(0, 10), lastmod);
 }
 
 console.log("marketing seo tests ok");
