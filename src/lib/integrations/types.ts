@@ -4,6 +4,11 @@ import type { ProductAttribute } from "@/lib/catalog/attributes";
 import type { ProductSheet } from "@/lib/catalog/sheet";
 import type { ProductSpecs } from "@/lib/catalog/specs";
 import type { ProductOption } from "@/lib/wizard/types";
+import {
+  DEFAULT_QUOTE_WIDGET,
+  parseQuoteWidget,
+  type QuoteWidgetSettings,
+} from "@/lib/integrations/quote-widget-settings";
 import { DEFAULT_STOREFRONT, parseStorefront, type StorefrontSettings } from "@/lib/integrations/storefront";
 
 export type CatalogProvider = "woocommerce" | "shopify";
@@ -94,6 +99,8 @@ export type ConnectionSettings = {
   pushToStore: boolean;
   /** Ne pas écraser une fiche déjà retouchée dans QuoteBuilder. */
   protectLocalEdits: boolean;
+  /** Widget devis navigateur : catalogue, besoin libre, IA optionnelle. */
+  widget: QuoteWidgetSettings;
 };
 
 export const DEFAULT_SETTINGS: ConnectionSettings = {
@@ -106,6 +113,7 @@ export const DEFAULT_SETTINGS: ConnectionSettings = {
   pullFromStore: true,
   pushToStore: false,
   protectLocalEdits: true,
+  widget: DEFAULT_QUOTE_WIDGET,
 };
 
 export function parseSettings(value: unknown): ConnectionSettings {
@@ -123,6 +131,7 @@ export function parseSettings(value: unknown): ConnectionSettings {
     pushToStore: Boolean(raw.pushToStore ?? DEFAULT_SETTINGS.pushToStore),
     protectLocalEdits:
       raw.protectLocalEdits == null ? DEFAULT_SETTINGS.protectLocalEdits : Boolean(raw.protectLocalEdits),
+    widget: parseQuoteWidget(raw.widget),
   };
 }
 

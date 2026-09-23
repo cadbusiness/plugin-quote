@@ -1,3 +1,4 @@
+import { quoteWidgetClientScript } from "@/lib/integrations/quote-widget-client";
 import { getAppUrl } from "@/lib/supabase/env";
 
 export function GET() {
@@ -99,6 +100,7 @@ export function GET() {
     return ${JSON.stringify(origin)} + path + "?" + params.toString();
   }
   function mount(el) {
+    if (el.getAttribute("data-module") === "quote" || el.hasAttribute("data-qb-widget")) return;
     var org = el.getAttribute("data-org") || el.getAttribute("data-quotebuilder-org");
     var id = el.getAttribute("data-id") || el.getAttribute("data-quotebuilder-id");
     if (!org || !id) return;
@@ -142,7 +144,8 @@ export function GET() {
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
-})();`;
+})();
+${quoteWidgetClientScript(origin)}`;
   return new Response(js, {
     headers: {
       "Content-Type": "application/javascript; charset=utf-8",

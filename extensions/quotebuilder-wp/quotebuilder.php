@@ -120,6 +120,14 @@ function quotebuilder_render_agent($atts = []) {
 }
 add_shortcode('quotebuilder_agent', 'quotebuilder_render_agent');
 
+function quotebuilder_render_widget($atts = []) {
+    if (!is_array($atts)) {
+        $atts = [];
+    }
+    return QuoteBuilder_Storefront::render_quote_widget($atts);
+}
+add_shortcode('quotebuilder_widget', 'quotebuilder_render_widget');
+
 function quotebuilder_submit($data) {
     return QuoteBuilder_Pairing::submit($data);
 }

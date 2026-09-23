@@ -209,6 +209,25 @@ class QuoteBuilder_Pairing {
         if (!empty($body['storefront']) && is_array($body['storefront'])) {
             update_option('quotebuilder_storefront', array_merge(QuoteBuilder_Settings::storefront(), $body['storefront']));
         }
+        if (!empty($body['site_key']) && is_string($body['site_key'])) {
+            update_option('quotebuilder_site_key', sanitize_text_field($body['site_key']));
+        }
+        if (!empty($body['public_submit']['path']) && is_string($body['public_submit']['path'])) {
+            update_option('quotebuilder_public_submit_path', sanitize_text_field($body['public_submit']['path']));
+        }
+        if (!empty($body['widget']) && is_array($body['widget'])) {
+            $mode = isset($body['widget']['mode']) ? (string) $body['widget']['mode'] : 'both';
+            if ($mode !== 'catalog' && $mode !== 'request' && $mode !== 'both') {
+                $mode = 'both';
+            }
+            update_option('quotebuilder_widget', [
+                'mode' => $mode,
+                'aiRequestText' => !empty($body['widget']['aiRequestText']),
+            ]);
+            if (empty($body['site_key']) && !empty($body['widget']['site_key']) && is_string($body['widget']['site_key'])) {
+                update_option('quotebuilder_site_key', sanitize_text_field($body['widget']['site_key']));
+            }
+        }
         if (isset($body['product_count'])) {
             update_option('quotebuilder_last_imported', (int) $body['product_count']);
         } elseif (isset($body['imported'])) {

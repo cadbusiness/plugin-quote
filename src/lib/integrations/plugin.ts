@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { loadConnection } from "@/lib/integrations/connections";
 import { PLUGIN_QUOTE_EXAMPLE } from "@/lib/integrations/plugin-quote-body";
 import { publicSiteQuotePath } from "@/lib/integrations/public-site-quote";
+import { widgetPairing } from "@/lib/integrations/quote-widget-settings";
 import { PLUGIN_CAPTURE_CONTRACT } from "@/lib/integrations/started-quote";
 import { parseSettings } from "@/lib/integrations/types";
 import { safeEqual } from "@/lib/integrations/secrets";
@@ -78,6 +79,7 @@ export async function pluginPayload(row: PluginConnection) {
       auth: "X-QuoteBuilder-Site-Key",
       cors: "Origin de la boutique, ou une entrée de allowed_origins",
     },
+    widget: widgetPairing(row.public_key, settings.widget),
     capture: PLUGIN_CAPTURE_CONTRACT,
   };
 }

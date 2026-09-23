@@ -82,10 +82,10 @@ export function matchingAllowedOrigin(requestOrigin: string | null, allowed: rea
   return requestOrigin;
 }
 
-export function siteCorsHeaders(origin: string) {
+export function siteCorsHeaders(origin: string, methods = CORS_METHODS) {
   const headers = new Headers();
   headers.set("Access-Control-Allow-Origin", origin);
-  headers.set("Access-Control-Allow-Methods", CORS_METHODS);
+  headers.set("Access-Control-Allow-Methods", methods);
   headers.set("Access-Control-Allow-Headers", CORS_REQUEST_HEADERS);
   headers.set("Access-Control-Max-Age", "86400");
   headers.set("Vary", "Origin");
@@ -123,40 +123,66 @@ function empty(status: number, extra?: Headers) {
   return new Response(null, { status, headers });
 }
 
+export type PublicSiteAccess = {
+  connection: PluginConnection;
+  cors: Headers;
+};
+
+/**
+ * Publishable site key + shop origin. OPTIONS returns 204.
+ * The plugin Bearer secret is not accepted.
+ */
+export async function openPublicSite(
+  req: Request,
+  siteKey: string,
+  options: {
+    load?: (publicKey: string) => Promise<PluginConnection | null>;
+    methods?: string;
+  } = {},
+): Promise<{ ok: true; access: PublicSiteAccess } | { ok: false; response: Response }> {
+  const methods = options.methods ?? CORS_METHODS;
+  const key = siteKey.trim();
+  if (!isPublicSiteKey(key)) {
+    return { ok: false, response: json({ error: "Clé site invalide" }, 401) };
+  }
+
+  const method = req.method.toUpperCase();
+  const allowedMethods = methods.split(",").map((part) => part.trim().toUpperCase());
+  if (!allowedMethods.includes(method)) {
+    return { ok: false, response: json({ error: "Méthode non autorisée" }, 405) };
+  }
+
+  const load = options.load ?? loadConnectionByPublicKey;
+  const connection = await load(key);
+  if (!connection || connection.status === "disabled" || connection.public_key !== key) {
+    return { ok: false, response: json({ error: "Clé site invalide" }, 401) };
+  }
+
+  const allowed = siteAllowedOrigins(connection.store_domain, connection.allowed_origins);
+  const origin = matchingAllowedOrigin(req.headers.get("origin"), allowed);
+  if (!origin) return { ok: false, response: json({ error: "Origine non autorisée" }, 403) };
+
+  const cors = siteCorsHeaders(origin, methods);
+  if (method === "OPTIONS") return { ok: false, response: empty(204, cors) };
+
+  const headerKey = req.headers.get(PUBLIC_SITE_KEY_HEADER)?.trim() ?? "";
+  if (!headerKey) return { ok: false, response: json({ error: "Clé site manquante" }, 401, cors) };
+  if (!isPublicSiteKey(headerKey) || !safeEqual(headerKey, key)) {
+    return { ok: false, response: json({ error: "Clé site invalide" }, 401, cors) };
+  }
+
+  return { ok: true, access: { connection, cors } };
+}
+
 /**
  * Browser quote create for one shop connection.
  * Auth is the publishable site key (path + header), not the plugin Bearer secret.
  * Idempotence, catalog match, and sales notify stay in receivePluginQuote.
  */
 export async function handlePublicSiteQuote(req: Request, siteKey: string, deps: PublicSiteDeps = {}) {
-  const key = siteKey.trim();
-  if (!isPublicSiteKey(key)) {
-    return json({ error: "Clé site invalide" }, 401);
-  }
-
-  const method = req.method.toUpperCase();
-  if (method !== "POST" && method !== "OPTIONS") {
-    return json({ error: "Méthode non autorisée" }, 405);
-  }
-
-  const load = deps.load ?? loadConnectionByPublicKey;
-  const connection = await load(key);
-  if (!connection || connection.status === "disabled" || connection.public_key !== key) {
-    return json({ error: "Clé site invalide" }, 401);
-  }
-
-  const allowed = siteAllowedOrigins(connection.store_domain, connection.allowed_origins);
-  const origin = matchingAllowedOrigin(req.headers.get("origin"), allowed);
-  if (!origin) return json({ error: "Origine non autorisée" }, 403);
-
-  const cors = siteCorsHeaders(origin);
-  if (method === "OPTIONS") return empty(204, cors);
-
-  const headerKey = req.headers.get(PUBLIC_SITE_KEY_HEADER)?.trim() ?? "";
-  if (!headerKey) return json({ error: "Clé site manquante" }, 401, cors);
-  if (!isPublicSiteKey(headerKey) || !safeEqual(headerKey, key)) {
-    return json({ error: "Clé site invalide" }, 401, cors);
-  }
+  const opened = await openPublicSite(req, siteKey, { load: deps.load });
+  if (!opened.ok) return opened.response;
+  const { connection, cors } = opened.access;
 
   const ipLimit = rateLimit(`public-site-quote:ip:${clientIp(req)}`, PUBLIC_SITE_QUOTE_IP_LIMIT, PUBLIC_SITE_QUOTE_WINDOW_MS);
   if (!ipLimit.ok) {

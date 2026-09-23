@@ -69,9 +69,11 @@ export async function POST(req: Request) {
     plan.action === "update"
       ? wooRows?.find((row) => row.id === plan.connectionId)
       : wooRows?.find((row) => row.store_domain === siteUrl);
+  const parsedSource = parseSettings(source?.settings);
   const settings = {
     ...DEFAULT_SETTINGS,
-    storefront: parseSettings(source?.settings).storefront,
+    storefront: parsedSource.storefront,
+    widget: parsedSource.widget,
   };
   const record = {
     organization_id: pairing.organization_id,

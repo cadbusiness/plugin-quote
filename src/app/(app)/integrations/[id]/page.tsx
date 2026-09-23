@@ -6,6 +6,7 @@ import {
   rotateWebhookSecret,
   toggleConnection,
   updateConnection,
+  updateQuoteWidget,
   updateStorefront,
 } from "@/app/(app)/integrations/actions";
 import { Chip, type ChipTone } from "@/components/ui/chip";
@@ -347,6 +348,29 @@ export default async function ConnectionPage({
           Clé publique pour le navigateur. Ce n’est pas le secret du plugin. Le navigateur envoie
           la clé dans l’en-tête X-QuoteBuilder-Site-Key, et seulement depuis une origine autorisée.
         </p>
+        <form action={updateQuoteWidget} className="mt-4 grid gap-3 sm:grid-cols-2">
+          <input type="hidden" name="id" value={connection.id} />
+          <Field name="widget_mode" label="Mode du widget" defaultValue={settings.widget.mode}>
+            <option value="both">Catalogue et besoin libre</option>
+            <option value="catalog">Catalogue uniquement</option>
+            <option value="request">Besoin libre uniquement</option>
+          </Field>
+          <Check
+            name="aiRequestText"
+            defaultChecked={settings.widget.aiRequestText}
+            label="Structurer le besoin libre (IA)"
+          />
+          <p className="text-xs text-slate-500 sm:col-span-2">
+            Catalogue : identifiant produit, variation et quantité. Besoin libre : le texte du visiteur
+            est enregistré sur le devis. L’IA, si elle est activée, prépare un brief et ne propose que
+            des produits déjà au catalogue. Le prospect n’est pas relancé par e-mail.
+          </p>
+          <div className="sm:col-span-2 text-right">
+            <button className="rounded-md bg-[#E85D04] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#d35400]">
+              Enregistrer le widget
+            </button>
+          </div>
+        </form>
         <dl className="mt-3 grid gap-2 text-sm">
           <div className="flex flex-wrap items-baseline gap-2">
             <dt className="w-24 shrink-0 text-slate-500">Clé site</dt>
@@ -357,6 +381,10 @@ export default async function ConnectionPage({
             <dd className="break-all font-mono text-xs text-slate-900">{publicQuoteUrl}</dd>
           </div>
         </dl>
+        <p className="mt-4 text-xs text-slate-500">
+          Collez ce bloc sur la boutique. Le mode et l’IA viennent des réglages ci-dessus.
+        </p>
+        <pre className="mt-2 overflow-x-auto bg-slate-50 px-3 py-2 font-mono text-xs text-slate-800">{`<div data-qb-widget data-site-key="${connection.public_key}"></div>\n<script src="${appUrl || ""}/widget.js" async></script>`}</pre>
       </section>
 
       <section className="border-b border-slate-100 px-4 py-6 lg:px-6">
