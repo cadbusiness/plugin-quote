@@ -1997,7 +1997,7 @@ export type Database = {
           assigned_to: string | null
           configurator_id: string
           contact_company: string | null
-          contact_email: string
+          contact_email: string | null
           contact_name: string
           contact_phone: string | null
           consent_marketing: boolean
@@ -2029,7 +2029,7 @@ export type Database = {
           assigned_to?: string | null
           configurator_id: string
           contact_company?: string | null
-          contact_email: string
+          contact_email?: string | null
           contact_name: string
           contact_phone?: string | null
           consent_marketing?: boolean
@@ -2061,7 +2061,7 @@ export type Database = {
           assigned_to?: string | null
           configurator_id?: string
           contact_company?: string | null
-          contact_email?: string
+          contact_email?: string | null
           contact_name?: string
           contact_phone?: string | null
           consent_marketing?: boolean
@@ -2111,6 +2111,132 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      visitor_identities: {
+        Row: {
+          connection_id: string | null
+          created_at: string
+          id: string
+          last_seen_at: string
+          organization_id: string
+          token_hash: string
+        }
+        Insert: {
+          connection_id?: string | null
+          created_at?: string
+          id?: string
+          last_seen_at?: string
+          organization_id: string
+          token_hash: string
+        }
+        Update: {
+          connection_id?: string | null
+          created_at?: string
+          id?: string
+          last_seen_at?: string
+          organization_id?: string
+          token_hash?: string
+        }
+        Relationships: []
+      }
+      visitor_request_lines: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          options: Json
+          organization_id: string
+          price_max: number | null
+          price_min: number | null
+          product_id: string
+          quantity: number
+          request_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          options?: Json
+          organization_id: string
+          price_max?: number | null
+          price_min?: number | null
+          product_id: string
+          quantity?: number
+          request_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          options?: Json
+          organization_id?: string
+          price_max?: number | null
+          price_min?: number | null
+          product_id?: string
+          quantity?: number
+          request_id?: string
+        }
+        Relationships: []
+      }
+      visitor_requests: {
+        Row: {
+          answers: Json
+          configurator_id: string
+          connection_id: string | null
+          contact_channel: string | null
+          contact_company: string | null
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string
+          id: string
+          identity_id: string
+          organization_id: string
+          quote_id: string | null
+          sales_notified_at: string | null
+          status: string
+          submitted_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          answers?: Json
+          configurator_id: string
+          connection_id?: string | null
+          contact_channel?: string | null
+          contact_company?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          identity_id: string
+          organization_id: string
+          quote_id?: string | null
+          sales_notified_at?: string | null
+          status?: string
+          submitted_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          answers?: Json
+          configurator_id?: string
+          connection_id?: string | null
+          contact_channel?: string | null
+          contact_company?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          identity_id?: string
+          organization_id?: string
+          quote_id?: string | null
+          sales_notified_at?: string | null
+          status?: string
+          submitted_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       shops: {
         Row: {

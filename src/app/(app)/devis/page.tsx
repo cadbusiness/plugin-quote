@@ -101,7 +101,7 @@ export default async function QuotesPage({
               <QuoteDossierCell
                 name={quote.contact_name}
                 company={quote.contact_company}
-                email={quote.contact_email}
+                email={quote.contact_email ?? ""}
                 assigned={assigned}
                 statusLabel={status?.label ?? quote.status}
                 statusSlug={status?.slug ?? quote.status}
