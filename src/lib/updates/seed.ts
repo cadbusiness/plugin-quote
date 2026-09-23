@@ -2,8 +2,21 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` + `0059` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` + `0059` + `0060` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.29.0",
+    version: "1.29.0",
+    title: "Widget devis dual (catalogue + besoin libre)",
+    items: [
+      "Sur la fiche connexion, « Devis depuis le site » règle le widget : catalogue, besoin libre, ou les deux.",
+      "En catalogue, le visiteur envoie des produits déjà connus (identifiant, variation, quantité). En besoin libre, son texte est enregistré sur le devis — sans e-mail au prospect.",
+      "L’option « Structurer le besoin libre (IA) » prépare un brief et n’ajoute une ligne que si le produit existe déjà au catalogue.",
+      "La fiche affiche le bloc à coller sur la boutique. Le shortcode WordPress [quotebuilder_widget] reprend ces réglages ; le zip publié reste en 2.3.20.",
+    ],
+    releasedAt: "2026-09-23",
+    createdAt: "2026-09-23T00:00:00.000Z",
+  },
   {
     id: "seed-1.28.0",
     version: "1.28.0",
