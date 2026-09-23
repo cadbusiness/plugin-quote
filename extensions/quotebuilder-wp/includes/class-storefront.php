@@ -477,6 +477,14 @@ class QuoteBuilder_Storefront {
             'phone' => '',
         ], $atts, 'quotebuilder');
 
+        if ($atts['module'] === 'quote') {
+            $args = [];
+            if ($atts['cart'] !== '') {
+                $args['cart'] = $atts['cart'];
+            }
+            return self::render_quote_widget($args);
+        }
+
         $origin = esc_url(QuoteBuilder_Settings::origin());
         if (!$atts['org'] || !$atts['id'] || !QuoteBuilder_Settings::connected()) {
             return '<p class="qb-empty">Connectez QuoteBuilder dans WordPress pour afficher le funnel et collecter les demandes.</p>';
@@ -513,6 +521,53 @@ class QuoteBuilder_Storefront {
             esc_attr($atts['org']),
             esc_attr($atts['id']),
             esc_attr($atts['height']),
+            $extra
+        );
+    }
+
+    public static function render_quote_widget($atts = []) {
+        $widget = QuoteBuilder_Settings::widget();
+        $atts = shortcode_atts([
+            'site_key' => QuoteBuilder_Settings::site_key(),
+            'mode' => $widget['mode'],
+            'ai' => $widget['aiRequestText'] ? '1' : '0',
+            'cart' => '',
+        ], $atts, 'quotebuilder_widget');
+
+        $key = sanitize_text_field($atts['site_key']);
+        if ($key === '' || strpos($key, 'qb_site_') !== 0) {
+            return '<p class="qb-empty">Connectez QuoteBuilder pour afficher le widget devis. La clé publique du site est requise.</p>';
+        }
+
+        $origin = esc_url(QuoteBuilder_Settings::origin());
+        wp_enqueue_script(
+            'quotebuilder-widget',
+            $origin . '/widget.js',
+            [],
+            null,
+            true
+        );
+
+        $cart = $atts['cart'] ?: (QuoteBuilder_Quote::items() ? wp_json_encode(QuoteBuilder_Quote::cart_payload()) : '');
+        $mode = in_array($atts['mode'], ['catalog', 'request', 'both'], true) ? $atts['mode'] : 'both';
+        $ai = ($atts['ai'] === '1' || $atts['ai'] === 'true') ? '1' : '0';
+        $path = (string) get_option('quotebuilder_public_submit_path', '');
+        $expected = '/api/public/sites/' . rawurlencode($key) . '/quotes';
+        if ($path !== $expected) {
+            $path = $expected;
+        }
+
+        $extra = '';
+        if ($cart) {
+            $extra .= ' data-cart="' . esc_attr($cart) . '"';
+        }
+
+        return sprintf(
+            '<div data-qb-widget data-site-key="%s" data-mode="%s" data-ai="%s" data-submit-path="%s"%s></div>',
+            esc_attr($key),
+            esc_attr($mode),
+            esc_attr($ai),
+            esc_attr($path),
             $extra
         );
     }

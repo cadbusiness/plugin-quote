@@ -21,6 +21,7 @@ import {
   type ResolvedConnection,
 } from "@/lib/integrations/types";
 import { parseAllowedOriginList } from "@/lib/integrations/public-site-quote";
+import { parseQuoteWidget } from "@/lib/integrations/quote-widget-settings";
 import { parseStorefront } from "@/lib/integrations/storefront";
 import { pluginConnectCallback } from "@/lib/integrations/plugin-connect";
 import { normalizeSiteUrl } from "@/lib/integrations/woocommerce";
@@ -127,9 +128,11 @@ export async function connectStore(
     .eq("provider", provider)
     .eq("store_domain", storeDomain)
     .maybeSingle();
+  const previous = parseSettings(existing?.settings);
   const settings: ConnectionSettings = {
     ...catalogSettings,
-    storefront: parseSettings(existing?.settings).storefront,
+    storefront: previous.storefront,
+    widget: previous.widget,
   };
   const label = String(formData.get("label") ?? "").trim() || test.shopName || storeDomain;
 
@@ -322,6 +325,37 @@ export async function updateStorefront(formData: FormData) {
     .eq("organization_id", ctx.organization.id);
   revalidatePath(`/integrations/${id}`);
   revalidatePath("/integrations");
+}
+
+export async function updateQuoteWidget(formData: FormData) {
+  const ctx = await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+  const supabase = await createClient();
+  const { data: existing } = await supabase
+    .from("catalog_connections")
+    .select("settings")
+    .eq("id", id)
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  if (!existing) return;
+  const current = parseSettings(existing.settings);
+  const settings: ConnectionSettings = {
+    ...current,
+    widget: parseQuoteWidget({
+      mode: String(formData.get("widget_mode") ?? ""),
+      aiRequestText: formData.get("aiRequestText") === "on",
+    }),
+  };
+  await supabase
+    .from("catalog_connections")
+    .update({
+      settings: settings as unknown as Json,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .eq("organization_id", ctx.organization.id);
+  revalidatePath(`/integrations/${id}`);
 }
 
 export async function toggleConnection(connectionId: string, enable: boolean) {

@@ -27,6 +27,25 @@ class QuoteBuilder_Settings {
         return untrailingslashit($origin);
     }
 
+    public static function site_key() {
+        return sanitize_text_field((string) get_option('quotebuilder_site_key', ''));
+    }
+
+    public static function widget() {
+        $saved = get_option('quotebuilder_widget', []);
+        if (!is_array($saved)) {
+            $saved = [];
+        }
+        $mode = isset($saved['mode']) ? (string) $saved['mode'] : 'both';
+        if ($mode !== 'catalog' && $mode !== 'request') {
+            $mode = 'both';
+        }
+        return [
+            'mode' => $mode,
+            'aiRequestText' => !empty($saved['aiRequestText']),
+        ];
+    }
+
     public static function flags() {
         return [
             'hidePrices',

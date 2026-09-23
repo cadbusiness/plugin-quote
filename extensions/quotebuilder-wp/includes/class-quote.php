@@ -192,6 +192,7 @@ class QuoteBuilder_Quote {
         foreach (self::items() as $item) {
             $lines[] = [
                 'id' => (string) $item['id'],
+                'variation_id' => (string) ($item['variation_id'] ?? ''),
                 'qty' => max(1, (int) ($item['qty'] ?? 1)),
                 'name' => $item['name'] ?? '',
                 'sku' => $item['sku'] ?? null,
