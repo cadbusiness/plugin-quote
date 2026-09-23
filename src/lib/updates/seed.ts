@@ -2,8 +2,22 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.26.0",
+    version: "1.26.0",
+    title: "Devis reçus depuis WordPress",
+    items: [
+      "Un visiteur qui envoie une demande depuis le site WordPress (plugin QuoteBuilder) crée un devis dans le dashboard, en statut Nouveau, origine Site Web.",
+      "Les lignes se rattachent aux produits déjà synchronisés (y compris les variations WooCommerce) ; un produit inconnu garde le nom envoyé.",
+      "L’équipe est prévenue comme pour un brief funnel (notification in-app + email brief) ; le prospect n’est pas relancé automatiquement.",
+      "Un même envoi n’est pas créé deux fois.",
+      "Dans le plugin, ajouter deux fois le même produit simple met à jour la quantité au lieu de dupliquer la ligne.",
+    ],
+    releasedAt: "2026-09-23",
+    createdAt: "2026-09-23T00:00:00.000Z",
+  },
   {
     id: "seed-1.25.0",
     version: "1.25.0",
