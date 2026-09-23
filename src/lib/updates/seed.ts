@@ -2,8 +2,21 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` + `0059` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.28.0",
+    version: "1.28.0",
+    title: "Devis depuis le navigateur (clé site)",
+    items: [
+      "Sur la fiche boutique, une section « Devis depuis le site » affiche la clé publique (qb_site_…) et l’URL POST pour créer un devis depuis le navigateur, sans exposer le secret du plugin.",
+      "Vous pouvez autoriser des domaines de préproduction via « Origines navigateur supplémentaires » (une origine par ligne) ; l’URL de la boutique est toujours autorisée.",
+      "Un widget ou le JavaScript de la page peut envoyer la même demande WordPress qu’avant : devis Nouveau, origine Site Web, brief commercial — sans mail au prospect.",
+      "Un même envoi n’est pas créé deux fois ; le secret Bearer du plugin reste réservé aux appels serveur.",
+    ],
+    releasedAt: "2026-09-23",
+    createdAt: "2026-09-23T00:00:00.000Z",
+  },
   {
     id: "seed-1.27.0",
     version: "1.27.0",
