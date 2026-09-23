@@ -1,4 +1,5 @@
 -- Visitor-owned draft « demande ».
+-- Numbered 0055: 0054 is plugin_quote_receipts.
 -- One open request per visitor identity (org, and catalog connection when present).
 -- Draft lines stay off the CRM until the first submit. After submit, the same
 -- visitor can append lines without sending another contact channel.
