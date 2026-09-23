@@ -33,7 +33,7 @@ function articleHtml(source: string) {
   const blocks: string[] = [];
   for (const raw of source.replace(/\r\n/g, "\n").trim().split(/\n{2,}/)) {
     const block = raw.trim();
-    if (!block || block.startsWith("# ")) continue;
+    if (!block || block.startsWith("# ") || block.startsWith("<!--")) continue;
     if (block.startsWith("## ")) {
       blocks.push(`<h2 class="mt-12 text-2xl font-semibold tracking-tight">${inlineHtml(block.slice(3))}</h2>`);
       continue;

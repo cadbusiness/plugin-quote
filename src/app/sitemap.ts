@@ -3,11 +3,17 @@ import { BLOG_POSTS } from "@/lib/marketing/blog";
 import { MARKETING_ROUTES } from "@/lib/marketing/routes";
 import { SITE_URL } from "@/lib/marketing/site";
 
+/** Dates éditoriales hors articles (le blog passe par publishedAt). */
+const CONTENT_LASTMOD: Record<string, string> = {
+  "/secteurs/funnel-devis-pergola-terrasse": "2026-09-23",
+  "/outils/estimateur-gain-temps-catalogue-devis": "2026-09-23",
+};
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const dates = new Map(BLOG_POSTS.map((post) => [post.path, post.publishedAt]));
   return MARKETING_ROUTES.map((route) => ({
     url: `${SITE_URL}${route.path === "/" ? "" : route.path}`,
-    lastModified: dates.get(route.path) ?? new Date(),
+    lastModified: dates.get(route.path) ?? CONTENT_LASTMOD[route.path] ?? new Date(),
     changeFrequency: route.changeFrequency,
     priority: route.priority,
   }));

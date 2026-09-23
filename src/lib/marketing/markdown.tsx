@@ -410,6 +410,11 @@ export function Markdown({
       continue;
     }
 
+    if (/^<!--[\s\S]*-->$/.test(line.trim())) {
+      i += 1;
+      continue;
+    }
+
     if (line.startsWith("### ")) {
       blocks.push(
         <h3 key={key++} className="mt-10 scroll-mt-28 text-lg font-semibold tracking-tight sm:text-xl">

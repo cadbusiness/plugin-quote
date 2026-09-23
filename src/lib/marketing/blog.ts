@@ -87,6 +87,7 @@ export const BLOG_TOOL_ACCEPTANCE = "/outils/simulateur-taux-acceptation-devis";
 export const BLOG_TOOL_INCOMPLETE_BRIEF = "/outils/estimateur-cout-brief-incomplet";
 export const BLOG_TOOL_EXPIRED_QUOTES = "/outils/simulateur-cout-devis-expires";
 export const BLOG_TOOL_ACOMPTE = "/outils/calculateur-acompte-devis";
+export const BLOG_TOOL_CATALOG_GAIN = "/outils/estimateur-gain-temps-catalogue-devis";
 
 export type BlogTool = {
   href: string;
@@ -168,9 +169,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "HT, TVA, % ou montant fixe, 1 à 4 jalons. Acompte TTC, reste dû, répartition indicative et délai de démarrage.",
     tags: ["funnel", "relances"],
   },
+  {
+    href: BLOG_TOOL_CATALOG_GAIN,
+    title: "Estimateur gain de temps catalogue / kits",
+    text: "Devis par mois, minutes manuelles, part bibliothèque, minutes gagnées, taux horaire. Heures et euros par mois et par an.",
+    tags: ["catalogue", "funnel"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "bibliotheque-lignes-kits-devis-b2b",
+    path: "/blog/bibliotheque-lignes-kits-devis-b2b",
+    title: "Bibliothèque de lignes et kits pour devis B2B : chiffrer plus vite sans Excel",
+    description:
+      "Bibliothèque de lignes, kits composés et articles récurrents pour accélérer le chiffrage B2B : catalogue HT, options, synchro boutique, erreurs de reprise manuelle, KPIs temps et écarts prix.",
+    publishedAt: "2026-09-23",
+    readingMinutes: 12,
+    tags: ["catalogue", "funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: "/images/blog/sync-catalogue-woocommerce-shopify-parcours-devis/06-produits.png",
+    pinned: false,
+  },
   {
     slug: "acomptes-echeances-devis-b2b",
     path: "/blog/acomptes-echeances-devis-b2b",
