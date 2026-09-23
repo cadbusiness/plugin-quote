@@ -85,6 +85,90 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
       a: "Non. C’est du process commercial. Grilles, CGV et exceptions sensibles : faites valider en interne (et juridiquement si besoin).",
     },
   ],
+  "preremplir-devis-url-parametres": [
+    {
+      q: "Est-ce que ça marche seulement sur la démo Quickly ?",
+      a: "Non. Quickly / rayonnage sert d’exemple public. Dès que votre org et votre funnel sont publiés, les mêmes paramètres s’appliquent sur /c/votre-org/votre-slug et /embed/.",
+    },
+    {
+      q: "Le shortcode WordPress doit-il inclure les paramètres ?",
+      a: "Pas forcément. Si la page hôte a déjà la query, le widget la recopie dans l’iframe. Vous pouvez aussi construire une URL d’embed complète si vous contrôlez le HTML.",
+    },
+    {
+      q: "Puis-je cumuler UTM et besoin / add ?",
+      a: "Oui. Ce sont des clés de query indépendantes. Gardez des noms stables pour le préremplissage ; laissez les UTM pour l’analytics.",
+    },
+    {
+      q: "Que se passe-t-il si j’ajoute deux fois le même produit ?",
+      a: "Chaque token add qui matche un produit suit la logique d’ajout (quantité / note). En doute, testez avec un seul SKU clair, puis documentez le comportement attendu pour votre équipe.",
+    },
+    {
+      q: "besoin peut-il cibler autre chose qu’une chip ?",
+      a: "Le contrat décrit le match sur chips (value ou label). Pour un produit catalogue, utilisez add ou product.",
+    },
+    {
+      q: "Comment lier ça à mon catalogue Woo ?",
+      a: "Synchronisez d’abord le catalogue (sku / external id alignés), puis utilisez ces identifiants dans add.",
+    },
+    {
+      q: "L’embed change-t-il les règles ?",
+      a: "Non. Mêmes paramètres, mêmes règles de session, sur /embed/ comme sur /c/.",
+    },
+    {
+      q: "Puis-je préremplir après qu’un devis a été soumis ?",
+      a: "Non pour cette session. La session soumise reste inchangée. Nouveau parcours pour un nouveau test.",
+    },
+    {
+      q: "Y a-t-il un outil pour construire l’URL ?",
+      a: "Oui : le générateur d’URL de préremplissage devis. Il sort l’URL complète, la query seule, et un exemple de shortcode.",
+    },
+    {
+      q: "Ça remplace un configurateur complet ?",
+      a: "Non. C’est un amorçage du brief (chips + produit). Le reste du funnel (dimensions, options, contact) reste à remplir.",
+    },
+  ],
+  "fiche-produit-b2b-devis-unifie": [
+    {
+      q: "Est-ce que je dois tout ressaisir si j’ai déjà Woo ?",
+      a: "Non. Partez d’une sync, puis enrichissez specs, médias et sheet dans QuoteBuilder. Les règles non destructives protègent cet enrichissement.",
+    },
+    {
+      q: "Les clés de specs sont-elles figées ?",
+      a: "Les clés listées (charge, hauteur, profondeur, materiau, delai) sont le socle. Des clés libres permettent d’étendre sans attendre une refonte.",
+    },
+    {
+      q: "Où apparaissent plan et usage ?",
+      a: "En thumbs / vignettes, pendant que la card utilise surtout le rôle product. Le détail d’interface peut varier selon funnel, embed ou boutique, mais le typage reste le même.",
+    },
+    {
+      q: "La notice peut-elle être longue ?",
+      a: "manualText est pensé court. Pour le détail, ajoutez un PDF de rôle manual.",
+    },
+    {
+      q: "Que synchronisent _qb_manual, _qb_certificate, _qb_warranty ?",
+      a: "Ce sont les meta Woo associées aux documents Mode d’emploi (manuel, certificat, garantie). Elles évitent de noyer les PDF dans la galerie classique.",
+    },
+    {
+      q: "Un pull Woo vide peut-il effacer ma notice ?",
+      a: "Non. Un pull vide n’efface pas une notice déjà sauvegardée. Et la description HTML Woo n’est pas copiée dans la notice.",
+    },
+    {
+      q: "Ça marche aussi en embed et en brief devis ?",
+      a: "Oui : funnel, embed, brief devis et page boutique peuvent afficher specs et Mode d’emploi si présents.",
+    },
+    {
+      q: "Lien avec les options / variantes ?",
+      a: "La fiche unifiée documente le produit de référence. Les alternatives sur le devis restent un sujet voisin : options, variantes, alternatives.",
+    },
+    {
+      q: "Shopify est-il couvert pareil ?",
+      a: "L’article met l’accent sur le contrat Woo (meta _qb_*, attributs). La sync catalogue multi-plateforme est traitée dans l’article sync Woo / Shopify. Pour les détails shell Shopify, restez sur ce qui est réellement branché sur votre plan.",
+    },
+    {
+      q: "Par où commencer sur 50 produits ?",
+      a: "Par les 10 SKU qui génèrent le plus de demandes Hot. Specs, une image product, notice courte. Puis plans et PDF sur les familles à fort contentieux technique.",
+    },
+  ],
   "acomptes-echeances-devis-b2b": [
     {
       q: "Quel pourcentage d’acompte demander sur un devis B2B de fabrication ?",

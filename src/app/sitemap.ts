@@ -14,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const dates = new Map(BLOG_POSTS.map((post) => [post.path, post.publishedAt]));
   return MARKETING_ROUTES.map((route) => ({
     url: `${SITE_URL}${route.path === "/" ? "" : route.path}`,
-    lastModified: dates.get(route.path) ?? CONTENT_LASTMOD[route.path] ?? new Date(),
+    lastModified: dates.get(route.path) ?? route.lastModified ?? CONTENT_LASTMOD[route.path] ?? new Date(),
     changeFrequency: route.changeFrequency,
     priority: route.priority,
   }));
