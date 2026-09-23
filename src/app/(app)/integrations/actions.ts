@@ -20,6 +20,7 @@ import {
   type ProviderCredentials,
   type ResolvedConnection,
 } from "@/lib/integrations/types";
+import { parseAllowedOriginList } from "@/lib/integrations/public-site-quote";
 import { parseStorefront } from "@/lib/integrations/storefront";
 import { pluginConnectCallback } from "@/lib/integrations/plugin-connect";
 import { normalizeSiteUrl } from "@/lib/integrations/woocommerce";
@@ -211,12 +212,14 @@ export async function updateConnection(formData: FormData) {
     }
     target = aligned.row;
   }
+  const rawOrigins = formData.get("allowed_origins");
   await supabase
     .from("catalog_connections")
     .update({
       label: String(formData.get("label") ?? "").trim() || "Boutique",
       configurator_id: String(formData.get("configurator_id") ?? "") || null,
       settings: settings as unknown as Json,
+      ...(typeof rawOrigins === "string" ? { allowed_origins: parseAllowedOriginList(rawOrigins) } : {}),
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)

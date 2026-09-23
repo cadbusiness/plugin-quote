@@ -346,6 +346,7 @@ export type Database = {
       }
       catalog_connections: {
         Row: {
+          allowed_origins: string[]
           configurator_id: string | null
           created_at: string
           credentials: Json
@@ -358,6 +359,7 @@ export type Database = {
           organization_id: string
           product_count: number
           provider: string
+          public_key: string
           settings: Json
           status: string
           store_domain: string
@@ -365,6 +367,7 @@ export type Database = {
           webhook_secret: string | null
         }
         Insert: {
+          allowed_origins?: string[]
           configurator_id?: string | null
           created_at?: string
           credentials?: Json
@@ -377,6 +380,7 @@ export type Database = {
           organization_id: string
           product_count?: number
           provider: string
+          public_key?: string
           settings?: Json
           status?: string
           store_domain: string
@@ -384,6 +388,7 @@ export type Database = {
           webhook_secret?: string | null
         }
         Update: {
+          allowed_origins?: string[]
           configurator_id?: string | null
           created_at?: string
           credentials?: Json
@@ -396,6 +401,7 @@ export type Database = {
           organization_id?: string
           product_count?: number
           provider?: string
+          public_key?: string
           settings?: Json
           status?: string
           store_domain?: string
