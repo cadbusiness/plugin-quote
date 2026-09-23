@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "recevoir-demandes-devis-wordpress-quotebuilder": [
+    {
+      q: "Le plugin WordPress envoie-t-il un email au prospect à la création du devis ?",
+      a: "Non pour le flux décrit ici : la création notifie le commercial. Le nurture ou la confirmation prospect se configure à part (autopilote, message manuel). Ce n’est pas le même événement.",
+    },
+    {
+      q: "Faut-il un Bearer pour créer un devis depuis le widget navigateur ?",
+      a: "Non. Avec la clé site et le CORS borné à vos domaines, le navigateur peut créer un devis sans Bearer. Les secrets serveur restent hors du front. La clé site n’est pas une clé admin.",
+    },
+    {
+      q: "Quelle différence entre [quotebuilder] et [quotebuilder_quote] ?",
+      a: "[quotebuilder] porte le funnel / parcours. [quotebuilder_quote] sert la liste ou la vue liée au devis. Ne les intervertissez pas sur une page « demander un devis ».",
+    },
+    {
+      q: "Que se passe-t-il si la variante Woo n’existe pas ?",
+      a: "La combinaison d’attributs inexistante est refusée. Pas de ligne fantôme, pas de prix inventé. Corrigez le catalogue ou le mapping attributs vers la variation réelle.",
+    },
+    {
+      q: "L’IA du widget peut-elle inventer un SKU ?",
+      a: "Non dans le cadre prévu : uniquement des SKU réels du catalogue synchronisé. Si le catalogue est vide ou désynchronisé, réparez la sync avant d’activer l’IA.",
+    },
+    {
+      q: "Le chat peut-il donner un prix ou un délai de pose ?",
+      a: "Il doit refuser les prix et délais inventés. Il s’appuie sur le catalogue, les specs et les modes d’emploi. Au-delà : escalade email vers le commercial assigné, sinon sales_email, sinon la boîte org.",
+    },
+    {
+      q: "Comment éviter les doublons quand le prospect clique deux fois ?",
+      a: "L’idempotence via externalId ignore le second événement identique. Vérifiez en QA avec un double envoi volontaire : un seul devis au statut Nouveau.",
+    },
+    {
+      q: "Où arrivent les demandes par rapport aux autres canaux ?",
+      a: "Dans le même pipeline QuoteBuilder, avec l’origine Site Web. Utile pour centraliser le site, les ads et la boutique sans boîtes mail concurrentes.",
+    },
+    {
+      q: "Comment mesurer si le formulaire contact me coûte encore trop cher ?",
+      a: "Comptez demandes par mois, pourcentage exploitables sans rappel, minutes de ressaisie et taux de réponse sous 24 h. L’estimateur formulaire vs funnel WordPress donne un ordre de grandeur (heures perdues, demandes mortes, score de maturité).",
+    },
+    {
+      q: "Ce guide remplace-t-il la doc d’installation du widget ?",
+      a: "Non. Pour CSP, domaines, Gutenberg et Elementor, voir installer le widget devis WordPress. Ici : réception des demandes, pipeline, et règles produit (clé site, variantes, chat, notif commerciale).",
+    },
+  ],
   "bibliotheque-lignes-kits-devis-b2b": [
     {
       q: "Quelle différence entre catalogue boutique et bibliothèque de devis ?",

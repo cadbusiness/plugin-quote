@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/marketing/site";
 export const metadata: Metadata = pageMetadata({
   title: "Outils devis B2B",
   description:
-    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage, impact remise, seuil de remise et plancher de marge, ROI logiciel, taux d’acceptation, coût d’un brief incomplet, coût des devis expirés, calculateur d’acompte, gain de temps catalogue, générateur d’URL de préremplissage. Outils gratuits QuoteBuilder.",
+    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage, impact remise, seuil de remise et plancher de marge, ROI logiciel, taux d’acceptation, coût d’un brief incomplet, coût des devis expirés, calculateur d’acompte, gain de temps catalogue, générateur d’URL de préremplissage, estimateur leads formulaire vs funnel WordPress. Outils gratuits QuoteBuilder.",
   path: "/outils",
 });
 
@@ -101,6 +101,12 @@ const TOOLS = [
     title: "Générateur d’URL de préremplissage devis",
     text: "URL de funnel avec ?besoin=, ?add= et ?product=, query seule et shortcode WordPress. Assemblage 100 % local.",
   },
+  {
+    href: "/outils/estimateur-leads-formulaire-vs-funnel-wp",
+    eyebrow: "Intégration",
+    title: "Estimateur leads formulaire vs funnel WordPress",
+    text: "Demandes / mois, % exploitables, ressaisie, réponse sous 24 h. Heures perdues, demandes mortes, coût d’opportunité, score de maturité. Calcul 100 % local.",
+  },
 ] as const;
 
 export default function OutilsIndexPage() {
@@ -113,7 +119,7 @@ export default function OutilsIndexPage() {
             Chiffrer le trou. Rédiger les touches.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-mk-muted sm:text-lg">
-            Quinze outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
+            Seize outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
           </p>
         </div>
       </section>

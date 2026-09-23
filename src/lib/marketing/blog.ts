@@ -90,6 +90,7 @@ export const BLOG_TOOL_ACOMPTE = "/outils/calculateur-acompte-devis";
 export const BLOG_TOOL_CATALOG_GAIN = "/outils/estimateur-gain-temps-catalogue-devis";
 export const BLOG_TOOL_SEUIL_REMISE = "/outils/calculateur-seuil-remise-marge";
 export const BLOG_TOOL_PREFILL_URL = "/outils/generateur-url-prefill-devis";
+export const BLOG_TOOL_LEADS_WP = "/outils/estimateur-leads-formulaire-vs-funnel-wp";
 
 export type BlogTool = {
   href: string;
@@ -189,9 +190,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "URL de funnel avec ?besoin=, ?add= et ?product=, query seule et shortcode WordPress. Assemblage 100 % local.",
     tags: ["funnel", "integrations"],
   },
+  {
+    href: BLOG_TOOL_LEADS_WP,
+    title: "Estimateur leads formulaire vs funnel WordPress",
+    text: "Demandes / mois, % exploitables, ressaisie, réponse sous 24 h. Heures perdues, demandes mortes, coût d’opportunité optionnel, score de maturité. Calcul 100 % local.",
+    tags: ["integrations", "funnel"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "recevoir-demandes-devis-wordpress-quotebuilder",
+    path: "/blog/recevoir-demandes-devis-wordpress-quotebuilder",
+    title: "Recevoir des demandes de devis WordPress dans QuoteBuilder",
+    description:
+      "Plugin WordPress devis B2B : créer un devis QuoteBuilder depuis le site (clé site + CORS), lignes Woo, variantes, widget dual-mode, chat ancré catalogue, notif commerciale. Pipeline, pas un simple formulaire.",
+    publishedAt: "2026-09-23",
+    readingMinutes: 12,
+    tags: ["integrations", "funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.integrations,
+    pinned: false,
+  },
   {
     slug: "bibliotheque-lignes-kits-devis-b2b",
     path: "/blog/bibliotheque-lignes-kits-devis-b2b",

@@ -36,6 +36,7 @@ import { computeAcompteDevis } from "./acompte-devis";
 import { computeGainTempsCatalogue } from "./gain-temps-catalogue";
 import { computeSeuilRemiseMarge } from "./seuil-remise-marge";
 import { buildPrefillUrl } from "./prefill-url";
+import { LEADS_FORMULAIRE_DEFAULTS, computeLeadsFormulaireVsFunnel } from "./leads-formulaire-vs-funnel";
 import { MARKETING_ROUTES } from "./routes";
 import sitemap from "../../app/sitemap";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
@@ -95,6 +96,7 @@ for (const required of [
   "/outils/estimateur-gain-temps-catalogue-devis",
   "/outils/calculateur-seuil-remise-marge",
   "/outils/generateur-url-prefill-devis",
+  "/outils/estimateur-leads-formulaire-vs-funnel-wp",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
@@ -104,6 +106,7 @@ for (const required of [
   "/secteurs/funnel-devis-cuisine-equipee",
   "/secteurs/funnel-devis-cloture-portail",
   "/secteurs/funnel-devis-pergola-terrasse",
+  "/blog/recevoir-demandes-devis-wordpress-quotebuilder",
   "/blog/bibliotheque-lignes-kits-devis-b2b",
   "/blog/remise-commerciale-marge-devis-b2b",
   "/blog/preremplir-devis-url-parametres",
@@ -132,7 +135,36 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 25);
+assert.equal(BLOG_POSTS.length, 26);
+assert.deepEqual(
+  BLOG_POSTS.find((post) => post.slug === "recevoir-demandes-devis-wordpress-quotebuilder")?.tags,
+  ["integrations", "funnel"],
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "recevoir-demandes-devis-wordpress-quotebuilder")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "recevoir-demandes-devis-wordpress-quotebuilder")?.cover,
+  "/images/blog/visite-guidee-parcours-devis-b2b/08-integrations.png",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "recevoir-demandes-devis-wordpress-quotebuilder")?.readingMinutes,
+  12,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "recevoir-demandes-devis-wordpress-quotebuilder")?.publishedAt,
+  "2026-09-23",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "recevoir-demandes-devis-wordpress-quotebuilder")?.pinned,
+  false,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "recevoir-demandes-devis-wordpress-quotebuilder")?.path,
+  "/blog/recevoir-demandes-devis-wordpress-quotebuilder",
+);
+assert.equal(BLOG_FAQ["recevoir-demandes-devis-wordpress-quotebuilder"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "bibliotheque-lignes-kits-devis-b2b")?.tags, [
   "catalogue",
   "funnel",
@@ -451,7 +483,7 @@ assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tag
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 12);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 12);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 6);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 7);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 5);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);
 assert.equal(midArticleHeadingIndex(12), 5);
@@ -644,6 +676,14 @@ const requiredSources = {
     "/secteurs/funnel-devis-rayonnage-stockage",
     "/secteurs/funnel-devis-menuiserie-sur-mesure",
     "/outils/simulateur-impact-remise-devis",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "recevoir-demandes-devis-wordpress-quotebuilder.md": [
+    "/blog/installer-widget-devis-wordpress-javascript",
+    "/blog/formulaire-contact-vs-funnel-devis-b2b",
+    "/outils/estimateur-leads-formulaire-vs-funnel-wp",
+    "/blog/sync-catalogue-woocommerce-shopify-parcours-devis",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -1010,6 +1050,22 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(storesBody, /signup\?plan=free/);
+}
+
+{
+  const wpRaw = readFileSync(join(blogDir, "recevoir-demandes-devis-wordpress-quotebuilder.md"), "utf8");
+  assert.ok(wpRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const wpBody = stripFrontmatter(wpRaw);
+  assert.ok(
+    wpBody.startsWith("# Recevoir des demandes de devis WordPress dans QuoteBuilder"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(wpBody, /^title:/m);
+  assert.match(wpBody, /signup\?plan=free/);
+  assert.match(wpBody, /\/outils\/estimateur-leads-formulaire-vs-funnel-wp/);
+  assert.match(wpBody, /\/c\/demo\/rayonnage/);
+  assert.doesNotMatch(wpBody, EM_DASH);
+  assert.ok(wpBody.split(/\s+/).filter(Boolean).length >= 1800, "wordpress demandes article body too short");
 }
 
 {
@@ -1783,11 +1839,80 @@ assert.equal(
 assert.equal(prefillEmbed.shortcode, '[quotebuilder org="demo" id="rayonnage"]');
 assert.match(prefillEmbed.tip, /catalogue synchronisé/);
 
+const leadsDefault = computeLeadsFormulaireVsFunnel({ ...LEADS_FORMULAIRE_DEFAULTS });
+assert.equal(leadsDefault.heures, 12);
+assert.equal(leadsDefault.mortes, 22);
+assert.equal(leadsDefault.recup, 14);
+assert.equal(leadsDefault.cout, 7560);
+assert.equal(leadsDefault.score, 40);
+assert.equal(leadsDefault.scoreTone, "bad");
+assert.equal(leadsDefault.alertTone, "bad");
+assert.match(leadsDefault.alert, /Pipeline fragile/);
+assert.match(leadsDefault.recap, /origine Site Web/);
+assert.match(leadsDefault.recap, /Score maturité pipeline : 40 \/ 100/);
+
+const leadsEmpty = computeLeadsFormulaireVsFunnel({ ...LEADS_FORMULAIRE_DEFAULTS, demandes: 0 });
+assert.equal(leadsEmpty.heures, 0);
+assert.equal(leadsEmpty.mortes, 0);
+assert.equal(leadsEmpty.recup, 0);
+assert.equal(leadsEmpty.cout, 0);
+assert.equal(leadsEmpty.alertTone, "neutral");
+assert.match(leadsEmpty.alert, /volume de demandes/);
+
+const leadsNoBasket = computeLeadsFormulaireVsFunnel({ ...LEADS_FORMULAIRE_DEFAULTS, panier: 0 });
+assert.equal(leadsNoBasket.cout, null);
+assert.equal(leadsNoBasket.coutLabel, "non calculé (panier = 0)");
+assert.match(leadsNoBasket.recap, /Coût d’opportunité indicatif : n\/a/);
+
+const leadsMature = computeLeadsFormulaireVsFunnel({
+  demandes: 20,
+  exploitPct: 85,
+  minutes: 4,
+  tauxActuel: 90,
+  tauxCible: 95,
+  panier: 0,
+  convPct: 12,
+});
+assert.equal(leadsMature.score, 87);
+assert.equal(leadsMature.alertTone, "ok");
+assert.match(leadsMature.tip, /qualité catalogue/);
+
+const leadsBuild = computeLeadsFormulaireVsFunnel({
+  demandes: 10,
+  exploitPct: 50,
+  minutes: 12,
+  tauxActuel: 50,
+  tauxCible: 80,
+  panier: 1000,
+  convPct: 10,
+});
+assert.equal(leadsBuild.heures, 2);
+assert.equal(leadsBuild.recup, 3);
+assert.equal(leadsBuild.mortes, 4.5);
+assert.equal(leadsBuild.cout, 300);
+assert.equal(leadsBuild.score, 52);
+assert.equal(leadsBuild.alertTone, "warn");
+
+const leadsNoGap = computeLeadsFormulaireVsFunnel({
+  demandes: 10,
+  exploitPct: 50,
+  minutes: 12,
+  tauxActuel: 80,
+  tauxCible: 40,
+  panier: 1000,
+  convPct: 10,
+});
+assert.equal(leadsNoGap.recup, 0);
+assert.equal(leadsNoGap.cout, 0);
+assert.equal(leadsNoGap.mortes, 3.5);
+
 const sitemapEntries = sitemap();
 for (const expected of [
   { path: "/blog/preremplir-devis-url-parametres", priority: 0.8, lastmod: "2026-09-22" },
   { path: "/blog/fiche-produit-b2b-devis-unifie", priority: 0.8, lastmod: "2026-09-22" },
   { path: "/outils/generateur-url-prefill-devis", priority: 0.7, lastmod: "2026-09-22" },
+  { path: "/blog/recevoir-demandes-devis-wordpress-quotebuilder", priority: 0.8, lastmod: "2026-09-23" },
+  { path: "/outils/estimateur-leads-formulaire-vs-funnel-wp", priority: 0.7, lastmod: "2026-09-23" },
 ]) {
   const entry = sitemapEntries.find((item) => item.url === `https://www.quotebuilder.co${expected.path}`);
   assert.ok(entry, `sitemap missing ${expected.path}`);
@@ -1795,6 +1920,8 @@ for (const expected of [
   assert.equal(entry?.lastModified, expected.lastmod);
 }
 assert.ok(paths.includes("/outils/generateur-url-prefill-devis"));
+assert.ok(paths.includes("/outils/estimateur-leads-formulaire-vs-funnel-wp"));
+assert.ok(paths.includes("/blog/recevoir-demandes-devis-wordpress-quotebuilder"));
 
 const acompteDefault = computeAcompteDevis({
   ht: 12000,
@@ -2157,6 +2284,8 @@ const llmsPaths = [
   "/blog/preremplir-devis-url-parametres",
   "/blog/fiche-produit-b2b-devis-unifie",
   "/outils/generateur-url-prefill-devis",
+  "/blog/recevoir-demandes-devis-wordpress-quotebuilder",
+  "/outils/estimateur-leads-formulaire-vs-funnel-wp",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -2454,6 +2583,8 @@ for (const root of marketingRoots) {
 assert.equal(CREAM_HEX, "#F6F0E8");
 
 for (const [path, lastmod] of [
+  ["/blog/recevoir-demandes-devis-wordpress-quotebuilder", "2026-09-23"],
+  ["/outils/estimateur-leads-formulaire-vs-funnel-wp", "2026-09-23"],
   ["/blog/bibliotheque-lignes-kits-devis-b2b", "2026-09-23"],
   ["/secteurs/funnel-devis-pergola-terrasse", "2026-09-23"],
   ["/outils/estimateur-gain-temps-catalogue-devis", "2026-09-23"],
