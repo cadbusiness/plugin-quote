@@ -2,8 +2,21 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.27.0",
+    version: "1.27.0",
+    title: "Demande brouillon : e-mail ou téléphone",
+    items: [
+      "Sur le funnel public (/c et /embed), le visiteur choisit « Par e-mail » ou le téléphone pour envoyer sa demande.",
+      "Après le premier envoi, il peut ajouter d’autres lignes au même dossier sans resaisir le contact.",
+      "Une seule notification brief arrive dans la boîte commerciale au premier envoi — pas de mail au prospect, pas de second brief si on ajoute encore des lignes.",
+      "Un dossier téléphone seul (sans e-mail) reste visible côté commercial ; la confirmation prospect n’est pas envoyée s’il n’y a pas d’e-mail.",
+    ],
+    releasedAt: "2026-09-23",
+    createdAt: "2026-09-23T00:00:00.000Z",
+  },
   {
     id: "seed-1.26.0",
     version: "1.26.0",
