@@ -6,6 +6,7 @@ import { quoteCoverSrc, QuoteProductMedia } from "@/components/catalog/quote-med
 import { ProductSheetLinks } from "@/components/catalog/product-sheet";
 import { SpecTable } from "@/components/catalog/spec-table";
 import { ProductMedia, ProductTile } from "@/components/catalog/product-tile";
+import { catalogAxes, quoteSelectionForProduct, resolveCatalogVariant } from "@/lib/catalog/variant-matrix";
 import { formatPrice } from "@/lib/format";
 import { groupProductsByCategory } from "@/lib/catalog/group";
 import { quoteLineCount } from "@/lib/funnels/kind";
@@ -42,30 +43,42 @@ export function CatalogBrowse({
   const [qty, setQty] = useState(1);
   const [options, setOptions] = useState<Record<string, string>>({});
   const [added, setAdded] = useState(false);
+  const [comboError, setComboError] = useState("");
 
   const count = quoteLineCount(customization);
   const activeGroup = groups.find((group) => group.key === (view.name === "categories" ? "" : view.category));
   const listed = view.name === "categories" ? [] : (activeGroup?.products ?? products);
   const product =
     view.name === "product" ? (listed.find((item) => item.id === view.productId) ?? products.find((item) => item.id === view.productId)) : null;
+  const axes = product ? catalogAxes({ options: product.options, variants: product.variants }) : [];
+  const resolved = product && axes.length ? resolveCatalogVariant(product.variants ?? [], axes, options) : null;
 
   function openProduct(next: Product, category: string) {
     setQty(customization.quantities[next.id] || 1);
     setOptions(customization.options[next.id] ?? {});
     setAdded((customization.quantities[next.id] ?? 0) > 0);
+    setComboError("");
     setView({ name: "product", category, productId: next.id });
   }
 
   function addProduct(item: Product) {
     const quantity = Math.max(1, qty);
+    const axes = catalogAxes({ options: item.options, variants: item.variants });
+    const line = quoteSelectionForProduct(item, options);
+    if (axes.length && !line.options.woo_variation_id) {
+      setComboError("Cette combinaison n'existe pas.");
+      setAdded(false);
+      return;
+    }
     onChange({
       ...customization,
       quantities: { ...customization.quantities, [item.id]: quantity },
       options: {
         ...customization.options,
-        [item.id]: options,
+        [item.id]: line.options,
       },
     });
+    setComboError("");
     setAdded(true);
   }
 
@@ -155,23 +168,36 @@ export function CatalogBrowse({
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-mk-faint">{view.category}</p>
               <h2 className="mt-1 text-2xl font-semibold tracking-tight text-mk-ink">{product.name}</h2>
-              <p className="mt-2 text-sm font-semibold text-mk-ink">{formatPrice(product.priceMin, product.priceMax, product.currency)}</p>
+              <p className="mt-2 text-sm font-semibold text-mk-ink">
+                {formatPrice(resolved?.price ?? product.priceMin, resolved?.price ?? product.priceMax, product.currency)}
+              </p>
+              {resolved?.sku ? <p className="mt-1 text-sm text-mk-faint">SKU {resolved.sku}</p> : null}
               <SpecTable specs={product.specs} />
               <ProductSheetLinks sheet={product.sheet} />
               {product.description ? (
                 <ProductHtml html={product.description} className="mt-3" />
               ) : null}
-              {product.options.length ? (
+              {(axes.length ? axes : product.options).length ? (
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                  {product.options.map((opt) => (
+                  {(axes.length
+                    ? [
+                        ...axes.map((axis) => ({ key: axis.key, label: axis.name, values: axis.options })),
+                        ...product.options.filter((option) => !axes.some((axis) => axis.key === option.key)),
+                      ]
+                    : product.options
+                  ).map((opt) => (
                     <label key={opt.key} className="text-sm">
                       <span className="mb-1 block text-mk-faint">{opt.label}</span>
                       <select
                         className="w-full rounded-xl border border-mk-border px-2.5 py-2 text-mk-ink outline-none focus:border-mk-accent focus:ring-4 focus:ring-mk-accent/15"
                         value={options[opt.key] ?? ""}
-                        onChange={(event) => setOptions((current) => ({ ...current, [opt.key]: event.target.value }))}
+                        onChange={(event) => {
+                          setComboError("");
+                          setAdded(false);
+                          setOptions((current) => ({ ...current, [opt.key]: event.target.value }));
+                        }}
                       >
-                        <option value="">Standard</option>
+                        <option value="">{axes.some((axis) => axis.key === opt.key) ? "Choisir" : "Standard"}</option>
                         {opt.values.map((value) => (
                           <option key={value.value} value={value.value}>
                             {value.label}
@@ -202,6 +228,7 @@ export function CatalogBrowse({
                   {added ? "Mettre à jour le devis" : "Ajouter au devis"}
                 </button>
               </div>
+              {comboError ? <p className="mt-3 text-sm text-red-600">{comboError}</p> : null}
               {added ? (
                 <p className="mt-3 flex items-center gap-1.5 text-sm font-medium text-emerald-600">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">

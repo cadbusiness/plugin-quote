@@ -12,6 +12,12 @@ import {
   type SheetDocument,
 } from "@/lib/catalog/sheet";
 import { mapWooCatalogAttributes, mapWooProductSpecs, wooSpecsWrite, type WooSpecUnits } from "@/lib/catalog/specs";
+import {
+  collectPaged,
+  mapWooVariantMatrix,
+  shouldLoadWooVariations,
+  WOO_VARIATION_PAGE_SIZE,
+} from "@/lib/catalog/variant-matrix";
 import { htmlToText, parsePrice } from "@/lib/integrations/html";
 import { safeEqual } from "@/lib/integrations/secrets";
 import {
@@ -76,8 +82,9 @@ type WooVariation = {
   regular_price?: string;
   sale_price?: string;
   stock_status?: string;
+  stock_quantity?: number | null;
   image?: WooImage;
-  attributes?: { name?: string; option?: string }[];
+  attributes?: { name?: string; slug?: string; option?: string }[];
 };
 
 export function normalizeSiteUrl(input: string) {
@@ -235,27 +242,18 @@ function mapImages(product: WooProduct): ProductImage[] {
   });
 }
 
-function mapVariants(variations: WooVariation[]): ProductVariant[] {
-  return variations.map((variation) => ({
-    externalId: String(variation.id),
-    title:
-      (variation.attributes ?? [])
-        .map((attr) => attr.option)
-        .filter(Boolean)
-        .join(" / ") || `Variante ${variation.id}`,
-    sku: variation.sku || null,
-    price: parsePrice(variation.price ?? variation.regular_price),
-    compareAtPrice:
-      variation.sale_price && variation.regular_price
-        ? parsePrice(variation.regular_price)
-        : null,
-    available: variation.stock_status !== "outofstock",
-    imageSrc: variation.image?.src ?? null,
-    selected: Object.fromEntries(
-      (variation.attributes ?? [])
-        .filter((attr) => attr.name && attr.option)
-        .map((attr) => [attr.name!, attr.option!]),
-    ),
+function mapVariants(attributes: WooAttribute[], variations: WooVariation[]): ProductVariant[] {
+  return mapWooVariantMatrix(attributes, variations).map((variant) => ({
+    externalId: variant.externalId,
+    title: variant.title,
+    sku: variant.sku,
+    price: variant.price,
+    compareAtPrice: variant.compareAtPrice ?? null,
+    available: variant.available,
+    imageSrc: variant.imageSrc ?? null,
+    selected: variant.selected,
+    stockStatus: variant.stockStatus,
+    stockQuantity: variant.stockQuantity,
   }));
 }
 
@@ -328,8 +326,9 @@ function normalizeProduct(
   currency: string,
   units: WooSpecUnits = {},
   categories: WooCategoryNode[] = [],
+  variantsComplete = true,
 ): NormalizedProduct {
-  const variants = mapVariants(variations);
+  const variants = mapVariants(product.attributes ?? [], variations);
   const variantPrices = variants.map((v) => v.price).filter((p): p is number => p !== null);
   const base = parsePrice(product.price ?? product.regular_price);
 
@@ -389,6 +388,7 @@ function normalizeProduct(
     attributes,
     options: toProspectOptions(attributes),
     variants,
+    variantsComplete,
     related: parseRelated({
       upsellIds: product.upsell_ids ?? [],
       crossSellIds: product.cross_sell_ids ?? [],
@@ -400,11 +400,23 @@ function normalizeProduct(
 }
 
 async function loadVariations(connection: ResolvedConnection, product: WooProduct) {
-  if (product.type !== "variable" || !(product.variations ?? []).length) return [];
-  const { data } = await wooFetch<WooVariation[]>(connection, `/products/${product.id}/variations`, {
-    per_page: 100,
-  });
-  return data;
+  if (!shouldLoadWooVariations(product)) return { variations: [] as WooVariation[], complete: true };
+  const expected = product.variations?.length ?? 0;
+  const collected = await collectPaged<WooVariation>(async (page, perPage) => {
+    const { data, headers } = await wooFetch<WooVariation[]>(connection, `/products/${product.id}/variations`, {
+      per_page: perPage,
+      page,
+      orderby: "id",
+      order: "asc",
+    });
+    const reported = Number(headers.get("x-wp-totalpages") ?? "");
+    return { items: data, totalPages: Number.isFinite(reported) && reported > 0 ? reported : null };
+  }, WOO_VARIATION_PAGE_SIZE);
+  // Parent connu, endpoint vide : ne pas remplacer la matrice par [].
+  if (expected > 0 && collected.items.length === 0) {
+    return { variations: [] as WooVariation[], complete: false };
+  }
+  return { variations: collected.items, complete: collected.complete };
 }
 
 export const wooAdapter: CatalogAdapter = {
@@ -443,8 +455,8 @@ export const wooAdapter: CatalogAdapter = {
 
     const products: NormalizedProduct[] = [];
     for (const product of data) {
-      const variations = await loadVariations(connection, product);
-      products.push(normalizeProduct(product, variations, currency, ctx.units, ctx.categories));
+      const loaded = await loadVariations(connection, product);
+      products.push(normalizeProduct(product, loaded.variations, currency, ctx.units, ctx.categories, loaded.complete));
     }
 
     const totalPages = Number(headers.get("x-wp-totalpages") ?? "1") || 1;
@@ -456,8 +468,8 @@ export const wooAdapter: CatalogAdapter = {
       const ctx = await catalogContext(connection);
       const currency = connection.currency || ctx.currency;
       const { data } = await wooFetch<WooProduct>(connection, `/products/${externalId}`);
-      const variations = await loadVariations(connection, data);
-      return normalizeProduct(data, variations, currency, ctx.units, ctx.categories);
+      const loaded = await loadVariations(connection, data);
+      return normalizeProduct(data, loaded.variations, currency, ctx.units, ctx.categories, loaded.complete);
     } catch (error) {
       if (error instanceof IntegrationError && error.status === 404) return null;
       throw error;

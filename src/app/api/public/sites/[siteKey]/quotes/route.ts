@@ -1,3 +1,4 @@
+import { loadWidgetCatalog } from "@/lib/integrations/quote-widget";
 import { handlePublicSiteQuote } from "@/lib/integrations/public-site-quote";
 
 export const runtime = "nodejs";
@@ -25,5 +26,5 @@ export async function OPTIONS(req: Request, ctx: Ctx) {
 
 export async function POST(req: Request, ctx: Ctx) {
   const { siteKey } = await ctx.params;
-  return handlePublicSiteQuote(req, siteKey);
+  return handlePublicSiteQuote(req, siteKey, { loadMatrices: loadWidgetCatalog });
 }

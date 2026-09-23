@@ -84,6 +84,15 @@ export type Product = {
   tags: string[];
   category: string | null;
   options: ProductOption[];
+  /** Matrice Woo/Shopify. Absente sur un produit simple. */
+  variants?: {
+    externalId: string;
+    title: string;
+    sku: string | null;
+    price: number | null;
+    available: boolean;
+    selected: Record<string, string>;
+  }[];
   /** Caractéristiques figées (charge, hauteur, profondeur, matériau, délai). */
   specs: ProductSpec[];
   /** Mode d'emploi, conformité, garantie. Absent si la fiche n'en a pas. */

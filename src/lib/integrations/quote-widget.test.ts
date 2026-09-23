@@ -176,6 +176,7 @@ function call(
   });
   return handler(req, init.key ?? SITE_KEY, {
     load: init.load ?? (async () => connection()),
+    loadMatrices: async () => [],
     ...extra,
   });
 }
@@ -322,6 +323,9 @@ async function main() {
   const widgetJs = readFileSync(new URL("../../app/widget.js/route.ts", import.meta.url), "utf8");
   const client = readFileSync(new URL("./quote-widget-client.ts", import.meta.url), "utf8");
   assert.match(widgetJs, /data-module"\) === "quote"/);
+  assert.match(client, /Cette combinaison n'existe pas/);
+  assert.match(client, /variant\.sku/);
+  assert.doesNotMatch(client, /sku:\s*selected/);
   assert.match(client, /x-quotebuilder-site-key/);
   assert.match(client, /source: "wordpress"/);
   assert.match(client, /requestText/);

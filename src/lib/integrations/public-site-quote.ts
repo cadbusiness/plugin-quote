@@ -1,5 +1,6 @@
 import type { PluginConnection } from "@/lib/integrations/plugin";
 import { receivePluginQuote, type PluginQuoteResult } from "@/lib/integrations/plugin-quotes";
+import { bindQuoteBody, type WidgetMatrixProduct } from "@/lib/integrations/quote-widget-bind";
 import { safeEqual } from "@/lib/integrations/secrets";
 import { clientIp, rateLimit } from "@/lib/security/rate-limit";
 import { createServiceClient } from "@/lib/supabase/service";
@@ -96,6 +97,8 @@ export function siteCorsHeaders(origin: string, methods = CORS_METHODS) {
 type PublicSiteDeps = {
   load?: (publicKey: string) => Promise<PluginConnection | null>;
   receive?: (connection: PluginConnection, body: unknown) => Promise<PluginQuoteResult>;
+  /** Présent sur la route publique : résout la matrice, rejette une combinaison inconnue. */
+  loadMatrices?: (connection: PluginConnection) => Promise<WidgetMatrixProduct[]>;
 };
 
 async function loadConnectionByPublicKey(publicKey: string) {
@@ -199,8 +202,14 @@ export async function handlePublicSiteQuote(req: Request, siteKey: string, deps:
     return json({ error: "Trop de requêtes, réessayez plus tard." }, 429, cors);
   }
 
-  const body = await req.json().catch(() => null);
+  let body = await req.json().catch(() => null);
   try {
+    if (deps.loadMatrices) {
+      const catalog = await deps.loadMatrices(connection);
+      const bound = bindQuoteBody(body, catalog);
+      if (!bound.ok) return json({ error: bound.error }, 422, cors);
+      body = bound.body;
+    }
     const receive = deps.receive ?? receivePluginQuote;
     const result = await receive(connection, body);
     if (!result.ok) return json({ error: result.error }, result.status, cors);

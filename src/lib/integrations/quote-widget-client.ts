@@ -19,7 +19,7 @@ export function quoteWidgetClientScript(origin: string) {
       + ".qb-w-tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:8px 0;cursor:pointer;color:#57534e}"
       + ".qb-w-tabs button.is-on{color:#E85D04;border-bottom-color:#E85D04;font-weight:600}"
       + ".qb-w label{display:block;margin:0 0 10px;font-size:13px}"
-      + ".qb-w input,.qb-w textarea{display:block;width:100%;margin-top:4px;padding:8px 10px;border:1px solid #e7e5e4;border-radius:6px;font:inherit}"
+      + ".qb-w input,.qb-w textarea,.qb-w select{display:block;width:100%;margin-top:4px;padding:8px 10px;border:1px solid #e7e5e4;border-radius:6px;font:inherit;background:#fff}"
       + ".qb-w textarea{min-height:96px;resize:vertical}"
       + ".qb-w-line{display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #f5f5f4}"
       + ".qb-w-line span{flex:1}"
@@ -61,6 +61,8 @@ export function quoteWidgetClientScript(origin: string) {
       if (variationId === "0") variationId = "";
       var qty = Number(row.qty || row.quantity || 1);
       if (!isFinite(qty) || qty < 1) qty = 1;
+      var selected = null;
+      if (row.selected && typeof row.selected === "object") selected = row.selected;
       lines.push({
         productId: productId.slice(0, 64),
         variationId: variationId.slice(0, 64),
@@ -68,7 +70,8 @@ export function quoteWidgetClientScript(origin: string) {
         qty: Math.min(9999, Math.round(qty)),
         sku: String(row.sku || "").trim().slice(0, 80),
         variation: String(row.variation || "").trim().slice(0, 300),
-        url: String(row.url || "").trim().slice(0, 2000)
+        url: String(row.url || "").trim().slice(0, 2000),
+        selected: selected
       });
     }
     return lines;
@@ -95,6 +98,35 @@ export function quoteWidgetClientScript(origin: string) {
       });
     });
   }
+  function catalogOf(data) {
+    return data && Array.isArray(data.catalog) ? data.catalog : [];
+  }
+  function resolveProduct(product, selected) {
+    var axes = product.axes || [];
+    if (!axes.length) {
+      return { variationId: "", sku: product.sku || "", variation: "", selected: null };
+    }
+    for (var i = 0; i < axes.length; i++) {
+      if (!selected[axes[i].key]) return { error: "Choisissez chaque option." };
+    }
+    var variations = product.variations || [];
+    for (var v = 0; v < variations.length; v++) {
+      var variant = variations[v];
+      var map = variant.selected || {};
+      var ok = true;
+      for (var a = 0; a < axes.length; a++) {
+        if (String(map[axes[a].key] || "") !== String(selected[axes[a].key] || "")) ok = false;
+      }
+      if (!ok) continue;
+      return {
+        variationId: String(variant.id || ""),
+        sku: variant.sku || "",
+        variation: variant.label || "",
+        selected: selected
+      };
+    }
+    return { error: "Cette combinaison n'existe pas." };
+  }
   function mount(el) {
     if (el.getAttribute("data-qb-ready") === "1") return;
     el.setAttribute("data-qb-ready", "1");
@@ -116,12 +148,12 @@ export function quoteWidgetClientScript(origin: string) {
       if (res.status === 200 && res.data && (res.data.mode === "catalog" || res.data.mode === "request" || res.data.mode === "both")) {
         config = { mode: res.data.mode, aiRequestText: !!res.data.aiRequestText };
       }
-      render(el, key, externalId, config, linesFrom(el.getAttribute("data-cart")));
+      render(el, key, externalId, config, linesFrom(el.getAttribute("data-cart")), catalogOf(res.data));
     }).catch(function () {
-      render(el, key, externalId, fallback, linesFrom(el.getAttribute("data-cart")));
+      render(el, key, externalId, fallback, linesFrom(el.getAttribute("data-cart")), []);
     });
   }
-  function render(root, key, externalId, config, lines) {
+  function render(root, key, externalId, config, lines, catalog) {
     root.innerHTML = "";
     var active = config.mode === "catalog" || (config.mode === "both" && lines.length) ? "catalog" : "request";
     var name = input("text", "");
@@ -143,7 +175,9 @@ export function quoteWidgetClientScript(origin: string) {
       if (!lines.length) {
         var empty = document.createElement("p");
         empty.className = "qb-note";
-        empty.textContent = "Ajoutez un produit connu (identifiant boutique, variation, quantité).";
+        empty.textContent = catalog.length
+          ? "Choisissez un produit, puis ses options."
+          : "Ajoutez un produit connu (identifiant boutique, variation, quantité).";
         catalogBox.appendChild(empty);
       }
       lines.forEach(function (line, index) {
@@ -164,34 +198,110 @@ export function quoteWidgetClientScript(origin: string) {
         row.appendChild(remove);
         catalogBox.appendChild(row);
       });
-      var productId = input("text", "");
-      var variationId = input("text", "");
       var qty = input("number", "1");
       qty.min = "1";
-      var productName = input("text", "");
       var add = document.createElement("button");
       add.type = "button";
       add.className = "qb-quiet";
       add.textContent = "Ajouter";
-      add.addEventListener("click", function () {
-        var id = productId.value.trim();
-        if (!id) return;
-        var next = linesFrom([{
-          productId: id,
-          variationId: variationId.value,
-          qty: qty.value,
-          name: productName.value
-        }]);
-        if (next[0]) lines.push(next[0]);
-        paintLines();
-      });
       var grid = document.createElement("div");
       grid.className = "qb-w-row";
-      grid.appendChild(field("Produit", productId));
-      grid.appendChild(field("Variation", variationId));
-      grid.appendChild(field("Qté", qty));
-      grid.appendChild(field("Nom", productName));
-      grid.appendChild(add);
+      if (catalog.length) {
+        var productPick = document.createElement("select");
+        var blank = document.createElement("option");
+        blank.value = "";
+        blank.textContent = "Choisir";
+        productPick.appendChild(blank);
+        catalog.forEach(function (product) {
+          if (!product || !product.externalId) return;
+          var option = document.createElement("option");
+          option.value = product.externalId;
+          option.textContent = product.name || product.externalId;
+          productPick.appendChild(option);
+        });
+        var axisBox = document.createElement("div");
+        axisBox.style.display = "contents";
+        function paintAxes() {
+          axisBox.innerHTML = "";
+          var product = null;
+          for (var i = 0; i < catalog.length; i++) {
+            if (catalog[i].externalId === productPick.value) product = catalog[i];
+          }
+          (product && product.axes ? product.axes : []).forEach(function (axis) {
+            var select = document.createElement("select");
+            select.setAttribute("data-axis", axis.key);
+            var emptyOption = document.createElement("option");
+            emptyOption.value = "";
+            emptyOption.textContent = "Choisir";
+            select.appendChild(emptyOption);
+            (axis.options || []).forEach(function (choice) {
+              var option = document.createElement("option");
+              option.value = choice.value;
+              option.textContent = choice.label || choice.value;
+              select.appendChild(option);
+            });
+            axisBox.appendChild(field(axis.name || axis.key, select));
+          });
+        }
+        productPick.addEventListener("change", function () {
+          error.hidden = true;
+          paintAxes();
+        });
+        add.addEventListener("click", function () {
+          error.hidden = true;
+          var product = null;
+          for (var i = 0; i < catalog.length; i++) {
+            if (catalog[i].externalId === productPick.value) product = catalog[i];
+          }
+          if (!product) return;
+          var selected = {};
+          Array.prototype.forEach.call(axisBox.querySelectorAll("select"), function (select) {
+            selected[select.getAttribute("data-axis")] = select.value;
+          });
+          var resolved = resolveProduct(product, selected);
+          if (!resolved || resolved.error) {
+            error.hidden = false;
+            error.textContent = (resolved && resolved.error) || "Cette combinaison n'existe pas.";
+            return;
+          }
+          var next = linesFrom([{
+            productId: product.externalId,
+            variationId: resolved.variationId,
+            qty: qty.value,
+            name: product.name,
+            sku: resolved.sku,
+            variation: resolved.variation,
+            selected: resolved.selected
+          }]);
+          if (next[0]) lines.push(next[0]);
+          paintLines();
+        });
+        grid.appendChild(field("Produit", productPick));
+        grid.appendChild(axisBox);
+        grid.appendChild(field("Qté", qty));
+        grid.appendChild(add);
+      } else {
+        var productId = input("text", "");
+        var variationId = input("text", "");
+        var productName = input("text", "");
+        add.addEventListener("click", function () {
+          var id = productId.value.trim();
+          if (!id) return;
+          var next = linesFrom([{
+            productId: id,
+            variationId: variationId.value,
+            qty: qty.value,
+            name: productName.value
+          }]);
+          if (next[0]) lines.push(next[0]);
+          paintLines();
+        });
+        grid.appendChild(field("Produit", productId));
+        grid.appendChild(field("Variation", variationId));
+        grid.appendChild(field("Qté", qty));
+        grid.appendChild(field("Nom", productName));
+        grid.appendChild(add);
+      }
       catalogBox.appendChild(grid);
     }
     function show(mode) {
@@ -287,7 +397,8 @@ export function quoteWidgetClientScript(origin: string) {
               variation: line.variation,
               qty: line.qty,
               sku: line.sku,
-              url: line.url
+              url: line.url,
+              selected: line.selected || undefined
             };
           }),
           requestText: requestText

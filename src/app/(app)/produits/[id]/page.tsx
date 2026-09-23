@@ -33,6 +33,7 @@ type StoredVariant = {
   sku?: string | null;
   price?: number | null;
   available?: boolean;
+  selected?: Record<string, string>;
 };
 
 function asArray<T>(value: Json): T[] {
@@ -231,7 +232,16 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           <DataTable headers={["Déclinaison", "SKU", "Prix", "Disponibilité"]}>
             {variants.map((variant, index) => (
               <tr key={variant.externalId ?? index} className="border-b border-slate-100">
-                <td className="px-4 py-2 lg:px-6">{variant.title ?? "-"}</td>
+                <td className="px-4 py-2 lg:px-6">
+                  {variant.title ?? "-"}
+                  {variant.selected && Object.keys(variant.selected).length ? (
+                    <span className="mt-0.5 block text-xs text-slate-500">
+                      {Object.entries(variant.selected)
+                        .map(([key, value]) => `${key} : ${value}`)
+                        .join(" · ")}
+                    </span>
+                  ) : null}
+                </td>
                 <td className="px-4 py-2 text-slate-500 lg:px-6">{variant.sku ?? "-"}</td>
                 <td className="px-4 py-2 tabular-nums lg:px-6">
                   {variant.price != null ? `${variant.price} ${product.currency}` : "-"}
