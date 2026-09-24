@@ -38,6 +38,7 @@ import { computeSeuilRemiseMarge } from "./seuil-remise-marge";
 import { buildPrefillUrl } from "./prefill-url";
 import { LEADS_FORMULAIRE_DEFAULTS, computeLeadsFormulaireVsFunnel } from "./leads-formulaire-vs-funnel";
 import { COUT_DEVIS_PDF_SEULS_DEFAULTS, computeCoutDevisPdfSeuls } from "./cout-devis-pdf-seuls";
+import { CHECKLIST_MENTIONS_ITEMS, computeChecklistMentions } from "./checklist-mentions-devis";
 import { MARKETING_ROUTES } from "./routes";
 import sitemap from "../../app/sitemap";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
@@ -99,6 +100,7 @@ for (const required of [
   "/outils/generateur-url-prefill-devis",
   "/outils/estimateur-leads-formulaire-vs-funnel-wp",
   "/outils/estimateur-cout-devis-pdf-seuls",
+  "/outils/checklist-mentions-devis-france",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
@@ -110,6 +112,7 @@ for (const required of [
   "/secteurs/funnel-devis-pergola-terrasse",
   "/secteurs/funnel-devis-pompe-chaleur-chauffage",
   "/blog/envoyer-devis-lien-securise-vs-pdf-email",
+  "/blog/mentions-obligatoires-devis-france",
   "/blog/recevoir-demandes-devis-wordpress-quotebuilder",
   "/blog/bibliotheque-lignes-kits-devis-b2b",
   "/blog/remise-commerciale-marge-devis-b2b",
@@ -139,7 +142,24 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 27);
+assert.equal(BLOG_POSTS.length, 28);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "mentions-obligatoires-devis-france")?.tags, ["funnel"]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "mentions-obligatoires-devis-france")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "mentions-obligatoires-devis-france")?.cover,
+  BLOG_DEMO_SHOTS.devisDetail,
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "mentions-obligatoires-devis-france")?.readingMinutes, 14);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "mentions-obligatoires-devis-france")?.publishedAt, "2026-09-24");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "mentions-obligatoires-devis-france")?.pinned, false);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "mentions-obligatoires-devis-france")?.path,
+  "/blog/mentions-obligatoires-devis-france",
+);
+assert.equal(BLOG_FAQ["mentions-obligatoires-devis-france"]?.length, 10);
 assert.deepEqual(
   BLOG_POSTS.find((post) => post.slug === "envoyer-devis-lien-securise-vs-pdf-email")?.tags,
   ["funnel", "relances"],
@@ -709,6 +729,17 @@ const requiredSources = {
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
+  "mentions-obligatoires-devis-france.md": [
+    "/outils/checklist-mentions-devis-france",
+    "/blog/signature-acceptation-devis-en-ligne-b2b",
+    "/blog/versions-historique-devis-b2b",
+    "/blog/acomptes-echeances-devis-b2b",
+    "/blog/validite-expiration-devis-b2b",
+    "/blog/envoyer-devis-lien-securise-vs-pdf-email",
+    "/blog/bibliotheque-lignes-kits-devis-b2b",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
   "envoyer-devis-lien-securise-vs-pdf-email.md": [
     "/blog/espace-prospect-devis-en-ligne",
     "/blog/configurateur-devis-vs-excel-pdf",
@@ -1099,6 +1130,22 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(storesBody, /signup\?plan=free/);
+}
+
+{
+  const mentionsRaw = readFileSync(join(blogDir, "mentions-obligatoires-devis-france.md"), "utf8");
+  assert.ok(mentionsRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const mentionsBody = stripFrontmatter(mentionsRaw);
+  assert.ok(
+    mentionsBody.startsWith("# Mentions obligatoires sur un devis en France (B2B)"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(mentionsBody, /^title:/m);
+  assert.match(mentionsBody, /signup\?plan=free/);
+  assert.match(mentionsBody, /\/outils\/checklist-mentions-devis-france/);
+  assert.match(mentionsBody, /\/c\/demo\/rayonnage/);
+  assert.doesNotMatch(mentionsBody, EM_DASH);
+  assert.equal(mentionsBody.split(/\s+/).filter(Boolean).length, 2712);
 }
 
 {
@@ -2076,6 +2123,43 @@ assert.equal(pdfClamp.convPdf, 100);
 assert.equal(pdfClamp.convLien, 0);
 assert.equal(pdfClamp.opp, null);
 
+const mentionsNone = computeChecklistMentions([]);
+assert.equal(CHECKLIST_MENTIONS_ITEMS.length, 20);
+assert.equal(mentionsNone.done, 0);
+assert.equal(mentionsNone.pct, 0);
+assert.equal(mentionsNone.missing.length, 20);
+assert.equal(mentionsNone.alertTone, "neutral");
+assert.match(mentionsNone.alert, /template de devis/);
+assert.match(mentionsNone.recap, /Items manquants/);
+assert.match(mentionsNone.recap, /SIRET \/ SIREN affiché/);
+assert.match(mentionsNone.recap, /pas une validation juridique/);
+assert.match(mentionsNone.recap, /\/blog\/mentions-obligatoires-devis-france/);
+
+const mentionsLow = computeChecklistMentions(["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"]);
+assert.equal(mentionsLow.done, 9);
+assert.equal(mentionsLow.pct, 45);
+assert.equal(mentionsLow.alertTone, "bad");
+assert.match(mentionsLow.alert, /Template incomplet · 45 % \(11 manques\)/);
+
+const mentionsMid = computeChecklistMentions(CHECKLIST_MENTIONS_ITEMS.slice(0, 10).map((item) => item.id));
+assert.equal(mentionsMid.pct, 50);
+assert.equal(mentionsMid.alertTone, "warn");
+assert.match(mentionsMid.alert, /Base correcte/);
+
+const mentionsHigh = computeChecklistMentions(CHECKLIST_MENTIONS_ITEMS.slice(0, 17).map((item) => item.id));
+assert.equal(mentionsHigh.pct, 85);
+assert.equal(mentionsHigh.alertTone, "warn");
+assert.match(mentionsHigh.alert, /Presque complet · 85 %/);
+
+const mentionsFull = computeChecklistMentions(CHECKLIST_MENTIONS_ITEMS.map((item) => item.id));
+assert.equal(mentionsFull.pct, 100);
+assert.equal(mentionsFull.done, 20);
+assert.equal(mentionsFull.missing.length, 0);
+assert.equal(mentionsFull.alertTone, "ok");
+assert.match(mentionsFull.alert, /pas une validation juridique/);
+assert.match(mentionsFull.recap, /Aucun item manquant/);
+assert.doesNotMatch(mentionsFull.recap, /Items manquants/);
+
 const sitemapEntries = sitemap();
 for (const expected of [
   { path: "/blog/preremplir-devis-url-parametres", priority: 0.8, lastmod: "2026-09-22" },
@@ -2084,7 +2168,9 @@ for (const expected of [
   { path: "/blog/recevoir-demandes-devis-wordpress-quotebuilder", priority: 0.8, lastmod: "2026-09-23" },
   { path: "/outils/estimateur-leads-formulaire-vs-funnel-wp", priority: 0.7, lastmod: "2026-09-23" },
   { path: "/blog/envoyer-devis-lien-securise-vs-pdf-email", priority: 0.8, lastmod: "2026-09-24" },
+  { path: "/blog/mentions-obligatoires-devis-france", priority: 0.8, lastmod: "2026-09-24" },
   { path: "/outils/estimateur-cout-devis-pdf-seuls", priority: 0.7, lastmod: "2026-09-24" },
+  { path: "/outils/checklist-mentions-devis-france", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
 ]) {
   const entry = sitemapEntries.find((item) => item.url === `https://www.quotebuilder.co${expected.path}`);
@@ -2097,6 +2183,8 @@ assert.ok(paths.includes("/outils/estimateur-leads-formulaire-vs-funnel-wp"));
 assert.ok(paths.includes("/outils/estimateur-cout-devis-pdf-seuls"));
 assert.ok(paths.includes("/blog/recevoir-demandes-devis-wordpress-quotebuilder"));
 assert.ok(paths.includes("/blog/envoyer-devis-lien-securise-vs-pdf-email"));
+assert.ok(paths.includes("/blog/mentions-obligatoires-devis-france"));
+assert.ok(paths.includes("/outils/checklist-mentions-devis-france"));
 assert.ok(paths.includes("/secteurs/funnel-devis-pompe-chaleur-chauffage"));
 
 const acompteDefault = computeAcompteDevis({
@@ -2464,6 +2552,8 @@ const llmsPaths = [
   "/outils/estimateur-leads-formulaire-vs-funnel-wp",
   "/blog/envoyer-devis-lien-securise-vs-pdf-email",
   "/outils/estimateur-cout-devis-pdf-seuls",
+  "/blog/mentions-obligatoires-devis-france",
+  "/outils/checklist-mentions-devis-france",
   "/secteurs/funnel-devis-pompe-chaleur-chauffage",
 ];
 for (const path of llmsPaths) {
@@ -2763,7 +2853,9 @@ assert.equal(CREAM_HEX, "#F6F0E8");
 
 for (const [path, lastmod] of [
   ["/blog/envoyer-devis-lien-securise-vs-pdf-email", "2026-09-24"],
+  ["/blog/mentions-obligatoires-devis-france", "2026-09-24"],
   ["/outils/estimateur-cout-devis-pdf-seuls", "2026-09-24"],
+  ["/outils/checklist-mentions-devis-france", "2026-09-24"],
   ["/secteurs/funnel-devis-pompe-chaleur-chauffage", "2026-09-24"],
   ["/blog/recevoir-demandes-devis-wordpress-quotebuilder", "2026-09-23"],
   ["/outils/estimateur-leads-formulaire-vs-funnel-wp", "2026-09-23"],

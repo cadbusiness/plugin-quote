@@ -92,6 +92,7 @@ export const BLOG_TOOL_SEUIL_REMISE = "/outils/calculateur-seuil-remise-marge";
 export const BLOG_TOOL_PREFILL_URL = "/outils/generateur-url-prefill-devis";
 export const BLOG_TOOL_LEADS_WP = "/outils/estimateur-leads-formulaire-vs-funnel-wp";
 export const BLOG_TOOL_PDF_SEULS = "/outils/estimateur-cout-devis-pdf-seuls";
+export const BLOG_TOOL_CHECKLIST_MENTIONS = "/outils/checklist-mentions-devis-france";
 
 export type BlogTool = {
   href: string;
@@ -203,9 +204,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Devis PDF / mois, % jamais ouverts, versions foireuses, ressaisie, taux horaire, panier, conv. PDF vs lien. Heures, coût friction, fantômes, deals, opportunités. Calcul 100 % local.",
     tags: ["funnel", "relances"],
   },
+  {
+    href: BLOG_TOOL_CHECKLIST_MENTIONS,
+    title: "Checklist mentions devis France (B2B)",
+    text: "Vingt blocs (identité, SIRET, TVA, prix, validité, acomptes, CGV, process). Score de complétion et récap des manques. Calcul 100 % local, pas une validation juridique.",
+    tags: ["funnel"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "mentions-obligatoires-devis-france",
+    path: "/blog/mentions-obligatoires-devis-france",
+    title: "Mentions obligatoires sur un devis en France (B2B)",
+    description:
+      "Mentions légales et blocs utiles sur un devis B2B en France : identité, SIRET, TVA, prix HT/TTC, validité, acomptes, CGV. Checklist pratique, pas un conseil juridique.",
+    publishedAt: "2026-09-24",
+    readingMinutes: 14,
+    tags: ["funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "envoyer-devis-lien-securise-vs-pdf-email",
     path: "/blog/envoyer-devis-lien-securise-vs-pdf-email",

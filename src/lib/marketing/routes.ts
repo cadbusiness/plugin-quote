@@ -34,6 +34,11 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   {
+    path: "/blog/mentions-obligatoires-devis-france",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
     path: "/blog/envoyer-devis-lien-securise-vs-pdf-email",
     changeFrequency: "monthly",
     priority: 0.8,
@@ -97,6 +102,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/estimateur-cout-devis-pdf-seuls",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-09-24",
+  },
+  {
+    path: "/outils/checklist-mentions-devis-france",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-09-24",
