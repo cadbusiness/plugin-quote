@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "mentions-obligatoires-devis-france": [
+    {
+      q: "Quelles sont les mentions obligatoires sur un devis en France ?",
+      a: "Il n’existe pas une liste unique identique pour tous les cas. En B2B, visez au minimum identité vendeur (dont SIRET), description, prix et TVA, date / numéro, validité, conditions utiles (paiement, délais), et CGV accessibles. Validez le détail avec un professionnel.",
+    },
+    {
+      q: "Un devis sans SIRET est-il valide ?",
+      a: "Valide au sens commercial et conforme au sens juridique ne sont pas la même chose. Opérationnellement, un devis sans identification claire de l’émetteur est fragile. Ajoutez le SIRET (et le reste de l’identité) dans le template.",
+    },
+    {
+      q: "Dois-je joindre les CGV à chaque devis ?",
+      a: "Souvent oui, ou au minimum les rendre accessibles de façon prouvable au moment de l’offre (lien versionné, annexe, espace prospect). Demandez à votre avocat ce qui est adapté à votre process d’acceptation.",
+    },
+    {
+      q: "B2B et B2C, mêmes mentions ?",
+      a: "Pas forcément. Le B2C ajoute souvent des contraintes de protection du consommateur. Si vous avez les deux clientèles, séparez les templates.",
+    },
+    {
+      q: "Quelle différence entre devis et facture ?",
+      a: "Le devis propose ; la facture constate et demande le paiement selon les règles de facturation. Ne recyclez pas un devis en facture sans contrôle.",
+    },
+    {
+      q: "Comment gérer la validité ?",
+      a: "Mettez une date claire, alignez-la avec vos coûts (matières, sous-traitance), et relancez avant expiration.",
+    },
+    {
+      q: "Les acomptes doivent-ils figurer sur le devis ?",
+      a: "Oui, si vous en demandez. Montant ou pourcentage, déclencheur, et suite de l’échéancier. Sinon le client découvre la règle au moment de payer.",
+    },
+    {
+      q: "Un lien sécurisé remplace-t-il les mentions ?",
+      a: "Non. Le lien améliore le suivi, les versions et l’acceptation. Les mentions restent dans le contenu de l’offre. Les deux se complètent.",
+    },
+    {
+      q: "Puis-je utiliser ce guide comme validation de conformité ?",
+      a: "Non. C’est un guide pédagogique pour outiller vos templates. La validation juridique se fait avec un avocat ou un expert-comptable.",
+    },
+    {
+      q: "Par quoi commencer demain matin ?",
+      a: "Extraire 3 devis récents. Cocher la checklist mentions devis France. Corriger le template, pas seulement le dernier PDF. Faire relire les libellés sensibles (TVA, CGV, assurances).",
+    },
+  ],
   "envoyer-devis-lien-securise-vs-pdf-email": [
     {
       q: "Un lien sécurisé remplace-t-il totalement le PDF ?",

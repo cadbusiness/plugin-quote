@@ -47,6 +47,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Mentions obligatoires sur un devis en France (B2B) : https://www.quotebuilder.co/blog/mentions-obligatoires-devis-france
 - Envoyer un devis par lien sécurisé vs PDF : https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email
 - Recevoir des demandes de devis WordPress dans QuoteBuilder : https://www.quotebuilder.co/blog/recevoir-demandes-devis-wordpress-quotebuilder
 - Bibliothèque de lignes et kits pour devis B2B : https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b
@@ -75,6 +76,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Score demande devis B2B : https://www.quotebuilder.co/blog/score-demande-devis-b2b
 - Configurateur de devis vs Excel + PDF : https://www.quotebuilder.co/blog/configurateur-devis-vs-excel-pdf
 - Outils : https://www.quotebuilder.co/outils
+- Checklist mentions devis France (B2B) : https://www.quotebuilder.co/outils/checklist-mentions-devis-france
 - Calculateur coût d’un devis non relancé : https://www.quotebuilder.co/outils/cout-devis-non-relance
 - Générateur de séquence de relances : https://www.quotebuilder.co/outils/generateur-sequence-relances
 - Score brief devis : https://www.quotebuilder.co/outils/score-brief-devis
