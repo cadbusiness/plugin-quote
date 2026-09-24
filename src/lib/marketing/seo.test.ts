@@ -37,6 +37,7 @@ import { computeGainTempsCatalogue } from "./gain-temps-catalogue";
 import { computeSeuilRemiseMarge } from "./seuil-remise-marge";
 import { buildPrefillUrl } from "./prefill-url";
 import { LEADS_FORMULAIRE_DEFAULTS, computeLeadsFormulaireVsFunnel } from "./leads-formulaire-vs-funnel";
+import { COUT_DEVIS_PDF_SEULS_DEFAULTS, computeCoutDevisPdfSeuls } from "./cout-devis-pdf-seuls";
 import { MARKETING_ROUTES } from "./routes";
 import sitemap from "../../app/sitemap";
 import { APEX_HOST, SITE_HOST, SITE_URL, absoluteUrl, pageMetadata, rootJsonLd } from "./site";
@@ -97,6 +98,7 @@ for (const required of [
   "/outils/calculateur-seuil-remise-marge",
   "/outils/generateur-url-prefill-devis",
   "/outils/estimateur-leads-formulaire-vs-funnel-wp",
+  "/outils/estimateur-cout-devis-pdf-seuls",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
@@ -106,6 +108,8 @@ for (const required of [
   "/secteurs/funnel-devis-cuisine-equipee",
   "/secteurs/funnel-devis-cloture-portail",
   "/secteurs/funnel-devis-pergola-terrasse",
+  "/secteurs/funnel-devis-pompe-chaleur-chauffage",
+  "/blog/envoyer-devis-lien-securise-vs-pdf-email",
   "/blog/recevoir-demandes-devis-wordpress-quotebuilder",
   "/blog/bibliotheque-lignes-kits-devis-b2b",
   "/blog/remise-commerciale-marge-devis-b2b",
@@ -135,7 +139,33 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 26);
+assert.equal(BLOG_POSTS.length, 27);
+assert.deepEqual(
+  BLOG_POSTS.find((post) => post.slug === "envoyer-devis-lien-securise-vs-pdf-email")?.tags,
+  ["funnel", "relances"],
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "envoyer-devis-lien-securise-vs-pdf-email")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "envoyer-devis-lien-securise-vs-pdf-email")?.cover,
+  BLOG_DEMO_SHOTS.devisDetail,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "envoyer-devis-lien-securise-vs-pdf-email")?.readingMinutes,
+  12,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "envoyer-devis-lien-securise-vs-pdf-email")?.publishedAt,
+  "2026-09-24",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "envoyer-devis-lien-securise-vs-pdf-email")?.pinned, false);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "envoyer-devis-lien-securise-vs-pdf-email")?.path,
+  "/blog/envoyer-devis-lien-securise-vs-pdf-email",
+);
+assert.equal(BLOG_FAQ["envoyer-devis-lien-securise-vs-pdf-email"]?.length, 10);
 assert.deepEqual(
   BLOG_POSTS.find((post) => post.slug === "recevoir-demandes-devis-wordpress-quotebuilder")?.tags,
   ["integrations", "funnel"],
@@ -679,6 +709,25 @@ const requiredSources = {
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
+  "envoyer-devis-lien-securise-vs-pdf-email.md": [
+    "/blog/espace-prospect-devis-en-ligne",
+    "/blog/configurateur-devis-vs-excel-pdf",
+    "/blog/versions-historique-devis-b2b",
+    "/blog/signature-acceptation-devis-en-ligne-b2b",
+    "/outils/estimateur-cout-devis-pdf-seuls",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "funnel-devis-pompe-chaleur-chauffage.md": [
+    "/blog/envoyer-devis-lien-securise-vs-pdf-email",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/pourquoi-les-devis-meurent-sans-relance",
+    "/secteurs/funnel-devis-stores-fermetures",
+    "/secteurs/funnel-devis-pergola-terrasse",
+    "/outils/estimateur-cout-brief-incomplet",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
   "recevoir-demandes-devis-wordpress-quotebuilder.md": [
     "/blog/installer-widget-devis-wordpress-javascript",
     "/blog/formulaire-contact-vs-funnel-devis-b2b",
@@ -1050,6 +1099,35 @@ for (const file of blogFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(storesBody, /signup\?plan=free/);
+}
+
+{
+  const lienRaw = readFileSync(join(blogDir, "envoyer-devis-lien-securise-vs-pdf-email.md"), "utf8");
+  assert.ok(lienRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const lienBody = stripFrontmatter(lienRaw);
+  assert.ok(
+    lienBody.startsWith("# Envoyer un devis par lien sécurisé vs PDF en pièce jointe"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(lienBody, /^title:/m);
+  assert.match(lienBody, /signup\?plan=free/);
+  assert.match(lienBody, /\/outils\/estimateur-cout-devis-pdf-seuls/);
+  assert.match(lienBody, /\/c\/demo\/rayonnage/);
+  assert.doesNotMatch(lienBody, EM_DASH);
+  assert.equal(lienBody.split(/\s+/).filter(Boolean).length, 2321);
+}
+
+{
+  const pacRaw = readFileSync(join(blogDir, "funnel-devis-pompe-chaleur-chauffage.md"), "utf8");
+  assert.ok(pacRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const pacBody = stripFrontmatter(pacRaw);
+  assert.ok(
+    pacBody.startsWith("# Funnel de devis pompe à chaleur et chauffage"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(pacBody, /signup\?plan=free/);
+  assert.doesNotMatch(pacBody, EM_DASH);
+  assert.equal(pacBody.split(/\s+/).filter(Boolean).length, 2066);
 }
 
 {
@@ -1906,6 +1984,98 @@ assert.equal(leadsNoGap.recup, 0);
 assert.equal(leadsNoGap.cout, 0);
 assert.equal(leadsNoGap.mortes, 3.5);
 
+const pdfDefault = computeCoutDevisPdfSeuls({ ...COUT_DEVIS_PDF_SEULS_DEFAULTS });
+assert.equal(pdfDefault.heures, 8.2);
+assert.equal(pdfDefault.coutFriction, 451);
+assert.equal(pdfDefault.fantomes, 13.2);
+assert.equal(pdfDefault.deals, 1.4);
+assert.equal(pdfDefault.opp, 9100);
+assert.equal(pdfDefault.total, 9551);
+assert.equal(pdfDefault.alertTone, "warn");
+assert.equal(pdfDefault.totalTone, "warn");
+assert.equal(pdfDefault.oppTone, "warn");
+assert.match(pdfDefault.alert, /Friction PDF notable/);
+assert.match(pdfDefault.recap, /Lien d’abord/);
+assert.match(pdfDefault.recap, /Coût total indicatif/);
+
+const pdfEmpty = computeCoutDevisPdfSeuls({ ...COUT_DEVIS_PDF_SEULS_DEFAULTS, devis: 0 });
+assert.equal(pdfEmpty.heures, 0);
+assert.equal(pdfEmpty.fantomes, 0);
+assert.equal(pdfEmpty.deals, 0);
+assert.equal(pdfEmpty.opp, 0);
+assert.equal(pdfEmpty.total, 0);
+assert.equal(pdfEmpty.alertTone, "neutral");
+assert.match(pdfEmpty.alert, /volume de devis PDF/);
+
+const pdfNoBasket = computeCoutDevisPdfSeuls({ ...COUT_DEVIS_PDF_SEULS_DEFAULTS, panier: 0 });
+assert.equal(pdfNoBasket.opp, null);
+assert.equal(pdfNoBasket.oppLabel, "non calculé (panier = 0)");
+assert.equal(pdfNoBasket.total, pdfNoBasket.coutFriction);
+assert.equal(pdfNoBasket.oppTone, "neutral");
+assert.match(pdfNoBasket.recap, /Opportunités manquées : n\/a/);
+
+const pdfHigh = computeCoutDevisPdfSeuls({
+  devis: 40,
+  jamaisPct: 30,
+  obsoletesPct: 20,
+  minutes: 20,
+  taux: 55,
+  panier: 1000,
+  convPdf: 10,
+  convLien: 12,
+});
+assert.equal(pdfHigh.heures, 13.3);
+assert.equal(pdfHigh.coutFriction, 732);
+assert.equal(pdfHigh.alertTone, "bad");
+assert.match(pdfHigh.tip, /lien sécurisé/);
+
+const pdfLow = computeCoutDevisPdfSeuls({
+  devis: 4,
+  jamaisPct: 5,
+  obsoletesPct: 5,
+  minutes: 15,
+  taux: 40,
+  panier: 1000,
+  convPdf: 18,
+  convLien: 18,
+});
+assert.equal(pdfLow.heures, 1);
+assert.equal(pdfLow.coutFriction, 40);
+assert.equal(pdfLow.fantomes, 0.3);
+assert.equal(pdfLow.deals, 0);
+assert.equal(pdfLow.opp, 0);
+assert.equal(pdfLow.total, 40);
+assert.equal(pdfLow.alertTone, "ok");
+assert.equal(pdfLow.totalTone, "ok");
+
+const pdfNoGap = computeCoutDevisPdfSeuls({
+  ...COUT_DEVIS_PDF_SEULS_DEFAULTS,
+  convPdf: 20,
+  convLien: 12,
+});
+assert.equal(pdfNoGap.deals, 0);
+assert.equal(pdfNoGap.opp, 0);
+
+const pdfClamp = computeCoutDevisPdfSeuls({
+  devis: -8,
+  jamaisPct: 140,
+  obsoletesPct: -3,
+  minutes: 900,
+  taux: 20000,
+  panier: -1,
+  convPdf: 150,
+  convLien: -4,
+});
+assert.equal(pdfClamp.devis, 0);
+assert.equal(pdfClamp.jamaisPct, 100);
+assert.equal(pdfClamp.obsoletesPct, 0);
+assert.equal(pdfClamp.minutes, 480);
+assert.equal(pdfClamp.taux, 10000);
+assert.equal(pdfClamp.panier, 0);
+assert.equal(pdfClamp.convPdf, 100);
+assert.equal(pdfClamp.convLien, 0);
+assert.equal(pdfClamp.opp, null);
+
 const sitemapEntries = sitemap();
 for (const expected of [
   { path: "/blog/preremplir-devis-url-parametres", priority: 0.8, lastmod: "2026-09-22" },
@@ -1913,6 +2083,9 @@ for (const expected of [
   { path: "/outils/generateur-url-prefill-devis", priority: 0.7, lastmod: "2026-09-22" },
   { path: "/blog/recevoir-demandes-devis-wordpress-quotebuilder", priority: 0.8, lastmod: "2026-09-23" },
   { path: "/outils/estimateur-leads-formulaire-vs-funnel-wp", priority: 0.7, lastmod: "2026-09-23" },
+  { path: "/blog/envoyer-devis-lien-securise-vs-pdf-email", priority: 0.8, lastmod: "2026-09-24" },
+  { path: "/outils/estimateur-cout-devis-pdf-seuls", priority: 0.7, lastmod: "2026-09-24" },
+  { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
 ]) {
   const entry = sitemapEntries.find((item) => item.url === `https://www.quotebuilder.co${expected.path}`);
   assert.ok(entry, `sitemap missing ${expected.path}`);
@@ -1921,7 +2094,10 @@ for (const expected of [
 }
 assert.ok(paths.includes("/outils/generateur-url-prefill-devis"));
 assert.ok(paths.includes("/outils/estimateur-leads-formulaire-vs-funnel-wp"));
+assert.ok(paths.includes("/outils/estimateur-cout-devis-pdf-seuls"));
 assert.ok(paths.includes("/blog/recevoir-demandes-devis-wordpress-quotebuilder"));
+assert.ok(paths.includes("/blog/envoyer-devis-lien-securise-vs-pdf-email"));
+assert.ok(paths.includes("/secteurs/funnel-devis-pompe-chaleur-chauffage"));
 
 const acompteDefault = computeAcompteDevis({
   ht: 12000,
@@ -2286,6 +2462,9 @@ const llmsPaths = [
   "/outils/generateur-url-prefill-devis",
   "/blog/recevoir-demandes-devis-wordpress-quotebuilder",
   "/outils/estimateur-leads-formulaire-vs-funnel-wp",
+  "/blog/envoyer-devis-lien-securise-vs-pdf-email",
+  "/outils/estimateur-cout-devis-pdf-seuls",
+  "/secteurs/funnel-devis-pompe-chaleur-chauffage",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -2583,6 +2762,9 @@ for (const root of marketingRoots) {
 assert.equal(CREAM_HEX, "#F6F0E8");
 
 for (const [path, lastmod] of [
+  ["/blog/envoyer-devis-lien-securise-vs-pdf-email", "2026-09-24"],
+  ["/outils/estimateur-cout-devis-pdf-seuls", "2026-09-24"],
+  ["/secteurs/funnel-devis-pompe-chaleur-chauffage", "2026-09-24"],
   ["/blog/recevoir-demandes-devis-wordpress-quotebuilder", "2026-09-23"],
   ["/outils/estimateur-leads-formulaire-vs-funnel-wp", "2026-09-23"],
   ["/blog/bibliotheque-lignes-kits-devis-b2b", "2026-09-23"],
