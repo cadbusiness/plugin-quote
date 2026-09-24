@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/marketing/site";
 export const metadata: Metadata = pageMetadata({
   title: "Outils devis B2B",
   description:
-    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage, impact remise, seuil de remise et plancher de marge, ROI logiciel, taux d’acceptation, coût d’un brief incomplet, coût des devis expirés, calculateur d’acompte, gain de temps catalogue, générateur d’URL de préremplissage, estimateur leads formulaire vs funnel WordPress. Outils gratuits QuoteBuilder.",
+    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage, impact remise, seuil de remise et plancher de marge, ROI logiciel, taux d’acceptation, coût d’un brief incomplet, coût des devis expirés, calculateur d’acompte, gain de temps catalogue, générateur d’URL de préremplissage, estimateur leads formulaire vs funnel WordPress, estimateur coût des devis PDF seuls. Outils gratuits QuoteBuilder.",
   path: "/outils",
 });
 
@@ -107,6 +107,12 @@ const TOOLS = [
     title: "Estimateur leads formulaire vs funnel WordPress",
     text: "Demandes / mois, % exploitables, ressaisie, réponse sous 24 h. Heures perdues, demandes mortes, coût d’opportunité, score de maturité. Calcul 100 % local.",
   },
+  {
+    href: "/outils/estimateur-cout-devis-pdf-seuls",
+    eyebrow: "Pilotage",
+    title: "Estimateur coût des devis PDF seuls",
+    text: "Devis PDF / mois, % jamais ouverts, versions foireuses, ressaisie, taux horaire, panier, conv. PDF vs lien. Heures, friction, fantômes, deals, opportunités. Calcul 100 % local.",
+  },
 ] as const;
 
 export default function OutilsIndexPage() {
@@ -119,7 +125,7 @@ export default function OutilsIndexPage() {
             Chiffrer le trou. Rédiger les touches.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-mk-muted sm:text-lg">
-            Seize outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
+            Dix-sept outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
           </p>
         </div>
       </section>

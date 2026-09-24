@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "envoyer-devis-lien-securise-vs-pdf-email": [
+    {
+      q: "Un lien sécurisé remplace-t-il totalement le PDF ?",
+      a: "Non. Il remplace le PDF comme canal principal. Le PDF reste un export utile, téléchargeable depuis l’espace.",
+    },
+    {
+      q: "Quelle différence avec un simple lien Google Drive ou Dropbox ?",
+      a: "Un Drive partagé n’est pas un dossier commercial : pas de score, pas de relance Hot, pas de statut devis, pas de signature branchée au pipeline. C’est un dossier de fichiers.",
+    },
+    {
+      q: "Faut-il un compte client pour ouvrir le devis ?",
+      a: "Dans le modèle espace prospect QuoteBuilder, non : lien + PIN, sans créer de compte.",
+    },
+    {
+      q: "Comment gérer plusieurs décideurs ?",
+      a: "Un même lien, et le PIN du mail de confirmation. Évitez de multiplier les fichiers nominatifs.",
+    },
+    {
+      q: "Que faire si le prospect refuse le lien et exige un PDF ?",
+      a: "Envoyez l’export, mais notez-le dans le dossier. Proposez quand même le lien pour les questions et la signature. Mesurez combien de ces cas restent vraiment PDF-only après 30 jours.",
+    },
+    {
+      q: "Les ouvertures de lien sont-elles fiables à 100 % ?",
+      a: "Aucun tracking n’est parfait (préchargement mail, VPN, etc.). Elles restent nettement plus utiles que l’absence totale de signal du PDF joint.",
+    },
+    {
+      q: "Lien vs signature : dans quel ordre ?",
+      a: "D’abord un espace où le brief et les options sont clairs. Ensuite la signature ou l’acceptation. Signer un PDF figé trop tôt fige aussi les erreurs.",
+    },
+    {
+      q: "Comment estimer ce que me coûte encore le PDF-only ?",
+      a: "Utilisez l’estimateur coût devis PDF seuls avec votre volume mensuel, vos pourcentages non ouverts, le temps de ressaisie et vos taux de conversion.",
+    },
+    {
+      q: "Est-ce lié au configurateur Excel vs funnel ?",
+      a: "Partiellement. Mieux créer le devis ne suffit pas si vous l’envoyez encore en pièce jointe orpheline. Les deux chantiers se complètent.",
+    },
+    {
+      q: "Par où démarrer cette semaine ?",
+      a: "Listez les devis Hot des 14 derniers jours. Comptez les renvois de PDF. Repassez les 5 plus gros en lien sécurisé. Comparez délai de réponse et clarté des questions.",
+    },
+  ],
   "recevoir-demandes-devis-wordpress-quotebuilder": [
     {
       q: "Le plugin WordPress envoie-t-il un email au prospect à la création du devis ?",

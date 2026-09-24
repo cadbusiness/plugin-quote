@@ -29,9 +29,15 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/secteurs/funnel-devis-cuisine-equipee", changeFrequency: "monthly", priority: 0.8 },
   { path: "/secteurs/funnel-devis-cloture-portail", changeFrequency: "monthly", priority: 0.8 },
   { path: "/secteurs/funnel-devis-pergola-terrasse", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", changeFrequency: "monthly", priority: 0.8 },
   { path: "/tarifs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  {
+    path: "/blog/envoyer-devis-lien-securise-vs-pdf-email",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
   {
     path: "/blog/recevoir-demandes-devis-wordpress-quotebuilder",
     changeFrequency: "monthly",
@@ -88,6 +94,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-09-23",
+  },
+  {
+    path: "/outils/estimateur-cout-devis-pdf-seuls",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-09-24",
   },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },
