@@ -30,9 +30,15 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/secteurs/funnel-devis-cloture-portail", changeFrequency: "monthly", priority: 0.8 },
   { path: "/secteurs/funnel-devis-pergola-terrasse", changeFrequency: "monthly", priority: 0.8 },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/secteurs/funnel-devis-photovoltaique-solaire", changeFrequency: "monthly", priority: 0.8 },
   { path: "/tarifs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  {
+    path: "/blog/pieces-jointes-plans-photos-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
   {
     path: "/blog/mentions-obligatoires-devis-france",
     changeFrequency: "monthly",
@@ -111,6 +117,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-09-24",
+  },
+  {
+    path: "/outils/estimateur-cout-aller-retours-brief-photos",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-09-25",
   },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },

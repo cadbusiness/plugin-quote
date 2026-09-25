@@ -38,6 +38,7 @@ import { computeSeuilRemiseMarge } from "./seuil-remise-marge";
 import { buildPrefillUrl } from "./prefill-url";
 import { LEADS_FORMULAIRE_DEFAULTS, computeLeadsFormulaireVsFunnel } from "./leads-formulaire-vs-funnel";
 import { COUT_DEVIS_PDF_SEULS_DEFAULTS, computeCoutDevisPdfSeuls } from "./cout-devis-pdf-seuls";
+import { COUT_ALLER_RETOURS_BRIEF_DEFAULTS, computeCoutAllerRetoursBrief } from "./cout-aller-retours-brief-photos";
 import { CHECKLIST_MENTIONS_ITEMS, computeChecklistMentions } from "./checklist-mentions-devis";
 import { MARKETING_ROUTES } from "./routes";
 import sitemap from "../../app/sitemap";
@@ -101,6 +102,7 @@ for (const required of [
   "/outils/estimateur-leads-formulaire-vs-funnel-wp",
   "/outils/estimateur-cout-devis-pdf-seuls",
   "/outils/checklist-mentions-devis-france",
+  "/outils/estimateur-cout-aller-retours-brief-photos",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
@@ -111,6 +113,8 @@ for (const required of [
   "/secteurs/funnel-devis-cloture-portail",
   "/secteurs/funnel-devis-pergola-terrasse",
   "/secteurs/funnel-devis-pompe-chaleur-chauffage",
+  "/secteurs/funnel-devis-photovoltaique-solaire",
+  "/blog/pieces-jointes-plans-photos-devis-b2b",
   "/blog/envoyer-devis-lien-securise-vs-pdf-email",
   "/blog/mentions-obligatoires-devis-france",
   "/blog/recevoir-demandes-devis-wordpress-quotebuilder",
@@ -142,7 +146,27 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 28);
+assert.equal(BLOG_POSTS.length, 29);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "pieces-jointes-plans-photos-devis-b2b")?.tags, [
+  "funnel",
+  "catalogue",
+]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "pieces-jointes-plans-photos-devis-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "pieces-jointes-plans-photos-devis-b2b")?.cover,
+  BLOG_DEMO_SHOTS.devisDetail,
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "pieces-jointes-plans-photos-devis-b2b")?.readingMinutes, 12);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "pieces-jointes-plans-photos-devis-b2b")?.publishedAt, "2026-09-25");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "pieces-jointes-plans-photos-devis-b2b")?.pinned, false);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "pieces-jointes-plans-photos-devis-b2b")?.path,
+  "/blog/pieces-jointes-plans-photos-devis-b2b",
+);
+assert.equal(BLOG_FAQ["pieces-jointes-plans-photos-devis-b2b"]?.length, 9);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "mentions-obligatoires-devis-france")?.tags, ["funnel"]);
 assert.equal(
   BLOG_POSTS.find((post) => post.slug === "mentions-obligatoires-devis-france")?.ctaHref,
@@ -534,7 +558,7 @@ assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meuren
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 12);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 12);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 7);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 5);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 6);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);
 assert.equal(midArticleHeadingIndex(12), 5);
 assert.ok(trimMetaDescription(BLOG_POSTS[0]!.description).length <= 155);
@@ -755,6 +779,24 @@ const requiredSources = {
     "/blog/pourquoi-les-devis-meurent-sans-relance",
     "/secteurs/funnel-devis-stores-fermetures",
     "/secteurs/funnel-devis-pergola-terrasse",
+    "/outils/estimateur-cout-brief-incomplet",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "pieces-jointes-plans-photos-devis-b2b.md": [
+    "/outils/estimateur-cout-aller-retours-brief-photos",
+    "/outils/estimateur-cout-brief-incomplet",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/envoyer-devis-lien-securise-vs-pdf-email",
+    "/secteurs/funnel-devis-photovoltaique-solaire",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "funnel-devis-photovoltaique-solaire.md": [
+    "/blog/pieces-jointes-plans-photos-devis-b2b",
+    "/blog/envoyer-devis-lien-securise-vs-pdf-email",
+    "/secteurs/funnel-devis-pompe-chaleur-chauffage",
+    "/outils/estimateur-cout-aller-retours-brief-photos",
     "/outils/estimateur-cout-brief-incomplet",
     "/c/demo/rayonnage",
     "/signup?plan=free",
@@ -1175,6 +1217,36 @@ for (const file of blogFiles) {
   assert.match(pacBody, /signup\?plan=free/);
   assert.doesNotMatch(pacBody, EM_DASH);
   assert.equal(pacBody.split(/\s+/).filter(Boolean).length, 2066);
+}
+
+{
+  const pjRaw = readFileSync(join(blogDir, "pieces-jointes-plans-photos-devis-b2b.md"), "utf8");
+  assert.ok(pjRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const pjBody = stripFrontmatter(pjRaw);
+  assert.ok(
+    pjBody.startsWith("# Pièces jointes, plans et photos dans un devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(pjBody, /^title:/m);
+  assert.match(pjBody, /signup\?plan=free/);
+  assert.match(pjBody, /\/outils\/estimateur-cout-aller-retours-brief-photos/);
+  assert.match(pjBody, /\/c\/demo\/rayonnage/);
+  assert.doesNotMatch(pjBody, EM_DASH);
+  assert.equal(pjBody.split(/\s+/).filter(Boolean).length, 2401);
+}
+
+{
+  const pvRaw = readFileSync(join(blogDir, "funnel-devis-photovoltaique-solaire.md"), "utf8");
+  assert.ok(pvRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const pvBody = stripFrontmatter(pvRaw);
+  assert.ok(
+    pvBody.startsWith("# Funnel de devis photovoltaïque et solaire"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(pvBody, /signup\?plan=free/);
+  assert.match(pvBody, /\/outils\/estimateur-cout-aller-retours-brief-photos/);
+  assert.doesNotMatch(pvBody, EM_DASH);
+  assert.equal(pvBody.split(/\s+/).filter(Boolean).length, 2294);
 }
 
 {
@@ -2123,6 +2195,101 @@ assert.equal(pdfClamp.convPdf, 100);
 assert.equal(pdfClamp.convLien, 0);
 assert.equal(pdfClamp.opp, null);
 
+const allerDefault = computeCoutAllerRetoursBrief({ ...COUT_ALLER_RETOURS_BRIEF_DEFAULTS });
+assert.equal(allerDefault.dossiers, 18);
+assert.equal(allerDefault.heures, 6.6);
+assert.equal(allerDefault.coutFriction, 363);
+assert.equal(allerDefault.deplacements, 2.7);
+assert.equal(allerDefault.coutTrajets, 230);
+assert.equal(allerDefault.deals, 0.7);
+assert.equal(allerDefault.opp, 5040);
+assert.equal(allerDefault.total, 5633);
+assert.equal(allerDefault.alertTone, "warn");
+assert.equal(allerDefault.totalTone, "warn");
+assert.equal(allerDefault.oppTone, "warn");
+assert.match(allerDefault.alert, /Friction documents notable/);
+assert.match(allerDefault.recap, /Upload photos \/ plans/);
+assert.match(allerDefault.recap, /Coût total indicatif/);
+
+const allerEmpty = computeCoutAllerRetoursBrief({ ...COUT_ALLER_RETOURS_BRIEF_DEFAULTS, demandes: 0 });
+assert.equal(allerEmpty.dossiers, 0);
+assert.equal(allerEmpty.heures, 0);
+assert.equal(allerEmpty.deplacements, 0);
+assert.equal(allerEmpty.deals, 0);
+assert.equal(allerEmpty.opp, 0);
+assert.equal(allerEmpty.total, 0);
+assert.equal(allerEmpty.alertTone, "neutral");
+assert.match(allerEmpty.alert, /volume de demandes/);
+
+const allerNoBasket = computeCoutAllerRetoursBrief({ ...COUT_ALLER_RETOURS_BRIEF_DEFAULTS, panier: 0 });
+assert.equal(allerNoBasket.opp, null);
+assert.equal(allerNoBasket.oppLabel, "non calculé (panier = 0)");
+assert.equal(allerNoBasket.total, allerNoBasket.coutFriction + allerNoBasket.coutTrajets);
+assert.equal(allerNoBasket.oppTone, "neutral");
+assert.match(allerNoBasket.recap, /Opportunités manquées : n\/a/);
+
+const allerHigh = computeCoutAllerRetoursBrief({
+  demandes: 80,
+  sansDocPct: 60,
+  minutes: 30,
+  deplacPct: 25,
+  coutTrajet: 100,
+  taux: 60,
+  panier: 10000,
+  ecartConvPts: 8,
+});
+assert.equal(allerHigh.dossiers, 48);
+assert.equal(allerHigh.heures, 24);
+assert.equal(allerHigh.coutFriction, 1440);
+assert.equal(allerHigh.deplacements, 12);
+assert.equal(allerHigh.coutTrajets, 1200);
+assert.equal(allerHigh.deals, 3.8);
+assert.equal(allerHigh.opp, 38000);
+assert.equal(allerHigh.total, 40640);
+assert.equal(allerHigh.alertTone, "bad");
+assert.match(allerHigh.tip, /upload photos/);
+
+const allerLow = computeCoutAllerRetoursBrief({
+  demandes: 4,
+  sansDocPct: 10,
+  minutes: 10,
+  deplacPct: 0,
+  coutTrajet: 0,
+  taux: 40,
+  panier: 1000,
+  ecartConvPts: 0,
+});
+assert.equal(allerLow.dossiers, 0.4);
+assert.equal(allerLow.heures, 0.1);
+assert.equal(allerLow.coutFriction, 4);
+assert.equal(allerLow.deplacements, 0);
+assert.equal(allerLow.deals, 0);
+assert.equal(allerLow.opp, 0);
+assert.equal(allerLow.total, 4);
+assert.equal(allerLow.alertTone, "ok");
+assert.equal(allerLow.totalTone, "ok");
+
+const allerClamp = computeCoutAllerRetoursBrief({
+  demandes: -5,
+  sansDocPct: 140,
+  minutes: 900,
+  deplacPct: -3,
+  coutTrajet: 200000,
+  taux: 20000,
+  panier: -1,
+  ecartConvPts: 80,
+});
+assert.equal(allerClamp.demandes, 0);
+assert.equal(allerClamp.sansDocPct, 100);
+assert.equal(allerClamp.minutes, 480);
+assert.equal(allerClamp.deplacPct, 0);
+assert.equal(allerClamp.coutTrajet, 100000);
+assert.equal(allerClamp.taux, 10000);
+assert.equal(allerClamp.panier, 0);
+assert.equal(allerClamp.ecartConvPts, 50);
+assert.equal(allerClamp.opp, null);
+assert.equal(allerClamp.alertTone, "neutral");
+
 const mentionsNone = computeChecklistMentions([]);
 assert.equal(CHECKLIST_MENTIONS_ITEMS.length, 20);
 assert.equal(mentionsNone.done, 0);
@@ -2172,6 +2339,9 @@ for (const expected of [
   { path: "/outils/estimateur-cout-devis-pdf-seuls", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/outils/checklist-mentions-devis-france", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
+  { path: "/blog/pieces-jointes-plans-photos-devis-b2b", priority: 0.8, lastmod: "2026-09-25" },
+  { path: "/outils/estimateur-cout-aller-retours-brief-photos", priority: 0.7, lastmod: "2026-09-25" },
+  { path: "/secteurs/funnel-devis-photovoltaique-solaire", priority: 0.8, lastmod: "2026-09-25" },
 ]) {
   const entry = sitemapEntries.find((item) => item.url === `https://www.quotebuilder.co${expected.path}`);
   assert.ok(entry, `sitemap missing ${expected.path}`);
@@ -2186,6 +2356,9 @@ assert.ok(paths.includes("/blog/envoyer-devis-lien-securise-vs-pdf-email"));
 assert.ok(paths.includes("/blog/mentions-obligatoires-devis-france"));
 assert.ok(paths.includes("/outils/checklist-mentions-devis-france"));
 assert.ok(paths.includes("/secteurs/funnel-devis-pompe-chaleur-chauffage"));
+assert.ok(paths.includes("/blog/pieces-jointes-plans-photos-devis-b2b"));
+assert.ok(paths.includes("/outils/estimateur-cout-aller-retours-brief-photos"));
+assert.ok(paths.includes("/secteurs/funnel-devis-photovoltaique-solaire"));
 
 const acompteDefault = computeAcompteDevis({
   ht: 12000,
@@ -2555,6 +2728,9 @@ const llmsPaths = [
   "/blog/mentions-obligatoires-devis-france",
   "/outils/checklist-mentions-devis-france",
   "/secteurs/funnel-devis-pompe-chaleur-chauffage",
+  "/blog/pieces-jointes-plans-photos-devis-b2b",
+  "/outils/estimateur-cout-aller-retours-brief-photos",
+  "/secteurs/funnel-devis-photovoltaique-solaire",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -2852,6 +3028,9 @@ for (const root of marketingRoots) {
 assert.equal(CREAM_HEX, "#F6F0E8");
 
 for (const [path, lastmod] of [
+  ["/blog/pieces-jointes-plans-photos-devis-b2b", "2026-09-25"],
+  ["/outils/estimateur-cout-aller-retours-brief-photos", "2026-09-25"],
+  ["/secteurs/funnel-devis-photovoltaique-solaire", "2026-09-25"],
   ["/blog/envoyer-devis-lien-securise-vs-pdf-email", "2026-09-24"],
   ["/blog/mentions-obligatoires-devis-france", "2026-09-24"],
   ["/outils/estimateur-cout-devis-pdf-seuls", "2026-09-24"],

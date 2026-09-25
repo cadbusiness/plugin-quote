@@ -1,6 +1,44 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "pieces-jointes-plans-photos-devis-b2b": [
+    {
+      q: "Faut-il interdire WhatsApp pour les devis ?",
+      a: "Non. Interdisez-en le rôle d’archive. Un prospect peut vous alerter sur WhatsApp ; le document utile doit atterrir dans le dossier / espace prospect.",
+    },
+    {
+      q: "Que faire si le plan est un DWG et que le commercial ne l’ouvre pas ?",
+      a: "Demandez un PDF coté en parallèle, ou une revue courte par le bureau d’études avant chiffrage. Le funnel peut proposer « PDF plan » comme format préféré.",
+    },
+    {
+      q: "Comment gérer les photos trop compressées ?",
+      a: "Expliquez dans l’espace prospect : « idéalement sans compression agressive, une photo par angle ». Proposez un second upload si illisible. Mieux que de chiffrer à l’aveugle.",
+    },
+    {
+      q: "Combien de documents maximum par dossier ?",
+      a: "Assez pour chiffrer, pas une bibliothèque. Souvent 3 à 10 fichiers utiles. Au-delà, demandez un index (quoi est quoi) ou un plan « courant » clairement marqué.",
+    },
+    {
+      q: "Le prospect peut-il remplacer un plan déjà uploadé ?",
+      a: "Oui, et ça doit créer une nouvelle version document visible, pas écraser en silence sans que l’estimateur le sache.",
+    },
+    {
+      q: "Quel lien avec la validité du devis ?",
+      a: "Si le plan change après envoi, la proposition peut être caduque. Affichez la validité et, si besoin, renvoyez une version.",
+    },
+    {
+      q: "Comment prioriser les dossiers sans photos ?",
+      a: "SLA plus long, ou étape « cadrage express » avant chiffrage. Ne brûlez pas l’équipe estimateur sur des briefs vides.",
+    },
+    {
+      q: "Peut-on démarrer sans espace prospect ?",
+      a: "Oui, avec un Drive partagé par dossier. Vous gagnerez déjà face à WhatsApp. L’espace prospect ajoute le lien devis, le statut et le multi-décideurs, avec moins de forward.",
+    },
+    {
+      q: "Où trouver un ordre de grandeur du coût des allers-retours ?",
+      a: "L’estimateur coût aller-retours brief / photos et l’estimateur brief incomplet.",
+    },
+  ],
   "mentions-obligatoires-devis-france": [
     {
       q: "Quelles sont les mentions obligatoires sur un devis en France ?",
