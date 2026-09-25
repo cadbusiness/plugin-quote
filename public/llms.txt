@@ -48,6 +48,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Commentaires et annotations sur un devis collaboratif B2B : https://www.quotebuilder.co/blog/commentaires-annotations-devis-collaboratif-b2b
 - Pièces jointes, plans et photos dans un devis B2B : https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b
 - Mentions obligatoires sur un devis en France (B2B) : https://www.quotebuilder.co/blog/mentions-obligatoires-devis-france
 - Envoyer un devis par lien sécurisé vs PDF : https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email
@@ -97,6 +98,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Estimateur leads formulaire contact vs funnel WordPress : https://www.quotebuilder.co/outils/estimateur-leads-formulaire-vs-funnel-wp
 - Estimateur coût des devis PDF seuls : https://www.quotebuilder.co/outils/estimateur-cout-devis-pdf-seuls
 - Estimateur coût des allers-retours brief sans photos / plans : https://www.quotebuilder.co/outils/estimateur-cout-aller-retours-brief-photos
+- Estimateur coût des e-mails de clarification devis : https://www.quotebuilder.co/outils/estimateur-cout-emails-clarification-devis
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 

@@ -39,6 +39,7 @@ import { buildPrefillUrl } from "./prefill-url";
 import { LEADS_FORMULAIRE_DEFAULTS, computeLeadsFormulaireVsFunnel } from "./leads-formulaire-vs-funnel";
 import { COUT_DEVIS_PDF_SEULS_DEFAULTS, computeCoutDevisPdfSeuls } from "./cout-devis-pdf-seuls";
 import { COUT_ALLER_RETOURS_BRIEF_DEFAULTS, computeCoutAllerRetoursBrief } from "./cout-aller-retours-brief-photos";
+import { COUT_EMAILS_CLARIFICATION_DEFAULTS, computeCoutEmailsClarification } from "./cout-emails-clarification";
 import { CHECKLIST_MENTIONS_ITEMS, computeChecklistMentions } from "./checklist-mentions-devis";
 import { MARKETING_ROUTES } from "./routes";
 import sitemap from "../../app/sitemap";
@@ -103,6 +104,8 @@ for (const required of [
   "/outils/estimateur-cout-devis-pdf-seuls",
   "/outils/checklist-mentions-devis-france",
   "/outils/estimateur-cout-aller-retours-brief-photos",
+  "/outils/estimateur-cout-emails-clarification-devis",
+  "/blog/commentaires-annotations-devis-collaboratif-b2b",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
   "/secteurs/funnel-devis-menuiserie-sur-mesure",
@@ -146,7 +149,36 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 29);
+assert.equal(BLOG_POSTS.length, 30);
+assert.deepEqual(
+  BLOG_POSTS.find((post) => post.slug === "commentaires-annotations-devis-collaboratif-b2b")?.tags,
+  ["funnel"],
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "commentaires-annotations-devis-collaboratif-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "commentaires-annotations-devis-collaboratif-b2b")?.cover,
+  BLOG_DEMO_SHOTS.devisDetail,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "commentaires-annotations-devis-collaboratif-b2b")?.readingMinutes,
+  12,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "commentaires-annotations-devis-collaboratif-b2b")?.publishedAt,
+  "2026-09-25",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "commentaires-annotations-devis-collaboratif-b2b")?.pinned,
+  false,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "commentaires-annotations-devis-collaboratif-b2b")?.path,
+  "/blog/commentaires-annotations-devis-collaboratif-b2b",
+);
+assert.equal(BLOG_FAQ["commentaires-annotations-devis-collaboratif-b2b"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "pieces-jointes-plans-photos-devis-b2b")?.tags, [
   "funnel",
   "catalogue",
@@ -592,8 +624,15 @@ for (const value of Object.values(BLOG_UI)) {
 }
 
 const blogDir = join(process.cwd(), "src/content/blog");
+const secteursDir = join(process.cwd(), "src/content/secteurs");
 const blogFiles = readdirSync(blogDir).filter((name) => name.endsWith(".md"));
 assert.ok(blogFiles.length >= 6, "expected blog markdown files");
+assert.equal(
+  existsSync(join(blogDir, "funnel-devis-photovoltaique-solaire.md")),
+  false,
+  "secteur photovoltaïque must not live under src/content/blog",
+);
+assert.ok(existsSync(join(secteursDir, "funnel-devis-photovoltaique-solaire.md")));
 
 const requiredSources = {
   "pourquoi-les-devis-meurent-sans-relance.md": [
@@ -788,6 +827,15 @@ const requiredSources = {
     "/outils/estimateur-cout-brief-incomplet",
     "/blog/qualifier-demande-devis-avant-chiffrage",
     "/blog/envoyer-devis-lien-securise-vs-pdf-email",
+    "/secteurs/funnel-devis-photovoltaique-solaire",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "commentaires-annotations-devis-collaboratif-b2b.md": [
+    "/outils/estimateur-cout-emails-clarification-devis",
+    "/outils/estimateur-cout-aller-retours-brief-photos",
+    "/blog/envoyer-devis-lien-securise-vs-pdf-email",
+    "/blog/versions-historique-devis-b2b",
     "/secteurs/funnel-devis-photovoltaique-solaire",
     "/c/demo/rayonnage",
     "/signup?plan=free",
@@ -1049,8 +1097,15 @@ const requiredSources = {
   ],
 } as const;
 
-for (const file of blogFiles) {
-  const body = readFileSync(join(blogDir, file), "utf8");
+const contentFiles = [
+  ...blogFiles.map((file) => ({ file, dir: blogDir })),
+  ...readdirSync(secteursDir)
+    .filter((name) => name.endsWith(".md"))
+    .map((file) => ({ file, dir: secteursDir })),
+];
+
+for (const { file, dir } of contentFiles) {
+  const body = readFileSync(join(dir, file), "utf8");
   assert.doesNotMatch(body, EM_DASH, `${file} still contains an em dash`);
   const words = body.split(/\s+/).filter(Boolean).length;
   assert.ok(words >= 1800, `${file} is too short for SEO (${words} words)`);
@@ -1236,7 +1291,23 @@ for (const file of blogFiles) {
 }
 
 {
-  const pvRaw = readFileSync(join(blogDir, "funnel-devis-photovoltaique-solaire.md"), "utf8");
+  const clarifRaw = readFileSync(join(blogDir, "commentaires-annotations-devis-collaboratif-b2b.md"), "utf8");
+  assert.ok(clarifRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const clarifBody = stripFrontmatter(clarifRaw);
+  assert.ok(
+    clarifBody.startsWith("# Commentaires et annotations sur un devis collaboratif B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(clarifBody, /^title:/m);
+  assert.match(clarifBody, /signup\?plan=free/);
+  assert.match(clarifBody, /\/outils\/estimateur-cout-emails-clarification-devis/);
+  assert.match(clarifBody, /\/c\/demo\/rayonnage/);
+  assert.doesNotMatch(clarifBody, EM_DASH);
+  assert.equal(clarifBody.split(/\s+/).filter(Boolean).length, 2429);
+}
+
+{
+  const pvRaw = readFileSync(join(secteursDir, "funnel-devis-photovoltaique-solaire.md"), "utf8");
   assert.ok(pvRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
   const pvBody = stripFrontmatter(pvRaw);
   assert.ok(
@@ -2290,6 +2361,57 @@ assert.equal(allerClamp.ecartConvPts, 50);
 assert.equal(allerClamp.opp, null);
 assert.equal(allerClamp.alertTone, "neutral");
 
+const clarifDefault = computeCoutEmailsClarification({ ...COUT_EMAILS_CLARIFICATION_DEFAULTS });
+assert.equal(clarifDefault.dossiers, 19.3);
+assert.equal(clarifDefault.mailsMois, 115.8);
+assert.equal(clarifDefault.heures, 15.4);
+assert.equal(clarifDefault.coutTemps, 847);
+assert.equal(clarifDefault.dealsPerdus, 0.8);
+assert.equal(clarifDefault.opp, 5760);
+assert.equal(clarifDefault.total, 6607);
+assert.equal(clarifDefault.alertTone, "bad");
+assert.equal(clarifDefault.totalTone, "warn");
+assert.equal(clarifDefault.oppTone, "warn");
+assert.match(clarifDefault.alert, /Friction clarification élevée/);
+assert.match(clarifDefault.recap, /Commentaires \/ annotations ancrés/);
+assert.match(clarifDefault.recap, /Coût total indicatif/);
+
+const clarifEmpty = computeCoutEmailsClarification({ ...COUT_EMAILS_CLARIFICATION_DEFAULTS, devis: 0 });
+assert.equal(clarifEmpty.dossiers, 0);
+assert.equal(clarifEmpty.mailsMois, 0);
+assert.equal(clarifEmpty.heures, 0);
+assert.equal(clarifEmpty.dealsPerdus, 0);
+assert.equal(clarifEmpty.opp, 0);
+assert.equal(clarifEmpty.total, 0);
+assert.equal(clarifEmpty.alertTone, "neutral");
+assert.match(clarifEmpty.alert, /volume de devis/);
+
+const clarifNoBasket = computeCoutEmailsClarification({ ...COUT_EMAILS_CLARIFICATION_DEFAULTS, panier: 0 });
+assert.equal(clarifNoBasket.opp, null);
+assert.equal(clarifNoBasket.oppLabel, "non calculé (panier = 0)");
+assert.equal(clarifNoBasket.total, clarifNoBasket.coutTemps);
+assert.equal(clarifNoBasket.oppTone, "neutral");
+assert.match(clarifNoBasket.recap, /Opportunités perdues : n\/a/);
+
+const clarifClamp = computeCoutEmailsClarification({
+  devis: -5,
+  pctClarif: 140,
+  mails: 900,
+  minutes: 900,
+  taux: 20000,
+  pctPerdus: 140,
+  panier: -1,
+});
+assert.equal(clarifClamp.devis, 0);
+assert.equal(clarifClamp.pctClarif, 100);
+assert.equal(clarifClamp.mails, 200);
+assert.equal(clarifClamp.minutes, 240);
+assert.equal(clarifClamp.taux, 10000);
+assert.equal(clarifClamp.pctPerdus, 100);
+assert.equal(clarifClamp.panier, 0);
+assert.equal(clarifClamp.opp, null);
+assert.equal(clarifClamp.alertTone, "neutral");
+
 const mentionsNone = computeChecklistMentions([]);
 assert.equal(CHECKLIST_MENTIONS_ITEMS.length, 20);
 assert.equal(mentionsNone.done, 0);
@@ -2340,7 +2462,9 @@ for (const expected of [
   { path: "/outils/checklist-mentions-devis-france", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
   { path: "/blog/pieces-jointes-plans-photos-devis-b2b", priority: 0.8, lastmod: "2026-09-25" },
+  { path: "/blog/commentaires-annotations-devis-collaboratif-b2b", priority: 0.8, lastmod: "2026-09-25" },
   { path: "/outils/estimateur-cout-aller-retours-brief-photos", priority: 0.7, lastmod: "2026-09-25" },
+  { path: "/outils/estimateur-cout-emails-clarification-devis", priority: 0.7, lastmod: "2026-09-25" },
   { path: "/secteurs/funnel-devis-photovoltaique-solaire", priority: 0.8, lastmod: "2026-09-25" },
 ]) {
   const entry = sitemapEntries.find((item) => item.url === `https://www.quotebuilder.co${expected.path}`);
@@ -2358,6 +2482,8 @@ assert.ok(paths.includes("/outils/checklist-mentions-devis-france"));
 assert.ok(paths.includes("/secteurs/funnel-devis-pompe-chaleur-chauffage"));
 assert.ok(paths.includes("/blog/pieces-jointes-plans-photos-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-aller-retours-brief-photos"));
+assert.ok(paths.includes("/blog/commentaires-annotations-devis-collaboratif-b2b"));
+assert.ok(paths.includes("/outils/estimateur-cout-emails-clarification-devis"));
 assert.ok(paths.includes("/secteurs/funnel-devis-photovoltaique-solaire"));
 
 const acompteDefault = computeAcompteDevis({
@@ -2729,7 +2855,9 @@ const llmsPaths = [
   "/outils/checklist-mentions-devis-france",
   "/secteurs/funnel-devis-pompe-chaleur-chauffage",
   "/blog/pieces-jointes-plans-photos-devis-b2b",
+  "/blog/commentaires-annotations-devis-collaboratif-b2b",
   "/outils/estimateur-cout-aller-retours-brief-photos",
+  "/outils/estimateur-cout-emails-clarification-devis",
   "/secteurs/funnel-devis-photovoltaique-solaire",
 ];
 for (const path of llmsPaths) {
@@ -3029,7 +3157,9 @@ assert.equal(CREAM_HEX, "#F6F0E8");
 
 for (const [path, lastmod] of [
   ["/blog/pieces-jointes-plans-photos-devis-b2b", "2026-09-25"],
+  ["/blog/commentaires-annotations-devis-collaboratif-b2b", "2026-09-25"],
   ["/outils/estimateur-cout-aller-retours-brief-photos", "2026-09-25"],
+  ["/outils/estimateur-cout-emails-clarification-devis", "2026-09-25"],
   ["/secteurs/funnel-devis-photovoltaique-solaire", "2026-09-25"],
   ["/blog/envoyer-devis-lien-securise-vs-pdf-email", "2026-09-24"],
   ["/blog/mentions-obligatoires-devis-france", "2026-09-24"],

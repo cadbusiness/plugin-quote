@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "commentaires-annotations-devis-collaboratif-b2b": [
+    {
+      q: "Faut-il interdire totalement le mail pour clarifier un devis ?",
+      a: "Non. Interdisez-en le rôle de salle de décision. Un prospect peut vous alerter par mail ; la décision utile doit atterrir en commentaire ancré sur le devis partagé (ou dans une nouvelle version).",
+    },
+    {
+      q: "Que faire si un décideur n’a pas accès au lien ?",
+      a: "Renvoyez le lien sécurisé (ou un accès espace prospect), pas un PDF. Sinon vous recréez le double canal.",
+    },
+    {
+      q: "Comment gérer une demande qui change le chiffrage ?",
+      a: "Ouvrez une nouvelle version du devis. Liez le commentaire déclencheur à cette version. Ne corrigez pas un PDF déjà en circulation sans historique.",
+    },
+    {
+      q: "Les commentaires remplacent-ils les options / variantes ?",
+      a: "Non. Les options structurées évitent une partie des commentaires. Les commentaires gèrent le reste (cas particuliers).",
+    },
+    {
+      q: "Que faire des anciens fils RE: RE: encore ouverts ?",
+      a: "Clôturez-les en reportant la décision finale dans le devis (commentaire ou note de version), puis archivez le mail. Ne laissez pas deux vérités.",
+    },
+    {
+      q: "Comment mesurer le coût des clarifications mail ?",
+      a: "Comptez devis/mois, % avec clarification, mails moyens, minutes/mail, taux horaire, % deals perdus faute de clarté, panier moyen. L’estimateur coût e-mails clarification le fait en local.",
+    },
+    {
+      q: "Faut-il résoudre tous les commentaires avant signature ?",
+      a: "Tous les commentaires critiques (prix, périmètre, délai engageant). Un commentaire cosmétique peut rester en note. Définissez la règle en équipe.",
+    },
+    {
+      q: "Quel lien avec la validité du devis ?",
+      a: "Si la clarification dépasse la validité, renvoyez une version à jour.",
+    },
+    {
+      q: "Peut-on démarrer sans outil collaboratif ?",
+      a: "Oui, avec un Drive et un tableau « décisions » par devis. Vous gagnerez déjà face aux fils RE: RE:. Le lien sécurisé et les commentaires ancrés réduisent encore le forward et le multi-décideurs.",
+    },
+    {
+      q: "Où trouver un ordre de grandeur du coût des allers-retours documents ?",
+      a: "L’estimateur coût aller-retours brief / photos et l’estimateur brief incomplet pour le brief ; l’estimateur e-mails clarification pour la phase post-envoi.",
+    },
+  ],
   "pieces-jointes-plans-photos-devis-b2b": [
     {
       q: "Faut-il interdire WhatsApp pour les devis ?",

@@ -35,6 +35,11 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   {
+    path: "/blog/commentaires-annotations-devis-collaboratif-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
     path: "/blog/pieces-jointes-plans-photos-devis-b2b",
     changeFrequency: "monthly",
     priority: 0.8,
@@ -120,6 +125,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/estimateur-cout-aller-retours-brief-photos",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-09-25",
+  },
+  {
+    path: "/outils/estimateur-cout-emails-clarification-devis",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-09-25",

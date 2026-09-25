@@ -8,6 +8,10 @@ export function stripFrontmatter(source: string) {
   return match ? source.slice(match[0].length).replace(/^\r?\n+/, "") : source;
 }
 
+export function loadContentBody(slug: string, folder: "blog" | "secteurs" = "blog") {
+  return stripFrontmatter(readFileSync(join(process.cwd(), "src/content", folder, `${slug}.md`), "utf8"));
+}
+
 export function loadPostBody(slug: string) {
-  return stripFrontmatter(readFileSync(join(process.cwd(), "src/content/blog", `${slug}.md`), "utf8"));
+  return loadContentBody(slug, "blog");
 }
