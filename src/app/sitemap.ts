@@ -5,6 +5,8 @@ import { SITE_URL } from "@/lib/marketing/site";
 
 /** Dates éditoriales hors articles (le blog passe par publishedAt). */
 const CONTENT_LASTMOD: Record<string, string> = {
+  "/secteurs/funnel-devis-photovoltaique-solaire": "2026-09-25",
+  "/outils/estimateur-cout-aller-retours-brief-photos": "2026-09-25",
   "/secteurs/funnel-devis-pompe-chaleur-chauffage": "2026-09-24",
   "/outils/estimateur-cout-devis-pdf-seuls": "2026-09-24",
   "/blog/mentions-obligatoires-devis-france": "2026-09-24",

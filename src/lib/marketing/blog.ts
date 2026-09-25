@@ -93,6 +93,7 @@ export const BLOG_TOOL_PREFILL_URL = "/outils/generateur-url-prefill-devis";
 export const BLOG_TOOL_LEADS_WP = "/outils/estimateur-leads-formulaire-vs-funnel-wp";
 export const BLOG_TOOL_PDF_SEULS = "/outils/estimateur-cout-devis-pdf-seuls";
 export const BLOG_TOOL_CHECKLIST_MENTIONS = "/outils/checklist-mentions-devis-france";
+export const BLOG_TOOL_ALLER_RETOURS_BRIEF = "/outils/estimateur-cout-aller-retours-brief-photos";
 
 export type BlogTool = {
   href: string;
@@ -210,9 +211,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Vingt blocs (identité, SIRET, TVA, prix, validité, acomptes, CGV, process). Score de complétion et récap des manques. Calcul 100 % local, pas une validation juridique.",
     tags: ["funnel"],
   },
+  {
+    href: BLOG_TOOL_ALLER_RETOURS_BRIEF,
+    title: "Estimateur coût des allers-retours brief sans photos",
+    text: "Demandes / mois, % sans photo ni plan, minutes perdues, déplacements inutiles, coût trajet, taux horaire, panier, écart de conversion. Heures, friction, trajets, opportunités. Calcul 100 % local.",
+    tags: ["funnel", "catalogue"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "pieces-jointes-plans-photos-devis-b2b",
+    path: "/blog/pieces-jointes-plans-photos-devis-b2b",
+    title: "Pièces jointes, plans et photos dans un devis B2B : du chaos WhatsApp au brief chiffrable",
+    description:
+      "Gérer plans, photos, PDF techniques et specs dans un devis B2B : éviter WhatsApp et mails orphelins, versions, espace prospect, brief chiffrable.",
+    publishedAt: "2026-09-25",
+    readingMinutes: 12,
+    tags: ["funnel", "catalogue"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "mentions-obligatoires-devis-france",
     path: "/blog/mentions-obligatoires-devis-france",
