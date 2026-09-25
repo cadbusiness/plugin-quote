@@ -3,7 +3,7 @@ import Link from "next/link";
 import { MarketingFaq } from "@/components/marketing/marketing-faq";
 import { MarketingCta } from "@/components/marketing/marketing-shell";
 import { Markdown } from "@/lib/marketing/markdown";
-import { loadPostBody } from "@/lib/marketing/load-post";
+import { loadContentBody } from "@/lib/marketing/load-post";
 import { SITE_URL, pageMetadata } from "@/lib/marketing/site";
 
 export const metadata: Metadata = pageMetadata({
@@ -53,7 +53,7 @@ const FAQ = [
 ];
 
 export default function PhotovoltaiqueSolaireLandingPage() {
-  const body = loadPostBody("funnel-devis-photovoltaique-solaire");
+  const body = loadContentBody("funnel-devis-photovoltaique-solaire", "secteurs");
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",

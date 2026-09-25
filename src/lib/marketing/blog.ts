@@ -94,6 +94,7 @@ export const BLOG_TOOL_LEADS_WP = "/outils/estimateur-leads-formulaire-vs-funnel
 export const BLOG_TOOL_PDF_SEULS = "/outils/estimateur-cout-devis-pdf-seuls";
 export const BLOG_TOOL_CHECKLIST_MENTIONS = "/outils/checklist-mentions-devis-france";
 export const BLOG_TOOL_ALLER_RETOURS_BRIEF = "/outils/estimateur-cout-aller-retours-brief-photos";
+export const BLOG_TOOL_EMAILS_CLARIFICATION = "/outils/estimateur-cout-emails-clarification-devis";
 
 export type BlogTool = {
   href: string;
@@ -217,9 +218,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Demandes / mois, % sans photo ni plan, minutes perdues, déplacements inutiles, coût trajet, taux horaire, panier, écart de conversion. Heures, friction, trajets, opportunités. Calcul 100 % local.",
     tags: ["funnel", "catalogue"],
   },
+  {
+    href: BLOG_TOOL_EMAILS_CLARIFICATION,
+    title: "Estimateur coût des e-mails de clarification devis",
+    text: "Devis / mois, % clarification mail, mails moyens, minutes, taux horaire, % deals perdus, panier. Heures, coût temps, opportunités. Calcul 100 % local.",
+    tags: ["funnel", "relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "commentaires-annotations-devis-collaboratif-b2b",
+    path: "/blog/commentaires-annotations-devis-collaboratif-b2b",
+    title: "Commentaires et annotations sur un devis collaboratif B2B : fin des fils RE: RE:",
+    description:
+      "Remplacer les mails RE: RE: par des commentaires et annotations sur un devis partagé (lien sécurisé) : multi-décideurs, threads par ligne, historique, versions et signature.",
+    publishedAt: "2026-09-25",
+    readingMinutes: 12,
+    tags: ["funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "pieces-jointes-plans-photos-devis-b2b",
     path: "/blog/pieces-jointes-plans-photos-devis-b2b",
