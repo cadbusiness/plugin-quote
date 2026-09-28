@@ -8,7 +8,7 @@ import { SITE_URL, pageMetadata } from "@/lib/marketing/site";
 export const metadata: Metadata = pageMetadata({
   title: "Estimateur coût des relances à l’aveugle sur devis",
   description:
-    "Estimez le coût des relances devis B2B sans savoir si le devis a été ouvert ou lu : heures perdues, opportunités mal priorisées, deals froids. Calcul 100 % local.",
+    "Estimez le coût des relances devis B2B faites sans regarder la fiche : heures, opportunités mal priorisées, timing. Calcul 100 % local.",
   path: "/outils/estimateur-cout-relances-aveugles-devis",
 });
 
@@ -19,15 +19,15 @@ const FAQ = [
   },
   {
     q: "Que mesure le coût total ?",
-    a: "La somme de trois ordres de grandeur : le temps chargé des relances sans signal d’ouverture, les opportunités mal priorisées si un panier et un écart de conversion sont renseignés, et l’impact timing (hypothèse de 25 % du panier sur les deals où la relance est trop tôt ou trop tard).",
+    a: "La somme de trois ordres de grandeur : le temps chargé des relances faites sans signal utile, les opportunités mal priorisées si un panier et un écart de conversion sont renseignés, et l’impact timing (hypothèse de 25 % du panier sur les deals où la relance est trop tôt ou trop tard).",
   },
   {
     q: "Pourquoi opportunités et impact timing disparaissent si le panier est à 0 ?",
-    a: "Sans panier, l’outil ne convertit pas l’écart de conversion ni le timing nuisible en euros. Devis sans signal, relances, heures et coût temps restent affichés.",
+    a: "Sans panier, l’outil ne convertit pas l’écart de conversion ni le timing nuisible en euros. Devis relancés sans signal, relances, heures et coût temps restent affichés.",
   },
   {
-    q: "Comment relier ça à un suivi d’ouverture ?",
-    a: "Envoi par lien ou espace prospect, alerte de première ouverture et de relectures sur les Hot, relance ciblée à 24-48 h. Lire le suivi d’ouverture et de lecture d’un devis en ligne B2B.",
+    q: "Comment relier ça au devis en ligne ?",
+    a: "Envoyez un lien, regardez la dernière consultation sur la fiche, suivez les relecteurs, et relancez sur une validation ou une demande de modifications. Lire l’article devis en ligne, dernière consultation et relecteurs.",
   },
 ];
 
@@ -40,7 +40,7 @@ export default function EstimateurCoutRelancesAveuglesPage() {
     operatingSystem: "Web",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
     description:
-      "Estime heures perdues, opportunités mal priorisées et impact timing quand les devis B2B sont relancés sans signal d’ouverture ou de lecture.",
+      "Estime heures perdues, opportunités mal priorisées et impact timing quand les devis B2B sont relancés sans regarder la fiche.",
     inLanguage: "fr-FR",
     url: `${SITE_URL}/outils/estimateur-cout-relances-aveugles-devis`,
   };
@@ -56,14 +56,15 @@ export default function EstimateurCoutRelancesAveuglesPage() {
             Estimateur coût des relances à l’aveugle sur devis
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-mk-muted sm:text-lg">
-            Volume de devis, part sans signal d’ouverture, rythme de relances aveugles et taux.
-            L’outil estime les relances, les heures perdues, le coût temps, les opportunités mal
-            priorisées et le total indicatif. Calcul 100 % dans votre navigateur.{" "}
+            Volume de devis, part relancée sans signal utile, rythme de relances et taux. L’outil
+            estime les relances, les heures, le coût temps, les opportunités mal priorisées et le
+            total indicatif. Ce n’est pas un taux de mails ouverts. Calcul 100 % dans votre
+            navigateur.{" "}
             <Link
               href="/blog/suivi-ouverture-lecture-devis-en-ligne-b2b"
               className="font-medium text-mk-accent underline-offset-2 hover:underline"
             >
-              Suivi d’ouverture et de lecture d’un devis en ligne
+              Dernière consultation, relecteurs et relances
             </Link>
             .
           </p>
@@ -77,12 +78,14 @@ export default function EstimateurCoutRelancesAveuglesPage() {
       <section className="mx-auto max-w-3xl px-6 pb-4">
         <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">Comment le lire</h2>
         <p className="mt-4 text-[16px] leading-7 text-mk-muted">
-          Les devis sans signal = devis envoyés × part sans ouverture / lecture. Les relances
-          aveugles / mois = ces devis × relances moyennes par devis. Les heures perdues = relances ×
-          minutes, ramenées en heures. Le coût temps = ces heures × le taux horaire chargé. Si le
-          panier est renseigné, les opportunités = devis sans signal × écart de conversion (en
-          points) × panier. L’impact timing = devis sans signal × part de deals où le timing a nui ×
-          panier × 25 %. Le total additionne coût temps, opportunités et impact timing.
+          Les devis relancés sans signal = devis envoyés × part relancée sans regarder un signal
+          utile (dernière consultation, statut des relecteurs, validation ou demande de
+          modifications). Les relances aveugles / mois = ces devis × relances moyennes. Les heures =
+          relances × minutes, ramenées en heures. Le coût temps = ces heures × le taux horaire
+          chargé. Si le panier est renseigné, les opportunités = ces devis × écart de conversion (en
+          points) × panier. L’écart mesure le gain si les dossiers qui ont un signal passent devant.
+          L’impact timing = ces devis × part de deals où le timing a nui × panier × 25 %. Le total
+          additionne coût temps, opportunités et impact timing.
         </p>
         <p className="mt-4 text-[16px] leading-7 text-mk-muted">
           Ensuite :{" "}
@@ -90,7 +93,7 @@ export default function EstimateurCoutRelancesAveuglesPage() {
             href="/blog/suivi-ouverture-lecture-devis-en-ligne-b2b"
             className="font-medium text-mk-accent underline-offset-2 hover:underline"
           >
-            suivi d’ouverture / lecture
+            dernière consultation et relecteurs
           </Link>
           {" · "}
           <Link
@@ -117,7 +120,7 @@ export default function EstimateurCoutRelancesAveuglesPage() {
       <MarketingFaq items={FAQ} />
       <MarketingCta
         title="Relancez sur un signal, pas au feeling."
-        text="Lien sécurisé, première ouverture, relectures dans le dossier. Free sans carte."
+        text="Lien de devis, dernière consultation sur la fiche, relecteurs et notifications de validation. Free sans carte."
       />
     </>
   );

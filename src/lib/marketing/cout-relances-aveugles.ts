@@ -38,14 +38,14 @@ export const COUT_RELANCES_AVEUGLES_DEFAULTS = {
 
 export const COUT_RELANCES_AVEUGLES_LABELS = {
   devis: "Devis envoyés / mois",
-  sansSignalPct: "% sans signal d’ouverture / lecture",
+  sansSignalPct: "% de devis relancés sans signal utile",
   relancesParDevis: "Relances aveugles / devis (moyenne)",
   minutes: "Minutes / relance aveugle",
   taux: "Taux horaire chargé (€)",
   nuirePct: "% de deals où timing de relance a nui",
   panier: "Panier moyen HT (€)",
-  ecartConvPts: "Écart conversion si priorisation des ouverts (points %)",
-  aveugles: "Devis / mois sans signal",
+  ecartConvPts: "Écart de conversion si on priorise les dossiers avec un signal (points %)",
+  aveugles: "Devis / mois relancés sans signal",
   relancesMois: "Relances aveugles / mois",
   heures: "Heures / mois perdues (relances)",
   coutTemps: "Coût temps (chargé)",
@@ -139,15 +139,15 @@ export function computeCoutRelancesAveugles(input: CoutRelancesAveuglesInput): C
   } else if (total >= 20000 || heures >= 15) {
     alertTone = "bad";
     alert = `Relances aveugles coûteuses · environ ${fmtEuro(total)} / mois (indicatif).`;
-    tip = "Priorité : envoi lien / espace avec 1ère ouverture + relectures, règles J+1/J+3, alertes Hot seulement.";
+    tip = "Priorité : envoyer un lien, regarder la dernière consultation sur la fiche, inviter les relecteurs, relancer sur une validation ou une demande de modifications.";
   } else if (total >= 6000 || heures >= 6) {
     alertTone = "warn";
     alert = `Friction relances notable · environ ${fmtEuro(total)} / mois (indicatif).`;
-    tip = "Pilotez d’abord les Hot : signal d’ouverture avant appel, digest quotidien pour le reste.";
+    tip = "Avant d’appeler, ouvrez la fiche : dernière consultation, statut des relecteurs, validation ou modifications.";
   } else {
     alertTone = "ok";
     alert = `Friction relances contenue · environ ${fmtEuro(total)} / mois (indicatif).`;
-    tip = "Gardez des règles simples. Surveillez le % jamais ouverts et le délai de 1ère relance post-ouverture.";
+    tip = "Gardez une règle simple : un regard sur la fiche avant chaque relance, et une réaction quand une validation ou une demande de modifications arrive.";
   }
 
   const totalTone: CoutRelancesAveuglesTone = total >= 20000 ? "bad" : total >= 6000 ? "warn" : "ok";
@@ -168,7 +168,7 @@ export function computeCoutRelancesAveugles(input: CoutRelancesAveuglesInput): C
   const recap = [
     "Récap coût relances à l’aveugle sur devis (indicatif)",
     `Devis envoyés / mois : ${fmtNumber(devis, 0)}`,
-    `% sans signal d’ouverture : ${fmtNumber(sansSignalPct, 0)} %`,
+    `% relancés sans signal utile : ${fmtNumber(sansSignalPct, 0)} %`,
     `Devis sans signal : ${fmtNumber(aveugles, 1)}`,
     `Relances aveugles / devis : ${fmtNumber(relancesParDevis, 1)}`,
     `Relances aveugles / mois : ${fmtNumber(relancesMois, 1)}`,
@@ -176,7 +176,7 @@ export function computeCoutRelancesAveugles(input: CoutRelancesAveuglesInput): C
     `Heures / mois perdues : ${heuresLabel}`,
     `Taux horaire chargé : ${fmtEuro(taux)}`,
     `Coût temps : ${coutTempsLabel}`,
-    `Écart conversion si priorisation ouverts (points) : ${fmtNumber(ecartConvPts, 1)}`,
+    `Écart de conversion si priorisation des dossiers avec signal (points) : ${fmtNumber(ecartConvPts, 1)}`,
     `Deals potentiellement mieux priorisés : ${dealsPriorisesLabel}`,
     `Panier moyen HT : ${panier > 0 ? fmtEuro(panier) : "n/a"}`,
     `Opportunités mal priorisées : ${panier > 0 && opp !== null ? fmtEuro(opp) : "n/a"}`,
@@ -186,12 +186,12 @@ export function computeCoutRelancesAveugles(input: CoutRelancesAveuglesInput): C
     `Statut : ${alert}`,
     "",
     "Checklist rapide :",
-    "- Envoyer via lien / espace (PDF téléchargeable dedans si besoin)",
-    "- Alerte 1ère ouverture + relectures sur les Hot",
-    "- Pas d’appel dans l’heure qui suit la 1ère ouverture",
-    "- Relance ciblée si ouvert sans suite (24-48 h)",
-    "- Jamais ouvert à J+2/J+3 : vérifier destinataire / spam",
-    "- Informer le prospect (finalité suivi devis, données minimisées)",
+    "- Envoyer un lien vers l’espace prospect (PDF téléchargeable dedans si besoin)",
+    "- Avant de relancer, ouvrir la fiche : dernière consultation",
+    "- Inviter les relecteurs et suivre En attente, Consulté, Validé, Modifications",
+    "- Réagir à une validation ou à une demande de modifications",
+    "- Aucune visite sur la fiche : vérifier le destinataire et renvoyer le lien",
+    "- Ne pas confondre une consultation et une acceptation",
     "",
     "Calcul local · à adapter à votre réalité métier.",
   ].join("\n");

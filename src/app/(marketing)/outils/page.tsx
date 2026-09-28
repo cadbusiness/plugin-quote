@@ -141,7 +141,7 @@ const TOOLS = [
     href: "/outils/estimateur-cout-relances-aveugles-devis",
     eyebrow: "Pilotage",
     title: "Estimateur coût des relances à l’aveugle sur devis",
-    text: "Devis / mois, % sans signal d’ouverture, relances aveugles, minutes, taux horaire, timing nuisible, panier, écart de conversion. Heures, coût temps, opportunités, impact timing. Calcul 100 % local.",
+    text: "Devis / mois, part relancée sans signal utile, relances aveugles, minutes, taux horaire, timing nuisible, panier, écart de conversion. Heures, coût temps, opportunités, impact timing. Calcul 100 % local.",
   },
 ] as const;
 

@@ -69,7 +69,7 @@ export function CoutRelancesAveuglesEstimator() {
             />
             <NumberField
               label={COUT_RELANCES_AVEUGLES_LABELS.sansSignalPct}
-              hint="Devis PDF email ou sans suivi d’accès lien / espace."
+              hint="Part relancée sans regarder la dernière consultation, le statut des relecteurs, ni une validation ou une demande de modifications."
               value={sansSignalPct}
               min={0}
               max={100}
@@ -80,7 +80,7 @@ export function CoutRelancesAveuglesEstimator() {
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <NumberField
               label={COUT_RELANCES_AVEUGLES_LABELS.relancesParDevis}
-              hint="Mails / appels sans savoir si le devis a été ouvert."
+              hint="Mails ou appels envoyés sans ouvrir la fiche."
               value={relancesParDevis}
               min={0}
               max={50}
@@ -112,7 +112,7 @@ export function CoutRelancesAveuglesEstimator() {
             />
             <NumberField
               label={COUT_RELANCES_AVEUGLES_LABELS.nuirePct}
-              hint="Trop tôt (agace) ou trop tard (concurrent) faute de signal."
+              hint="Trop tôt ou trop tard, faute d’avoir regardé la fiche."
               value={nuirePct}
               min={0}
               max={100}
@@ -130,7 +130,7 @@ export function CoutRelancesAveuglesEstimator() {
             />
             <NumberField
               label={COUT_RELANCES_AVEUGLES_LABELS.ecartConvPts}
-              hint="Ex. +4 points en relançant d’abord les devis réellement ouverts / relus."
+              hint="Ex. +4 points en appelant d’abord un dossier consulté récemment, validé, ou avec une demande de modifications."
               value={ecartConvPts}
               min={0}
               max={50}
@@ -140,8 +140,8 @@ export function CoutRelancesAveuglesEstimator() {
           </div>
           <p className="mt-3 text-[12px] leading-5 text-mk-faint">
             Laissez le panier à 0 pour ignorer les opportunités mal priorisées et l’impact timing en
-            euros. L’écart de conversion (en points) estime les deals mieux priorisés si les ouverts
-            passent devant.
+            euros. L’écart de conversion (en points) estime les dossiers mieux priorisés si ceux qui
+            ont un signal (consultation récente, validation, demande de modifications) passent devant.
           </p>
           <button
             type="button"
@@ -179,7 +179,7 @@ export function CoutRelancesAveuglesEstimator() {
         <p className="mt-3 text-sm leading-6 text-mk-on-dark/75">{result.tip}</p>
         <p className="mt-3 text-xs leading-5 text-mk-on-dark/45">
           Calcul indicatif pour une discussion d’équipe, pas une prévision financière. Aucune donnée
-          n’est envoyée. Cadre privacy : informez le prospect si vous suivez les accès au devis.
+          n’est envoyée. Le pourcentage saisi n’est pas un taux de mails ouverts.
         </p>
 
         <label className="mt-6 block text-[12px] leading-5 text-mk-on-dark/50">

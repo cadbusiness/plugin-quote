@@ -3,44 +3,44 @@ import type { FaqItem } from "@/components/marketing/marketing-faq";
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
   "suivi-ouverture-lecture-devis-en-ligne-b2b": [
     {
-      q: "Est-ce légal de savoir qu’un prospect a ouvert mon devis ?",
-      a: "Ça dépend du dispositif, de l’information donnée et de la finalité. En B2B, un suivi d’accès à un devis demandé, avec information claire et données minimisées, est souvent envisagé sous un angle d’intérêt légitime, mais ce n’est pas automatique. Faites valider votre cas. Pas de tracking opaque « pour voir ».",
+      q: "La fiche indique-t-elle que le prospect a consulté le devis ?",
+      a: "Oui, pour le lien de l’espace prospect. Le champ Espace prospect ajoute la dernière consultation en texte relatif, par exemple « vu il y a 2 h ». S’il n’y a pas encore de visite, cette mention n’apparaît pas.",
     },
     {
-      q: "Faut-il le dire au prospect ?",
-      a: "Oui, clairement et simplement (mail et/ou espace). La transparence évite l’effet stalking et aligne le process avec une logique privacy by design.",
+      q: "Y a-t-il une date de première consultation, un compteur ou un historique ?",
+      a: "Non. Chaque visite remplace la précédente. Vous voyez la dernière, pas la première, pas le nombre, pas la liste des heures.",
     },
     {
-      q: "Quelle différence entre ouverture de mail et ouverture de devis ?",
-      a: "L’ouverture de mail est fragile (bloquée souvent) et ne prouve pas la lecture du devis. L’accès au lien / espace porte sur le contenu de la proposition. C’est plus actionnable pour la relance.",
+      q: "La liste des devis montre-t-elle cette consultation ?",
+      a: "Non. Il faut ouvrir la fiche. La liste peut en revanche résumer la validation des relecteurs (validé, modifications demandées, compteur de validations), ce qui est un autre signal.",
     },
     {
-      q: "Combien de temps attendre après une ouverture avant de relancer ?",
-      a: "Pour un Hot, souvent 24-48 h sans nouvelle, pas 10 minutes. Adaptez au panier et au contexte (appel déjà prévu, urgence chantier, etc.).",
+      q: "Les e-mails sont-ils suivis ?",
+      a: "Non. Il n’y a pas de pixel. Vous ne savez pas si le message a été ouvert. Vous savez, sur la fiche, si l’espace a été consulté, et seulement la dernière fois.",
     },
     {
-      q: "Que faire si le devis n’est jamais ouvert ?",
-      a: "Vérifiez le contact, le spam, renvoyez le lien, appelez pour confirmer réception. Ne doublez pas un long mail commercial à l’aveugle.",
+      q: "Comment inviter un relecteur ?",
+      a: "Le contact principal le fait depuis l’espace. Le commercial peut aussi inviter depuis le dossier (rôle financier, technique, acheteur ou décideur). La personne reçoit un lien, valable 30 jours.",
     },
     {
-      q: "Les relectures veulent-elles toujours dire que le deal est chaud ?",
-      a: "Non. Ça peut être de l’inquiétude, une comparaison, un comité. Traitez comme un signal de priorité, puis posez une question utile.",
+      q: "Que veulent dire les pastilles ?",
+      a: "En attente : lien pas encore ouvert. Consulté : le lien du relecteur a été ouvert. Validé : la personne a approuvé. Modifications : elle demande un changement. Ce n’est pas un nombre de relectures.",
     },
     {
-      q: "Peut-on suivre un PDF envoyé en pièce jointe ?",
-      a: "Certains outils ajoutent des mécanismes, souvent opaques ou fragiles. Préférez un lien / espace explicite : meilleur signal, meilleure version, meilleure information du prospect.",
+      q: "Quand l’équipe est-elle notifiée ?",
+      a: "Quand le client invite un relecteur, quand quelqu’un valide, quand quelqu’un demande des modifications, et quand tout le circuit est validé. La validation complète part aussi vers l’adresse commerciale de l’organisation.",
     },
     {
-      q: "Comment lier ça à la signature électronique ?",
-      a: "Le suivi de lecture aide à savoir quand proposer l’étape suivante. L’acceptation reste un acte distinct : signature / acceptation en ligne.",
+      q: "Une simple consultation déclenche-t-elle une alerte ?",
+      a: "Non. Ni la visite du contact principal, ni le passage d’une pastille à Consulté. Vous le constatez en ouvrant la fiche.",
     },
     {
-      q: "Comment mesurer le coût des relances sans signal ?",
-      a: "Volume de devis, part sans signal d’ouverture, nombre de relances aveugles, minutes, taux chargé, panier, écart de conversion si vous priorisiez les ouverts : voir l’estimateur coût des relances aveugles.",
+      q: "Comment relancer sans inventer un signal ?",
+      a: "Ouvrez la fiche. Consultation récente : une question courte, après un délai. Modification demandée : répondez au point. Circuit validé : proposez l’acceptation. Aucune visite : vérifiez le destinataire et renvoyez le lien.",
     },
     {
-      q: "Est-ce que ça remplace une bonne revue de pipeline ?",
-      a: "Non. Ça l’alimente. Sans rituel (revue pipeline), les alertes restent du bruit.",
+      q: "Comment chiffrer les relances faites sans regarder la fiche ?",
+      a: "Volume de devis, part relancée sans signal utile, nombre de relances, minutes, taux chargé, panier, écart de conversion si les dossiers avec un signal passent devant. Voir l’estimateur du coût des relances à l’aveugle.",
     },
   ],
   "validation-interne-avant-envoi-devis-b2b": [

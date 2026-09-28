@@ -179,7 +179,7 @@ assert.equal(
 );
 assert.equal(
   BLOG_POSTS.find((post) => post.slug === "suivi-ouverture-lecture-devis-en-ligne-b2b")?.readingMinutes,
-  16,
+  19,
 );
 assert.equal(
   BLOG_POSTS.find((post) => post.slug === "suivi-ouverture-lecture-devis-en-ligne-b2b")?.publishedAt,
@@ -1387,7 +1387,7 @@ for (const { file, dir } of contentFiles) {
   assert.ok(suiviRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
   const suiviBody = stripFrontmatter(suiviRaw);
   assert.ok(
-    suiviBody.startsWith("# Suivi d’ouverture et de lecture d’un devis en ligne B2B"),
+    suiviBody.startsWith("# Devis en ligne B2B : dernière consultation, relecteurs et relances utiles"),
     "frontmatter must be stripped before render",
   );
   assert.doesNotMatch(suiviBody, /^title:/m);
@@ -1395,7 +1395,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(suiviBody, /\/outils\/estimateur-cout-relances-aveugles-devis/);
   assert.match(suiviBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(suiviBody, EM_DASH);
-  assert.equal(suiviBody.split(/\s+/).filter(Boolean).length, 3148);
+  assert.equal(suiviBody.split(/\s+/).filter(Boolean).length, 3862);
 }
 
 {
@@ -2679,7 +2679,7 @@ assert.equal(relancesHigh.total, 139440);
 assert.equal(relancesHigh.alertTone, "bad");
 assert.equal(relancesHigh.totalTone, "bad");
 assert.equal(relancesHigh.nuireTone, "bad");
-assert.match(relancesHigh.tip, /1ère ouverture/);
+assert.match(relancesHigh.tip, /dernière consultation/);
 
 const relancesLow = computeCoutRelancesAveugles({
   devis: 10,

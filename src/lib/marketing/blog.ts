@@ -235,7 +235,7 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
   {
     href: BLOG_TOOL_RELANCES_AVEUGLES,
     title: "Estimateur coût des relances à l’aveugle sur devis",
-    text: "Devis / mois, % sans signal d’ouverture, relances aveugles, minutes, taux horaire, timing nuisible, panier, écart de conversion. Heures, coût temps, opportunités mal priorisées, impact timing. Calcul 100 % local.",
+    text: "Devis / mois, part relancée sans signal utile, relances aveugles, minutes, taux horaire, timing nuisible, panier, écart de conversion. Heures, coût temps, opportunités mal priorisées, impact timing. Calcul 100 % local.",
     tags: ["funnel", "scoring"],
   },
 ];
@@ -244,11 +244,11 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: "suivi-ouverture-lecture-devis-en-ligne-b2b",
     path: "/blog/suivi-ouverture-lecture-devis-en-ligne-b2b",
-    title: "Suivi d’ouverture et de lecture d’un devis en ligne B2B : savoir quand relancer",
+    title: "Devis en ligne B2B : dernière consultation, relecteurs et relances utiles",
     description:
-      "Savoir quand un prospect ouvre et lit un devis B2B envoyé en ligne (lien sécurisé / espace prospect), vs PDF email aveugle. Relances ciblées, scoring Hot, signaux utiles et cadre RGPD prudent.",
+      "Lien de devis plutôt qu’un PDF : dernière consultation sur la fiche, relecteurs, notifications de validation. Relancer sur ces signaux.",
     publishedAt: "2026-09-28",
-    readingMinutes: 16,
+    readingMinutes: 19,
     tags: ["funnel", "scoring"],
     ctaHref: "https://www.quotebuilder.co/signup?plan=free",
     cover: BLOG_DEMO_SHOTS.devisDetail,
