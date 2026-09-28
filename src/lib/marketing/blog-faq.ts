@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "suivi-ouverture-lecture-devis-en-ligne-b2b": [
+    {
+      q: "La fiche indique-t-elle que le prospect a consulté le devis ?",
+      a: "Oui, pour le lien de l’espace prospect. Le champ Espace prospect ajoute la dernière consultation en texte relatif, par exemple « vu il y a 2 h ». S’il n’y a pas encore de visite, cette mention n’apparaît pas.",
+    },
+    {
+      q: "Y a-t-il une date de première consultation, un compteur ou un historique ?",
+      a: "Non. Chaque visite remplace la précédente. Vous voyez la dernière, pas la première, pas le nombre, pas la liste des heures.",
+    },
+    {
+      q: "La liste des devis montre-t-elle cette consultation ?",
+      a: "Non. Il faut ouvrir la fiche. La liste peut en revanche résumer la validation des relecteurs (validé, modifications demandées, compteur de validations), ce qui est un autre signal.",
+    },
+    {
+      q: "Les e-mails sont-ils suivis ?",
+      a: "Non. Il n’y a pas de pixel. Vous ne savez pas si le message a été ouvert. Vous savez, sur la fiche, si l’espace a été consulté, et seulement la dernière fois.",
+    },
+    {
+      q: "Comment inviter un relecteur ?",
+      a: "Le contact principal le fait depuis l’espace. Le commercial peut aussi inviter depuis le dossier (rôle financier, technique, acheteur ou décideur). La personne reçoit un lien, valable 30 jours.",
+    },
+    {
+      q: "Que veulent dire les pastilles ?",
+      a: "En attente : lien pas encore ouvert. Consulté : le lien du relecteur a été ouvert. Validé : la personne a approuvé. Modifications : elle demande un changement. Ce n’est pas un nombre de relectures.",
+    },
+    {
+      q: "Quand l’équipe est-elle notifiée ?",
+      a: "Quand le client invite un relecteur, quand quelqu’un valide, quand quelqu’un demande des modifications, et quand tout le circuit est validé. La validation complète part aussi vers l’adresse commerciale de l’organisation.",
+    },
+    {
+      q: "Une simple consultation déclenche-t-elle une alerte ?",
+      a: "Non. Ni la visite du contact principal, ni le passage d’une pastille à Consulté. Vous le constatez en ouvrant la fiche.",
+    },
+    {
+      q: "Comment relancer sans inventer un signal ?",
+      a: "Ouvrez la fiche. Consultation récente : une question courte, après un délai. Modification demandée : répondez au point. Circuit validé : proposez l’acceptation. Aucune visite : vérifiez le destinataire et renvoyez le lien.",
+    },
+    {
+      q: "Comment chiffrer les relances faites sans regarder la fiche ?",
+      a: "Volume de devis, part relancée sans signal utile, nombre de relances, minutes, taux chargé, panier, écart de conversion si les dossiers avec un signal passent devant. Voir l’estimateur du coût des relances à l’aveugle.",
+    },
+  ],
   "validation-interne-avant-envoi-devis-b2b": [
     {
       q: "Faut-il faire valider tous les devis ?",

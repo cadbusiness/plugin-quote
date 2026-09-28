@@ -96,6 +96,7 @@ export const BLOG_TOOL_CHECKLIST_MENTIONS = "/outils/checklist-mentions-devis-fr
 export const BLOG_TOOL_ALLER_RETOURS_BRIEF = "/outils/estimateur-cout-aller-retours-brief-photos";
 export const BLOG_TOOL_EMAILS_CLARIFICATION = "/outils/estimateur-cout-emails-clarification-devis";
 export const BLOG_TOOL_DEVIS_SANS_VALIDATION = "/outils/estimateur-cout-devis-sans-validation";
+export const BLOG_TOOL_RELANCES_AVEUGLES = "/outils/estimateur-cout-relances-aveugles-devis";
 
 export type BlogTool = {
   href: string;
@@ -231,9 +232,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Devis / mois, % sans relecture, taux de correction, minutes, remises et écart de marge, panier, taux horaire, écart de conversion. Devis à risque, heures, friction, coût marge, opportunités. Calcul 100 % local.",
     tags: ["funnel", "scoring"],
   },
+  {
+    href: BLOG_TOOL_RELANCES_AVEUGLES,
+    title: "Estimateur coût des relances à l’aveugle sur devis",
+    text: "Devis / mois, part relancée sans signal utile, relances aveugles, minutes, taux horaire, timing nuisible, panier, écart de conversion. Heures, coût temps, opportunités mal priorisées, impact timing. Calcul 100 % local.",
+    tags: ["funnel", "scoring"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "suivi-ouverture-lecture-devis-en-ligne-b2b",
+    path: "/blog/suivi-ouverture-lecture-devis-en-ligne-b2b",
+    title: "Devis en ligne B2B : dernière consultation, relecteurs et relances utiles",
+    description:
+      "Lien de devis plutôt qu’un PDF : dernière consultation sur la fiche, relecteurs, notifications de validation. Relancer sur ces signaux.",
+    publishedAt: "2026-09-28",
+    readingMinutes: 19,
+    tags: ["funnel", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "validation-interne-avant-envoi-devis-b2b",
     path: "/blog/validation-interne-avant-envoi-devis-b2b",

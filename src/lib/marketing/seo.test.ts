@@ -45,6 +45,11 @@ import {
   COUT_DEVIS_SANS_VALIDATION_LABELS,
   computeCoutDevisSansValidation,
 } from "./cout-devis-sans-validation";
+import {
+  COUT_RELANCES_AVEUGLES_DEFAULTS,
+  COUT_RELANCES_AVEUGLES_LABELS,
+  computeCoutRelancesAveugles,
+} from "./cout-relances-aveugles";
 import { CHECKLIST_MENTIONS_ITEMS, computeChecklistMentions } from "./checklist-mentions-devis";
 import { MARKETING_ROUTES } from "./routes";
 import sitemap from "../../app/sitemap";
@@ -111,6 +116,8 @@ for (const required of [
   "/outils/estimateur-cout-aller-retours-brief-photos",
   "/outils/estimateur-cout-emails-clarification-devis",
   "/outils/estimateur-cout-devis-sans-validation",
+  "/outils/estimateur-cout-relances-aveugles-devis",
+  "/blog/suivi-ouverture-lecture-devis-en-ligne-b2b",
   "/blog/validation-interne-avant-envoi-devis-b2b",
   "/blog/commentaires-annotations-devis-collaboratif-b2b",
   "/a-propos",
@@ -157,7 +164,33 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 31);
+assert.equal(BLOG_POSTS.length, 32);
+assert.deepEqual(
+  BLOG_POSTS.find((post) => post.slug === "suivi-ouverture-lecture-devis-en-ligne-b2b")?.tags,
+  ["funnel", "scoring"],
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "suivi-ouverture-lecture-devis-en-ligne-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "suivi-ouverture-lecture-devis-en-ligne-b2b")?.cover,
+  BLOG_DEMO_SHOTS.devisDetail,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "suivi-ouverture-lecture-devis-en-ligne-b2b")?.readingMinutes,
+  19,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "suivi-ouverture-lecture-devis-en-ligne-b2b")?.publishedAt,
+  "2026-09-28",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "suivi-ouverture-lecture-devis-en-ligne-b2b")?.pinned, false);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "suivi-ouverture-lecture-devis-en-ligne-b2b")?.path,
+  "/blog/suivi-ouverture-lecture-devis-en-ligne-b2b",
+);
+assert.equal(BLOG_FAQ["suivi-ouverture-lecture-devis-en-ligne-b2b"]?.length, 10);
 assert.deepEqual(
   BLOG_POSTS.find((post) => post.slug === "validation-interne-avant-envoi-devis-b2b")?.tags,
   ["funnel", "scoring"],
@@ -621,8 +654,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 13);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 13);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 14);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 14);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 7);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 6);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);
@@ -862,6 +895,14 @@ const requiredSources = {
     "/blog/qualifier-demande-devis-avant-chiffrage",
     "/blog/envoyer-devis-lien-securise-vs-pdf-email",
     "/secteurs/funnel-devis-photovoltaique-solaire",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "suivi-ouverture-lecture-devis-en-ligne-b2b.md": [
+    "/outils/estimateur-cout-relances-aveugles-devis",
+    "/blog/envoyer-devis-lien-securise-vs-pdf-email",
+    "/blog/relancer-devis-hot-depuis-dossier",
+    "/blog/espace-prospect-devis-en-ligne",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -1339,6 +1380,22 @@ for (const { file, dir } of contentFiles) {
   assert.match(pjBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(pjBody, EM_DASH);
   assert.equal(pjBody.split(/\s+/).filter(Boolean).length, 2401);
+}
+
+{
+  const suiviRaw = readFileSync(join(blogDir, "suivi-ouverture-lecture-devis-en-ligne-b2b.md"), "utf8");
+  assert.ok(suiviRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const suiviBody = stripFrontmatter(suiviRaw);
+  assert.ok(
+    suiviBody.startsWith("# Devis en ligne B2B : dernière consultation, relecteurs et relances utiles"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(suiviBody, /^title:/m);
+  assert.match(suiviBody, /signup\?plan=free/);
+  assert.match(suiviBody, /\/outils\/estimateur-cout-relances-aveugles-devis/);
+  assert.match(suiviBody, /\/c\/demo\/rayonnage/);
+  assert.doesNotMatch(suiviBody, EM_DASH);
+  assert.equal(suiviBody.split(/\s+/).filter(Boolean).length, 3862);
 }
 
 {
@@ -2560,6 +2617,114 @@ assert.equal(sansValidClamp.ecartConvPts, 50);
 assert.equal(sansValidClamp.opp, null);
 assert.equal(sansValidClamp.alertTone, "neutral");
 
+const relancesDefault = computeCoutRelancesAveugles({ ...COUT_RELANCES_AVEUGLES_DEFAULTS });
+assert.equal(relancesDefault.aveugles, 28);
+assert.equal(relancesDefault.relancesMois, 70);
+assert.equal(relancesDefault.heures, 14);
+assert.equal(relancesDefault.coutTemps, 770);
+assert.equal(relancesDefault.dealsPriorises, 1.1);
+assert.equal(relancesDefault.opp, 9350);
+assert.equal(relancesDefault.dealsNuire, 4.2);
+assert.equal(relancesDefault.coutNuire, 8925);
+assert.equal(relancesDefault.total, 19045);
+assert.equal(relancesDefault.alertTone, "warn");
+assert.equal(relancesDefault.totalTone, "warn");
+assert.equal(relancesDefault.nuireTone, "warn");
+assert.match(relancesDefault.alert, /Friction relances notable/);
+assert.match(relancesDefault.recap, /Checklist rapide/);
+assert.match(relancesDefault.recap, /Coût total indicatif/);
+assert.match(relancesDefault.recap, /hypothèse 25 % panier/);
+assert.equal(COUT_RELANCES_AVEUGLES_LABELS.devis, "Devis envoyés / mois");
+assert.equal(COUT_RELANCES_AVEUGLES_LABELS.total, "Coût total indicatif mensuel");
+
+const relancesEmpty = computeCoutRelancesAveugles({ ...COUT_RELANCES_AVEUGLES_DEFAULTS, devis: 0 });
+assert.equal(relancesEmpty.aveugles, 0);
+assert.equal(relancesEmpty.relancesMois, 0);
+assert.equal(relancesEmpty.heures, 0);
+assert.equal(relancesEmpty.opp, 0);
+assert.equal(relancesEmpty.coutNuire, 0);
+assert.equal(relancesEmpty.total, 0);
+assert.equal(relancesEmpty.alertTone, "neutral");
+assert.match(relancesEmpty.alert, /volume de devis/);
+
+const relancesNoBasket = computeCoutRelancesAveugles({ ...COUT_RELANCES_AVEUGLES_DEFAULTS, panier: 0 });
+assert.equal(relancesNoBasket.opp, null);
+assert.equal(relancesNoBasket.coutNuire, null);
+assert.equal(relancesNoBasket.oppLabel, "non calculé (panier = 0)");
+assert.equal(relancesNoBasket.coutNuireLabel, "non calculé (panier = 0)");
+assert.equal(relancesNoBasket.total, relancesNoBasket.coutTemps);
+assert.equal(relancesNoBasket.nuireTone, "neutral");
+assert.match(relancesNoBasket.recap, /Opportunités mal priorisées : n\/a/);
+assert.match(relancesNoBasket.recap, /Impact timing \(hypothèse 25 % panier\) : n\/a/);
+
+const relancesHigh = computeCoutRelancesAveugles({
+  devis: 80,
+  sansSignalPct: 90,
+  relancesParDevis: 3,
+  minutes: 20,
+  taux: 70,
+  nuirePct: 30,
+  panier: 12000,
+  ecartConvPts: 8,
+});
+assert.equal(relancesHigh.aveugles, 72);
+assert.equal(relancesHigh.relancesMois, 216);
+assert.equal(relancesHigh.heures, 72);
+assert.equal(relancesHigh.coutTemps, 5040);
+assert.equal(relancesHigh.dealsPriorises, 5.8);
+assert.equal(relancesHigh.opp, 69600);
+assert.equal(relancesHigh.dealsNuire, 21.6);
+assert.equal(relancesHigh.coutNuire, 64800);
+assert.equal(relancesHigh.total, 139440);
+assert.equal(relancesHigh.alertTone, "bad");
+assert.equal(relancesHigh.totalTone, "bad");
+assert.equal(relancesHigh.nuireTone, "bad");
+assert.match(relancesHigh.tip, /dernière consultation/);
+
+const relancesLow = computeCoutRelancesAveugles({
+  devis: 10,
+  sansSignalPct: 10,
+  relancesParDevis: 1,
+  minutes: 6,
+  taux: 50,
+  nuirePct: 0,
+  panier: 2000,
+  ecartConvPts: 5,
+});
+assert.equal(relancesLow.aveugles, 1);
+assert.equal(relancesLow.relancesMois, 1);
+assert.equal(relancesLow.heures, 0.1);
+assert.equal(relancesLow.coutTemps, 5);
+assert.equal(relancesLow.dealsPriorises, 0.1);
+assert.equal(relancesLow.opp, 200);
+assert.equal(relancesLow.coutNuire, 0);
+assert.equal(relancesLow.total, 205);
+assert.equal(relancesLow.alertTone, "ok");
+assert.equal(relancesLow.nuireTone, "ok");
+assert.match(relancesLow.alert, /Friction relances contenue/);
+
+const relancesClamp = computeCoutRelancesAveugles({
+  devis: -5,
+  sansSignalPct: 140,
+  relancesParDevis: 80,
+  minutes: 900,
+  taux: 20000,
+  nuirePct: 140,
+  panier: -1,
+  ecartConvPts: 80,
+});
+assert.equal(relancesClamp.devis, 0);
+assert.equal(relancesClamp.sansSignalPct, 100);
+assert.equal(relancesClamp.relancesParDevis, 50);
+assert.equal(relancesClamp.minutes, 480);
+assert.equal(relancesClamp.taux, 10000);
+assert.equal(relancesClamp.nuirePct, 100);
+assert.equal(relancesClamp.panier, 0);
+assert.equal(relancesClamp.ecartConvPts, 50);
+assert.equal(relancesClamp.opp, null);
+assert.equal(relancesClamp.coutNuire, null);
+assert.equal(relancesClamp.alertTone, "neutral");
+
 const clarifClamp = computeCoutEmailsClarification({
   devis: -5,
   pctClarif: 140,
@@ -2629,6 +2794,8 @@ for (const expected of [
   { path: "/outils/checklist-mentions-devis-france", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
   { path: "/blog/pieces-jointes-plans-photos-devis-b2b", priority: 0.8, lastmod: "2026-09-25" },
+  { path: "/blog/suivi-ouverture-lecture-devis-en-ligne-b2b", priority: 0.8, lastmod: "2026-09-28" },
+  { path: "/outils/estimateur-cout-relances-aveugles-devis", priority: 0.7, lastmod: "2026-09-28" },
   { path: "/blog/validation-interne-avant-envoi-devis-b2b", priority: 0.8, lastmod: "2026-09-28" },
   { path: "/outils/estimateur-cout-devis-sans-validation", priority: 0.7, lastmod: "2026-09-28" },
   { path: "/secteurs/funnel-devis-isolation-thermique-ite", priority: 0.8, lastmod: "2026-09-28" },
@@ -2655,6 +2822,8 @@ assert.ok(paths.includes("/outils/estimateur-cout-aller-retours-brief-photos"));
 assert.ok(paths.includes("/blog/commentaires-annotations-devis-collaboratif-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-emails-clarification-devis"));
 assert.ok(paths.includes("/secteurs/funnel-devis-photovoltaique-solaire"));
+assert.ok(paths.includes("/blog/suivi-ouverture-lecture-devis-en-ligne-b2b"));
+assert.ok(paths.includes("/outils/estimateur-cout-relances-aveugles-devis"));
 assert.ok(paths.includes("/blog/validation-interne-avant-envoi-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-devis-sans-validation"));
 assert.ok(paths.includes("/secteurs/funnel-devis-isolation-thermique-ite"));
@@ -3034,6 +3203,8 @@ const llmsPaths = [
   "/secteurs/funnel-devis-photovoltaique-solaire",
   "/blog/validation-interne-avant-envoi-devis-b2b",
   "/outils/estimateur-cout-devis-sans-validation",
+  "/blog/suivi-ouverture-lecture-devis-en-ligne-b2b",
+  "/outils/estimateur-cout-relances-aveugles-devis",
   "/secteurs/funnel-devis-isolation-thermique-ite",
 ];
 for (const path of llmsPaths) {
@@ -3332,6 +3503,8 @@ for (const root of marketingRoots) {
 assert.equal(CREAM_HEX, "#F6F0E8");
 
 for (const [path, lastmod] of [
+  ["/blog/suivi-ouverture-lecture-devis-en-ligne-b2b", "2026-09-28"],
+  ["/outils/estimateur-cout-relances-aveugles-devis", "2026-09-28"],
   ["/blog/validation-interne-avant-envoi-devis-b2b", "2026-09-28"],
   ["/outils/estimateur-cout-devis-sans-validation", "2026-09-28"],
   ["/secteurs/funnel-devis-isolation-thermique-ite", "2026-09-28"],
