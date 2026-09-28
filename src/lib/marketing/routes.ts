@@ -31,9 +31,20 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/secteurs/funnel-devis-pergola-terrasse", changeFrequency: "monthly", priority: 0.8 },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", changeFrequency: "monthly", priority: 0.8 },
   { path: "/secteurs/funnel-devis-photovoltaique-solaire", changeFrequency: "monthly", priority: 0.8 },
+  {
+    path: "/secteurs/funnel-devis-isolation-thermique-ite",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-09-28",
+  },
   { path: "/tarifs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  {
+    path: "/blog/validation-interne-avant-envoi-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
   {
     path: "/blog/commentaires-annotations-devis-collaboratif-b2b",
     changeFrequency: "monthly",
@@ -134,6 +145,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-09-25",
+  },
+  {
+    path: "/outils/estimateur-cout-devis-sans-validation",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-09-28",
   },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },

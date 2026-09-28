@@ -95,6 +95,7 @@ export const BLOG_TOOL_PDF_SEULS = "/outils/estimateur-cout-devis-pdf-seuls";
 export const BLOG_TOOL_CHECKLIST_MENTIONS = "/outils/checklist-mentions-devis-france";
 export const BLOG_TOOL_ALLER_RETOURS_BRIEF = "/outils/estimateur-cout-aller-retours-brief-photos";
 export const BLOG_TOOL_EMAILS_CLARIFICATION = "/outils/estimateur-cout-emails-clarification-devis";
+export const BLOG_TOOL_DEVIS_SANS_VALIDATION = "/outils/estimateur-cout-devis-sans-validation";
 
 export type BlogTool = {
   href: string;
@@ -224,9 +225,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Devis / mois, % clarification mail, mails moyens, minutes, taux horaire, % deals perdus, panier. Heures, coût temps, opportunités. Calcul 100 % local.",
     tags: ["funnel", "relances"],
   },
+  {
+    href: BLOG_TOOL_DEVIS_SANS_VALIDATION,
+    title: "Estimateur coût des devis envoyés sans validation interne",
+    text: "Devis / mois, % sans relecture, taux de correction, minutes, remises et écart de marge, panier, taux horaire, écart de conversion. Devis à risque, heures, friction, coût marge, opportunités. Calcul 100 % local.",
+    tags: ["funnel", "scoring"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "validation-interne-avant-envoi-devis-b2b",
+    path: "/blog/validation-interne-avant-envoi-devis-b2b",
+    title: "Validation interne avant envoi d’un devis B2B : relecture commerciale, technique et marge",
+    description:
+      "Mettre en place une validation interne avant d’envoyer un devis B2B : rôles, checklist, SLA, versions, commentaires, mentions et marge. Moins d’erreurs, moins de remises sauvages.",
+    publishedAt: "2026-09-28",
+    readingMinutes: 14,
+    tags: ["funnel", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "commentaires-annotations-devis-collaboratif-b2b",
     path: "/blog/commentaires-annotations-devis-collaboratif-b2b",

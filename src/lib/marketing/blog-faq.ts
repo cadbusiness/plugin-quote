@@ -1,6 +1,44 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "validation-interne-avant-envoi-devis-b2b": [
+    {
+      q: "Faut-il faire valider tous les devis ?",
+      a: "Non. Proportionnez au risque (panier, complexité, remise, type de client). Un gate unique pour tout crée des contournements.",
+    },
+    {
+      q: "Combien de temps max pour une validation interne ?",
+      a: "Pour un Hot, visez des heures, pas des jours. Si vous dépassez 24 h ouvrées trop souvent, le process est mal dimensionné ou sous-staffé.",
+    },
+    {
+      q: "Qui tranche en cas de désaccord commercial / technique ?",
+      a: "Owner deal = commercial sur le récit et le timing. Owner technique = estimateur sur les hypothèses. Manager si impact marge ou engagement. Tracez la décision.",
+    },
+    {
+      q: "Comment éviter que la validation tue la conversion ?",
+      a: "SLA courts, seuils clairs, checklist courte, priorité Hot. Mesurez le délai validation comme un KPI commercial, pas seulement qualité.",
+    },
+    {
+      q: "Les commentaires internes sont-ils visibles du prospect ?",
+      a: "Ils ne doivent pas l’être. Gardez annotations internes distinctes des questions dans l’espace prospect.",
+    },
+    {
+      q: "Que faire si le prospect exige un devis « ce soir » ?",
+      a: "Envoyez un indicatif clairement marqué ou un périmètre réduit, ou accélérez le gate Hot (créneau manager fixe). Évitez de lâcher une V1 non relue présentée comme ferme.",
+    },
+    {
+      q: "Comment lier validation et signature électronique ?",
+      a: "La validation précède l’envoi. La signature / acceptation vient après, sur une version propre. Ne faites pas signer une V1 bancale.",
+    },
+    {
+      q: "Quel lien avec les mentions obligatoires ?",
+      a: "Le gate compliance léger (checklist) avant envoi. Ce n’est pas un audit juridique à chaque devis, c’est un filet opérationnel.",
+    },
+    {
+      q: "Comment chiffrer le coût des envois sans validation ?",
+      a: "Volume, % sans relecture, corrections, remises sauvages, taux horaire, panier. L’estimateur coût devis sans validation le fait en local.",
+    },
+  ],
   "commentaires-annotations-devis-collaboratif-b2b": [
     {
       q: "Faut-il interdire totalement le mail pour clarifier un devis ?",
