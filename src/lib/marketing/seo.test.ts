@@ -40,6 +40,11 @@ import { LEADS_FORMULAIRE_DEFAULTS, computeLeadsFormulaireVsFunnel } from "./lea
 import { COUT_DEVIS_PDF_SEULS_DEFAULTS, computeCoutDevisPdfSeuls } from "./cout-devis-pdf-seuls";
 import { COUT_ALLER_RETOURS_BRIEF_DEFAULTS, computeCoutAllerRetoursBrief } from "./cout-aller-retours-brief-photos";
 import { COUT_EMAILS_CLARIFICATION_DEFAULTS, computeCoutEmailsClarification } from "./cout-emails-clarification";
+import {
+  COUT_DEVIS_SANS_VALIDATION_DEFAULTS,
+  COUT_DEVIS_SANS_VALIDATION_LABELS,
+  computeCoutDevisSansValidation,
+} from "./cout-devis-sans-validation";
 import { CHECKLIST_MENTIONS_ITEMS, computeChecklistMentions } from "./checklist-mentions-devis";
 import { MARKETING_ROUTES } from "./routes";
 import sitemap from "../../app/sitemap";
@@ -105,6 +110,8 @@ for (const required of [
   "/outils/checklist-mentions-devis-france",
   "/outils/estimateur-cout-aller-retours-brief-photos",
   "/outils/estimateur-cout-emails-clarification-devis",
+  "/outils/estimateur-cout-devis-sans-validation",
+  "/blog/validation-interne-avant-envoi-devis-b2b",
   "/blog/commentaires-annotations-devis-collaboratif-b2b",
   "/a-propos",
   "/secteurs/funnel-devis-rayonnage-stockage",
@@ -117,6 +124,7 @@ for (const required of [
   "/secteurs/funnel-devis-pergola-terrasse",
   "/secteurs/funnel-devis-pompe-chaleur-chauffage",
   "/secteurs/funnel-devis-photovoltaique-solaire",
+  "/secteurs/funnel-devis-isolation-thermique-ite",
   "/blog/pieces-jointes-plans-photos-devis-b2b",
   "/blog/envoyer-devis-lien-securise-vs-pdf-email",
   "/blog/mentions-obligatoires-devis-france",
@@ -149,7 +157,33 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 30);
+assert.equal(BLOG_POSTS.length, 31);
+assert.deepEqual(
+  BLOG_POSTS.find((post) => post.slug === "validation-interne-avant-envoi-devis-b2b")?.tags,
+  ["funnel", "scoring"],
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "validation-interne-avant-envoi-devis-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "validation-interne-avant-envoi-devis-b2b")?.cover,
+  BLOG_DEMO_SHOTS.devisDetail,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "validation-interne-avant-envoi-devis-b2b")?.readingMinutes,
+  14,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "validation-interne-avant-envoi-devis-b2b")?.publishedAt,
+  "2026-09-28",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "validation-interne-avant-envoi-devis-b2b")?.pinned, false);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "validation-interne-avant-envoi-devis-b2b")?.path,
+  "/blog/validation-interne-avant-envoi-devis-b2b",
+);
+assert.equal(BLOG_FAQ["validation-interne-avant-envoi-devis-b2b"]?.length, 9);
 assert.deepEqual(
   BLOG_POSTS.find((post) => post.slug === "commentaires-annotations-devis-collaboratif-b2b")?.tags,
   ["funnel"],
@@ -587,8 +621,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 12);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 12);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 13);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 13);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 7);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 6);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);
@@ -828,6 +862,23 @@ const requiredSources = {
     "/blog/qualifier-demande-devis-avant-chiffrage",
     "/blog/envoyer-devis-lien-securise-vs-pdf-email",
     "/secteurs/funnel-devis-photovoltaique-solaire",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "validation-interne-avant-envoi-devis-b2b.md": [
+    "/outils/estimateur-cout-devis-sans-validation",
+    "/blog/remise-commerciale-marge-devis-b2b",
+    "/blog/versions-historique-devis-b2b",
+    "/blog/mentions-obligatoires-devis-france",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "funnel-devis-isolation-thermique-ite.md": [
+    "/blog/validation-interne-avant-envoi-devis-b2b",
+    "/secteurs/funnel-devis-pompe-chaleur-chauffage",
+    "/secteurs/funnel-devis-photovoltaique-solaire",
+    "/outils/estimateur-cout-devis-sans-validation",
+    "/outils/estimateur-cout-aller-retours-brief-photos",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -1288,6 +1339,37 @@ for (const { file, dir } of contentFiles) {
   assert.match(pjBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(pjBody, EM_DASH);
   assert.equal(pjBody.split(/\s+/).filter(Boolean).length, 2401);
+}
+
+{
+  const validationRaw = readFileSync(join(blogDir, "validation-interne-avant-envoi-devis-b2b.md"), "utf8");
+  assert.ok(validationRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const validationBody = stripFrontmatter(validationRaw);
+  assert.ok(
+    validationBody.startsWith("# Validation interne avant envoi d’un devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(validationBody, /^title:/m);
+  assert.match(validationBody, /signup\?plan=free/);
+  assert.match(validationBody, /\/outils\/estimateur-cout-devis-sans-validation/);
+  assert.match(validationBody, /\/c\/demo\/rayonnage/);
+  assert.doesNotMatch(validationBody, EM_DASH);
+  assert.equal(validationBody.split(/\s+/).filter(Boolean).length, 2704);
+}
+
+{
+  const iteRaw = readFileSync(join(blogDir, "funnel-devis-isolation-thermique-ite.md"), "utf8");
+  assert.ok(iteRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const iteBody = stripFrontmatter(iteRaw);
+  assert.ok(
+    iteBody.startsWith("# Funnel de devis isolation thermique et ITE"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(iteBody, /signup\?plan=free/);
+  assert.match(iteBody, /\/outils\/estimateur-cout-devis-sans-validation/);
+  assert.match(iteBody, /\/blog\/validation-interne-avant-envoi-devis-b2b/);
+  assert.doesNotMatch(iteBody, EM_DASH);
+  assert.equal(iteBody.split(/\s+/).filter(Boolean).length, 2575);
 }
 
 {
@@ -2393,6 +2475,91 @@ assert.equal(clarifNoBasket.total, clarifNoBasket.coutTemps);
 assert.equal(clarifNoBasket.oppTone, "neutral");
 assert.match(clarifNoBasket.recap, /Opportunités perdues : n\/a/);
 
+const sansValidDefault = computeCoutDevisSansValidation({ ...COUT_DEVIS_SANS_VALIDATION_DEFAULTS });
+assert.equal(sansValidDefault.aRisque, 19.3);
+assert.equal(sansValidDefault.corrections, 5.8);
+assert.equal(sansValidDefault.heures, 4.4);
+assert.equal(sansValidDefault.coutFriction, 242);
+assert.equal(sansValidDefault.dossiersMarge, 3.5);
+assert.equal(sansValidDefault.coutMarge, 1190);
+assert.equal(sansValidDefault.deals, 0.6);
+assert.equal(sansValidDefault.opp, 5100);
+assert.equal(sansValidDefault.total, 6532);
+assert.equal(sansValidDefault.alertTone, "warn");
+assert.equal(sansValidDefault.totalTone, "warn");
+assert.equal(sansValidDefault.oppTone, "warn");
+assert.match(sansValidDefault.alert, /Friction validation notable/);
+assert.match(sansValidDefault.recap, /Checklist rapide/);
+assert.match(sansValidDefault.recap, /Coût total indicatif/);
+assert.equal(COUT_DEVIS_SANS_VALIDATION_LABELS.devis, "Devis envoyés / mois");
+assert.equal(COUT_DEVIS_SANS_VALIDATION_LABELS.total, "Coût total indicatif mensuel");
+
+const sansValidEmpty = computeCoutDevisSansValidation({ ...COUT_DEVIS_SANS_VALIDATION_DEFAULTS, devis: 0 });
+assert.equal(sansValidEmpty.aRisque, 0);
+assert.equal(sansValidEmpty.corrections, 0);
+assert.equal(sansValidEmpty.heures, 0);
+assert.equal(sansValidEmpty.opp, 0);
+assert.equal(sansValidEmpty.total, 0);
+assert.equal(sansValidEmpty.alertTone, "neutral");
+assert.match(sansValidEmpty.alert, /volume de devis/);
+
+const sansValidNoBasket = computeCoutDevisSansValidation({ ...COUT_DEVIS_SANS_VALIDATION_DEFAULTS, panier: 0 });
+assert.equal(sansValidNoBasket.opp, null);
+assert.equal(sansValidNoBasket.oppLabel, "non calculé (panier = 0)");
+assert.equal(sansValidNoBasket.coutMargeLabel, "non calculé (panier = 0)");
+assert.equal(sansValidNoBasket.total, sansValidNoBasket.coutFriction);
+assert.equal(sansValidNoBasket.oppTone, "neutral");
+assert.match(sansValidNoBasket.recap, /Opportunités manquées : n\/a/);
+assert.match(sansValidNoBasket.recap, /Coût erreurs \/ marge : n\/a/);
+
+const sansValidHigh = computeCoutDevisSansValidation({
+  devis: 80,
+  sansValidPct: 80,
+  tauxErreur: 50,
+  minutes: 60,
+  remisePct: 40,
+  ecartMarge: 8,
+  panier: 12000,
+  taux: 70,
+  ecartConvPts: 6,
+});
+assert.equal(sansValidHigh.aRisque, 64);
+assert.equal(sansValidHigh.corrections, 32);
+assert.equal(sansValidHigh.heures, 32);
+assert.equal(sansValidHigh.coutFriction, 2240);
+assert.equal(sansValidHigh.dossiersMarge, 25.6);
+assert.equal(sansValidHigh.coutMarge, 24576);
+assert.equal(sansValidHigh.deals, 3.8);
+assert.equal(sansValidHigh.opp, 45600);
+assert.equal(sansValidHigh.total, 72416);
+assert.equal(sansValidHigh.alertTone, "bad");
+assert.equal(sansValidHigh.totalTone, "bad");
+assert.equal(sansValidHigh.oppTone, "bad");
+assert.match(sansValidHigh.tip, /en validation/);
+
+const sansValidClamp = computeCoutDevisSansValidation({
+  devis: -5,
+  sansValidPct: 140,
+  tauxErreur: 140,
+  minutes: 900,
+  remisePct: -3,
+  ecartMarge: 80,
+  panier: -1,
+  taux: 20000,
+  ecartConvPts: 80,
+});
+assert.equal(sansValidClamp.devis, 0);
+assert.equal(sansValidClamp.sansValidPct, 100);
+assert.equal(sansValidClamp.tauxErreur, 100);
+assert.equal(sansValidClamp.minutes, 480);
+assert.equal(sansValidClamp.remisePct, 0);
+assert.equal(sansValidClamp.ecartMarge, 50);
+assert.equal(sansValidClamp.panier, 0);
+assert.equal(sansValidClamp.taux, 10000);
+assert.equal(sansValidClamp.ecartConvPts, 50);
+assert.equal(sansValidClamp.opp, null);
+assert.equal(sansValidClamp.alertTone, "neutral");
+
 const clarifClamp = computeCoutEmailsClarification({
   devis: -5,
   pctClarif: 140,
@@ -2462,6 +2629,9 @@ for (const expected of [
   { path: "/outils/checklist-mentions-devis-france", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
   { path: "/blog/pieces-jointes-plans-photos-devis-b2b", priority: 0.8, lastmod: "2026-09-25" },
+  { path: "/blog/validation-interne-avant-envoi-devis-b2b", priority: 0.8, lastmod: "2026-09-28" },
+  { path: "/outils/estimateur-cout-devis-sans-validation", priority: 0.7, lastmod: "2026-09-28" },
+  { path: "/secteurs/funnel-devis-isolation-thermique-ite", priority: 0.8, lastmod: "2026-09-28" },
   { path: "/blog/commentaires-annotations-devis-collaboratif-b2b", priority: 0.8, lastmod: "2026-09-25" },
   { path: "/outils/estimateur-cout-aller-retours-brief-photos", priority: 0.7, lastmod: "2026-09-25" },
   { path: "/outils/estimateur-cout-emails-clarification-devis", priority: 0.7, lastmod: "2026-09-25" },
@@ -2485,6 +2655,9 @@ assert.ok(paths.includes("/outils/estimateur-cout-aller-retours-brief-photos"));
 assert.ok(paths.includes("/blog/commentaires-annotations-devis-collaboratif-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-emails-clarification-devis"));
 assert.ok(paths.includes("/secteurs/funnel-devis-photovoltaique-solaire"));
+assert.ok(paths.includes("/blog/validation-interne-avant-envoi-devis-b2b"));
+assert.ok(paths.includes("/outils/estimateur-cout-devis-sans-validation"));
+assert.ok(paths.includes("/secteurs/funnel-devis-isolation-thermique-ite"));
 
 const acompteDefault = computeAcompteDevis({
   ht: 12000,
@@ -2859,6 +3032,9 @@ const llmsPaths = [
   "/outils/estimateur-cout-aller-retours-brief-photos",
   "/outils/estimateur-cout-emails-clarification-devis",
   "/secteurs/funnel-devis-photovoltaique-solaire",
+  "/blog/validation-interne-avant-envoi-devis-b2b",
+  "/outils/estimateur-cout-devis-sans-validation",
+  "/secteurs/funnel-devis-isolation-thermique-ite",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -3156,6 +3332,9 @@ for (const root of marketingRoots) {
 assert.equal(CREAM_HEX, "#F6F0E8");
 
 for (const [path, lastmod] of [
+  ["/blog/validation-interne-avant-envoi-devis-b2b", "2026-09-28"],
+  ["/outils/estimateur-cout-devis-sans-validation", "2026-09-28"],
+  ["/secteurs/funnel-devis-isolation-thermique-ite", "2026-09-28"],
   ["/blog/pieces-jointes-plans-photos-devis-b2b", "2026-09-25"],
   ["/blog/commentaires-annotations-devis-collaboratif-b2b", "2026-09-25"],
   ["/outils/estimateur-cout-aller-retours-brief-photos", "2026-09-25"],
