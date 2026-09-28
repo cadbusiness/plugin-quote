@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "suivi-ouverture-lecture-devis-en-ligne-b2b": [
+    {
+      q: "Est-ce légal de savoir qu’un prospect a ouvert mon devis ?",
+      a: "Ça dépend du dispositif, de l’information donnée et de la finalité. En B2B, un suivi d’accès à un devis demandé, avec information claire et données minimisées, est souvent envisagé sous un angle d’intérêt légitime, mais ce n’est pas automatique. Faites valider votre cas. Pas de tracking opaque « pour voir ».",
+    },
+    {
+      q: "Faut-il le dire au prospect ?",
+      a: "Oui, clairement et simplement (mail et/ou espace). La transparence évite l’effet stalking et aligne le process avec une logique privacy by design.",
+    },
+    {
+      q: "Quelle différence entre ouverture de mail et ouverture de devis ?",
+      a: "L’ouverture de mail est fragile (bloquée souvent) et ne prouve pas la lecture du devis. L’accès au lien / espace porte sur le contenu de la proposition. C’est plus actionnable pour la relance.",
+    },
+    {
+      q: "Combien de temps attendre après une ouverture avant de relancer ?",
+      a: "Pour un Hot, souvent 24-48 h sans nouvelle, pas 10 minutes. Adaptez au panier et au contexte (appel déjà prévu, urgence chantier, etc.).",
+    },
+    {
+      q: "Que faire si le devis n’est jamais ouvert ?",
+      a: "Vérifiez le contact, le spam, renvoyez le lien, appelez pour confirmer réception. Ne doublez pas un long mail commercial à l’aveugle.",
+    },
+    {
+      q: "Les relectures veulent-elles toujours dire que le deal est chaud ?",
+      a: "Non. Ça peut être de l’inquiétude, une comparaison, un comité. Traitez comme un signal de priorité, puis posez une question utile.",
+    },
+    {
+      q: "Peut-on suivre un PDF envoyé en pièce jointe ?",
+      a: "Certains outils ajoutent des mécanismes, souvent opaques ou fragiles. Préférez un lien / espace explicite : meilleur signal, meilleure version, meilleure information du prospect.",
+    },
+    {
+      q: "Comment lier ça à la signature électronique ?",
+      a: "Le suivi de lecture aide à savoir quand proposer l’étape suivante. L’acceptation reste un acte distinct : signature / acceptation en ligne.",
+    },
+    {
+      q: "Comment mesurer le coût des relances sans signal ?",
+      a: "Volume de devis, part sans signal d’ouverture, nombre de relances aveugles, minutes, taux chargé, panier, écart de conversion si vous priorisiez les ouverts : voir l’estimateur coût des relances aveugles.",
+    },
+    {
+      q: "Est-ce que ça remplace une bonne revue de pipeline ?",
+      a: "Non. Ça l’alimente. Sans rituel (revue pipeline), les alertes restent du bruit.",
+    },
+  ],
   "validation-interne-avant-envoi-devis-b2b": [
     {
       q: "Faut-il faire valider tous les devis ?",
