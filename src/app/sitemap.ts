@@ -5,6 +5,8 @@ import { SITE_URL } from "@/lib/marketing/site";
 
 /** Dates éditoriales hors articles (le blog passe par publishedAt). */
 const CONTENT_LASTMOD: Record<string, string> = {
+  "/blog/tva-ht-ttc-devis-b2b-france": "2026-09-29",
+  "/outils/calculateur-tva-devis-ht-ttc": "2026-09-29",
   "/blog/approbation-client-multi-decideurs-devis-b2b": "2026-09-29",
   "/outils/estimateur-cout-attente-multi-decideurs-devis": "2026-09-29",
   "/secteurs/funnel-devis-couverture-toiture": "2026-09-29",

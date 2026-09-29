@@ -47,6 +47,11 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   {
+    path: "/blog/tva-ht-ttc-devis-b2b-france",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
     path: "/blog/approbation-client-multi-decideurs-devis-b2b",
     changeFrequency: "monthly",
     priority: 0.8,
@@ -176,6 +181,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/estimateur-cout-attente-multi-decideurs-devis",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-09-29",
+  },
+  {
+    path: "/outils/calculateur-tva-devis-ht-ttc",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-09-29",

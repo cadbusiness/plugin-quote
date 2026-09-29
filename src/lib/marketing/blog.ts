@@ -98,6 +98,7 @@ export const BLOG_TOOL_EMAILS_CLARIFICATION = "/outils/estimateur-cout-emails-cl
 export const BLOG_TOOL_DEVIS_SANS_VALIDATION = "/outils/estimateur-cout-devis-sans-validation";
 export const BLOG_TOOL_RELANCES_AVEUGLES = "/outils/estimateur-cout-relances-aveugles-devis";
 export const BLOG_TOOL_ATTENTE_MULTI = "/outils/estimateur-cout-attente-multi-decideurs-devis";
+export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
   href: string;
@@ -245,9 +246,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Devis / mois, % multi-décideurs, jours d’attente, minutes de relance, taux horaire, panier, % deals perdus ou retardés. Devis concernés, jours-homme, heures, coût temps, opportunités. Calcul 100 % local.",
     tags: ["funnel", "scoring"],
   },
+  {
+    href: BLOG_TOOL_TVA,
+    title: "Calculateur TVA devis HT / TTC",
+    text: "HT vers TTC ou l’inverse, taux 20 % 10 % 5,5 % 2,1 % 0 % ou perso, jusqu’à 3 lignes. Totaux HT, TVA ventilée, TTC. Calcul 100 % local, indicatif, pas un conseil fiscal.",
+    tags: ["funnel"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "tva-ht-ttc-devis-b2b-france",
+    path: "/blog/tva-ht-ttc-devis-b2b-france",
+    title: "HT, TTC et TVA sur un devis B2B en France : afficher clair sans se tromper",
+    description:
+      "Comment afficher HT, TTC et TVA sur un devis B2B en France : taux courants, totaux par taux, erreurs classiques, checklist avant envoi. Process PME, pas un conseil fiscal.",
+    publishedAt: "2026-09-29",
+    readingMinutes: 13,
+    tags: ["funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "approbation-client-multi-decideurs-devis-b2b",
     path: "/blog/approbation-client-multi-decideurs-devis-b2b",

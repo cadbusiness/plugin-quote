@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "tva-ht-ttc-devis-b2b-france": [
+    {
+      q: "Quelle différence entre HT et TTC sur un devis ?",
+      a: "Le HT est le montant avant TVA. Le TTC est HT + TVA. En B2B on négocie souvent en HT, mais le client regarde aussi le TTC pour son budget cash.",
+    },
+    {
+      q: "Comment calculer la TVA à partir du HT ?",
+      a: "Formule indicative : TVA = HT × taux. Exemple à 20 % : 1 000 € HT → 200 € de TVA. Le taux exact dépend de votre situation : validez-le avec votre expert-comptable.",
+    },
+    {
+      q: "Comment retrouver le HT à partir d’un TTC ?",
+      a: "Formule indicative : HT = TTC ÷ (1 + taux). Exemple à 20 % : 1 200 € TTC → 1 000 € HT. Utilisez le calculateur TVA devis HT/TTC pour éviter les erreurs de virgule.",
+    },
+    {
+      q: "Quels taux de TVA mettre sur un devis en France ?",
+      a: "Les taux courants qu’on croise sont notamment 20 %, 10 %, 5,5 %, 2,1 %, et parfois 0 % / exonération selon les cas. Ce n’est pas une liste à appliquer au hasard : le bon taux dépend de la prestation et du contexte. Demandez conseil à votre expert-comptable.",
+    },
+    {
+      q: "Peut-on mélanger plusieurs taux sur un même devis ?",
+      a: "Oui, c’est fréquent. Affichez alors le taux par ligne et une ventilation TVA par taux en bas de page, sinon le total devient opaque.",
+    },
+    {
+      q: "Que mettre en cas d’exonération ou d’autoliquidation ?",
+      a: "Uniquement le libellé validé par votre expert-comptable (ou avocat). Ne recopiez pas une phrase trouvée en ligne. Figez le bon texte dans votre template.",
+    },
+    {
+      q: "L’acompte se calcule sur le HT ou le TTC ?",
+      a: "Ce que vous écrivez sur le devis. Choisissez une règle, notez-la (« 30 % TTC à la commande » ou « 30 % HT »), et alignez facturation et encaissement.",
+    },
+    {
+      q: "Un logiciel de devis choisit-il le bon taux tout seul ?",
+      a: "Non, pas au sens fiscal. Un bon outil applique les taux que vous avez paramétrés (catalogue, templates) et calcule les totaux. Le choix du taux légalement applicable reste de votre responsabilité, avec votre conseil. QuoteBuilder ne calcule pas la TVA légale et ne gère pas l’autoliquidation.",
+    },
+    {
+      q: "Que faire si le prospect ne comprend que le TTC ?",
+      a: "Montrez les deux : HT, TVA, TTC. En réunion, convertissez son budget TTC en HT max avec le calculateur. Évitez de « cacher » le HT : la facture le fera réapparaître.",
+    },
+    {
+      q: "Par quoi commencer demain matin ?",
+      a: "Ouvrez trois devis récents, vérifiez qu’aucune ligne ne mélange HT et TTC, contrôlez la ventilation TVA, alignez le taux par défaut dans le catalogue, puis faites valider les libellés sensibles (exonération, autoliquidation) par votre expert-comptable.",
+    },
+  ],
   "approbation-client-multi-decideurs-devis-b2b": [
     {
       q: "Quelle différence avec la validation interne avant envoi ?",

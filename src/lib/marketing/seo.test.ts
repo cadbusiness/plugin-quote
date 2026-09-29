@@ -55,6 +55,7 @@ import {
   COUT_ATTENTE_MULTI_DECIDEURS_LABELS,
   computeCoutAttenteMultiDecideurs,
 } from "./cout-attente-multi-decideurs-devis";
+import { computeTvaDevisHtTtc, resolveTvaRatePct } from "./tva-devis-ht-ttc";
 import { CHECKLIST_MENTIONS_ITEMS, computeChecklistMentions } from "./checklist-mentions-devis";
 import { MARKETING_ROUTES } from "./routes";
 import sitemap from "../../app/sitemap";
@@ -123,6 +124,8 @@ for (const required of [
   "/outils/estimateur-cout-devis-sans-validation",
   "/outils/estimateur-cout-relances-aveugles-devis",
   "/outils/estimateur-cout-attente-multi-decideurs-devis",
+  "/outils/calculateur-tva-devis-ht-ttc",
+  "/blog/tva-ht-ttc-devis-b2b-france",
   "/blog/approbation-client-multi-decideurs-devis-b2b",
   "/blog/suivi-ouverture-lecture-devis-en-ligne-b2b",
   "/blog/validation-interne-avant-envoi-devis-b2b",
@@ -172,7 +175,24 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 33);
+assert.equal(BLOG_POSTS.length, 34);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "tva-ht-ttc-devis-b2b-france")?.tags, ["funnel"]);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "tva-ht-ttc-devis-b2b-france")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "tva-ht-ttc-devis-b2b-france")?.cover,
+  BLOG_DEMO_SHOTS.devisDetail,
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "tva-ht-ttc-devis-b2b-france")?.readingMinutes, 13);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "tva-ht-ttc-devis-b2b-france")?.publishedAt, "2026-09-29");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "tva-ht-ttc-devis-b2b-france")?.pinned, false);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "tva-ht-ttc-devis-b2b-france")?.path,
+  "/blog/tva-ht-ttc-devis-b2b-france",
+);
+assert.equal(BLOG_FAQ["tva-ht-ttc-devis-b2b-france"]?.length, 10);
 assert.deepEqual(
   BLOG_POSTS.find((post) => post.slug === "approbation-client-multi-decideurs-devis-b2b")?.tags,
   ["funnel", "scoring"],
@@ -940,6 +960,15 @@ const requiredSources = {
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
+  "tva-ht-ttc-devis-b2b-france.md": [
+    "/outils/calculateur-tva-devis-ht-ttc",
+    "/blog/acomptes-echeances-devis-b2b",
+    "/blog/mentions-obligatoires-devis-france",
+    "/blog/remise-commerciale-marge-devis-b2b",
+    "/outils/checklist-mentions-devis-france",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
   "approbation-client-multi-decideurs-devis-b2b.md": [
     "/outils/estimateur-cout-attente-multi-decideurs-devis",
     "/blog/validation-interne-avant-envoi-devis-b2b",
@@ -1432,6 +1461,23 @@ for (const { file, dir } of contentFiles) {
   assert.match(pjBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(pjBody, EM_DASH);
   assert.equal(pjBody.split(/\s+/).filter(Boolean).length, 2401);
+}
+
+{
+  const tvaRaw = readFileSync(join(blogDir, "tva-ht-ttc-devis-b2b-france.md"), "utf8");
+  assert.ok(tvaRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const tvaBody = stripFrontmatter(tvaRaw);
+  assert.ok(
+    tvaBody.startsWith("# HT, TTC et TVA sur un devis B2B en France : afficher clair sans se tromper"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(tvaBody, /^title:/m);
+  assert.match(tvaBody, /signup\?plan=free/);
+  assert.match(tvaBody, /\/outils\/calculateur-tva-devis-ht-ttc/);
+  assert.match(tvaBody, /\/c\/demo\/rayonnage/);
+  assert.match(tvaBody, /ne prétend pas calculer la TVA/);
+  assert.doesNotMatch(tvaBody, EM_DASH);
+  assert.equal(tvaBody.split(/\s+/).filter(Boolean).length, 2602);
 }
 
 {
@@ -2982,6 +3028,8 @@ for (const expected of [
   { path: "/outils/checklist-mentions-devis-france", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
   { path: "/blog/pieces-jointes-plans-photos-devis-b2b", priority: 0.8, lastmod: "2026-09-25" },
+  { path: "/blog/tva-ht-ttc-devis-b2b-france", priority: 0.8, lastmod: "2026-09-29" },
+  { path: "/outils/calculateur-tva-devis-ht-ttc", priority: 0.7, lastmod: "2026-09-29" },
   { path: "/blog/approbation-client-multi-decideurs-devis-b2b", priority: 0.8, lastmod: "2026-09-29" },
   { path: "/outils/estimateur-cout-attente-multi-decideurs-devis", priority: 0.7, lastmod: "2026-09-29" },
   { path: "/secteurs/funnel-devis-couverture-toiture", priority: 0.8, lastmod: "2026-09-29" },
@@ -3013,6 +3061,8 @@ assert.ok(paths.includes("/outils/estimateur-cout-aller-retours-brief-photos"));
 assert.ok(paths.includes("/blog/commentaires-annotations-devis-collaboratif-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-emails-clarification-devis"));
 assert.ok(paths.includes("/secteurs/funnel-devis-photovoltaique-solaire"));
+assert.ok(paths.includes("/blog/tva-ht-ttc-devis-b2b-france"));
+assert.ok(paths.includes("/outils/calculateur-tva-devis-ht-ttc"));
 assert.ok(paths.includes("/blog/approbation-client-multi-decideurs-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-attente-multi-decideurs-devis"));
 assert.ok(paths.includes("/secteurs/funnel-devis-couverture-toiture"));
@@ -3402,6 +3452,8 @@ const llmsPaths = [
   "/secteurs/funnel-devis-isolation-thermique-ite",
   "/blog/approbation-client-multi-decideurs-devis-b2b",
   "/outils/estimateur-cout-attente-multi-decideurs-devis",
+  "/blog/tva-ht-ttc-devis-b2b-france",
+  "/outils/calculateur-tva-devis-ht-ttc",
   "/secteurs/funnel-devis-couverture-toiture",
 ];
 for (const path of llmsPaths) {
@@ -3699,7 +3751,91 @@ for (const root of marketingRoots) {
 }
 assert.equal(CREAM_HEX, "#F6F0E8");
 
+const tvaHt = computeTvaDevisHtTtc({ mode: "ht", montant: 10000, ratePct: 20, lines: [] });
+assert.equal(tvaHt.ht, 10000);
+assert.equal(tvaHt.tva, 2000);
+assert.equal(tvaHt.ttc, 12000);
+assert.equal(tvaHt.alertTone, "ok");
+assert.match(tvaHt.alert, /HT → TTC à 20 %/);
+assert.equal(tvaHt.showBreakdown, false);
+
+const tvaFromTtc = computeTvaDevisHtTtc({ mode: "ttc", montant: 12000, ratePct: 20, lines: [] });
+assert.equal(tvaFromTtc.ttc, 12000);
+assert.equal(tvaFromTtc.ht, 10000);
+assert.equal(tvaFromTtc.tva, 2000);
+assert.match(tvaFromTtc.alert, /TTC → HT à 20 %/);
+
+const tvaReduced = computeTvaDevisHtTtc({ mode: "ht", montant: 1000, ratePct: 5.5, lines: [] });
+assert.equal(tvaReduced.tva, 55);
+assert.equal(tvaReduced.ttc, 1055);
+
+const tvaCustom = computeTvaDevisHtTtc({
+  mode: "ht",
+  montant: 10000,
+  ratePct: resolveTvaRatePct("custom", 8.5),
+  lines: [],
+});
+assert.equal(tvaCustom.tva, 850);
+assert.equal(tvaCustom.ttc, 10850);
+assert.equal(resolveTvaRatePct("custom", 150), 100);
+
+const tvaZero = computeTvaDevisHtTtc({ mode: "ttc", montant: 1200, ratePct: 0, lines: [] });
+assert.equal(tvaZero.ht, 1200);
+assert.equal(tvaZero.tva, 0);
+assert.equal(tvaZero.ttc, 1200);
+assert.equal(tvaZero.alertTone, "warn");
+
+const tvaEmpty = computeTvaDevisHtTtc({ mode: "ht", montant: 0, ratePct: 20, lines: [] });
+assert.equal(tvaEmpty.ht, 0);
+assert.equal(tvaEmpty.alertTone, "neutral");
+assert.match(tvaEmpty.alert, /Indiquez un montant/);
+
+const tvaMulti = computeTvaDevisHtTtc({
+  mode: "lines",
+  montant: 0,
+  ratePct: 20,
+  lines: [
+    { ht: 4000, ratePct: 20 },
+    { ht: 3000, ratePct: 10 },
+    { ht: 0, ratePct: 20 },
+  ],
+});
+assert.equal(tvaMulti.ht, 7000);
+assert.equal(tvaMulti.tva, 1100);
+assert.equal(tvaMulti.ttc, 8100);
+assert.equal(tvaMulti.alertTone, "warn");
+assert.equal(tvaMulti.lineTtc[0], 4800);
+assert.equal(tvaMulti.lineTtc[1], 3300);
+assert.equal(tvaMulti.lineTtc[2], null);
+assert.deepEqual(
+  tvaMulti.breakdown.map((row) => [row.ratePct, row.tva]),
+  [
+    [20, 800],
+    [10, 300],
+  ],
+);
+assert.equal(tvaMulti.showBreakdown, true);
+assert.match(tvaMulti.alert, /Plusieurs taux/);
+assert.match(tvaMulti.recap, /pas un conseil fiscal/);
+
+const tvaSameRate = computeTvaDevisHtTtc({
+  mode: "lines",
+  montant: 0,
+  ratePct: 20,
+  lines: [
+    { ht: 1000, ratePct: 20 },
+    { ht: 0, ratePct: 10 },
+  ],
+});
+assert.equal(tvaSameRate.ht, 1000);
+assert.equal(tvaSameRate.tva, 200);
+assert.equal(tvaSameRate.ttc, 1200);
+assert.equal(tvaSameRate.alertTone, "ok");
+assert.equal(tvaSameRate.showBreakdown, true);
+
 for (const [path, lastmod] of [
+  ["/blog/tva-ht-ttc-devis-b2b-france", "2026-09-29"],
+  ["/outils/calculateur-tva-devis-ht-ttc", "2026-09-29"],
   ["/blog/approbation-client-multi-decideurs-devis-b2b", "2026-09-29"],
   ["/outils/estimateur-cout-attente-multi-decideurs-devis", "2026-09-29"],
   ["/secteurs/funnel-devis-couverture-toiture", "2026-09-29"],
