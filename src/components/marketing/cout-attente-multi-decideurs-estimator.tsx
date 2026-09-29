@@ -87,7 +87,7 @@ export function CoutAttenteMultiDecideursEstimator() {
             />
             <NumberField
               label={COUT_ATTENTE_MULTI_DECIDEURS_LABELS.jours}
-              hint="Cycle allongé faute de circuit clair (invitations, badges, version unique)."
+              hint="Cycle allongé faute de circuit clair (invitations, badges, un seul lien)."
               value={jours}
               min={0}
               max={365}

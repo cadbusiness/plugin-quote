@@ -31,7 +31,7 @@ const FAQ = [
   },
   {
     q: "Comment relier ça à un circuit client ?",
-    a: "Lien unique, invitations de relecteurs, badges vu / approuvé / demande de modifs, commentaires, versions, notifications (invitation, approbation, demande de modifs, validation) et signature sur la dernière version. La fiche peut afficher une dernière consultation relative. Pas de première ouverture, pas de compteur, pas d’historique d’ouvertures, pas d’alerte à la consultation, pas de pixel e-mail.",
+    a: "Lien partagé, invitations (directeur financier, responsable technique, acheteur, décideur), badges En attente / Consulté / Validé / Modifications, un commentaire et un budget max par relecteur, récap du type Validé · 2/2. Notifications : invitation par le prospect, validation, demande de modifications, validation complète. L’invitation envoyée par le commercial ne notifie pas l’équipe. La fiche peut afficher une dernière consultation relative. Pas de compteur, pas d’historique, pas d’alerte à la consultation, pas de pixel.",
   },
 ];
 
@@ -98,10 +98,10 @@ export default function EstimateurCoutAttenteMultiDecideursPage() {
           </Link>
           {" · "}
           <Link
-            href="/blog/commentaires-annotations-devis-collaboratif-b2b"
+            href="/blog/validation-interne-avant-envoi-devis-b2b"
             className="font-medium text-mk-accent underline-offset-2 hover:underline"
           >
-            commentaires collaboratifs
+            validation interne avant envoi
           </Link>
           {" · "}
           <Link
@@ -121,7 +121,7 @@ export default function EstimateurCoutAttenteMultiDecideursPage() {
       <MarketingFaq items={FAQ} />
       <MarketingCta
         title="Faites circuler le devis sur un seul lien."
-        text="Invitations, badges relecteurs, versions et signature sur la bonne version. Free sans carte."
+        text="Invitations, badges En attente / Consulté / Validé / Modifications, commentaire et budget max. Free sans carte."
       />
     </>
   );

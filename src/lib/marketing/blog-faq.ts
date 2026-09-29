@@ -4,43 +4,43 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
   "approbation-client-multi-decideurs-devis-b2b": [
     {
       q: "Quelle différence avec la validation interne avant envoi ?",
-      a: "La validation interne est chez vous, avant que le prospect voie le prix. L’approbation multi-décideurs est chez le client, après envoi. Les deux se complètent.",
+      a: "La validation interne est chez vous, avant que le prospect voie le prix. Le circuit multi-décideurs est chez le client, après envoi. Les deux se complètent.",
     },
     {
-      q: "Faut-il que tous les décideurs signent électroniquement ?",
-      a: "Pas forcément. Souvent plusieurs relecteurs (badges, commentaires) et un seul signataire habilité. Adaptez au cadre juridique et au type de compte.",
+      q: "Que peut faire un relecteur sur son lien ?",
+      a: "Ouvrir la configuration, indiquer un budget max, écrire un commentaire, puis valider le dossier ou demander des modifications. Le lien dure 30 jours. Il ne pose pas le statut du devis.",
     },
     {
       q: "Que voit-on côté vendeur sur les consultations ?",
-      a: "Sur QuoteBuilder, la fiche ou l’espace peut afficher une dernière consultation en texte relatif. Pas de première ouverture, pas de compteur, pas d’historique d’ouvertures, pas d’alerte à chaque consultation, pas de pixel e-mail. Le pilotage passe par les badges relecteurs (vu, approuvé, modifs) et les notifications (invitation, approbation, demande de modifs, validation).",
+      a: "Sur la fiche, une dernière consultation en temps relatif, par exemple « vu il y a 2 h ». Pas de première ouverture, pas de compteur, pas d’historique, pas d’alerte à la consultation, pas de pixel e-mail. Le pilotage passe par les pastilles En attente, Consulté, Validé et Modifications, le récap, et les notifications.",
     },
     {
-      q: "Comment inviter Achats sans perdre le contact projet ?",
-      a: "Gardez le contact comme owner côté client. Invitez Achats en relecteur. Les notifications partent aux bons moments. Évitez de court-circuiter le contact sans accord.",
+      q: "Une invitation envoyée par le commercial prévient-elle l’équipe ?",
+      a: "Non. L’invité reçoit son lien. L’équipe est notifiée si le prospect invite depuis l’espace, si quelqu’un valide, si quelqu’un demande des modifications, et quand tout le circuit est validé.",
     },
     {
-      q: "Que faire si Technique demande des modifs et Achats veut signer vite ?",
-      a: "Traitez les modifs, publiez une version, puis signature. Signer une version techniquement contestée crée des litiges.",
+      q: "Que faire si le responsable technique demande des modifications et l’acheteur a déjà validé ?",
+      a: "Le récap passe à Modifications demandées. Traitez le commentaire et le budget max s’il y en a un. L’acheteur reste sur Validé. Les deux informations sont sur la fiche.",
     },
     {
-      q: "Les commentaires client sont-ils les mêmes que les commentaires internes ?",
-      a: "Non. Interne = équipe vendeur. Espace prospect = conversation avec le client et les relecteurs. Ne mélangez pas les deux.",
+      q: "Les messages du prospect sont-ils les mêmes que les notes internes ?",
+      a: "Non. Les notes internes restent dans l’équipe. Le fil de messages de l’espace est la conversation avec le contact, en un seul fil. Le commentaire d’un relecteur est un champ unique, à côté de son budget max.",
     },
     {
       q: "Comment chiffrer le coût de l’attente multi-décideurs ?",
-      a: "Volume, % multi-décideurs, nombre de décideurs, jours d’attente, minutes de relance, taux horaire, panier, % de deals retardés ou perdus. L’estimateur coût d’attente multi-décideurs le fait en local.",
+      a: "Volume, part multi-décideurs, nombre de décideurs, jours d’attente, minutes de relance, taux horaire, panier, part de dossiers retardés ou perdus. L’estimateur le fait en local.",
     },
     {
-      q: "Un lien partagé suffit-il sans badges ?",
-      a: "Mieux qu’un PDF, mais insuffisant. Sans statut par relecteur, vous revenez aux « tu as pu regarder ? » téléphoniques.",
+      q: "Un lien partagé suffit-il sans pastilles ?",
+      a: "Mieux qu’un PDF seul, mais insuffisant dès qu’il y a deux lecteurs. Sans statut par personne, vous revenez aux « tu as pu regarder ? ».",
     },
     {
       q: "Comment gérer un syndic avec un vote AG distant ?",
-      a: "Lien partagé, validité claire, relances calées sur le calendrier AG. Ne réservez pas de créneau chantier ferme avant décision.",
+      a: "Lien partagé, validité affichée, relances calées sur le calendrier de l’assemblée. Ne réservez pas de créneau ferme avant le récap et la décision commerciale.",
     },
     {
-      q: "Quel lien avec la signature électronique ?",
-      a: "La signature clôt le circuit sur une version propre, après les relectures utiles.",
+      q: "Qui pose Accepté, Signé ou Gagné ?",
+      a: "Le commercial, sur la fiche. Le relecteur ne le fait pas. Son choix est Valider le dossier ou Modifications.",
     },
   ],
   "suivi-ouverture-lecture-devis-en-ligne-b2b": [

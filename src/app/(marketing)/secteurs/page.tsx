@@ -160,7 +160,7 @@ export default function SecteursPage() {
             </p>
             <p className="mt-2 text-[15px] leading-7 text-mk-muted">
               Tuiles, ardoise, zinc, étanchéité, surface, accès, photos, urgence fuite vs projet.
-              Brief chiffrable, score et signature.
+              Brief chiffrable, score et espace prospect.
             </p>
           </Link>
           <Link

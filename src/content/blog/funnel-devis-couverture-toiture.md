@@ -1,5 +1,5 @@
 ---
-title: "Funnel de devis couverture et toiture : tuiles, ardoise, zinc, étanchéité, brief, signature"
+title: "Funnel de devis couverture et toiture : tuiles, ardoise, zinc, étanchéité, brief, espace prospect"
 slug: funnel-devis-couverture-toiture
 description: "Landing SEO artisans et entreprises couverture / toiture : funnel de devis (type d'intervention, surface ou pans, pente, accès, état existant, photos, urgence fuite vs projet, type client), sans barèmes d'aides inventés."
 canonical: /secteurs/funnel-devis-couverture-toiture
@@ -19,17 +19,17 @@ updated: 2026-09-29
 sector: couverture-toiture
 ---
 
-# Funnel de devis couverture et toiture : tuiles, ardoise, zinc, étanchéité, brief, signature
+# Funnel de devis couverture et toiture : tuiles, ardoise, zinc, étanchéité, brief, espace prospect
 
 Un particulier, un syndic ou un gestionnaire de parc ouvre votre page. Il a une fuite, une toiture fatiguée, ou un projet de réfection. Il clique sur **Demander un devis**.
 
 Puis il écrit : « Bonjour, tarif pour toiture. »
 
-Pas de type d'intervention (tuiles, ardoise, zinc, bac acier, étanchéité terrasse…). Pas de surface ni de nombre de pans. Pas de pente. Pas d'accès. Pas d'état existant. Pas de photos. Pas de distinction urgence fuite vs projet planifié. Votre couvreur / technico rappelle. On reconstruit le brief. Parfois on se déplace pour découvrir un accès nacelle obligatoire, une charpente à reprendre, ou un syndic qui n'a pas encore voté. Parfois le prospect a déjà signé chez quelqu'un qui avait posé les bonnes questions dès le premier écran.
+Pas de type d'intervention (tuiles, ardoise, zinc, bac acier, étanchéité terrasse…). Pas de surface ni de nombre de pans. Pas de pente. Pas d'accès. Pas d'état existant. Pas de photos. Pas de distinction urgence fuite vs projet planifié. Votre couvreur / technico rappelle. On reconstruit le brief. Parfois on se déplace pour découvrir un accès nacelle obligatoire, une charpente à reprendre, ou un syndic qui n'a pas encore voté. Parfois le prospect a déjà choisi un couvreur qui avait posé les bonnes questions dès le premier écran.
 
 Ce n'est pas seulement un sujet commercial. C'est un sujet d'**entrée**.
 
-Cette page explique comment un **funnel de devis couverture / toiture** transforme une demande vague en **brief chiffrable** : type d'intervention, surface ou pans, pente / accès, état existant, charpente visible, photos, urgence vs projet, type de client, options, puis espace prospect et signature. Public : entreprises de couverture, zingueurs, étancheurs, artisans rénovation toiture, réseaux et agences qui outillent ces équipes.
+Cette page explique comment un **funnel de devis couverture / toiture** transforme une demande vague en **brief chiffrable** : type d'intervention, surface ou pans, pente / accès, état existant, charpente visible, photos, urgence vs projet, type de client, options, puis espace prospect. Public : entreprises de couverture, zingueurs, étancheurs, artisans rénovation toiture, réseaux et agences qui outillent ces équipes.
 
 
 **Voir un parcours structuré :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel](https://www.quotebuilder.co/c/demo/rayonnage) pour comprendre funnel → dossier scoré (le principe se transpose à la couverture / toiture).
@@ -123,7 +123,7 @@ Dans un funnel public, la posture saine est :
 
 Promettre un montant d'aide ou un prix figé sans brief crée des litiges. Même logique que sur le [funnel isolation / ITE](https://www.quotebuilder.co/secteurs/funnel-devis-isolation-thermique-ite) et le [funnel pompe à chaleur / chauffage](https://www.quotebuilder.co/secteurs/funnel-devis-pompe-chaleur-chauffage) : générique oui, barème inventé non.
 
-## Parcours type : du clic à la signature
+## Parcours type : du clic au dossier partagé
 
 ### 1. Entrée (Ads, SEO, QR chantier, partenaires, assureurs)
 
@@ -149,9 +149,9 @@ Lien magique : récap, options, questions, documents (photos toiture, plan, cons
 
 Sur les comptes multi-décideurs (syndic, acheteur pro), le circuit de relecture côté client compte autant que le brief. Voir [approbation client multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b).
 
-### 6. Relances + signature
+### 6. Relances
 
-Séquence adaptée au score et à l'urgence. Acceptation en ligne quand le dossier est prêt. Validité affichée clairement.
+Séquence adaptée au score et à l'urgence. Le dossier reste sur le lien de l'espace prospect. La validité est affichée. Quand le client a tranché, le commercial met à jour le statut du devis.
 
 
 **Cadrez la couverture sans reconstruire chaque brief :** [essai Free](https://www.quotebuilder.co/signup?plan=free) · [démo publique](https://www.quotebuilder.co/c/demo/rayonnage).
@@ -204,22 +204,21 @@ Affichez-les comme options cochables. Le total bouge. Le prospect comprend. Vous
 Trois leviers à lier :
 
 1. **Validité du devis** (ex. 30 jours) : matériaux et planning bougent. Voir [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
-2. **Créneau chantier** : réservé après signature + acompte, pas sur un devis « peut-être » (surtout en saison ou après orage).
+2. **Créneau chantier** : réservé quand le dossier est gagné et que l'acompte est reçu, pas sur un devis « peut-être » (surtout en saison ou après orage).
 3. **Acompte / échéances** : rassurer trésorerie et commande matériaux. Voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b).
 
 Sans ça, vous bloquez des semaines d'équipe pour des prospects qui comparent encore chez trois couvreurs.
 
-## Espace prospect, multi-décideurs et signature
+## Espace prospect et multi-décideurs
 
 Après envoi, le prospect doit pouvoir :
 
 - relire le récap (type d'intervention, surface / pans indicatifs, options, total) ;
-- poser une question sans relancer un e-mail perdu ;
+- poser une question dans le fil de messages, sans relancer un e-mail perdu ;
 - déposer une photo complémentaire ou un document syndic / assurance ;
-- faire circuler le lien chez un second décideur ;
-- accepter / signer quand c'est le bon moment.
+- inviter un relecteur (directeur financier, responsable technique, acheteur ou décideur) sur le même lien.
 
-C'est le rôle de l'[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) et de la [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b). Sur syndic ou compte pro, liez ça à l'[approbation multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b) et aux [versions / historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b).
+C'est le rôle de l'[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne). Sur syndic ou compte pro, le circuit de relecture est décrit dans [approbation client multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b) : pastilles En attente / Consulté / Validé / Modifications, un commentaire et un budget max par personne. Le commercial pose ensuite le statut du devis.
 
 ## KPIs secteur (comité mensuel)
 
@@ -228,8 +227,8 @@ C'est le rôle de l'[espace prospect](https://www.quotebuilder.co/blog/espace-pr
 | % briefs avec type intervention + surface/pans ou photos | Qualité d'entrée |
 | Délai moyen 1er devis (urgence vs projet) | Compétitivité |
 | % visites « inutiles » (accès / hors scope) | Filtrage trop faible |
-| % options échafaudage / zinguerie présentes sur devis acceptés | Qualité du funnel options |
-| Taux d'acceptation sous validité | Cycle commercial |
+| % options échafaudage / zinguerie présentes sur devis gagnés | Qualité du funnel options |
+| Part de dossiers gagnés sous validité | Cycle commercial |
 | % demandes hors zone filtrées tôt | Santé du pipeline |
 
 ## Relances : le devis toiture meurt souvent après l'envoi
@@ -251,9 +250,9 @@ Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les de
 3. **Ignorer l'accès et la hauteur** : le coût sort au chantier.
 4. **Traiter une fuite comme un projet long** (SLA trop lent) : le prospect appelle le voisin.
 5. **Un seul PDF sans suivi** : relances à l'aveugle. Préférez le [lien sécurisé](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email).
-6. **Réserver un créneau équipe avant signature** : vous bloquez pour un comparateur.
+6. **Réserver un créneau équipe avant que le dossier soit gagné** : vous bloquez pour un comparateur.
 7. **Mélanger particulier, pro et syndic sur les mêmes champs** : branche « type de client » dès le début.
-8. **Envoyer sans validation technique** sur un Hot complexe : V2 garantie. Voir [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
+8. **Envoyer sans validation technique** sur un Hot complexe : le devis revient à la charge. Voir [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
 
 ## Secteurs proches et maillage
 
@@ -307,7 +306,7 @@ Un widget funnel sur la page « Devis couverture / toiture » + catalogue minima
 
 ### Faut-il une validation interne avant d'envoyer un devis toiture complexe ?
 
-Sur les Hot / paniers élevés / accès complexes, oui. Ça réduit les V2 et les remises de panique. Voir [validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b) et l'[estimateur coût devis sans validation](https://www.quotebuilder.co/outils/estimateur-cout-devis-sans-validation).
+Sur les Hot / paniers élevés / accès complexes, oui. Ça réduit les devis à reprendre et les remises de panique. Voir [validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b) et l'[estimateur coût devis sans validation](https://www.quotebuilder.co/outils/estimateur-cout-devis-sans-validation).
 
 
 **Passez d'un « prix toiture » vague à un brief chiffrable :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) · [voir la démo](https://www.quotebuilder.co/c/demo/rayonnage).
@@ -322,7 +321,6 @@ Sur les Hot / paniers élevés / accès complexes, oui. Ça réduit les V2 et le
 - [Envoyer un devis : lien sécurisé vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email)
 - [Options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)
 - [Validité et expiration des devis](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b)
-- [Signature et acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b)
 - [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
 - [Funnel devis isolation thermique / ITE](https://www.quotebuilder.co/secteurs/funnel-devis-isolation-thermique-ite)
 - [Funnel devis pompe à chaleur / chauffage](https://www.quotebuilder.co/secteurs/funnel-devis-pompe-chaleur-chauffage)

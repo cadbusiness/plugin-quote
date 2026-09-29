@@ -1450,7 +1450,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(approBody, /Pas de première ouverture/);
   assert.match(approBody, /pas de pixel e-mail/);
   assert.doesNotMatch(approBody, EM_DASH);
-  assert.equal(approBody.split(/\s+/).filter(Boolean).length, 2660);
+  assert.equal(approBody.split(/\s+/).filter(Boolean).length, 3983);
 }
 
 {
@@ -1465,7 +1465,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(couvBody, /\/blog\/approbation-client-multi-decideurs-devis-b2b/);
   assert.match(couvBody, /\/outils\/estimateur-cout-devis-sans-validation/);
   assert.doesNotMatch(couvBody, EM_DASH);
-  assert.equal(couvBody.split(/\s+/).filter(Boolean).length, 2904);
+  assert.equal(couvBody.split(/\s+/).filter(Boolean).length, 2947);
 }
 
 {
@@ -2694,8 +2694,8 @@ assert.equal(attenteDefault.totalTone, "warn");
 assert.equal(attenteDefault.oppTone, "bad");
 assert.match(attenteDefault.alert, /Friction multi-décideurs notable/);
 assert.match(attenteDefault.recap, /Checklist rapide/);
-assert.match(attenteDefault.recap, /Badges vu \/ approuvé \/ demande de modifs/);
-assert.match(attenteDefault.recap, /Notifications invitation \/ approbation \/ modifs \/ validation/);
+assert.match(attenteDefault.recap, /Badges En attente \/ Consulté \/ Validé \/ Modifications/);
+assert.match(attenteDefault.recap, /Notifications : invitation par le prospect, validation, demande de modifications, validation complète/);
 assert.doesNotMatch(attenteDefault.recap, /première ouverture/);
 assert.doesNotMatch(attenteDefault.recap, /pixel/);
 assert.doesNotMatch(attenteDefault.tip, /première ouverture/);
@@ -2759,7 +2759,7 @@ assert.equal(attenteHigh.total, 131880);
 assert.equal(attenteHigh.alertTone, "bad");
 assert.equal(attenteHigh.totalTone, "bad");
 assert.equal(attenteHigh.oppTone, "bad");
-assert.match(attenteHigh.tip, /badges vu/);
+assert.match(attenteHigh.tip, /En attente/);
 
 const attenteClamp = computeCoutAttenteMultiDecideurs({
   devis: -5,

@@ -135,16 +135,16 @@ export function computeCoutAttenteMultiDecideurs(
     alertTone = "bad";
     alert = `Friction multi-décideurs élevée · environ ${fmtEuro(total)} / mois (indicatif).`;
     tip =
-      "Priorité : lien unique, invitations de relecteurs, badges vu / approuvé / modifs, versions, signature sur la bonne Vn.";
+      "Priorité : un seul lien, invitations de relecteurs, badges En attente / Consulté / Validé / Modifications, un commentaire et un budget max.";
   } else if (total >= 8000 || heures >= 8) {
     alertTone = "warn";
     alert = `Friction multi-décideurs notable · environ ${fmtEuro(total)} / mois (indicatif).`;
     tip =
-      "Pilotez d’abord les Hot / paniers élevés. Mesurez le délai invitation → premier signal (vu, modifs, approuvé).";
+      "Pilotez d’abord les Hot et les paniers élevés. Sur la fiche, regardez le passage de En attente à Consulté, Validé ou Modifications.";
   } else {
     alertTone = "ok";
     alert = `Friction multi-décideurs contenue · environ ${fmtEuro(total)} / mois (indicatif).`;
-    tip = "Gardez le circuit léger. Surveillez quand même les PDF forwardés et les signatures sur version morte.";
+    tip = "Gardez le circuit léger. Surveillez quand même les PDF qui circulent en dehors du lien partagé.";
   }
 
   const totalTone: CoutAttenteMultiDecideursTone = total >= 25000 ? "bad" : total >= 8000 ? "warn" : "ok";
@@ -180,12 +180,12 @@ export function computeCoutAttenteMultiDecideurs(
     `Statut : ${alert}`,
     "",
     "Checklist rapide :",
-    "- Lien unique (pas de PDF forwardé pour les comptes multi-décideurs)",
-    "- Invitations relecteurs (achats / technique / finance)",
-    "- Badges vu / approuvé / demande de modifs",
-    "- Commentaires ancrés + versions",
-    "- Notifications invitation / approbation / modifs / validation",
-    "- Signature sur la dernière version propre",
+    "- Lien partagé (espace prospect), pas un PDF renvoyé à côté",
+    "- Invitations : Directeur financier, Responsable technique, Acheteur, Décideur",
+    "- Badges En attente / Consulté / Validé / Modifications",
+    "- Récap Validé · n/n, un commentaire et un budget max par relecteur",
+    "- Notifications : invitation par le prospect, validation, demande de modifications, validation complète",
+    "- Dernière consultation en temps relatif sur la fiche (pas de compteur, pas d’historique, pas d’alerte à la consultation)",
     "",
     "Calcul local · à adapter à votre réalité métier.",
   ].join("\n");

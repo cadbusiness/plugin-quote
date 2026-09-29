@@ -7,7 +7,7 @@ import { loadPostBody } from "@/lib/marketing/load-post";
 import { SITE_URL, pageMetadata } from "@/lib/marketing/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Funnel de devis couverture et toiture : tuiles, ardoise, zinc, étanchéité, brief, signature",
+  title: "Funnel de devis couverture et toiture : tuiles, ardoise, zinc, étanchéité, brief, espace prospect",
   description:
     "Landing SEO artisans et entreprises couverture / toiture : funnel de devis (type d’intervention, surface ou pans, pente, accès, état existant, photos, urgence fuite vs projet, type client), sans barèmes d’aides inventés.",
   path: "/secteurs/funnel-devis-couverture-toiture",
@@ -52,7 +52,7 @@ const FAQ = [
   },
   {
     q: "Faut-il une validation interne avant d’envoyer un devis toiture complexe ?",
-    a: "Sur les Hot, les paniers élevés et les accès complexes, oui. Ça réduit les V2 et les remises de panique.",
+    a: "Sur les Hot, les paniers élevés et les accès complexes, oui. Ça réduit les devis à reprendre et les remises de panique.",
   },
 ];
 
@@ -61,7 +61,7 @@ export default function CouvertureToitureLandingPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Funnel de devis couverture et toiture : tuiles, ardoise, zinc, étanchéité, brief, signature",
+    name: "Funnel de devis couverture et toiture : tuiles, ardoise, zinc, étanchéité, brief, espace prospect",
     url: `${SITE_URL}/secteurs/funnel-devis-couverture-toiture`,
     about: "Couverture, toiture, tuiles, ardoise, zinc, étanchéité, accès chantier, photos",
     isPartOf: { "@id": `${SITE_URL}/#website` },
@@ -77,12 +77,12 @@ export default function CouvertureToitureLandingPage() {
             Secteur · Couverture et toiture
           </p>
           <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl sm:leading-tight">
-            Funnel de devis couverture et toiture : tuiles, ardoise, zinc, étanchéité, brief, signature
+            Funnel de devis couverture et toiture : tuiles, ardoise, zinc, étanchéité, brief, espace prospect
           </h1>
           <p className="mt-4 text-[16px] leading-7 text-mk-muted sm:text-lg">
             Type d’intervention, surface ou pans, pente, accès, état existant, photos, urgence fuite
-            vs projet, type de client. Un brief chiffrable, un score, puis une signature qui ne
-            traîne pas.
+            vs projet, type de client. Un brief chiffrable, un score, puis un espace prospect sur
+            un seul lien.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link

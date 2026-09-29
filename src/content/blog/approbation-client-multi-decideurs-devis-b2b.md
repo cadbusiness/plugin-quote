@@ -1,7 +1,7 @@
 ---
 title: "Approbation client multi-décideurs sur un devis B2B : achats, technique, finance, direction"
 slug: approbation-client-multi-decideurs-devis-b2b
-description: "Quand un devis B2B doit être relu et validé côté client par plusieurs décideurs (achats, technique, finance, direction) : lien partagé, invitations, badges, commentaires, notifications, versions et signature."
+description: "Devis B2B relu par plusieurs décideurs : lien partagé, invitations, badges En attente / Consulté / Validé / Modifications, commentaire et budget max."
 canonical: /blog/approbation-client-multi-decideurs-devis-b2b
 locale: fr-FR
 word_count_target: 2500
@@ -12,7 +12,7 @@ keywords:
   - circuit d'approbation devis
   - relecteurs devis partagé
   - devis achats technique finance
-  - signature multi-décideurs
+  - budget max relecteur
 author: QuoteBuilder
 date: 2026-09-29
 updated: 2026-09-29
@@ -20,310 +20,369 @@ updated: 2026-09-29
 
 # Approbation client multi-décideurs sur un devis B2B : achats, technique, finance, direction
 
-Jeudi 11 h 20. Vous avez envoyé le devis. Le contact terrain répond « ça me va ». Trois jours plus tard : silence. Vous apprenez que le document circule chez le client. Achats veut une option moins chère. Le bureau d'études doute d'une quantité. La finance bloque sur l'acompte. La direction n'a pas encore ouvert le bon fichier. Vous renvoyez un PDF « V2 pour tout le monde ». Personne ne sait qui a validé quoi. Le deal se dilue.
+Jeudi 11 h 20. Vous avez envoyé le devis. Le contact terrain répond « ça me va ». Trois jours plus tard : silence. Vous apprenez que le document circule chez le client. L'acheteur veut une option moins chère. Le responsable technique doute d'une quantité. Le directeur financier bloque sur l'acompte. Un autre décideur n'a pas encore ouvert le bon fichier. Vous renvoyez un PDF « pour tout le monde ». Personne ne sait qui a validé quoi. Le dossier se dilue.
 
-Ce guide traite du **circuit d'approbation côté client**, pas de la [validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b) (relecture commerciale / technique / marge chez vous). Ici, le devis est déjà sorti. Plusieurs personnes chez le prospect doivent le relire, commenter, demander des modifs, puis quelqu'un doit accepter.
+Ce guide traite du **circuit d'approbation côté client**, pas de la [validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b) (relecture commerciale, technique et marge chez vous). Ici, le devis est déjà sorti. Plusieurs personnes chez le prospect doivent ouvrir le même lien, laisser un commentaire, indiquer un budget max, puis valider le dossier ou demander des modifications.
 
-Public : dirigeants PME, commerciaux B2B, chefs de projet, estimateurs (menuiserie, rayonnage, agencement, chauffage, isolation, couverture, clôture, cuisine…).
+Public : dirigeants PME, commerciaux B2B, chefs de projet, estimateurs (menuiserie, rayonnage, agencement, chauffage, isolation, couverture, clôture, cuisine).
 
 
-**Partager un devis sans perdre le fil des décideurs :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte).
+**Inviter des relecteurs sur le lien du devis :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte).
 
 
 ## Ce que « multi-décideurs » veut dire (et ce que ce n'est pas)
 
 ### Côté client, pas côté vendeur
 
-Chez vous, un gate interne évite d'envoyer trop tôt. Chez le client, un circuit d'approbation décide si le devis devient commande. Les acteurs typiques :
+Chez vous, un gate interne évite d'envoyer trop tôt. Chez le client, plusieurs personnes doivent voir le même dossier avant que le commercial ne conclue. Dans QuoteBuilder, l'invitation propose quatre rôles :
 
-1. **Contact terrain / projet** : reçoit le devis, le lit en premier, souvent pas le signataire.
-2. **Technique / bureau d'études** : vérifie quantités, hypothèses, exclusions, plans.
-3. **Achats** : négocie prix, options, conditions, délais.
-4. **Finance / contrôle de gestion** : acompte, échéancier, budget, taxonomie interne.
-5. **Direction / sponsor** : feu vert final, surtout sur les paniers élevés.
+1. **Directeur financier** : budget et validation financière.
+2. **Responsable technique** : faisabilité et contraintes techniques.
+3. **Acheteur** : finalisation et conditions d'achat.
+4. **Décideur** : autre personne interne chez le prospect.
 
-Ce n'est pas « tout le monde doit signer électroniquement ». C'est « plusieurs personnes doivent pouvoir voir la même version, commenter, et laisser une trace avant l'acceptation ».
+Le contact principal n'est pas un cinquième rôle. C'est lui qui tient l'[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne). Il peut inviter ces personnes. Le commercial peut aussi les inviter depuis le dossier.
+
+Chaque relecteur ouvre son lien (valable 30 jours). Il voit la configuration. Il peut indiquer un budget max et écrire **un** commentaire. Ensuite il choisit **Valider le dossier** ou **Modifications** (le bouton dit « Demander des modifications »).
+
+Ce choix ne clôt pas la vente. **Accepté**, **Signé** et **Gagné** sont des statuts posés par le commercial sur la fiche. Il n'y a pas de bouton public pour les poser.
 
 ### Ce que ce n'est pas
 
-- un comité interminable pour un devis de 900 € ;
-- remplacer votre [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b) (si vous envoyez du brouillon, le multi-décideurs côté client empire le chaos) ;
-- un tracking d'ouvertures avancé (première ouverture, compteur, historique d'accès, alertes à chaque consultation, pixel e-mail). Sur un outil comme QuoteBuilder, la fiche devis / espace prospect peut afficher une **dernière consultation** en texte relatif. Pas une timeline d'ouvertures. Les signaux utiles pour le multi-décideurs, ce sont plutôt les **relecteurs invités** (badges vu / approuvé / modifs) et les **notifications** (invitation, approbation, demande de modifs, validation).
+- un comité pour un devis de 900 € ;
+- remplacer votre [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b) : si vous envoyez un brouillon, le circuit côté client empire le chaos ;
+- un suivi d'ouvertures. Pas de première ouverture, pas de compteur, pas d'historique, pas d'alerte à la consultation, pas de pixel e-mail. La fiche peut afficher une **dernière consultation** en temps relatif, par exemple « vu il y a 2 h ».
 
-<!-- PLACEHOLDER IMAGE: schéma décideurs client achats / technique / finance / direction autour d'un lien devis (shoot Content) -->
+<!-- PLACEHOLDER IMAGE: schéma décideurs client autour d'un lien devis (shoot Content) -->
 
-## Pourquoi le PDF forwardé casse le circuit
+## Pourquoi le PDF renvoyé de main en main casse le circuit
 
 Le scénario classique :
 
 1. Vous envoyez un PDF au contact.
-2. Il le forward à Achats.
-3. Achats annote une copie locale.
-4. Technique lit une V1 pendant que vous chiffrez déjà une V2.
-5. Direction reçoit un extrait mail sans les options.
-6. Quelqu'un « valide » une version morte.
+2. Il le transmet à l'acheteur.
+3. L'acheteur écrit sur une copie locale, dans son lecteur PDF, hors du dossier.
+4. Le responsable technique lit un fichier pendant que vous en envoyez un autre par mail.
+5. Le directeur financier reçoit un extrait, sans les options.
+6. Quelqu'un dit « c'est bon » sur un document que vous n'avez plus sous les yeux.
 
 Résultat :
 
-- pas de source de vérité unique ;
-- commentaires dispersés (mail, WhatsApp, PDF annoté) ;
-- pas de badges « qui a vu / qui a demandé des modifs / qui a approuvé » ;
-- signature possible sur le mauvais document ;
-- relances vendeur qui harcèlent le mauvais contact.
+- pas de source unique ;
+- remarques dispersées (mail, messagerie, fichier annoté en local) ;
+- pas de pastille par personne ;
+- relances qui tombent sur le mauvais contact.
 
-Le contraste avec [envoyer un devis : lien sécurisé vs PDF e-mail](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) est direct. Un lien partagé (espace prospect) porte le devis **et** le circuit de relecture au même endroit. Voir aussi [espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+Le contraste avec [envoyer un devis : lien sécurisé vs PDF e-mail](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) est direct. Un lien partagé porte le devis et les relecteurs au même endroit. Le détail de la dernière consultation est dans [devis en ligne, dernière consultation et relecteurs](https://www.quotebuilder.co/blog/suivi-ouverture-lecture-devis-en-ligne-b2b).
 
-## Anatomie d'un circuit d'approbation client propre
+## Ce que la fiche montre vraiment
 
-Un circuit utile n'est pas un workflow BPMN de 40 cases. C'est un **paquet minimum** :
+Un circuit utile n'est pas un schéma de quarante cases. Sur un dossier QuoteBuilder, vous voyez ceci.
 
 | Élément | Rôle | Sans lui |
 |---------|------|----------|
-| Lien unique (version courante) | Tout le monde lit la même chose | Copies divergentes |
-| Invitations de relecteurs | Achats / technique / finance reçoivent un accès clair | Forward sauvage |
-| Badges vu / approuvé / modifs | Statut lisible par relecteur | « Tu as vu ? » en boucle |
-| Commentaires ancrés | Clarification sur ligne / section | Fil RE: RE: |
-| Notifications ciblées | Invitation, approbation, demande de modifs, validation | Silence ou spam |
-| Versions | Chaque décision rattache à une Vn | Signature sur V morte |
-| Acceptation / signature | Feu vert final tracé | « On est d'accord » oral |
+| Lien partagé (espace prospect) | Tout le monde ouvre le même dossier | Copies qui divergent |
+| Invitations | Directeur financier, responsable technique, acheteur, décideur | Transfert sauvage du PDF |
+| Pastilles En attente / Consulté / Validé / Modifications | Statut lisible par personne | « Tu as vu ? » en boucle |
+| Récap « Validé · 2/2 » | Le circuit entier, en une pastille | Comptage à la main dans les mails |
+| Un commentaire et un budget max | La réserve de cette personne, au moment où elle tranche | Fil de mails sans auteur clair |
+| Notifications | Invitation par le prospect, validation, demande de modifications, validation complète | Silence, ou l'impression qu'il ne se passe rien |
+| Dernière consultation relative | « vu il y a 2 h » sur la fiche, pour le lien principal | Relance au calendrier, sans regarder le dossier |
 
-Les [commentaires et annotations collaboratifs](https://www.quotebuilder.co/blog/commentaires-annotations-devis-collaboratif-b2b) et les [versions / historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b) sont le socle. Le multi-décideurs ajoute surtout les **rôles de relecture** et le **statut par personne**.
+Les notes internes de l'équipe et le fil de messages du prospect sont deux endroits distincts. Le fil prospect est un **fil plat** : une suite de messages, pas un commentaire collé à une ligne. Le relecteur, lui, n'écrit pas dans ce fil. Il a un seul champ commentaire, plus le budget max, au moment de valider ou de demander des modifications.
 
-## Les rôles côté client : qui fait quoi
+La liste des devis peut résumer le circuit : « Validé 2/2 », « Modifs demandées », ou « 1/3 validations ». La dernière consultation du contact principal reste sur la fiche. Il faut ouvrir le dossier pour la lire.
 
-### Contact projet (owner côté client)
+<!-- PLACEHOLDER IMAGE: pastilles En attente / Consulté / Validé / Modifications et récap Validé · 2/2 (shoot Content) -->
 
-Il reçoit le lien. Il invite les autres (ou vous les invitez avec son accord). Il synthétise. Il n'est pas forcément le signataire.
+## Les quatre rôles, et le contact qui invite
 
-### Technique
+### Contact principal
 
-Relit hypothèses, quantités, plans, exclusions. Badge utile : **vu** puis **modifs** si quelque chose bloque, ou **approuvé** sur le périmètre technique.
+Il reçoit le lien de l'espace. Il lit la configuration, pose une question dans le fil de messages, dépose une photo. Depuis le bloc « Partager pour validation », il invite un collègue. Cette invitation-là **notifie l'équipe** assignée au dossier (ou les owners et admins s'il n'y a pas d'assigné).
 
-### Achats
+### Directeur financier
 
-Compare options, demande variantes, négocie. Souvent source de [options / variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b). Évitez de traiter chaque demande Achats comme un nouveau devis orphelin : restez sur le même dossier versionné.
+Il regarde le budget, l'acompte, l'échéancier. Le champ budget max est fait pour lui : un plafond, pas un second devis. Voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b) et [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b). Un dossier « OK technique » peut rester bloqué ici si l'échéancier est illisible. Son commentaire tient dans un seul champ.
 
-### Finance
+### Responsable technique
 
-Regarde acompte, échéances, validité, budget. Voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b) et [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b). Un devis « OK technique » peut mourir ici si l'échéancier est illisible.
+Il vérifie quantités, hypothèses, exclusions, plans. Pastille utile : **Consulté**, puis **Modifications** si quelque chose bloque, ou **Validé** sur le périmètre technique. La demande de modifications notifie l'équipe. Le passage à Consulté, non.
 
-### Direction / sponsor
+### Acheteur
 
-Feu vert final. Idéalement, elle arrive sur une version déjà nettoyée (moins de bruit). La [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) doit porter sur **cette** version.
+Il compare les options, demande une variante, discute les conditions. Souvent source d'[options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b). Gardez la demande sur le même dossier. Le commentaire de l'acheteur et celui du technique restent deux champs, pas un fil unique mélangé.
 
-<!-- PLACEHOLDER IMAGE: badges relecteurs vu / approuvé / demande de modifs sur fiche devis (shoot Content) -->
+### Décideur
 
-## Workflow type en 7 étapes (du lien à la signature)
+Le quatrième rôle, pour la personne qui n'est ni finance, ni technique, ni achat : direction, sponsor, gestionnaire. Elle arrive en général quand les autres ont déjà tranché. Le récap « Validé · 2/2 » (ou « 1/3 validations ») lui dit, et vous dit, où en est le circuit.
 
-### 1. Envoi du lien (après votre gate interne)
+## Invitations, pastilles, notifications
 
-Vous n'envoyez pas un brouillon. Votre validation interne est faite. Le prospect reçoit un lien d'espace prospect, pas seulement un PDF mort.
+### Qui invite
+
+Deux portes.
+
+- Le **prospect**, depuis l'espace. L'équipe est notifiée : « untel (rôle) invité à valider le dossier ».
+- Le **commercial**, depuis le dossier (« Inviter un décideur »). L'invité reçoit le mail et son lien. **L'équipe n'est pas notifiée** de ce geste. Vous le savez déjà, puisque c'est vous qui l'avez fait.
+
+Le mail à l'invité dit d'ouvrir le lien, d'ajouter une contrainte budgétaire si besoin, puis de valider ou de demander des modifications. Le lien expire dans 30 jours. Réinviter la même adresse remet la pastille à **En attente** et efface le commentaire et le budget max précédents.
+
+### Les quatre pastilles
+
+- **En attente** : le lien de cette personne n'a pas encore été ouvert.
+- **Consulté** : elle a ouvert son lien au moins une fois.
+- **Validé** : elle a choisi « Valider le dossier ».
+- **Modifications** : elle a demandé un changement.
+
+Ce n'est pas un nombre de visites. La pastille passe de En attente à Consulté, puis à Validé ou Modifications. Vous voyez l'état, pas la durée, pas les sections lues.
+
+### Le récap
+
+- tout le monde a validé : **Validé · 2/2** (les chiffres suivent le nombre d'invités) ;
+- quelqu'un a demandé un changement : **Modifications demandées** (ce statut l'emporte, même si d'autres ont validé) ;
+- une partie seulement a validé, sans demande de modifications : **1/3 validations**.
+
+### Les notifications qui partent
+
+L'équipe est notifiée quand :
+
+- le **prospect** invite un relecteur ;
+- quelqu'un **valide** ;
+- quelqu'un **demande des modifications** ;
+- **tout le circuit** est validé.
+
+La validation complète part aussi par e-mail vers l'adresse commerciale de l'organisation, avec un lien vers la fiche.
+
+Elle n'est pas notifiée quand :
+
+- le commercial invite lui-même ;
+- le contact principal consulte l'espace (la ligne « vu il y a 2 h » se met à jour en silence) ;
+- une pastille passe à **Consulté**.
+
+Pas de première ouverture. Pas de compteur. Pas d'historique. Pas d'alerte à la consultation. Pas de pixel e-mail.
+
+## Déroulé type, du lien au récap
+
+### 1. Envoi du lien, après votre gate interne
+
+Vous n'envoyez pas un brouillon. La [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b) est faite. Le prospect reçoit le lien de l'espace, pas seulement un PDF.
 
 ### 2. Invitation des relecteurs
 
-Le contact (ou vous, avec son accord) invite Achats, Technique, Finance. Chaque personne a un accès. Pas « forward à qui veut ».
+Le contact invite, ou vous invitez avec son accord. Rôles : directeur financier, responsable technique, acheteur, décideur. Pas « transfert à qui veut ».
 
-### 3. Première lecture et badges « vu »
+### 3. Première lecture
 
-Les relecteurs ouvrent. Le badge **vu** indique qu'ils ont au moins consulté. Côté vendeur, vous pouvez aussi voir une **dernière consultation** relative sur la fiche. Ce n'est pas un historique d'ouvertures minute par minute, ni une alerte à chaque clic.
+Les relecteurs ouvrent. La pastille passe à **Consulté**, sans alerte. Sur la fiche, la dernière consultation du lien principal s'affiche en temps relatif si l'espace a été ouvert. S'il n'y a pas encore de visite, la mention n'apparaît pas. La liste des devis ne reprend pas cette ligne.
 
-### 4. Commentaires et demandes de modifs
+### 4. Commentaire, budget max, décision
 
-Annotations sur lignes / sections. Badge **modifs** si le relecteur bloque. Chaque point = corriger / accepter / reporter en exclusion. Voir [commentaires collaboratifs](https://www.quotebuilder.co/blog/commentaires-annotations-devis-collaboratif-b2b).
+Un champ commentaire. Un budget max, facultatif. Puis **Valider le dossier** ou **Demander des modifications**. Chaque point à traiter est dans ce commentaire, pas dans une note collée à une ligne du tableau. Le fil de messages du prospect, s'il a posé une question, reste à part : c'est la conversation avec le contact principal.
 
-### 5. Nouvelle version (si besoin)
+### 5. Lecture des pastilles
 
-Vous produisez une Vn. Les [versions](https://www.quotebuilder.co/blog/versions-historique-devis-b2b) gardent le fil. Les relecteurs reviennent sur le **même lien**, pas sur un nouveau PDF perdu.
+**Validé** par une personne, ce n'est pas encore la commande. C'est son feu vert. **Modifications** veut dire : traiter le commentaire avant de relancer pour « conclure ».
 
-### 6. Approbations partielles
+### 6. Récap
 
-Badge **approuvé** par rôle (technique OK, achats OK…). Ce n'est pas encore la commande. C'est un feu vert de relecture.
+Quand les deux invités ont validé, la fiche affiche **Validé · 2/2**. L'équipe reçoit la notification de validation complète, et l'adresse commerciale aussi. S'il reste une demande de modifications, le récap dit **Modifications demandées**, même si l'autre personne a validé.
 
-### 7. Acceptation / signature
+### 7. Statut du devis, posé par le commercial
 
-Un signataire habilité accepte. Notifications de validation. Le dossier passe en gagné / à lancer, avec [acomptes](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b) si besoin.
-
-
-**Moins de « qui a validé quoi ? » :** [essai Free](https://www.quotebuilder.co/signup?plan=free) · [démo publique](https://www.quotebuilder.co/c/demo/rayonnage).
+Le circuit relecteurs ne passe pas le devis en gagné tout seul. C'est le commercial qui pose **Accepté**, **Signé** ou **Gagné** quand la vente est conclue. Les acomptes, s'il y en a, se calent sur votre process, pas sur un bouton du relecteur. Voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b).
 
 
-## Ce que le logiciel de devis doit rendre visible (sans inventer du tracking)
+**Lire les pastilles En attente, Consulté, Validé et Modifications sur un dossier :** [essai Free](https://www.quotebuilder.co/signup?plan=free) · [démo publique](https://www.quotebuilder.co/c/demo/rayonnage).
 
-Soyez précis sur les features. Un bon outil pour le multi-décideurs côté client montre surtout :
 
-- lien sécurisé / [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) ;
-- invitations de relecteurs ;
-- badges **vu / approuvé / modifs** ;
-- commentaires séparés de la vue « devis figé » ;
-- notifications à l'invitation, à l'approbation, à la demande de modifs, à la validation ;
-- versions ;
-- signature / acceptation ;
-- éventuellement une **dernière consultation** relative sur la fiche devis.
+## Ce que ce circuit ne fait pas
 
-Ce qu'il ne faut **pas** promettre si le produit ne l'a pas (cas QuoteBuilder confirmé) :
+Autant le dire ici, pour ne pas construire un process sur un écran absent.
 
-- première ouverture horodatée comme KPI marketing ;
-- compteur d'ouvertures ;
-- historique complet des consultations ;
-- alertes automatiques à chaque consultation ;
-- pixel e-mail dans le mail d'envoi.
+QuoteBuilder ne propose pas :
 
-Pour piloter les relances, basez-vous sur les **événements de relecture** (invitation, badge, commentaire, demande de modifs, approbation) plutôt que sur une fiction de tracking d'ouvertures. L'[estimateur coût d'attente multi-décideurs](https://www.quotebuilder.co/outils/estimateur-cout-attente-multi-decideurs-devis) aide à chiffrer le temps perdu quand ce circuit n'existe pas.
+- des versions de devis (pas de V1, pas de V2, pas de Vn, pas d'historique de versions) ;
+- une acceptation ou une signature en ligne par le prospect ;
+- des commentaires ancrés aux lignes, ni des annotations sur une section.
+
+Le prospect parle dans un fil de messages plat. Chaque relecteur a un seul commentaire et un budget max. Le suivi d'ouverture n'existe pas : pas de compteur, pas d'historique, pas d'alerte à la consultation, pas de pixel. Il reste la dernière consultation relative, les pastilles, et les notifications listées plus haut.
+
+## Bonne pratique générale, hors QuoteBuilder
+
+Cette partie ne décrit pas le produit, et elle n'est pas une promesse. Certaines équipes, avec d'autres outils ou à la main, tiennent un historique de fichiers, font signer un bon à part, ou collent des remarques sur un plan. Si c'est votre cas en dehors de QuoteBuilder :
+
+- ne faites pas circuler deux PDF en parallèle sans dire lequel fait foi ;
+- ne concluez pas pendant qu'un responsable technique a encore une réserve écrite ;
+- gardez la trace de qui a dit quoi, même dans un tableur, plutôt que dans un fil « RE: RE: ».
+
+Dès que le dossier est dans QuoteBuilder, revenez aux pastilles, au commentaire, au budget max et au récap. N'attendez pas une version ou une signature que l'écran ne montre pas.
 
 ## Le coût réel de l'attente multi-décideurs
 
 Sans circuit clair, vous payez :
 
-- jours d'attente additionnels vs un mono-décideur ;
-- minutes de relances (« vous avez pu faire suivre ? ») ;
-- clarifications en double (Achats et Technique posent la même question) ;
-- deals retardés ou perdus parce que la direction n'a jamais vu la bonne version ;
-- friction interne vendeur (commercial vs BE qui refait le devis pour la 4e fois).
+- des jours d'attente en plus par rapport à un seul décideur ;
+- des minutes de relance (« vous avez pu faire suivre ? ») ;
+- les mêmes questions posées deux fois, par l'acheteur et par le technique ;
+- des dossiers retardés parce que le directeur financier n'a jamais eu le lien ;
+- du temps interne, quand le chiffrage est refait parce que la demande est arrivée par mail, hors dossier.
 
-Ce n'est pas une statistique magique. C'est un ordre de grandeur que vous pouvez estimer avec votre volume, le nombre de décideurs moyen, les jours d'attente, le taux horaire et le panier. L'[estimateur coût attente multi-décideurs](https://www.quotebuilder.co/outils/estimateur-cout-attente-multi-decideurs-devis) est fait pour ça. Complément utile : [estimateur coût e-mails de clarification](https://www.quotebuilder.co/outils/estimateur-cout-emails-clarification-devis).
+Ce n'est pas une statistique magique. C'est un ordre de grandeur : volume, part de comptes multi-décideurs, nombre de décideurs (il documente le circuit, il ne multiplie pas le montant), jours d'attente, taux horaire, panier, part de dossiers perdus ou fortement retardés. L'[estimateur](https://www.quotebuilder.co/outils/estimateur-cout-attente-multi-decideurs-devis) le calcule dans le navigateur. Complément : [estimateur coût e-mails de clarification](https://www.quotebuilder.co/outils/estimateur-cout-emails-clarification-devis).
 
-<!-- PLACEHOLDER IMAGE: timeline attente multi-décideurs sans circuit vs avec invitations et badges (shoot Content) -->
+Les jours-homme de l'outil mesurent le stock de cycle (devis concernés × jours / 20 jours ouvrés). Ce ne sont pas des heures facturables. Les heures, elles, viennent des minutes de relance.
+
+<!-- PLACEHOLDER IMAGE: attente sans circuit vs invitations et pastilles (shoot Content) -->
 
 ## Relances : qui relancer, et avec quel signal
 
-Relancer « le prospect » est trop vague. Relancez **le bon rôle** avec le bon message.
+Relancer « le prospect » est trop vague. Ouvrez la fiche. Lisez la dernière consultation et les pastilles. Ensuite seulement, écrivez.
 
-| Signal | Relance utile | Relance inutile |
+| Signal sur la fiche | Relance utile | Relance inutile |
 |--------|---------------|-----------------|
-| Relecteur invité, badge pas encore « vu » | Rappel doux au contact projet : « X n'a pas encore ouvert le lien » (si vous avez ce statut) | Mail agressif à la direction |
-| Badge « modifs » | Traiter les points, republier une version, notifier | Relancer pour « signature » |
-| Approuvé technique, silence Achats | Relancer Achats / contact projet sur options / prix | Relancer Technique |
-| Tous approuvés, pas de signature | Relancer le signataire + rappel validité | Relancer tout le monde |
-| Dernière consultation récente (texte relatif) | Peut justifier un appel ciblé | Ne prouve pas que tous les décideurs ont lu |
+| Invité, pastille encore **En attente** | Rappel au contact : le lien de cette personne n'a pas été ouvert. Vous le voyez en ouvrant la fiche, vous n'êtes pas alerté | Mail sec au directeur financier que vous n'avez pas invité |
+| Pastille **Consulté**, pas de décision | Question courte au contact ou à cette personne : il manque un délai, une option ? | « Vous n'avez pas ouvert », alors que la pastille dit le contraire |
+| Pastille **Modifications** | Traiter le commentaire (et le budget max s'il est rempli), répondre dans le dossier | Relancer pour conclure comme si de rien n'était |
+| **Validé** technique, silence acheteur | Relancer l'acheteur ou le contact sur les options et le prix | Relancer le responsable technique |
+| Récap **Validé · 2/2** | Proposer la suite (commande, créneau, acompte). Le commercial pose le statut du devis | Relancer tout le monde « pour être sûr » |
+| Dernière consultation récente | Peut justifier un appel ciblé, un peu plus tard | Ne prouve pas que tous les relecteurs ont lu. Ne prouve pas une lecture attentive |
 
-Sans badges ni commentaires, vous retomber sur des [relances à l'aveugle](https://www.quotebuilder.co/outils/estimateur-cout-relances-aveugles-devis). Méthode générale : [pourquoi les devis meurent sans relance](https://www.quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance) et [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
+Sans pastilles, vous retombez sur des [relances à l'aveugle](https://www.quotebuilder.co/outils/estimateur-cout-relances-aveugles-devis). Méthode générale : [pourquoi les devis meurent sans relance](https://www.quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance) et [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
 
-## Cas fréquents par type de compte
+Ne dites pas « vous avez passé 14 minutes sur les conditions ». Vous ne le savez pas. Restez sur le fait disponible : le lien a servi, un relecteur a validé, une modification est demandée, un budget max est écrit.
 
-### PME avec 2-3 décideurs
+## Cas fréquents
 
-Contact + gérant (+ parfois un technicien). Circuit léger : lien partagé, 1-2 invitations, commentaires, signature. Évitez le process « grand compte ».
+### PME, deux ou trois personnes
 
-### ETI / site industriel
+Contact et gérant, parfois un technicien. Circuit léger : le lien, une ou deux invitations (souvent décideur et responsable technique). Évitez d'inviter quatre rôles « pour faire propre » sur un panier modeste.
 
-Achats + technique + finance. Invitations formelles. Options visibles. Versions strictes. Validation interne vendeur renforcée avant envoi.
+### Site industriel
 
-### Syndic / copropriété
+Acheteur, responsable technique, directeur financier. Invitations explicites. Options visibles sur le même dossier. Validation interne chez vous, avant envoi, sur les Hot.
 
-Conseil syndical, gestionnaire, parfois AMO. Le lien partagé évite les versions contradictoires entre AG et e-mails. Attention : le délai de décision est souvent long (vote). Affichez la [validité](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b) clairement.
+### Syndic, copropriété
 
-### Particulier « multi-foyer »
+Gestionnaire, conseil, parfois un décideur côté AMO. Le lien évite les fichiers contradictoires entre l'ordre du jour et les mails. Le délai est souvent long (vote). Affichez la [validité](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b). Ne réservez pas un créneau ferme tant que le récap n'est pas au vert et que le commercial n'a pas conclu. Cas proche : [couverture et toiture](https://www.quotebuilder.co/secteurs/funnel-devis-couverture-toiture).
 
-Conjoint, parents, architecte. Moins formel, mais le même lien partagé évite le PDF annoté sur le frigo digital.
+### Foyer, ou conjoint et architecte
 
-## Lien avec votre process vendeur (ne pas mélanger les gates)
+Moins formel. Le même lien suffit souvent, avec un rôle **Décideur** pour la seconde personne. Le fil de messages sert aux questions. Le commentaire du relecteur sert à la réserve, s'il y en a une.
 
-Deux gates distincts :
+## Ne pas mélanger les deux gates
 
-1. **Interne (avant envoi)** : commercial / technique / marge chez vous. Voir [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
-2. **Client (après envoi)** : relecteurs, badges, commentaires, approbations, signature.
+Deux moments distincts :
 
-Si vous mélangez les deux dans le même fil Slack, le prospect finit par lire vos doutes internes. Les commentaires **internes** restent internes. Les commentaires **espace prospect** sont la conversation client.
+1. **Chez vous, avant envoi** : commercial, technique, marge. Voir [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
+2. **Chez le client, après envoi** : invitations, pastilles, commentaire, budget max, récap.
 
-## KPIs à suivre (comité mensuel)
+Les notes internes restent dans le dossier commercial. Le fil de messages de l'espace est la conversation avec le contact. Le commentaire du relecteur est un troisième endroit : un champ, visible sur la fiche avec son nom, son rôle et son budget max. Si vous collez vos doutes de marge dans le fil prospect, le client les lit.
 
-| KPI | Lecture |
+## Ce que vous pouvez compter en revue
+
+QuoteBuilder ne fabrique pas ces taux tout seul. En ouvrant les fiches du mois, vous pouvez noter :
+
+| Repère | Lecture |
 |-----|---------|
-| % devis multi-décideurs avec ≥2 relecteurs invités | Adoption du circuit |
-| Délai moyen invitation → première approbation / demande de modifs | Friction client |
-| % devis avec demande de modifs puis Vn sous X jours | Réactivité vendeur |
-| % signatures sur version ≠ dernière version | Chaos versions |
-| Jours d'attente additionnels vs mono-décideur (estimés) | Coût cycle |
-| Minutes de relance / devis bloqué | Coût commercial |
+| Part de dossiers multi-décideurs avec au moins deux invités | Le circuit est-il utilisé, ou le PDF circule-t-il encore à côté ? |
+| Délai entre l'invitation et la première pastille Validé ou Modifications | Friction côté client |
+| Part de circuits arrivés à « Validé · n/n » | Les réserves ont été levées, ou pas |
+| Dossiers encore en Modifications après plusieurs jours | Le commentaire n'a pas été traité |
+| Présence ou non d'une dernière consultation sur la fiche | Le lien principal a servi au moins une fois. Pas un taux d'ouverture |
+| Jours d'attente et minutes de relance (estimateur) | Coût du cycle, ordre de grandeur |
 
-Si les invitations ne sont jamais utilisées, le « lien magique » reste un PDF déguisé.
+Si les invitations ne sont jamais utilisées, le lien reste un PDF déguisé.
 
 ## Erreurs fréquentes
 
-1. **Forward PDF « pour info »** : vous perdez le circuit.
-2. **Inviter tout le monde trop tôt** : bruit. Invitez Technique avant Direction sur les dossiers complexes.
-3. **Promettre un tracking d'ouvertures avancé** que vous n'avez pas : crédibilité cassée.
-4. **Traiter chaque commentaire Achats comme un nouveau devis mail** : restez sur le dossier versionné.
-5. **Faire signer avant les approbations techniques** : litige chantier.
-6. **Mélanger commentaires internes et vue client** : le prospect lit vos doutes.
-7. **Relancer la direction tous les jours** pendant que Technique a mis « modifs ».
-8. **Oublier la validité** pendant un circuit long : le prix a bougé, le devis est mort. Voir [validité](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
+1. **Transférer le PDF « pour info »** en plus du lien. Vous recréez les copies.
+2. **Inviter tout le monde le premier jour** sur un dossier encore flou. Invitez le responsable technique avant le décideur quand le périmètre bouge.
+3. **Promettre un suivi d'ouvertures** (compteur, historique, alerte, pixel). La fiche ne le montre pas.
+4. **Traiter le commentaire de l'acheteur dans un nouveau mail**, hors dossier. Répondez à partir du champ, sur le même devis.
+5. **Conclure alors qu'une pastille Modifications est ouverte.** Le commercial qui pose Gagné trop tôt laisse une réserve non traitée.
+6. **Mélanger notes internes et fil prospect.** Le client lit vos doutes.
+7. **Relancer le directeur financier tous les jours** pendant que le technique est en Modifications.
+8. **Croire qu'inviter depuis le dossier prévient l'équipe.** Non. Seule l'invitation faite par le prospect notifie. La validation et la demande de modifications notifient, elles, dans les deux cas.
+9. **Oublier la validité** sur un circuit long. Le prix a bougé, le devis est mort. Voir [validité](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
+10. **Prendre Consulté pour Validé.** Consulté veut dire que le lien a été ouvert. Validé veut dire que la personne a tranché.
 
-## Mise en place en 2 semaines
+## Mise en place en deux semaines
 
 ### Semaine 1
 
-- lister les rôles client typiques (terrain, technique, achats, finance, direction) ;
-- décider qui invite (vous vs contact projet) ;
-- standardiser le message d'invitation ;
-- vérifier que commentaires + versions + signature sont prêts.
+- Lister les rôles que vous invitez vraiment : directeur financier, responsable technique, acheteur, décideur.
+- Décider qui invite (le contact, vous, ou les deux selon le compte).
+- Écrire le message d'accompagnement, en plus du mail automatique : pourquoi cette personne, quoi regarder.
+- Vérifier sur un dossier test : pastilles, commentaire, budget max, récap, et qu'une invitation commerciale ne crée pas une notification d'équipe.
 
 ### Semaine 2
 
-- piloter sur les devis Hot multi-décideurs uniquement ;
-- mesurer délai invitation → signal (vu / modifs / approuvé) ;
-- former l'équipe : « pas de PDF forwardé pour les comptes à plusieurs décideurs » ;
-- brancher l'[estimateur coût attente](https://www.quotebuilder.co/outils/estimateur-cout-attente-multi-decideurs-devis) dans la revue mensuelle.
+- Piloter seulement les dossiers Hot à plusieurs décideurs.
+- Chaque matin, ouvrir ces fiches : dernière consultation, pastilles, récap.
+- Traiter le jour même les notifications de validation et de demande de modifications.
+- Rappeler la règle : pas de PDF à côté pour ces comptes.
+- Passer vos volumes dans l'[estimateur coût d'attente](https://www.quotebuilder.co/outils/estimateur-cout-attente-multi-decideurs-devis) en revue mensuelle.
 
-<!-- PLACEHOLDER IMAGE: kanban côté client invité → vu → modifs/approuvé → signé (shoot Content) -->
+<!-- PLACEHOLDER IMAGE: fiche dossier, relecteurs invités, pastilles, récap (shoot Content) -->
 
 ## FAQ
 
 ### Quelle différence avec la validation interne avant envoi ?
 
-La validation interne est **chez vous**, avant que le prospect voie le prix. L'approbation multi-décideurs est **chez le client**, après envoi. Les deux se complètent. Voir [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
+La validation interne est **chez vous**, avant que le prospect voie le prix. Le circuit multi-décideurs est **chez le client**, après envoi. Les deux se complètent. Voir [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
 
-### Faut-il que tous les décideurs signent électroniquement ?
+### Que peut faire un relecteur sur son lien ?
 
-Pas forcément. Souvent : plusieurs relecteurs (badges / commentaires), un seul signataire habilité. Adaptez à votre cadre juridique et au type de compte.
+Ouvrir la configuration, indiquer un budget max, écrire un commentaire, puis **Valider le dossier** ou **Demander des modifications**. Le lien dure 30 jours. Il ne pose pas le statut du devis.
 
 ### Que voit-on côté vendeur sur les consultations ?
 
-Selon l'outil. Sur QuoteBuilder, l'espace / fiche peut afficher une **dernière consultation** en texte relatif. Pas de première ouverture, pas de compteur, pas d'historique d'ouvertures, pas d'alerte à chaque consultation, pas de pixel e-mail. Les badges relecteurs et les notifications (invitation, approbation, modifs, validation) portent le pilotage multi-décideurs.
+Sur la fiche, le champ Espace prospect peut afficher une **dernière consultation** en temps relatif (« vu il y a 2 h »). Pas de première ouverture, pas de compteur, pas d'historique, pas d'alerte à chaque consultation, pas de pixel e-mail. Le pilotage multi-décideurs passe par les pastilles (En attente, Consulté, Validé, Modifications), le récap, et les notifications (invitation par le prospect, validation, demande de modifications, validation complète).
 
-### Comment inviter Achats sans perdre le contact projet ?
+### Une invitation envoyée par le commercial prévient-elle l'équipe ?
 
-Gardez le contact comme owner côté client. Invitez Achats en relecteur. Les notifications partent aux bons moments. Évitez de « court-circuiter » le contact sans accord.
+Non. L'invité reçoit son lien. L'équipe n'est pas notifiée de cette invitation. Elle l'est si **le prospect** invite depuis l'espace, si quelqu'un valide, si quelqu'un demande des modifications, et quand tout le circuit est validé. La validation complète part aussi vers l'adresse commerciale.
 
-### Que faire si Technique demande des modifs et Achats veut signer vite ?
+### Que faire si le responsable technique demande des modifications et l'acheteur a déjà validé ?
 
-Traitez les modifs, publiez une version, puis signature. Signer une version techniquement contestée crée des litiges. Les [versions](https://www.quotebuilder.co/blog/versions-historique-devis-b2b) existent pour ça.
+Le récap passe à **Modifications demandées**. Traitez le commentaire (et le budget max s'il y en a un). Ne concluez pas pendant que cette pastille est ouverte. L'acheteur reste sur **Validé** : les deux informations coexistent sur la fiche.
 
-### Les commentaires client sont-ils les mêmes que les commentaires internes ?
+### Les messages du prospect sont-ils les mêmes que les notes internes ?
 
-Non. Interne = équipe vendeur. Espace prospect = conversation avec le client / relecteurs. Ne mélangez pas. Voir [commentaires collaboratifs](https://www.quotebuilder.co/blog/commentaires-annotations-devis-collaboratif-b2b).
+Non. Les notes internes restent dans l'équipe. Le fil de messages de l'espace est la conversation avec le contact, en un seul fil, pas ligne par ligne. Le commentaire d'un relecteur est encore autre chose : un champ unique, à côté de son nom et de son budget max.
 
 ### Comment chiffrer le coût de l'attente multi-décideurs ?
 
-L'[estimateur coût attente multi-décideurs](https://www.quotebuilder.co/outils/estimateur-cout-attente-multi-decideurs-devis) : volume, % multi-décideurs, nb décideurs, jours d'attente, minutes de relance, taux horaire, panier, % deals retardés / perdus.
+L'[estimateur](https://www.quotebuilder.co/outils/estimateur-cout-attente-multi-decideurs-devis) : volume, part multi-décideurs, nombre de décideurs, jours d'attente, minutes de relance, taux horaire, panier, part de dossiers retardés ou perdus. Le calcul reste dans le navigateur.
 
-### Un lien partagé suffit-il sans badges ?
+### Un lien partagé suffit-il sans pastilles ?
 
-Mieux qu'un PDF, mais insuffisant. Sans statut par relecteur, vous revenez aux « tu as pu regarder ? » téléphoniques.
+Mieux qu'un PDF seul, mais insuffisant dès qu'il y a deux lecteurs. Sans statut par personne, vous revenez aux « tu as pu regarder ? ».
 
-### Comment gérer un syndic avec un vote AG distant ?
+### Comment gérer un syndic avec un vote distant ?
 
-Lien partagé + validité claire + relances calées sur le calendrier AG. Ne réservez pas de créneau chantier ferme avant décision. Voir aussi les landings secteurs type [isolation / ITE](https://www.quotebuilder.co/secteurs/funnel-devis-isolation-thermique-ite) ou [couverture / toiture](https://www.quotebuilder.co/secteurs/funnel-devis-couverture-toiture) où ce cas est fréquent.
+Lien partagé, validité affichée, relances calées sur le calendrier de l'assemblée. Invitez le gestionnaire et, si besoin, un décideur. Ne réservez pas de créneau ferme avant le récap et la décision commerciale. Voir aussi [couverture / toiture](https://www.quotebuilder.co/secteurs/funnel-devis-couverture-toiture).
 
-### Quel lien avec la signature électronique ?
+### Qui pose Accepté, Signé ou Gagné ?
 
-La signature clôt le circuit sur une version propre, après les relectures utiles. Voir [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b).
+Le commercial, sur la fiche. Le relecteur ne le fait pas. Son bouton est **Valider le dossier** ou **Modifications**. Quand le récap est au vert, le commercial décide s'il pose le statut de conclusion.
 
 
-**Passez du PDF forwardé au circuit lisible :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) · [voir la démo](https://www.quotebuilder.co/c/demo/rayonnage).
+**Ouvrir un espace prospect et inviter un directeur financier, un responsable technique ou un acheteur :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) · [voir la démo](https://www.quotebuilder.co/c/demo/rayonnage).
 
 
 ## Pour aller plus loin
 
 - [Validation interne avant envoi d'un devis B2B](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b)
-- [Commentaires et annotations sur un devis collaboratif B2B](https://www.quotebuilder.co/blog/commentaires-annotations-devis-collaboratif-b2b)
+- [Devis en ligne : dernière consultation, relecteurs et relances](https://www.quotebuilder.co/blog/suivi-ouverture-lecture-devis-en-ligne-b2b)
 - [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
 - [Envoyer un devis : lien sécurisé vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email)
-- [Versions et historique des devis B2B](https://www.quotebuilder.co/blog/versions-historique-devis-b2b)
-- [Signature et acceptation de devis en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b)
+- Page séparée, qui décrit un autre niveau de détail que le fil plat et le commentaire unique du produit : [commentaires et annotations](https://www.quotebuilder.co/blog/commentaires-annotations-devis-collaboratif-b2b)
 - [Options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)
 - [Validité et expiration des devis](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b)
-- [Suivi d'ouverture et de lecture (cadre prudent)](https://www.quotebuilder.co/blog/suivi-ouverture-lecture-devis-en-ligne-b2b)
+- [Acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b)
+- [Funnel devis couverture / toiture](https://www.quotebuilder.co/secteurs/funnel-devis-couverture-toiture)
 - [Estimateur coût attente multi-décideurs](https://www.quotebuilder.co/outils/estimateur-cout-attente-multi-decideurs-devis)
 - [Estimateur coût e-mails de clarification](https://www.quotebuilder.co/outils/estimateur-cout-emails-clarification-devis)
+- [Estimateur coût des relances à l'aveugle](https://www.quotebuilder.co/outils/estimateur-cout-relances-aveugles-devis)
 - Hub [/outils](https://www.quotebuilder.co/outils)

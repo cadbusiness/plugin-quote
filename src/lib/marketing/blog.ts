@@ -253,7 +253,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/approbation-client-multi-decideurs-devis-b2b",
     title: "Approbation client multi-décideurs sur un devis B2B : achats, technique, finance, direction",
     description:
-      "Quand un devis B2B doit être relu et validé côté client par plusieurs décideurs (achats, technique, finance, direction) : lien partagé, invitations, badges, commentaires, notifications, versions et signature.",
+      "Devis B2B relu par plusieurs décideurs : lien partagé, invitations, badges En attente / Consulté / Validé / Modifications, commentaire et budget max.",
     publishedAt: "2026-09-29",
     readingMinutes: 13,
     tags: ["funnel", "scoring"],
