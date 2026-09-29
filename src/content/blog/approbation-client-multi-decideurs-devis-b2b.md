@@ -45,7 +45,7 @@ Le contact principal n'est pas un cinquième rôle. C'est lui qui tient l'[espac
 
 Chaque relecteur ouvre son lien (valable 30 jours). Il voit la configuration. Il peut indiquer un budget max et écrire **un** commentaire. Ensuite il choisit **Valider le dossier** ou **Modifications** (le bouton dit « Demander des modifications »).
 
-Ce choix ne clôt pas la vente. **Accepté**, **Signé** et **Gagné** sont des statuts posés par le commercial sur la fiche. Il n'y a pas de bouton public pour les poser.
+Ce choix ne clôt pas la vente. C'est le commercial qui passe le devis en **Gagné** (l'espace prospect affiche alors « Accepté »). Il n'y a pas de bouton public pour le faire.
 
 ### Ce que ce n'est pas
 
@@ -190,7 +190,7 @@ Quand les deux invités ont validé, la fiche affiche **Validé · 2/2**. L'équ
 
 ### 7. Statut du devis, posé par le commercial
 
-Le circuit relecteurs ne passe pas le devis en gagné tout seul. C'est le commercial qui pose **Accepté**, **Signé** ou **Gagné** quand la vente est conclue. Les acomptes, s'il y en a, se calent sur votre process, pas sur un bouton du relecteur. Voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b).
+Le circuit relecteurs ne passe pas le devis en gagné tout seul. C'est le commercial qui passe le devis en **Gagné** (l'espace prospect affiche alors « Accepté »). Les acomptes, s'il y en a, se calent sur votre process, pas sur un bouton du relecteur. Voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b).
 
 
 **Lire les pastilles En attente, Consulté, Validé et Modifications sur un dossier :** [essai Free](https://www.quotebuilder.co/signup?plan=free) · [démo publique](https://www.quotebuilder.co/c/demo/rayonnage).
@@ -363,9 +363,9 @@ Mieux qu'un PDF seul, mais insuffisant dès qu'il y a deux lecteurs. Sans statut
 
 Lien partagé, validité affichée, relances calées sur le calendrier de l'assemblée. Invitez le gestionnaire et, si besoin, un décideur. Ne réservez pas de créneau ferme avant le récap et la décision commerciale. Voir aussi [couverture / toiture](https://www.quotebuilder.co/secteurs/funnel-devis-couverture-toiture).
 
-### Qui pose Accepté, Signé ou Gagné ?
+### Qui passe le devis en Gagné ?
 
-Le commercial, sur la fiche. Le relecteur ne le fait pas. Son bouton est **Valider le dossier** ou **Modifications**. Quand le récap est au vert, le commercial décide s'il pose le statut de conclusion.
+C'est le commercial qui passe le devis en **Gagné** (l'espace prospect affiche alors « Accepté »). Le relecteur ne le fait pas. Son bouton est **Valider le dossier** ou **Modifications**.
 
 
 **Ouvrir un espace prospect et inviter un directeur financier, un responsable technique ou un acheteur :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) · [voir la démo](https://www.quotebuilder.co/c/demo/rayonnage).

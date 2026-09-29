@@ -39,8 +39,8 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
       a: "Lien partagé, validité affichée, relances calées sur le calendrier de l’assemblée. Ne réservez pas de créneau ferme avant le récap et la décision commerciale.",
     },
     {
-      q: "Qui pose Accepté, Signé ou Gagné ?",
-      a: "Le commercial, sur la fiche. Le relecteur ne le fait pas. Son choix est Valider le dossier ou Modifications.",
+      q: "Qui passe le devis en Gagné ?",
+      a: "C’est le commercial qui passe le devis en Gagné (l’espace prospect affiche alors « Accepté »). Le relecteur ne le fait pas. Son choix est Valider le dossier ou Modifications.",
     },
   ],
   "suivi-ouverture-lecture-devis-en-ligne-b2b": [
