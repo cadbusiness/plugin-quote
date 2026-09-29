@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "approbation-client-multi-decideurs-devis-b2b": [
+    {
+      q: "Quelle différence avec la validation interne avant envoi ?",
+      a: "La validation interne est chez vous, avant que le prospect voie le prix. L’approbation multi-décideurs est chez le client, après envoi. Les deux se complètent.",
+    },
+    {
+      q: "Faut-il que tous les décideurs signent électroniquement ?",
+      a: "Pas forcément. Souvent plusieurs relecteurs (badges, commentaires) et un seul signataire habilité. Adaptez au cadre juridique et au type de compte.",
+    },
+    {
+      q: "Que voit-on côté vendeur sur les consultations ?",
+      a: "Sur QuoteBuilder, la fiche ou l’espace peut afficher une dernière consultation en texte relatif. Pas de première ouverture, pas de compteur, pas d’historique d’ouvertures, pas d’alerte à chaque consultation, pas de pixel e-mail. Le pilotage passe par les badges relecteurs (vu, approuvé, modifs) et les notifications (invitation, approbation, demande de modifs, validation).",
+    },
+    {
+      q: "Comment inviter Achats sans perdre le contact projet ?",
+      a: "Gardez le contact comme owner côté client. Invitez Achats en relecteur. Les notifications partent aux bons moments. Évitez de court-circuiter le contact sans accord.",
+    },
+    {
+      q: "Que faire si Technique demande des modifs et Achats veut signer vite ?",
+      a: "Traitez les modifs, publiez une version, puis signature. Signer une version techniquement contestée crée des litiges.",
+    },
+    {
+      q: "Les commentaires client sont-ils les mêmes que les commentaires internes ?",
+      a: "Non. Interne = équipe vendeur. Espace prospect = conversation avec le client et les relecteurs. Ne mélangez pas les deux.",
+    },
+    {
+      q: "Comment chiffrer le coût de l’attente multi-décideurs ?",
+      a: "Volume, % multi-décideurs, nombre de décideurs, jours d’attente, minutes de relance, taux horaire, panier, % de deals retardés ou perdus. L’estimateur coût d’attente multi-décideurs le fait en local.",
+    },
+    {
+      q: "Un lien partagé suffit-il sans badges ?",
+      a: "Mieux qu’un PDF, mais insuffisant. Sans statut par relecteur, vous revenez aux « tu as pu regarder ? » téléphoniques.",
+    },
+    {
+      q: "Comment gérer un syndic avec un vote AG distant ?",
+      a: "Lien partagé, validité claire, relances calées sur le calendrier AG. Ne réservez pas de créneau chantier ferme avant décision.",
+    },
+    {
+      q: "Quel lien avec la signature électronique ?",
+      a: "La signature clôt le circuit sur une version propre, après les relectures utiles.",
+    },
+  ],
   "suivi-ouverture-lecture-devis-en-ligne-b2b": [
     {
       q: "La fiche indique-t-elle que le prospect a consulté le devis ?",

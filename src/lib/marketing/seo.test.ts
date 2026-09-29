@@ -50,6 +50,11 @@ import {
   COUT_RELANCES_AVEUGLES_LABELS,
   computeCoutRelancesAveugles,
 } from "./cout-relances-aveugles";
+import {
+  COUT_ATTENTE_MULTI_DECIDEURS_DEFAULTS,
+  COUT_ATTENTE_MULTI_DECIDEURS_LABELS,
+  computeCoutAttenteMultiDecideurs,
+} from "./cout-attente-multi-decideurs-devis";
 import { CHECKLIST_MENTIONS_ITEMS, computeChecklistMentions } from "./checklist-mentions-devis";
 import { MARKETING_ROUTES } from "./routes";
 import sitemap from "../../app/sitemap";
@@ -117,6 +122,8 @@ for (const required of [
   "/outils/estimateur-cout-emails-clarification-devis",
   "/outils/estimateur-cout-devis-sans-validation",
   "/outils/estimateur-cout-relances-aveugles-devis",
+  "/outils/estimateur-cout-attente-multi-decideurs-devis",
+  "/blog/approbation-client-multi-decideurs-devis-b2b",
   "/blog/suivi-ouverture-lecture-devis-en-ligne-b2b",
   "/blog/validation-interne-avant-envoi-devis-b2b",
   "/blog/commentaires-annotations-devis-collaboratif-b2b",
@@ -132,6 +139,7 @@ for (const required of [
   "/secteurs/funnel-devis-pompe-chaleur-chauffage",
   "/secteurs/funnel-devis-photovoltaique-solaire",
   "/secteurs/funnel-devis-isolation-thermique-ite",
+  "/secteurs/funnel-devis-couverture-toiture",
   "/blog/pieces-jointes-plans-photos-devis-b2b",
   "/blog/envoyer-devis-lien-securise-vs-pdf-email",
   "/blog/mentions-obligatoires-devis-france",
@@ -164,7 +172,33 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 32);
+assert.equal(BLOG_POSTS.length, 33);
+assert.deepEqual(
+  BLOG_POSTS.find((post) => post.slug === "approbation-client-multi-decideurs-devis-b2b")?.tags,
+  ["funnel", "scoring"],
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "approbation-client-multi-decideurs-devis-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "approbation-client-multi-decideurs-devis-b2b")?.cover,
+  BLOG_DEMO_SHOTS.devisDetail,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "approbation-client-multi-decideurs-devis-b2b")?.readingMinutes,
+  13,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "approbation-client-multi-decideurs-devis-b2b")?.publishedAt,
+  "2026-09-29",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "approbation-client-multi-decideurs-devis-b2b")?.pinned, false);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "approbation-client-multi-decideurs-devis-b2b")?.path,
+  "/blog/approbation-client-multi-decideurs-devis-b2b",
+);
+assert.equal(BLOG_FAQ["approbation-client-multi-decideurs-devis-b2b"]?.length, 10);
 assert.deepEqual(
   BLOG_POSTS.find((post) => post.slug === "suivi-ouverture-lecture-devis-en-ligne-b2b")?.tags,
   ["funnel", "scoring"],
@@ -654,8 +688,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 14);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 14);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 15);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 15);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 7);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 6);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);
@@ -903,6 +937,24 @@ const requiredSources = {
     "/blog/envoyer-devis-lien-securise-vs-pdf-email",
     "/blog/relancer-devis-hot-depuis-dossier",
     "/blog/espace-prospect-devis-en-ligne",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "approbation-client-multi-decideurs-devis-b2b.md": [
+    "/outils/estimateur-cout-attente-multi-decideurs-devis",
+    "/blog/validation-interne-avant-envoi-devis-b2b",
+    "/blog/commentaires-annotations-devis-collaboratif-b2b",
+    "/blog/suivi-ouverture-lecture-devis-en-ligne-b2b",
+    "/secteurs/funnel-devis-couverture-toiture",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "funnel-devis-couverture-toiture.md": [
+    "/blog/approbation-client-multi-decideurs-devis-b2b",
+    "/blog/validation-interne-avant-envoi-devis-b2b",
+    "/secteurs/funnel-devis-isolation-thermique-ite",
+    "/outils/estimateur-cout-devis-sans-validation",
+    "/outils/estimateur-cout-brief-incomplet",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -1380,6 +1432,40 @@ for (const { file, dir } of contentFiles) {
   assert.match(pjBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(pjBody, EM_DASH);
   assert.equal(pjBody.split(/\s+/).filter(Boolean).length, 2401);
+}
+
+{
+  const approRaw = readFileSync(join(blogDir, "approbation-client-multi-decideurs-devis-b2b.md"), "utf8");
+  assert.ok(approRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const approBody = stripFrontmatter(approRaw);
+  assert.ok(
+    approBody.startsWith("# Approbation client multi-décideurs sur un devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(approBody, /^title:/m);
+  assert.match(approBody, /signup\?plan=free/);
+  assert.match(approBody, /\/outils\/estimateur-cout-attente-multi-decideurs-devis/);
+  assert.match(approBody, /\/secteurs\/funnel-devis-couverture-toiture/);
+  assert.match(approBody, /\/c\/demo\/rayonnage/);
+  assert.match(approBody, /Pas de première ouverture/);
+  assert.match(approBody, /pas de pixel e-mail/);
+  assert.doesNotMatch(approBody, EM_DASH);
+  assert.equal(approBody.split(/\s+/).filter(Boolean).length, 2660);
+}
+
+{
+  const couvRaw = readFileSync(join(blogDir, "funnel-devis-couverture-toiture.md"), "utf8");
+  assert.ok(couvRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const couvBody = stripFrontmatter(couvRaw);
+  assert.ok(
+    couvBody.startsWith("# Funnel de devis couverture et toiture"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(couvBody, /signup\?plan=free/);
+  assert.match(couvBody, /\/blog\/approbation-client-multi-decideurs-devis-b2b/);
+  assert.match(couvBody, /\/outils\/estimateur-cout-devis-sans-validation/);
+  assert.doesNotMatch(couvBody, EM_DASH);
+  assert.equal(couvBody.split(/\s+/).filter(Boolean).length, 2904);
 }
 
 {
@@ -2594,6 +2680,108 @@ assert.equal(sansValidHigh.totalTone, "bad");
 assert.equal(sansValidHigh.oppTone, "bad");
 assert.match(sansValidHigh.tip, /en validation/);
 
+const attenteDefault = computeCoutAttenteMultiDecideurs({ ...COUT_ATTENTE_MULTI_DECIDEURS_DEFAULTS });
+assert.equal(attenteDefault.concernes, 18);
+assert.equal(attenteDefault.jh, 6.3);
+assert.equal(attenteDefault.heures, 16.5);
+assert.equal(attenteDefault.coutTemps, 908);
+assert.equal(attenteDefault.deals, 1.4);
+assert.equal(attenteDefault.opp, 16800);
+assert.equal(attenteDefault.total, 17708);
+assert.equal(attenteDefault.decideurs, 3);
+assert.equal(attenteDefault.alertTone, "warn");
+assert.equal(attenteDefault.totalTone, "warn");
+assert.equal(attenteDefault.oppTone, "bad");
+assert.match(attenteDefault.alert, /Friction multi-décideurs notable/);
+assert.match(attenteDefault.recap, /Checklist rapide/);
+assert.match(attenteDefault.recap, /Badges vu \/ approuvé \/ demande de modifs/);
+assert.match(attenteDefault.recap, /Notifications invitation \/ approbation \/ modifs \/ validation/);
+assert.doesNotMatch(attenteDefault.recap, /première ouverture/);
+assert.doesNotMatch(attenteDefault.recap, /pixel/);
+assert.doesNotMatch(attenteDefault.tip, /première ouverture/);
+assert.equal(COUT_ATTENTE_MULTI_DECIDEURS_LABELS.devis, "Devis envoyés / mois");
+assert.equal(COUT_ATTENTE_MULTI_DECIDEURS_LABELS.total, "Coût total indicatif mensuel");
+assert.equal(COUT_ATTENTE_MULTI_DECIDEURS_LABELS.jh, "Jours-homme équivalents d’attente / mois");
+
+const attenteEmpty = computeCoutAttenteMultiDecideurs({ ...COUT_ATTENTE_MULTI_DECIDEURS_DEFAULTS, devis: 0 });
+assert.equal(attenteEmpty.concernes, 0);
+assert.equal(attenteEmpty.jh, 0);
+assert.equal(attenteEmpty.heures, 0);
+assert.equal(attenteEmpty.opp, 0);
+assert.equal(attenteEmpty.total, 0);
+assert.equal(attenteEmpty.alertTone, "neutral");
+assert.match(attenteEmpty.alert, /volume de devis/);
+
+const attenteNoBasket = computeCoutAttenteMultiDecideurs({ ...COUT_ATTENTE_MULTI_DECIDEURS_DEFAULTS, panier: 0 });
+assert.equal(attenteNoBasket.opp, null);
+assert.equal(attenteNoBasket.oppLabel, "non calculé (panier = 0)");
+assert.equal(attenteNoBasket.total, attenteNoBasket.coutTemps);
+assert.equal(attenteNoBasket.oppTone, "neutral");
+assert.match(attenteNoBasket.recap, /Opportunités : n\/a/);
+
+const attenteLow = computeCoutAttenteMultiDecideurs({
+  devis: 10,
+  pctMulti: 20,
+  decideurs: 2,
+  jours: 1,
+  minutes: 10,
+  taux: 40,
+  panier: 1000,
+  pctPerdus: 2,
+});
+assert.equal(attenteLow.concernes, 2);
+assert.equal(attenteLow.jh, 0.1);
+assert.equal(attenteLow.heures, 0.3);
+assert.equal(attenteLow.coutTemps, 12);
+assert.equal(attenteLow.deals, 0);
+assert.equal(attenteLow.opp, 0);
+assert.equal(attenteLow.total, 12);
+assert.equal(attenteLow.alertTone, "ok");
+assert.match(attenteLow.alert, /Friction multi-décideurs contenue/);
+
+const attenteHigh = computeCoutAttenteMultiDecideurs({
+  devis: 80,
+  pctMulti: 70,
+  decideurs: 4,
+  jours: 12,
+  minutes: 90,
+  taux: 70,
+  panier: 15000,
+  pctPerdus: 15,
+});
+assert.equal(attenteHigh.concernes, 56);
+assert.equal(attenteHigh.jh, 33.6);
+assert.equal(attenteHigh.heures, 84);
+assert.equal(attenteHigh.coutTemps, 5880);
+assert.equal(attenteHigh.deals, 8.4);
+assert.equal(attenteHigh.opp, 126000);
+assert.equal(attenteHigh.total, 131880);
+assert.equal(attenteHigh.alertTone, "bad");
+assert.equal(attenteHigh.totalTone, "bad");
+assert.equal(attenteHigh.oppTone, "bad");
+assert.match(attenteHigh.tip, /badges vu/);
+
+const attenteClamp = computeCoutAttenteMultiDecideurs({
+  devis: -5,
+  pctMulti: 140,
+  decideurs: 40,
+  jours: 400,
+  minutes: 900,
+  taux: 20000,
+  panier: -1,
+  pctPerdus: 140,
+});
+assert.equal(attenteClamp.devis, 0);
+assert.equal(attenteClamp.pctMulti, 100);
+assert.equal(attenteClamp.decideurs, 20);
+assert.equal(attenteClamp.jours, 365);
+assert.equal(attenteClamp.minutes, 480);
+assert.equal(attenteClamp.taux, 10000);
+assert.equal(attenteClamp.panier, 0);
+assert.equal(attenteClamp.pctPerdus, 100);
+assert.equal(attenteClamp.opp, null);
+assert.equal(attenteClamp.alertTone, "neutral");
+
 const sansValidClamp = computeCoutDevisSansValidation({
   devis: -5,
   sansValidPct: 140,
@@ -2794,6 +2982,9 @@ for (const expected of [
   { path: "/outils/checklist-mentions-devis-france", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
   { path: "/blog/pieces-jointes-plans-photos-devis-b2b", priority: 0.8, lastmod: "2026-09-25" },
+  { path: "/blog/approbation-client-multi-decideurs-devis-b2b", priority: 0.8, lastmod: "2026-09-29" },
+  { path: "/outils/estimateur-cout-attente-multi-decideurs-devis", priority: 0.7, lastmod: "2026-09-29" },
+  { path: "/secteurs/funnel-devis-couverture-toiture", priority: 0.8, lastmod: "2026-09-29" },
   { path: "/blog/suivi-ouverture-lecture-devis-en-ligne-b2b", priority: 0.8, lastmod: "2026-09-28" },
   { path: "/outils/estimateur-cout-relances-aveugles-devis", priority: 0.7, lastmod: "2026-09-28" },
   { path: "/blog/validation-interne-avant-envoi-devis-b2b", priority: 0.8, lastmod: "2026-09-28" },
@@ -2822,6 +3013,9 @@ assert.ok(paths.includes("/outils/estimateur-cout-aller-retours-brief-photos"));
 assert.ok(paths.includes("/blog/commentaires-annotations-devis-collaboratif-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-emails-clarification-devis"));
 assert.ok(paths.includes("/secteurs/funnel-devis-photovoltaique-solaire"));
+assert.ok(paths.includes("/blog/approbation-client-multi-decideurs-devis-b2b"));
+assert.ok(paths.includes("/outils/estimateur-cout-attente-multi-decideurs-devis"));
+assert.ok(paths.includes("/secteurs/funnel-devis-couverture-toiture"));
 assert.ok(paths.includes("/blog/suivi-ouverture-lecture-devis-en-ligne-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-relances-aveugles-devis"));
 assert.ok(paths.includes("/blog/validation-interne-avant-envoi-devis-b2b"));
@@ -3206,6 +3400,9 @@ const llmsPaths = [
   "/blog/suivi-ouverture-lecture-devis-en-ligne-b2b",
   "/outils/estimateur-cout-relances-aveugles-devis",
   "/secteurs/funnel-devis-isolation-thermique-ite",
+  "/blog/approbation-client-multi-decideurs-devis-b2b",
+  "/outils/estimateur-cout-attente-multi-decideurs-devis",
+  "/secteurs/funnel-devis-couverture-toiture",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -3503,6 +3700,9 @@ for (const root of marketingRoots) {
 assert.equal(CREAM_HEX, "#F6F0E8");
 
 for (const [path, lastmod] of [
+  ["/blog/approbation-client-multi-decideurs-devis-b2b", "2026-09-29"],
+  ["/outils/estimateur-cout-attente-multi-decideurs-devis", "2026-09-29"],
+  ["/secteurs/funnel-devis-couverture-toiture", "2026-09-29"],
   ["/blog/suivi-ouverture-lecture-devis-en-ligne-b2b", "2026-09-28"],
   ["/outils/estimateur-cout-relances-aveugles-devis", "2026-09-28"],
   ["/blog/validation-interne-avant-envoi-devis-b2b", "2026-09-28"],

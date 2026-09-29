@@ -97,6 +97,7 @@ export const BLOG_TOOL_ALLER_RETOURS_BRIEF = "/outils/estimateur-cout-aller-reto
 export const BLOG_TOOL_EMAILS_CLARIFICATION = "/outils/estimateur-cout-emails-clarification-devis";
 export const BLOG_TOOL_DEVIS_SANS_VALIDATION = "/outils/estimateur-cout-devis-sans-validation";
 export const BLOG_TOOL_RELANCES_AVEUGLES = "/outils/estimateur-cout-relances-aveugles-devis";
+export const BLOG_TOOL_ATTENTE_MULTI = "/outils/estimateur-cout-attente-multi-decideurs-devis";
 
 export type BlogTool = {
   href: string;
@@ -238,9 +239,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Devis / mois, part relancée sans signal utile, relances aveugles, minutes, taux horaire, timing nuisible, panier, écart de conversion. Heures, coût temps, opportunités mal priorisées, impact timing. Calcul 100 % local.",
     tags: ["funnel", "scoring"],
   },
+  {
+    href: BLOG_TOOL_ATTENTE_MULTI,
+    title: "Estimateur coût d’attente multi-décideurs sur devis",
+    text: "Devis / mois, % multi-décideurs, jours d’attente, minutes de relance, taux horaire, panier, % deals perdus ou retardés. Devis concernés, jours-homme, heures, coût temps, opportunités. Calcul 100 % local.",
+    tags: ["funnel", "scoring"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "approbation-client-multi-decideurs-devis-b2b",
+    path: "/blog/approbation-client-multi-decideurs-devis-b2b",
+    title: "Approbation client multi-décideurs sur un devis B2B : achats, technique, finance, direction",
+    description:
+      "Quand un devis B2B doit être relu et validé côté client par plusieurs décideurs (achats, technique, finance, direction) : lien partagé, invitations, badges, commentaires, notifications, versions et signature.",
+    publishedAt: "2026-09-29",
+    readingMinutes: 13,
+    tags: ["funnel", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "suivi-ouverture-lecture-devis-en-ligne-b2b",
     path: "/blog/suivi-ouverture-lecture-devis-en-ligne-b2b",
