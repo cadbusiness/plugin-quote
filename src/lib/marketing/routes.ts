@@ -37,9 +37,20 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.8,
     lastModified: "2026-09-28",
   },
+  {
+    path: "/secteurs/funnel-devis-couverture-toiture",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-09-29",
+  },
   { path: "/tarifs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  {
+    path: "/blog/approbation-client-multi-decideurs-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
   {
     path: "/blog/suivi-ouverture-lecture-devis-en-ligne-b2b",
     changeFrequency: "monthly",
@@ -162,6 +173,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-09-28",
+  },
+  {
+    path: "/outils/estimateur-cout-attente-multi-decideurs-devis",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-09-29",
   },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },

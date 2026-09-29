@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "approbation-client-multi-decideurs-devis-b2b": [
+    {
+      q: "Quelle différence avec la validation interne avant envoi ?",
+      a: "La validation interne est chez vous, avant que le prospect voie le prix. Le circuit multi-décideurs est chez le client, après envoi. Les deux se complètent.",
+    },
+    {
+      q: "Que peut faire un relecteur sur son lien ?",
+      a: "Ouvrir la configuration, indiquer un budget max, écrire un commentaire, puis valider le dossier ou demander des modifications. Le lien dure 30 jours. Il ne pose pas le statut du devis.",
+    },
+    {
+      q: "Que voit-on côté vendeur sur les consultations ?",
+      a: "Sur la fiche, une dernière consultation en temps relatif, par exemple « vu il y a 2 h ». Pas de première ouverture, pas de compteur, pas d’historique, pas d’alerte à la consultation, pas de pixel e-mail. Le pilotage passe par les pastilles En attente, Consulté, Validé et Modifications, le récap, et les notifications.",
+    },
+    {
+      q: "Une invitation envoyée par le commercial prévient-elle l’équipe ?",
+      a: "Non. L’invité reçoit son lien. L’équipe est notifiée si le prospect invite depuis l’espace, si quelqu’un valide, si quelqu’un demande des modifications, et quand tout le circuit est validé.",
+    },
+    {
+      q: "Que faire si le responsable technique demande des modifications et l’acheteur a déjà validé ?",
+      a: "Le récap passe à Modifications demandées. Traitez le commentaire et le budget max s’il y en a un. L’acheteur reste sur Validé. Les deux informations sont sur la fiche.",
+    },
+    {
+      q: "Les messages du prospect sont-ils les mêmes que les notes internes ?",
+      a: "Non. Les notes internes restent dans l’équipe. Le fil de messages de l’espace est la conversation avec le contact, en un seul fil. Le commentaire d’un relecteur est un champ unique, à côté de son budget max.",
+    },
+    {
+      q: "Comment chiffrer le coût de l’attente multi-décideurs ?",
+      a: "Volume, part multi-décideurs, nombre de décideurs, jours d’attente, minutes de relance, taux horaire, panier, part de dossiers retardés ou perdus. L’estimateur le fait en local.",
+    },
+    {
+      q: "Un lien partagé suffit-il sans pastilles ?",
+      a: "Mieux qu’un PDF seul, mais insuffisant dès qu’il y a deux lecteurs. Sans statut par personne, vous revenez aux « tu as pu regarder ? ».",
+    },
+    {
+      q: "Comment gérer un syndic avec un vote AG distant ?",
+      a: "Lien partagé, validité affichée, relances calées sur le calendrier de l’assemblée. Ne réservez pas de créneau ferme avant le récap et la décision commerciale.",
+    },
+    {
+      q: "Qui passe le devis en Gagné ?",
+      a: "C’est le commercial qui passe le devis en Gagné (l’espace prospect affiche alors « Accepté »). Le relecteur ne le fait pas. Son choix est Valider le dossier ou Modifications.",
+    },
+  ],
   "suivi-ouverture-lecture-devis-en-ligne-b2b": [
     {
       q: "La fiche indique-t-elle que le prospect a consulté le devis ?",

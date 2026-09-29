@@ -46,9 +46,11 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Funnel devis pompe à chaleur et chauffage : https://www.quotebuilder.co/secteurs/funnel-devis-pompe-chaleur-chauffage
 - Funnel devis photovoltaïque et solaire : https://www.quotebuilder.co/secteurs/funnel-devis-photovoltaique-solaire
 - Funnel devis isolation thermique et ITE : https://www.quotebuilder.co/secteurs/funnel-devis-isolation-thermique-ite
+- Funnel devis couverture et toiture : https://www.quotebuilder.co/secteurs/funnel-devis-couverture-toiture
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Approbation client multi-décideurs sur un devis B2B : https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b
 - Devis en ligne B2B : dernière consultation, relecteurs et relances utiles : https://www.quotebuilder.co/blog/suivi-ouverture-lecture-devis-en-ligne-b2b
 - Validation interne avant envoi d’un devis B2B : https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b
 - Commentaires et annotations sur un devis collaboratif B2B : https://www.quotebuilder.co/blog/commentaires-annotations-devis-collaboratif-b2b
@@ -104,6 +106,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Estimateur coût des e-mails de clarification devis : https://www.quotebuilder.co/outils/estimateur-cout-emails-clarification-devis
 - Estimateur coût des devis envoyés sans validation interne : https://www.quotebuilder.co/outils/estimateur-cout-devis-sans-validation
 - Estimateur coût des relances à l’aveugle sur devis : https://www.quotebuilder.co/outils/estimateur-cout-relances-aveugles-devis
+- Estimateur coût d’attente multi-décideurs sur devis : https://www.quotebuilder.co/outils/estimateur-cout-attente-multi-decideurs-devis
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 
