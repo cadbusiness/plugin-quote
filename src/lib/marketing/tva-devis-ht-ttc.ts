@@ -89,7 +89,7 @@ export const TVA_DEVIS_LABELS = {
   totalTva: "Total TVA",
   totalTtc: "Total TTC",
   disclaimer:
-    "Calcul arithmétique indicatif pour comprendre HT / TVA / TTC sur un devis. Ce n’est pas un conseil fiscal. Les taux applicables dépendent de votre situation : vérifiez avec votre expert-comptable. QuoteBuilder n’applique que les taux que vous saisissez : il ne choisit pas le taux légal et ne gère pas l’autoliquidation. Aucune donnée n’est envoyée.",
+    "Calcul arithmétique indicatif pour comprendre HT / TVA / TTC sur un devis. Ce n’est pas un conseil fiscal. Les taux applicables dépendent de votre situation : vérifiez avec votre expert-comptable. Ce calculateur applique le taux que vous saisissez. Il ne choisit pas le taux légal et ne gère pas l’autoliquidation. Aucune donnée n’est envoyée.",
 } as const;
 
 export function resolveTvaRatePct(preset: string, customRate: number) {

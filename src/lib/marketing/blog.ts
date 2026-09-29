@@ -260,7 +260,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/tva-ht-ttc-devis-b2b-france",
     title: "HT, TTC et TVA sur un devis B2B en France : afficher clair sans se tromper",
     description:
-      "Comment afficher HT, TTC et TVA sur un devis B2B en France : taux courants, totaux par taux, erreurs classiques, checklist avant envoi. Process PME, pas un conseil fiscal.",
+      "Comment afficher HT, TTC et TVA sur un devis B2B en France. Bonnes pratiques générales, et fourchette indicative dans QuoteBuilder. Pas un conseil fiscal.",
     publishedAt: "2026-09-29",
     readingMinutes: 13,
     tags: ["funnel"],

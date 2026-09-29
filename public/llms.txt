@@ -10,6 +10,7 @@ Langue principale: français
 
 - Parcours de devis (funnel / wizard / chat IA) pour collecter un brief exploitable
 - Catalogue produits avec règles (sync WooCommerce / Shopify sur plans payants)
+- Montants du devis : fourchette indicative min-max, en euros entiers (fiche, espace prospect, PDF). Pas de taux de TVA, pas de totaux HT / TVA / TTC. Mentions dans le pied de page libre du PDF. Le réglage « Taxes » du plugin WooCommerce est désactivé par défaut et reprend la taxe calculée par Woo, sans ventilation par taux.
 - Pipeline de demandes scorées Hot / Warm / Cold
 - Autopilote de relances (ex. T+0, T+4h, T+3j)
 - Espace prospect (lien magique, récap, messagerie légère)

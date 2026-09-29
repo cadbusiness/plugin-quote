@@ -185,6 +185,9 @@ export function TvaDevisHtTtcCalculator() {
         >
           Essayer QuoteBuilder gratuitement
         </Link>
+        <p className="mt-3 text-xs leading-5 text-mk-on-dark/55">
+          Le compte sert à partager un dossier (lien, espace prospect, relecteurs, PDF). Ce calcul reste dans le navigateur.
+        </p>
         <p className="mt-4 text-sm leading-6 text-mk-on-dark/70">
           Voir aussi :{" "}
           <Link href="/blog/tva-ht-ttc-devis-b2b-france" className="font-medium text-mk-accent hover:underline">

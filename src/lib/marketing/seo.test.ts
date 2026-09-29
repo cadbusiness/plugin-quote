@@ -1475,9 +1475,13 @@ for (const { file, dir } of contentFiles) {
   assert.match(tvaBody, /signup\?plan=free/);
   assert.match(tvaBody, /\/outils\/calculateur-tva-devis-ht-ttc/);
   assert.match(tvaBody, /\/c\/demo\/rayonnage/);
-  assert.match(tvaBody, /ne prétend pas calculer la TVA/);
+  assert.match(tvaBody, /Bonne pratique générale, hors QuoteBuilder/);
+  assert.match(tvaBody, /Fourchette indicative/);
+  assert.match(tvaBody, /Total indicatif/);
+  assert.doesNotMatch(tvaBody, /ne prétend pas calculer la TVA/);
+  assert.doesNotMatch(tvaBody, /blocs TVA/);
   assert.doesNotMatch(tvaBody, EM_DASH);
-  assert.equal(tvaBody.split(/\s+/).filter(Boolean).length, 2602);
+  assert.equal(tvaBody.split(/\s+/).filter(Boolean).length, 3228);
 }
 
 {

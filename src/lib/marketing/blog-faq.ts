@@ -20,27 +20,27 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Peut-on mélanger plusieurs taux sur un même devis ?",
-      a: "Oui, c’est fréquent. Affichez alors le taux par ligne et une ventilation TVA par taux en bas de page, sinon le total devient opaque.",
+      a: "Oui, c’est fréquent. Bonne pratique générale, hors QuoteBuilder : le taux sur chaque ligne, et une ventilation de la TVA par taux en bas de page. QuoteBuilder ne fait pas cette ventilation. Il affiche une fourchette indicative, en euros entiers.",
     },
     {
       q: "Que mettre en cas d’exonération ou d’autoliquidation ?",
-      a: "Uniquement le libellé validé par votre expert-comptable (ou avocat). Ne recopiez pas une phrase trouvée en ligne. Figez le bon texte dans votre template.",
+      a: "Uniquement le libellé validé par votre expert-comptable ou votre avocat. Ne recopiez pas une phrase trouvée en ligne. Sur votre modèle de devis, figez ce texte. Dans QuoteBuilder, les mentions peuvent aller dans le pied de page libre du PDF. Il n’y a pas de champ SIRET ni de numéro de TVA.",
     },
     {
       q: "L’acompte se calcule sur le HT ou le TTC ?",
-      a: "Ce que vous écrivez sur le devis. Choisissez une règle, notez-la (« 30 % TTC à la commande » ou « 30 % HT »), et alignez facturation et encaissement.",
+      a: "Sur la base que vous écrivez. Choisissez une règle, notez-la (« 30 % TTC à la commande » ou « 30 % du HT »), et alignez facturation et encaissement.",
     },
     {
       q: "Un logiciel de devis choisit-il le bon taux tout seul ?",
-      a: "Non, pas au sens fiscal. Un bon outil applique les taux que vous avez paramétrés (catalogue, templates) et calcule les totaux. Le choix du taux légalement applicable reste de votre responsabilité, avec votre conseil. QuoteBuilder ne calcule pas la TVA légale et ne gère pas l’autoliquidation.",
+      a: "Le taux applicable se valide avec votre expert-comptable. Une bonne pratique générale, hors QuoteBuilder, est de porter un taux par ligne et de ventiler la TVA. QuoteBuilder n’a pas de champ taux : la fiche, l’espace prospect (« Total indicatif ») et le PDF (« Fourchette indicative ») montrent une fourchette minimum – maximum, en euros entiers. Le calculateur TVA devis HT/TTC applique le taux que vous saisissez, dans le navigateur.",
     },
     {
       q: "Que faire si le prospect ne comprend que le TTC ?",
-      a: "Montrez les deux : HT, TVA, TTC. En réunion, convertissez son budget TTC en HT max avec le calculateur. Évitez de « cacher » le HT : la facture le fera réapparaître.",
+      a: "Sur un devis classique, montrez le HT, la TVA et le TTC. En réunion, convertissez son budget TTC en HT maximum avec le calculateur. Sur un dossier QuoteBuilder, le nombre à l’écran est une fourchette indicative : dites ce que ce minimum et ce maximum recouvrent.",
     },
     {
       q: "Par quoi commencer demain matin ?",
-      a: "Ouvrez trois devis récents, vérifiez qu’aucune ligne ne mélange HT et TTC, contrôlez la ventilation TVA, alignez le taux par défaut dans le catalogue, puis faites valider les libellés sensibles (exonération, autoliquidation) par votre expert-comptable.",
+      a: "Ouvrez trois devis récents. Vérifiez qu’aucune ligne ne mélange HT et TTC, que la ventilation de TVA est lisible s’il y a plusieurs taux, et faites valider les libellés sensibles par votre expert-comptable. Sur QuoteBuilder, vérifiez que la fourchette min-max se lit pareil sur la fiche, dans l’espace prospect et sur le PDF, et relisez le pied de page libre.",
     },
   ],
   "approbation-client-multi-decideurs-devis-b2b": [

@@ -15,7 +15,7 @@ export const metadata: Metadata = pageMetadata({
 const FAQ = [
   {
     q: "Le calcul remplace-t-il un expert-comptable ?",
-    a: "Non. C’est une arithmétique HT, TVA et TTC pour comprendre un devis. Le taux applicable dépend de votre situation. QuoteBuilder n’applique que le taux que vous saisissez : il ne choisit pas le taux légal et ne gère pas l’autoliquidation.",
+    a: "Non. C’est une arithmétique HT, TVA et TTC pour comprendre un devis. Le taux applicable dépend de votre situation. Ce calculateur applique le taux que vous saisissez : il ne choisit pas le taux légal et ne gère pas l’autoliquidation.",
   },
   {
     q: "Comment passer du HT au TTC ?",
@@ -23,7 +23,7 @@ const FAQ = [
   },
   {
     q: "Que faire avec plusieurs taux sur le même devis ?",
-    a: "Passez en mode plusieurs lignes (jusqu’à 3). Le total HT, la TVA ventilée par taux et le total TTC s’affichent. Sur le devis, gardez le taux sur chaque ligne et le détail en bas de page.",
+    a: "Passez en mode plusieurs lignes (jusqu’à 3). Le total HT, la TVA ventilée par taux et le total TTC s’affichent dans ce calculateur. Sur un devis, la bonne pratique générale est de garder le taux sur chaque ligne et le détail en bas de page.",
   },
   {
     q: "Les données quittent-elles le navigateur ?",
@@ -124,8 +124,8 @@ export default function CalculateurTvaDevisHtTtcPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Affichez HT, TVA et TTC sans retaper le bas de page."
-        text="Taux portés sur le catalogue, totaux stables, envoi par lien. L’outil reste indicatif : le taux légal se valide avec votre expert-comptable. Free sans carte."
+        title="Partagez le dossier : lien, espace prospect, relecteurs, PDF."
+        text="Le prospect ouvre le même lien. La fiche et le PDF montrent une fourchette indicative, en euros entiers. Essai gratuit, sans carte."
       />
     </>
   );
