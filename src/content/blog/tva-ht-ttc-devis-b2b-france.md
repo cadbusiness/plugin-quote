@@ -27,7 +27,7 @@ Ce guide parle du **process métier** pour afficher et expliquer HT, TTC et TVA 
 **Disclaimer (à lire une fois) :** cet article est pédagogique. Ce n’est **pas un conseil juridique ni fiscal**. Les taux, exonérations, autoliquidation, franchise en base et cas export / UE dépendent de votre situation, de votre activité et des règles en vigueur. Vérifiez avec votre expert-comptable (et un avocat si besoin) avant de figer des libellés. Les exemples chiffrés ci-dessous sont indicatifs pour comprendre les formules, pas des barèmes officiels ni des promesses d’aides.
 
 
-**Partager le même dossier avec le prospect et les relecteurs :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage). L’arithmétique HT / TTC, à part, se fait dans le navigateur : [calculateur TVA devis HT/TTC](https://www.quotebuilder.co/outils/calculateur-tva-devis-ht-ttc).
+**Ouvrir l’espace prospect :** le prospect a son lien, chaque relecteur reçoit le sien (30 jours) vers la même page. [Créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage). L’arithmétique HT / TTC, à part, se fait dans le navigateur : [calculateur TVA devis HT/TTC](https://www.quotebuilder.co/outils/calculateur-tva-devis-ht-ttc).
 
 
 ## Pourquoi le trio HT / TVA / TTC bloque encore des devis
@@ -170,18 +170,18 @@ Trois endroits montrent la même chose :
 
 S’il n’y a ni minimum ni maximum, l’affichage devient « Sur devis ».
 
-Le prospect et les relecteurs ouvrent le [lien partagé](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email). Ils voient cette fourchette, pas une ventilation de TVA. Le PDF reprend la même fourchette. Côté commercial, les statuts du dossier sont Commencée, Nouveau, Contacté, En cours, Gagné, Perdu et En attente.
+Le prospect ouvre son lien vers l’espace prospect. Chaque relecteur reçoit le sien, valable 30 jours, vers la même page (voir [envoi par lien plutôt qu’un PDF joint](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email)). Tous y voient cette fourchette, pas une ventilation de TVA. Le PDF reprend la même fourchette. Côté commercial, les statuts du dossier sont Commencée, Nouveau, Contacté, En cours, Gagné, Perdu et En attente.
 
 Il n’y a pas de champ SIRET, pas de numéro de TVA, pas de bloc de mentions légales. Les mentions peuvent aller dans le **pied de page libre du PDF** : un texte que vous rédigez, après validation par votre conseil. La [checklist mentions](https://www.quotebuilder.co/outils/checklist-mentions-devis-france) sert à préparer ce texte. Elle ne remplit pas le PDF à votre place.
 
-Le [catalogue](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) sert à retrouver des produits et des kits avec leur fourchette de prix. Il ne porte pas de taux par défaut.
+Le [catalogue](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) réunit des produits, leurs options, leurs variantes et les produits liés, avec une fourchette de prix. Il ne porte pas de taux par défaut.
 
 Le seul affichage de taxe lié au produit est le réglage « Taxes » du plugin WooCommerce, désactivé par défaut. S’il est activé, la liste de devis WooCommerce montre la taxe déjà calculée par WooCommerce (un montant par ligne, et « dont taxes » au total), sans ventilation par taux. Ce réglage ne crée pas de taux dans QuoteBuilder, et il ne change pas la fiche, l’espace prospect ni le PDF.
 
 <!-- PLACEHOLDER IMAGE: fiche devis avec fourchette indicative min-max, sans colonnes HT TVA TTC (shoot Content) -->
 
 
-**Envoyer le lien, l’espace prospect et le PDF du même dossier :** [essai gratuit](https://www.quotebuilder.co/signup?plan=free) · [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage).
+**Un lien pour le prospect, un lien par relecteur (30 jours) vers la même page, et le PDF de la fourchette :** [essai gratuit](https://www.quotebuilder.co/signup?plan=free) · [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage).
 
 
 Avant d’envoyer un dossier QuoteBuilder, trois contrôles suffisent : la fourchette min-max est compréhensible, le PDF dit « Fourchette indicative » comme l’espace prospect dit « Total indicatif », et le pied de page libre contient les mentions que votre conseil a validées.
@@ -204,7 +204,7 @@ Le devis n’est pas la facture. Un devis flou sur la TVA produit des factures c
 
 Le calculateur de cette page fait l’arithmétique : il applique le taux saisi, ventile si vous avez plusieurs lignes, et n’enregistre rien. Votre expert-comptable tranche le taux et les libellés d’exonération ou d’autoliquidation.
 
-QuoteBuilder, de son côté, partage le dossier. Le lien, l’espace prospect, les relecteurs et le PDF montrent la fourchette indicative. Les mentions légales, si vous en écrivez, tiennent dans le pied de page libre du PDF.
+QuoteBuilder, de son côté, ouvre l’espace prospect. Le prospect a son lien. Chaque relecteur reçoit le sien, valable 30 jours, vers la même page. Le PDF montre la fourchette indicative. Les mentions légales, si vous en écrivez, tiennent dans le pied de page libre du PDF.
 
 ## FAQ
 
@@ -246,14 +246,14 @@ Sur un devis classique, montrez le HT, la TVA et le TTC. En réunion, convertiss
 
 ### 10. Par quoi commencer demain matin ?
 
-Ouvrez trois devis récents. Vérifiez qu’aucune ligne ne mélange HT et TTC, que la ventilation de TVA est lisible s’il y a plusieurs taux, et faites valider les libellés sensibles par votre expert-comptable. Sur QuoteBuilder, vérifiez que la fourchette min-max se lit pareil sur la fiche, dans l’espace prospect et sur le PDF, et relisez le pied de page libre.
+Ouvrez trois devis récents. Vérifiez qu’aucune ligne ne mélange HT et TTC, que la ventilation de TVA est lisible s’il y a plusieurs taux, et faites valider les libellés sensibles par votre expert-comptable. Sur QuoteBuilder, vérifiez que la fourchette min-max se lit pareil sur la fiche, dans l’espace prospect et sur le PDF, et relisez le pied de page libre. Le prospect a son lien. Chaque relecteur reçoit le sien, valable 30 jours, vers la même page.
 
 
 ## Synthèse
 
 Sur un devis B2B en France, HT, TVA et TTC forment un contrat de lisibilité avec le prospect et avec votre future facture. Chiffrez selon une convention d’équipe claire. Portez le taux sur chaque ligne, ventilez la TVA quand il y a plusieurs taux, contrôlez le total TTC, et gardez les libellés d’exonération pour les phrases validées par un pro. Cette discipline est une bonne pratique générale, hors QuoteBuilder.
 
-QuoteBuilder affiche une fourchette indicative (minimum et maximum, euros entiers) sur la fiche, dans l’espace prospect et sur le PDF. Les relecteurs voient le même lien. Les mentions légales peuvent tenir dans le pied de page libre du PDF. Le [calculateur](https://www.quotebuilder.co/outils/calculateur-tva-devis-ht-ttc) reste l’outil local pour passer du HT au TTC.
+QuoteBuilder affiche une fourchette indicative (minimum et maximum, euros entiers) sur la fiche, dans l’espace prospect et sur le PDF. Le prospect a son lien. Chaque relecteur reçoit le sien, valable 30 jours, vers la même page. Les mentions légales peuvent tenir dans le pied de page libre du PDF. Le [calculateur](https://www.quotebuilder.co/outils/calculateur-tva-devis-ht-ttc) reste l’outil local pour passer du HT au TTC.
 
 
-**Prochaine étape :** ouvrez la [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) pour voir la fourchette sur un dossier, ou [créez un compte Free](https://www.quotebuilder.co/signup?plan=free) pour partager le lien, l’espace prospect et le PDF avec un prospect et des relecteurs.
+**Prochaine étape :** ouvrez la [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) pour voir la fourchette sur un dossier, ou [créez un compte Free](https://www.quotebuilder.co/signup?plan=free). Le prospect a son lien, chaque relecteur le sien (30 jours) vers la même page, et le PDF reprend la fourchette.

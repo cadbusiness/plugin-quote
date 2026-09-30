@@ -152,6 +152,7 @@ export function TvaDevisHtTtcCalculator() {
         </fieldset>
       </form>
 
+      <div className="space-y-6">
       <div className="rounded-2xl bg-mk-dark p-5 text-mk-on-dark sm:p-6" aria-live="polite">
         <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mk-accent">Résultat</p>
         <dl className="mt-4 space-y-4 text-sm">
@@ -178,17 +179,21 @@ export function TvaDevisHtTtcCalculator() {
           {result.alert}
         </p>
         <p className="mt-3 text-xs leading-5 text-mk-on-dark/45">{TVA_DEVIS_LABELS.disclaimer}</p>
+      </div>
 
+      <div className="rounded-2xl bg-white p-5 ring-1 ring-mk-border sm:p-6">
+        <p className="text-sm leading-6 text-mk-muted">
+          Ce calcul reste dans votre navigateur. QuoteBuilder affiche une fourchette indicative (minimum et
+          maximum, en euros entiers) sur la fiche, dans l’espace prospect et sur le PDF. Le prospect a son
+          lien. Chaque relecteur reçoit le sien, valable 30 jours, vers la même page.
+        </p>
         <Link
           href="/signup?plan=free"
           className="mt-5 inline-flex rounded-full bg-mk-accent px-4 py-2.5 text-sm font-semibold text-white hover:bg-mk-accent-hover"
         >
           Essayer QuoteBuilder gratuitement
         </Link>
-        <p className="mt-3 text-xs leading-5 text-mk-on-dark/55">
-          Le compte sert à partager un dossier (lien, espace prospect, relecteurs, PDF). Ce calcul reste dans le navigateur.
-        </p>
-        <p className="mt-4 text-sm leading-6 text-mk-on-dark/70">
+        <p className="mt-4 text-sm leading-6 text-mk-muted">
           Voir aussi :{" "}
           <Link href="/blog/tva-ht-ttc-devis-b2b-france" className="font-medium text-mk-accent hover:underline">
             HT, TTC et TVA sur un devis B2B
@@ -207,6 +212,7 @@ export function TvaDevisHtTtcCalculator() {
           </Link>
           .
         </p>
+      </div>
       </div>
     </div>
   );

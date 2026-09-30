@@ -40,7 +40,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Par quoi commencer demain matin ?",
-      a: "Ouvrez trois devis récents. Vérifiez qu’aucune ligne ne mélange HT et TTC, que la ventilation de TVA est lisible s’il y a plusieurs taux, et faites valider les libellés sensibles par votre expert-comptable. Sur QuoteBuilder, vérifiez que la fourchette min-max se lit pareil sur la fiche, dans l’espace prospect et sur le PDF, et relisez le pied de page libre.",
+      a: "Ouvrez trois devis récents. Vérifiez qu’aucune ligne ne mélange HT et TTC, que la ventilation de TVA est lisible s’il y a plusieurs taux, et faites valider les libellés sensibles par votre expert-comptable. Sur QuoteBuilder, vérifiez que la fourchette min-max se lit pareil sur la fiche, dans l’espace prospect et sur le PDF, et relisez le pied de page libre. Le prospect a son lien. Chaque relecteur reçoit le sien, valable 30 jours, vers la même page.",
     },
   ],
   "approbation-client-multi-decideurs-devis-b2b": [
@@ -302,7 +302,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Comment gérer plusieurs décideurs ?",
-      a: "Un même lien, et le PIN du mail de confirmation. Évitez de multiplier les fichiers nominatifs.",
+      a: "Le prospect a son lien, avec le PIN du mail de confirmation. Chaque relecteur reçoit son propre lien, valable 30 jours, vers la même page. Évitez de multiplier les PDF nominatifs.",
     },
     {
       q: "Que faire si le prospect refuse le lien et exige un PDF ?",

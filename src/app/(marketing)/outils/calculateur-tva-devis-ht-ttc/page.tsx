@@ -124,8 +124,8 @@ export default function CalculateurTvaDevisHtTtcPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Partagez le dossier : lien, espace prospect, relecteurs, PDF."
-        text="Le prospect ouvre le même lien. La fiche et le PDF montrent une fourchette indicative, en euros entiers. Essai gratuit, sans carte."
+        title="Espace prospect, relecteurs et PDF."
+        text="Le prospect a son lien. Chaque relecteur reçoit le sien, valable 30 jours, vers la même page. La fiche et le PDF montrent une fourchette indicative, en euros entiers. Essai gratuit, sans carte."
       />
     </>
   );
