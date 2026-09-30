@@ -99,6 +99,7 @@ export const BLOG_TOOL_DEVIS_SANS_VALIDATION = "/outils/estimateur-cout-devis-sa
 export const BLOG_TOOL_RELANCES_AVEUGLES = "/outils/estimateur-cout-relances-aveugles-devis";
 export const BLOG_TOOL_ATTENTE_MULTI = "/outils/estimateur-cout-attente-multi-decideurs-devis";
 export const BLOG_TOOL_VISITES_INUTILES = "/outils/estimateur-cout-visites-techniques-inutiles";
+export const BLOG_TOOL_PIPELINE_FANTOME = "/outils/estimateur-cout-pipeline-fantome-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -254,6 +255,12 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     tags: ["funnel", "scoring"],
   },
   {
+    href: BLOG_TOOL_PIPELINE_FANTOME,
+    title: "Estimateur coût du pipeline fantôme devis",
+    text: "Dossiers ouverts, % sans maj de statut depuis 30 jours, minutes de suivi, taux horaire, panier, parts Perdu et Gagné non closés. Fantômes, heures, coût temps, opportunités. Calcul 100 % local.",
+    tags: ["funnel", "scoring"],
+  },
+  {
     href: BLOG_TOOL_TVA,
     title: "Calculateur TVA devis HT / TTC",
     text: "HT vers TTC ou l’inverse, taux 20 % 10 % 5,5 % 2,1 % 0 % ou perso, jusqu’à 3 lignes. Totaux HT, TVA ventilée, TTC. Calcul 100 % local, indicatif, pas un conseil fiscal.",
@@ -262,6 +269,20 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "statuts-pipeline-devis-b2b",
+    path: "/blog/statuts-pipeline-devis-b2b",
+    title:
+      "Les 7 statuts d'un pipeline devis B2B (et pourquoi « Accepté » / « Signé » ne sont pas des statuts)",
+    description:
+      "Process métier pour nommer et faire vivre les 7 statuts CRM d'un pipeline devis (Commencée → Gagné/Perdu) : playbook, anti-patterns, sans confondre Accepté / Signé.",
+    publishedAt: "2026-09-30",
+    readingMinutes: 14,
+    tags: ["funnel", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "visite-technique-avant-devis-b2b",
     path: "/blog/visite-technique-avant-devis-b2b",

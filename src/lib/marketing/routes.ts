@@ -53,6 +53,11 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   {
+    path: "/blog/statuts-pipeline-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
     path: "/blog/visite-technique-avant-devis-b2b",
     changeFrequency: "monthly",
     priority: 0.8,
@@ -198,6 +203,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/estimateur-cout-visites-techniques-inutiles",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-09-30",
+  },
+  {
+    path: "/outils/estimateur-cout-pipeline-fantome-devis",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-09-30",

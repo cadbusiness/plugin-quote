@@ -60,6 +60,11 @@ import {
   COUT_VISITES_INUTILES_LABELS,
   computeCoutVisitesInutiles,
 } from "./cout-visites-techniques-inutiles";
+import {
+  COUT_PIPELINE_FANTOME_DEFAULTS,
+  COUT_PIPELINE_FANTOME_LABELS,
+  computeCoutPipelineFantome,
+} from "./cout-pipeline-fantome-devis";
 import { computeTvaDevisHtTtc, resolveTvaRatePct } from "./tva-devis-ht-ttc";
 import { CHECKLIST_MENTIONS_ITEMS, computeChecklistMentions } from "./checklist-mentions-devis";
 import { MARKETING_ROUTES } from "./routes";
@@ -130,6 +135,8 @@ for (const required of [
   "/outils/estimateur-cout-relances-aveugles-devis",
   "/outils/estimateur-cout-attente-multi-decideurs-devis",
   "/outils/estimateur-cout-visites-techniques-inutiles",
+  "/outils/estimateur-cout-pipeline-fantome-devis",
+  "/blog/statuts-pipeline-devis-b2b",
   "/blog/visite-technique-avant-devis-b2b",
   "/outils/calculateur-tva-devis-ht-ttc",
   "/blog/tva-ht-ttc-devis-b2b-france",
@@ -183,7 +190,27 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 35);
+assert.equal(BLOG_POSTS.length, 36);
+assert.deepEqual(
+  BLOG_POSTS.find((post) => post.slug === "statuts-pipeline-devis-b2b")?.tags,
+  ["funnel", "scoring"],
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "statuts-pipeline-devis-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "statuts-pipeline-devis-b2b")?.cover,
+  BLOG_DEMO_SHOTS.devisDetail,
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "statuts-pipeline-devis-b2b")?.readingMinutes, 14);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "statuts-pipeline-devis-b2b")?.publishedAt, "2026-09-30");
+assert.equal(BLOG_POSTS.find((post) => post.slug === "statuts-pipeline-devis-b2b")?.pinned, false);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "statuts-pipeline-devis-b2b")?.path,
+  "/blog/statuts-pipeline-devis-b2b",
+);
+assert.equal(BLOG_FAQ["statuts-pipeline-devis-b2b"]?.length, 10);
 assert.deepEqual(
   BLOG_POSTS.find((post) => post.slug === "visite-technique-avant-devis-b2b")?.tags,
   ["funnel", "scoring"],
@@ -742,8 +769,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 16);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 16);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 17);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 17);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 7);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 6);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);
@@ -991,6 +1018,14 @@ const requiredSources = {
     "/blog/envoyer-devis-lien-securise-vs-pdf-email",
     "/blog/relancer-devis-hot-depuis-dossier",
     "/blog/espace-prospect-devis-en-ligne",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "statuts-pipeline-devis-b2b.md": [
+    "/outils/estimateur-cout-pipeline-fantome-devis",
+    "/blog/revue-pipeline-devis-b2b",
+    "/blog/score-demande-devis-b2b",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -1539,6 +1574,32 @@ for (const { file, dir } of contentFiles) {
   assert.doesNotMatch(tvaBody, /blocs TVA/);
   assert.doesNotMatch(tvaBody, EM_DASH);
   assert.equal(tvaBody.split(/\s+/).filter(Boolean).length, 3314);
+}
+
+{
+  const statutsRaw = readFileSync(join(blogDir, "statuts-pipeline-devis-b2b.md"), "utf8");
+  assert.ok(statutsRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const statutsBody = stripFrontmatter(statutsRaw);
+  assert.ok(
+    statutsBody.startsWith("# Les 7 statuts d'un pipeline devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(statutsBody, /^title:/m);
+  assert.match(statutsBody, /signup\?plan=free/);
+  assert.match(statutsBody, /\/outils\/estimateur-cout-pipeline-fantome-devis/);
+  assert.match(statutsBody, /\/blog\/revue-pipeline-devis-b2b/);
+  assert.match(statutsBody, /\/c\/demo\/rayonnage/);
+  assert.match(statutsBody, /Commencée/);
+  assert.match(statutsBody, /En attente/);
+  assert.match(statutsBody, /libellé d'espace prospect/);
+  assert.match(statutsBody, /libellé de graphique de stats/);
+  assert.match(statutsBody, /pas d'acceptation \/ signature en ligne du prospect/);
+  assert.match(statutsBody, /formule fixe/);
+  assert.match(statutsBody, /Pas de SLA produit/);
+  assert.match(statutsBody, /dernière consultation/);
+  assert.match(statutsBody, /Valider le dossier/);
+  assert.doesNotMatch(statutsBody, EM_DASH);
+  assert.equal(statutsBody.split(/\s+/).filter(Boolean).length, 2701);
 }
 
 {
@@ -3046,6 +3107,135 @@ assert.equal(visitesClamp.pctPerdus, 100);
 assert.equal(visitesClamp.opp, null);
 assert.equal(visitesClamp.alertTone, "neutral");
 
+const fantomeDefault = computeCoutPipelineFantome({ ...COUT_PIPELINE_FANTOME_DEFAULTS });
+assert.equal(fantomeDefault.fantomes, 34);
+assert.equal(fantomeDefault.heures, 14.2);
+assert.equal(fantomeDefault.coutTemps, 781);
+assert.equal(fantomeDefault.perdusPot, 11.9);
+assert.equal(fantomeDefault.gagnePot, 1.7);
+assert.equal(fantomeDefault.opp, 119000);
+assert.equal(fantomeDefault.gagneVal, 17000);
+assert.equal(fantomeDefault.total, 119781);
+assert.equal(fantomeDefault.alertTone, "bad");
+assert.equal(fantomeDefault.totalTone, "bad");
+assert.equal(fantomeDefault.oppTone, "bad");
+assert.equal(fantomeDefault.gagneTone, "ok");
+assert.match(fantomeDefault.alert, /Pipeline fantôme lourd/);
+assert.match(fantomeDefault.recap, /Checklist rapide/);
+assert.match(fantomeDefault.recap, /7 statuts CRM seulement/);
+assert.match(fantomeDefault.recap, /Accepté \/ Signé ne sont pas des statuts CRM/);
+assert.match(fantomeDefault.recap, /pas de signature prospect auto/);
+assert.match(fantomeDefault.recap, /pas de SLA produit/);
+assert.doesNotMatch(fantomeDefault.recap, /signature électronique/);
+assert.equal(COUT_PIPELINE_FANTOME_LABELS.ouverts, "Dossiers ouverts dans le pipeline");
+assert.equal(COUT_PIPELINE_FANTOME_LABELS.total, "Coût total indicatif mensuel (temps + opportunités)");
+
+const fantomeEmpty = computeCoutPipelineFantome({ ...COUT_PIPELINE_FANTOME_DEFAULTS, ouverts: 0 });
+assert.equal(fantomeEmpty.fantomes, 0);
+assert.equal(fantomeEmpty.heures, 0);
+assert.equal(fantomeEmpty.coutTemps, 0);
+assert.equal(fantomeEmpty.opp, 0);
+assert.equal(fantomeEmpty.total, 0);
+assert.equal(fantomeEmpty.alertTone, "neutral");
+assert.match(fantomeEmpty.alert, /dossiers ouverts/);
+
+const fantomeNoBasket = computeCoutPipelineFantome({ ...COUT_PIPELINE_FANTOME_DEFAULTS, panier: 0 });
+assert.equal(fantomeNoBasket.opp, null);
+assert.equal(fantomeNoBasket.gagneVal, null);
+assert.equal(fantomeNoBasket.oppLabel, "non calculé (panier = 0)");
+assert.equal(fantomeNoBasket.gagneLabel, "non calculé (panier = 0)");
+assert.equal(fantomeNoBasket.total, fantomeNoBasket.coutTemps);
+assert.equal(fantomeNoBasket.oppTone, "neutral");
+assert.equal(fantomeNoBasket.alertTone, "bad");
+assert.match(fantomeNoBasket.recap, /Opportunités fantômes \(Perdu\) : n\/a/);
+
+const fantomeLow = computeCoutPipelineFantome({
+  ouverts: 20,
+  pctFantome: 10,
+  age: 20,
+  minutes: 10,
+  taux: 40,
+  panier: 500,
+  pctPerdu: 5,
+  pctGagne: 2,
+});
+assert.equal(fantomeLow.fantomes, 2);
+assert.equal(fantomeLow.heures, 0.3);
+assert.equal(fantomeLow.coutTemps, 12);
+assert.equal(fantomeLow.perdusPot, 0.1);
+assert.equal(fantomeLow.gagnePot, 0);
+assert.equal(fantomeLow.opp, 50);
+assert.equal(fantomeLow.gagneVal, 0);
+assert.equal(fantomeLow.total, 62);
+assert.equal(fantomeLow.alertTone, "ok");
+assert.match(fantomeLow.alert, /Pipeline plutôt tenu/);
+
+const fantomeWarn = computeCoutPipelineFantome({
+  ouverts: 40,
+  pctFantome: 30,
+  age: 50,
+  minutes: 20,
+  taux: 50,
+  panier: 1000,
+  pctPerdu: 10,
+  pctGagne: 5,
+});
+assert.equal(fantomeWarn.fantomes, 12);
+assert.equal(fantomeWarn.heures, 4);
+assert.equal(fantomeWarn.coutTemps, 200);
+assert.equal(fantomeWarn.perdusPot, 1.2);
+assert.equal(fantomeWarn.opp, 1200);
+assert.equal(fantomeWarn.total, 1400);
+assert.equal(fantomeWarn.alertTone, "warn");
+assert.equal(fantomeWarn.totalTone, "ok");
+assert.match(fantomeWarn.tip, /45 jours/);
+
+const fantomeHigh = computeCoutPipelineFantome({
+  ouverts: 200,
+  pctFantome: 50,
+  age: 90,
+  minutes: 40,
+  taux: 70,
+  panier: 8000,
+  pctPerdu: 40,
+  pctGagne: 8,
+});
+assert.equal(fantomeHigh.fantomes, 100);
+assert.equal(fantomeHigh.heures, 66.7);
+assert.equal(fantomeHigh.coutTemps, 4669);
+assert.equal(fantomeHigh.perdusPot, 40);
+assert.equal(fantomeHigh.gagnePot, 8);
+assert.equal(fantomeHigh.opp, 320000);
+assert.equal(fantomeHigh.gagneVal, 64000);
+assert.equal(fantomeHigh.total, 324669);
+assert.equal(fantomeHigh.alertTone, "bad");
+assert.equal(fantomeHigh.totalTone, "bad");
+assert.equal(fantomeHigh.oppTone, "bad");
+assert.equal(fantomeHigh.gagneTone, "warn");
+assert.match(fantomeHigh.tip, /Gagné \/ Perdu/);
+
+const fantomeClamp = computeCoutPipelineFantome({
+  ouverts: -5,
+  pctFantome: 140,
+  age: 9000,
+  minutes: 24 * 60 + 30,
+  taux: 20000,
+  panier: -1,
+  pctPerdu: 140,
+  pctGagne: 140,
+});
+assert.equal(fantomeClamp.ouverts, 0);
+assert.equal(fantomeClamp.pctFantome, 100);
+assert.equal(fantomeClamp.age, 3650);
+assert.equal(fantomeClamp.minutes, 24 * 60);
+assert.equal(fantomeClamp.taux, 10000);
+assert.equal(fantomeClamp.panier, 0);
+assert.equal(fantomeClamp.pctPerdu, 100);
+assert.equal(fantomeClamp.pctGagne, 100);
+assert.equal(fantomeClamp.opp, null);
+assert.equal(fantomeClamp.gagneVal, null);
+assert.equal(fantomeClamp.alertTone, "neutral");
+
 const sansValidClamp = computeCoutDevisSansValidation({
   devis: -5,
   sansValidPct: 140,
@@ -3246,6 +3436,8 @@ for (const expected of [
   { path: "/outils/checklist-mentions-devis-france", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
   { path: "/blog/pieces-jointes-plans-photos-devis-b2b", priority: 0.8, lastmod: "2026-09-25" },
+  { path: "/blog/statuts-pipeline-devis-b2b", priority: 0.8, lastmod: "2026-09-30" },
+  { path: "/outils/estimateur-cout-pipeline-fantome-devis", priority: 0.7, lastmod: "2026-09-30" },
   { path: "/blog/visite-technique-avant-devis-b2b", priority: 0.8, lastmod: "2026-09-30" },
   { path: "/outils/estimateur-cout-visites-techniques-inutiles", priority: 0.7, lastmod: "2026-09-30" },
   { path: "/secteurs/funnel-devis-plomberie-sanitaire", priority: 0.8, lastmod: "2026-09-30" },
@@ -3287,6 +3479,8 @@ assert.ok(paths.includes("/outils/calculateur-tva-devis-ht-ttc"));
 assert.ok(paths.includes("/blog/approbation-client-multi-decideurs-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-attente-multi-decideurs-devis"));
 assert.ok(paths.includes("/secteurs/funnel-devis-couverture-toiture"));
+assert.ok(paths.includes("/blog/statuts-pipeline-devis-b2b"));
+assert.ok(paths.includes("/outils/estimateur-cout-pipeline-fantome-devis"));
 assert.ok(paths.includes("/blog/visite-technique-avant-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-visites-techniques-inutiles"));
 assert.ok(paths.includes("/secteurs/funnel-devis-plomberie-sanitaire"));
@@ -3679,6 +3873,8 @@ const llmsPaths = [
   "/blog/tva-ht-ttc-devis-b2b-france",
   "/outils/calculateur-tva-devis-ht-ttc",
   "/secteurs/funnel-devis-couverture-toiture",
+  "/blog/statuts-pipeline-devis-b2b",
+  "/outils/estimateur-cout-pipeline-fantome-devis",
   "/blog/visite-technique-avant-devis-b2b",
   "/outils/estimateur-cout-visites-techniques-inutiles",
   "/secteurs/funnel-devis-plomberie-sanitaire",
@@ -4061,6 +4257,8 @@ assert.equal(tvaSameRate.alertTone, "ok");
 assert.equal(tvaSameRate.showBreakdown, true);
 
 for (const [path, lastmod] of [
+  ["/blog/statuts-pipeline-devis-b2b", "2026-09-30"],
+  ["/outils/estimateur-cout-pipeline-fantome-devis", "2026-09-30"],
   ["/blog/visite-technique-avant-devis-b2b", "2026-09-30"],
   ["/outils/estimateur-cout-visites-techniques-inutiles", "2026-09-30"],
   ["/secteurs/funnel-devis-plomberie-sanitaire", "2026-09-30"],
