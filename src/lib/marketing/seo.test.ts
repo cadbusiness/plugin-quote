@@ -1557,8 +1557,15 @@ for (const { file, dir } of contentFiles) {
   assert.match(visiteBody, /première ouverture/);
   assert.match(visiteBody, /pixel e-mail/);
   assert.match(visiteBody, /planification terrain reste hors produit|il n'y en a pas/);
+  assert.match(visiteBody, /champ « Espace prospect »/);
+  assert.match(visiteBody, /page prospect ne la montre pas/);
+  assert.match(visiteBody, /En attente/);
+  assert.match(visiteBody, /Consulté/);
+  assert.match(visiteBody, /Validé/);
+  assert.match(visiteBody, /Modifications/);
+  assert.doesNotMatch(visiteBody, /badges vu/);
   assert.doesNotMatch(visiteBody, EM_DASH);
-  assert.equal(visiteBody.split(/\s+/).filter(Boolean).length, 2711);
+  assert.equal(visiteBody.split(/\s+/).filter(Boolean).length, 2741);
 }
 
 {
@@ -1573,9 +1580,14 @@ for (const { file, dir } of contentFiles) {
   assert.match(plombBody, /\/blog\/visite-technique-avant-devis-b2b/);
   assert.match(plombBody, /\/outils\/estimateur-cout-visites-techniques-inutiles/);
   assert.match(plombBody, /ne planifie pas la tournée/);
+  assert.match(plombBody, /ordre fixe/);
+  assert.match(plombBody, /Si\/Alors servent à suggérer/);
+  assert.doesNotMatch(plombBody, /branche/i);
+  assert.doesNotMatch(plombBody, /kits/i);
+  assert.doesNotMatch(plombBody, /template plomberie/i);
   assert.doesNotMatch(plombBody, /signature électronique/);
   assert.doesNotMatch(plombBody, EM_DASH);
-  assert.equal(plombBody.split(/\s+/).filter(Boolean).length, 2654);
+  assert.equal(plombBody.split(/\s+/).filter(Boolean).length, 2707);
 }
 
 {

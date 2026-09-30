@@ -70,7 +70,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Comment relancer après une visite sans harceler ?",
-      a: "Une séquence courte liée au score, avec une question métier précise (option, accès, délai), plutôt qu’un « avez-vous lu le devis ? ». Les badges relecteurs et la dernière consultation relative aident un peu ; ils ne remplacent pas le jugement.",
+      a: "Une séquence courte liée au score, avec une question métier précise (option, accès, délai), plutôt qu’un « avez-vous lu le devis ? ». Sur la fiche commerciale, le champ Espace prospect montre la dernière consultation. Les pastilles sont En attente, Consulté, Validé et Modifications. Ça aide, sans remplacer le jugement.",
     },
     {
       q: "Que faire si le décideur est absent le jour J ?",

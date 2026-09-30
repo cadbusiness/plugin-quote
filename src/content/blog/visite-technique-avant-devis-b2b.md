@@ -41,14 +41,14 @@ Dans beaucoup de métiers (plomberie, couverture, menuiserie sur mesure, rayonna
 - lever des ambiguïtés que les photos ne montrent pas ;
 - aligner le décideur terrain avec ce que vous allez proposer.
 
-Ce n'est pas une « signature sur place ». Ce n'est pas non plus un rituel obligatoire pour chaque lead. C'est un **outil de réduction de risque** : vous payez du temps (technicien + commercial + déplacement) pour éviter une fourchette trop large, une erreur de pose, ou une V2 humiliante après envoi.
+Ce n'est pas une « signature sur place ». Ce n'est pas non plus un rituel obligatoire pour chaque lead. C'est un **outil de réduction de risque** : vous payez du temps (technicien + commercial + déplacement) pour éviter une fourchette trop large, une erreur de pose, ou un correctif humiliant après envoi.
 
 ### Ce que ce n'est pas
 
 - un planning de tournées dans QuoteBuilder (il n'y en a pas) : la visite se décide et se réserve ailleurs (agenda, terrain, téléphone) ;
 - un score magique qui remplace le jugement métier ;
 - une excuse pour ne jamais chiffrer à distance quand le brief est bon ;
-- un suivi d'ouverture avancé du devis après envoi (première ouverture, compteur, historique, alertes consultation, pixel e-mail). Sur un outil comme QuoteBuilder, la fiche / [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) peut afficher une **dernière consultation** en texte relatif. Les signaux utiles après visite restent plutôt les **relecteurs** (badges vu / approuvé / modifs) et les **notifications**, plus le statut CRM posé par le commercial (dont **Gagné** / **Perdu**).
+- un suivi d'ouverture avancé du devis après envoi (première ouverture, compteur, historique, alertes consultation, pixel e-mail). Sur QuoteBuilder, la **dernière consultation** s'affiche seulement dans le champ « Espace prospect » de la fiche devis, côté commercial, en texte relatif (par exemple « vu il y a 2 h »). La page prospect ne la montre pas. Chaque relecteur a son propre lien. Les pastilles sont **En attente**, **Consulté**, **Validé** et **Modifications**. Le statut CRM (dont **Gagné** / **Perdu**) reste posé par le commercial. Voir [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
 
 <!-- PLACEHOLDER IMAGE: schéma décision visite vs chiffrage distant selon score brief (shoot Content) -->
 
@@ -106,7 +106,7 @@ Dans ces cas, le funnel ne remplace pas la visite. Il **prépare** la visite : v
 
 Vous pouvez souvent chiffrer (au moins un **indicatif**) sans visite si :
 
-- le catalogue est standardisable (kits, forfaits pose, options claires) ;
+- le catalogue est standardisable (forfaits pose, options claires) ;
 - les photos / plans sont exploitables ;
 - l'accès est simple et déclaré ;
 - le prospect accepte une mention « sous réserve de visite / métré » ;
@@ -254,7 +254,7 @@ Non. L'outil aide à structurer funnel, dossier scoré, devis, espace prospect, 
 
 ### Comment relancer après une visite sans harceler ?
 
-Une séquence courte liée au score, avec une question métier précise (option, accès, délai), plutôt qu'un « avez-vous lu le devis ? ». Les badges relecteurs et la dernière consultation relative aident un peu ; ils ne remplacent pas le jugement.
+Une séquence courte liée au score, avec une question métier précise (option, accès, délai), plutôt qu'un « avez-vous lu le devis ? ». Sur la fiche commerciale, le champ Espace prospect montre la dernière consultation. Les pastilles sont En attente, Consulté, Validé et Modifications. Ça aide, sans remplacer le jugement.
 
 ### Que faire si le décideur est absent le jour J ?
 

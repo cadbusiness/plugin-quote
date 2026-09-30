@@ -31,7 +31,7 @@ const FAQ = [
   },
   {
     q: "Comment relier ça à un funnel ?",
-    a: "Type d’intervention, accès, photos, urgence, type de client, score Hot / Warm / Cold, hypothèses écrites si vous chiffrez sans visite. Le statut Gagné ou Perdu est posé par le commercial. Pas de suivi d’ouverture avancé : dernière consultation relative, badges relecteurs, notifications d’invitation, d’approbation et de modifications.",
+    a: "Type d’intervention, accès, photos, urgence, type de client, score Hot / Warm / Cold, hypothèses écrites si vous chiffrez sans visite. Le statut Gagné ou Perdu est posé par le commercial. Pas de suivi d’ouverture avancé : la dernière consultation est dans le champ Espace prospect de la fiche commerciale. Pastilles relecteurs : En attente, Consulté, Validé, Modifications. L’équipe est notifiée quand le client invite un relecteur, quand quelqu’un valide ou demande des modifications. Une invitation envoyée par le commercial ne notifie pas l’équipe.",
   },
 ];
 

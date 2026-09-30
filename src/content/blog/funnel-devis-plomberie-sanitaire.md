@@ -96,9 +96,9 @@ Les options non choisies restent proposables plus tard en [variante](https://www
 
 ## Urgence fuite vs rénovation vs neuf : trois vitesses, un funnel
 
-Ne créez pas trois sites. Créez une **branche précoce** « contexte ».
+Ne créez pas trois sites. Posez une **question « contexte »** tôt, dans un ordre fixe. La réponse change la priorité et le score. Les étapes suivantes restent les mêmes.
 
-| Branche | Priorité funnel | Suite typique |
+| Réponse à « contexte » | Priorité du brief | Suite typique |
 |---------|-----------------|---------------|
 | Urgence fuite / dépannage | Photos + localisation + accès + créneau rappel court | Mise en sécurité / dépannage puis devis complémentaire si besoin |
 | Rénovation partielle | Pièce, photos, accès, niveau finition | Brief scoré → indicatif ou visite ciblée |
@@ -108,7 +108,7 @@ Ne créez pas trois sites. Créez une **branche précoce** « contexte ».
 
 Le scoring change. Le process devis (dossier, validation, envoi, relance) reste le même.
 
-<!-- PLACEHOLDER IMAGE: branches urgence vs rénovation vs neuf dans un même wizard (shoot Content) -->
+<!-- PLACEHOLDER IMAGE: question contexte urgence vs rénovation vs neuf dans un même wizard (shoot Content) -->
 
 ## Assurance, DTU, prix au forfait : ce qu'il ne faut pas inventer
 
@@ -132,7 +132,7 @@ Landing secteur ou widget. Pas un textarea. Wizard 8-11 étapes max.
 
 ### 2. Configuration guidée
 
-Branches Si/Alors (particulier vs pro vs syndic ; urgence vs rénovation vs neuf ; pièce ; accès). Catalogue de forfaits dépannage / lignes sanitaires / options dépose. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b).
+Les questions se suivent dans un ordre fixe : type de client (particulier, pro, syndic), contexte, pièce, accès. Les règles Si/Alors servent à suggérer des produits du catalogue (forfaits dépannage, lignes sanitaires, options de dépose). Le commercial retrouve les mêmes lignes en interne. Voir [options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b).
 
 ### 3. Score et assignation
 
@@ -157,7 +157,7 @@ Côté QuoteBuilder, l'affichage devis reste souvent une fourchette indicative e
 
 Lien magique : récap, options, questions, documents (photos, plan si neuf). Le prospect n'a pas à chercher le bon PDF. Voir [envoyer devis lien vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) et [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
 
-Sur syndic ou compte pro, invitez les relecteurs (Responsable technique, Directeur financier…). Ils peuvent **Valider le dossier** ou demander des **Modifications** (commentaire + budget max). Commentaires en fil plat. Pas d'acceptation en ligne inventée comme substitut au closing : le commercial pose le statut **Gagné** quand le deal est clos. « Accepté » n'est qu'un libellé d'espace prospect dans ce cas.
+Sur syndic ou compte pro, invitez les relecteurs (Responsable technique, Directeur financier…). Chacun a son propre lien. Ils peuvent **Valider le dossier** ou demander des **Modifications** (commentaire + budget max). Commentaires en fil plat. Pas d'acceptation en ligne inventée comme substitut au closing : le commercial pose le statut **Gagné** quand le deal est clos. « Accepté » n'est qu'un libellé d'espace prospect dans ce cas.
 
 ### 7. Relances
 
@@ -183,9 +183,9 @@ Sans photo d'accès, vous multipliez les déplacements inutiles. L'[estimateur c
 
 ## Matériaux, options et variantes (sans catalogue infini)
 
-Beaucoup d'entreprises proposent plusieurs gammes sanitaires. Évitez un wizard de 40 écrans. Une branche « niveau de finition » + options suffit souvent :
+Beaucoup d'entreprises proposent plusieurs gammes sanitaires. Évitez un wizard de 40 écrans. Une question « niveau de finition », au même endroit du parcours, plus des options, suffit souvent :
 
-| Branche / option | Infos critiques |
+| Cas | Infos critiques |
 |------------------|-----------------|
 | Dépannage / mise en sécurité | Localisation, photos, accès, urgence |
 | Remplacement appareil | Type appareil, photos raccordements, accès |
@@ -219,7 +219,7 @@ Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les de
 
 ## Erreurs fréquentes en plomberie / sanitaire
 
-1. **Traiter toute demande comme une urgence** (ou l'inverse) : branche « contexte » dès le début.
+1. **Traiter toute demande comme une urgence** (ou l'inverse) : question « contexte » dès le début, dans l'ordre fixe du parcours.
 2. **Visiter sans photos** : vous payez pour collecter le brief.
 3. **Promettre un forfait national** sans accès ni existant.
 4. **Mélanger particulier, pro et syndic** sur les mêmes champs.
@@ -251,7 +251,7 @@ Dangereux sans brief. Préférez un parcours qui aboutit à une estimation perso
 
 ### Comment gérer urgence et projet long dans le même funnel ?
 
-Branche précoce « contexte ». SLA et scoring différents. Même dossier ensuite.
+Une question « contexte » posée dans un ordre fixe. SLA et scoring différents. Même dossier ensuite.
 
 ### Comment parler d'assurance sans se tromper ?
 
@@ -259,7 +259,7 @@ Mention générique + collecte d'infos + traitement humain. Pas de promesse de p
 
 ### Fuite et rénovation salle de bain doivent-elles être deux funnels ?
 
-Pas forcément. Une branche « type d'intervention » dans le même funnel suffit souvent. Séparez seulement si les équipes / catalogues sont vraiment distincts.
+Pas forcément. Une question « type d'intervention » dans le même funnel, dans un ordre fixe, suffit souvent. Séparez seulement si les équipes / catalogues sont vraiment distincts.
 
 ### Comment éviter l'abandon à l'étape photos ?
 

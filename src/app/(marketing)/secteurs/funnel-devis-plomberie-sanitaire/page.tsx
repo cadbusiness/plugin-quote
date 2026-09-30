@@ -24,7 +24,7 @@ const FAQ = [
   },
   {
     q: "Comment gérer urgence et projet long dans le même funnel ?",
-    a: "Branche précoce « contexte ». SLA et scoring différents. Même dossier ensuite.",
+    a: "Une question « contexte », posée dans un ordre fixe. Le score et le SLA changent selon la réponse. Le dossier reste le même ensuite.",
   },
   {
     q: "Comment parler d’assurance sans se tromper ?",
@@ -32,7 +32,7 @@ const FAQ = [
   },
   {
     q: "Fuite et rénovation salle de bain doivent-elles être deux funnels ?",
-    a: "Pas forcément. Une branche « type d’intervention » dans le même funnel suffit souvent. Séparez seulement si les équipes ou les catalogues sont vraiment distincts.",
+    a: "Pas forcément. Une question « type d’intervention », dans le même funnel et dans un ordre fixe, suffit souvent. Séparez seulement si les équipes ou les catalogues sont vraiment distincts.",
   },
   {
     q: "Comment éviter l’abandon à l’étape photos ?",
@@ -109,8 +109,8 @@ export default function PlomberieSanitaireLandingPage() {
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">La chaîne, sur ce métier</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
-              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches type d’intervention, pièce, accès, photos, urgence." },
-              { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Forfaits dépannage, sanitaires, dépose, accès." },
+              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Questions en ordre fixe : type d’intervention, pièce, accès, photos, urgence." },
+              { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Forfaits dépannage, sanitaires, dépose. Si/Alors pour les produits suggérés." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, urgence vs projet, assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances, validité." },
             ].map((item) => (
@@ -129,8 +129,8 @@ export default function PlomberieSanitaireLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer le template plomberie / sanitaire"
-        text="Un parcours type d’intervention, pièce, accès, photos, urgence vs projet. Le plan Free suffit pour voir l’interface, sans carte."
+        title="Essayer gratuitement"
+        text="Posez type d’intervention, pièce, accès, photos et urgence dans un ordre fixe, puis scorez le dossier. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );
