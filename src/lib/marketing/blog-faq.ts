@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "statuts-pipeline-devis-b2b": [
+    {
+      q: "Combien de statuts faut-il dans un pipeline devis B2B ?",
+      a: "Sept suffisent si chacun a une règle claire : Commencée, Nouveau, Contacté, En cours, En attente, Gagné, Perdu. Au-delà, vous recréez souvent des nuances qui devraient vivre dans la prochaine action.",
+    },
+    {
+      q: "Pourquoi « Accepté » n’est pas un statut CRM ?",
+      a: "Parce que c’est un libellé d’espace prospect quand le devis est déjà Gagné. Ce n’est pas une étape intermédiaire que le prospect active pour pousser le CRM.",
+    },
+    {
+      q: "Et « Signé » ?",
+      a: "Un libellé de graphique de stats, pas une colonne CRM, pas une preuve de signature électronique prospect dans le produit.",
+    },
+    {
+      q: "Qui pose Gagné et Perdu ?",
+      a: "Le commercial (ou le process interne). Pas une acceptation en ligne automatique du prospect. Les relecteurs valident le dossier ou demandent des Modifications ; ils ne remplacent pas la décision commerciale.",
+    },
+    {
+      q: "Quelle différence entre En cours et En attente ?",
+      a: "En cours : le ballon est chez vous. En attente : chez le client ou un tiers, avec une date de revue. Sans cette distinction, tout devient un parking.",
+    },
+    {
+      q: "Le score Hot / Warm / Cold remplace-t-il le statut ?",
+      a: "Non. Le score trie et priorise. Le statut dit où en est le deal dans le cycle. Dans QuoteBuilder le score suit une formule fixe (surface, load, access, project_type, constraints, longueur du besoin) ; il ignore photos, zone, urgence ; il n’est pas configurable et n’embarque pas de SLA produit.",
+    },
+    {
+      q: "Faut-il un statut « Vu » quand le prospect ouvre le devis ?",
+      a: "Non. Une dernière consultation relative est un indice utile, pas un statut. Posez plutôt En attente / En cours avec une prochaine action.",
+    },
+    {
+      q: "Comment forcer les sorties Perdu sans casser le moral ?",
+      a: "Ritualisez : revue hebdo, âge max, motif court, et rappel que Perdu libère du temps pour les Hot. Montrez le coût des fantômes avec l’estimateur.",
+    },
+    {
+      q: "Les relecteurs changent-ils le statut CRM ?",
+      a: "Ils aident le circuit client (Valider / Modifications, badges, notifications). Le passage Gagné / Perdu reste une décision commerciale. Pas de signature prospect, pas de commentaires ancrés aux lignes.",
+    },
+    {
+      q: "Combien de temps pour assainir un pipeline gonflé ?",
+      a: "Souvent deux semaines pour le vocabulaire, le ménage des plus vieux, et la première vraie revue. Le maintien est hebdomadaire : sans rituel, les fantômes reviennent.",
+    },
+  ],
   "tva-ht-ttc-devis-b2b-france": [
     {
       q: "Quelle différence entre HT et TTC sur un devis ?",

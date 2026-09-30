@@ -156,6 +156,12 @@ const TOOLS = [
     text: "Devis / mois, % de visites, % inutiles, durée, taux horaire, déplacement, panier, % deals mal priorisés. Visites, heures, coût temps + déplacement, opportunités. Calcul 100 % local.",
   },
   {
+    href: "/outils/estimateur-cout-pipeline-fantome-devis",
+    eyebrow: "Pilotage",
+    title: "Estimateur coût du pipeline fantôme devis",
+    text: "Dossiers ouverts, % sans maj de statut depuis 30 jours, minutes de suivi, taux horaire, panier, parts Perdu et Gagné non closés. Fantômes, heures, coût temps, opportunités. Calcul 100 % local.",
+  },
+  {
     href: "/outils/calculateur-tva-devis-ht-ttc",
     eyebrow: "Pilotage",
     title: "Calculateur TVA devis HT / TTC",
@@ -173,7 +179,7 @@ export default function OutilsIndexPage() {
             Chiffrer le trou. Rédiger les touches.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-mk-muted sm:text-lg">
-            Vingt-quatre outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
+            Vingt-cinq outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
           </p>
         </div>
       </section>
