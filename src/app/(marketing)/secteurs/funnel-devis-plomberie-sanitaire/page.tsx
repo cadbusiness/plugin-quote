@@ -7,7 +7,7 @@ import { loadPostBody } from "@/lib/marketing/load-post";
 import { SITE_URL, pageMetadata } from "@/lib/marketing/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Funnel de devis plomberie et sanitaire : fuite, rénovation, neuf, brief scoré",
+  title: "Funnel de devis plomberie et sanitaire : fuite, rénovation, neuf, libellé automatique",
   description:
     "Landing SEO artisans et entreprises plomberie / sanitaire : funnel de devis (type d’intervention, type de pièce, accès, photos, urgence, type client, matériaux, options), sans barèmes ni prix officiels inventés.",
   path: "/secteurs/funnel-devis-plomberie-sanitaire",
@@ -24,7 +24,7 @@ const FAQ = [
   },
   {
     q: "Comment gérer urgence et projet long dans le même funnel ?",
-    a: "Une question « contexte », posée dans un ordre fixe. Le score et le SLA changent selon la réponse. Le dossier reste le même ensuite.",
+    a: "Une question « contexte », posée dans un ordre fixe. QuoteBuilder pose un libellé automatique Hot, Warm ou Cold à partir des réponses du formulaire. L’urgence et le délai de réponse se trient dans l’équipe, hors produit. Le dossier reste le même ensuite.",
   },
   {
     q: "Comment parler d’assurance sans se tromper ?",
@@ -40,11 +40,11 @@ const FAQ = [
   },
   {
     q: "QuoteBuilder planifie-t-il les tournées plombiers ?",
-    a: "Non. Le produit aide à filtrer et scorer les demandes, chiffrer, partager l’espace prospect et relancer. L’agenda terrain reste hors produit.",
+    a: "Non. Le produit collecte le brief, pose un libellé automatique Hot, Warm ou Cold, chiffre, partage l’espace prospect et relance. L’agenda terrain, l’urgence et le délai de réponse restent dans l’équipe.",
   },
   {
     q: "Combien d’étapes idéales ?",
-    a: "Souvent 8 à 11. Au-delà, découpez (cœur puis technique) ou repoussez le détail après le score Hot.",
+    a: "Souvent 8 à 11. Au-delà, découpez (cœur puis technique) ou repoussez le détail une fois le libellé posé.",
   },
   {
     q: "Comment démarrer sans refondre tout le site ?",
@@ -52,7 +52,7 @@ const FAQ = [
   },
   {
     q: "Faut-il une validation interne avant d’envoyer un devis plomberie complexe ?",
-    a: "Sur les Hot, les paniers élevés, les accès complexes et les sinistres, oui. Ça réduit les devis trop optimistes.",
+    a: "Sur les dossiers complexes, les paniers élevés, les accès difficiles et les sinistres, oui. Ça réduit les devis trop optimistes.",
   },
 ];
 
@@ -61,7 +61,7 @@ export default function PlomberieSanitaireLandingPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Funnel de devis plomberie et sanitaire : fuite, rénovation, neuf, brief scoré",
+    name: "Funnel de devis plomberie et sanitaire : fuite, rénovation, neuf, libellé automatique",
     url: `${SITE_URL}/secteurs/funnel-devis-plomberie-sanitaire`,
     about: "Plomberie, sanitaire, fuite, rénovation, accès chantier, photos",
     isPartOf: { "@id": `${SITE_URL}/#website` },
@@ -77,11 +77,11 @@ export default function PlomberieSanitaireLandingPage() {
             Secteur · Plomberie et sanitaire
           </p>
           <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl sm:leading-tight">
-            Funnel de devis plomberie et sanitaire : fuite, rénovation, neuf, brief scoré
+            Funnel de devis plomberie et sanitaire : fuite, rénovation, neuf, libellé automatique
           </h1>
           <p className="mt-4 text-[16px] leading-7 text-mk-muted sm:text-lg">
             Type d’intervention, type de pièce, accès, photos, urgence, type de client, matériaux
-            et options. Un brief chiffrable, un score, puis un espace prospect sur un seul lien.
+            et options. Un brief chiffrable, un libellé automatique, puis un espace prospect sur un seul lien.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
@@ -111,7 +111,7 @@ export default function PlomberieSanitaireLandingPage() {
             {[
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Questions en ordre fixe : type d’intervention, pièce, accès, photos, urgence." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Forfaits dépannage, sanitaires, dépose. Si/Alors pour les produits suggérés." },
-              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, urgence vs projet, assignation." },
+              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances, validité." },
             ].map((item) => (
               <Link
@@ -130,7 +130,7 @@ export default function PlomberieSanitaireLandingPage() {
       <MarketingFaq items={FAQ} />
       <MarketingCta
         title="Essayer gratuitement"
-        text="Posez type d’intervention, pièce, accès, photos et urgence dans un ordre fixe, puis scorez le dossier. Le plan Free suffit pour voir l’interface, sans carte."
+        text="Posez type d’intervention, pièce, accès, photos et urgence dans un ordre fixe. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

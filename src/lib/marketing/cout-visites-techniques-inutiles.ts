@@ -49,7 +49,7 @@ export const COUT_VISITES_INUTILES_LABELS = {
   inutiles: "Visites inutiles / mois",
   heures: "Heures perdues / mois (visites inutiles)",
   cout: "Coût temps + déplacement (visites inutiles)",
-  opp: "Opportunité indicative / mois (Hot mal priorisés)",
+  opp: "Opportunité indicative / mois (deals mal priorisés)",
   total: "Coût total indicatif mensuel",
 } as const;
 
@@ -136,7 +136,7 @@ export function computeCoutVisitesInutiles(input: CoutVisitesInutilesInput): Cou
     alertTone = "bad";
     alert = `Friction visites élevée · environ ${fmtEuro(total)} / mois (indicatif).`;
     tip =
-      "Priorité : funnel + photos + score avant de démarrer le fourgon. Réservez les visites aux Hot / risques réels, avec hypothèses écrites si vous chiffrez sans y aller.";
+      "Priorité : funnel et photos avant de démarrer le fourgon. L’équipe réserve les visites aux risques réels, avec hypothèses écrites si vous chiffrez sans y aller.";
   } else if (total >= 7000 || heures >= 15 || inutiles >= 5) {
     alertTone = "warn";
     alert = `Friction visites notable · environ ${fmtEuro(total)} / mois (indicatif).`;
@@ -145,7 +145,7 @@ export function computeCoutVisitesInutiles(input: CoutVisitesInutilesInput): Cou
   } else {
     alertTone = "ok";
     alert = `Friction visites contenue · environ ${fmtEuro(total)} / mois (indicatif).`;
-    tip = "Gardez le filtre. Surveillez quand même les Cold qui insistent pour un déplacement « pour voir ».";
+    tip = "Gardez le filtre. Surveillez quand même les dossiers peu prioritaires qui insistent pour un déplacement « pour voir ».";
   }
 
   const totalTone: CoutVisitesInutilesTone = total >= 20000 ? "bad" : total >= 7000 ? "warn" : "ok";
@@ -182,11 +182,11 @@ export function computeCoutVisitesInutiles(input: CoutVisitesInutilesInput): Cou
     "",
     "Checklist rapide :",
     "- Funnel : type d’intervention, accès, photos, urgence, type client",
-    "- Score Hot / Warm / Cold avant de réserver un créneau",
+    "- Libellé automatique Hot / Warm / Cold, calculé sur les réponses du formulaire",
+    "- Urgence, zone et délai de réponse : tri de l’équipe, hors QuoteBuilder",
     "- Pas de visite pour collecter un brief que WhatsApp aurait donné",
     "- Hypothèses écrites si chiffrage sans visite",
-    "- SLA devis après visite (souvent J0 / 48 h)",
-    "- Relances scorées ; statut Gagné / Perdu posé par le commercial",
+    "- Relances ; statut Gagné / Perdu posé par le commercial",
     "",
     "Calcul local · à adapter à votre réalité métier. Pas de planification de tournée dans cet outil.",
   ].join("\n");

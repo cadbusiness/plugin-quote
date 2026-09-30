@@ -1565,7 +1565,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(visiteBody, /Modifications/);
   assert.doesNotMatch(visiteBody, /badges vu/);
   assert.doesNotMatch(visiteBody, EM_DASH);
-  assert.equal(visiteBody.split(/\s+/).filter(Boolean).length, 2741);
+  assert.equal(visiteBody.split(/\s+/).filter(Boolean).length, 2811);
 }
 
 {
@@ -1587,7 +1587,7 @@ for (const { file, dir } of contentFiles) {
   assert.doesNotMatch(plombBody, /template plomberie/i);
   assert.doesNotMatch(plombBody, /signature électronique/);
   assert.doesNotMatch(plombBody, EM_DASH);
-  assert.equal(plombBody.split(/\s+/).filter(Boolean).length, 2707);
+  assert.equal(plombBody.split(/\s+/).filter(Boolean).length, 2829);
 }
 
 {

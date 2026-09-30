@@ -1,7 +1,7 @@
 ---
 title: "Visite technique avant devis B2B : quand y aller (et quand s'en passer)"
 slug: visite-technique-avant-devis-b2b
-description: "Quand (et quand ne pas) faire une visite technique avant de chiffrer un devis B2B : funnel et brief scorés pour filtrer les déplacements inutiles, hypothèses écrites si on chiffre sans visite, relance après visite."
+description: "Quand (et quand ne pas) faire une visite technique avant de chiffrer un devis B2B : funnel et libellé automatique pour filtrer les déplacements inutiles, hypothèses écrites si on chiffre sans visite, relance après visite."
 canonical: /blog/visite-technique-avant-devis-b2b
 locale: fr-FR
 word_count_target: 2500
@@ -9,7 +9,7 @@ keywords:
   - visite technique avant devis
   - devis B2B visite chantier
   - filtrer déplacements devis
-  - brief scoré devis
+  - libellé automatique devis
   - chiffrage sans visite
   - relance après visite technique
   - funnel devis visite
@@ -20,14 +20,14 @@ updated: 2026-09-30
 
 # Visite technique avant devis B2B : quand y aller (et quand s'en passer)
 
-Mardi 9 h 40. Votre technicien part en visite. Quarante minutes de route. Sur place : un projet vague, pas de photos utiles, un décideur absent, et un brief qui aurait pu se résoudre en trois questions au téléphone. Deux heures plus tard, vous avez un déplacement « pour rien » et un dossier Cold que personne ne relancera correctement.
+Mardi 9 h 40. Votre technicien part en visite. Quarante minutes de route. Sur place : un projet vague, pas de photos utiles, un décideur absent, et un brief qui aurait pu se résoudre en trois questions au téléphone. Deux heures plus tard, vous avez un déplacement « pour rien » et un dossier que l'équipe aurait dû laisser de côté.
 
-Le lendemain, un vrai Hot arrive. Photos correctes, accès clair, urgence réelle. Vous le mettez en file d'attente parce que l'équipe est en route pour un autre « peut-être ». Le prospect signe ailleurs.
+Le lendemain, une demande urgente arrive. Photos correctes, accès clair. Vous la mettez en file d'attente parce que l'équipe est en route pour un autre « peut-être ». Le prospect signe ailleurs.
 
-Ce guide traite d'une décision simple en apparence : **faut-il se déplacer avant de chiffrer ?** Pas d'un module de planning dans le logiciel. L'angle est métier + entrée : comment un [funnel](https://www.quotebuilder.co/blog/formulaire-contact-vs-funnel-devis-b2b) et un [brief scoré](https://www.quotebuilder.co/blog/score-demande-devis-b2b) aident à décider *si* une visite vaut le coup, quelles hypothèses écrire si vous chiffrez sans y aller, et comment relancer après la visite.
+Ce guide traite d'une décision simple en apparence : **faut-il se déplacer avant de chiffrer ?** Pas d'un module de planning dans le logiciel. L'angle est métier + entrée : comment un [funnel](https://www.quotebuilder.co/blog/formulaire-contact-vs-funnel-devis-b2b) prépare le brief, comment le [libellé automatique](https://www.quotebuilder.co/blog/score-demande-devis-b2b) s'affiche, et comment l'équipe décide *si* une visite vaut le coup, quelles hypothèses écrire si vous chiffrez sans y aller, et comment relancer après la visite.
 
 
-**Réduire les déplacements inutiles sans ralentir les Hot :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte).
+**Réduire les déplacements inutiles :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte).
 
 
 ## Ce que « visite technique avant devis » veut dire (et ce que ce n'est pas)
@@ -46,11 +46,11 @@ Ce n'est pas une « signature sur place ». Ce n'est pas non plus un rituel obli
 ### Ce que ce n'est pas
 
 - un planning de tournées dans QuoteBuilder (il n'y en a pas) : la visite se décide et se réserve ailleurs (agenda, terrain, téléphone) ;
-- un score magique qui remplace le jugement métier ;
+- le libellé automatique ne décide pas de la visite ;
 - une excuse pour ne jamais chiffrer à distance quand le brief est bon ;
 - un suivi d'ouverture avancé du devis après envoi (première ouverture, compteur, historique, alertes consultation, pixel e-mail). Sur QuoteBuilder, la **dernière consultation** s'affiche seulement dans le champ « Espace prospect » de la fiche devis, côté commercial, en texte relatif (par exemple « vu il y a 2 h »). La page prospect ne la montre pas. Chaque relecteur a son propre lien. Les pastilles sont **En attente**, **Consulté**, **Validé** et **Modifications**. Le statut CRM (dont **Gagné** / **Perdu**) reste posé par le commercial. Voir [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
 
-<!-- PLACEHOLDER IMAGE: schéma décision visite vs chiffrage distant selon score brief (shoot Content) -->
+<!-- PLACEHOLDER IMAGE: schéma décision d'équipe visite vs chiffrage distant (shoot Content) -->
 
 ## Pourquoi les visites « inutiles » explosent (sans que personne le voie)
 
@@ -58,13 +58,13 @@ Une visite inutile, ce n'est pas seulement « le prospect n'a pas signé ». C'e
 
 1. **Brief trop faible** : type d'intervention flou, pas de photos, accès inconnu, budget irréaliste jamais dit.
 2. **Deal déjà mort** : comparateur, projet non voté, hors zone, hors compétence, décideur introuvable.
-3. **Mauvaise priorité** : vous visitez les Cold parce qu'ils ont insisté au téléphone, pendant que les Hot attendent.
+3. **Mauvaise priorité** : vous visitez les dossiers faibles parce qu'ils ont insisté au téléphone, pendant que les demandes urgentes attendent.
 4. **Hypothèses jamais écrites** : vous chiffrez après visite… mais sans noter ce qui reste à confirmer. Puis litige.
 5. **Pas de relance structurée après visite** : le déplacement a produit un devis, le devis meurt sans suite.
 
-Le coût est réel : heures aller-retour + visite, coût de déplacement fixe, opportunité des Hot non traités. Pour le chiffrer en interne, voir l'[estimateur coût des visites techniques inutiles](https://www.quotebuilder.co/outils/estimateur-cout-visites-techniques-inutiles) et, côté brief photos, l'[estimateur coût aller-retours brief / photos](https://www.quotebuilder.co/outils/estimateur-cout-aller-retours-brief-photos).
+Le coût est réel : heures aller-retour + visite, coût de déplacement fixe, opportunité des demandes urgentes non traitées. Pour le chiffrer en interne, voir l'[estimateur coût des visites techniques inutiles](https://www.quotebuilder.co/outils/estimateur-cout-visites-techniques-inutiles) et, côté brief photos, l'[estimateur coût aller-retours brief / photos](https://www.quotebuilder.co/outils/estimateur-cout-aller-retours-brief-photos).
 
-## Le funnel et le brief scoré : filtrer avant de démarrer le moteur
+## Le funnel et le libellé automatique : filtrer avant de démarrer le moteur
 
 La visite n'est pas l'étape 1. L'étape 1, c'est de [qualifier la demande avant chiffrage](https://www.quotebuilder.co/blog/qualifier-demande-devis-avant-chiffrage).
 
@@ -77,18 +77,20 @@ Un [formulaire contact](https://www.quotebuilder.co/blog/formulaire-contact-vs-f
 - type de client (particulier, pro, syndic…) ;
 - zone, délai, budget indicatif si vous l'osez.
 
-Le [score de demande](https://www.quotebuilder.co/blog/score-demande-devis-b2b) (Hot / Warm / Cold, ou votre grille) ne remplace pas le métier. Il **ordonne** :
+QuoteBuilder pose un libellé automatique Hot, Warm ou Cold, calculé à partir des réponses du formulaire. Il n'est pas configurable. Photos, zone et urgence ne le font pas varier. Voir [score de demande](https://www.quotebuilder.co/blog/score-demande-devis-b2b).
 
-| Score typique | Visite ? | Suite fréquente |
-|---------------|----------|-----------------|
-| Hot + photos exploitables + zone OK | Oui, prioritaire (ou chiffrage indicatif puis visite courte) | Devis sous réserve claire |
-| Hot sans photos / accès flou | Visite ou demande de photos avant déplacement | Ne pas « y aller pour collecter le brief » |
-| Warm sérieux | Téléphone / visioconférence d'abord | Visite seulement si le risque le justifie |
-| Cold (hors zone, vague, comparateur sec) | Non | Nurturing ou refus poli |
+La décision de visite se prend dans l'équipe, hors produit. Urgence, zone, photos et délai de réponse sont ce tri-là.
 
-Sans score, chaque commercial invente sa règle. Avec score + SLA ([délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b), [assignation](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe)), l'équipe sait qui se déplace, quand, et pourquoi.
+| Ce que l'équipe regarde | Visite ? | Suite fréquente |
+|-------------------------|----------|-----------------|
+| Photos exploitables, accès clair, zone OK | Oui, prioritaire, ou indicatif puis visite courte | Devis sous réserve claire |
+| Accès flou, pas de photos | Demande de photos avant déplacement | Ne pas y aller pour collecter le brief |
+| Dossier sérieux, risque modéré | Téléphone ou visio d'abord | Visite seulement si le risque le justifie |
+| Hors zone, vague, comparateur sec | Non | Nurturing ou refus poli |
 
-<!-- PLACEHOLDER IMAGE: dossier scoré Hot avec checklist photos accès avant visite (shoot Content) -->
+Le délai de réponse (qui se déplace, sous quel délai) est une règle d'équipe. QuoteBuilder ne la calcule pas.
+
+<!-- PLACEHOLDER IMAGE: checklist équipe photos accès avant visite, à côté du libellé automatique (shoot Content) -->
 
 ## Quand la visite est utile (même coûteuse)
 
@@ -110,11 +112,11 @@ Vous pouvez souvent chiffrer (au moins un **indicatif**) sans visite si :
 - les photos / plans sont exploitables ;
 - l'accès est simple et déclaré ;
 - le prospect accepte une mention « sous réserve de visite / métré » ;
-- le panier ne justifie pas deux heures de route pour un Warm tiède.
+- le panier ne justifie pas deux heures de route pour un dossier tiède.
 
 Contre-productif :
 
-- visiter pour « faire plaisir » un Cold ;
+- visiter pour « faire plaisir » un dossier déjà faible ;
 - visiter avant d'avoir demandé les photos (vous collectez sur place ce que WhatsApp aurait donné) ;
 - visiter sans décideur présent (vous recommencez) ;
 - bloquer l'agenda équipe sur des « peut-être » pendant la haute saison.
@@ -143,7 +145,7 @@ Côté produit QuoteBuilder, la proposition reste une fourchette indicative en e
 Avant envoi, une [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b) (technique + marge) évite d'envoyer un indicatif trop optimiste. Les [options / variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b) aident à proposer « si accès simple » vs « si nacelle » sans tout reconstruire.
 
 
-**Structurer brief + score avant de démarrer le fourgon :** [essai Free](https://www.quotebuilder.co/signup?plan=free) · [démo publique](https://www.quotebuilder.co/c/demo/rayonnage).
+**Structurer le brief avant de démarrer le fourgon :** [essai Free](https://www.quotebuilder.co/signup?plan=free) · [démo publique](https://www.quotebuilder.co/c/demo/rayonnage).
 
 
 <!-- PLACEHOLDER IMAGE: extrait devis avec bloc hypothèses et mention sous réserve de visite (shoot Content) -->
@@ -168,23 +170,23 @@ Sans séquence, la visite devient un coût sans retour. Adaptez :
 
 - T+0 / T+1 : envoi devis + rappel des hypothèses validées sur site ;
 - T+2 / T+3 : message court (options, accès, délai) ;
-- T+5 / T+7 : relance Hot avec une question précise (« on confirme l'option nacelle ? ») ;
+- T+5 / T+7 : relance avec une question précise (« on confirme l'option nacelle ? ») ;
 - puis nurturing ou **Perdu** assumé.
 
 Méthode générale : [pourquoi les devis meurent sans relance](https://www.quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance), [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier). Évitez les [relances à l'aveugle](https://www.quotebuilder.co/outils/estimateur-cout-relances-aveugles-devis) (« vous avez vu le devis ? ») sans signal utile.
 
-<!-- PLACEHOLDER IMAGE: timeline post-visite envoi devis + relances scorées (shoot Content) -->
+<!-- PLACEHOLDER IMAGE: timeline post-visite envoi devis + relances (shoot Content) -->
 
 ## Grille de décision pratique (à coller en équipe)
 
 Posez ces questions avant de réserver un créneau :
 
 1. Le brief a-t-il le minimum chiffrable (type, zone, accès, photos ou plan) ?
-2. Le score est-il Hot / Warm sérieux, ou Cold déguisé ?
+2. L'équipe confirme-t-elle que la visite vaut le déplacement ? Le libellé automatique s'affiche à côté, sans trancher.
 3. Le décideur sera-t-il présent ?
 4. Que doit produire la visite concrètement (métré, diagnostic, validation accès) ?
 5. Peut-on envoyer un indicatif sous hypothèses écrites d'abord ?
-6. Quel SLA de devis après visite (même jour / 48 h) ?
+6. Quel délai l'équipe s'impose après visite (même jour / 48 h) ? Ce délai est hors QuoteBuilder.
 7. Qui est owner du dossier jusqu'à Gagné / Perdu ?
 
 Si vous ne pouvez pas répondre à (1) et (3), vous n'avez pas une visite : vous avez une exploration payante.
@@ -201,7 +203,7 @@ Mesurez ce qui fait mal :
 
 Ne cherchez pas un pixel d'ouverture e-mail pour justifier la visite. Cherchez des briefs meilleurs et des priorités plus nettes.
 
-<!-- PLACEHOLDER IMAGE: tableau équipe % visites inutiles avant/après funnel scoré (shoot Content) -->
+<!-- PLACEHOLDER IMAGE: tableau équipe % visites inutiles avant/après funnel (shoot Content) -->
 
 ## Cas types par métier (sans barème inventé)
 
@@ -209,17 +211,17 @@ Sans coller de prix « officiels » :
 
 - **Plomberie / sanitaire** : fuite urgente ≠ rénovation salle de bain ≠ neuf. Photos + type pièce + accès + urgence filtrent énormément. Landing dédiée : [funnel devis plomberie sanitaire](https://www.quotebuilder.co/secteurs/funnel-devis-plomberie-sanitaire).
 - **Couverture** : accès / pans / urgence fuite vs projet. Voir [funnel couverture / toiture](https://www.quotebuilder.co/secteurs/funnel-devis-couverture-toiture).
-- **Rayonnage / agencement** : plans et contraintes sol / hauteur remplacent parfois une visite ; sinon visite courte sur Hot.
+- **Rayonnage / agencement** : plans et contraintes sol / hauteur remplacent parfois une visite ; sinon visite courte si l'équipe la juge utile.
 - **Menuiserie sur mesure** : cotes et photos d'ouverture ; visite si pose complexe ou rénovation lourde.
 
-Le pattern est toujours le même : **qualifier → scorer → décider la visite → écrire les hypothèses → relancer**.
+Le pattern est toujours le même : **qualifier → lire le libellé automatique → décider la visite dans l'équipe → écrire les hypothèses → relancer**.
 
 ## Erreurs fréquentes
 
 1. **Visiter tous les leads** « pour se démarquer » : vous vous démarquez surtout par des journées saturées.
 2. **Chiffrer sans visite et sans hypothèses** : le prospect lit un chiffre ferme dans sa tête.
 3. **Visiter sans photos préalables** : vous payez pour collecter ce que le funnel devait collecter.
-4. **Pas de SLA post-visite** : le déplacement chauffe le prospect, le devis arrive trop tard.
+4. **Pas de délai d'équipe après visite** : le déplacement chauffe le prospect, le devis arrive trop tard. Ce délai n'est pas un réglage QuoteBuilder.
 5. **Confondre validation interne et visite** : la visite réduit le risque terrain ; la [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b) réduit le risque d'envoi trop tôt.
 6. **Promettre une acceptation / signature électronique magique** comme substitut au process commercial : côté QuoteBuilder, le commercial pose **Gagné** ; l'espace prospect et les relecteurs aident le circuit client, ils ne remplacent pas le jugement.
 7. **Ignorer le multi-décideurs** après visite : le contact terrain dit oui, Achats bloque. Voir [approbation multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b).
@@ -240,9 +242,9 @@ En collectant type d'intervention, accès, photos, urgence, type de client et zo
 
 Oui, si vous écrivez les hypothèses, distinguez indicatif et ferme, et prévoyez ce qui déclenche une révision. Sans ça, vous vendez une illusion.
 
-### Que mettre dans le score pour décider d'une visite ?
+### Le libellé QuoteBuilder décide-t-il d'une visite ?
 
-Complétude du brief, photos exploitables, zone, urgence, présence d'un décideur, panier estimé, historique du compte. Le score oriente ; le métier tranche.
+Non. QuoteBuilder pose un libellé automatique Hot, Warm ou Cold à partir des réponses du formulaire. Il n'est pas configurable. Photos, zone, urgence et délai de réponse se trient dans l'équipe, hors produit.
 
 ### Combien de temps après la visite faut-il envoyer le devis ?
 
@@ -250,11 +252,11 @@ Le plus tôt possible tant que le contexte est chaud : souvent le jour même ou 
 
 ### QuoteBuilder planifie-t-il les visites techniques ?
 
-Non. L'outil aide à structurer funnel, dossier scoré, devis, espace prospect, relecteurs et relances. La planification terrain reste hors produit (agenda / process équipe).
+Non. L'outil aide à structurer le funnel, le libellé automatique, le devis, l'espace prospect, les relecteurs et les relances. La planification terrain reste hors produit (agenda / process équipe).
 
 ### Comment relancer après une visite sans harceler ?
 
-Une séquence courte liée au score, avec une question métier précise (option, accès, délai), plutôt qu'un « avez-vous lu le devis ? ». Sur la fiche commerciale, le champ Espace prospect montre la dernière consultation. Les pastilles sont En attente, Consulté, Validé et Modifications. Ça aide, sans remplacer le jugement.
+Une séquence courte, avec une question métier précise (option, accès, délai), plutôt qu'un « avez-vous lu le devis ? ». Sur la fiche commerciale, le champ Espace prospect montre la dernière consultation. Les pastilles sont En attente, Consulté, Validé et Modifications. Ça aide, sans remplacer le jugement.
 
 ### Que faire si le décideur est absent le jour J ?
 
@@ -266,7 +268,7 @@ Définissez un critère simple (brief insuffisant, hors scope, deal mort avant v
 
 ### Faut-il une validation interne après visite ?
 
-Sur les Hot / paniers élevés / accès complexes, oui. La visite réduit le doute terrain ; la validation réduit le doute marge / conformité avant envoi.
+Sur les dossiers que l'équipe juge prioritaires, les paniers élevés et les accès complexes, oui. La visite réduit le doute terrain ; la validation réduit le doute marge / conformité avant envoi.
 
 
 **Moins de routes pour rien, plus de devis sur les bons dossiers :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) · [voir la démo](https://www.quotebuilder.co/c/demo/rayonnage).

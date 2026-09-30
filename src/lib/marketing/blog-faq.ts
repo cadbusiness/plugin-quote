@@ -57,8 +57,8 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
       a: "Oui, si vous écrivez les hypothèses, distinguez indicatif et ferme, et prévoyez ce qui déclenche une révision. Sans ça, vous vendez une illusion.",
     },
     {
-      q: "Que mettre dans le score pour décider d’une visite ?",
-      a: "Complétude du brief, photos exploitables, zone, urgence, présence d’un décideur, panier estimé, historique du compte. Le score oriente ; le métier tranche.",
+      q: "Le libellé QuoteBuilder décide-t-il d’une visite ?",
+      a: "Non. QuoteBuilder pose un libellé automatique Hot, Warm ou Cold à partir des réponses du formulaire. Il n’est pas configurable. Photos, zone, urgence et délai de réponse se trient dans l’équipe, hors produit.",
     },
     {
       q: "Combien de temps après la visite faut-il envoyer le devis ?",
@@ -66,11 +66,11 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "QuoteBuilder planifie-t-il les visites techniques ?",
-      a: "Non. L’outil aide à structurer funnel, dossier scoré, devis, espace prospect, relecteurs et relances. La planification terrain reste hors produit (agenda, process équipe).",
+      a: "Non. L’outil aide à structurer le funnel, le libellé automatique, le devis, l’espace prospect, les relecteurs et les relances. La planification terrain reste hors produit (agenda, process équipe).",
     },
     {
       q: "Comment relancer après une visite sans harceler ?",
-      a: "Une séquence courte liée au score, avec une question métier précise (option, accès, délai), plutôt qu’un « avez-vous lu le devis ? ». Sur la fiche commerciale, le champ Espace prospect montre la dernière consultation. Les pastilles sont En attente, Consulté, Validé et Modifications. Ça aide, sans remplacer le jugement.",
+      a: "Une séquence courte, avec une question métier précise (option, accès, délai), plutôt qu’un « avez-vous lu le devis ? ». Sur la fiche commerciale, le champ Espace prospect montre la dernière consultation. Les pastilles sont En attente, Consulté, Validé et Modifications. Ça aide, sans remplacer le jugement.",
     },
     {
       q: "Que faire si le décideur est absent le jour J ?",
@@ -82,7 +82,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Faut-il une validation interne après visite ?",
-      a: "Sur les Hot, les paniers élevés et les accès complexes, oui. La visite réduit le doute terrain ; la validation réduit le doute marge et conformité avant envoi.",
+      a: "Sur les dossiers que l’équipe juge prioritaires, les paniers élevés et les accès complexes, oui. La visite réduit le doute terrain ; la validation réduit le doute marge et conformité avant envoi.",
     },
   ],
   "approbation-client-multi-decideurs-devis-b2b": [

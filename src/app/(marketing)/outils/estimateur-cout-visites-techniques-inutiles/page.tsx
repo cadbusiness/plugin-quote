@@ -31,7 +31,7 @@ const FAQ = [
   },
   {
     q: "Comment relier ça à un funnel ?",
-    a: "Type d’intervention, accès, photos, urgence, type de client, score Hot / Warm / Cold, hypothèses écrites si vous chiffrez sans visite. Le statut Gagné ou Perdu est posé par le commercial. Pas de suivi d’ouverture avancé : la dernière consultation est dans le champ Espace prospect de la fiche commerciale. Pastilles relecteurs : En attente, Consulté, Validé, Modifications. L’équipe est notifiée quand le client invite un relecteur, quand quelqu’un valide ou demande des modifications. Une invitation envoyée par le commercial ne notifie pas l’équipe.",
+    a: "Le funnel collecte type d’intervention, accès, photos, urgence et type de client. QuoteBuilder pose un libellé automatique Hot, Warm ou Cold à partir des réponses du formulaire. Il n’est pas configurable. Hypothèses écrites si vous chiffrez sans visite. Le statut Gagné ou Perdu est posé par le commercial. Pas de suivi d’ouverture avancé : la dernière consultation est dans le champ Espace prospect de la fiche commerciale. Pastilles relecteurs : En attente, Consulté, Validé, Modifications. L’équipe est notifiée quand le client invite un relecteur, quand quelqu’un valide ou demande des modifications. Une invitation envoyée par le commercial ne notifie pas l’équipe.",
   },
 ];
 
@@ -91,6 +91,11 @@ export default function EstimateurCoutVisitesTechniquesInutilesPage() {
           et opportunités.
         </p>
         <p className="mt-4 text-[16px] leading-7 text-mk-muted">
+          QuoteBuilder pose un libellé automatique Hot, Warm ou Cold à partir des réponses du
+          formulaire. Il n’est pas configurable. Urgence, zone et délai de réponse se trient dans
+          l’équipe, hors produit.
+        </p>
+        <p className="mt-4 text-[16px] leading-7 text-mk-muted">
           Ensuite :{" "}
           <Link
             href="/blog/visite-technique-avant-devis-b2b"
@@ -130,7 +135,7 @@ export default function EstimateurCoutVisitesTechniquesInutilesPage() {
       <MarketingFaq items={FAQ} />
       <MarketingCta
         title="Filtrez avant de démarrer le fourgon."
-        text="Funnel, photos, score, hypothèses écrites si vous chiffrez sans visite. Free sans carte."
+        text="Funnel, photos, hypothèses écrites si vous chiffrez sans visite. Free sans carte."
       />
     </>
   );

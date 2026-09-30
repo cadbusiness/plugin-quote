@@ -160,7 +160,7 @@ export default function SecteursPage() {
             </p>
             <p className="mt-2 text-[15px] leading-7 text-mk-muted">
               Fuite, rénovation, neuf, pièce, accès, photos, urgence, type de client. Brief
-              chiffrable, score et espace prospect.
+              chiffrable, libellé automatique et espace prospect.
             </p>
           </Link>
           <Link

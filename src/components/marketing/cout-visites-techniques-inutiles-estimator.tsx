@@ -148,7 +148,7 @@ export function CoutVisitesTechniquesInutilesEstimator() {
             />
             <NumberField
               label={COUT_VISITES_INUTILES_LABELS.pctPerdus}
-              hint="Hot non visités (ou visités trop tard) pendant que l’équipe était sur des inutiles. Sur le volume de devis / mois."
+              hint="Demandes prioritaires non visitées (ou visitées trop tard) pendant que l’équipe était sur des inutiles. Sur le volume de devis / mois."
               value={pctPerdus}
               min={0}
               max={100}

@@ -267,7 +267,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/visite-technique-avant-devis-b2b",
     title: "Visite technique avant devis B2B : quand y aller (et quand s'en passer)",
     description:
-      "Quand (et quand ne pas) faire une visite technique avant de chiffrer un devis B2B : funnel et brief scorés pour filtrer les déplacements inutiles, hypothèses écrites si on chiffre sans visite, relance après visite.",
+      "Quand (et quand ne pas) faire une visite technique avant de chiffrer un devis B2B : funnel et libellé automatique pour filtrer les déplacements inutiles, hypothèses écrites si on chiffre sans visite, relance après visite.",
     publishedAt: "2026-09-30",
     readingMinutes: 13,
     tags: ["funnel", "scoring"],
