@@ -43,9 +43,20 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.8,
     lastModified: "2026-09-29",
   },
+  {
+    path: "/secteurs/funnel-devis-plomberie-sanitaire",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-09-30",
+  },
   { path: "/tarifs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  {
+    path: "/blog/visite-technique-avant-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
   {
     path: "/blog/tva-ht-ttc-devis-b2b-france",
     changeFrequency: "monthly",
@@ -184,6 +195,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-09-29",
+  },
+  {
+    path: "/outils/estimateur-cout-visites-techniques-inutiles",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-09-30",
   },
   {
     path: "/outils/calculateur-tva-devis-ht-ttc",

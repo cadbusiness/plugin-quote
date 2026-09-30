@@ -98,6 +98,7 @@ export const BLOG_TOOL_EMAILS_CLARIFICATION = "/outils/estimateur-cout-emails-cl
 export const BLOG_TOOL_DEVIS_SANS_VALIDATION = "/outils/estimateur-cout-devis-sans-validation";
 export const BLOG_TOOL_RELANCES_AVEUGLES = "/outils/estimateur-cout-relances-aveugles-devis";
 export const BLOG_TOOL_ATTENTE_MULTI = "/outils/estimateur-cout-attente-multi-decideurs-devis";
+export const BLOG_TOOL_VISITES_INUTILES = "/outils/estimateur-cout-visites-techniques-inutiles";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -247,6 +248,12 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     tags: ["funnel", "scoring"],
   },
   {
+    href: BLOG_TOOL_VISITES_INUTILES,
+    title: "Estimateur coût des visites techniques inutiles",
+    text: "Devis / mois, % de visites, % inutiles, durée, taux horaire, déplacement, panier, % deals mal priorisés. Visites, heures, coût temps + déplacement, opportunités. Calcul 100 % local.",
+    tags: ["funnel", "scoring"],
+  },
+  {
     href: BLOG_TOOL_TVA,
     title: "Calculateur TVA devis HT / TTC",
     text: "HT vers TTC ou l’inverse, taux 20 % 10 % 5,5 % 2,1 % 0 % ou perso, jusqu’à 3 lignes. Totaux HT, TVA ventilée, TTC. Calcul 100 % local, indicatif, pas un conseil fiscal.",
@@ -255,6 +262,19 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "visite-technique-avant-devis-b2b",
+    path: "/blog/visite-technique-avant-devis-b2b",
+    title: "Visite technique avant devis B2B : quand y aller (et quand s'en passer)",
+    description:
+      "Quand (et quand ne pas) faire une visite technique avant de chiffrer un devis B2B : funnel et brief scorés pour filtrer les déplacements inutiles, hypothèses écrites si on chiffre sans visite, relance après visite.",
+    publishedAt: "2026-09-30",
+    readingMinutes: 13,
+    tags: ["funnel", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "tva-ht-ttc-devis-b2b-france",
     path: "/blog/tva-ht-ttc-devis-b2b-france",

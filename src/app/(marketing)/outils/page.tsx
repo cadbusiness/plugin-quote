@@ -150,6 +150,12 @@ const TOOLS = [
     text: "Devis / mois, % multi-décideurs, jours d’attente, minutes de relance, taux horaire, panier, % deals perdus ou retardés. Devis concernés, jours-homme, coût temps, opportunités. Calcul 100 % local.",
   },
   {
+    href: "/outils/estimateur-cout-visites-techniques-inutiles",
+    eyebrow: "Pilotage",
+    title: "Estimateur coût des visites techniques inutiles",
+    text: "Devis / mois, % de visites, % inutiles, durée, taux horaire, déplacement, panier, % deals mal priorisés. Visites, heures, coût temps + déplacement, opportunités. Calcul 100 % local.",
+  },
+  {
     href: "/outils/calculateur-tva-devis-ht-ttc",
     eyebrow: "Pilotage",
     title: "Calculateur TVA devis HT / TTC",
