@@ -43,6 +43,48 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
       a: "Ouvrez trois devis récents. Vérifiez qu’aucune ligne ne mélange HT et TTC, que la ventilation de TVA est lisible s’il y a plusieurs taux, et faites valider les libellés sensibles par votre expert-comptable. Sur QuoteBuilder, vérifiez que la fourchette min-max se lit pareil sur la fiche, dans l’espace prospect et sur le PDF, et relisez le pied de page libre. Le prospect a son lien. Chaque relecteur reçoit le sien, valable 30 jours, vers la même page.",
     },
   ],
+  "visite-technique-avant-devis-b2b": [
+    {
+      q: "Faut-il toujours une visite technique avant un devis B2B ?",
+      a: "Non. Seulement quand le risque de mal chiffrer (ou de mal diagnostiquer) dépasse le coût du déplacement, ou quand la visite est le service (dépannage). Sinon, brief, photos et hypothèses écrites suffisent souvent pour un indicatif.",
+    },
+    {
+      q: "Comment un funnel réduit-il les déplacements inutiles ?",
+      a: "En collectant type d’intervention, accès, photos, urgence, type de client et zone avant le rappel. Vous filtrez hors scope, hors zone et briefs vides sans démarrer le fourgon.",
+    },
+    {
+      q: "Peut-on chiffrer sans visite de façon sérieuse ?",
+      a: "Oui, si vous écrivez les hypothèses, distinguez indicatif et ferme, et prévoyez ce qui déclenche une révision. Sans ça, vous vendez une illusion.",
+    },
+    {
+      q: "Le libellé QuoteBuilder décide-t-il d’une visite ?",
+      a: "Non. QuoteBuilder pose un libellé automatique Hot, Warm ou Cold à partir des réponses du formulaire. Il n’est pas configurable. Photos, zone, urgence et délai de réponse se trient dans l’équipe, hors produit.",
+    },
+    {
+      q: "Combien de temps après la visite faut-il envoyer le devis ?",
+      a: "Le plus tôt possible tant que le contexte est chaud : souvent le jour même ou sous 48 h. Au-delà, le prospect compare ailleurs.",
+    },
+    {
+      q: "QuoteBuilder planifie-t-il les visites techniques ?",
+      a: "Non. L’outil aide à structurer le funnel, le libellé automatique, le devis, l’espace prospect, les relecteurs et les relances. La planification terrain reste hors produit (agenda, process équipe).",
+    },
+    {
+      q: "Comment relancer après une visite sans harceler ?",
+      a: "Une séquence courte, avec une question métier précise (option, accès, délai), plutôt qu’un « avez-vous lu le devis ? ». Sur la fiche commerciale, le champ Espace prospect montre la dernière consultation. Les pastilles sont En attente, Consulté, Validé et Modifications. Ça aide, sans remplacer le jugement.",
+    },
+    {
+      q: "Que faire si le décideur est absent le jour J ?",
+      a: "Ne transformez pas la visite en tourisme. Collectez ce qui est possible, notez l’absence, planifiez un point avec le décideur (visio ou rappel) avant de figer un devis ferme.",
+    },
+    {
+      q: "Comment mesurer les visites inutiles ?",
+      a: "Définissez un critère simple (brief insuffisant, hors scope, deal mort avant visite, décideur absent). Comptez le pourcentage sur 30 jours. Reliez-le aux heures et au coût de déplacement via l’estimateur.",
+    },
+    {
+      q: "Faut-il une validation interne après visite ?",
+      a: "Sur les dossiers que l’équipe juge prioritaires, les paniers élevés et les accès complexes, oui. La visite réduit le doute terrain ; la validation réduit le doute marge et conformité avant envoi.",
+    },
+  ],
   "approbation-client-multi-decideurs-devis-b2b": [
     {
       q: "Quelle différence avec la validation interne avant envoi ?",

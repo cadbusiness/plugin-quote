@@ -55,6 +55,11 @@ import {
   COUT_ATTENTE_MULTI_DECIDEURS_LABELS,
   computeCoutAttenteMultiDecideurs,
 } from "./cout-attente-multi-decideurs-devis";
+import {
+  COUT_VISITES_INUTILES_DEFAULTS,
+  COUT_VISITES_INUTILES_LABELS,
+  computeCoutVisitesInutiles,
+} from "./cout-visites-techniques-inutiles";
 import { computeTvaDevisHtTtc, resolveTvaRatePct } from "./tva-devis-ht-ttc";
 import { CHECKLIST_MENTIONS_ITEMS, computeChecklistMentions } from "./checklist-mentions-devis";
 import { MARKETING_ROUTES } from "./routes";
@@ -124,6 +129,8 @@ for (const required of [
   "/outils/estimateur-cout-devis-sans-validation",
   "/outils/estimateur-cout-relances-aveugles-devis",
   "/outils/estimateur-cout-attente-multi-decideurs-devis",
+  "/outils/estimateur-cout-visites-techniques-inutiles",
+  "/blog/visite-technique-avant-devis-b2b",
   "/outils/calculateur-tva-devis-ht-ttc",
   "/blog/tva-ht-ttc-devis-b2b-france",
   "/blog/approbation-client-multi-decideurs-devis-b2b",
@@ -143,6 +150,7 @@ for (const required of [
   "/secteurs/funnel-devis-photovoltaique-solaire",
   "/secteurs/funnel-devis-isolation-thermique-ite",
   "/secteurs/funnel-devis-couverture-toiture",
+  "/secteurs/funnel-devis-plomberie-sanitaire",
   "/blog/pieces-jointes-plans-photos-devis-b2b",
   "/blog/envoyer-devis-lien-securise-vs-pdf-email",
   "/blog/mentions-obligatoires-devis-france",
@@ -175,7 +183,33 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 34);
+assert.equal(BLOG_POSTS.length, 35);
+assert.deepEqual(
+  BLOG_POSTS.find((post) => post.slug === "visite-technique-avant-devis-b2b")?.tags,
+  ["funnel", "scoring"],
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "visite-technique-avant-devis-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "visite-technique-avant-devis-b2b")?.cover,
+  BLOG_DEMO_SHOTS.devisDetail,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "visite-technique-avant-devis-b2b")?.readingMinutes,
+  13,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "visite-technique-avant-devis-b2b")?.publishedAt,
+  "2026-09-30",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "visite-technique-avant-devis-b2b")?.pinned, false);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "visite-technique-avant-devis-b2b")?.path,
+  "/blog/visite-technique-avant-devis-b2b",
+);
+assert.equal(BLOG_FAQ["visite-technique-avant-devis-b2b"]?.length, 10);
 assert.deepEqual(BLOG_POSTS.find((post) => post.slug === "tva-ht-ttc-devis-b2b-france")?.tags, ["funnel"]);
 assert.equal(
   BLOG_POSTS.find((post) => post.slug === "tva-ht-ttc-devis-b2b-france")?.ctaHref,
@@ -708,8 +742,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 15);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 15);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 16);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 16);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 7);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 6);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);
@@ -957,6 +991,29 @@ const requiredSources = {
     "/blog/envoyer-devis-lien-securise-vs-pdf-email",
     "/blog/relancer-devis-hot-depuis-dossier",
     "/blog/espace-prospect-devis-en-ligne",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "visite-technique-avant-devis-b2b.md": [
+    "/outils/estimateur-cout-visites-techniques-inutiles",
+    "/outils/estimateur-cout-aller-retours-brief-photos",
+    "/outils/estimateur-cout-brief-incomplet",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/score-demande-devis-b2b",
+    "/blog/formulaire-contact-vs-funnel-devis-b2b",
+    "/secteurs/funnel-devis-plomberie-sanitaire",
+    "/secteurs/funnel-devis-couverture-toiture",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "funnel-devis-plomberie-sanitaire.md": [
+    "/blog/visite-technique-avant-devis-b2b",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/validation-interne-avant-envoi-devis-b2b",
+    "/secteurs/funnel-devis-couverture-toiture",
+    "/secteurs/funnel-devis-pompe-chaleur-chauffage",
+    "/outils/estimateur-cout-visites-techniques-inutiles",
+    "/outils/estimateur-cout-brief-incomplet",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -1482,6 +1539,55 @@ for (const { file, dir } of contentFiles) {
   assert.doesNotMatch(tvaBody, /blocs TVA/);
   assert.doesNotMatch(tvaBody, EM_DASH);
   assert.equal(tvaBody.split(/\s+/).filter(Boolean).length, 3314);
+}
+
+{
+  const visiteRaw = readFileSync(join(blogDir, "visite-technique-avant-devis-b2b.md"), "utf8");
+  assert.ok(visiteRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const visiteBody = stripFrontmatter(visiteRaw);
+  assert.ok(
+    visiteBody.startsWith("# Visite technique avant devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(visiteBody, /^title:/m);
+  assert.match(visiteBody, /signup\?plan=free/);
+  assert.match(visiteBody, /\/outils\/estimateur-cout-visites-techniques-inutiles/);
+  assert.match(visiteBody, /\/secteurs\/funnel-devis-plomberie-sanitaire/);
+  assert.match(visiteBody, /\/c\/demo\/rayonnage/);
+  assert.match(visiteBody, /première ouverture/);
+  assert.match(visiteBody, /pixel e-mail/);
+  assert.match(visiteBody, /planification terrain reste hors produit|il n'y en a pas/);
+  assert.match(visiteBody, /champ « Espace prospect »/);
+  assert.match(visiteBody, /page prospect ne la montre pas/);
+  assert.match(visiteBody, /En attente/);
+  assert.match(visiteBody, /Consulté/);
+  assert.match(visiteBody, /Validé/);
+  assert.match(visiteBody, /Modifications/);
+  assert.doesNotMatch(visiteBody, /badges vu/);
+  assert.doesNotMatch(visiteBody, EM_DASH);
+  assert.equal(visiteBody.split(/\s+/).filter(Boolean).length, 2811);
+}
+
+{
+  const plombRaw = readFileSync(join(blogDir, "funnel-devis-plomberie-sanitaire.md"), "utf8");
+  assert.ok(plombRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const plombBody = stripFrontmatter(plombRaw);
+  assert.ok(
+    plombBody.startsWith("# Funnel de devis plomberie et sanitaire"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(plombBody, /signup\?plan=free/);
+  assert.match(plombBody, /\/blog\/visite-technique-avant-devis-b2b/);
+  assert.match(plombBody, /\/outils\/estimateur-cout-visites-techniques-inutiles/);
+  assert.match(plombBody, /ne planifie pas la tournée/);
+  assert.match(plombBody, /ordre fixe/);
+  assert.match(plombBody, /Si\/Alors servent à suggérer/);
+  assert.doesNotMatch(plombBody, /branche/i);
+  assert.doesNotMatch(plombBody, /kits/i);
+  assert.doesNotMatch(plombBody, /template plomberie/i);
+  assert.doesNotMatch(plombBody, /signature électronique/);
+  assert.doesNotMatch(plombBody, EM_DASH);
+  assert.equal(plombBody.split(/\s+/).filter(Boolean).length, 2829);
 }
 
 {
@@ -2832,6 +2938,114 @@ assert.equal(attenteClamp.pctPerdus, 100);
 assert.equal(attenteClamp.opp, null);
 assert.equal(attenteClamp.alertTone, "neutral");
 
+const visitesDefault = computeCoutVisitesInutiles({ ...COUT_VISITES_INUTILES_DEFAULTS });
+assert.equal(visitesDefault.visites, 20);
+assert.equal(visitesDefault.inutiles, 6);
+assert.equal(visitesDefault.heures, 15);
+assert.equal(visitesDefault.coutTemps, 975);
+assert.equal(visitesDefault.coutDepl, 210);
+assert.equal(visitesDefault.cout, 1185);
+assert.equal(visitesDefault.deals, 3);
+assert.equal(visitesDefault.opp, 13500);
+assert.equal(visitesDefault.total, 14685);
+assert.equal(visitesDefault.alertTone, "warn");
+assert.equal(visitesDefault.totalTone, "warn");
+assert.equal(visitesDefault.oppTone, "warn");
+assert.match(visitesDefault.alert, /Friction visites notable/);
+assert.match(visitesDefault.recap, /Checklist rapide/);
+assert.match(visitesDefault.recap, /statut Gagné \/ Perdu posé par le commercial/);
+assert.match(visitesDefault.recap, /Pas de planification de tournée dans cet outil/);
+assert.doesNotMatch(visitesDefault.recap, /signature électronique/);
+assert.doesNotMatch(visitesDefault.recap, /première ouverture/);
+assert.doesNotMatch(visitesDefault.tip, /planifie les tournées/);
+assert.equal(COUT_VISITES_INUTILES_LABELS.devis, "Devis / demandes traitées / mois");
+assert.equal(COUT_VISITES_INUTILES_LABELS.total, "Coût total indicatif mensuel");
+assert.equal(COUT_VISITES_INUTILES_LABELS.cout, "Coût temps + déplacement (visites inutiles)");
+
+const visitesEmpty = computeCoutVisitesInutiles({ ...COUT_VISITES_INUTILES_DEFAULTS, devis: 0 });
+assert.equal(visitesEmpty.visites, 0);
+assert.equal(visitesEmpty.inutiles, 0);
+assert.equal(visitesEmpty.heures, 0);
+assert.equal(visitesEmpty.opp, 0);
+assert.equal(visitesEmpty.total, 0);
+assert.equal(visitesEmpty.alertTone, "neutral");
+assert.match(visitesEmpty.alert, /volume de devis/);
+
+const visitesNoBasket = computeCoutVisitesInutiles({ ...COUT_VISITES_INUTILES_DEFAULTS, panier: 0 });
+assert.equal(visitesNoBasket.opp, null);
+assert.equal(visitesNoBasket.oppLabel, "non calculé (panier = 0)");
+assert.equal(visitesNoBasket.total, visitesNoBasket.cout);
+assert.equal(visitesNoBasket.oppTone, "neutral");
+assert.equal(visitesNoBasket.alertTone, "warn");
+assert.match(visitesNoBasket.recap, /Opportunité indicative : n\/a/);
+
+const visitesLow = computeCoutVisitesInutiles({
+  devis: 8,
+  pctVisite: 10,
+  pctInutile: 10,
+  duree: 1,
+  taux: 40,
+  deplacement: 10,
+  panier: 500,
+  pctPerdus: 1,
+});
+assert.equal(visitesLow.visites, 0.8);
+assert.equal(visitesLow.inutiles, 0.1);
+assert.equal(visitesLow.heures, 0.1);
+assert.equal(visitesLow.coutTemps, 4);
+assert.equal(visitesLow.coutDepl, 1);
+assert.equal(visitesLow.cout, 5);
+assert.equal(visitesLow.deals, 0.1);
+assert.equal(visitesLow.opp, 50);
+assert.equal(visitesLow.total, 55);
+assert.equal(visitesLow.alertTone, "ok");
+assert.match(visitesLow.alert, /Friction visites contenue/);
+
+const visitesHigh = computeCoutVisitesInutiles({
+  devis: 120,
+  pctVisite: 70,
+  pctInutile: 40,
+  duree: 3,
+  taux: 80,
+  deplacement: 40,
+  panier: 10000,
+  pctPerdus: 12,
+});
+assert.equal(visitesHigh.visites, 84);
+assert.equal(visitesHigh.inutiles, 33.6);
+assert.equal(visitesHigh.heures, 100.8);
+assert.equal(visitesHigh.coutTemps, 8064);
+assert.equal(visitesHigh.coutDepl, 1344);
+assert.equal(visitesHigh.cout, 9408);
+assert.equal(visitesHigh.deals, 14.4);
+assert.equal(visitesHigh.opp, 144000);
+assert.equal(visitesHigh.total, 153408);
+assert.equal(visitesHigh.alertTone, "bad");
+assert.equal(visitesHigh.totalTone, "bad");
+assert.equal(visitesHigh.oppTone, "bad");
+assert.match(visitesHigh.tip, /hypothèses écrites/);
+
+const visitesClamp = computeCoutVisitesInutiles({
+  devis: -5,
+  pctVisite: 140,
+  pctInutile: 140,
+  duree: 40,
+  taux: 20000,
+  deplacement: 200000,
+  panier: -1,
+  pctPerdus: 140,
+});
+assert.equal(visitesClamp.devis, 0);
+assert.equal(visitesClamp.pctVisite, 100);
+assert.equal(visitesClamp.pctInutile, 100);
+assert.equal(visitesClamp.duree, 24);
+assert.equal(visitesClamp.taux, 10000);
+assert.equal(visitesClamp.deplacement, 100000);
+assert.equal(visitesClamp.panier, 0);
+assert.equal(visitesClamp.pctPerdus, 100);
+assert.equal(visitesClamp.opp, null);
+assert.equal(visitesClamp.alertTone, "neutral");
+
 const sansValidClamp = computeCoutDevisSansValidation({
   devis: -5,
   sansValidPct: 140,
@@ -3032,6 +3246,9 @@ for (const expected of [
   { path: "/outils/checklist-mentions-devis-france", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
   { path: "/blog/pieces-jointes-plans-photos-devis-b2b", priority: 0.8, lastmod: "2026-09-25" },
+  { path: "/blog/visite-technique-avant-devis-b2b", priority: 0.8, lastmod: "2026-09-30" },
+  { path: "/outils/estimateur-cout-visites-techniques-inutiles", priority: 0.7, lastmod: "2026-09-30" },
+  { path: "/secteurs/funnel-devis-plomberie-sanitaire", priority: 0.8, lastmod: "2026-09-30" },
   { path: "/blog/tva-ht-ttc-devis-b2b-france", priority: 0.8, lastmod: "2026-09-29" },
   { path: "/outils/calculateur-tva-devis-ht-ttc", priority: 0.7, lastmod: "2026-09-29" },
   { path: "/blog/approbation-client-multi-decideurs-devis-b2b", priority: 0.8, lastmod: "2026-09-29" },
@@ -3070,6 +3287,9 @@ assert.ok(paths.includes("/outils/calculateur-tva-devis-ht-ttc"));
 assert.ok(paths.includes("/blog/approbation-client-multi-decideurs-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-attente-multi-decideurs-devis"));
 assert.ok(paths.includes("/secteurs/funnel-devis-couverture-toiture"));
+assert.ok(paths.includes("/blog/visite-technique-avant-devis-b2b"));
+assert.ok(paths.includes("/outils/estimateur-cout-visites-techniques-inutiles"));
+assert.ok(paths.includes("/secteurs/funnel-devis-plomberie-sanitaire"));
 assert.ok(paths.includes("/blog/suivi-ouverture-lecture-devis-en-ligne-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-relances-aveugles-devis"));
 assert.ok(paths.includes("/blog/validation-interne-avant-envoi-devis-b2b"));
@@ -3459,6 +3679,9 @@ const llmsPaths = [
   "/blog/tva-ht-ttc-devis-b2b-france",
   "/outils/calculateur-tva-devis-ht-ttc",
   "/secteurs/funnel-devis-couverture-toiture",
+  "/blog/visite-technique-avant-devis-b2b",
+  "/outils/estimateur-cout-visites-techniques-inutiles",
+  "/secteurs/funnel-devis-plomberie-sanitaire",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -3838,6 +4061,9 @@ assert.equal(tvaSameRate.alertTone, "ok");
 assert.equal(tvaSameRate.showBreakdown, true);
 
 for (const [path, lastmod] of [
+  ["/blog/visite-technique-avant-devis-b2b", "2026-09-30"],
+  ["/outils/estimateur-cout-visites-techniques-inutiles", "2026-09-30"],
+  ["/secteurs/funnel-devis-plomberie-sanitaire", "2026-09-30"],
   ["/blog/tva-ht-ttc-devis-b2b-france", "2026-09-29"],
   ["/outils/calculateur-tva-devis-ht-ttc", "2026-09-29"],
   ["/blog/approbation-client-multi-decideurs-devis-b2b", "2026-09-29"],
