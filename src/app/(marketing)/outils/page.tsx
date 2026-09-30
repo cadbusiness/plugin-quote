@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/marketing/site";
 export const metadata: Metadata = pageMetadata({
   title: "Outils devis B2B",
   description:
-    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage, impact remise, seuil de remise et plancher de marge, ROI logiciel, taux d’acceptation, coût d’un brief incomplet, coût des devis expirés, calculateur d’acompte, gain de temps catalogue, générateur d’URL de préremplissage, estimateur leads formulaire vs funnel WordPress, estimateur coût des devis PDF seuls, checklist mentions devis France, estimateur coût des allers-retours brief sans photos, estimateur coût des e-mails de clarification, estimateur coût des devis envoyés sans validation interne, estimateur coût des relances à l’aveugle, estimateur coût d’attente multi-décideurs. Outils gratuits QuoteBuilder.",
+    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage, impact remise, seuil de remise et plancher de marge, ROI logiciel, taux d’acceptation, coût d’un brief incomplet, coût des devis expirés, calculateur d’acompte, gain de temps catalogue, générateur d’URL de préremplissage, estimateur leads formulaire vs funnel WordPress, estimateur coût des devis PDF seuls, checklist mentions devis France, estimateur coût des allers-retours brief sans photos, estimateur coût des e-mails de clarification, estimateur coût des devis envoyés sans validation interne, estimateur coût des relances à l’aveugle, estimateur coût d’attente multi-décideurs, calculateur TVA devis HT/TTC. Outils gratuits QuoteBuilder.",
   path: "/outils",
 });
 
@@ -149,6 +149,12 @@ const TOOLS = [
     title: "Estimateur coût d’attente multi-décideurs sur devis",
     text: "Devis / mois, % multi-décideurs, jours d’attente, minutes de relance, taux horaire, panier, % deals perdus ou retardés. Devis concernés, jours-homme, coût temps, opportunités. Calcul 100 % local.",
   },
+  {
+    href: "/outils/calculateur-tva-devis-ht-ttc",
+    eyebrow: "Pilotage",
+    title: "Calculateur TVA devis HT / TTC",
+    text: "HT vers TTC ou l’inverse, taux 20 % 10 % 5,5 % 2,1 % 0 % ou perso, jusqu’à 3 lignes. Totaux HT, TVA ventilée, TTC. Calcul 100 % local, indicatif, pas un conseil fiscal.",
+  },
 ] as const;
 
 export default function OutilsIndexPage() {
@@ -161,7 +167,7 @@ export default function OutilsIndexPage() {
             Chiffrer le trou. Rédiger les touches.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-mk-muted sm:text-lg">
-            Vingt-trois outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
+            Vingt-quatre outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
           </p>
         </div>
       </section>

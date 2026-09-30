@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "tva-ht-ttc-devis-b2b-france": [
+    {
+      q: "Quelle différence entre HT et TTC sur un devis ?",
+      a: "Le HT est le montant avant TVA. Le TTC est HT + TVA. En B2B on négocie souvent en HT, mais le client regarde aussi le TTC pour son budget cash.",
+    },
+    {
+      q: "Comment calculer la TVA à partir du HT ?",
+      a: "Formule indicative : TVA = HT × taux. Exemple à 20 % : 1 000 € HT → 200 € de TVA. Le taux exact dépend de votre situation : validez-le avec votre expert-comptable.",
+    },
+    {
+      q: "Comment retrouver le HT à partir d’un TTC ?",
+      a: "Formule indicative : HT = TTC ÷ (1 + taux). Exemple à 20 % : 1 200 € TTC → 1 000 € HT. Utilisez le calculateur TVA devis HT/TTC pour éviter les erreurs de virgule.",
+    },
+    {
+      q: "Quels taux de TVA mettre sur un devis en France ?",
+      a: "Les taux courants qu’on croise sont notamment 20 %, 10 %, 5,5 %, 2,1 %, et parfois 0 % / exonération selon les cas. Ce n’est pas une liste à appliquer au hasard : le bon taux dépend de la prestation et du contexte. Demandez conseil à votre expert-comptable.",
+    },
+    {
+      q: "Peut-on mélanger plusieurs taux sur un même devis ?",
+      a: "Oui, c’est fréquent. Bonne pratique générale, hors QuoteBuilder : le taux sur chaque ligne, et une ventilation de la TVA par taux en bas de page. QuoteBuilder ne fait pas cette ventilation. Il affiche une fourchette indicative, en euros entiers.",
+    },
+    {
+      q: "Que mettre en cas d’exonération ou d’autoliquidation ?",
+      a: "Uniquement le libellé validé par votre expert-comptable ou votre avocat. Ne recopiez pas une phrase trouvée en ligne. Sur votre modèle de devis, figez ce texte. Dans QuoteBuilder, les mentions peuvent aller dans le pied de page libre du PDF. Il n’y a pas de champ SIRET ni de numéro de TVA.",
+    },
+    {
+      q: "L’acompte se calcule sur le HT ou le TTC ?",
+      a: "Sur la base que vous écrivez. Choisissez une règle, notez-la (« 30 % TTC à la commande » ou « 30 % du HT »), et alignez facturation et encaissement.",
+    },
+    {
+      q: "Un logiciel de devis choisit-il le bon taux tout seul ?",
+      a: "Le taux applicable se valide avec votre expert-comptable. Une bonne pratique générale, hors QuoteBuilder, est de porter un taux par ligne et de ventiler la TVA. QuoteBuilder n’a pas de champ taux : la fiche, l’espace prospect (« Total indicatif ») et le PDF (« Fourchette indicative ») montrent une fourchette minimum – maximum, en euros entiers. Le calculateur TVA devis HT/TTC applique le taux que vous saisissez, dans le navigateur.",
+    },
+    {
+      q: "Que faire si le prospect ne comprend que le TTC ?",
+      a: "Sur un devis classique, montrez le HT, la TVA et le TTC. En réunion, convertissez son budget TTC en HT maximum avec le calculateur. Sur un dossier QuoteBuilder, le nombre à l’écran est une fourchette indicative : dites ce que ce minimum et ce maximum recouvrent.",
+    },
+    {
+      q: "Par quoi commencer demain matin ?",
+      a: "Ouvrez trois devis récents. Vérifiez qu’aucune ligne ne mélange HT et TTC, que la ventilation de TVA est lisible s’il y a plusieurs taux, et faites valider les libellés sensibles par votre expert-comptable. Sur QuoteBuilder, vérifiez que la fourchette min-max se lit pareil sur la fiche, dans l’espace prospect et sur le PDF, et relisez le pied de page libre. Le prospect a son lien. Chaque relecteur reçoit le sien, valable 30 jours, vers la même page.",
+    },
+  ],
   "approbation-client-multi-decideurs-devis-b2b": [
     {
       q: "Quelle différence avec la validation interne avant envoi ?",
@@ -260,7 +302,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Comment gérer plusieurs décideurs ?",
-      a: "Un même lien, et le PIN du mail de confirmation. Évitez de multiplier les fichiers nominatifs.",
+      a: "Le prospect a son lien, avec le PIN du mail de confirmation. Chaque relecteur reçoit son propre lien, valable 30 jours, vers la même page. Évitez de multiplier les PDF nominatifs.",
     },
     {
       q: "Que faire si le prospect refuse le lien et exige un PDF ?",
