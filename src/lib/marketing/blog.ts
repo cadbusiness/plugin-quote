@@ -374,7 +374,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/commentaires-annotations-devis-collaboratif-b2b",
     title: "Commentaires et annotations sur un devis collaboratif B2B : fin des fils RE: RE:",
     description:
-      "Remplacer les mails RE: RE: par des commentaires et annotations sur un devis partagé (lien sécurisé) : multi-décideurs, threads par ligne, historique, versions et signature.",
+      "Remplacer les mails RE: RE: par des commentaires et annotations sur un devis partagé (lien sécurisé) : multi-décideurs, threads par ligne, historique, versions et relances.",
     publishedAt: "2026-09-25",
     readingMinutes: 12,
     tags: ["funnel"],
@@ -413,7 +413,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/envoyer-devis-lien-securise-vs-pdf-email",
     title: "Envoyer un devis par lien sécurisé vs PDF en pièce jointe",
     description:
-      "PDF en e-mail vs lien sécurisé / espace prospect : ouvertures, versions, relances, signature. Coût réel du PDF-only pour les devis B2B.",
+      "PDF en e-mail vs lien sécurisé / espace prospect : ouvertures, versions, relances, relecteurs. Coût réel du PDF-only pour les devis B2B.",
     publishedAt: "2026-09-24",
     readingMinutes: 12,
     tags: ["funnel", "relances"],

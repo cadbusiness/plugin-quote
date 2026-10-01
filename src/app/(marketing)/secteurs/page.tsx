@@ -130,7 +130,7 @@ export default function SecteursPage() {
             </p>
             <p className="mt-2 text-[15px] leading-7 text-mk-muted">
               Surface, énergie, isolation, accès, aides, photos, délai de pose. Brief chiffrable,
-              score et signature.
+              score et relances.
             </p>
           </Link>
           <Link
@@ -145,7 +145,7 @@ export default function SecteursPage() {
             </p>
             <p className="mt-2 text-[15px] leading-7 text-mk-muted">
               Toiture, kWc, orientation, conso, type de client, accès, option batterie, photos.
-              Brief chiffrable, score et signature.
+              Brief chiffrable, score et relances.
             </p>
           </Link>
           <Link
@@ -205,7 +205,7 @@ export default function SecteursPage() {
             </p>
             <p className="mt-2 text-[15px] leading-7 text-mk-muted">
               Façade, combles, surface, support, accès chantier, photos, type de client. Brief
-              chiffrable, score et signature.
+              chiffrable, score et relances.
             </p>
           </Link>
           <Link
@@ -220,7 +220,7 @@ export default function SecteursPage() {
             </p>
             <p className="mt-2 text-[15px] leading-7 text-mk-muted">
               Dimensions, matériaux, motorisation, éclairage, photos site, délai de pose. Brief
-              chiffrable, score et signature.
+              chiffrable, score et relances.
             </p>
           </Link>
           <Link

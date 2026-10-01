@@ -50,7 +50,7 @@ Le devis est une **proposition**. La facture est un **document de facturation** 
 Conséquences pratiques :
 
 - Un bon devis prépare la future facture (identité, TVA, description, montants), sans prétendre être la facture.
-- Quand le prospect accepte, vous avez besoin d’une **version claire** de ce qui a été accepté (voir [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) et [versions / historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b)).
+- Quand le commercial pose Gagné, vous avez besoin d’une **version claire** de ce qui a été accepté (voir [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit, et [versions / historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b)).
 - Les acomptes demandés sur devis doivent coller à ce que vous pourrez facturer ensuite (voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b)).
 
 Si votre process mélange « devis PDF » et « facture Excel », les mentions deviennent incohérentes d’un document à l’autre. Alignez les blocs d’identité et de TVA une fois pour toutes.

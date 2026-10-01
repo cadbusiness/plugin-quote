@@ -198,7 +198,7 @@ C’est le même esprit que l’[assignation et le délai de prise en charge](ht
 
 Beaucoup d’équipes gardent un PDF téléchargeable dans l’espace, pour les clients qui archivent encore un fichier. L’envoi de travail, lui, reste le lien. Voir [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
 
-La consultation n’est pas une signature. Seule une [acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), ou un bon de commande, clôt le dossier. Le lien sert à savoir quand proposer cette étape, quand une validation interne côté client est déjà faite.
+La consultation n’est pas une décision. Les relecteurs valident le dossier ou demandent des Modifications. Le commercial pose Gagné. L’article [acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) est hors produit.
 
 ## Erreurs fréquentes
 

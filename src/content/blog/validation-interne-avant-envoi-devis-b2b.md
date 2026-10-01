@@ -225,7 +225,7 @@ OK commercial + OK technique (+ OK marge si besoin). Si refus : retour brouillon
 
 ### 6. Envoi versionné
 
-Lien sécurisé (idéalement) + espace prospect. Relance planifiée. Signature possible plus tard : [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b).
+Lien sécurisé (idéalement) + espace prospect. Relance planifiée. Le commercial pose Gagné. L’article [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) est hors produit.
 
 Ce fil ressemble au [parcours devis](https://www.quotebuilder.co/blog/visite-guidee-parcours-devis-b2b) : entrée → dossier → chiffrage → envoi → suivi. La validation est juste le cran entre chiffrage et envoi.
 
@@ -337,7 +337,7 @@ Envoyez un **indicatif clairement marqué** ou un périmètre réduit, ou accél
 
 ### Comment lier validation et signature électronique ?
 
-La validation précède l’envoi. La [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) vient après, sur une version propre. Ne faites pas signer une V1 bancale.
+La validation précède l’envoi. Le commercial pose ensuite Gagné, sur une version propre. L’article [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) décrit un process hors produit.
 
 ### Quel lien avec les mentions obligatoires ?
 

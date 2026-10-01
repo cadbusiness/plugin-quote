@@ -1,7 +1,7 @@
 ---
-title: "Funnel de devis pergola et terrasse sur mesure : brief, options, signature"
+title: "Funnel de devis pergola et terrasse sur mesure : brief, options, relances"
 slug: funnel-devis-pergola-terrasse
-description: "Landing SEO poseurs et fabricants de pergolas, abris et terrasses sur mesure : funnel de devis (dimensions, matériaux, motorisation, éclairage, photos site, délai pose), espace prospect et signature."
+description: "Landing SEO poseurs et fabricants de pergolas, abris et terrasses sur mesure : funnel de devis (dimensions, matériaux, motorisation, éclairage, photos site, délai pose), espace prospect et relances."
 canonical: /secteurs/funnel-devis-pergola-terrasse
 locale: fr-FR
 word_count_target: 2100
@@ -18,7 +18,7 @@ updated: 2026-09-23
 sector: pergola-terrasse
 ---
 
-# Funnel de devis pergola et terrasse sur mesure : brief, options, signature
+# Funnel de devis pergola et terrasse sur mesure : brief, options, relances
 
 Un particulier ou un promoteur ouvre votre site. Il veut une pergola bioclimatique, un abri de terrasse, parfois une structure adossée avec stores et LED. Il clique sur **Demander un devis**.
 
@@ -28,7 +28,7 @@ Pas de dimensions. Pas de type (bioclimatique, toile, polycarbonate, bois). Pas 
 
 Ce n’est pas seulement un sujet commercial. C’est un sujet d’**entrée**.
 
-Cette page explique comment un **funnel de devis pergola / abri / terrasse sur mesure** transforme une demande vague en **brief chiffrable** : dimensions, matériaux, options (motorisation, éclairage, stores), photos site, délai de pose, puis espace prospect et signature. Public : poseurs, fabricants, menuisiers, réseaux et agences qui outillent ces équipes.
+Cette page explique comment un **funnel de devis pergola / abri / terrasse sur mesure** transforme une demande vague en **brief chiffrable** : dimensions, matériaux, options (motorisation, éclairage, stores), photos site, délai de pose, puis espace prospect et relances. Les relecteurs valident le dossier ; le commercial pose Gagné. Public : poseurs, fabricants, menuisiers, réseaux et agences qui outillent ces équipes.
 
 
 **Voir un parcours structuré :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel](https://www.quotebuilder.co/c/demo/rayonnage) pour comprendre funnel → dossier scoré (le principe se transpose aux pergolas et terrasses).
@@ -75,9 +75,9 @@ Sans photo ni côte, l’estimateur suppose. La visite technique devient obligat
 
 « Pour cet été » sans date de décision, sans acompte, sans validité du devis : le planning se remplit de dossiers fantômes. Liez délai, [validité](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b) et prochaines étapes.
 
-### 5. La signature qui traîne
+### 5. Le closing qui traîne
 
-Le devis PDF part par e-mail. Personne ne sait s’il a été ouvert. Relances dispersées. Un [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) + [signature en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) raccourcit le cycle.
+Le devis PDF part par e-mail. Personne ne sait s’il a été ouvert. Relances dispersées. Un [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne), avec relecteurs et relances, raccourcit le cycle. Le commercial pose Gagné.
 
 ## Anatomie d’un brief pergola « chiffrable »
 
@@ -98,7 +98,7 @@ Sans ces éléments, [qualifier avant de chiffrer](https://www.quotebuilder.co/b
 
 <!-- PLACEHOLDER IMAGE: brief pergola avec photos site + options cochées (shoot Content) -->
 
-## Parcours type : du clic à la signature
+## Parcours type : du clic au dossier
 
 ### 1. Entrée (Ads, SEO, QR chantier)
 
@@ -120,9 +120,9 @@ Estimateur assemble depuis le catalogue / kits. Moins de reprise Excel. Options 
 
 Lien magique : récap, options, questions, documents. Le prospect n’a pas à chercher le bon PDF dans sa boîte mail.
 
-### 6. Relances + signature
+### 6. Relances
 
-Séquence T+0 / T+2j / T+5j selon score. Acceptation en ligne quand le dossier est prêt.
+Relances selon le score. Les relecteurs valident sur l’espace prospect ; le commercial pose Gagné.
 
 ## Configurateur / funnel vs Excel + PDF
 
@@ -166,22 +166,21 @@ Clarifiez dans le parcours : « devis indicatif sous réserve de visite » vs «
 Trois leviers à lier :
 
 1. **Validité du devis** (ex. 30 jours) : matière et planning bougent. Voir [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
-2. **Créneau pose** : réservé après signature + acompte, pas sur un devis « peut-être ».
+2. **Créneau pose** : réservé après accord commercial (statut Gagné) et acompte, pas sur un devis « peut-être ».
 3. **Acompte / échéances** : rassurer atelier et trésorerie. Voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b).
 
 Sans ça, vous bloquez des semaines pour des prospects qui comparent encore.
 
-## Espace prospect et signature
+## Espace prospect
 
 Après envoi, le prospect doit pouvoir :
 
 - relire le récap (dimensions, options, total) ;
-- poser une question sans relancer un e-mail perdu ;
-- accepter / signer quand c’est le bon moment.
+- poser une question sans relancer un e-mail perdu.
 
-C’est le rôle de l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) et de la [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b). Moins de « vous avez bien reçu mon devis ? ».
+Les relecteurs invités répondent par « Valider le dossier » ou « Modifications ». Le commercial pose Gagné. Moins de « vous avez bien reçu mon devis ? ». Voir l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
 
-<!-- PLACEHOLDER IMAGE: espace prospect devis pergola + bouton accepter (shoot Content) -->
+<!-- PLACEHOLDER IMAGE: espace prospect devis pergola et relecteurs (shoot Content) -->
 
 ## KPIs secteur (à coller au comité mensuel)
 
@@ -220,7 +219,7 @@ Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les de
 
 ## Erreurs fréquentes à éviter sur ce secteur
 
-1. **Promettre un délai pose avant signature** : vous bloquez l’atelier pour un prospect encore en comparaison.
+1. **Promettre un délai pose avant que le commercial pose Gagné** : vous bloquez l’atelier pour un prospect encore en comparaison.
 2. **Cacher les options dans le devis** : le client découvre la LED « en plus » et se sent piégé. Mieux vaut cocher / décocher dès le funnel.
 3. **Un seul PDF sans suivi d’ouverture** : vous relancez à l’aveugle. L’espace prospect réduit le flou.
 4. **Prix au feeling sur les reprises de façade** : standardisez une ligne « reprise / étanchéité » avec fourchette, puis ajuste après visite.
@@ -269,7 +268,7 @@ Un widget funnel sur la page « Devis pergola » + catalogue minimal (5 structur
 - [Qualifier une demande avant chiffrage](https://www.quotebuilder.co/blog/qualifier-demande-devis-avant-chiffrage)
 - [Options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)
 - [Validité et expiration des devis](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b)
-- [Signature et acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b)
+- [Signature et acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit : le commercial pose Gagné
 - [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
 - [Bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b)
 - Hub [/secteurs](https://www.quotebuilder.co/secteurs)

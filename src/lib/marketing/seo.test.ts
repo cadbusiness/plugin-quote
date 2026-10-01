@@ -1569,7 +1569,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(mentionsBody, /\/outils\/checklist-mentions-devis-france/);
   assert.match(mentionsBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(mentionsBody, EM_DASH);
-  assert.equal(mentionsBody.split(/\s+/).filter(Boolean).length, 2712);
+  assert.equal(mentionsBody.split(/\s+/).filter(Boolean).length, 2715);
 }
 
 {
@@ -1585,7 +1585,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(lienBody, /\/outils\/estimateur-cout-devis-pdf-seuls/);
   assert.match(lienBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(lienBody, EM_DASH);
-  assert.equal(lienBody.split(/\s+/).filter(Boolean).length, 2321);
+  assert.equal(lienBody.split(/\s+/).filter(Boolean).length, 2343);
 }
 
 {
@@ -1598,7 +1598,7 @@ for (const { file, dir } of contentFiles) {
   );
   assert.match(pacBody, /signup\?plan=free/);
   assert.doesNotMatch(pacBody, EM_DASH);
-  assert.equal(pacBody.split(/\s+/).filter(Boolean).length, 2063);
+  assert.equal(pacBody.split(/\s+/).filter(Boolean).length, 2078);
 }
 
 {
@@ -1802,7 +1802,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(suiviBody, /\/outils\/estimateur-cout-relances-aveugles-devis/);
   assert.match(suiviBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(suiviBody, EM_DASH);
-  assert.equal(suiviBody.split(/\s+/).filter(Boolean).length, 3862);
+  assert.equal(suiviBody.split(/\s+/).filter(Boolean).length, 3851);
 }
 
 {
@@ -1818,7 +1818,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(validationBody, /\/outils\/estimateur-cout-devis-sans-validation/);
   assert.match(validationBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(validationBody, EM_DASH);
-  assert.equal(validationBody.split(/\s+/).filter(Boolean).length, 2704);
+  assert.equal(validationBody.split(/\s+/).filter(Boolean).length, 2708);
 }
 
 {
@@ -1833,7 +1833,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(iteBody, /\/outils\/estimateur-cout-devis-sans-validation/);
   assert.match(iteBody, /\/blog\/validation-interne-avant-envoi-devis-b2b/);
   assert.doesNotMatch(iteBody, EM_DASH);
-  assert.equal(iteBody.split(/\s+/).filter(Boolean).length, 2572);
+  assert.equal(iteBody.split(/\s+/).filter(Boolean).length, 2587);
 }
 
 {
@@ -1849,7 +1849,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(clarifBody, /\/outils\/estimateur-cout-emails-clarification-devis/);
   assert.match(clarifBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(clarifBody, EM_DASH);
-  assert.equal(clarifBody.split(/\s+/).filter(Boolean).length, 2429);
+  assert.equal(clarifBody.split(/\s+/).filter(Boolean).length, 2436);
 }
 
 {
@@ -1863,7 +1863,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(pvBody, /signup\?plan=free/);
   assert.match(pvBody, /\/outils\/estimateur-cout-aller-retours-brief-photos/);
   assert.doesNotMatch(pvBody, EM_DASH);
-  assert.equal(pvBody.split(/\s+/).filter(Boolean).length, 2291);
+  assert.equal(pvBody.split(/\s+/).filter(Boolean).length, 2306);
 }
 
 {
@@ -1907,7 +1907,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(pergolaBody, /signup\?plan=free/);
   assert.doesNotMatch(pergolaBody, EM_DASH);
   const pergolaWords = pergolaBody.split(/\s+/).filter(Boolean).length;
-  assert.equal(pergolaWords, 2147);
+  assert.equal(pergolaWords, 2165);
 }
 
 {

@@ -152,7 +152,7 @@ Après envoi du devis (idéalement via lien espace prospect) :
 - distinguer Hot et Warm ;
 - figer les versions si le client demande une modif (nouvelle version, pas un PDF parallèle).
 
-Playbook : [relancer un devis Hot depuis le dossier](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier). Pour l’acceptation en ligne (bouton vs signature), l’article [signature / acceptation devis en ligne B2B](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) détaille le tunnel envoi → vue → questions → acceptation.
+Playbook : [relancer un devis Hot depuis le dossier](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier). Les relecteurs valident sur l’espace prospect ; le commercial pose Gagné. L’article [signature / acceptation devis en ligne B2B](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) décrit un process hors produit.
 
 La revue hebdo aide à sortir les dossiers « visite faite, devis non tranché » : [revue pipeline devis B2B](https://www.quotebuilder.co/blog/revue-pipeline-devis-b2b).
 
@@ -254,6 +254,6 @@ Cartographiez vos 20 dernières demandes : champs manquants récurrents (plan, �
 
 ## Conclusion
 
-En cuisine équipée, le devis se gagne ou se perd sur la qualité de l’entrée : typologie, plans, électro, pose, contraintes techniques. Un funnel transforme le « j’ai besoin d’une cuisine » en dossier scoré, assignable et relançable. Le reste (catalogue, versions, espace prospect, acceptation en ligne) amplifie. Sans brief solide, vous chiffrez du vent.
+En cuisine équipée, le devis se gagne ou se perd sur la qualité de l’entrée : typologie, plans, électro, pose, contraintes techniques. Un funnel transforme le « j’ai besoin d’une cuisine » en dossier scoré, assignable et relançable. Le reste (catalogue, espace prospect, relances) amplifie. Le commercial pose Gagné. Sans brief solide, vous chiffrez du vent.
 
 Pour tester le principe : [essai Free](https://www.quotebuilder.co/signup?plan=free) ou [démo](https://www.quotebuilder.co/c/demo/rayonnage).
