@@ -53,6 +53,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Sources d'une demande de devis B2B : funnel, API, intégrations : https://www.quotebuilder.co/blog/sources-demande-devis-b2b-funnel-api
 - Téléphone et WhatsApp vers brief devis B2B : https://www.quotebuilder.co/blog/telephone-whatsapp-vers-brief-devis-b2b
 - Les 7 statuts d'un pipeline devis B2B : https://www.quotebuilder.co/blog/statuts-pipeline-devis-b2b
 - Visite technique avant devis B2B : https://www.quotebuilder.co/blog/visite-technique-avant-devis-b2b
@@ -118,6 +119,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Estimateur coût du pipeline fantôme devis : https://www.quotebuilder.co/outils/estimateur-cout-pipeline-fantome-devis
 - Calculateur TVA devis HT / TTC : https://www.quotebuilder.co/outils/calculateur-tva-devis-ht-ttc
 - Estimateur coût des demandes orales non capturées : https://www.quotebuilder.co/outils/estimateur-cout-demandes-orales-non-capturees
+- Estimateur coût de la double saisie devis : https://www.quotebuilder.co/outils/estimateur-cout-double-saisie-devis
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 

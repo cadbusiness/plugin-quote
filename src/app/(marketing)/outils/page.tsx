@@ -7,7 +7,7 @@ import { pageMetadata } from "@/lib/marketing/site";
 export const metadata: Metadata = pageMetadata({
   title: "Outils devis B2B",
   description:
-    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage, impact remise, seuil de remise et plancher de marge, ROI logiciel, taux d’acceptation, coût d’un brief incomplet, coût des devis expirés, calculateur d’acompte, gain de temps catalogue, générateur d’URL de préremplissage, estimateur leads formulaire vs funnel WordPress, estimateur coût des devis PDF seuls, checklist mentions devis France, estimateur coût des allers-retours brief sans photos, estimateur coût des e-mails de clarification, estimateur coût des devis envoyés sans validation interne, estimateur coût des relances à l’aveugle, estimateur coût d’attente multi-décideurs, estimateur coût des visites techniques inutiles, estimateur coût du pipeline fantôme, calculateur TVA devis HT/TTC, estimateur coût des demandes orales non capturées. Outils gratuits QuoteBuilder.",
+    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage, impact remise, seuil de remise et plancher de marge, ROI logiciel, taux d’acceptation, coût d’un brief incomplet, coût des devis expirés, calculateur d’acompte, gain de temps catalogue, générateur d’URL de préremplissage, estimateur leads formulaire vs funnel WordPress, estimateur coût des devis PDF seuls, checklist mentions devis France, estimateur coût des allers-retours brief sans photos, estimateur coût des e-mails de clarification, estimateur coût des devis envoyés sans validation interne, estimateur coût des relances à l’aveugle, estimateur coût d’attente multi-décideurs, estimateur coût des visites techniques inutiles, estimateur coût du pipeline fantôme, calculateur TVA devis HT/TTC, estimateur coût des demandes orales non capturées, estimateur coût de la double saisie devis. Outils gratuits QuoteBuilder.",
   path: "/outils",
 });
 
@@ -173,6 +173,12 @@ const TOOLS = [
     eyebrow: "Pilotage",
     title: "Estimateur coût des demandes orales non capturées",
     text: "Demandes orales / mois (tél + WhatsApp + SMS), % non capturées, minutes, taux horaire, panier, % deals perdus. Heures, coût temps, opportunités. Le % funnel est indicatif. Calcul 100 % local.",
+  },
+  {
+    href: "/outils/estimateur-cout-double-saisie-devis",
+    eyebrow: "Pilotage",
+    title: "Estimateur coût de la double saisie devis",
+    text: "Demandes / mois en double saisie, minutes, % d’infos déformées, % qui meurent ou repartent en clarification, taux horaire, panier. Heures, coût temps, dossiers déformés, opportunités. Calcul 100 % local.",
   },
 ] as const;
 

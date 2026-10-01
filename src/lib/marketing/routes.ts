@@ -59,6 +59,11 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   {
+    path: "/blog/sources-demande-devis-b2b-funnel-api",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  {
     path: "/blog/telephone-whatsapp-vers-brief-devis-b2b",
     changeFrequency: "monthly",
     priority: 0.8,
@@ -232,6 +237,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/estimateur-cout-demandes-orales-non-capturees",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-01",
+  },
+  {
+    path: "/outils/estimateur-cout-double-saisie-devis",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-01",
