@@ -39,8 +39,8 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
       a: "Un formulaire contact pauvre recrée la double saisie. Un funnel (ou un pont plugin vers QuoteBuilder) capture le brief. Comparer formulaire vs funnel, recevoir les demandes WordPress, et l'estimateur formulaire vs funnel WP.",
     },
     {
-      q: "Accepté / Signé / versions / TVA : ça joue sur les sources ?",
-      a: "Non. Ce sont d'autres sujets produit. Rappel : Accepté / Signé ne sont pas des statuts CRM ; pas de versions Vn ; pas d'acceptation en ligne prospect ; pas de TVA stockée (fourchette min-max). La priorité sources reste : naître juste, une fois, sans resaisie.",
+      q: "Validité, versions, signature, kits, TVA : ça joue sur les sources ?",
+      a: "Non. Le produit ne les porte pas. Pas de date de validité, pas de versions Vn, pas de signature en ligne prospect, pas de kits (options, variantes, produits liés), pas de TVA stockée (fourchette min-max). Le funnel n'a pas de branchement conditionnel : ordre fixe, Si/Alors pour suggérer des produits. Accepté / Signé ne sont pas des statuts CRM. La priorité sources reste : naître juste, une fois, sans resaisie.",
     },
   ],
   "telephone-whatsapp-vers-brief-devis-b2b": [

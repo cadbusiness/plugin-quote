@@ -27,7 +27,7 @@ const FAQ = [
   },
   {
     q: "QuoteBuilder a-t-il un écran pour saisir ou importer un devis ?",
-    a: "Non. Pas de saisie manuelle de devis, pas d’écran d’import. Les demandes naissent du funnel public, de /api/leads, des plugins, de l’agent chat, ou d’un lien préfill que le commercial envoie. Le commercial ne joint pas de fichiers : les pièces viennent des uploads prospect.",
+    a: "Non. Pas de saisie manuelle de devis, pas d’écran d’import. Les demandes naissent du funnel public, de /api/leads, des plugins, de l’agent chat, ou d’un lien préfill rempli par le commercial. Le commercial ne joint pas de fichiers : les pièces viennent des uploads prospect. Pas de validité, de versions, de signature, de kits ni de TVA. Le funnel reste en ordre fixe, sans branchement conditionnel.",
   },
   {
     q: "L’outil change-t-il un score ou un statut ?",

@@ -1606,6 +1606,20 @@ for (const { file, dir } of contentFiles) {
     "frontmatter must be stripped before render",
   );
   assert.match(storesBody, /signup\?plan=free/);
+  const storesPage = readFileSync(
+    join(process.cwd(), "src/app/(marketing)/secteurs/funnel-devis-stores-fermetures/page.tsx"),
+    "utf8",
+  );
+  assert.match(storesPage, /Essayer le template Menuisier/);
+  assert.match(storesPage, /Ouverture « Fenêtre, porte, store »/);
+  assert.doesNotMatch(storesPage, /pas de template/i);
+  const pergolaPage = readFileSync(
+    join(process.cwd(), "src/app/(marketing)/secteurs/funnel-devis-pergola-terrasse/page.tsx"),
+    "utf8",
+  );
+  assert.doesNotMatch(pergolaPage, /Kits structure/);
+  assert.match(pergolaPage, /produits liés de pose/);
+  assert.match(pergolaPage, /Essayer le template Paysagiste/);
 }
 
 {
@@ -1710,9 +1724,12 @@ for (const { file, dir } of contentFiles) {
   assert.match(sourcesBody, /Commencée/);
   assert.match(sourcesBody, /En attente/);
   assert.match(sourcesBody, /Accepté \/ Signé ne sont pas des statuts/);
+  assert.match(sourcesBody, /sans branchement conditionnel/);
+  assert.match(sourcesBody, /pas de date de validité/);
+  assert.match(sourcesBody, /pas de kits/);
   assert.doesNotMatch(sourcesBody, /signature électronique/);
   assert.doesNotMatch(sourcesBody, EM_DASH);
-  assert.equal(sourcesBody.split(/\s+/).filter(Boolean).length, 2810);
+  assert.equal(sourcesBody.split(/\s+/).filter(Boolean).length, 2876);
 }
 
 {

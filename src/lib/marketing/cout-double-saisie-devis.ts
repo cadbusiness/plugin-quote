@@ -123,7 +123,7 @@ export function computeCoutDoubleSaisie(input: CoutDoubleSaisieInput): CoutDoubl
     alertTone = "warn";
     alert = `Double saisie notable · environ ${fmtEuro(total)} / mois (indicatif).`;
     tip =
-      "Remplacez le formulaire pauvre par un funnel, branchez WordPress / API, et convertissez WhatsApp via lien préfill le jour même.";
+      "Remplacez le formulaire pauvre par un funnel, reliez WordPress et l'API, et convertissez WhatsApp via lien préfill le jour même.";
   } else {
     alertTone = "ok";
     alert = `Double saisie plutôt contenue · environ ${fmtEuro(total)} / mois (indicatif).`;
@@ -166,6 +166,8 @@ export function computeCoutDoubleSaisie(input: CoutDoubleSaisieInput): CoutDoubl
     "- Le commercial aide via préfill, il ne retape pas hors funnel",
     "- Pièces jointes = uploads prospect (funnel ou espace prospect)",
     "- Score Hot / Warm / Cold à la soumission (formule fixe, pas de SLA produit)",
+    "- Pas de validité, de versions, de signature, de kits ni de TVA stockée",
+    "- Funnel en ordre fixe, sans branchement conditionnel",
     "- Remplacer formulaire pauvre + Excel par une source unique",
     "",
     "Calcul local · à adapter à votre réalité métier.",

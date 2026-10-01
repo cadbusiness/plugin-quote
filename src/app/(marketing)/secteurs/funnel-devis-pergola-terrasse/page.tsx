@@ -102,7 +102,7 @@ export default function PergolaTerrasseLandingPage() {
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Ordre fixe : bioclimatique, toile, options, photos." },
-              { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Kits structure, options LED, lignes de pose." },
+              { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Options et variantes de structure, LED, produits liés de pose." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, délai pose, assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
             ].map((item) => (

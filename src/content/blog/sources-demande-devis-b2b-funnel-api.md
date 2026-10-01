@@ -20,7 +20,7 @@ updated: 2026-10-01
 
 # Sources d'une demande de devis B2B : funnel, API, intégrations (sans double saisie)
 
-Lundi 9 h 10. Trois demandes « urgentes » dans trois boîtes. Un mail avec un PDF scanné. Un formulaire Contact Form 7 qui dit juste « besoin de devis ». Un WhatsApp avec deux photos floues. Le commercial ouvre Excel, recopie le nom, invente une surface « à confirmer », cherche la pièce jointe dans un second fil, crée une ligne CRM. À 11 h, le brief n'est déjà plus celui du prospect. À 16 h, quelqu'un d'autre a chiffré une autre version du même besoin.
+Lundi 9 h 10. Trois demandes « urgentes » dans trois boîtes. Un mail avec un PDF scanné. Un formulaire Contact Form 7 qui dit juste « besoin de devis ». Un WhatsApp avec deux photos floues. Le commercial ouvre Excel, recopie le nom, invente une surface « à confirmer », cherche la pièce jointe dans un second fil, crée une ligne CRM. À 11 h, le brief n'est déjà plus celui du prospect. À 16 h, quelqu'un d'autre a chiffré un besoin qui n'est plus celui du prospect.
 
 Ce n'est pas un problème de motivation. C'est un problème de **source**. Tant que la demande de devis ne naît pas dans un parcours structuré (funnel, API, plugin, lien prérempli), elle vit dans la tête des gens et dans des outils qui n'ont pas le même schéma de données. La double saisie (mail → tableur → logiciel) n'est pas un détail opérationnel : c'est un anti-pattern métier qui déforme le brief, ralentit la réponse et pourrit le pipeline.
 
@@ -65,7 +65,7 @@ Dans QuoteBuilder, il n'y a **pas** d'écran de saisie manuelle de devis / dossi
 
 ### 1. Funnel public
 
-Le prospect parcourt un funnel (questions dans un ordre fixe), joint éventuellement des fichiers, soumet. Le dossier naît avec un brief. C'est le modèle de référence face au [formulaire contact générique](https://www.quotebuilder.co/blog/formulaire-contact-vs-funnel-devis-b2b).
+Le prospect parcourt un funnel (questions dans un ordre fixe, sans branchement conditionnel), joint éventuellement des fichiers, soumet. Le dossier naît avec un brief. C'est le modèle de référence face au [formulaire contact générique](https://www.quotebuilder.co/blog/formulaire-contact-vs-funnel-devis-b2b).
 
 Pourquoi c'est sain :
 
@@ -125,9 +125,10 @@ Pour rester honnête sur le produit :
 - pas de saisie manuelle de devis / dossier dans un écran « créer » ;
 - pas d'import de devis ;
 - le commercial **ne joint pas** de fichiers au dossier : les pièces viennent des uploads prospect (funnel ou espace prospect) ;
-- pas de versions Vn, pas d'acceptation / signature en ligne par le prospect (Gagné / Perdu sont posés par le commercial) ;
+- pas de versions Vn, pas de date de validité, pas d'acceptation / signature en ligne par le prospect (Gagné / Perdu sont posés par le commercial) ;
 - pas de TVA stockée sur les lignes (fourchette indicative min-max en euros) ;
-- pas de kits / bundles catalogue ;
+- pas de kits : seulement des options, des variantes et des produits liés ;
+- pas de branchement conditionnel du funnel : questions dans un ordre fixe, règles Si/Alors pour suggérer des produits sans sauter d'étape ;
 - pas de suivi d'ouverture avancé (seulement une dernière consultation relative sur l'espace prospect) ;
 - statuts CRM fixes seulement : Commencée, Nouveau, Contacté, En cours, Gagné, Perdu, En attente (Accepté / Signé ne sont pas des statuts).
 
@@ -209,9 +210,9 @@ Un dossier resaisi ne se « soigne » pas avec plus de relances : la qualité se
 
 ## Mise en place sur 2 semaines
 
-**Semaine 1 :** cartographie A/B/C + estimateur en réunion ; choisir la source canonique du canal n°1 (souvent site / WP) ; brancher funnel ou plugin ; interdire Excel « temporaire » sur ce canal ; mesurer le % sans resaisie.
+**Semaine 1 :** cartographie A/B/C + estimateur en réunion ; choisir la source canonique du canal n°1 (souvent site / WP) ; relier le funnel ou le plugin ; interdire Excel « temporaire » sur ce canal ; mesurer le % sans resaisie.
 
-**Semaine 2 :** préfill + script téléphone / WhatsApp ; brancher `/api/leads` si un outil métier alimente encore la boîte mail ; en revue, sortir ou requalifier les dossiers nés d'une double saisie trop pauvre. Objectif indicatif : >70 % des **Nouveau** nés d'une source A.
+**Semaine 2 :** préfill + script téléphone / WhatsApp ; relier `/api/leads` si un outil métier alimente encore la boîte mail ; en revue, sortir ou requalifier les dossiers nés d'une double saisie trop pauvre. Objectif indicatif : >70 % des **Nouveau** nés d'une source A.
 
 <!-- PLACEHOLDER IMAGE: checklist 2 semaines sources + % Nouveau sans resaisie (shoot Content) -->
 
@@ -232,7 +233,7 @@ Un dossier resaisi ne se « soigne » pas avec plus de relances : la qualité se
 - Formulaire contact + mail = « on a digitalisé ».
 - Confondre score et statut ; inventer Accepté / Signé dans le CRM.
 - Promettre signature en ligne ou versions Vn pour compenser un brief pourri.
-- Kits / templates secteur magiques comme raccourci d'entrée (hors modèle produit).
+- Pas de kits catalogue, et pas de branchement conditionnel pour raccourcir le funnel.
 
 
 **Mesurer le coût de la resaisie puis couper le canal C :** [estimateur double saisie](https://www.quotebuilder.co/outils/estimateur-cout-double-saisie-devis) · [compte Free](https://www.quotebuilder.co/signup?plan=free) · [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage).
@@ -276,8 +277,8 @@ Minutes perdues × volume × taux chargé, plus une part d'opportunités mortes 
 
 Un formulaire contact pauvre recrée la double saisie. Un funnel (ou un pont plugin vers QuoteBuilder) capture le brief. Comparer : [formulaire vs funnel](https://www.quotebuilder.co/blog/formulaire-contact-vs-funnel-devis-b2b), [recevoir WP](https://www.quotebuilder.co/blog/recevoir-demandes-devis-wordpress-quotebuilder), [estimateur formulaire vs funnel WP](https://www.quotebuilder.co/outils/estimateur-leads-formulaire-vs-funnel-wp).
 
-### 10. Accepté / Signé / versions / TVA : ça joue sur les sources ?
+### 10. Validité, versions, signature, kits, TVA : ça joue sur les sources ?
 
-Non. Ce sont d'autres sujets produit. Rappel : Accepté / Signé ne sont pas des statuts CRM ; pas de versions Vn ; pas d'acceptation en ligne prospect ; pas de TVA stockée (fourchette min-max). La priorité « sources » reste : naître juste, une fois, sans resaisie.
+Non. Le produit ne les porte pas. Pas de date de validité, pas de versions Vn, pas de signature en ligne prospect, pas de kits (options, variantes, produits liés), pas de TVA stockée (fourchette min-max). Le funnel n'a pas de branchement conditionnel : ordre fixe, Si/Alors pour suggérer des produits. Accepté / Signé ne sont pas des statuts CRM. La priorité « sources » reste : naître juste, une fois, sans resaisie.
 
 <!-- PLACEHOLDER IMAGE: récap 5 sources saines + préfill vendeur (shoot Content) -->

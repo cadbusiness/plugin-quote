@@ -121,8 +121,8 @@ export default function StoresFermeturesLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer gratuitement"
-        text="Posez dimensions, motorisation et pose dans un ordre fixe. Il n’y a pas de template stores. Le plan Free suffit pour voir l’interface, sans carte."
+        title="Essayer le template Menuisier"
+        text="Partez du template Menuisier, option Ouverture « Fenêtre, porte, store ». Posez dimensions, motorisation et pose dans un ordre fixe. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );
