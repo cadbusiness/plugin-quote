@@ -49,9 +49,20 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.8,
     lastModified: "2026-09-30",
   },
+  {
+    path: "/secteurs/funnel-devis-electricite-tertiaire",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-01",
+  },
   { path: "/tarifs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  {
+    path: "/blog/telephone-whatsapp-vers-brief-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
   {
     path: "/blog/statuts-pipeline-devis-b2b",
     changeFrequency: "monthly",
@@ -218,6 +229,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-09-29",
+  },
+  {
+    path: "/outils/estimateur-cout-demandes-orales-non-capturees",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-01",
   },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },

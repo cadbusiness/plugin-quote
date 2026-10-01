@@ -6,6 +6,7 @@ import {
   BLOG_IMAGE_DIR,
   BLOG_POSTS,
   BLOG_TAG_DEFS,
+  BLOG_TOOLS,
   BLOG_UI,
   blogArticleJsonLd,
   blogBreadcrumbJsonLd,
@@ -60,6 +61,11 @@ import {
   COUT_VISITES_INUTILES_LABELS,
   computeCoutVisitesInutiles,
 } from "./cout-visites-techniques-inutiles";
+import {
+  COUT_DEMANDES_ORALES_DEFAULTS,
+  COUT_DEMANDES_ORALES_LABELS,
+  computeCoutDemandesOrales,
+} from "./cout-demandes-orales-non-capturees";
 import {
   COUT_PIPELINE_FANTOME_DEFAULTS,
   COUT_PIPELINE_FANTOME_LABELS,
@@ -136,6 +142,8 @@ for (const required of [
   "/outils/estimateur-cout-attente-multi-decideurs-devis",
   "/outils/estimateur-cout-visites-techniques-inutiles",
   "/outils/estimateur-cout-pipeline-fantome-devis",
+  "/outils/estimateur-cout-demandes-orales-non-capturees",
+  "/blog/telephone-whatsapp-vers-brief-devis-b2b",
   "/blog/statuts-pipeline-devis-b2b",
   "/blog/visite-technique-avant-devis-b2b",
   "/outils/calculateur-tva-devis-ht-ttc",
@@ -158,6 +166,7 @@ for (const required of [
   "/secteurs/funnel-devis-isolation-thermique-ite",
   "/secteurs/funnel-devis-couverture-toiture",
   "/secteurs/funnel-devis-plomberie-sanitaire",
+  "/secteurs/funnel-devis-electricite-tertiaire",
   "/blog/pieces-jointes-plans-photos-devis-b2b",
   "/blog/envoyer-devis-lien-securise-vs-pdf-email",
   "/blog/mentions-obligatoires-devis-france",
@@ -190,7 +199,41 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 36);
+assert.equal(BLOG_POSTS.length, 37);
+assert.equal(BLOG_TOOLS.length, 27);
+assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-demandes-orales-non-capturees"));
+const outilsHub = readFileSync(new URL("../../app/(marketing)/outils/page.tsx", import.meta.url), "utf8");
+assert.match(outilsHub, /Vingt-sept outils publics/);
+assert.doesNotMatch(outilsHub, /Vingt-quatre|Vingt-cinq|Vingt-six/);
+assert.match(outilsHub, /estimateur-cout-demandes-orales-non-capturees/);
+const secteursHub = readFileSync(new URL("../../app/(marketing)/secteurs/page.tsx", import.meta.url), "utf8");
+assert.match(secteursHub, /funnel-devis-electricite-tertiaire/);
+assert.deepEqual(
+  BLOG_POSTS.find((post) => post.slug === "telephone-whatsapp-vers-brief-devis-b2b")?.tags,
+  ["funnel", "scoring"],
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "telephone-whatsapp-vers-brief-devis-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "telephone-whatsapp-vers-brief-devis-b2b")?.cover,
+  BLOG_DEMO_SHOTS.devisDetail,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "telephone-whatsapp-vers-brief-devis-b2b")?.readingMinutes,
+  13,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "telephone-whatsapp-vers-brief-devis-b2b")?.publishedAt,
+  "2026-10-01",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "telephone-whatsapp-vers-brief-devis-b2b")?.pinned, false);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "telephone-whatsapp-vers-brief-devis-b2b")?.path,
+  "/blog/telephone-whatsapp-vers-brief-devis-b2b",
+);
+assert.equal(BLOG_FAQ["telephone-whatsapp-vers-brief-devis-b2b"]?.length, 10);
 assert.deepEqual(
   BLOG_POSTS.find((post) => post.slug === "statuts-pipeline-devis-b2b")?.tags,
   ["funnel", "scoring"],
@@ -769,8 +812,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 17);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 17);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 18);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 18);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 7);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 6);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);
@@ -1038,6 +1081,25 @@ const requiredSources = {
     "/blog/formulaire-contact-vs-funnel-devis-b2b",
     "/secteurs/funnel-devis-plomberie-sanitaire",
     "/secteurs/funnel-devis-couverture-toiture",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "telephone-whatsapp-vers-brief-devis-b2b.md": [
+    "/outils/estimateur-cout-demandes-orales-non-capturees",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/blog/score-demande-devis-b2b",
+    "/blog/centraliser-demandes-devis-multi-canaux",
+    "/secteurs/funnel-devis-electricite-tertiaire",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "funnel-devis-electricite-tertiaire.md": [
+    "/blog/telephone-whatsapp-vers-brief-devis-b2b",
+    "/blog/visite-technique-avant-devis-b2b",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/secteurs/funnel-devis-plomberie-sanitaire",
+    "/outils/estimateur-cout-demandes-orales-non-capturees",
+    "/outils/estimateur-cout-visites-techniques-inutiles",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -1574,6 +1636,48 @@ for (const { file, dir } of contentFiles) {
   assert.doesNotMatch(tvaBody, /blocs TVA/);
   assert.doesNotMatch(tvaBody, EM_DASH);
   assert.equal(tvaBody.split(/\s+/).filter(Boolean).length, 3314);
+}
+
+{
+  const oralRaw = readFileSync(join(blogDir, "telephone-whatsapp-vers-brief-devis-b2b.md"), "utf8");
+  assert.ok(oralRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const oralBody = stripFrontmatter(oralRaw);
+  assert.ok(
+    oralBody.startsWith("# Téléphone et WhatsApp vers brief devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(oralBody, /^title:/m);
+  assert.match(oralBody, /signup\?plan=free/);
+  assert.match(oralBody, /\/outils\/estimateur-cout-demandes-orales-non-capturees/);
+  assert.match(oralBody, /\/secteurs\/funnel-devis-electricite-tertiaire/);
+  assert.match(oralBody, /\/c\/demo\/rayonnage/);
+  assert.match(oralBody, /il n'y en a pas|ce n'est pas un client WhatsApp/i);
+  assert.match(oralBody, /formule fixe/);
+  assert.match(oralBody, /Gagné/);
+  assert.match(oralBody, /dernière consultation/);
+  assert.doesNotMatch(oralBody, /signature électronique/);
+  assert.doesNotMatch(oralBody, EM_DASH);
+  assert.equal(oralBody.split(/\s+/).filter(Boolean).length, 2697);
+}
+
+{
+  const elecRaw = readFileSync(join(blogDir, "funnel-devis-electricite-tertiaire.md"), "utf8");
+  assert.ok(elecRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const elecBody = stripFrontmatter(elecRaw);
+  assert.ok(
+    elecBody.startsWith("# Funnel de devis électricité tertiaire"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(elecBody, /signup\?plan=free/);
+  assert.match(elecBody, /\/blog\/telephone-whatsapp-vers-brief-devis-b2b/);
+  assert.match(elecBody, /\/outils\/estimateur-cout-demandes-orales-non-capturees/);
+  assert.match(elecBody, /ordre fixe|étapes produit restent en ordre fixe|ordre fixe/);
+  assert.match(elecBody, /NF C 15-100/);
+  assert.match(elecBody, /pas comme feature|pas un module QuoteBuilder/i);
+  assert.match(elecBody, /il n'existe pas de template secteur électricité/);
+  assert.doesNotMatch(elecBody, /signature électronique/);
+  assert.doesNotMatch(elecBody, EM_DASH);
+  assert.equal(elecBody.split(/\s+/).filter(Boolean).length, 2641);
 }
 
 {
@@ -3107,6 +3211,112 @@ assert.equal(visitesClamp.pctPerdus, 100);
 assert.equal(visitesClamp.opp, null);
 assert.equal(visitesClamp.alertTone, "neutral");
 
+const oralesDefault = computeCoutDemandesOrales({ ...COUT_DEMANDES_ORALES_DEFAULTS });
+assert.equal(oralesDefault.nonCap, 36);
+assert.equal(oralesDefault.heures, 15);
+assert.equal(oralesDefault.cout, 825);
+assert.equal(oralesDefault.deals, 4);
+assert.equal(oralesDefault.opp, 16800);
+assert.equal(oralesDefault.total, 17625);
+assert.equal(oralesDefault.versFunnel, 48);
+assert.equal(oralesDefault.alertTone, "bad");
+assert.equal(oralesDefault.totalTone, "warn");
+assert.equal(oralesDefault.oppTone, "bad");
+assert.match(oralesDefault.alert, /Friction orale élevée/);
+assert.match(oralesDefault.recap, /Checklist rapide/);
+assert.match(oralesDefault.recap, /Gagné \/ Perdu posés par le commercial/);
+assert.match(oralesDefault.recap, /pas de bot WhatsApp inventé/);
+assert.match(oralesDefault.recap, /formule fixe produit/);
+assert.match(oralesDefault.recap, /n'est pas un client WhatsApp/);
+assert.doesNotMatch(oralesDefault.recap, /signature électronique/);
+assert.doesNotMatch(oralesDefault.recap, /première ouverture/);
+assert.equal(COUT_DEMANDES_ORALES_LABELS.orales, "Demandes orales / mois (tél + WhatsApp + SMS)");
+assert.equal(COUT_DEMANDES_ORALES_LABELS.total, "Coût total indicatif mensuel");
+assert.equal(COUT_DEMANDES_ORALES_LABELS.versFunnel, "Orales qui auraient pu aller au funnel (indicatif)");
+
+const oralesEmpty = computeCoutDemandesOrales({ ...COUT_DEMANDES_ORALES_DEFAULTS, orales: 0 });
+assert.equal(oralesEmpty.nonCap, 0);
+assert.equal(oralesEmpty.heures, 0);
+assert.equal(oralesEmpty.cout, 0);
+assert.equal(oralesEmpty.opp, 0);
+assert.equal(oralesEmpty.total, 0);
+assert.equal(oralesEmpty.versFunnel, 0);
+assert.equal(oralesEmpty.alertTone, "neutral");
+assert.match(oralesEmpty.alert, /volume de demandes orales/);
+
+const oralesNoBasket = computeCoutDemandesOrales({ ...COUT_DEMANDES_ORALES_DEFAULTS, panier: 0 });
+assert.equal(oralesNoBasket.opp, null);
+assert.equal(oralesNoBasket.oppLabel, "non calculé (panier = 0)");
+assert.equal(oralesNoBasket.total, oralesNoBasket.cout);
+assert.equal(oralesNoBasket.oppTone, "neutral");
+assert.equal(oralesNoBasket.alertTone, "bad");
+assert.match(oralesNoBasket.recap, /Opportunité indicative : n\/a/);
+
+const oralesFunnelIgnored = computeCoutDemandesOrales({ ...COUT_DEMANDES_ORALES_DEFAULTS, pctFunnel: 0 });
+assert.equal(oralesFunnelIgnored.versFunnel, 0);
+assert.equal(oralesFunnelIgnored.total, oralesDefault.total);
+assert.equal(oralesFunnelIgnored.cout, oralesDefault.cout);
+assert.equal(oralesFunnelIgnored.opp, oralesDefault.opp);
+
+const oralesLow = computeCoutDemandesOrales({
+  orales: 10,
+  pctNonCapturees: 10,
+  minutes: 10,
+  pctFunnel: 20,
+  taux: 40,
+  pctPerdus: 1,
+  panier: 500,
+});
+assert.equal(oralesLow.nonCap, 1);
+assert.equal(oralesLow.heures, 0.2);
+assert.equal(oralesLow.cout, 8);
+assert.equal(oralesLow.deals, 0.1);
+assert.equal(oralesLow.opp, 50);
+assert.equal(oralesLow.total, 58);
+assert.equal(oralesLow.versFunnel, 2);
+assert.equal(oralesLow.alertTone, "ok");
+assert.match(oralesLow.alert, /Friction orale contenue/);
+
+const oralesHigh = computeCoutDemandesOrales({
+  orales: 200,
+  pctNonCapturees: 80,
+  minutes: 40,
+  pctFunnel: 70,
+  taux: 80,
+  pctPerdus: 10,
+  panier: 8000,
+});
+assert.equal(oralesHigh.nonCap, 160);
+assert.equal(oralesHigh.heures, 106.7);
+assert.equal(oralesHigh.cout, 8536);
+assert.equal(oralesHigh.deals, 20);
+assert.equal(oralesHigh.opp, 160000);
+assert.equal(oralesHigh.total, 168536);
+assert.equal(oralesHigh.versFunnel, 140);
+assert.equal(oralesHigh.alertTone, "bad");
+assert.equal(oralesHigh.totalTone, "bad");
+assert.equal(oralesHigh.oppTone, "bad");
+assert.match(oralesHigh.tip, /checklist collable/);
+
+const oralesClamp = computeCoutDemandesOrales({
+  orales: -5,
+  pctNonCapturees: 140,
+  minutes: 2000,
+  pctFunnel: 140,
+  taux: 20000,
+  pctPerdus: 140,
+  panier: -1,
+});
+assert.equal(oralesClamp.orales, 0);
+assert.equal(oralesClamp.pctNonCapturees, 100);
+assert.equal(oralesClamp.minutes, 1440);
+assert.equal(oralesClamp.pctFunnel, 100);
+assert.equal(oralesClamp.taux, 10000);
+assert.equal(oralesClamp.pctPerdus, 100);
+assert.equal(oralesClamp.panier, 0);
+assert.equal(oralesClamp.opp, null);
+assert.equal(oralesClamp.alertTone, "neutral");
+
 const fantomeDefault = computeCoutPipelineFantome({ ...COUT_PIPELINE_FANTOME_DEFAULTS });
 assert.equal(fantomeDefault.fantomes, 34);
 assert.equal(fantomeDefault.heures, 14.2);
@@ -3436,6 +3646,9 @@ for (const expected of [
   { path: "/outils/checklist-mentions-devis-france", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
   { path: "/blog/pieces-jointes-plans-photos-devis-b2b", priority: 0.8, lastmod: "2026-09-25" },
+  { path: "/blog/telephone-whatsapp-vers-brief-devis-b2b", priority: 0.8, lastmod: "2026-10-01" },
+  { path: "/outils/estimateur-cout-demandes-orales-non-capturees", priority: 0.7, lastmod: "2026-10-01" },
+  { path: "/secteurs/funnel-devis-electricite-tertiaire", priority: 0.8, lastmod: "2026-10-01" },
   { path: "/blog/statuts-pipeline-devis-b2b", priority: 0.8, lastmod: "2026-09-30" },
   { path: "/outils/estimateur-cout-pipeline-fantome-devis", priority: 0.7, lastmod: "2026-09-30" },
   { path: "/blog/visite-technique-avant-devis-b2b", priority: 0.8, lastmod: "2026-09-30" },
@@ -3479,6 +3692,9 @@ assert.ok(paths.includes("/outils/calculateur-tva-devis-ht-ttc"));
 assert.ok(paths.includes("/blog/approbation-client-multi-decideurs-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-attente-multi-decideurs-devis"));
 assert.ok(paths.includes("/secteurs/funnel-devis-couverture-toiture"));
+assert.ok(paths.includes("/blog/telephone-whatsapp-vers-brief-devis-b2b"));
+assert.ok(paths.includes("/outils/estimateur-cout-demandes-orales-non-capturees"));
+assert.ok(paths.includes("/secteurs/funnel-devis-electricite-tertiaire"));
 assert.ok(paths.includes("/blog/statuts-pipeline-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-pipeline-fantome-devis"));
 assert.ok(paths.includes("/blog/visite-technique-avant-devis-b2b"));
@@ -3878,6 +4094,9 @@ const llmsPaths = [
   "/blog/visite-technique-avant-devis-b2b",
   "/outils/estimateur-cout-visites-techniques-inutiles",
   "/secteurs/funnel-devis-plomberie-sanitaire",
+  "/blog/telephone-whatsapp-vers-brief-devis-b2b",
+  "/secteurs/funnel-devis-electricite-tertiaire",
+  "/outils/estimateur-cout-demandes-orales-non-capturees",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -4257,6 +4476,9 @@ assert.equal(tvaSameRate.alertTone, "ok");
 assert.equal(tvaSameRate.showBreakdown, true);
 
 for (const [path, lastmod] of [
+  ["/blog/telephone-whatsapp-vers-brief-devis-b2b", "2026-10-01"],
+  ["/outils/estimateur-cout-demandes-orales-non-capturees", "2026-10-01"],
+  ["/secteurs/funnel-devis-electricite-tertiaire", "2026-10-01"],
   ["/blog/statuts-pipeline-devis-b2b", "2026-09-30"],
   ["/outils/estimateur-cout-pipeline-fantome-devis", "2026-09-30"],
   ["/blog/visite-technique-avant-devis-b2b", "2026-09-30"],

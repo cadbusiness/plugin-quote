@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "telephone-whatsapp-vers-brief-devis-b2b": [
+    {
+      q: "Faut-il interdire WhatsApp pour les devis B2B ?",
+      a: "Non. Il faut capturer ce qui arrive sur WhatsApp dans un brief structuré (checklist + dossier), puis continuer sur funnel, devis et espace prospect. Interdire le canal sans alternative fait juste passer les leads ailleurs.",
+    },
+    {
+      q: "QuoteBuilder lit-il WhatsApp ou le téléphone ?",
+      a: "Non. Ce n’est pas un client WhatsApp ni un standard téléphonique. L’outil sert après (ou pendant) la capture : funnel, préremplissage, dossier scoré, chiffrage, espace prospect, relances.",
+    },
+    {
+      q: "Que mettre absolument dans un brief oral ?",
+      a: "Type de projet ou d’intervention, accès, les grandeurs utiles (surface, charge, etc.), contraintes, un besoin rédigé, contact et owner. Photos et urgence sont utiles au métier et au triage, même si le score produit ne les lit pas.",
+    },
+    {
+      q: "Comment éviter la double saisie après un appel ?",
+      a: "Une checklist unique qui alimente le dossier. Lien prérempli ou saisie directe. Pas de copier-coller WhatsApp, puis Excel, puis CRM, puis devis.",
+    },
+    {
+      q: "Le score Hot / Warm / Cold remplace-t-il le feeling du commercial ?",
+      a: "Non. Sur QuoteBuilder, c’est une formule fixe (surface, load, access, project_type, constraints, longueur du besoin). Elle ordonne. Le commercial et les règles d’équipe tranchent encore, surtout pour l’urgence et la zone.",
+    },
+    {
+      q: "Peut-on préremplir un funnel après un appel ?",
+      a: "Oui, via des paramètres d’URL quand les champs sont déjà connus. Sinon, un lien funnel vide à faire compléter par le prospect.",
+    },
+    {
+      q: "Comment gérer les photos envoyées sur WhatsApp ?",
+      a: "Demandez-les, stockez-les dans le dossier ou les pièces jointes du parcours, et évitez de chiffrer sur un fil de messages non classés.",
+    },
+    {
+      q: "Quel statut CRM après un premier appel ?",
+      a: "Souvent Nouveau ou Contacté selon la convention d’équipe, puis En cours dès qu’un owner chiffre. Gagné et Perdu uniquement en clôture commerciale. Liste fixe : Commencée, Nouveau, Contacté, En cours, Gagné, Perdu, En attente.",
+    },
+    {
+      q: "Comment mesurer le coût des oraux non capturés ?",
+      a: "Comptez les demandes téléphone + WhatsApp + SMS par mois, le pourcentage sans brief structuré, les minutes de re-qualification, et une hypothèse de deals perdus. L’estimateur formalise le calcul, indicatif et local.",
+    },
+    {
+      q: "Faut-il un funnel différent pour le téléphone et le web ?",
+      a: "Non. Mêmes questions cœur. Le téléphone est un canal d’entrée. Le funnel, ou la checklist alignée, est le format de brief.",
+    },
+  ],
   "statuts-pipeline-devis-b2b": [
     {
       q: "Combien de statuts faut-il dans un pipeline devis B2B ?",
