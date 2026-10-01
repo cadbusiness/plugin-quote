@@ -40,7 +40,7 @@ const FAQ = [
   },
   {
     q: "Quel lien avec le catalogue produits ?",
-    a: "Les gammes modules / onduleurs / forfaits pose du funnel doivent mapper vos kits / articles. Sinon double saisie.",
+    a: "Les gammes modules, onduleurs et forfaits pose du funnel doivent mapper vos options, variantes et produits liés. Pas de kits. Sinon double saisie des lignes.",
   },
   {
     q: "Combien d’étapes idéales ?",
@@ -125,8 +125,8 @@ export default function PhotovoltaiqueSolaireLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer le template photovoltaïque / solaire"
-        text="Un parcours toiture, kWc, orientation, photos, option batterie. Le plan Free suffit pour voir l’interface, sans carte."
+        title="Essayer gratuitement"
+        text="Posez toiture, orientation, photos et option batterie dans un ordre fixe. Il n’y a pas de template photovoltaïque. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

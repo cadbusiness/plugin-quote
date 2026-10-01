@@ -22,10 +22,14 @@ Lundi 9 h 12. Trois demandes arrivent presque en même temps. Une sur WhatsApp, 
 
 Ce n’est pas un problème de motivation. C’est un problème d’**assignation** et de **SLA**.
 
-Quand une équipe traite des devis sans owner clair, sans délai de première réponse, sans règle Hot / Warm / Cold, vous obtenez du double-travail, des dossiers orphelins, et des prospects qui sentent le désordre avant même le montant. Ce guide détaille comment organiser l’assignation des demandes de devis B2B, définir des SLA réalistes, escalader sans chaos, et mesurer ce qui compte. Public : responsables commerciaux, fondateurs qui passent de solo à 2–8 commerciaux, PME industrielles, agenceurs, menuisiers, rayonnage, services configurables.
+Quand une équipe traite des devis sans owner clair et sans délai de première réponse, vous obtenez du double-travail, des dossiers orphelins, et des prospects qui sentent le désordre avant même le montant. Public : responsables commerciaux, fondateurs qui passent de solo à 2–8 commerciaux, PME industrielles, agenceurs, menuisiers, rayonnage, services configurables.
+
+**Dans QuoteBuilder.** Le libellé automatique Hot, Warm ou Cold vient d’une formule fixe (surface, charge, accès, type de projet, contraintes, longueur du texte du besoin). Il n’est pas configurable. Il n’y a pas de SLA. Urgence, zone et délai de réponse se trient dans l’équipe.
+
+**Hors QuoteBuilder.** La suite décrit l’assignation, les délais de réponse et l’escalade comme process d’équipe. Ce n’est pas une fonction du logiciel.
 
 
-**Mettre en place un pipeline assigné sans tout reconstruire :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) pour voir demandes scorées et dossiers, ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte) pour voir d’où naît une demande déjà structurée.
+**Voir des demandes avec libellé automatique :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte). Le compte ne pose pas de SLA.
 
 
 ## Pourquoi l’assignation casse (même avec de bons commerciaux)

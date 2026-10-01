@@ -18,6 +18,7 @@ import {
   midArticleHeadingIndex,
   normalizeCoverPath,
   primaryTagLabel,
+  outilsHubIntro,
   trimMetaDescription,
 } from "./blog";
 import { coverCandidatesForSlug, resolveCoverForPost } from "./blog-assets";
@@ -203,7 +204,12 @@ assert.equal(BLOG_POSTS.length, 37);
 assert.equal(BLOG_TOOLS.length, 27);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-demandes-orales-non-capturees"));
 const outilsHub = readFileSync(new URL("../../app/(marketing)/outils/page.tsx", import.meta.url), "utf8");
-assert.match(outilsHub, /Vingt-sept outils publics/);
+assert.match(outilsHub, /outilsHubIntro\(\)/);
+assert.equal(
+  outilsHubIntro(),
+  "Vingt-sept outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
+);
+assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 assert.doesNotMatch(outilsHub, /Vingt-quatre|Vingt-cinq|Vingt-six/);
 assert.match(outilsHub, /estimateur-cout-demandes-orales-non-capturees/);
 const secteursHub = readFileSync(new URL("../../app/(marketing)/secteurs/page.tsx", import.meta.url), "utf8");
@@ -1585,7 +1591,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(lienBody, /\/outils\/estimateur-cout-devis-pdf-seuls/);
   assert.match(lienBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(lienBody, EM_DASH);
-  assert.equal(lienBody.split(/\s+/).filter(Boolean).length, 2343);
+  assert.equal(lienBody.split(/\s+/).filter(Boolean).length, 2524);
 }
 
 {
@@ -1598,7 +1604,7 @@ for (const { file, dir } of contentFiles) {
   );
   assert.match(pacBody, /signup\?plan=free/);
   assert.doesNotMatch(pacBody, EM_DASH);
-  assert.equal(pacBody.split(/\s+/).filter(Boolean).length, 2078);
+  assert.equal(pacBody.split(/\s+/).filter(Boolean).length, 2171);
 }
 
 {
@@ -1703,7 +1709,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(statutsBody, /dernière consultation/);
   assert.match(statutsBody, /Valider le dossier/);
   assert.doesNotMatch(statutsBody, EM_DASH);
-  assert.equal(statutsBody.split(/\s+/).filter(Boolean).length, 2701);
+  assert.equal(statutsBody.split(/\s+/).filter(Boolean).length, 2740);
 }
 
 {
@@ -1771,7 +1777,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(approBody, /Pas de première ouverture/);
   assert.match(approBody, /pas de pixel e-mail/);
   assert.doesNotMatch(approBody, EM_DASH);
-  assert.equal(approBody.split(/\s+/).filter(Boolean).length, 3983);
+  assert.equal(approBody.split(/\s+/).filter(Boolean).length, 3998);
 }
 
 {
@@ -1786,7 +1792,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(couvBody, /\/blog\/approbation-client-multi-decideurs-devis-b2b/);
   assert.match(couvBody, /\/outils\/estimateur-cout-devis-sans-validation/);
   assert.doesNotMatch(couvBody, EM_DASH);
-  assert.equal(couvBody.split(/\s+/).filter(Boolean).length, 2943);
+  assert.equal(couvBody.split(/\s+/).filter(Boolean).length, 3050);
 }
 
 {
@@ -1818,7 +1824,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(validationBody, /\/outils\/estimateur-cout-devis-sans-validation/);
   assert.match(validationBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(validationBody, EM_DASH);
-  assert.equal(validationBody.split(/\s+/).filter(Boolean).length, 2708);
+  assert.equal(validationBody.split(/\s+/).filter(Boolean).length, 2760);
 }
 
 {
@@ -1833,7 +1839,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(iteBody, /\/outils\/estimateur-cout-devis-sans-validation/);
   assert.match(iteBody, /\/blog\/validation-interne-avant-envoi-devis-b2b/);
   assert.doesNotMatch(iteBody, EM_DASH);
-  assert.equal(iteBody.split(/\s+/).filter(Boolean).length, 2587);
+  assert.equal(iteBody.split(/\s+/).filter(Boolean).length, 2681);
 }
 
 {
@@ -1849,7 +1855,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(clarifBody, /\/outils\/estimateur-cout-emails-clarification-devis/);
   assert.match(clarifBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(clarifBody, EM_DASH);
-  assert.equal(clarifBody.split(/\s+/).filter(Boolean).length, 2436);
+  assert.equal(clarifBody.split(/\s+/).filter(Boolean).length, 2644);
 }
 
 {
@@ -1863,7 +1869,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(pvBody, /signup\?plan=free/);
   assert.match(pvBody, /\/outils\/estimateur-cout-aller-retours-brief-photos/);
   assert.doesNotMatch(pvBody, EM_DASH);
-  assert.equal(pvBody.split(/\s+/).filter(Boolean).length, 2306);
+  assert.equal(pvBody.split(/\s+/).filter(Boolean).length, 2393);
 }
 
 {
@@ -1893,7 +1899,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(biblioBody, /signup\?plan=free/);
   assert.doesNotMatch(biblioBody, EM_DASH);
   const biblioWords = biblioBody.split(/\s+/).filter(Boolean).length;
-  assert.equal(biblioWords, 2264);
+  assert.equal(biblioWords, 2514);
 }
 
 {
@@ -1907,7 +1913,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(pergolaBody, /signup\?plan=free/);
   assert.doesNotMatch(pergolaBody, EM_DASH);
   const pergolaWords = pergolaBody.split(/\s+/).filter(Boolean).length;
-  assert.equal(pergolaWords, 2165);
+  assert.equal(pergolaWords, 2328);
 }
 
 {
@@ -2919,7 +2925,7 @@ assert.equal(clarifDefault.alertTone, "bad");
 assert.equal(clarifDefault.totalTone, "warn");
 assert.equal(clarifDefault.oppTone, "warn");
 assert.match(clarifDefault.alert, /Friction clarification élevée/);
-assert.match(clarifDefault.recap, /Commentaires \/ annotations ancrés/);
+assert.match(clarifDefault.recap, /Fil prospect plat, un commentaire et un budget max par relecteur/);
 assert.match(clarifDefault.recap, /Coût total indicatif/);
 
 const clarifEmpty = computeCoutEmailsClarification({ ...COUT_EMAILS_CLARIFICATION_DEFAULTS, devis: 0 });

@@ -24,7 +24,7 @@ const FAQ = [
   },
   {
     q: "Comment gérer urgence fuite et projet long dans le même funnel ?",
-    a: "Branche précoce « contexte ». SLA et scoring différents. Même dossier ensuite.",
+    a: "Une question « contexte », dans un ordre fixe. Le libellé Hot, Warm ou Cold est calculé à la soumission et ignore l’urgence. L’équipe trie la fuite, hors produit. Même dossier ensuite.",
   },
   {
     q: "Comment parler des aides ou de l’assurance sans se tromper ?",
@@ -40,7 +40,7 @@ const FAQ = [
   },
   {
     q: "Quel lien avec le catalogue produits ?",
-    a: "Les gammes couverture, zinguerie et forfaits pose du funnel doivent mapper vos kits et articles. Sinon double saisie.",
+    a: "Les gammes couverture, zinguerie et forfaits pose du funnel doivent mapper vos options, variantes et produits liés. Pas de kits. Sinon double saisie.",
   },
   {
     q: "Combien d’étapes idéales ?",
@@ -112,7 +112,7 @@ export default function CouvertureToitureLandingPage() {
             {[
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches type d’intervention, surface, accès, photos, urgence." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Tuiles, zinc, étanchéité, forfaits pose, accès." },
-              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, urgence vs projet, assignation." },
+              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation. L’urgence se trie dans l’équipe." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
             ].map((item) => (
               <Link
@@ -130,8 +130,8 @@ export default function CouvertureToitureLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer le template couverture / toiture"
-        text="Un parcours type d’intervention, surface, accès, photos, urgence vs projet. Le plan Free suffit pour voir l’interface, sans carte."
+        title="Essayer gratuitement"
+        text="Posez type d’intervention, surface, accès et photos dans un ordre fixe. Il n’y a pas de template couverture. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

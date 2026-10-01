@@ -40,7 +40,7 @@ const FAQ = [
   },
   {
     q: "Quel lien avec le catalogue produits ?",
-    a: "Les gammes isolants, finitions et forfaits pose du funnel doivent mapper vos kits et articles. Sinon double saisie.",
+    a: "Les gammes isolants, finitions et forfaits pose du funnel doivent mapper vos options, variantes et produits liés. Pas de kits. Sinon double saisie des lignes.",
   },
   {
     q: "Combien d’étapes idéales ?",
@@ -129,8 +129,8 @@ export default function IsolationThermiqueIteLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer le template isolation thermique / ITE"
-        text="Un parcours surface, support, accès, photos, type de client. Le plan Free suffit pour voir l’interface, sans carte."
+        title="Essayer gratuitement"
+        text="Posez surface, support, accès et photos dans un ordre fixe. Il n’y a pas de template isolation. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

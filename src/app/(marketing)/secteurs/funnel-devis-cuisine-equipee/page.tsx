@@ -28,7 +28,7 @@ const FAQ = [
   },
   {
     q: "Comment scorer « urgent avant emménagement » ?",
-    a: "Souvent Hot : date contrainte. Vérifiez décideur, accès chantier, et complétude du brief. SLA court.",
+    a: "Le libellé automatique ignore l’urgence. L’équipe, hors produit, vérifie la date, le décideur, l’accès chantier et le brief. Il n’y a pas de SLA.",
   },
   {
     q: "Un seul funnel pour particulier et pro léger ?",
@@ -36,7 +36,7 @@ const FAQ = [
   },
   {
     q: "Comment traiter architecte + client final ?",
-    a: "Champ « interlocuteurs », circuit de validation, un seul lien espace prospect pour la bonne version.",
+    a: "Champ « interlocuteurs », circuit de validation, un seul lien espace prospect. Il n’y a pas de versions de devis.",
   },
   {
     q: "Le funnel remplace-t-il le dessinateur ?",
@@ -44,7 +44,7 @@ const FAQ = [
   },
   {
     q: "Comment éviter les reprises électro ?",
-    a: "Liste d’appareils + qui fournit + références dès le funnel. Toute modif = nouvelle version du devis.",
+    a: "Liste d’appareils + qui fournit + références dès le funnel. Toute modif met à jour le dossier courant. Il n’y a pas de versions.",
   },
 ];
 
@@ -103,7 +103,7 @@ export default function CuisineEquipeeLandingPage() {
             {[
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches linéaire, U, îlot, pro léger." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Façades, plans, électro + Si/Alors." },
-              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, SLA pose, assignation." },
+              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relevé, relances." },
             ].map((item) => (
               <Link

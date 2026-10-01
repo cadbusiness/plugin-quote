@@ -110,6 +110,15 @@ export type BlogTool = {
   tags: readonly BlogTagSlug[];
 };
 
+/** Intro du hub /outils, calée sur le nombre réel d’entrées de BLOG_TOOLS. */
+export function outilsHubIntro(count = BLOG_TOOLS.length): string {
+  const words: Record<number, string> = {
+    27: "Vingt-sept",
+  };
+  const label = words[count] ?? String(count);
+  return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
+}
+
 export const BLOG_TOOLS: readonly BlogTool[] = [
   {
     href: "/outils/cout-devis-non-relance",
@@ -361,7 +370,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/validation-interne-avant-envoi-devis-b2b",
     title: "Validation interne avant envoi d’un devis B2B : relecture commerciale, technique et marge",
     description:
-      "Mettre en place une validation interne avant d’envoyer un devis B2B : rôles, checklist, SLA, versions, commentaires, mentions et marge. Moins d’erreurs, moins de remises sauvages.",
+      "Mettre en place une validation interne avant d’envoyer un devis B2B : rôles, checklist, relecture, mentions et marge. Pas de SLA produit ni de versions.",
     publishedAt: "2026-09-28",
     readingMinutes: 14,
     tags: ["funnel", "scoring"],
@@ -374,7 +383,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/commentaires-annotations-devis-collaboratif-b2b",
     title: "Commentaires et annotations sur un devis collaboratif B2B : fin des fils RE: RE:",
     description:
-      "Remplacer les mails RE: RE: par des commentaires et annotations sur un devis partagé (lien sécurisé) : multi-décideurs, threads par ligne, historique, versions et relances.",
+      "Remplacer les mails RE: RE: par le fil plat du prospect et le commentaire de chaque relecteur (budget max). Pas de threads par ligne, pas de versions.",
     publishedAt: "2026-09-25",
     readingMinutes: 12,
     tags: ["funnel"],
@@ -413,7 +422,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/envoyer-devis-lien-securise-vs-pdf-email",
     title: "Envoyer un devis par lien sécurisé vs PDF en pièce jointe",
     description:
-      "PDF en e-mail vs lien sécurisé / espace prospect : ouvertures, versions, relances, relecteurs. Coût réel du PDF-only pour les devis B2B.",
+      "PDF en e-mail vs lien sécurisé : dernière consultation sur la fiche, relecteurs, relances. Pas de stats d’ouverture ni de versions.",
     publishedAt: "2026-09-24",
     readingMinutes: 12,
     tags: ["funnel", "relances"],
@@ -439,7 +448,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/bibliotheque-lignes-kits-devis-b2b",
     title: "Bibliothèque de lignes et kits pour devis B2B : chiffrer plus vite sans Excel",
     description:
-      "Bibliothèque de lignes, kits composés et articles récurrents pour accélérer le chiffrage B2B : catalogue HT, options, synchro boutique, erreurs de reprise manuelle, KPIs temps et écarts prix.",
+      "Options, variantes, produits liés et fourchette min-max dans QuoteBuilder. Kits et catalogue HT : pratique générale, hors produit.",
     publishedAt: "2026-09-23",
     readingMinutes: 12,
     tags: ["catalogue", "funnel"],
@@ -569,7 +578,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/versions-historique-devis-b2b",
     title: "Versions et historique des devis B2B : v1, v2, v3 sans perdre le fil",
     description:
-      "Quand le prospect itère (options, remises, scope creep), versionner v1/v2/v3, garder l’historique, lier au dossier, comparer et relancer sur la bonne version.",
+      "Process d’équipe quand le prospect itère. Hors QuoteBuilder : pas de versions, pas d’historique v1/v2/v3. Le dossier courant se met à jour.",
     publishedAt: "2026-09-16",
     readingMinutes: 11,
     tags: ["funnel", "relances"],
@@ -582,7 +591,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/assignation-sla-demande-devis-equipe",
     title: "Assignation et SLA des demandes de devis en équipe : owner, Hot/Warm/Cold, escalade",
     description:
-      "Owner unique, SLA première réponse et chiffrage, playbook Hot/Warm/Cold, escalade week-end, charge équipe et erreurs classiques B2B.",
+      "Owner unique et playbook d’équipe Hot/Warm/Cold. Pas de SLA QuoteBuilder. Le libellé automatique ignore urgence, zone et délai.",
     publishedAt: "2026-09-15",
     readingMinutes: 11,
     tags: ["scoring", "relances"],
@@ -647,7 +656,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/relancer-devis-hot-depuis-dossier",
     title: "Relancer un devis Hot depuis le dossier : SLA, owner et automations",
     description:
-      "Process métier : relancer un devis Hot depuis le dossier QuoteBuilder. Score, owner, SLA, actions Écrire/Appeler/Relancer, automations vs jugement commercial, checklist équipe.",
+      "Relancer un devis Hot depuis le dossier. Libellé automatique, owner d’équipe, relances. Le délai de réponse est hors produit : pas de SLA QuoteBuilder.",
     publishedAt: "2026-09-11",
     readingMinutes: 12,
     tags: ["relances", "scoring"],
@@ -660,7 +669,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/delai-reponse-demande-devis-b2b",
     title: "Délai de réponse à une demande de devis B2B : SLA, chiffres et process",
     description:
-      "Guide long : délai de réponse devis B2B (speed to lead). Benchmarks sourcés, SLA Hot/Warm/Cold, notifications, brief chiffrable, métriques et FAQ pour PME.",
+      "Délai de réponse devis B2B : benchmarks et process d’équipe. Pas de SLA QuoteBuilder. Le libellé automatique ignore urgence et zone.",
     publishedAt: "2026-09-11",
     readingMinutes: 11,
     tags: ["scoring", "relances"],

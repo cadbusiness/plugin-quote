@@ -22,10 +22,12 @@ Mardi 16 h 40. Le prospect répond : « On part sur l’option B, moins 8 %, et 
 
 Ce n’est pas un problème de « discipline PDF ». C’est un problème de **versions** et d’**historique** liés au dossier commercial.
 
-Quand un prospect itère (options, remises, scope creep), chaque envoi crée une photo du deal. Si ces photos vivent en pièces jointes orphelines, le pipeline casse : mauvais numéro envoyé, relance sur une version morte, marge qui fond sans trace, litige au moment de la commande. Ce guide détaille pourquoi le PDF « final vraiment final » ne tient pas, comment versionner (v1 / v2 / v3), garder l’historique, lier chaque version au dossier, comparer, et relancer sur la bonne. Public : commerciaux B2B, responsables devis, PME industrielles, agenceurs, menuisiers, rayonnage, services configurables.
+Quand un prospect itère (options, remises, scope creep), chaque envoi crée une photo du deal. Si ces photos vivent en pièces jointes orphelines, le pipeline casse : mauvais numéro envoyé, relance sur une version morte, marge qui fond sans trace, litige au moment de la commande. Ce guide détaille pourquoi le PDF « final vraiment final » ne tient pas, et comment une équipe peut, hors logiciel, garder une trace des envois. Public : commerciaux B2B, responsables devis, PME industrielles, agenceurs, menuisiers, rayonnage, services configurables.
+
+**Hors QuoteBuilder.** Le produit n’a pas de versions de devis. Le dossier courant est la page partagée. Les relecteurs cliquent « Valider le dossier » ou « Modifications ». Le commercial pose Gagné. La suite est une pratique générale.
 
 
-**Garder l’historique sans empiler des PDF :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) pour centraliser demandes et dossiers, ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte) pour voir comment naît une demande déjà structurée.
+**Centraliser demandes et dossiers, sans historique de versions :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte). Le compte ne crée pas de v1 / v2 / v3.
 
 
 ## Pourquoi le PDF « v2 final vraiment final » casse le pipeline
@@ -109,14 +111,14 @@ Sans ce journal, la comparaison de versions devient une lecture ligne à ligne s
 
 ### Étape 4 : une seule version « active » pour le prospect
 
-À tout moment, le dossier a **une** version active côté client. Les précédentes restent consultables (historique), marquées « remplacées ». Les [relances](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier) et l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) pointent vers l’active. Sinon le prospect ouvre le lien magique et tombe sur v1 pendant que vous négociez v3.
+À tout moment, dans ce process général, le dossier a **une** version active côté client. Les précédentes restent consultables (historique), marquées « remplacées ». Les relances d’équipe pointent vers cet envoi. L’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) QuoteBuilder, lui, montre le dossier courant, sans historique de versions. Sinon, hors produit, le prospect ouvre un vieux PDF pendant que vous négociez autre chose.
 
 ### Étape 5 : envoi tracé, pas « je pense que j’ai envoyé »
 
 Chaque envoi enregistre : version, canal, destinataire, horodatage. Ça règle aussi le [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b) : vous savez quand v2 est partie, pas seulement quand le mail a été rédigé.
 
 
-**Tester le parcours sans reconstruire votre stack :** [essai Free](https://www.quotebuilder.co/signup?plan=free) ou [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage).
+Ce bloc reste une pratique générale, hors QuoteBuilder. Le compte Free ne crée pas de v1, v2 ou v3.
 
 
 ## Comparer deux versions (sans y passer une heure)
@@ -242,7 +244,7 @@ Traitez-le comme un incident process. Vérifiez le contenu signé, confirmez par
 
 ### PDF, lien magique, ou les deux ?
 
-Le lien vers un [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) réduit le risque de mauvais fichier si l’espace n’expose que l’active. Le PDF reste utile pour archivage et signatures hors ligne. Les deux doivent porter le même numéro de version.
+L’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) QuoteBuilder montre le dossier courant. Il n’expose pas une version « active » parmi plusieurs, et il n’y a pas de numéro de version. Le PDF reste utile pour l’archivage. La signature en ligne est hors produit.
 
 ### Comment versionner quand plusieurs commerciaux touchent le dossier ?
 

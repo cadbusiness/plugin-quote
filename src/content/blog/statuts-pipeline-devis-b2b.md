@@ -62,7 +62,7 @@ Chaque statut a une règle de passage, une prochaine action typique, et des anti
 
 ### 1. Commencée
 
-**Quand :** le parcours a démarré (funnel, saisie partielle, brouillon), sans être encore une opportunité propre. Souvent : abandon mid-funnel, ou dossier ouvert sans brief minimum.
+**Quand :** le parcours a démarré (funnel commencé, brouillon de parcours), sans être encore une opportunité propre. Souvent : abandon mid-funnel, ou dossier ouvert sans brief minimum. Pas de saisie manuelle de devis.
 
 **Prochaine action typique :** compléter le brief ou abandonner proprement. Voir [qualifier une demande avant chiffrage](https://www.quotebuilder.co/blog/qualifier-demande-devis-avant-chiffrage).
 
@@ -70,7 +70,7 @@ Chaque statut a une règle de passage, une prochaine action typique, et des anti
 
 ### 2. Nouveau
 
-**Quand :** demande entrée dans le CRM (funnel, import, saisie), assez d'info pour qu'un commercial la prenne. Pas encore de premier contact qualifiant.
+**Quand :** demande entrée dans le CRM (funnel, API, intégrations), assez d'info pour qu'un commercial la prenne. Pas encore de premier contact qualifiant. Les devis ne se saisissent pas à la main et ne s'importent pas : ils naissent du funnel (y compris par lien prérempli), de /api/leads, des intégrations plugin ou du chat agent.
 
 **Prochaine action typique :** owner, lecture du brief, rappel / mail / abandon. Le [score Hot / Warm / Cold](https://www.quotebuilder.co/blog/score-demande-devis-b2b) **ordonne** la file ; il ne remplace pas le statut.
 

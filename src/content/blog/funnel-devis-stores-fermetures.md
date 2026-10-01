@@ -118,23 +118,27 @@ Sans ça, limitez-vous à une estimation indicative. Ne lancez pas la commande f
 
 ## Score Hot / Warm / Cold en stores / fermetures
 
-| Score | Exemples | Action |
+QuoteBuilder pose un libellé automatique Hot, Warm ou Cold. La formule est fixe : surface, charge, accès, type de projet, contraintes, et longueur du texte du besoin. Elle ignore photos, délai, zone et urgence. Elle n'est pas configurable. Il n'y a pas de SLA.
+
+Le tableau suivant est un tri d'équipe, hors produit. Il ne décrit pas la formule.
+
+| Tri d'équipe | Exemples | Action hors produit |
 |-------|----------|--------|
-| Hot | Date chantier < 4-6 semaines, cotes OK ou métrage planifié, décideur identifié, budget cohérent | Owner + SLA court, chiffrage prioritaire |
-| Warm | Projet réel, délai 2-4 mois, photos OK, quelques trous (motorisation, accès) | Qualifier puis chiffrer |
-| Cold | « Juste un prix », pas de cote, pas de date, browsing | Réponse légère ou nurture, pas d’atelier |
+| Prioritaire | Date chantier < 4-6 semaines, cotes OK ou métrage planifié, décideur identifié, budget cohérent | Owner nommé, premier contact rapide, chiffrage prioritaire |
+| À qualifier | Projet réel, délai 2-4 mois, photos OK, quelques trous (motorisation, accès) | Qualifier puis chiffrer |
+| Plus tard | « Juste un prix », pas de cote, pas de date, browsing | Réponse légère ou nurture, pas d’atelier |
 
 Détail méthode : [score demande devis B2B](https://www.quotebuilder.co/blog/score-demande-devis-b2b), outil [score brief](https://www.quotebuilder.co/outils/score-brief-devis).
 
-## Assignation et SLA
+## Assignation et délai de réponse (hors QuoteBuilder)
 
-En saison, le volume explose. Sans assignation claire, les Hot WhatsApp passent devant les Hot site… ou l’inverse, au hasard. Posez :
+En saison, le volume explose. Sans assignation claire, les dossiers que l'équipe juge urgents sur WhatsApp passent devant ceux du site, ou l’inverse, au hasard. Posez, hors produit :
 
 - un owner par dossier ;
-- un SLA de premier contact selon le score ;
+- un délai de premier contact décidé par l'équipe (pas un SLA produit, et pas calé sur le libellé automatique) ;
 - un backup pour les congés.
 
-Guide : [assignation et SLA](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe). Capacité : [calculateur capacité équipe](https://www.quotebuilder.co/outils/calculateur-capacite-equipe-devis), [estimateur temps de chiffrage](https://www.quotebuilder.co/outils/estimateur-temps-chiffrage-devis).
+Guide : [assignation et délai de réponse](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe). Capacité : [calculateur capacité équipe](https://www.quotebuilder.co/outils/calculateur-capacite-equipe-devis), [estimateur temps de chiffrage](https://www.quotebuilder.co/outils/estimateur-temps-chiffrage-devis).
 
 
 **Mettre en place le funnel stores sans attendre la haute saison :** [essai Free](https://www.quotebuilder.co/signup?plan=free) ou [démo](https://www.quotebuilder.co/c/demo/rayonnage).
@@ -156,8 +160,8 @@ Sans règles, le commercial improvise. Avec règles, le brief du funnel alimente
 
 Deux moments critiques :
 
-1. **Après envoi du devis** sans ouverture / sans réponse.
-2. **Après métrage** : le prospect a investi du temps, vous aussi. La relance doit partir du dossier, avec la bonne version.
+1. **Après envoi du devis** sans réponse. Le champ Espace prospect montre seulement la dernière consultation, en temps relatif. Pas de compteur d'ouverture.
+2. **Après métrage** : le prospect a investi du temps, vous aussi. La relance part du dossier courant. Il n'y a pas de versions.
 
 Voir [relancer Hot depuis le dossier](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier), [générateur de séquence](https://www.quotebuilder.co/outils/generateur-sequence-relances), [coût devis non relancé](https://www.quotebuilder.co/outils/cout-devis-non-relance), [autopilote](https://www.quotebuilder.co/fonctionnalites/autopilote).
 
@@ -221,8 +225,8 @@ Les stores se vendent beaucoup hors site : appel après panneau chantier, messag
 - dimensions et niveau de confiance (indicatif / ferme) ;
 - motorisation et commandes listées ;
 - pose + accès + dépose chiffrés ou exclus explicitement ;
-- délai et validité ;
-- version numérotée liée au dossier ;
+- durée de prix, hors produit, si l'équipe en tient une ;
+- dossier courant à jour (pas de version numérotée) ;
 - prochain pas clair (métrage, acompte, validation syndic).
 
 Si un de ces points manque, vous n’envoyez pas un devis : vous envoyez une hypothèse fragile.
@@ -245,11 +249,11 @@ Famille produit d’abord (pour brancher les bonnes questions), puis dimensions 
 
 ### 4. Comment scorer une demande « urgent avant travaux façade » ?
 
-Souvent Hot : date contrainte forte. Vérifiez décideur et budget. SLA court, owner nommé.
+Le libellé automatique ignore l'urgence. L'équipe, hors produit, vérifie la date, le décideur et le budget, et nomme un owner. Il n'y a pas de SLA.
 
 ### 5. Les remises saisonnières sont-elles compatibles avec un funnel ?
 
-Oui, si la remise est une règle catalogue ou une version tracée, pas un prix oral perdu. Utilisez le [simulateur d’impact remise](https://www.quotebuilder.co/outils/simulateur-impact-remise-devis).
+Oui, si la remise est une règle d'équipe tracée, pas un prix oral perdu. Il n'y a pas de versions de devis. Utilisez le [simulateur d’impact remise](https://www.quotebuilder.co/outils/simulateur-impact-remise-devis).
 
 ### 6. Peut-on un seul funnel pour stores, volets et portes de garage ?
 
@@ -257,7 +261,7 @@ Oui, avec une première question « famille produit » et des branches. Un funne
 
 ### 7. Comment traiter les devis copropriété ?
 
-Champ « type de client = copro / syndic », circuit de validation, délai AG. Espace prospect unique pour faire circuler la bonne version.
+Champ « type de client = copro / syndic », circuit de validation, délai AG. Espace prospect unique. Il n'y a pas de versions de devis.
 
 ### 8. Le funnel remplace-t-il le commercial ?
 
@@ -265,11 +269,11 @@ Non. Il prépare le brief pour que le commercial et le poseur ne perdent pas leu
 
 ### 9. Quel SLA viser en haute saison ?
 
-Exemple : Hot < 2 h ouvrées pour premier contact, Warm < 24 h. Sans file unique et owners, le SLA reste théorique.
+Hors QuoteBuilder. Exemple d'équipe : premier contact sous 2 h ouvrées pour un dossier prioritaire, sous 24 h pour le reste. Sans file unique et owners, ce délai reste théorique. Le produit ne pose pas de SLA.
 
 ### 10. Par où commencer concrètement ?
 
-Cartographiez vos 20 dernières demandes : champs manquants récurrents. Construisez le funnel autour de ces champs. Branchez le widget. Formez l’équipe à la saisie des appels dans le même pipeline.
+Cartographiez vos 20 dernières demandes : champs manquants récurrents. Construisez le funnel autour de ces champs. Branchez le widget. Pour un appel, faites remplir le même funnel, y compris par lien prérempli.
 
 ## Conclusion
 

@@ -28,11 +28,11 @@ const FAQ = [
   },
   {
     q: "Comment scorer une demande « urgent avant travaux façade » ?",
-    a: "Souvent Hot : date contrainte forte. Vérifiez décideur et budget. SLA court, owner nommé.",
+    a: "Le libellé automatique ignore l’urgence. L’équipe, hors produit, vérifie la date, le décideur et le budget, et nomme un owner. Il n’y a pas de SLA.",
   },
   {
     q: "Les remises saisonnières sont-elles compatibles avec un funnel ?",
-    a: "Oui, si la remise est une règle catalogue ou une version tracée, pas un prix oral perdu. Utilisez le simulateur d’impact remise.",
+    a: "Oui, si la remise est une règle d’équipe tracée, pas un prix oral perdu. Il n’y a pas de versions de devis. Utilisez le simulateur d’impact remise.",
   },
   {
     q: "Peut-on un seul funnel pour stores, volets et portes de garage ?",
@@ -40,7 +40,7 @@ const FAQ = [
   },
   {
     q: "Comment traiter les devis copropriété ?",
-    a: "Champ « type de client = copro / syndic », circuit de validation, délai AG. Espace prospect unique pour faire circuler la bonne version.",
+    a: "Champ « type de client = copro / syndic », circuit de validation, délai AG. Espace prospect unique. Il n’y a pas de versions de devis.",
   },
   {
     q: "Le funnel remplace-t-il le commercial ?",
@@ -103,7 +103,7 @@ export default function StoresFermeturesLandingPage() {
             {[
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches banne, volet, BSO, porte garage." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Toiles, lames, motorisation + Si/Alors." },
-              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, SLA saison, assignation." },
+              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, métrage, relances." },
             ].map((item) => (
               <Link
@@ -121,8 +121,8 @@ export default function StoresFermeturesLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer le template stores"
-        text="Un parcours dimensions, motorisation, pose. Le plan Free suffit pour voir l’interface, sans carte."
+        title="Essayer gratuitement"
+        text="Posez dimensions, motorisation et pose dans un ordre fixe. Il n’y a pas de template stores. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

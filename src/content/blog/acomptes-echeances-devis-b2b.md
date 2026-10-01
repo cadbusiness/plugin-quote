@@ -123,7 +123,7 @@ L’acompte ne vit pas seul.
 
 ### Validité du devis
 
-Un acompte demandé sur un devis **expiré** ou sur une version ambiguë crée du litige. Cadrez d’abord la fenêtre de prix : [validité et expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b). Idéalement : acceptation sur version active, puis déclenchement de l’acompte (lien de paiement, virement avec référence devis, ou autre mode que vous utilisez).
+**Hors QuoteBuilder.** Le produit n’affiche pas de validité et n’a pas de versions. Un acompte demandé sur un prix dont la durée d’équipe est passée crée du litige. Cadrez d’abord la fenêtre de prix, hors produit : [validité et expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b). L’acompte se déclenche ensuite (lien de paiement, virement avec référence devis, ou autre mode que vous utilisez).
 
 ### Signature / acceptation en ligne (hors produit)
 
@@ -131,11 +131,11 @@ L’[acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptatio
 
 ### Options et variantes
 
-Si le prospect coche une [option / variante](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b) après coup, le total change : l’acompte et le reste dû doivent suivre **la version acceptée**, pas un PDF mailé la semaine d’avant.
+Si le prospect coche une [option / variante](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b) après coup, le total change : mettez à jour le dossier courant. Il n’y a pas de versions. L’acompte suit la fourchette du dossier, pas un PDF mailé la semaine d’avant.
 
 ### Versions et historique
 
-Toute modification de % ou de jalons = nouvelle version ou avenant tracé. Sinon le client garde l’ancien échéancier et vous le nouveau. Voir [versions et historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b).
+**Hors QuoteBuilder.** Il n’y a pas de versions. Toute modification de % ou de jalons met à jour le dossier courant, ou un avenant hors produit. Sinon le client garde l’ancien échéancier et vous le nouveau. Voir [versions et historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b).
 
 ## Ce qu’il faut écrire clairement sur le devis
 
@@ -306,7 +306,7 @@ Non. C’est du process commercial. Mentions légales, qualification des paiemen
 
 ## Conclusion
 
-Un devis B2B sans cadre d’acompte et d’échéances laisse l’atelier, la trésorerie et le client dans le flou. Posez des % réalistes, un échéancier en 2 à 4 jalons liés à des événements réels, un encadré clair (TTC, dates, reste dû), un statut « en attente acompte », et un blocage de lancement sauf dérogation. Reliez le tout à la validité, à la signature sur la bonne version, aux options et à l’historique.
+Un devis B2B sans cadre d’acompte et d’échéances laisse l’atelier, la trésorerie et le client dans le flou. Posez des % réalistes, un échéancier en 2 à 4 jalons liés à des événements réels, un encadré clair (TTC, dates, reste dû) et une règle d’équipe sur le lancement. Reliez le tout à une durée de prix hors produit, au passage en Gagné, aux options et au dossier courant. Pas de signature sur une version : il n’y a pas de versions.
 
 Sans ça, vous multipliez les « OK » fragiles : du CA fantôme, des matières commandées trop tôt, des litiges sur le moment du paiement.
 

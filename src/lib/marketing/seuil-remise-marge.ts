@@ -143,7 +143,7 @@ export function computeSeuilRemiseMarge(input: SeuilRemiseInput): SeuilRemiseRes
     "- Remise max calculée vs plancher",
     "- Seuil auto / manager / directeur respecté",
     "- Alternative testée (variante, phasage, validité, acompte)",
-    "- Remise affichée (catalogue / geste / net) sur la bonne version",
+    "- Remise affichée (catalogue / geste / net) sur le dossier courant",
     "",
     "Calcul local · à adapter à votre grille métier.",
   ];

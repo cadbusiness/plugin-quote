@@ -22,12 +22,14 @@ Vous avez un catalogue correct. Des commerciaux qui savent parler produit. Et po
 
 Le sujet n’est pas « être plus agressif ». C’est **combien de minutes** s’écoulent entre « le prospect a fini le formulaire » et « quelqu’un de chez vous a vraiment bougé ».
 
-Ce guide traite le **délai de réponse à une demande de devis B2B** (souvent appelé *speed to lead* côté inbound). Pas la théorie motivationnelle. Des ordres de grandeur sourcés, des SLA réalistes pour une PME, un process qui tient un vendredi à 17 h, et des métriques à coller dans votre tableau de bord.
+Ce guide traite le **délai de réponse à une demande de devis B2B** (souvent appelé *speed to lead* côté inbound). Pas la théorie motivationnelle. Des ordres de grandeur sourcés, un process d’équipe qui tient un vendredi à 17 h, et des métriques à coller dans votre tableau de bord.
+
+**Hors QuoteBuilder.** Il n’y a pas de SLA produit. Le libellé automatique ignore l’urgence, la zone et le délai. La suite est un process d’équipe.
 
 Public : équipes solo, PME industrielles, location, menuiserie, rayonnage, services configurables, agences qui gèrent le parcours devis de leurs clients.
 
 
-**Tenir le SLA dès aujourd’hui :** [créer un compte Free](/signup?plan=free) pour voir pipeline, dossiers et notifs, ou [ouvrir la démo funnel rayonnage](/c/demo/rayonnage) (sans compte) pour voir d’où naît une demande scorée.
+**Voir les demandes avec libellé automatique :** [créer un compte Free](/signup?plan=free) pour voir pipeline, dossiers et notifs, ou [ouvrir la démo funnel rayonnage](/c/demo/rayonnage) (sans compte). Le compte ne pose pas de SLA.
 
 
 ## Ce que « délai de réponse » veut dire ici

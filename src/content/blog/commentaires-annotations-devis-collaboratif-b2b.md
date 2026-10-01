@@ -22,12 +22,14 @@ updated: 2026-09-25
 
 Mardi 16 h 40. Le devis est parti. Le directeur achats répond « OK sauf la ligne 7, on veut l’option B ». Le bureau d’études répond dans un autre fil. Le commercial forward le PDF annoté à la main. Trois jours plus tard, personne ne sait quelle version du devis porte quelle décision. Le prospect signe « presque »… puis le deal meurt dans la clarification.
 
-Ce guide parle d’un process banal et très cher : **comment on clarifie un devis à plusieurs**. Pas « comment écrire un beau commentaire ». Plutôt : pourquoi les mails `RE: RE:` cassent le cycle, comment travailler avec des commentaires / annotations sur un devis partagé (lien sécurisé), threads par ligne, notifications, historique, lien avec versions et signature.
+Ce guide parle d’un process banal et très cher : **comment on clarifie un devis à plusieurs**. Pas « comment écrire un beau commentaire ». Plutôt : pourquoi les mails `RE: RE:` cassent le cycle, ce que QuoteBuilder fait vraiment (fil plat, un commentaire et un budget max par relecteur), et, plus loin, une pratique générale hors produit (threads par ligne, versions, signature).
 
 Public : dirigeants PME, commerciaux B2B, estimateurs, chefs de projet (menuiserie, rayonnage, agencement, chauffage, solaire, clôture, cuisine).
 
 
-**Clarifier sans reconstruire le fil mail :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte).
+**Dans QuoteBuilder.** Le chat prospect est un fil plat. Chaque relecteur laisse un commentaire et un budget max. Il n’y a pas de commentaires ancrés aux lignes, pas de threads par ligne, pas de versions de devis. Les relecteurs cliquent « Valider le dossier » ou « Modifications ». Le commercial pose Gagné. La dernière consultation apparaît en temps relatif dans le champ Espace prospect, côté commercial. Pas de compteur, pas d’historique, pas de stats d’ouverture.
+
+**Clarifier sans reconstruire le fil mail :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte). Le compte sert à voir ce fil plat et les relecteurs, pas des threads par ligne.
 
 
 ## Ce que « clarification » veut dire dans un devis B2B
@@ -73,6 +75,10 @@ Pour chiffrer ça en interne, l’[estimateur coût des e-mails de clarification
 
 <!-- PLACEHOLDER IMAGE: fil mail RE RE annoté vs devis partagé avec commentaires par ligne (shoot Content) -->
 
+## Bonne pratique générale, hors QuoteBuilder
+
+La suite décrit un process plus riche que le produit : ancrage par ligne, threads, versions, signature. Ce n’est pas une fonction QuoteBuilder.
+
 ## Anatomie d’une clarification propre (lien + commentaires)
 
 Une clarification propre n’est pas un roman. C’est un **paquet minimum** :
@@ -101,20 +107,24 @@ Souvent :
 
 Si chaque personne reçoit un PDF différent, ou un extrait mail, vous multipliez les versions mentales. Le commercial finit en secrétaire de réunion : il consolide des avis qui ne se croisent jamais.
 
-Avec annotations sur le devis partagé :
+Dans un outil qui ancre les commentaires (ce n’est pas QuoteBuilder) :
 
 - chaque décideur commente **sa** zone ;
 - le commercial voit l’ensemble dans un fil par ligne ;
 - le bureau d’études répond sur la ligne technique, pas dans un nouveau mail ;
-- la clôture (résolu) est visible avant de relancer pour signature.
+- la clôture (résolu) est visible avant une signature, elle aussi hors produit.
+
+Dans QuoteBuilder, le prospect écrit dans un fil plat. Chaque relecteur laisse un seul commentaire et un budget max.
 
 C’est le même esprit que [relancer un devis Hot depuis le dossier](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier) : on relance sur un état, pas sur un sentiment.
 
 <!-- PLACEHOLDER IMAGE: multi-décideurs commentant le même devis via lien sécurisé (shoot Content) -->
 
-## Threads par ligne : pourquoi l’ancrage change tout
+## Threads par ligne : pourquoi l’ancrage change tout (hors produit)
 
-Un commentaire flottant (« trop cher ») est peu actionnable. Un commentaire **ancré** sur une ligne ou un bloc l’est.
+QuoteBuilder n’ancre pas les commentaires aux lignes. Le paragraphe suivant est une pratique générale.
+
+Un commentaire flottant (« trop cher ») est peu actionnable. Un commentaire **ancré** sur une ligne ou un bloc l’est, dans un outil qui le permet.
 
 Exemples utiles :
 
@@ -156,16 +166,16 @@ Un historique utile montre :
 
 Ce n’est pas du juridique théâtral. C’est de la **mémoire opérationnelle**. Sans ça, vous rejouez le fil mail six mois plus tard.
 
-Lien avec [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit : le commercial pose Gagné sur une version. Les commentaires ouverts sur une version précédente doivent être soit résolus, soit reportés explicitement.
+Lien avec [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit. Dans QuoteBuilder, le commercial pose Gagné sur le dossier courant. Il n’y a pas de versions. Le commentaire du relecteur et son budget max restent sur la fiche.
 
 ## Lien avec versions et signature (le cycle complet)
 
 Le process sain ressemble à ça :
 
 1. Envoi du devis (lien sécurisé).
-2. Commentaires / annotations (threads par ligne).
+2. Commentaires ancrés (threads par ligne) : pratique générale, pas dans QuoteBuilder.
 3. Décisions internes (option, prix, délai).
-4. Si besoin : **nouvelle version** du devis (historique conservé).
+4. Si besoin, hors produit : une **nouvelle version** du devis (historique conservé). QuoteBuilder n’a pas de versions.
 5. Clôture des threads ouverts.
 6. Relance ciblée puis signature sur la version courante.
 
@@ -176,7 +186,7 @@ Les [pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-j
 <!-- PLACEHOLDER IMAGE: timeline version devis + commentaires résolus + signature (shoot Content) -->
 
 
-**Tester le cycle lien + commentaires sans reconstruire le process :** [essai Free](https://www.quotebuilder.co/signup?plan=free) · [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage).
+Le cycle threads, versions et signature décrit juste au-dessus est hors QuoteBuilder. Pas de bouton d’essai sur cette partie.
 
 
 ## Cas métier (courts)
@@ -221,14 +231,13 @@ Si le % de mails de clarification reste haut alors que le lien sécurisé est en
 Un bon outil ne « ajoute pas un chat ». Il **attache** la clarification au cycle :
 
 - envoi lien → lecture partagée ;
-- commentaire ancré → notification ;
-- décision → version ou résolution ;
-- résolution → relance / signature ;
-- historique → revue pipeline.
+- dans QuoteBuilder : fil plat, un commentaire et un budget max par relecteur ;
+- le commercial pose Gagné ;
+- threads par ligne, versions et signature : hors produit.
 
 C’est la même logique que le [configurateur vs Excel + PDF](https://www.quotebuilder.co/blog/configurateur-devis-vs-excel-pdf) : Excel peut calculer. Il ne porte pas la décision collective.
 
-QuoteBuilder (et des outils du même type) vise ce fil : devis partagé, espace prospect, commentaires / annotations, versions, signature. Pas magique. Juste moins de `RE: RE:`.
+QuoteBuilder porte le devis partagé, l’espace prospect, le fil plat et le passage en Gagné par le commercial. Pas de versions. Pas de signature en ligne. Pas magique. Juste moins de `RE: RE:`.
 
 ## Checklist de mise en place (2 semaines)
 

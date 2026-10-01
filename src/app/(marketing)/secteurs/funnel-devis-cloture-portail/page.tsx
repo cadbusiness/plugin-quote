@@ -28,7 +28,7 @@ const FAQ = [
   },
   {
     q: "Comment scorer « urgent avant vente du bien » ?",
-    a: "Souvent Hot : date contrainte. Vérifiez décideur, accès, complétude du brief. SLA court.",
+    a: "Le libellé automatique ignore l’urgence. L’équipe, hors produit, vérifie la date, le décideur, l’accès et le brief. Il n’y a pas de SLA.",
   },
   {
     q: "Un seul funnel pour particulier et promoteur ?",
@@ -36,7 +36,7 @@ const FAQ = [
   },
   {
     q: "Comment traiter syndic + copropriétaires ?",
-    a: "Champ interlocuteurs, circuit de validation, un seul lien espace prospect pour la bonne version.",
+    a: "Champ interlocuteurs, circuit de validation, un seul lien espace prospect. Il n’y a pas de versions de devis.",
   },
   {
     q: "Le funnel remplace-t-il le poseur ?",
@@ -44,7 +44,7 @@ const FAQ = [
   },
   {
     q: "Comment éviter les reprises motorisation ?",
-    a: "Liste moteur + accessoires + alimentation dès le funnel. Toute modif = nouvelle version du devis.",
+    a: "Liste moteur + accessoires + alimentation dès le funnel. Toute modif met à jour le dossier courant. Il n’y a pas de versions.",
   },
 ];
 
@@ -103,7 +103,7 @@ export default function CloturePortailLandingPage() {
             {[
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches clôture, portail, grille, moteur." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Panneaux, lames, motorisation + Si/Alors." },
-              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, SLA saison, assignation." },
+              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, métrage, relances." },
             ].map((item) => (
               <Link
@@ -121,8 +121,8 @@ export default function CloturePortailLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer le template clôture / portail"
-        text="Un parcours linéaire, hauteur, motorisation, pose. Le plan Free suffit pour voir l’interface, sans carte."
+        title="Essayer gratuitement"
+        text="Posez linéaire, hauteur, motorisation et pose dans un ordre fixe. Il n’y a pas de template clôture. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

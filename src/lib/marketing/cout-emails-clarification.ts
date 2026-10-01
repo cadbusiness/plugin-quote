@@ -111,12 +111,12 @@ export function computeCoutEmailsClarification(
     alertTone = "bad";
     alert = `Friction clarification élevée · environ ${fmtEuro(total)} / mois (indicatif).`;
     tip =
-      "Priorité : devis en lien sécurisé, commentaires / annotations ancrés, et clôture des threads avant signature.";
+      "Priorité : devis en lien sécurisé, fil plat, un commentaire et un budget max par relecteur. Le commercial pose Gagné. Pas de threads par ligne ni de signature.";
   } else if (total >= 5000 || heures >= 5) {
     alertTone = "warn";
     alert = `Friction clarification notable · environ ${fmtEuro(total)} / mois (indicatif).`;
     tip =
-      "Pilotez les réponses dans le devis partagé. Mesurez mails / devis et % signatures sur la mauvaise version.";
+      "Pilotez les réponses dans le fil plat. Mesurez les mails / devis. Il n’y a pas de versions ni de signature en ligne.";
   } else {
     alertTone = "ok";
     alert = `Friction clarification contenue · environ ${fmtEuro(total)} / mois (indicatif).`;
@@ -155,10 +155,10 @@ export function computeCoutEmailsClarification(
     "",
     "Checklist rapide :",
     "- Envoyer le devis en lien sécurisé (pas PDF seul)",
-    "- Commentaires / annotations ancrés par ligne",
-    "- Notifications owner + BE sur dossiers techniques",
-    "- Nouvelle version si le chiffrage change",
-    "- Signature seulement si threads critiques résolus",
+    "- Fil prospect plat, un commentaire et un budget max par relecteur",
+    "- Notifications quand un relecteur valide ou demande des modifications",
+    "- Mettre à jour le dossier courant si le chiffrage change (pas de nouvelle version)",
+    "- Le commercial pose Gagné. Pas de signature en ligne",
     "- Mesurer mails de clarification / devis chaque mois",
     "",
     "Calcul local · à adapter à votre réalité métier.",

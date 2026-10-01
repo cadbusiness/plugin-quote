@@ -42,7 +42,7 @@ Un **devis cuisine équipée** (résidentiel ou professionnelle légère) est un
 - le plan de travail (matériau, épaisseur, découpes) ;
 - l’électroménager (inclus, fourni client, ou hors devis) ;
 - la pose, les ajustements, parfois la plomberie / électricité déléguée ou exclue ;
-- le délai, la validité, les conditions d’acompte.
+- le délai et les conditions d’acompte. Une durée de prix, si l’équipe en tient une, est hors produit.
 
 Sans typologie et sans contraintes techniques, vous n’avez pas un devis. Vous avez une fourchette marketing.
 
@@ -123,25 +123,21 @@ Chaque branche évite les champs inutiles. Un prospect en linéaire simple ne r�
 
 ## Score Hot / Warm / Cold en cuisine
 
-Exemples de règles (à écrire, pas à improviser) :
+QuoteBuilder pose un libellé automatique Hot, Warm ou Cold. La formule est fixe : surface, charge, accès, type de projet, contraintes, et longueur du texte du besoin. Elle ignore photos, délai, zone et urgence. Elle n'est pas configurable. Il n'y a pas de SLA. Le libellé ne sert pas à promettre un délai de réponse. Voir [score demande devis B2B](https://www.quotebuilder.co/blog/score-demande-devis-b2b) pour le principe général.
 
-- **Hot** : délai < 8 semaines, décideur identifié, photos/plan fournis, budget cohérent, typologie claire.
-- **Warm** : intérêt réel mais plan manquant, ou budget flou, ou décision à deux sans calendrier.
-- **Cold** : « on se renseigne », pas de photos, hors zone, hors typologie, silence après visite.
+Délai, photos, plan, zone et décideur aident l'équipe à trier, hors produit. Ils ne changent pas la formule.
 
-Le score sert à l’assignation et aux SLA, pas à flatter le commercial. Voir [score demande devis B2B](https://www.quotebuilder.co/blog/score-demande-devis-b2b) pour le principe général.
+## Assignation et délai de réponse (hors QuoteBuilder)
 
-## Assignation et SLA
+Sans owner, le dossier cuisine pourrit entre showroom, dessinateur et poseur. Le délai de réponse est un tri d'équipe, pas un SLA produit.
 
-Sans owner, le dossier cuisine pourrit entre showroom, dessinateur et poseur.
+Règles d'équipe, hors produit :
 
-Règles simples :
-
-- Hot : owner nommé < 1 h ouvrée, premier contact < 2–4 h.
-- Warm : owner < 4 h, contact < 24 h.
+- Dossier que l'équipe juge prioritaire : owner nommé < 1 h ouvrée, premier contact < 2–4 h.
+- Dossier moins pressé : owner < 4 h, contact < 24 h.
 - Brief incomplet : ne partez pas en dessin 3D complet. Demandez le manquant d’abord.
 
-L’assignation et les SLA d’équipe se pilotent mieux avec une file unique : [assignation SLA demandes](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe).
+L’assignation et le délai de réponse d’équipe se pilotent mieux avec une file unique : [assignation et délai de réponse](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe).
 
 ## Relances après devis cuisine
 
@@ -189,7 +185,7 @@ Le funnel doit proposer un mode « pro léger » dès la première question cont
 3. **Promettre un délai fabricant** sans vérifier stocks façades / plan de travail.
 4. **Négocier la remise oralement** sans recalculer marge matière + pose.
 5. **Laisser le poseur partir sans checklist** : photos, arrivées eau/élec, accès, présence client.
-6. **Accepter une version pendant qu’une autre circule** par mail.
+6. **Laisser deux PDF divergents circuler** par mail.
 
 ## Mini-checklist avant d’envoyer le devis
 
@@ -198,8 +194,8 @@ Le funnel doit proposer un mode « pro léger » dès la première question cont
 - électro clair (inclus / client / références) ;
 - pose + accès + dépose chiffrés ou exclus ;
 - plomberie / électricité statut clair ;
-- délai et validité ;
-- version numérotée liée au dossier ;
+- durée de prix, hors produit, si l'équipe en tient une ;
+- dossier courant à jour (pas de version numérotée) ;
 - prochain pas clair (visite, acompte, validation plan).
 
 Si un point manque, vous envoyez une hypothèse fragile.
@@ -226,7 +222,7 @@ Typologie et contexte d’abord (pour brancher les questions), budget ensuite en
 
 ### 4. Comment scorer « urgent avant emménagement » ?
 
-Souvent Hot : date contrainte. Vérifiez décideur, accès chantier, et complétude du brief. SLA court.
+Le libellé automatique ignore l'urgence. L'équipe, hors produit, vérifie la date, le décideur, l'accès chantier et le brief. Il n'y a pas de SLA.
 
 ### 5. Un seul funnel pour particulier et pro léger ?
 
@@ -234,7 +230,7 @@ Oui, avec une première question contexte et des branches. Un monolithe sans bra
 
 ### 6. Comment traiter architecte + client final ?
 
-Champ « interlocuteurs », circuit de validation, un seul lien espace prospect pour la bonne version.
+Champ « interlocuteurs », circuit de validation, un seul lien espace prospect. Il n'y a pas de versions de devis.
 
 ### 7. Le funnel remplace-t-il le dessinateur ?
 
@@ -242,15 +238,15 @@ Non. Il prépare le brief pour que le dessinateur et le poseur ne perdent pas le
 
 ### 8. Quel SLA en période salon / promo ?
 
-Exemple : Hot < 2 h pour premier contact, Warm < 24 h. Sans file unique, le SLA reste théorique.
+Hors QuoteBuilder. Exemple d'équipe : premier contact sous 2 h pour un dossier prioritaire, sous 24 h pour le reste. Sans file unique, ce délai reste théorique. Le produit ne pose pas de SLA.
 
 ### 9. Comment éviter les reprises électro ?
 
-Liste d’appareils + qui fournit + références dès le funnel. Toute modif = nouvelle version du devis.
+Liste d’appareils + qui fournit + références dès le funnel. Toute modif met à jour le dossier courant. Il n’y a pas de versions.
 
 ### 10. Par où commencer concrètement ?
 
-Cartographiez vos 20 dernières demandes : champs manquants récurrents (plan, électro, plomberie…). Construisez le funnel autour de ces champs. Branchez le widget. Formez l’équipe à saisir les passages showroom dans le même pipeline.
+Cartographiez vos 20 dernières demandes : champs manquants récurrents (plan, électro, plomberie…). Construisez le funnel autour de ces champs. Branchez le widget. Pour un passage showroom, faites remplir le même funnel, y compris par lien prérempli.
 
 ## Conclusion
 

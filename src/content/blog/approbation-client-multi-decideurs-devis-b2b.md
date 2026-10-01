@@ -361,7 +361,7 @@ Mieux qu'un PDF seul, mais insuffisant dès qu'il y a deux lecteurs. Sans statut
 
 ### Comment gérer un syndic avec un vote distant ?
 
-Lien partagé, validité affichée, relances calées sur le calendrier de l'assemblée. Invitez le gestionnaire et, si besoin, un décideur. Ne réservez pas de créneau ferme avant le récap et la décision commerciale. Voir aussi [couverture / toiture](https://www.quotebuilder.co/secteurs/funnel-devis-couverture-toiture).
+Lien partagé et relances calées sur le calendrier de l'assemblée. QuoteBuilder n'affiche pas de validité : une durée de prix est une règle d'équipe, hors produit. Invitez le gestionnaire et, si besoin, un décideur. Ne réservez pas de créneau ferme avant le récap et la décision commerciale. Voir aussi [couverture / toiture](https://www.quotebuilder.co/secteurs/funnel-devis-couverture-toiture).
 
 ### Qui passe le devis en Gagné ?
 

@@ -36,7 +36,7 @@ const FAQ = [
   },
   {
     q: "Quel lien avec le catalogue produits ?",
-    a: "Les structures et options du funnel doivent mapper vos kits / articles catalogue. Sinon double saisie.",
+    a: "Les structures et options du funnel doivent mapper vos options, variantes et produits liés. Pas de kits. Sinon double saisie des lignes.",
   },
   {
     q: "Combien d’étapes idéales ?",
@@ -121,8 +121,8 @@ export default function PergolaTerrasseLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer le template pergola / terrasse"
-        text="Un parcours dimensions, matériaux, options, photos. Le plan Free suffit pour voir l’interface, sans carte."
+        title="Essayer gratuitement"
+        text="Posez dimensions, matériaux, options et photos dans un ordre fixe. Il n’y a pas de template pergola. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

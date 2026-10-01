@@ -112,16 +112,16 @@ export function computeCoutDevisPdfSeuls(input: CoutDevisPdfSeulsInput): CoutDev
     alertTone = "bad";
     alert = `Friction PDF élevée · environ ${fmtEuro(total)} / mois (indicatif).`;
     tip =
-      "Priorité : passer les devis Hot en lien sécurisé, garder le PDF en export, et relancer sur ouverture réelle plutôt que « avez-vous reçu ? ».";
+      "Priorité : passer les devis Hot en lien sécurisé, garder le PDF en export, et relancer à partir de la dernière consultation (temps relatif), pas d’un compteur d’ouvertures.";
   } else if (total >= 5000 || heures >= 5) {
     alertTone = "warn";
     alert = `Friction PDF notable · environ ${fmtEuro(total)} / mois (indicatif).`;
     tip =
-      "Pilotez 20 % des envois en lien + espace prospect. Mesurez les renvois de PJ et le délai de première ouverture.";
+      "Pilotez 20 % des envois en lien + espace prospect. Mesurez les renvois de PJ. Il n’y a pas de délai de première ouverture.";
   } else {
     alertTone = "ok";
     alert = `Friction PDF contenue · environ ${fmtEuro(total)} / mois (indicatif).`;
-    tip = "Gardez le lien comme canal principal. Surveillez quand même les versions obsolètes et la validité affichée.";
+    tip = "Gardez le lien comme canal principal. Il n’y a pas de versions ni de validité affichée dans le produit.";
   }
 
   const totalTone: CoutDevisPdfTone = total >= 15000 ? "bad" : total >= 5000 ? "warn" : "ok";
@@ -155,10 +155,10 @@ export function computeCoutDevisPdfSeuls(input: CoutDevisPdfSeulsInput): CoutDev
     "",
     "Checklist rapide :",
     "- Lien d’abord, PDF en téléchargement dans l’espace",
-    "- Une seule source de vérité (plus de v3_final)",
-    "- Relances basées sur ouverture / activité",
-    "- Validité visible sur la page devis",
-    "- Signature / acceptation sur la version courante",
+    "- Une seule page de dossier (pas de versions, plus de v3_final)",
+    "- Relances à partir de la dernière consultation (temps relatif, champ Espace prospect). Pas de compteur ni de stats",
+    "- Pas de validité affichée : durée de prix hors QuoteBuilder, si votre process l’exige",
+    "- Relecteurs : Valider le dossier ou Modifications. Le commercial pose Gagné. Pas de signature en ligne",
     "",
     "Calcul local · à adapter à votre réalité métier.",
   ].join("\n");

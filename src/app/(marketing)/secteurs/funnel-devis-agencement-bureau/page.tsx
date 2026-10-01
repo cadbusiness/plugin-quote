@@ -103,7 +103,7 @@ export default function AgencementBureauLandingPage() {
             {[
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Steps postes, cloisons, planning, plans." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Gammes mobilier, finitions + Si/Alors." },
-              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, SLA chantier, assignation." },
+              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, visite, relances." },
             ].map((item) => (
               <Link
@@ -121,8 +121,8 @@ export default function AgencementBureauLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer le template agencement"
-        text="Un parcours postes, cloisons, planning. Le plan Free suffit pour voir l’interface, sans carte."
+        title="Essayer gratuitement"
+        text="Posez postes, cloisons et planning dans un ordre fixe. Il n’y a pas de template agencement. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );
