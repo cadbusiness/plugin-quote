@@ -24,6 +24,8 @@ Ce n’est pas un problème de motivation commerciale. C’est un problème de *
 
 Ce guide explique comment les équipes B2B font accepter (et éventuellement signer) un devis en ligne sans ping-pong PDF interminable. On réduit la friction de l’envoi à la vue, des questions à l’acceptation. On suit un statut clair. On évite les doubles versions. On tranche quand l’e-signature compte vraiment, et quand un simple bouton « Accepter » suffit. Playbook orienté PME : menuiserie, stores, rayonnage, agencement, cuisine, services configurables.
 
+**Hors QuoteBuilder.** Le produit ne fait pas accepter ni signer en ligne. Sur l’espace prospect, les relecteurs invités répondent par « Valider le dossier » ou « Modifications ». Le commercial pose Gagné. La suite décrit un process métier général, pas une fonction du logiciel.
+
 
 **Tester un parcours sans PDF orphelin :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) pour voir un dossier et un espace prospect déjà cadrés.
 
@@ -174,7 +176,7 @@ Ne noyez pas l’équipe. Suivez :
 Pour chiffrer l’attente et l’impact d’un meilleur taux, un [simulateur de taux d’acceptation](https://www.quotebuilder.co/outils/simulateur-taux-acceptation-devis) aide (taux actuel vs cible, panier, délai). Complément ROI outil : [simulateur ROI logiciel de devis](https://www.quotebuilder.co/outils/simulateur-roi-logiciel-devis). Coût du silence : [coût devis non relancé](https://www.quotebuilder.co/outils/cout-devis-non-relance).
 
 
-**Structurer envoi, statut et acceptation :** [essai Free QuoteBuilder](https://www.quotebuilder.co/signup?plan=free) pour un parcours dossier + espace prospect, ou [démo](https://www.quotebuilder.co/c/demo/rayonnage) sans créer de compte.
+**Structurer envoi et relances :** [essai Free QuoteBuilder](https://www.quotebuilder.co/signup?plan=free) pour un parcours dossier + espace prospect, ou [démo](https://www.quotebuilder.co/c/demo/rayonnage) sans créer de compte. Le commercial pose Gagné.
 
 
 ![Capture type : statut devis Vu / En questions / Accepté](/blog/signature-acceptation-devis-en-ligne-b2b/img-2.png)

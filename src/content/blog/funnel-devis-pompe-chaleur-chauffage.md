@@ -1,7 +1,7 @@
 ---
-title: "Funnel de devis pompe à chaleur et chauffage : brief, aides, signature"
+title: "Funnel de devis pompe à chaleur et chauffage : brief, aides, relances"
 slug: funnel-devis-pompe-chaleur-chauffage
-description: "Landing SEO installateurs et bureaux d’études chauffage / PAC : funnel de devis (puissance, surface, énergie, isolation, accès, aides, photos, délai pose), options et signature."
+description: "Landing SEO installateurs et bureaux d’études chauffage / PAC : funnel de devis (puissance, surface, énergie, isolation, accès, aides, photos, délai pose), options et relances."
 canonical: /secteurs/funnel-devis-pompe-chaleur-chauffage
 locale: fr-FR
 word_count_target: 2100
@@ -18,7 +18,7 @@ updated: 2026-09-24
 sector: pompe-chaleur-chauffage
 ---
 
-# Funnel de devis pompe à chaleur et chauffage : brief, aides, signature
+# Funnel de devis pompe à chaleur et chauffage : brief, aides, relances
 
 Un particulier ou un syndic ouvre votre site. Il veut une pompe à chaleur, un ballon thermodynamique, parfois le remplacement d’une chaudière gaz avec radiateurs. Il clique sur **Demander un devis**.
 
@@ -28,7 +28,7 @@ Pas de type (air-eau, air-air). Pas d’énergie actuelle. Pas d’isolation. Pa
 
 Ce n’est pas seulement un sujet commercial. C’est un sujet d’**entrée**.
 
-Cette page explique comment un **funnel de devis pompe à chaleur / chauffage** transforme une demande vague en **brief chiffrable** : puissance indicative, surface, énergie actuelle, isolation, accès technique, mention générique des aides, photos, délai de pose, options, puis espace prospect et signature. Public : installateurs, bureaux d’études thermiques, réseaux et agences qui outillent ces équipes.
+Cette page explique comment un **funnel de devis pompe à chaleur / chauffage** transforme une demande vague en **brief chiffrable** : puissance indicative, surface, énergie actuelle, isolation, accès technique, mention générique des aides, photos, délai de pose, options, puis espace prospect et relances. Les relecteurs valident le dossier ; le commercial pose Gagné. Public : installateurs, bureaux d’études thermiques, réseaux et agences qui outillent ces équipes.
 
 
 **Voir un parcours structuré :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel](https://www.quotebuilder.co/c/demo/rayonnage) pour comprendre funnel → dossier scoré (le principe se transpose au chauffage / PAC).
@@ -104,7 +104,7 @@ Dans un funnel public, la posture saine est :
 
 Promettre un montant d’aide dans un wizard marketing crée des litiges. Mieux vaut un champ « je souhaite être accompagné sur les aides (oui / non / je ne sais pas) » et un process humain derrière.
 
-## Parcours type : du clic à la signature
+## Parcours type : du clic au dossier
 
 ### 1. Entrée (Ads, SEO, QR chantier, partenaires)
 
@@ -126,9 +126,9 @@ Estimateur assemble depuis le catalogue / forfaits pose. Options visibles. Prix 
 
 Lien magique : récap, options, questions, documents. Le prospect n’a pas à chercher le bon PDF. Voir [envoyer devis lien vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) et [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
 
-### 6. Relances + signature
+### 6. Relances
 
-Séquence T+0 / T+2j / T+5j selon score. Acceptation en ligne quand le dossier est prêt. Validité affichée clairement.
+Relances selon le score. Les relecteurs valident sur l’espace prospect ; le commercial pose Gagné.
 
 
 **Cadrez PAC / chauffage sans reconstruire chaque brief :** [essai Free](https://www.quotebuilder.co/signup?plan=free) · [démo publique](https://www.quotebuilder.co/c/demo/rayonnage).
@@ -165,21 +165,20 @@ Affichez-les comme options cochables. Le total bouge. Le prospect comprend. Vous
 Trois leviers à lier :
 
 1. **Validité du devis** (ex. 30 jours) : matériel et planning bougent. Voir [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
-2. **Créneau pose** : réservé après signature + acompte, pas sur un devis « peut-être ».
+2. **Créneau pose** : réservé après accord commercial (statut Gagné) et acompte, pas sur un devis « peut-être ».
 3. **Acompte / échéances** : rassurer trésorerie et commande matériel. Voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b).
 
 Sans ça, vous bloquez des semaines de planning pour des prospects qui comparent encore chez trois installateurs.
 
-## Espace prospect et signature
+## Espace prospect
 
 Après envoi, le prospect doit pouvoir :
 
 - relire le récap (système, surface, options, total) ;
 - poser une question sans relancer un e-mail perdu ;
-- déposer une facture d’énergie ou une photo complémentaire ;
-- accepter / signer quand c’est le bon moment.
+- déposer une facture d’énergie ou une photo complémentaire.
 
-C’est le rôle de l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) et de la [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b). Moins de « vous avez bien reçu mon devis ? ».
+Les relecteurs invités répondent par « Valider le dossier » ou « Modifications ». Le commercial pose Gagné. Moins de « vous avez bien reçu mon devis ? ». Voir l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
 
 ## KPIs secteur (comité mensuel)
 
@@ -210,7 +209,7 @@ Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les de
 2. **Prix au m² affiché sans brief** : vous attirez des tireurs de prix.
 3. **Ignorer l’accès unité extérieure** : le coût sort au chantier.
 4. **Un seul PDF sans suivi** : relances à l’aveugle. Préférez le [lien sécurisé](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email).
-5. **Réserver un créneau pose avant signature** : vous bloquez l’équipe pour un comparateur.
+5. **Réserver un créneau pose avant que le commercial pose Gagné** : vous bloquez l’équipe pour un comparateur.
 6. **Mélanger air-air et air-eau sur le même écran d’options** : le prospect se perd, le devis aussi.
 
 ## Secteurs proches et maillage
@@ -271,7 +270,7 @@ Un widget funnel sur la page « Devis PAC » + catalogue minimal (3 gammes, forf
 - [Envoyer un devis : lien sécurisé vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email)
 - [Options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)
 - [Validité et expiration des devis](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b)
-- [Signature et acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b)
+- [Signature et acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit : le commercial pose Gagné
 - [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
 - [Estimateur coût brief incomplet](https://www.quotebuilder.co/outils/estimateur-cout-brief-incomplet)
 - Hub [/secteurs](https://www.quotebuilder.co/secteurs)

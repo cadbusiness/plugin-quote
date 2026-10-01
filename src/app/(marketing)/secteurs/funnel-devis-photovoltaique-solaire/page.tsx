@@ -7,7 +7,7 @@ import { loadContentBody } from "@/lib/marketing/load-post";
 import { SITE_URL, pageMetadata } from "@/lib/marketing/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Funnel de devis photovoltaïque et solaire : toiture, kWc, brief, signature",
+  title: "Funnel de devis photovoltaïque et solaire : toiture, kWc, brief, relances",
   description:
     "Landing SEO installateurs et bureaux d’études PV : funnel de devis (toiture, puissance kWc, orientation, conso, type de client, accès, stockage batterie option, délai pose), sans barèmes d’aides inventés.",
   path: "/secteurs/funnel-devis-photovoltaique-solaire",
@@ -57,7 +57,7 @@ export default function PhotovoltaiqueSolaireLandingPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Funnel de devis photovoltaïque et solaire : toiture, kWc, brief, signature",
+    name: "Funnel de devis photovoltaïque et solaire : toiture, kWc, brief, relances",
     url: `${SITE_URL}/secteurs/funnel-devis-photovoltaique-solaire`,
     about: "Photovoltaïque, solaire, toiture, kWc, orientation, consommation, batterie, pose",
     isPartOf: { "@id": `${SITE_URL}/#website` },
@@ -73,12 +73,11 @@ export default function PhotovoltaiqueSolaireLandingPage() {
             Secteur · Photovoltaïque et solaire
           </p>
           <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl sm:leading-tight">
-            Funnel de devis photovoltaïque et solaire : toiture, kWc, brief, signature
+            Funnel de devis photovoltaïque et solaire : toiture, kWc, brief, relances
           </h1>
           <p className="mt-4 text-[16px] leading-7 text-mk-muted sm:text-lg">
             Toiture, puissance indicative (kWc), orientation, consommation, type de client, accès,
-            option batterie, photos, délai de pose. Un brief chiffrable, un score, puis une signature
-            qui ne traîne pas.
+            option batterie, photos, délai de pose. Un brief chiffrable, un score, puis des relances.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
@@ -109,7 +108,7 @@ export default function PhotovoltaiqueSolaireLandingPage() {
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches toiture, kWc, type de client, photos." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Gammes modules, onduleurs, forfaits pose, batterie." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, délai pose, assignation." },
-              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances, validité." },
+              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
             ].map((item) => (
               <Link
                 key={item.href}

@@ -7,7 +7,7 @@ import { loadPostBody } from "@/lib/marketing/load-post";
 import { SITE_URL, pageMetadata } from "@/lib/marketing/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Funnel de devis isolation thermique et ITE : façade, combles, brief, signature",
+  title: "Funnel de devis isolation thermique et ITE : façade, combles, brief, relances",
   description:
     "Landing SEO artisans et entreprises isolation / ITE : funnel de devis (type de surface, m², support, accès chantier, état existant, photos, délai, type client), sans barèmes d’aides inventés.",
   path: "/secteurs/funnel-devis-isolation-thermique-ite",
@@ -61,7 +61,7 @@ export default function IsolationThermiqueIteLandingPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Funnel de devis isolation thermique et ITE : façade, combles, brief, signature",
+    name: "Funnel de devis isolation thermique et ITE : façade, combles, brief, relances",
     url: `${SITE_URL}/secteurs/funnel-devis-isolation-thermique-ite`,
     about: "Isolation thermique, ITE, façade, combles, surface, accès chantier, photos",
     isPartOf: { "@id": `${SITE_URL}/#website` },
@@ -77,11 +77,11 @@ export default function IsolationThermiqueIteLandingPage() {
             Secteur · Isolation thermique et ITE
           </p>
           <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl sm:leading-tight">
-            Funnel de devis isolation thermique et ITE : façade, combles, brief, signature
+            Funnel de devis isolation thermique et ITE : façade, combles, brief, relances
           </h1>
           <p className="mt-4 text-[16px] leading-7 text-mk-muted sm:text-lg">
             Type de travaux, surface, support, accès chantier, état existant, photos, délai, type de
-            client. Un brief chiffrable, un score, puis une signature qui ne traîne pas.
+            client. Un brief chiffrable, un score, puis des relances.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
@@ -112,7 +112,7 @@ export default function IsolationThermiqueIteLandingPage() {
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches ITE, combles, murs, type de client, photos." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Gammes isolants, finitions, forfaits pose, accès." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, délai chantier, assignation." },
-              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances, validité." },
+              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
             ].map((item) => (
               <Link
                 key={item.href}

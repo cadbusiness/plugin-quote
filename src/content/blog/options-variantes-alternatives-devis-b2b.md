@@ -180,7 +180,7 @@ Le message d’envoi doit dire :
 2. Quelles options sont optionnelles (vraiment).
 3. Comment accepter / poser une question (un seul canal).
 
-Ensuite, suivez la vue et l’[acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b). Si le prospect n’ouvre pas, relancez le dossier Hot, pas une nouvelle variante inventée.
+Ensuite, suivez la vue et les relances. Si le prospect n’ouvre pas, relancez le dossier Hot, pas une nouvelle variante inventée. L’[acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) est un process hors produit.
 
 
 **Au milieu du parcours :** testez un [essai gratuit](https://www.quotebuilder.co/signup?plan=free) pour voir options et versions sur un dossier réel, ou la [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) pour parcourir un funnel déjà structuré.
@@ -334,7 +334,7 @@ Recadrez : une base recommandée + options. Un devis 100 % optionnel n’est pas
 
 ### Les options ralentissent-elles l’acceptation ?
 
-Mal présentées, oui. Bien structurées (recommandation + totaux clairs + acceptation en ligne), elles accélèrent souvent la décision en évitant le ping-pong PDF.
+Mal présentées, oui. Bien structurées (recommandation + totaux clairs), elles accélèrent souvent la décision en évitant le ping-pong PDF. Le commercial pose Gagné.
 
 ### Comment relier options et score Hot / Warm / Cold ?
 

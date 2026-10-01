@@ -7,9 +7,9 @@ import { loadPostBody } from "@/lib/marketing/load-post";
 import { SITE_URL, pageMetadata } from "@/lib/marketing/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Funnel de devis pergola et terrasse sur mesure : brief, options, signature",
+  title: "Funnel de devis pergola et terrasse sur mesure : brief, options, relances",
   description:
-    "Landing SEO poseurs et fabricants de pergolas, abris et terrasses sur mesure : funnel de devis (dimensions, matériaux, motorisation, éclairage, photos site, délai pose), espace prospect et signature.",
+    "Landing SEO poseurs et fabricants de pergolas, abris et terrasses sur mesure : funnel de devis (dimensions, matériaux, motorisation, éclairage, photos site, délai pose), espace prospect et relances.",
   path: "/secteurs/funnel-devis-pergola-terrasse",
 });
 
@@ -53,7 +53,7 @@ export default function PergolaTerrasseLandingPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Funnel de devis pergola et terrasse sur mesure : brief, options, signature",
+    name: "Funnel de devis pergola et terrasse sur mesure : brief, options, relances",
     url: `${SITE_URL}/secteurs/funnel-devis-pergola-terrasse`,
     about: "Pergola, abri, terrasse sur mesure, dimensions, motorisation, éclairage, pose",
     isPartOf: { "@id": `${SITE_URL}/#website` },
@@ -69,11 +69,11 @@ export default function PergolaTerrasseLandingPage() {
             Secteur · Pergola et terrasse
           </p>
           <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl sm:leading-tight">
-            Funnel de devis pergola et terrasse sur mesure : brief, options, signature
+            Funnel de devis pergola et terrasse sur mesure : brief, options, relances
           </h1>
           <p className="mt-4 text-[16px] leading-7 text-mk-muted sm:text-lg">
             Dimensions, matériaux, motorisation, éclairage, photos du site, délai de pose. Un brief
-            chiffrable, un score, un owner, puis une signature qui ne traîne pas.
+            chiffrable, un score, un owner, puis des relances.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
@@ -104,7 +104,7 @@ export default function PergolaTerrasseLandingPage() {
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches bioclimatique, toile, options, photos." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Kits structure, options LED, lignes de pose." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, délai pose, assignation." },
-              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances, validité." },
+              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
             ].map((item) => (
               <Link
                 key={item.href}

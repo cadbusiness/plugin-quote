@@ -56,7 +56,7 @@ Clarifiez le vocabulaire en interne.
 
 Prolonger n’est pas re-chiffrer. Re-chiffrer n’est pas « juste changer la date en bas ». Mélanger les deux crée des surprises côté marge.
 
-Liens utiles côté process : [versions et historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b), [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), [relancer un Hot depuis le dossier](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
+Liens utiles côté process : [versions et historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b), [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) (hors produit), [relancer un Hot depuis le dossier](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
 
 ## Combien de jours : repères réalistes (pas une règle magique)
 
@@ -180,7 +180,7 @@ Scénario classique : devis de février, acceptation orale en mai, fournisseur a
 Pour limiter la casse :
 
 1. **Date de validité visible** (PDF + espace prospect + mail d’envoi).
-2. **Version claire** au moment de l’acceptation ([acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b)).
+2. **Version claire** au moment où le commercial pose Gagné ([acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit).
 3. **Pas d’acceptation sur une version expirée** sans geste conscient (prolongation ou nouvelle version).
 4. **Clause de révision** si le projet dépasse une durée longue (matières, énergie, transport).
 5. **Trace** des échanges dans le dossier, pas seulement dans une boîte mail perso.
@@ -252,7 +252,7 @@ Liez ça à l’[assignation / SLA](https://www.quotebuilder.co/blog/assignation
 
 L’expiration fonctionne mieux si le prospect a **un lien unique** vers la bonne version. Sinon il signe un PDF mailé trois semaines plus tôt pendant que vous avez déjà une V3.
 
-Voir : [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne), [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b). L’acceptation doit être bloquée (ou au moins avertie) sur version expirée : soit prolongation, soit nouvelle offre.
+Voir : [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne), [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) (hors produit). Le commercial ne pose pas Gagné sur une offre expirée sans prolongation ou nouvelle offre.
 
 ## FAQ
 
@@ -276,9 +276,9 @@ L’automatisation évite les oublis. Gardez une action humaine pour prolonger o
 
 Une date de validité pour la version complète. Si une option rare a une dispo courte, notez-le sur la ligne ou réduisez la validité globale.
 
-### L’expiration empêche-t-elle l’acceptation en ligne ?
+### Que faire si l’offre est expirée ?
 
-Idéalement oui (ou warning fort). Accepter un devis expiré sans geste revient à signer un engagement ambigu.
+Le commercial ne pose pas Gagné sans prolongation ou nouvelle offre. Un accord sur un prix périmé reste un engagement ambigu.
 
 ### Que mettre dans la relance J-5 ?
 

@@ -125,9 +125,9 @@ L’acompte ne vit pas seul.
 
 Un acompte demandé sur un devis **expiré** ou sur une version ambiguë crée du litige. Cadrez d’abord la fenêtre de prix : [validité et expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b). Idéalement : acceptation sur version active, puis déclenchement de l’acompte (lien de paiement, virement avec référence devis, ou autre mode que vous utilisez).
 
-### Signature / acceptation en ligne
+### Signature / acceptation en ligne (hors produit)
 
-L’[acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) dit « quelle version est acceptée ». L’acompte dit « l’engagement cash a commencé ». Les deux se renforcent. Sans signature claire, l’acompte flotte. Sans acompte, la signature peut rester un « OK » faible pour l’atelier.
+L’[acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) est un process hors QuoteBuilder. Dans le produit, le commercial pose Gagné. L’acompte dit « l’engagement cash a commencé ». Sans cadre d’acompte, un accord oral reste un « OK » faible pour l’atelier.
 
 ### Options et variantes
 
@@ -288,9 +288,9 @@ Non. La validité cadre le **prix dans le temps**. L’acompte cadre le **démar
 
 Nouvelle version ou avenant : total, acompte déjà versé, reste dû mis à jour. Ne modifiez pas silencieusement la même version.
 
-### Peut-on bloquer la signature en ligne tant que l’acompte n’est pas payé ?
+### Peut-on bloquer le lancement tant que l’acompte n’est pas payé ?
 
-Selon votre tunnel : parfois signature d’abord puis paiement immédiat ; parfois paiement comme étape du parcours. L’essentiel est qu’il n’y ait pas de lancement atelier entre les deux sans statut clair. Voir [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b).
+Dans QuoteBuilder, le commercial pose Gagné. Parfois cet accord vient avant le paiement, parfois l’acompte vient d’abord. L’essentiel est qu’il n’y ait pas de lancement atelier entre les deux sans statut clair. Voir [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit.
 
 ### Quels indicateurs regarder en comité commercial ?
 

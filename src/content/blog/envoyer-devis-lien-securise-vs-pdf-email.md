@@ -1,7 +1,7 @@
 ---
 title: "Envoyer un devis par lien sécurisé vs PDF en pièce jointe"
 slug: envoyer-devis-lien-securise-vs-pdf-email
-description: "PDF en e-mail vs lien sécurisé / espace prospect : ouvertures, versions, relances, signature. Coût réel du PDF-only pour les devis B2B."
+description: "PDF en e-mail vs lien sécurisé / espace prospect : ouvertures, versions, relances, relecteurs. Coût réel du PDF-only pour les devis B2B."
 canonical: /blog/envoyer-devis-lien-securise-vs-pdf-email
 locale: fr-FR
 word_count_target: 2400
@@ -89,7 +89,7 @@ Quand vous partagez un **lien** vers une page devis (souvent protégée par PIN)
 - possibilité d’ajouter photos / plans / notes ;
 - messagerie légère attachée au dossier ;
 - accès multi-décideurs sans renvoyer un fichier ;
-- chemin vers l’[acceptation / signature en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b).
+- les relecteurs invités répondent par Valider le dossier ou Modifications ; le commercial pose Gagné.
 
 Côté vendeur, les ouvertures et l’activité nourrissent le dossier. Une relance Hot part depuis le même endroit. Voir [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier) et [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
 
@@ -104,7 +104,7 @@ Le PDF peut rester un **export** (bouton télécharger). Il n’est plus le cont
 | Multi-décideurs | Forward de fichiers divergents | Même lien + PIN |
 | Compléments (photos, plans) | Autre mail / WhatsApp | Upload sur le dossier |
 | Relances | « Avez-vous reçu ? » | Relance contextuelle (ouvert / pas ouvert / options) |
-| Signature | Scan, mail « ok », mauvaise version | Acceptation sur la version à jour |
+| Clôture | Scan, mail « ok », mauvaise version | Le commercial pose Gagné |
 | Validité affichée | Souvent oubliée dans le corps du mail | Visible sur la page |
 | Charge anti-spam / PJ | Risque réel | Lien texte, plus léger |
 | Traçabilité équipe | Boîte perso du commercial | Dossier partagé pipeline |
@@ -185,7 +185,7 @@ Le lien n’est utile que s’il s’inscrit dans un fil cohérent :
 3. **Chiffrage** : catalogue, options, variantes ([options / variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)).
 4. **Envoi** : lien sécurisé (ce guide).
 5. **Relances** : autopilote ou relance Hot depuis le dossier.
-6. **Signature** : acceptation en ligne sur la bonne version.
+6. **Clôture** : les relecteurs valident le dossier ou demandent des Modifications ; le commercial pose Gagné.
 7. **Validité** : date claire, pas de devis zombie.
 
 Sans les étapes 1 à 3, le lien partage juste un mauvais brief plus joliment. Sans 5 à 7, vous avez un bel espace et un pipeline qui dort.
@@ -253,7 +253,7 @@ Aucun tracking n’est parfait (préchargement mail, VPN, etc.). Elles restent n
 
 ### Lien vs signature : dans quel ordre ?
 
-D’abord un espace où le brief et les options sont clairs. Ensuite la [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b). Signer un PDF figé trop tôt fige aussi les erreurs.
+D’abord un espace où le brief et les options sont clairs. Le commercial pose ensuite Gagné. Signer un PDF figé trop tôt fige aussi les erreurs. L’article [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) décrit un process hors produit.
 
 ### Comment estimer ce que me coûte encore le PDF-only ?
 

@@ -1,5 +1,5 @@
 ---
-title: "Funnel de devis isolation thermique et ITE : façade, combles, brief, signature"
+title: "Funnel de devis isolation thermique et ITE : façade, combles, brief, relances"
 slug: funnel-devis-isolation-thermique-ite
 description: "Landing SEO artisans et entreprises isolation / ITE : funnel de devis (type de surface, m², support, accès chantier, état existant, photos, délai, type client), sans barèmes d’aides inventés."
 canonical: /secteurs/funnel-devis-isolation-thermique-ite
@@ -19,7 +19,7 @@ updated: 2026-09-28
 sector: isolation-thermique-ite
 ---
 
-# Funnel de devis isolation thermique et ITE : façade, combles, brief, signature
+# Funnel de devis isolation thermique et ITE : façade, combles, brief, relances
 
 Un particulier, un syndic ou un gestionnaire de parc ouvre votre page. Il veut « isoler » : parfois l’ITE (isolation thermique par l’extérieur), parfois les combles, parfois les murs par l’intérieur ou un plancher. Il clique sur **Demander un devis**.
 
@@ -29,7 +29,7 @@ Pas de type de surface. Pas de m². Pas de support (façade, combles perdus, ram
 
 Ce n’est pas seulement un sujet commercial. C’est un sujet d’**entrée**.
 
-Cette page explique comment un **funnel de devis isolation thermique / ITE** transforme une demande vague en **brief chiffrable** : type de travaux, surface, support, accès, état existant, photos, délai, type de client, options, puis espace prospect et signature. Public : entreprises d’isolation, façadiers ITE, artisans rénovation énergétique, réseaux et agences qui outillent ces équipes.
+Cette page explique comment un **funnel de devis isolation thermique / ITE** transforme une demande vague en **brief chiffrable** : type de travaux, surface, support, accès, état existant, photos, délai, type de client, options, puis espace prospect et relances. Les relecteurs valident le dossier ; le commercial pose Gagné. Public : entreprises d’isolation, façadiers ITE, artisans rénovation énergétique, réseaux et agences qui outillent ces équipes.
 
 
 **Voir un parcours structuré :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel](https://www.quotebuilder.co/c/demo/rayonnage) pour comprendre funnel → dossier scoré (le principe se transpose à l’isolation / ITE).
@@ -108,7 +108,7 @@ Promettre un montant d’aide figé dans un wizard marketing crée des litiges. 
 
 Même logique que sur le [funnel photovoltaïque / solaire](https://www.quotebuilder.co/secteurs/funnel-devis-photovoltaique-solaire) et le [funnel pompe à chaleur / chauffage](https://www.quotebuilder.co/secteurs/funnel-devis-pompe-chaleur-chauffage) : générique oui, barème inventé non.
 
-## Parcours type : du clic à la signature
+## Parcours type : du clic au dossier
 
 ### 1. Entrée (Ads, SEO, QR chantier, partenaires)
 
@@ -132,9 +132,9 @@ Avant envoi, une [validation interne](https://www.quotebuilder.co/blog/validatio
 
 Lien magique : récap, options, questions, documents (photos façade, plan, diagnostic). Le prospect n’a pas à chercher le bon PDF. Voir [envoyer devis lien vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) et [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
 
-### 6. Relances + signature
+### 6. Relances
 
-Séquence T+0 / T+2j / T+5j selon score. Acceptation en ligne quand le dossier est prêt. Validité affichée clairement.
+Relances selon le score. Les relecteurs valident sur l’espace prospect ; le commercial pose Gagné.
 
 
 **Cadrez l’isolation sans reconstruire chaque brief :** [essai Free](https://www.quotebuilder.co/signup?plan=free) · [démo publique](https://www.quotebuilder.co/c/demo/rayonnage).
@@ -185,21 +185,20 @@ Affichez-les comme options cochables. Le total bouge. Le prospect comprend. Vous
 Trois leviers à lier :
 
 1. **Validité du devis** (ex. 30 jours) : matériaux et planning bougent. Voir [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
-2. **Créneau chantier** : réservé après signature + acompte, pas sur un devis « peut-être » (surtout en saison ITE).
+2. **Créneau chantier** : réservé après accord commercial (statut Gagné) et acompte, pas sur un devis « peut-être » (surtout en saison ITE).
 3. **Acompte / échéances** : rassurer trésorerie et commande. Voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b).
 
 Sans ça, vous bloquez des semaines d’échafaudage pour des prospects qui comparent encore chez trois façadiers.
 
-## Espace prospect et signature
+## Espace prospect
 
 Après envoi, le prospect doit pouvoir :
 
 - relire le récap (type de travaux, m² indicatifs, options, total) ;
 - poser une question sans relancer un e-mail perdu ;
-- déposer une photo complémentaire, un plan ou un document syndic ;
-- accepter / signer quand c’est le bon moment.
+- déposer une photo complémentaire, un plan ou un document syndic.
 
-C’est le rôle de l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) et de la [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b). Moins de « vous avez bien reçu mon devis ? ».
+Les relecteurs invités répondent par « Valider le dossier » ou « Modifications ». Le commercial pose Gagné. Moins de « vous avez bien reçu mon devis ? ». Voir l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
 
 Sur les dossiers syndic, l’espace partagé évite aussi les versions contradictoires entre conseil syndical et gestionnaire. Liez ça aux [versions / historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b) et à la [validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
 
@@ -232,7 +231,7 @@ Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les de
 2. **Prix au m² affiché sans brief** : vous attirez des tireurs de prix.
 3. **Ignorer l’accès et la hauteur** : le coût sort au chantier.
 4. **Un seul PDF sans suivi** : relances à l’aveugle. Préférez le [lien sécurisé](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email).
-5. **Réserver un créneau échafaudage avant signature** : vous bloquez l’équipe pour un comparateur.
+5. **Réserver un créneau échafaudage avant que le commercial pose Gagné** : vous bloquez l’équipe pour un comparateur.
 6. **Mélanger particulier, pro et syndic sur les mêmes champs** : branche « type de client » dès le début.
 7. **Envoyer sans validation technique** sur un Hot ITE complexe : V2 garantie. Voir [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
 
@@ -302,7 +301,7 @@ Sur les Hot / paniers élevés / accès complexes, oui. Ça réduit les V2 et le
 - [Envoyer un devis : lien sécurisé vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email)
 - [Options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)
 - [Validité et expiration des devis](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b)
-- [Signature et acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b)
+- [Signature et acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit : le commercial pose Gagné
 - [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
 - [Funnel devis pompe à chaleur / chauffage](https://www.quotebuilder.co/secteurs/funnel-devis-pompe-chaleur-chauffage)
 - [Funnel devis photovoltaïque / solaire](https://www.quotebuilder.co/secteurs/funnel-devis-photovoltaique-solaire)

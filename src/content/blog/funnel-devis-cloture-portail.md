@@ -153,7 +153,7 @@ Après envoi du devis (idéalement via lien espace prospect) :
 - figer les versions si le client demande une modif (nouvelle version, pas un PDF parallèle) ;
 - rappeler la **date de validité** (matière alu / acier peuvent bouger) : [validité / expiration devis](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
 
-Playbook : [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier). Acceptation : [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b). Revue : [pipeline devis B2B](https://www.quotebuilder.co/blog/revue-pipeline-devis-b2b).
+Playbook : [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier). Les relecteurs valident sur l’espace prospect ; le commercial pose Gagné. Revue : [pipeline devis B2B](https://www.quotebuilder.co/blog/revue-pipeline-devis-b2b).
 
 ## Cas d’usage : journée type poseur / fabricant
 
@@ -245,6 +245,6 @@ Cartographiez vos 20 dernières demandes : champs manquants récurrents (hauteur
 
 ## Conclusion
 
-En clôture, portail et grilles, le devis se gagne ou se perd sur la qualité de l’entrée : linéaire, hauteur, matériaux, motorisation, terrain, pose. Un funnel transforme le « j’ai besoin d’une clôture » en dossier scoré, assignable et relançable. Le reste (catalogue, options, versions, espace prospect, validité, acceptation en ligne) amplifie. Sans brief solide, vous chiffrez du vent.
+En clôture, portail et grilles, le devis se gagne ou se perd sur la qualité de l’entrée : linéaire, hauteur, matériaux, motorisation, terrain, pose. Un funnel transforme le « j’ai besoin d’une clôture » en dossier scoré, assignable et relançable. Le reste (catalogue, options, espace prospect, relances) amplifie. Le commercial pose Gagné. Sans brief solide, vous chiffrez du vent.
 
 Pour tester le principe : [essai Free](https://www.quotebuilder.co/signup?plan=free) ou [démo](https://www.quotebuilder.co/c/demo/rayonnage).

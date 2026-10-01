@@ -156,7 +156,7 @@ Un historique utile montre :
 
 Ce n’est pas du juridique théâtral. C’est de la **mémoire opérationnelle**. Sans ça, vous rejouez le fil mail six mois plus tard.
 
-Lien avec [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) : on signe une version. Les commentaires ouverts sur une version précédente doivent être soit résolus, soit reportés explicitement.
+Lien avec [signature / acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit : le commercial pose Gagné sur une version. Les commentaires ouverts sur une version précédente doivent être soit résolus, soit reportés explicitement.
 
 ## Lien avec versions et signature (le cycle complet)
 
@@ -299,7 +299,7 @@ L’[estimateur coût aller-retours brief / photos](https://www.quotebuilder.co/
 - [Envoyer un devis : lien sécurisé vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email)
 - [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
 - [Versions et historique des devis](https://www.quotebuilder.co/blog/versions-historique-devis-b2b)
-- [Signature et acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b)
+- [Signature et acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit
 - [Options, variantes et alternatives](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)
 - [Pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b)
 - [Estimateur coût e-mails de clarification devis](https://www.quotebuilder.co/outils/estimateur-cout-emails-clarification-devis)

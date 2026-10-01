@@ -7,9 +7,9 @@ import { loadPostBody } from "@/lib/marketing/load-post";
 import { SITE_URL, pageMetadata } from "@/lib/marketing/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Funnel de devis pompe à chaleur et chauffage : brief, aides, signature",
+  title: "Funnel de devis pompe à chaleur et chauffage : brief, aides, relances",
   description:
-    "Landing SEO installateurs et bureaux d’études chauffage / PAC : funnel de devis (puissance, surface, énergie, isolation, accès, aides, photos, délai pose), options et signature.",
+    "Landing SEO installateurs et bureaux d’études chauffage / PAC : funnel de devis (puissance, surface, énergie, isolation, accès, aides, photos, délai pose), options et relances.",
   path: "/secteurs/funnel-devis-pompe-chaleur-chauffage",
 });
 
@@ -57,7 +57,7 @@ export default function PompeChaleurChauffageLandingPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Funnel de devis pompe à chaleur et chauffage : brief, aides, signature",
+    name: "Funnel de devis pompe à chaleur et chauffage : brief, aides, relances",
     url: `${SITE_URL}/secteurs/funnel-devis-pompe-chaleur-chauffage`,
     about: "Pompe à chaleur, chauffage, surface, énergie, isolation, accès, aides, pose",
     isPartOf: { "@id": `${SITE_URL}/#website` },
@@ -73,11 +73,11 @@ export default function PompeChaleurChauffageLandingPage() {
             Secteur · Pompe à chaleur et chauffage
           </p>
           <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl sm:leading-tight">
-            Funnel de devis pompe à chaleur et chauffage : brief, aides, signature
+            Funnel de devis pompe à chaleur et chauffage : brief, aides, relances
           </h1>
           <p className="mt-4 text-[16px] leading-7 text-mk-muted sm:text-lg">
             Puissance indicative, surface, énergie actuelle, isolation, accès technique, aides, photos,
-            délai de pose. Un brief chiffrable, un score, puis une signature qui ne traîne pas.
+            délai de pose. Un brief chiffrable, un score, puis des relances.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
@@ -108,7 +108,7 @@ export default function PompeChaleurChauffageLandingPage() {
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches air-eau, air-air, accès, photos." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Gammes PAC, forfaits pose, options." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, délai pose, assignation." },
-              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances, validité." },
+              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
             ].map((item) => (
               <Link
                 key={item.href}

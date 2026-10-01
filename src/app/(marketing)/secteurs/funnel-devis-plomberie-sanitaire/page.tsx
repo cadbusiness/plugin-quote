@@ -112,7 +112,7 @@ export default function PlomberieSanitaireLandingPage() {
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Questions en ordre fixe : type d’intervention, pièce, accès, photos, urgence." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Forfaits dépannage, sanitaires, dépose. Si/Alors pour les produits suggérés." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation." },
-              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances, validité." },
+              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
             ].map((item) => (
               <Link
                 key={item.href}
