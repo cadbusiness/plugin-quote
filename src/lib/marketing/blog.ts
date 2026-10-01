@@ -101,6 +101,7 @@ export const BLOG_TOOL_ATTENTE_MULTI = "/outils/estimateur-cout-attente-multi-de
 export const BLOG_TOOL_VISITES_INUTILES = "/outils/estimateur-cout-visites-techniques-inutiles";
 export const BLOG_TOOL_PIPELINE_FANTOME = "/outils/estimateur-cout-pipeline-fantome-devis";
 export const BLOG_TOOL_DEMANDES_ORALES = "/outils/estimateur-cout-demandes-orales-non-capturees";
+export const BLOG_TOOL_DOUBLE_SAISIE = "/outils/estimateur-cout-double-saisie-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -114,6 +115,7 @@ export type BlogTool = {
 export function outilsHubIntro(count = BLOG_TOOLS.length): string {
   const words: Record<number, string> = {
     27: "Vingt-sept",
+    28: "Vingt-huit",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -282,9 +284,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Demandes orales / mois (tél + WhatsApp + SMS), % non capturées, minutes, taux horaire, panier, % deals perdus. Heures, coût temps, opportunités. Le % funnel est indicatif. Calcul 100 % local.",
     tags: ["funnel", "scoring"],
   },
+  {
+    href: BLOG_TOOL_DOUBLE_SAISIE,
+    title: "Estimateur coût de la double saisie devis",
+    text: "Demandes / mois en double saisie, minutes, % d’infos déformées, % qui meurent ou repartent en clarification, taux horaire, panier. Heures, coût temps, dossiers déformés, opportunités. Calcul 100 % local.",
+    tags: ["funnel", "scoring"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "sources-demande-devis-b2b-funnel-api",
+    path: "/blog/sources-demande-devis-b2b-funnel-api",
+    title: "Sources d'une demande de devis B2B : funnel, API, intégrations (sans double saisie)",
+    description:
+      "D'où viennent vraiment les demandes de devis B2B (funnel, API, plugins, préfill) et pourquoi la double saisie mail → Excel → logiciel tue la qualité du brief. Process métier + modèle sain.",
+    publishedAt: "2026-10-01",
+    readingMinutes: 14,
+    tags: ["funnel", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.funnelPublic,
+    pinned: false,
+  },
   {
     slug: "telephone-whatsapp-vers-brief-devis-b2b",
     path: "/blog/telephone-whatsapp-vers-brief-devis-b2b",

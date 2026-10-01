@@ -68,6 +68,11 @@ import {
   computeCoutDemandesOrales,
 } from "./cout-demandes-orales-non-capturees";
 import {
+  COUT_DOUBLE_SAISIE_DEFAULTS,
+  COUT_DOUBLE_SAISIE_LABELS,
+  computeCoutDoubleSaisie,
+} from "./cout-double-saisie-devis";
+import {
   COUT_PIPELINE_FANTOME_DEFAULTS,
   COUT_PIPELINE_FANTOME_LABELS,
   computeCoutPipelineFantome,
@@ -144,6 +149,8 @@ for (const required of [
   "/outils/estimateur-cout-visites-techniques-inutiles",
   "/outils/estimateur-cout-pipeline-fantome-devis",
   "/outils/estimateur-cout-demandes-orales-non-capturees",
+  "/outils/estimateur-cout-double-saisie-devis",
+  "/blog/sources-demande-devis-b2b-funnel-api",
   "/blog/telephone-whatsapp-vers-brief-devis-b2b",
   "/blog/statuts-pipeline-devis-b2b",
   "/blog/visite-technique-avant-devis-b2b",
@@ -200,18 +207,46 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 37);
-assert.equal(BLOG_TOOLS.length, 27);
+assert.equal(BLOG_POSTS.length, 38);
+assert.equal(BLOG_TOOLS.length, 28);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-demandes-orales-non-capturees"));
+assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-double-saisie-devis"));
 const outilsHub = readFileSync(new URL("../../app/(marketing)/outils/page.tsx", import.meta.url), "utf8");
 assert.match(outilsHub, /outilsHubIntro\(\)/);
 assert.equal(
   outilsHubIntro(),
-  "Vingt-sept outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
+  "Vingt-huit outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
 );
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
-assert.doesNotMatch(outilsHub, /Vingt-quatre|Vingt-cinq|Vingt-six/);
+assert.doesNotMatch(outilsHub, /Vingt-quatre|Vingt-cinq|Vingt-six|Vingt-sept|Vingt-huit/);
 assert.match(outilsHub, /estimateur-cout-demandes-orales-non-capturees/);
+assert.match(outilsHub, /estimateur-cout-double-saisie-devis/);
+assert.deepEqual(
+  BLOG_POSTS.find((post) => post.slug === "sources-demande-devis-b2b-funnel-api")?.tags,
+  ["funnel", "scoring"],
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "sources-demande-devis-b2b-funnel-api")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "sources-demande-devis-b2b-funnel-api")?.cover,
+  BLOG_DEMO_SHOTS.funnelPublic,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "sources-demande-devis-b2b-funnel-api")?.readingMinutes,
+  14,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "sources-demande-devis-b2b-funnel-api")?.publishedAt,
+  "2026-10-01",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "sources-demande-devis-b2b-funnel-api")?.pinned, false);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "sources-demande-devis-b2b-funnel-api")?.path,
+  "/blog/sources-demande-devis-b2b-funnel-api",
+);
+assert.equal(BLOG_FAQ["sources-demande-devis-b2b-funnel-api"]?.length, 10);
 const secteursHub = readFileSync(new URL("../../app/(marketing)/secteurs/page.tsx", import.meta.url), "utf8");
 assert.match(secteursHub, /funnel-devis-electricite-tertiaire/);
 assert.deepEqual(
@@ -818,8 +853,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 18);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 18);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 19);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 19);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 7);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 6);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);
@@ -1087,6 +1122,17 @@ const requiredSources = {
     "/blog/formulaire-contact-vs-funnel-devis-b2b",
     "/secteurs/funnel-devis-plomberie-sanitaire",
     "/secteurs/funnel-devis-couverture-toiture",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "sources-demande-devis-b2b-funnel-api.md": [
+    "/outils/estimateur-cout-double-saisie-devis",
+    "/blog/formulaire-contact-vs-funnel-devis-b2b",
+    "/blog/preremplir-devis-url-parametres",
+    "/blog/recevoir-demandes-devis-wordpress-quotebuilder",
+    "/blog/telephone-whatsapp-vers-brief-devis-b2b",
+    "/blog/score-demande-devis-b2b",
+    "/blog/statuts-pipeline-devis-b2b",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -1642,6 +1688,31 @@ for (const { file, dir } of contentFiles) {
   assert.doesNotMatch(tvaBody, /blocs TVA/);
   assert.doesNotMatch(tvaBody, EM_DASH);
   assert.equal(tvaBody.split(/\s+/).filter(Boolean).length, 3314);
+}
+
+{
+  const sourcesRaw = readFileSync(join(blogDir, "sources-demande-devis-b2b-funnel-api.md"), "utf8");
+  assert.ok(sourcesRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const sourcesBody = stripFrontmatter(sourcesRaw);
+  assert.ok(
+    sourcesBody.startsWith("# Sources d'une demande de devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(sourcesBody, /^title:/m);
+  assert.match(sourcesBody, /signup\?plan=free/);
+  assert.match(sourcesBody, /\/outils\/estimateur-cout-double-saisie-devis/);
+  assert.match(sourcesBody, /\/api\/leads/);
+  assert.match(sourcesBody, /\/c\/demo\/rayonnage/);
+  assert.match(sourcesBody, /d'écran de saisie manuelle/);
+  assert.match(sourcesBody, /d'écran d'import de devis/);
+  assert.match(sourcesBody, /ne joint pas/);
+  assert.match(sourcesBody, /formule fixe/);
+  assert.match(sourcesBody, /Commencée/);
+  assert.match(sourcesBody, /En attente/);
+  assert.match(sourcesBody, /Accepté \/ Signé ne sont pas des statuts/);
+  assert.doesNotMatch(sourcesBody, /signature électronique/);
+  assert.doesNotMatch(sourcesBody, EM_DASH);
+  assert.equal(sourcesBody.split(/\s+/).filter(Boolean).length, 2810);
 }
 
 {
@@ -3217,6 +3288,122 @@ assert.equal(visitesClamp.pctPerdus, 100);
 assert.equal(visitesClamp.opp, null);
 assert.equal(visitesClamp.alertTone, "neutral");
 
+const doubleDefault = computeCoutDoubleSaisie({ ...COUT_DOUBLE_SAISIE_DEFAULTS });
+assert.equal(doubleDefault.heures, 12);
+assert.equal(doubleDefault.coutTemps, 660);
+assert.equal(doubleDefault.deformes, 14);
+assert.equal(doubleDefault.morts, 5.6);
+assert.equal(doubleDefault.opp, 47600);
+assert.equal(doubleDefault.total, 48260);
+assert.equal(doubleDefault.alertTone, "warn");
+assert.equal(doubleDefault.totalTone, "warn");
+assert.equal(doubleDefault.defTone, "warn");
+assert.equal(doubleDefault.oppTone, "warn");
+assert.match(doubleDefault.alert, /Double saisie notable/);
+assert.match(doubleDefault.recap, /Checklist rapide/);
+assert.match(doubleDefault.recap, /pas d'écran import devis/);
+assert.match(doubleDefault.recap, /formule fixe, pas de SLA produit/);
+assert.match(doubleDefault.recap, /uploads prospect/);
+assert.doesNotMatch(doubleDefault.recap, /signature électronique/);
+assert.doesNotMatch(doubleDefault.recap, EM_DASH);
+assert.equal(COUT_DOUBLE_SAISIE_LABELS.demandes, "Demandes / mois en double saisie");
+assert.equal(COUT_DOUBLE_SAISIE_LABELS.total, "Coût total indicatif mensuel (temps + opportunités)");
+
+const doubleFormula = computeCoutDoubleSaisie({
+  demandes: 60,
+  minutes: 20,
+  pctPerte: 50,
+  pctMort: 40,
+  taux: 50,
+  panier: 1000,
+});
+assert.equal(doubleFormula.heures, (60 * 20) / 60);
+assert.equal(doubleFormula.coutTemps, doubleFormula.heures * 50);
+assert.equal(doubleFormula.deformes, (60 * 50) / 100);
+assert.equal(doubleFormula.morts, (doubleFormula.deformes * 40) / 100);
+assert.equal(doubleFormula.opp, doubleFormula.morts * 1000);
+assert.equal(doubleFormula.total, doubleFormula.coutTemps + (doubleFormula.opp ?? 0));
+assert.equal(doubleFormula.heures, 20);
+assert.equal(doubleFormula.coutTemps, 1000);
+assert.equal(doubleFormula.deformes, 30);
+assert.equal(doubleFormula.morts, 12);
+assert.equal(doubleFormula.opp, 12000);
+assert.equal(doubleFormula.total, 13000);
+assert.equal(doubleFormula.alertTone, "bad");
+assert.equal(doubleFormula.defTone, "bad");
+
+const doubleEmpty = computeCoutDoubleSaisie({ ...COUT_DOUBLE_SAISIE_DEFAULTS, demandes: 0 });
+assert.equal(doubleEmpty.heures, 0);
+assert.equal(doubleEmpty.coutTemps, 0);
+assert.equal(doubleEmpty.deformes, 0);
+assert.equal(doubleEmpty.morts, 0);
+assert.equal(doubleEmpty.opp, 0);
+assert.equal(doubleEmpty.total, 0);
+assert.equal(doubleEmpty.alertTone, "neutral");
+assert.match(doubleEmpty.alert, /volume de demandes en double saisie/);
+
+const doubleNoBasket = computeCoutDoubleSaisie({ ...COUT_DOUBLE_SAISIE_DEFAULTS, panier: 0 });
+assert.equal(doubleNoBasket.opp, null);
+assert.equal(doubleNoBasket.oppLabel, "non calculé (panier = 0)");
+assert.equal(doubleNoBasket.total, doubleNoBasket.coutTemps);
+assert.equal(doubleNoBasket.oppTone, "neutral");
+assert.equal(doubleNoBasket.alertTone, "warn");
+assert.match(doubleNoBasket.recap, /Opportunités perdues \(indicatif\) : n\/a/);
+
+const doubleLow = computeCoutDoubleSaisie({
+  demandes: 12,
+  minutes: 10,
+  pctPerte: 10,
+  pctMort: 50,
+  taux: 60,
+  panier: 2000,
+});
+assert.equal(doubleLow.heures, 2);
+assert.equal(doubleLow.coutTemps, 120);
+assert.equal(doubleLow.deformes, 1.2);
+assert.equal(doubleLow.morts, 0.6);
+assert.equal(doubleLow.opp, 1200);
+assert.equal(doubleLow.total, 1320);
+assert.equal(doubleLow.alertTone, "ok");
+assert.match(doubleLow.alert, /Double saisie plutôt contenue/);
+
+const doubleHigh = computeCoutDoubleSaisie({
+  demandes: 200,
+  minutes: 30,
+  pctPerte: 50,
+  pctMort: 50,
+  taux: 80,
+  panier: 10000,
+});
+assert.equal(doubleHigh.heures, 100);
+assert.equal(doubleHigh.coutTemps, 8000);
+assert.equal(doubleHigh.deformes, 100);
+assert.equal(doubleHigh.morts, 50);
+assert.equal(doubleHigh.opp, 500000);
+assert.equal(doubleHigh.total, 508000);
+assert.equal(doubleHigh.alertTone, "bad");
+assert.equal(doubleHigh.totalTone, "bad");
+assert.equal(doubleHigh.defTone, "bad");
+assert.equal(doubleHigh.oppTone, "bad");
+assert.match(doubleHigh.tip, /source unique/);
+
+const doubleClamp = computeCoutDoubleSaisie({
+  demandes: -5,
+  minutes: 2000,
+  pctPerte: 140,
+  pctMort: 140,
+  taux: 20000,
+  panier: -1,
+});
+assert.equal(doubleClamp.demandes, 0);
+assert.equal(doubleClamp.minutes, 1440);
+assert.equal(doubleClamp.pctPerte, 100);
+assert.equal(doubleClamp.pctMort, 100);
+assert.equal(doubleClamp.taux, 10000);
+assert.equal(doubleClamp.panier, 0);
+assert.equal(doubleClamp.opp, null);
+assert.equal(doubleClamp.alertTone, "neutral");
+
 const oralesDefault = computeCoutDemandesOrales({ ...COUT_DEMANDES_ORALES_DEFAULTS });
 assert.equal(oralesDefault.nonCap, 36);
 assert.equal(oralesDefault.heures, 15);
@@ -3652,6 +3839,8 @@ for (const expected of [
   { path: "/outils/checklist-mentions-devis-france", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
   { path: "/blog/pieces-jointes-plans-photos-devis-b2b", priority: 0.8, lastmod: "2026-09-25" },
+  { path: "/blog/sources-demande-devis-b2b-funnel-api", priority: 0.8, lastmod: "2026-10-01" },
+  { path: "/outils/estimateur-cout-double-saisie-devis", priority: 0.7, lastmod: "2026-10-01" },
   { path: "/blog/telephone-whatsapp-vers-brief-devis-b2b", priority: 0.8, lastmod: "2026-10-01" },
   { path: "/outils/estimateur-cout-demandes-orales-non-capturees", priority: 0.7, lastmod: "2026-10-01" },
   { path: "/secteurs/funnel-devis-electricite-tertiaire", priority: 0.8, lastmod: "2026-10-01" },
@@ -3698,6 +3887,8 @@ assert.ok(paths.includes("/outils/calculateur-tva-devis-ht-ttc"));
 assert.ok(paths.includes("/blog/approbation-client-multi-decideurs-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-attente-multi-decideurs-devis"));
 assert.ok(paths.includes("/secteurs/funnel-devis-couverture-toiture"));
+assert.ok(paths.includes("/blog/sources-demande-devis-b2b-funnel-api"));
+assert.ok(paths.includes("/outils/estimateur-cout-double-saisie-devis"));
 assert.ok(paths.includes("/blog/telephone-whatsapp-vers-brief-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-demandes-orales-non-capturees"));
 assert.ok(paths.includes("/secteurs/funnel-devis-electricite-tertiaire"));
@@ -4100,6 +4291,8 @@ const llmsPaths = [
   "/blog/visite-technique-avant-devis-b2b",
   "/outils/estimateur-cout-visites-techniques-inutiles",
   "/secteurs/funnel-devis-plomberie-sanitaire",
+  "/blog/sources-demande-devis-b2b-funnel-api",
+  "/outils/estimateur-cout-double-saisie-devis",
   "/blog/telephone-whatsapp-vers-brief-devis-b2b",
   "/secteurs/funnel-devis-electricite-tertiaire",
   "/outils/estimateur-cout-demandes-orales-non-capturees",
@@ -4482,6 +4675,8 @@ assert.equal(tvaSameRate.alertTone, "ok");
 assert.equal(tvaSameRate.showBreakdown, true);
 
 for (const [path, lastmod] of [
+  ["/blog/sources-demande-devis-b2b-funnel-api", "2026-10-01"],
+  ["/outils/estimateur-cout-double-saisie-devis", "2026-10-01"],
   ["/blog/telephone-whatsapp-vers-brief-devis-b2b", "2026-10-01"],
   ["/outils/estimateur-cout-demandes-orales-non-capturees", "2026-10-01"],
   ["/secteurs/funnel-devis-electricite-tertiaire", "2026-10-01"],

@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "sources-demande-devis-b2b-funnel-api": [
+    {
+      q: "Quelles sont les vraies sources d'une demande dans QuoteBuilder ?",
+      a: "Funnel public, /api/leads, plugins / intégrations (WordPress, Woo, Shopify, etc.), agent chat, ou un commercial qui remplit / envoie un lien préfill vers le funnel. Pas d'écran « créer devis » manuel, pas d'import de devis.",
+    },
+    {
+      q: "Pourquoi refuser la saisie manuelle si mon équipe est habituée à Excel ?",
+      a: "Parce que la resaisie déforme le brief et recrée deux vérités. L'habitude Excel est confortable pour l'émetteur, coûteuse pour le chiffrage et le prospect. Le préfill + funnel garde le geste humain sans casser le schéma.",
+    },
+    {
+      q: "Un commercial peut-il joindre un PDF reçu par mail au dossier ?",
+      a: "Dans QuoteBuilder, le commercial ne joint pas de fichiers au dossier. Les pièces jointes viennent des uploads prospect (funnel ou espace prospect). La bonne pratique : renvoyer le prospect (ou le préfill) pour qu'il dépose le plan au bon endroit.",
+    },
+    {
+      q: "Faut-il tuer le téléphone et WhatsApp ?",
+      a: "Non. Il faut les convertir en brief structuré le jour même (script + préfill + funnel). Voir téléphone / WhatsApp vers brief et l'estimateur demandes orales.",
+    },
+    {
+      q: "Quelle différence entre centraliser multi-canaux et ce guide « sources » ?",
+      a: "Centraliser traite le chaos des boîtes et canaux humains. Ici on précise le mécanisme d'entrée technique (funnel / API / plugin / préfill) et pourquoi la double saisie est l'ennemi, y compris dans un CRM.",
+    },
+    {
+      q: "Le score Hot / Warm / Cold dépend-il de la source ?",
+      a: "Le score se calcule à la soumission sur des champs du brief (surface, load, access, project_type, constraints, longueur du besoin). Il ignore photos, zone, urgence. Il n'est pas configurable et il n'y a pas de SLA produit. Une source pauvre produit souvent un brief trop court, donc un score peu discriminant.",
+    },
+    {
+      q: "Peut-on importer un historique de devis PDF ?",
+      a: "Il n'y a pas d'écran d'import de devis dans QuoteBuilder. Pour le futur, faites naître les demandes dans le funnel / API / plugins. L'historique PDF reste de l'archive métier hors ce modèle.",
+    },
+    {
+      q: "Comment chiffrer le coût de la double saisie ?",
+      a: "Minutes perdues × volume × taux chargé, plus une part d'opportunités mortes ou reparties en clarification. L'estimateur coût double saisie devis le fait en local dans le navigateur.",
+    },
+    {
+      q: "Formulaire WordPress ou funnel : que choisir ?",
+      a: "Un formulaire contact pauvre recrée la double saisie. Un funnel (ou un pont plugin vers QuoteBuilder) capture le brief. Comparer formulaire vs funnel, recevoir les demandes WordPress, et l'estimateur formulaire vs funnel WP.",
+    },
+    {
+      q: "Accepté / Signé / versions / TVA : ça joue sur les sources ?",
+      a: "Non. Ce sont d'autres sujets produit. Rappel : Accepté / Signé ne sont pas des statuts CRM ; pas de versions Vn ; pas d'acceptation en ligne prospect ; pas de TVA stockée (fourchette min-max). La priorité sources reste : naître juste, une fois, sans resaisie.",
+    },
+  ],
   "telephone-whatsapp-vers-brief-devis-b2b": [
     {
       q: "Faut-il interdire WhatsApp pour les devis B2B ?",
