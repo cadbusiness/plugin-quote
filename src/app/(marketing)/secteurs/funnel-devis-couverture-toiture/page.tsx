@@ -32,7 +32,7 @@ const FAQ = [
   },
   {
     q: "Tuiles et étanchéité terrasse doivent-elles être deux funnels séparés ?",
-    a: "Une branche « type d’intervention » dans le même funnel suffit souvent. Séparez si les équipes ou les catalogues sont vraiment distincts.",
+    a: "Posez le type d’intervention dans le même parcours, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Séparez si les équipes ou les catalogues sont vraiment distincts.",
   },
   {
     q: "Comment éviter l’abandon à l’étape photos ?",
@@ -110,7 +110,7 @@ export default function CouvertureToitureLandingPage() {
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">La chaîne, sur ce métier</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
-              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches type d’intervention, surface, accès, photos, urgence." },
+              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Ordre fixe : type d’intervention, surface, accès, photos." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Tuiles, zinc, étanchéité, forfaits pose, accès." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation. L’urgence se trie dans l’équipe." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },

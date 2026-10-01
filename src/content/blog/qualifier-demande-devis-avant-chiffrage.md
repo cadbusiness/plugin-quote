@@ -176,7 +176,7 @@ SLA indicatifs (à adapter) :
 
 ### Funnel
 
-Le funnel pose les questions dans le bon ordre. Branches Si/Alors. Sortie = dossier, pas un mail. Produit : [funnel](https://www.quotebuilder.co/fonctionnalites/funnel). Vue d’ensemble : [comment ça marche](https://www.quotebuilder.co/comment-ca-marche).
+Le funnel pose les questions dans un ordre fixe. Les règles Si/Alors suggèrent des produits, elles ne sautent pas d’étape. Sortie = dossier, pas un mail. Produit : [funnel](https://www.quotebuilder.co/fonctionnalites/funnel). Vue d’ensemble : [comment ça marche](https://www.quotebuilder.co/comment-ca-marche).
 
 ### Score
 
@@ -277,7 +277,7 @@ Non. Elle décide **quand** y aller et avec quel brief. Voir aussi [visite guid�
 
 ### Comment traiter un appel d’offres formel ?
 
-Branche dédiée : délais, pièces, critères, contacts. Ne forcez pas le même parcours qu’un devis express.
+Même parcours, dans un ordre fixe : délais, pièces, critères, contacts. Les règles Si/Alors suggèrent les produits. Ne forcez pas le même discours qu’un devis express.
 
 ### Que faire si le prospect refuse de donner un budget ?
 

@@ -112,7 +112,7 @@ Landing secteur ou widget. Pas un textarea. Wizard 7–10 étapes max.
 
 ### 2. Configuration guidée
 
-Branches Si/Alors (PAC air-eau vs air-air vs ballon). Catalogue de gammes, options, variantes et produits liés. Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
+Questions dans un ordre fixe : type de système (air-eau, air-air, ballon), surface, énergie, accès. Les règles Si/Alors ne changent pas cet ordre. Elles suggèrent des produits du catalogue : gammes, options, variantes et produits liés. Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
 
 ### 3. Score et assignation
 
@@ -234,7 +234,7 @@ Dangereux sans brief. Préférez un parcours qui aboutit à une estimation perso
 
 ### Comment gérer air-eau vs air-air dans le même funnel ?
 
-Branche précoce « type de système », puis questions spécifiques. Ne mélangez pas les options des deux familles sur le même écran.
+Posez le type de système dans l’ordre fixe. Les questions suivantes restent affichées. Les règles Si/Alors suggèrent les produits de la famille choisie, sans mélanger les options sur le même écran.
 
 ### Comment parler des aides sans se tromper ?
 
@@ -242,7 +242,7 @@ Mention générique + collecte d’infos + traitement humain. Pas de barème inv
 
 ### Les syndics et les particuliers ont-ils le même parcours ?
 
-Même logique, champs différents (lots, contacts, planning). Deux funnels ou une branche « type de client » dès le début.
+Même logique, champs différents (lots, contacts, planning). Deux parcours, ou le même avec une question « type de client » dans l’ordre fixe.
 
 ### Comment éviter l’abandon à l’étape photos ?
 

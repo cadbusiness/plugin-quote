@@ -139,7 +139,7 @@ Vous n’avez pas besoin d’une norme ISO en PME. Vous avez besoin de **règles
 - Photos : JPG / PNG / HEIC (si votre stack le convertit).
 - Plans : PDF, parfois DWG (si votre équipe lit le DWG ; sinon exporter PDF coté).
 - Specs : PDF, DOCX.
-- Éviter les archives ZIP opaques sans légende.
+- Éviter les archives ZIP opaques sans description.
 
 ### Taille
 
@@ -155,11 +155,11 @@ Fixez un plafond clair (ex. 20 Mo par fichier) et un message humain si ça casse
 
 Le nom fichier original du client peut rester en métadonnée. Ce qui compte, c’est que l’équipe retrouve le rôle du document en deux secondes.
 
-### Légendes
+### Contexte de la photo
 
-Une photo sans légende (« façade nord, accès étroit ») vaut moins. Dans l’espace prospect, un champ commentaire à côté de l’upload change la qualité du brief.
+Une photo sans contexte (« façade nord, accès étroit ») vaut moins. Il n’y a pas de champ légende. Décrivez l’accès dans le texte du besoin. L’upload se fait dans le funnel ou sur la page prospect, pas dans le fil de messages.
 
-<!-- PLACEHOLDER IMAGE: espace prospect upload plan + photo + légende (shoot Content) -->
+<!-- PLACEHOLDER IMAGE: espace prospect upload plan + photo (shoot Content) -->
 
 ## Versions de plans et versions de devis (ne pas confondre)
 
@@ -221,7 +221,7 @@ Si le % « avec document » stagne bas, le problème n’est pas le stockage. C�
 1. **Upload obligatoire trop tôt** : vous tuez la conversion. Mieux vaut optionnel + SLA différencié.
 2. **Accepter WhatsApp comme archive** : le fil disparaît, l’équipe aussi.
 3. **Un seul PDF fourre-tout** : plan + devis + CGV dans le même fichier, impossible à versionner.
-4. **Pas de légende** : photo jolie, inutilisable.
+4. **Photo sans contexte** : jolie, inutilisable. Décrivez façade et accès dans le texte du besoin. Il n’y a pas de champ légende.
 5. **Chiffrer sur un plan « peut-être à jour »** : validez la version courante avant de sortir le prix.
 6. **Relancer sans regarder les uploads** : le prospect a déjà déposé le plan ; votre mail « merci de renvoyer » casse la confiance.
 

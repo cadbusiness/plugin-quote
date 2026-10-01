@@ -116,7 +116,7 @@ Landing secteur ou widget. Pas un textarea. Wizard 8-11 étapes max.
 
 ### 2. Configuration guidée
 
-Branches Si/Alors (particulier vs pro vs syndic ; ITE vs combles vs murs ; accès simple vs nacelle). Catalogue de gammes isolants, finitions, forfaits pose, options et produits liés. Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
+Questions dans un ordre fixe : type de client, type de travaux (ITE, combles, murs), accès. Les règles Si/Alors ne changent pas cet ordre. Elles suggèrent des produits du catalogue : gammes isolants, finitions, forfaits pose, options et produits liés. Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
 
 ### 3. Score et assignation
 
@@ -154,18 +154,18 @@ Sans photo d’accès, vous multipliez les déplacements inutiles. L’[estimate
 
 <!-- PLACEHOLDER IMAGE: espace prospect devis ITE + upload photos façade / échafaudage (shoot Content) -->
 
-## ITE, combles, murs, planchers : une branche, pas quatre sites
+## ITE, combles, murs, planchers : une question, pas quatre sites
 
-Beaucoup d’entreprises font plusieurs familles. Évitez quatre landings qui se cannibalisent sans brief commun. Une branche précoce « type de travaux » suffit :
+Beaucoup d’entreprises font plusieurs familles. Évitez quatre landings qui se cannibalisent sans brief commun. Posez le type de travaux dans l’ordre fixe :
 
-| Branche | Infos critiques |
+| Type de travaux | Infos critiques |
 |---------|-----------------|
 | ITE / façade | m² façade, hauteur, finition, accès, ouvertures |
 | Combles | perdus / aménagés, surface, accès trappe, état sous-toiture |
 | Murs intérieurs | pièces concernées, m², finitions, contraintes usage |
 | Planchers / vides | type support, accès, hauteur sous plancher |
 
-Le scoring et le catalogue changent. Le process devis (dossier, validation, envoi, relance) reste le même.
+Le catalogue suggère d’autres produits selon le type. Le libellé automatique, lui, ne change pas. Le process devis (dossier, validation, envoi, relance) reste le même.
 
 ## Options fréquentes à proposer (sans 15 écrans)
 
@@ -232,7 +232,7 @@ Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les de
 3. **Ignorer l’accès et la hauteur** : le coût sort au chantier.
 4. **Un seul PDF sans suivi** : relances à l’aveugle. Préférez le [lien sécurisé](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email).
 5. **Réserver un créneau échafaudage avant que le commercial pose Gagné** : vous bloquez l’équipe pour un comparateur.
-6. **Mélanger particulier, pro et syndic sur les mêmes champs** : branche « type de client » dès le début.
+6. **Mélanger particulier, pro et syndic sur les mêmes champs** : posez « type de client » dans l’ordre fixe, dès le début.
 7. **Envoyer sans validation technique** sur un Hot ITE complexe : V2 garantie. Voir [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
 
 ## Secteurs proches et maillage
@@ -259,7 +259,7 @@ Dangereux sans brief. Préférez un parcours qui aboutit à une estimation perso
 
 ### Comment gérer particulier, pro et syndic dans le même funnel ?
 
-Branche précoce « type de client », puis champs spécifiques (SIRET, lots, contact technique, vote AG). Ne mélangez pas tout sur le même écran.
+Posez « type de client » dans l’ordre fixe, puis SIRET, lots, contact technique, vote AG. Ne mélangez pas tout sur le même écran. Les règles Si/Alors suggèrent les produits.
 
 ### Comment parler des aides sans se tromper ?
 
@@ -267,7 +267,7 @@ Mention générique + collecte d’infos + traitement humain. Pas de barème inv
 
 ### Combles et ITE doivent-ils être deux funnels séparés ?
 
-Pas forcément. Une branche « type de travaux » dans le même funnel suffit souvent. Séparez seulement si les équipes / catalogues sont vraiment distincts.
+Pas forcément. Posez le type de travaux dans le même parcours, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Séparez seulement si les équipes ou les catalogues sont vraiment distincts.
 
 ### Comment éviter l’abandon à l’étape photos ?
 

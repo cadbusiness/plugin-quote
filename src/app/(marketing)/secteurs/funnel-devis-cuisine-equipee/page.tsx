@@ -24,7 +24,7 @@ const FAQ = [
   },
   {
     q: "Que mettre en premier : typologie ou budget ?",
-    a: "Typologie et contexte d’abord (pour brancher les questions), budget ensuite en fourchette. Inverser pousse à un prix magique.",
+    a: "Typologie et contexte d’abord, budget ensuite en fourchette, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Inverser pousse à un prix magique.",
   },
   {
     q: "Comment scorer « urgent avant emménagement » ?",
@@ -32,7 +32,7 @@ const FAQ = [
   },
   {
     q: "Un seul funnel pour particulier et pro léger ?",
-    a: "Oui, avec une première question contexte et des branches. Un monolithe sans branches redevient un formulaire flou.",
+    a: "Oui, avec une première question contexte, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Un formulaire sans ordre redevient flou.",
   },
   {
     q: "Comment traiter architecte + client final ?",
@@ -101,7 +101,7 @@ export default function CuisineEquipeeLandingPage() {
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">La chaîne, sur ce métier</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
-              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches linéaire, U, îlot, pro léger." },
+              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Ordre fixe : linéaire, U, îlot, pro léger." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Façades, plans, électro + Si/Alors." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relevé, relances." },

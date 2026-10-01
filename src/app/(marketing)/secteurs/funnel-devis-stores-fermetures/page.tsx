@@ -24,7 +24,7 @@ const FAQ = [
   },
   {
     q: "Que mettre en premier dans le funnel : produit ou dimensions ?",
-    a: "Famille produit d’abord (pour brancher les bonnes questions), puis dimensions et motorisation. Inverser crée des champs inutiles.",
+    a: "Famille produit d’abord, puis dimensions et motorisation, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Inverser crée des champs inutiles.",
   },
   {
     q: "Comment scorer une demande « urgent avant travaux façade » ?",
@@ -36,7 +36,7 @@ const FAQ = [
   },
   {
     q: "Peut-on un seul funnel pour stores, volets et portes de garage ?",
-    a: "Oui, avec une première question « famille produit » et des branches. Un funnel monolithe sans branches redevient un formulaire flou.",
+    a: "Oui, avec une première question « famille produit », dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Un formulaire sans ordre redevient flou.",
   },
   {
     q: "Comment traiter les devis copropriété ?",
@@ -101,7 +101,7 @@ export default function StoresFermeturesLandingPage() {
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">La chaîne, sur ce métier</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
-              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches banne, volet, BSO, porte garage." },
+              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Ordre fixe : banne, volet, BSO, porte de garage." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Toiles, lames, motorisation + Si/Alors." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, métrage, relances." },

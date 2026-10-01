@@ -48,7 +48,7 @@ Sans typologie et sans contraintes techniques, vous n’avez pas un devis. Vous 
 
 ## Définition : funnel de devis cuisine
 
-Un **funnel de devis** est un parcours guidé (wizard, parfois chat) qui pose les questions dans le bon ordre, avec des branches Si/Alors. Exemple : si « îlot » alors demander accès, alimentation, dimensions îlot ; si « électroménager fourni client » alors lister références et découpes ; si « rénovation » alors demander dépose existant et état des arrivées.
+Un **funnel de devis** est un parcours guidé (wizard, parfois chat) qui pose les questions dans un ordre fixe : typologie, dimensions, électroménager, pose, photos. Les règles Si/Alors ne sautent pas d’étape. Elles suggèrent des produits (îlot, électro, dépose) selon les réponses.
 
 La sortie n’est pas un e-mail libre. C’est un **dossier** : lignes, contraintes, photos / plans, score Hot / Warm / Cold, owner.
 
@@ -94,7 +94,7 @@ Un formulaire « nom, email, message » invite au message vague. En cuisine, le 
 
 Le formulaire contact :
 
-- ne branche pas les questions selon typologie ;
+- ne pose pas typologie, contraintes et photos dans un ordre fixe ;
 - ne demande pas les contraintes techniques au bon moment ;
 - ne produit pas de score ni d’owner ;
 - ne prépare pas la relance.
@@ -119,7 +119,7 @@ Ordre type (adaptable) :
 12. **Photos / plan** : upload obligatoire ou fortement encouragé.
 13. **Coordonnées** + décideur + créneau de rappel.
 
-Chaque branche évite les champs inutiles. Un prospect en linéaire simple ne répond pas aux questions îlot.
+L’ordre fixe pose d’abord la typologie, puis les dimensions. Un prospect en linéaire répond quand même à la question îlot (non). Les règles Si/Alors suggèrent les modules, elles ne retirent pas les questions.
 
 ## Score Hot / Warm / Cold en cuisine
 
@@ -176,7 +176,7 @@ Cantine d’entreprise, food court, labo, petite restauration : mêmes principes
 - horaires d’intervention ;
 - décideur (gérant vs siège).
 
-Le funnel doit proposer un mode « pro léger » dès la première question contexte, pour brancher les bonnes exigences sans noyer le particulier.
+Le funnel pose un contexte « pro léger » dès la première question, dans l’ordre fixe. Les exigences pro restent des questions du parcours. Les règles Si/Alors suggèrent les produits, sans noyer le particulier dans un second tunnel.
 
 ## Erreurs fréquentes sur les devis cuisine
 
@@ -218,7 +218,7 @@ Autorisez WhatsApp pour recevoir, mais créez tout de suite un dossier et upload
 
 ### 3. Que mettre en premier : typologie ou budget ?
 
-Typologie et contexte d’abord (pour brancher les questions), budget ensuite en fourchette. Inverser pousse à un prix magique.
+Typologie et contexte d’abord, budget ensuite en fourchette, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Inverser pousse à un prix magique.
 
 ### 4. Comment scorer « urgent avant emménagement » ?
 
@@ -226,7 +226,7 @@ Le libellé automatique ignore l'urgence. L'équipe, hors produit, vérifie la d
 
 ### 5. Un seul funnel pour particulier et pro léger ?
 
-Oui, avec une première question contexte et des branches. Un monolithe sans branches redevient un formulaire flou.
+Oui, avec une première question contexte, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Un formulaire sans ordre redevient flou.
 
 ### 6. Comment traiter architecte + client final ?
 
@@ -236,7 +236,7 @@ Champ « interlocuteurs », circuit de validation, un seul lien espace prospect.
 
 Non. Il prépare le brief pour que le dessinateur et le poseur ne perdent pas leur temps sur des incomplets.
 
-### 8. Quel SLA en période salon / promo ?
+### 8. Quel délai de réponse viser en période salon ?
 
 Hors QuoteBuilder. Exemple d'équipe : premier contact sous 2 h pour un dossier prioritaire, sous 24 h pour le reste. Sans file unique, ce délai reste théorique. Le produit ne pose pas de SLA.
 

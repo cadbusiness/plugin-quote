@@ -166,7 +166,7 @@ export function computeCoutAllerRetoursBrief(input: CoutAllerRetoursBriefInput):
     "Checklist rapide :",
     "- Upload photos / plans dans le funnel (le score ne lit pas les photos)",
     "- Espace prospect pour compléter sans WhatsApp",
-    "- Une légende par photo ou plan, dans le dossier (pas de versions)",
+    "- Décrire l’accès dans le texte du besoin (pas de champ légende, pas de versions)",
     "- Filtrer les déplacements si accès illisible",
     "- Mesurer % dossiers documentés chaque mois",
     "",

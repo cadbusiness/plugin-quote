@@ -47,7 +47,7 @@ Sans linéaire, hauteur et typologie, vous n’avez pas un devis : vous avez une
 
 ## Définition : funnel de devis clôture / portail
 
-Un **funnel de devis** est un parcours guidé (wizard, parfois chat) qui pose les questions dans le bon ordre, avec des branches Si/Alors. Exemple : si « portail coulissant » alors demander largeur passage, type de rail, motorisation ; si « clôture occultante » alors hauteur, type d’occultation, linéaire total ; si « rénovation » alors dépose et état des piliers.
+Un **funnel de devis** est un parcours guidé (wizard, parfois chat) qui pose les questions dans un ordre fixe : famille, dimensions, motorisation, pose, photos. Les règles Si/Alors ne sautent pas d’étape. Elles suggèrent des produits (coulissant, occultation, accessoires) selon les réponses.
 
 La sortie n’est pas un e-mail libre. C’est un **dossier** : lignes, contraintes, photos / cotes, score Hot / Warm / Cold, owner.
 
@@ -115,7 +115,7 @@ Le funnel ne remplace pas le savoir pose. Il force le **minimum de données** po
 10. **Décideur** : contact + qui signe.
 11. **Pièces** : upload photos façades, piliers, accès, plans cadastraux si dispo.
 
-Chaque branche évite les champs inutiles. Un prospect « clôture simple sans moteur » ne répond pas aux questions digicode.
+L’ordre fixe pose d’abord la famille, puis les dimensions et la motorisation. Un prospect sans moteur répond quand même à la question (manuelle). Les règles Si/Alors suggèrent les accessoires, elles ne retirent pas les questions.
 
 ## Score Hot / Warm / Cold
 
@@ -207,7 +207,7 @@ Autorisez WhatsApp pour recevoir, mais créez tout de suite un dossier et upload
 
 ### 3. Que mettre en premier : linéaire ou type de produit ?
 
-Famille produit et typologie d’abord (pour brancher les questions), puis dimensions. Inverser pousse à un prix au mètre magique.
+Famille produit et typologie d’abord, puis dimensions, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Inverser pousse à un prix au mètre magique.
 
 ### 4. Comment scorer « urgent avant vente du bien » ?
 
@@ -215,7 +215,7 @@ Le libellé automatique ignore l'urgence. L'équipe, hors produit, vérifie la d
 
 ### 5. Un seul funnel pour particulier et promoteur ?
 
-Oui, avec une première question contexte et des branches (volumes, lots, interlocuteurs). Un monolithe sans branches redevient un formulaire flou.
+Oui, avec une première question contexte, dans un ordre fixe (volumes, lots, interlocuteurs). Les règles Si/Alors suggèrent les produits. Un formulaire sans ordre redevient flou.
 
 ### 6. Comment traiter syndic + copropriétaires ?
 
@@ -225,7 +225,7 @@ Champ interlocuteurs, circuit de validation, un seul lien espace prospect. Il n'
 
 Non. Il prépare le brief pour que le poseur et l’atelier ne perdent pas leur temps sur des incomplets.
 
-### 8. Quel SLA en haute saison ?
+### 8. Quel délai de réponse viser en haute saison ?
 
 Hors QuoteBuilder. Exemple d'équipe : premier contact sous 2 h pour un dossier prioritaire, sous 24 h pour le reste. Sans file unique, ce délai reste théorique. Le produit ne pose pas de SLA.
 

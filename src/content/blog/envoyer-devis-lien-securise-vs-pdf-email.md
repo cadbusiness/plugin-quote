@@ -157,7 +157,7 @@ Durée : souvent 7 à 15 jours. Mémoire commerciale : faible. Stress : élevé.
 1. Devis finalisé dans le dossier (catalogue / lignes / options).
 2. Envoi du **lien** (+ PIN si activé) avec un court message.
 3. Dernière consultation visible sur la fiche (temps relatif), si l’espace a été ouvert. Pas de compteur ni de stats.
-4. Prospect ajoute une photo ou une question dans le fil plat.
+4. Prospect dépose une photo par l’upload (funnel ou page prospect) et pose sa question dans le fil plat.
 5. Relance Hot depuis le dossier si besoin.
 6. Les relecteurs cliquent Valider le dossier ou Modifications. Le commercial pose Gagné. Pas de validité produit, pas de signature en ligne, pas de version à accepter.
 

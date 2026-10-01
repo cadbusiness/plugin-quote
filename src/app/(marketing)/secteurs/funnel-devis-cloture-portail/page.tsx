@@ -24,7 +24,7 @@ const FAQ = [
   },
   {
     q: "Que mettre en premier : linéaire ou type de produit ?",
-    a: "Famille produit et typologie d’abord (pour brancher les questions), puis dimensions. Inverser pousse à un prix au mètre magique.",
+    a: "Famille produit et typologie d’abord, puis dimensions, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Inverser pousse à un prix au mètre magique.",
   },
   {
     q: "Comment scorer « urgent avant vente du bien » ?",
@@ -32,7 +32,7 @@ const FAQ = [
   },
   {
     q: "Un seul funnel pour particulier et promoteur ?",
-    a: "Oui, avec une première question contexte et des branches (volumes, lots, interlocuteurs). Un monolithe sans branches redevient un formulaire flou.",
+    a: "Oui, avec une première question contexte, dans un ordre fixe (volumes, lots, interlocuteurs). Les règles Si/Alors suggèrent les produits. Un formulaire sans ordre redevient flou.",
   },
   {
     q: "Comment traiter syndic + copropriétaires ?",
@@ -101,7 +101,7 @@ export default function CloturePortailLandingPage() {
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">La chaîne, sur ce métier</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
-              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches clôture, portail, grille, moteur." },
+              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Ordre fixe : clôture, portail, grille, moteur." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Panneaux, lames, motorisation + Si/Alors." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, métrage, relances." },

@@ -24,7 +24,7 @@ const FAQ = [
   },
   {
     q: "Comment gérer air-eau vs air-air dans le même funnel ?",
-    a: "Branche précoce « type de système », puis questions spécifiques. Ne mélangez pas les options des deux familles sur le même écran.",
+    a: "Posez le type de système dans l’ordre fixe. Les questions suivantes restent affichées. Les règles Si/Alors suggèrent les produits de la famille choisie, sans mélanger les options sur le même écran.",
   },
   {
     q: "Comment parler des aides sans se tromper ?",
@@ -32,7 +32,7 @@ const FAQ = [
   },
   {
     q: "Les syndics et les particuliers ont-ils le même parcours ?",
-    a: "Même logique, champs différents (lots, contacts, planning). Deux funnels ou une branche « type de client » dès le début.",
+    a: "Même logique, champs différents (lots, contacts, planning). Deux parcours, ou le même avec une question « type de client » dans l’ordre fixe.",
   },
   {
     q: "Comment éviter l’abandon à l’étape photos ?",
@@ -105,7 +105,7 @@ export default function PompeChaleurChauffageLandingPage() {
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">La chaîne, sur ce métier</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
-              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches air-eau, air-air, accès, photos." },
+              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Ordre fixe : air-eau, air-air, accès, photos." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Gammes PAC, forfaits pose, options." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, délai pose, assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },

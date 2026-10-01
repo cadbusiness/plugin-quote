@@ -109,8 +109,8 @@ export default function LocationEvenementielLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer gratuitement"
-        text="Posez dates, matériel et logistique dans un ordre fixe. Il n’y a pas de template événementiel. Le plan Free suffit pour voir l’interface, sans carte."
+        title="Essayer le template événementiel"
+        text="Famille événementiel : Location matériel, Chapiteaux et agence, Traiteur, Catalogue événementiel. Posez dates, matériel et logistique dans un ordre fixe. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

@@ -1591,7 +1591,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(lienBody, /\/outils\/estimateur-cout-devis-pdf-seuls/);
   assert.match(lienBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(lienBody, EM_DASH);
-  assert.equal(lienBody.split(/\s+/).filter(Boolean).length, 2524);
+  assert.equal(lienBody.split(/\s+/).filter(Boolean).length, 2531);
 }
 
 {
@@ -1604,7 +1604,7 @@ for (const { file, dir } of contentFiles) {
   );
   assert.match(pacBody, /signup\?plan=free/);
   assert.doesNotMatch(pacBody, EM_DASH);
-  assert.equal(pacBody.split(/\s+/).filter(Boolean).length, 2171);
+  assert.equal(pacBody.split(/\s+/).filter(Boolean).length, 2203);
 }
 
 {
@@ -1620,7 +1620,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(pjBody, /\/outils\/estimateur-cout-aller-retours-brief-photos/);
   assert.match(pjBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(pjBody, EM_DASH);
-  assert.equal(pjBody.split(/\s+/).filter(Boolean).length, 2401);
+  assert.equal(pjBody.split(/\s+/).filter(Boolean).length, 2433);
 }
 
 {
@@ -1792,7 +1792,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(couvBody, /\/blog\/approbation-client-multi-decideurs-devis-b2b/);
   assert.match(couvBody, /\/outils\/estimateur-cout-devis-sans-validation/);
   assert.doesNotMatch(couvBody, EM_DASH);
-  assert.equal(couvBody.split(/\s+/).filter(Boolean).length, 3050);
+  assert.equal(couvBody.split(/\s+/).filter(Boolean).length, 3082);
 }
 
 {
@@ -1839,7 +1839,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(iteBody, /\/outils\/estimateur-cout-devis-sans-validation/);
   assert.match(iteBody, /\/blog\/validation-interne-avant-envoi-devis-b2b/);
   assert.doesNotMatch(iteBody, EM_DASH);
-  assert.equal(iteBody.split(/\s+/).filter(Boolean).length, 2681);
+  assert.equal(iteBody.split(/\s+/).filter(Boolean).length, 2718);
 }
 
 {
@@ -1869,7 +1869,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(pvBody, /signup\?plan=free/);
   assert.match(pvBody, /\/outils\/estimateur-cout-aller-retours-brief-photos/);
   assert.doesNotMatch(pvBody, EM_DASH);
-  assert.equal(pvBody.split(/\s+/).filter(Boolean).length, 2393);
+  assert.equal(pvBody.split(/\s+/).filter(Boolean).length, 2421);
 }
 
 {
@@ -1899,7 +1899,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(biblioBody, /signup\?plan=free/);
   assert.doesNotMatch(biblioBody, EM_DASH);
   const biblioWords = biblioBody.split(/\s+/).filter(Boolean).length;
-  assert.equal(biblioWords, 2514);
+  assert.equal(biblioWords, 2516);
 }
 
 {
@@ -1913,7 +1913,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(pergolaBody, /signup\?plan=free/);
   assert.doesNotMatch(pergolaBody, EM_DASH);
   const pergolaWords = pergolaBody.split(/\s+/).filter(Boolean).length;
-  assert.equal(pergolaWords, 2328);
+  assert.equal(pergolaWords, 2333);
 }
 
 {

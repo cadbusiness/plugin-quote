@@ -24,7 +24,7 @@ const FAQ = [
   },
   {
     q: "Comment gérer particulier, pro et syndic dans le même funnel ?",
-    a: "Branche précoce « type de client », puis champs spécifiques (SIRET, lots, contact technique). Ne mélangez pas tout sur le même écran.",
+    a: "Posez « type de client » dans l’ordre fixe, puis SIRET, lots et contact technique. Ne mélangez pas tout sur le même écran. Les règles Si/Alors suggèrent les produits.",
   },
   {
     q: "Comment parler des aides sans se tromper ?",
@@ -32,7 +32,7 @@ const FAQ = [
   },
   {
     q: "La batterie doit-elle être obligatoire dans le parcours ?",
-    a: "Non. Proposez-la en option ou en branche « je veux étudier le stockage ». Beaucoup de prospects veulent d’abord la production.",
+    a: "Non. Posez-la en question optionnelle, dans l’ordre fixe. Beaucoup de prospects veulent d’abord la production. Les règles Si/Alors suggèrent la batterie, elles ne la rendent pas obligatoire.",
   },
   {
     q: "Comment éviter l’abandon à l’étape photos ?",
@@ -105,7 +105,7 @@ export default function PhotovoltaiqueSolaireLandingPage() {
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">La chaîne, sur ce métier</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
-              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches toiture, kWc, type de client, photos." },
+              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Ordre fixe : toiture, kWc, type de client, photos." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Gammes modules, onduleurs, forfaits pose, batterie." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, délai pose, assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },

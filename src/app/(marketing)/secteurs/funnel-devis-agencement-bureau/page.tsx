@@ -20,11 +20,11 @@ const FAQ = [
   },
   {
     q: "Peut-on gérer mobilier seul et pack fit-out dans le même parcours ?",
-    a: "Oui, avec une branche « périmètre » dès le début. Les questions cloison / phasage n’apparaissent que si besoin.",
+    a: "Oui. Posez le périmètre (mobilier seul ou fit-out) dans un ordre fixe. Les questions cloison et phasage restent dans le parcours. Les règles Si/Alors suggèrent les produits.",
   },
   {
     q: "Comment traiter les appels d’offres formalisés ?",
-    a: "Parcours ou branche « AO » : délais, pièces, critères, contacts. Ne forcez pas le même flux qu’un devis express PME.",
+    a: "Même parcours, dans un ordre fixe : délais, pièces, critères, contacts. Les règles Si/Alors suggèrent les produits. Ne forcez pas le même discours qu’un devis express PME.",
   },
   {
     q: "Et les normes (accessibilité, incendie) ?",
@@ -121,8 +121,8 @@ export default function AgencementBureauLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer gratuitement"
-        text="Posez postes, cloisons et planning dans un ordre fixe. Il n’y a pas de template agencement. Le plan Free suffit pour voir l’interface, sans carte."
+        title="Essayer Aménagement industriel"
+        text="Pas de template bureau dédié : partez d’Aménagement industriel, option Bureaux / vestiaires. Posez postes, cloisons et planning dans un ordre fixe. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

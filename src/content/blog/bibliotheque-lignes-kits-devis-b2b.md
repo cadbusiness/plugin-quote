@@ -160,7 +160,7 @@ Beaucoup d’équipes synchronisent WooCommerce ou Shopify. Utile. Mais la bouti
 | Options, variantes, produits liés | Souvent faible | Dans QuoteBuilder |
 | Prix min et prix max (fourchette) | Variable | Dans QuoteBuilder. Pas de catalogue HT |
 | Libellés chiffrage atelier | Rare | Central |
-| Règles Si/Alors funnel | Hors scope | Souvent lié |
+| Règles Si/Alors (produits suggérés) | Hors scope | Dans le catalogue |
 
 La synchro doit être **bidirectionnelle ou maîtrisée** : quels champs viennent de la boutique, lesquels restent locaux au devis. Voir [sync catalogue WooCommerce / Shopify → parcours devis](https://www.quotebuilder.co/blog/sync-catalogue-woocommerce-shopify-parcours-devis).
 

@@ -48,7 +48,7 @@ Sans surface, typologie et contraintes d’accès / planning, vous n’avez pas 
 
 ## Définition : funnel de devis agencement / fit-out
 
-Un **funnel de devis agencement** est un parcours guidé (wizard, parfois chat) qui pose les questions dans le bon ordre, avec des branches Si/Alors. Exemple : si « réaménagement occupé » alors demander phasage et horaires ; si « cloison vitrée » alors demander hauteur sous plafond et type de vitrage.
+Un **funnel de devis agencement** est un parcours guidé (wizard, parfois chat) qui pose les questions dans un ordre fixe : contexte, périmètre, postes, cloisons, planning, plan. Les règles Si/Alors ne sautent pas d’étape. Elles suggèrent des produits (phasage, vitrage) selon les réponses. Pas de template bureau dédié : partez du template Aménagement industriel, option Bureaux / vestiaires.
 
 La sortie n’est pas un e-mail libre. C’est un **dossier** : lignes, contraintes, pièces jointes (plan DWG / PDF, photos plateau), score Hot / Warm / Cold, owner.
 
@@ -99,7 +99,7 @@ Idée clé : en fit-out, chaque champ manquant (plan, phasage, type de cloison) 
 9. **Pièces** : upload plan / photos / CCTP.
 10. **Récap** : le prospect voit ce que vous avez compris avant envoi.
 
-Branches Si/Alors utiles : si pas de plan → demander surface + schéma + photo ; si site occupé → phasage ; si cloison → hauteur sous plafond.
+Les questions plan, site occupé et cloison restent dans l’ordre fixe. Les règles Si/Alors suggèrent les produits (surface à compléter, phasage, hauteur sous plafond), elles ne retirent pas les questions.
 
 ## Brief minimum chiffrable (agencement)
 
@@ -234,11 +234,11 @@ Non. Il prépare ou filtre la visite. Certains pré-devis partent sur plan + pho
 
 ### Peut-on gérer mobilier seul et pack fit-out dans le même parcours ?
 
-Oui, avec une branche « périmètre » dès le début. Les questions cloison / phasage n’apparaissent que si besoin.
+Oui. Posez le périmètre (mobilier seul ou fit-out) dans un ordre fixe. Les questions cloison et phasage restent dans le parcours. Les règles Si/Alors suggèrent les produits.
 
 ### Comment traiter les appels d’offres formalisés ?
 
-Parcours ou branche « AO » : délais, pièces, critères, contacts. Ne forcez pas le même flux qu’un devis express PME.
+Même parcours, dans un ordre fixe : délais, pièces, critères, contacts. Les règles Si/Alors suggèrent les produits. Ne forcez pas le même discours qu’un devis express PME.
 
 ### Et les normes (accessibilité, incendie) ?
 

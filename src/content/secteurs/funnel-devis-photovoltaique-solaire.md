@@ -116,7 +116,7 @@ Landing secteur ou widget. Pas un textarea. Wizard 8–11 étapes max.
 
 ### 2. Configuration guidée
 
-Branches Si/Alors (particulier vs pro vs syndic ; toiture vs sol ; avec / sans batterie). Catalogue de gammes modules, onduleurs, forfaits pose, options et produits liés. Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
+Questions dans un ordre fixe : type de client, toiture ou sol, option batterie, accès. Les règles Si/Alors ne changent pas cet ordre. Elles suggèrent des produits du catalogue : gammes modules, onduleurs, forfaits pose, options et produits liés. Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
 
 ### 3. Score et assignation
 
@@ -215,7 +215,7 @@ Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les de
 3. **Ignorer l’accès toiture et la hauteur** : le coût sort au chantier.
 4. **Un seul PDF sans suivi** : relances à l’aveugle. Préférez le [lien sécurisé](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email).
 5. **Réserver un créneau pose avant que le commercial pose Gagné** : vous bloquez l’équipe pour un comparateur.
-6. **Mélanger particulier, pro et syndic sur les mêmes champs** : branche « type de client » dès le début.
+6. **Mélanger particulier, pro et syndic sur les mêmes champs** : posez « type de client » dans l’ordre fixe, dès le début.
 
 ## Secteurs proches et maillage
 
@@ -240,7 +240,7 @@ Dangereux sans brief. Préférez un parcours qui aboutit à une estimation perso
 
 ### Comment gérer particulier, pro et syndic dans le même funnel ?
 
-Branche précoce « type de client », puis champs spécifiques (SIRET, lots, contact technique). Ne mélangez pas tout sur le même écran.
+Posez « type de client » dans l’ordre fixe, puis SIRET, lots et contact technique. Ne mélangez pas tout sur le même écran. Les règles Si/Alors suggèrent les produits.
 
 ### Comment parler des aides sans se tromper ?
 
@@ -248,7 +248,7 @@ Mention générique + collecte d’infos + traitement humain. Pas de barème inv
 
 ### La batterie doit-elle être obligatoire dans le parcours ?
 
-Non. Proposez-la en option ou en branche « je veux étudier le stockage ». Beaucoup de prospects veulent d’abord la production.
+Non. Posez-la en question optionnelle, dans l’ordre fixe. Beaucoup de prospects veulent d’abord la production. Les règles Si/Alors suggèrent la batterie, elles ne la rendent pas obligatoire.
 
 ### Comment éviter l’abandon à l’étape photos ?
 

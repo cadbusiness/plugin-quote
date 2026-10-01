@@ -98,16 +98,16 @@ Les options non choisies restent proposables plus tard en [variante](https://www
 
 ## Urgence fuite vs projet planifié : deux vitesses, un funnel
 
-Ne créez pas deux sites. Créez une **branche précoce** « contexte ».
+Ne créez pas deux sites. Posez le contexte comme une question, dans l'ordre fixe du parcours.
 
-| Branche | Priorité funnel | Suite typique |
+| Contexte | Priorité funnel | Suite typique |
 |---------|-----------------|---------------|
 | Urgence fuite | Photos dégâts + localisation + accès + créneau rappel court | Dépannage / mise en sécurité puis devis réfection |
 | Réfection partielle | Zone concernée, pans, photos, état | Visite ciblée + devis |
 | Réfection totale | Surface / pans, type couverture, accès, délai | Étude + devis + options |
 | Entretien / démoussage | Surface, accès, état | Devis plus simple, score Warm souvent |
 
-Le scoring change. Le process devis (dossier, validation, envoi, relance) reste le même.
+Le libellé automatique ne change pas : il ignore l'urgence. Le process devis (dossier, validation, envoi, relance) reste le même.
 
 ## Aides, assurance, DTU, prix au m² : ce qu'il ne faut pas inventer
 
@@ -131,7 +131,7 @@ Landing secteur ou widget. Pas un textarea. Wizard 8-11 étapes max.
 
 ### 2. Configuration guidée
 
-Branches Si/Alors (particulier vs pro vs syndic ; urgence vs projet ; tuiles vs zinc vs étanchéité ; accès simple vs nacelle). Catalogue de gammes, forfaits pose, options zinguerie, variantes et produits liés. Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
+Questions dans un ordre fixe : type de client, contexte (fuite, réfection, entretien), type d'intervention, accès. Les règles Si/Alors ne changent pas cet ordre. Elles suggèrent des produits du catalogue : gammes, forfaits pose, options zinguerie, variantes et produits liés. Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
 
 ### 3. Score et assignation
 
@@ -171,11 +171,11 @@ Sans photo d'accès, vous multipliez les déplacements inutiles. L'[estimateur c
 
 <!-- PLACEHOLDER IMAGE: espace prospect devis toiture + upload photos pans / gouttières / accès (shoot Content) -->
 
-## Tuiles, ardoise, zinc, bac acier, étanchéité : une branche, pas cinq sites
+## Tuiles, ardoise, zinc, bac acier, étanchéité : une question, pas cinq sites
 
-Beaucoup d'entreprises font plusieurs familles. Évitez cinq landings qui se cannibalisent sans brief commun. Une branche précoce « type d'intervention » suffit :
+Beaucoup d'entreprises font plusieurs familles. Évitez cinq landings qui se cannibalisent sans brief commun. Posez le type d'intervention dans l'ordre fixe :
 
-| Branche | Infos critiques |
+| Type d'intervention | Infos critiques |
 |---------|-----------------|
 | Tuiles | m² ou pans, pente, état, faîtage / noues |
 | Ardoise | m² ou pans, type pose, accès, état support |
@@ -251,7 +251,7 @@ Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les de
 4. **Traiter une fuite comme un projet long** : le prospect appelle le voisin. Le libellé automatique ignore l'urgence. Le délai de réponse se trie dans l'équipe, hors produit.
 5. **Un seul PDF sans suivi** : relances à l'aveugle. Préférez le [lien sécurisé](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email).
 6. **Réserver un créneau équipe avant que le dossier soit gagné** : vous bloquez pour un comparateur.
-7. **Mélanger particulier, pro et syndic sur les mêmes champs** : branche « type de client » dès le début.
+7. **Mélanger particulier, pro et syndic sur les mêmes champs** : posez « type de client » dans l'ordre fixe, dès le début.
 8. **Envoyer sans validation technique** sur un Hot complexe : le devis revient à la charge. Voir [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
 
 ## Secteurs proches et maillage
@@ -278,7 +278,7 @@ Dangereux sans brief. Préférez un parcours qui aboutit à une estimation perso
 
 ### Comment gérer urgence fuite et projet long dans le même funnel ?
 
-Branche précoce « contexte ». Le libellé automatique ignore l'urgence. Le délai de réponse se trie dans l'équipe, hors produit. Même dossier ensuite.
+Posez le contexte dans l'ordre fixe (fuite, réfection, entretien). Le libellé automatique ignore l'urgence. Le délai de réponse se trie dans l'équipe, hors produit. Même dossier ensuite.
 
 ### Comment parler des aides ou de l'assurance sans se tromper ?
 
@@ -286,7 +286,7 @@ Mention générique + collecte d'infos + traitement humain. Pas de barème inven
 
 ### Tuiles et étanchéité terrasse doivent-elles être deux funnels séparés ?
 
-Pas forcément. Une branche « type d'intervention » dans le même funnel suffit souvent. Séparez seulement si les équipes / catalogues sont vraiment distincts.
+Pas forcément. Posez le type d'intervention dans le même parcours, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Séparez seulement si les équipes ou les catalogues sont vraiment distincts.
 
 ### Comment éviter l'abandon à l'étape photos ?
 

@@ -51,7 +51,7 @@ Sans dimensions et typologie, vous n’avez pas un devis : vous avez une fourche
 
 ## Définition : funnel de devis pergola / terrasse
 
-Un **funnel de devis** est un parcours guidé (wizard, parfois chat) qui pose les questions dans le bon ordre, avec des branches Si/Alors. Exemple : si « bioclimatique » alors demander orientation des lames et motorisation ; si « adossée » alors type de façade et étanchéité ; si « rénovation » alors état de la terrasse existante et photos.
+Un **funnel de devis** est un parcours guidé (wizard, parfois chat) qui pose les questions dans un ordre fixe : type, dimensions, implantation, options, photos. Les règles Si/Alors ne sautent pas d’étape. Elles suggèrent des produits (structure, lames, motorisation) selon les réponses.
 
 La sortie n’est pas un e-mail libre. C’est un **dossier** : lignes, contraintes, photos / cotes, score Hot / Warm / Cold, owner.
 
@@ -106,7 +106,7 @@ Le prospect arrive sur une landing secteur ou un widget. Pas un textarea « mess
 
 ### 2. Configuration guidée
 
-Branches Si/Alors. Catalogue de structures, options, variantes et produits liés. Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
+Questions dans un ordre fixe : type, dimensions, implantation, options. Les règles Si/Alors suggèrent des produits du catalogue (structures, options, variantes, produits liés). Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
 
 ### 3. Score et assignation
 
@@ -241,11 +241,11 @@ Dangereux sans brief. Préférez une fourchette large ou un parcours qui aboutit
 
 ### Comment gérer bioclimatique vs toile dans le même funnel ?
 
-Branche précoce « type de pergola », puis questions spécifiques. Ne mélangez pas les options des deux familles sur le même écran.
+Posez le type de pergola dans l’ordre fixe. Les questions suivantes restent affichées. Les règles Si/Alors suggèrent les produits de la famille choisie, sans mélanger les options sur le même écran.
 
 ### Les promoteurs et les particuliers ont-ils le même parcours ?
 
-Même logique, champs différents (SIRET, nombre de lots, planning livraison). Deux funnels ou un funnel avec branche « type de client » dès le début.
+Même logique, champs différents (SIRET, nombre de lots, planning livraison). Deux parcours, ou le même avec une question « type de client » dans l’ordre fixe.
 
 ### Comment éviter que le prospect abandonne à l’étape photos ?
 

@@ -24,7 +24,7 @@ const FAQ = [
   },
   {
     q: "Comment gérer particulier, pro et syndic dans le même funnel ?",
-    a: "Branche précoce « type de client », puis champs spécifiques (SIRET, lots, contact technique, vote AG). Ne mélangez pas tout sur le même écran.",
+    a: "Posez « type de client » dans l’ordre fixe, puis SIRET, lots, contact technique, vote AG. Ne mélangez pas tout sur le même écran. Les règles Si/Alors suggèrent les produits.",
   },
   {
     q: "Comment parler des aides sans se tromper ?",
@@ -32,7 +32,7 @@ const FAQ = [
   },
   {
     q: "Combles et ITE doivent-ils être deux funnels séparés ?",
-    a: "Une branche « type de travaux » dans le même funnel suffit souvent. Séparez si les équipes ou les catalogues sont vraiment distincts.",
+    a: "Posez le type de travaux dans le même parcours, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Séparez si les équipes ou les catalogues sont vraiment distincts.",
   },
   {
     q: "Comment éviter l’abandon à l’étape photos ?",
@@ -109,7 +109,7 @@ export default function IsolationThermiqueIteLandingPage() {
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">La chaîne, sur ce métier</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
-              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches ITE, combles, murs, type de client, photos." },
+              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Ordre fixe : ITE, combles, murs, type de client, photos." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Gammes isolants, finitions, forfaits pose, accès." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, délai chantier, assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
