@@ -204,7 +204,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Comment gérer un syndic avec un vote AG distant ?",
-      a: "Lien partagé, validité affichée, relances calées sur le calendrier de l’assemblée. Ne réservez pas de créneau ferme avant le récap et la décision commerciale.",
+      a: "Lien partagé et relances calées sur le calendrier de l’assemblée. QuoteBuilder n’affiche pas de validité : une durée de prix est une règle d’équipe, hors produit. Ne réservez pas de créneau ferme avant le récap et la décision commerciale.",
     },
     {
       q: "Qui passe le devis en Gagné ?",
@@ -268,7 +268,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Comment éviter que la validation tue la conversion ?",
-      a: "SLA courts, seuils clairs, checklist courte, priorité Hot. Mesurez le délai validation comme un KPI commercial, pas seulement qualité.",
+      a: "Délais d’équipe courts, hors produit : pas de SLA QuoteBuilder. Seuils clairs, checklist courte, priorité selon le libellé automatique. Mesurez le délai de validation comme un KPI commercial, pas seulement qualité.",
     },
     {
       q: "Les commentaires internes sont-ils visibles du prospect ?",
@@ -276,11 +276,11 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Que faire si le prospect exige un devis « ce soir » ?",
-      a: "Envoyez un indicatif clairement marqué ou un périmètre réduit, ou accélérez le gate Hot (créneau manager fixe). Évitez de lâcher une V1 non relue présentée comme ferme.",
+      a: "Envoyez un indicatif clairement marqué ou un périmètre réduit, ou accélérez le gate d’équipe (créneau manager fixe). Évitez d’envoyer un dossier non relu présenté comme ferme. Il n’y a pas de versions.",
     },
     {
       q: "Comment lier validation et signature électronique ?",
-      a: "La validation précède l’envoi. La signature / acceptation vient après, sur une version propre. Ne faites pas signer une V1 bancale.",
+      a: "La validation interne précède l’envoi. Il n’y a pas de signature en ligne ni de versions. Les relecteurs cliquent Valider le dossier ou Modifications. Le commercial pose Gagné.",
     },
     {
       q: "Quel lien avec les mentions obligatoires ?",
@@ -294,7 +294,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
   "commentaires-annotations-devis-collaboratif-b2b": [
     {
       q: "Faut-il interdire totalement le mail pour clarifier un devis ?",
-      a: "Non. Interdisez-en le rôle de salle de décision. Un prospect peut vous alerter par mail ; la décision utile doit atterrir en commentaire ancré sur le devis partagé (ou dans une nouvelle version).",
+      a: "Non. Interdisez-en le rôle de salle de décision. Dans QuoteBuilder, la décision utile atterrit dans le fil plat du prospect, ou dans le commentaire et le budget max du relecteur. Pas de commentaire ancré, pas de nouvelle version.",
     },
     {
       q: "Que faire si un décideur n’a pas accès au lien ?",
@@ -302,7 +302,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Comment gérer une demande qui change le chiffrage ?",
-      a: "Ouvrez une nouvelle version du devis. Liez le commentaire déclencheur à cette version. Ne corrigez pas un PDF déjà en circulation sans historique.",
+      a: "QuoteBuilder n’a pas de versions. Mettez à jour le dossier courant, répondez dans le fil plat, et laissez le relecteur ajuster son commentaire ou son budget max. Ne laissez pas un ancien PDF circuler comme s’il faisait foi.",
     },
     {
       q: "Les commentaires remplacent-ils les options / variantes ?",
@@ -318,15 +318,15 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Faut-il résoudre tous les commentaires avant signature ?",
-      a: "Tous les commentaires critiques (prix, périmètre, délai engageant). Un commentaire cosmétique peut rester en note. Définissez la règle en équipe.",
+      a: "Il n’y a pas de signature en ligne. Le commercial pose Gagné. Avant cela, lisez le commentaire et le budget max du relecteur. Une pratique générale, hors produit, consiste à ne pas figer un accord tant qu’un point critique (prix, périmètre, délai) est ouvert.",
     },
     {
       q: "Quel lien avec la validité du devis ?",
-      a: "Si la clarification dépasse la validité, renvoyez une version à jour.",
+      a: "QuoteBuilder n’a pas de date de validité ni de versions. Si l’équipe s’est fixé une durée de prix, hors produit, et qu’elle est dépassée, mettez à jour le dossier courant avant que le commercial pose Gagné.",
     },
     {
       q: "Peut-on démarrer sans outil collaboratif ?",
-      a: "Oui, avec un Drive et un tableau « décisions » par devis. Vous gagnerez déjà face aux fils RE: RE:. Le lien sécurisé et les commentaires ancrés réduisent encore le forward et le multi-décideurs.",
+      a: "Oui, avec un Drive et un tableau « décisions » par devis. Vous gagnerez déjà face aux fils RE: RE:. Le lien sécurisé, le fil plat et le commentaire de chaque relecteur réduisent encore le forward. Les commentaires ancrés aux lignes restent hors produit.",
     },
     {
       q: "Où trouver un ordre de grandeur du coût des allers-retours documents ?",
@@ -352,15 +352,15 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Le prospect peut-il remplacer un plan déjà uploadé ?",
-      a: "Oui, et ça doit créer une nouvelle version document visible, pas écraser en silence sans que l’estimateur le sache.",
+      a: "Le prospect peut déposer un nouveau fichier dans le dossier. QuoteBuilder ne crée pas une version de devis pour autant. Prévenez l’estimateur : il n’y a pas d’historique de versions.",
     },
     {
       q: "Quel lien avec la validité du devis ?",
-      a: "Si le plan change après envoi, la proposition peut être caduque. Affichez la validité et, si besoin, renvoyez une version.",
+      a: "Si le plan change après envoi, la proposition peut être caduque. QuoteBuilder n’affiche pas de validité et n’a pas de versions. Mettez à jour le dossier courant. Une durée de prix, si vous en tenez une, est hors produit.",
     },
     {
       q: "Comment prioriser les dossiers sans photos ?",
-      a: "SLA plus long, ou étape « cadrage express » avant chiffrage. Ne brûlez pas l’équipe estimateur sur des briefs vides.",
+      a: "L’équipe, hors produit, peut attendre avant de chiffrer, ou poser une étape de cadrage. Il n’y a pas de SLA produit. Le libellé automatique ignore les photos.",
     },
     {
       q: "Peut-on démarrer sans espace prospect ?",
@@ -432,15 +432,15 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Que faire si le prospect refuse le lien et exige un PDF ?",
-      a: "Envoyez l’export, mais notez-le dans le dossier. Proposez quand même le lien pour les questions et la signature. Mesurez combien de ces cas restent vraiment PDF-only après 30 jours.",
+      a: "Envoyez l’export, mais notez-le dans le dossier. Proposez quand même le lien pour les questions. Les relecteurs cliquent Valider le dossier ou Modifications. Le commercial pose Gagné. Pas de signature en ligne.",
     },
     {
       q: "Les ouvertures de lien sont-elles fiables à 100 % ?",
-      a: "Aucun tracking n’est parfait (préchargement mail, VPN, etc.). Elles restent nettement plus utiles que l’absence totale de signal du PDF joint.",
+      a: "Il n’y a pas de suivi d’ouverture. Le champ Espace prospect montre seulement la dernière consultation, en temps relatif. Pas de compteur, pas d’historique, pas de stats. C’est déjà plus qu’un PDF joint, et ce n’est pas un tracking.",
     },
     {
       q: "Lien vs signature : dans quel ordre ?",
-      a: "D’abord un espace où le brief et les options sont clairs. Ensuite la signature ou l’acceptation. Signer un PDF figé trop tôt fige aussi les erreurs.",
+      a: "D’abord un espace où le brief et les options sont clairs. Les relecteurs cliquent Valider le dossier ou Modifications. Le commercial pose Gagné. Il n’y a pas de signature en ligne. Signer un PDF figé trop tôt fige aussi les erreurs.",
     },
     {
       q: "Comment estimer ce que me coûte encore le PDF-only ?",
@@ -500,15 +500,15 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
   "bibliotheque-lignes-kits-devis-b2b": [
     {
       q: "Quelle différence entre catalogue boutique et bibliothèque de devis ?",
-      a: "La boutique sert l’achat en ligne et le SEO produit. La bibliothèque de devis sert le chiffrage : kits pose, options métier, prix HT B2B, lignes hors web. Les deux peuvent se synchroniser, mais leurs priorités diffèrent.",
+      a: "La boutique sert l’achat en ligne et le SEO produit. Dans QuoteBuilder, le catalogue devis sert le chiffrage avec des options, des variantes, des produits liés et une fourchette min-max. Kits de pose et prix HT sont une pratique générale, hors produit.",
     },
     {
       q: "Faut-il tout mettre en kits ?",
-      a: "Non. Kits pour les assemblages fréquents, articles unitaires pour le reste. Trop de kits = maintenance. Trop peu = chiffrage lent.",
+      a: "Hors QuoteBuilder, des kits servent aux assemblages fréquents et les articles unitaires au reste. Dans le produit, il n’y a pas de kits : options, variantes et produits liés suffisent.",
     },
     {
       q: "Comment gérer les prix qui changent souvent (matière) ?",
-      a: "Versionnez ou datez les prix catalogue. Ne laissez pas chaque commercial ajuster au feeling. Documentez qui peut modifier le prix de référence.",
+      a: "Dans QuoteBuilder, mettez à jour le prix min et le prix max. Il n’y a pas de versions de prix ni de catalogue HT. Documentez qui peut modifier la fourchette.",
     },
     {
       q: "Un commercial peut-il créer une ligne hors biblio ?",
@@ -520,7 +520,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Que faire des anciens modèles Excel ?",
-      a: "Archivez-les en lecture seule après migration des kits critiques. Garder Excel « au cas où » prolonge la double vérité.",
+      a: "Archivez-les en lecture seule après avoir repris les lignes critiques en options, variantes et produits liés. Les kits ne se migrent pas : le produit n’en a pas.",
     },
     {
       q: "Quels métiers en profitent le plus ?",
@@ -536,7 +536,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Où voir ça concrètement dans QuoteBuilder ?",
-      a: "Sur la fonctionnalité catalogue, reliée au funnel et aux demandes. Compte Free ou démo publique pour tester le principe. L’estimateur gain temps catalogue chiffre l’ordre de grandeur.",
+      a: "Sur la fonctionnalité catalogue : options, variantes, produits liés, fourchette minimum et maximum. Pas de kits, pas de catalogue HT. Compte Free ou démo publique pour tester ce principe.",
     },
   ],
   "remise-commerciale-marge-devis-b2b": [
@@ -822,7 +822,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Faut-il un PIN ou une authentification ?",
-      a: "Utile si les devis sont sensibles ou multi-destinataires. Pour beaucoup de PME, un lien magique + traçage d’ouverture est un bon premier cran. Voir l’article espace prospect.",
+      a: "Hors QuoteBuilder pour la signature. Un lien avec PIN existe. Il n’y a pas de traçage d’ouverture : seulement la dernière consultation, en temps relatif, dans le champ Espace prospect.",
     },
     {
       q: "Quel délai de validité mettre ?",
@@ -940,7 +940,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "PDF, lien magique, ou les deux ?",
-      a: "Le lien vers un espace prospect réduit le risque de mauvais fichier si l’espace n’expose que l’active. Le PDF reste utile pour archivage et signatures hors ligne. Les deux doivent porter le même numéro de version.",
+      a: "Hors QuoteBuilder pour les versions et la signature. L’espace prospect montre le dossier courant, sans numéro de version. Le PDF reste utile pour l’archivage.",
     },
     {
       q: "Comment versionner quand plusieurs commerciaux touchent le dossier ?",

@@ -46,7 +46,7 @@ Sans dimensions fiables et sans typologie, vous n’avez pas un devis : vous ave
 
 ## Définition : funnel de devis stores / fermetures
 
-Un **funnel de devis** est un parcours guidé (wizard, parfois chat) qui pose les questions dans le bon ordre, avec des branches Si/Alors. Exemple : si « store banne » alors demander projection, largeur toile, type de bras, motorisation ; si « volet roulant rénovation » alors demander type de coffre et place sous linteau ; si « porte de garage » alors largeur × hauteur passage, type d’ouvrant, motorisation, type de pose.
+Un **funnel de devis** est un parcours guidé (wizard, parfois chat) qui pose les questions dans un ordre fixe : famille, dimensions, motorisation, pose, photos. Les règles Si/Alors ne sautent pas d’étape. Elles suggèrent des produits (banne, volet, porte de garage) selon les réponses.
 
 La sortie n’est pas un e-mail libre. C’est un **dossier** : lignes, contraintes, photos / cotes, score Hot / Warm / Cold, owner.
 
@@ -90,7 +90,7 @@ Si vos demandes arrivent aussi par WhatsApp (photos de baies) ou téléphone, ce
 
 1. **Contexte** : particulier / pro / copro, neuf ou rénovation, ville / accès.
 2. **Famille produit** : store intérieur, store extérieur / banne, volet, BSO, porte de garage, mix.
-3. **Typologie fine** : selon branche (ex. banne bras droits / monobloc ; volet rénovation / traditionnel ; sectionnelle / enroulable).
+3. **Typologie fine** : banne bras droits ou monobloc, volet rénovation ou traditionnel, sectionnelle ou enroulable. La question est posée à tous.
 4. **Dimensions** : largeur, hauteur, projection si besoin ; précision (approx vs métrage).
 5. **Motorisation** : manuelle / motorisée ; filaire / radio ; nombre de commandes ; options capteurs.
 6. **Pose** : dépose existant, hauteur travail, échafaudage / nacelle, contraintes syndic.
@@ -100,7 +100,7 @@ Si vos demandes arrivent aussi par WhatsApp (photos de baies) ou téléphone, ce
 10. **Pièces** : upload photos baies / coffres / plans.
 11. **Récap** : le prospect voit ce que vous avez compris avant envoi.
 
-Branches Si/Alors utiles : si rénovation volet → type de coffre ; si étage élevé → accès pose ; si porte garage → type d’ouvrant + dimensions passage clair ; si BSO → orientation et lame.
+Les règles Si/Alors suggèrent ensuite des produits (coffre de volet, accès pose, ouvrant de garage, lame de BSO). Elles ne retirent pas les questions de l’ordre fixe.
 
 ## Brief minimum chiffrable (stores / fermetures)
 
@@ -118,23 +118,27 @@ Sans ça, limitez-vous à une estimation indicative. Ne lancez pas la commande f
 
 ## Score Hot / Warm / Cold en stores / fermetures
 
-| Score | Exemples | Action |
+QuoteBuilder pose un libellé automatique Hot, Warm ou Cold. La formule est fixe : surface, charge, accès, type de projet, contraintes, et longueur du texte du besoin. Elle ignore photos, délai, zone et urgence. Elle n'est pas configurable. Il n'y a pas de SLA.
+
+Le tableau suivant est un tri d'équipe, hors produit. Il ne décrit pas la formule.
+
+| Tri d'équipe | Exemples | Action hors produit |
 |-------|----------|--------|
-| Hot | Date chantier < 4-6 semaines, cotes OK ou métrage planifié, décideur identifié, budget cohérent | Owner + SLA court, chiffrage prioritaire |
-| Warm | Projet réel, délai 2-4 mois, photos OK, quelques trous (motorisation, accès) | Qualifier puis chiffrer |
-| Cold | « Juste un prix », pas de cote, pas de date, browsing | Réponse légère ou nurture, pas d’atelier |
+| Prioritaire | Date chantier < 4-6 semaines, cotes OK ou métrage planifié, décideur identifié, budget cohérent | Owner nommé, premier contact rapide, chiffrage prioritaire |
+| À qualifier | Projet réel, délai 2-4 mois, photos OK, quelques trous (motorisation, accès) | Qualifier puis chiffrer |
+| Plus tard | « Juste un prix », pas de cote, pas de date, browsing | Réponse légère ou nurture, pas d’atelier |
 
 Détail méthode : [score demande devis B2B](https://www.quotebuilder.co/blog/score-demande-devis-b2b), outil [score brief](https://www.quotebuilder.co/outils/score-brief-devis).
 
-## Assignation et SLA
+## Assignation et délai de réponse (hors QuoteBuilder)
 
-En saison, le volume explose. Sans assignation claire, les Hot WhatsApp passent devant les Hot site… ou l’inverse, au hasard. Posez :
+En saison, le volume explose. Sans assignation claire, les dossiers que l'équipe juge urgents sur WhatsApp passent devant ceux du site, ou l’inverse, au hasard. Posez, hors produit :
 
 - un owner par dossier ;
-- un SLA de premier contact selon le score ;
+- un délai de premier contact décidé par l'équipe (pas un SLA produit, et pas calé sur le libellé automatique) ;
 - un backup pour les congés.
 
-Guide : [assignation et SLA](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe). Capacité : [calculateur capacité équipe](https://www.quotebuilder.co/outils/calculateur-capacite-equipe-devis), [estimateur temps de chiffrage](https://www.quotebuilder.co/outils/estimateur-temps-chiffrage-devis).
+Guide : [assignation et délai de réponse](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe). Capacité : [calculateur capacité équipe](https://www.quotebuilder.co/outils/calculateur-capacite-equipe-devis), [estimateur temps de chiffrage](https://www.quotebuilder.co/outils/estimateur-temps-chiffrage-devis).
 
 
 **Mettre en place le funnel stores sans attendre la haute saison :** [essai Free](https://www.quotebuilder.co/signup?plan=free) ou [démo](https://www.quotebuilder.co/c/demo/rayonnage).
@@ -156,8 +160,8 @@ Sans règles, le commercial improvise. Avec règles, le brief du funnel alimente
 
 Deux moments critiques :
 
-1. **Après envoi du devis** sans ouverture / sans réponse.
-2. **Après métrage** : le prospect a investi du temps, vous aussi. La relance doit partir du dossier, avec la bonne version.
+1. **Après envoi du devis** sans réponse. Le champ Espace prospect montre seulement la dernière consultation, en temps relatif. Pas de compteur d'ouverture.
+2. **Après métrage** : le prospect a investi du temps, vous aussi. La relance part du dossier courant. Il n'y a pas de versions.
 
 Voir [relancer Hot depuis le dossier](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier), [générateur de séquence](https://www.quotebuilder.co/outils/generateur-sequence-relances), [coût devis non relancé](https://www.quotebuilder.co/outils/cout-devis-non-relance), [autopilote](https://www.quotebuilder.co/fonctionnalites/autopilote).
 
@@ -167,15 +171,19 @@ Beaucoup d’entreprises de fermetures ont un site WordPress vitrine. Le widget 
 
 Landings voisines (même logique funnel) : [rayonnage](https://www.quotebuilder.co/secteurs/funnel-devis-rayonnage-stockage), [menuiserie](https://www.quotebuilder.co/secteurs/funnel-devis-menuiserie-sur-mesure), [agencement bureau](https://www.quotebuilder.co/secteurs/funnel-devis-agencement-bureau), [location événementielle](https://www.quotebuilder.co/secteurs/funnel-devis-location-evenementiel).
 
-## Exemple de branches Si/Alors (extrait)
+## Exemple : ordre fixe, produits suggérés
 
-- Si **store banne** → largeur, projection, type de bras, toile acrylique / micro-perforée, motorisation, capteur vent.
-- Si **volet roulant rénovation** → dimensions tableau, type de coffre, isolation, motorisation radio souvent préférée.
-- Si **BSO** → largeur × hauteur, orientation, lame, motorisation, intégration façade.
-- Si **porte de garage sectionnelle** → largeur × hauteur passage, hauteur linteau, motorisation, type de panneaux, accès chantier.
-- Si **étage ≥ 2 sans balcon** → alerte accès pose / nacelle avant prix « tout compris ».
+Les questions restent les mêmes pour tout le monde, dans cet ordre : famille, dimensions, motorisation, pose, photos.
 
-Ces branches évitent le message libre « j’ai besoin de stores ».
+Les règles Si/Alors suggèrent ensuite des produits :
+
+- store banne : toiles, bras, capteur vent ;
+- volet roulant rénovation : coffre, motorisation radio ;
+- BSO : lame, motorisation, intégration façade ;
+- porte de garage sectionnelle : panneaux, motorisation ;
+- étage élevé : ligne d’accès pose ou nacelle, avant un prix « tout compris ».
+
+Ces suggestions évitent le message libre « j’ai besoin de stores ».
 
 ## Indicateurs utiles pour une PME fermetures
 
@@ -221,8 +229,8 @@ Les stores se vendent beaucoup hors site : appel après panneau chantier, messag
 - dimensions et niveau de confiance (indicatif / ferme) ;
 - motorisation et commandes listées ;
 - pose + accès + dépose chiffrés ou exclus explicitement ;
-- délai et validité ;
-- version numérotée liée au dossier ;
+- durée de prix, hors produit, si l'équipe en tient une ;
+- dossier courant à jour (pas de version numérotée) ;
 - prochain pas clair (métrage, acompte, validation syndic).
 
 Si un de ces points manque, vous n’envoyez pas un devis : vous envoyez une hypothèse fragile.
@@ -241,35 +249,35 @@ Autorisez WhatsApp pour recevoir les photos, mais créez tout de suite un dossie
 
 ### 3. Que mettre en premier dans le funnel : produit ou dimensions ?
 
-Famille produit d’abord (pour brancher les bonnes questions), puis dimensions et motorisation. Inverser crée des champs inutiles.
+Famille produit d’abord, puis dimensions et motorisation, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Inverser crée des champs inutiles.
 
 ### 4. Comment scorer une demande « urgent avant travaux façade » ?
 
-Souvent Hot : date contrainte forte. Vérifiez décideur et budget. SLA court, owner nommé.
+Le libellé automatique ignore l'urgence. L'équipe, hors produit, vérifie la date, le décideur et le budget, et nomme un owner. Il n'y a pas de SLA.
 
 ### 5. Les remises saisonnières sont-elles compatibles avec un funnel ?
 
-Oui, si la remise est une règle catalogue ou une version tracée, pas un prix oral perdu. Utilisez le [simulateur d’impact remise](https://www.quotebuilder.co/outils/simulateur-impact-remise-devis).
+Oui, si la remise est une règle d'équipe tracée, pas un prix oral perdu. Il n'y a pas de versions de devis. Utilisez le [simulateur d’impact remise](https://www.quotebuilder.co/outils/simulateur-impact-remise-devis).
 
 ### 6. Peut-on un seul funnel pour stores, volets et portes de garage ?
 
-Oui, avec une première question « famille produit » et des branches. Un funnel monolithe sans branches redevient un formulaire flou.
+Oui, avec une première question « famille produit », dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Un formulaire sans ordre redevient flou.
 
 ### 7. Comment traiter les devis copropriété ?
 
-Champ « type de client = copro / syndic », circuit de validation, délai AG. Espace prospect unique pour faire circuler la bonne version.
+Champ « type de client = copro / syndic », circuit de validation, délai AG. Espace prospect unique. Il n'y a pas de versions de devis.
 
 ### 8. Le funnel remplace-t-il le commercial ?
 
 Non. Il prépare le brief pour que le commercial et le poseur ne perdent pas leur temps sur des incomplets.
 
-### 9. Quel SLA viser en haute saison ?
+### 9. Quel délai de réponse viser en haute saison ?
 
-Exemple : Hot < 2 h ouvrées pour premier contact, Warm < 24 h. Sans file unique et owners, le SLA reste théorique.
+Hors QuoteBuilder. Exemple d'équipe : premier contact sous 2 h ouvrées pour un dossier prioritaire, sous 24 h pour le reste. Sans file unique et owners, ce délai reste théorique. Le produit ne pose pas de SLA.
 
 ### 10. Par où commencer concrètement ?
 
-Cartographiez vos 20 dernières demandes : champs manquants récurrents. Construisez le funnel autour de ces champs. Branchez le widget. Formez l’équipe à la saisie des appels dans le même pipeline.
+Cartographiez vos 20 dernières demandes : champs manquants récurrents. Construisez le funnel autour de ces champs. Branchez le widget. Pour un appel, faites remplir le même funnel, y compris par lien prérempli.
 
 ## Conclusion
 

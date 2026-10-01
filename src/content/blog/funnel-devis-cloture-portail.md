@@ -47,7 +47,7 @@ Sans linéaire, hauteur et typologie, vous n’avez pas un devis : vous avez une
 
 ## Définition : funnel de devis clôture / portail
 
-Un **funnel de devis** est un parcours guidé (wizard, parfois chat) qui pose les questions dans le bon ordre, avec des branches Si/Alors. Exemple : si « portail coulissant » alors demander largeur passage, type de rail, motorisation ; si « clôture occultante » alors hauteur, type d’occultation, linéaire total ; si « rénovation » alors dépose et état des piliers.
+Un **funnel de devis** est un parcours guidé (wizard, parfois chat) qui pose les questions dans un ordre fixe : famille, dimensions, motorisation, pose, photos. Les règles Si/Alors ne sautent pas d’étape. Elles suggèrent des produits (coulissant, occultation, accessoires) selon les réponses.
 
 La sortie n’est pas un e-mail libre. C’est un **dossier** : lignes, contraintes, photos / cotes, score Hot / Warm / Cold, owner.
 
@@ -115,43 +115,37 @@ Le funnel ne remplace pas le savoir pose. Il force le **minimum de données** po
 10. **Décideur** : contact + qui signe.
 11. **Pièces** : upload photos façades, piliers, accès, plans cadastraux si dispo.
 
-Chaque branche évite les champs inutiles. Un prospect « clôture simple sans moteur » ne répond pas aux questions digicode.
+L’ordre fixe pose d’abord la famille, puis les dimensions et la motorisation. Un prospect sans moteur répond quand même à la question (manuelle). Les règles Si/Alors suggèrent les accessoires, elles ne retirent pas les questions.
 
 ## Score Hot / Warm / Cold
 
-Exemples de règles (à écrire) :
+QuoteBuilder pose un libellé automatique Hot, Warm ou Cold. La formule est fixe : surface, charge, accès, type de projet, contraintes, et longueur du texte du besoin. Elle ignore photos, délai, zone et urgence. Elle n'est pas configurable. Il n'y a pas de SLA. Le libellé ne promet aucun délai de réponse. Voir [score demande devis B2B](https://www.quotebuilder.co/blog/score-demande-devis-b2b).
 
-- **Hot** : délai < 6–8 semaines, décideur identifié, photos / cotes fournies, budget cohérent, typologie claire, zone couverte.
-- **Warm** : intérêt réel mais métrage manquant, ou budget flou, ou décision à deux sans calendrier.
-- **Cold** : « on se renseigne », hors zone, hors typologie, silence après visite.
+## Assignation et délai de réponse (hors QuoteBuilder)
 
-Le score sert à l’assignation et aux SLA. Voir [score demande devis B2B](https://www.quotebuilder.co/blog/score-demande-devis-b2b).
+Urgence, zone et délai de réponse se trient dans l'équipe. Ce n'est pas un SLA produit. Sans owner, le dossier pourrit entre commercial, atelier et poseur.
 
-## Assignation, SLA et délai de réponse
+Règles d'équipe, hors produit :
 
-Sans owner, le dossier pourrit entre commercial, atelier et poseur.
-
-Règles simples :
-
-- Hot : owner nommé < 1 h ouvrée, premier contact < 2–4 h.
-- Warm : owner < 4 h, contact < 24 h.
+- Dossier que l'équipe juge prioritaire : owner nommé < 1 h ouvrée, premier contact < 2–4 h.
+- Dossier moins pressé : owner < 4 h, contact < 24 h.
 - Brief incomplet : ne partez pas en chiffrage atelier complet. Demandez le manquant d’abord.
 
-Le [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b) compte autant que le prix en saison (printemps / pré-été). L’[assignation / SLA](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe) évite que trois personnes se renvoient le même WhatsApp.
+Le [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b) compte autant que le prix en saison (printemps / pré-été). L’[assignation / SLA](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe) décrit ce process d'équipe, hors produit. Il évite que trois personnes se renvoient le même WhatsApp.
 
 
 **Mettre en place funnel + dossiers scorés :** [essai Free](https://www.quotebuilder.co/signup?plan=free) ou [démo](https://www.quotebuilder.co/c/demo/rayonnage).
 
 
-## Relances, validité et espace prospect
+## Relances et espace prospect
 
 Après envoi du devis (idéalement via lien espace prospect) :
 
-- suivre vue / non vue ;
+- la dernière consultation s'affiche en temps relatif dans le champ Espace prospect, côté commercial (pas de compteur, pas d'historique, pas de stats d'ouverture) ;
 - relancer depuis le dossier, pas depuis une boîte perso ;
-- distinguer Hot et Warm ;
-- figer les versions si le client demande une modif (nouvelle version, pas un PDF parallèle) ;
-- rappeler la **date de validité** (matière alu / acier peuvent bouger) : [validité / expiration devis](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
+- distinguer Hot et Warm selon le libellé automatique ;
+- les relecteurs cliquent « Valider le dossier » ou « Modifications » ; le commercial pose Gagné ;
+- il n'y a pas de versions de devis, ni de date de validité dans le produit. Une durée de prix (matière alu / acier) est une règle d'équipe, hors QuoteBuilder : [validité / expiration devis](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
 
 Playbook : [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier). Les relecteurs valident sur l’espace prospect ; le commercial pose Gagné. Revue : [pipeline devis B2B](https://www.quotebuilder.co/blog/revue-pipeline-devis-b2b).
 
@@ -182,8 +176,8 @@ Sans recommandation claire, le prospect demande trois PDF. Structure : [options 
 3. Promettre un délai fabricant sans stock / charge atelier.
 4. Négocier la remise oralement sans recalculer marge matière + pose.
 5. Laisser le poseur partir sans checklist (photos, pente, accès, mitoyenneté).
-6. Accepter une version pendant qu’une autre circule par mail.
-7. Validité trop longue sur matières volatiles.
+6. Laisser deux PDF divergents circuler par mail.
+7. Durée de prix trop longue sur matières volatiles, hors produit.
 
 ## Mini-checklist avant d’envoyer le devis
 
@@ -191,8 +185,8 @@ Sans recommandation claire, le prospect demande trois PDF. Structure : [options 
 - matériaux / finition listés ;
 - motorisation + accessoires clairs (inclus / exclus) ;
 - pose + terrain + dépose chiffrés ou exclus ;
-- délai et validité ;
-- version numérotée liée au dossier ;
+- durée de prix, hors produit, si l'équipe en tient une ;
+- dossier courant à jour (pas de version numérotée) ;
 - prochain pas clair (visite, acompte, validation plan).
 
 ![Checklist brief clôture/portail avant chiffrage](/secteurs/funnel-devis-cloture-portail/img-2.png)
@@ -213,35 +207,35 @@ Autorisez WhatsApp pour recevoir, mais créez tout de suite un dossier et upload
 
 ### 3. Que mettre en premier : linéaire ou type de produit ?
 
-Famille produit et typologie d’abord (pour brancher les questions), puis dimensions. Inverser pousse à un prix au mètre magique.
+Famille produit et typologie d’abord, puis dimensions, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Inverser pousse à un prix au mètre magique.
 
 ### 4. Comment scorer « urgent avant vente du bien » ?
 
-Souvent Hot : date contrainte. Vérifiez décideur, accès, complétude du brief. SLA court.
+Le libellé automatique ignore l'urgence. L'équipe, hors produit, vérifie la date, le décideur, l'accès et le brief. Il n'y a pas de SLA.
 
 ### 5. Un seul funnel pour particulier et promoteur ?
 
-Oui, avec une première question contexte et des branches (volumes, lots, interlocuteurs). Un monolithe sans branches redevient un formulaire flou.
+Oui, avec une première question contexte, dans un ordre fixe (volumes, lots, interlocuteurs). Les règles Si/Alors suggèrent les produits. Un formulaire sans ordre redevient flou.
 
 ### 6. Comment traiter syndic + copropriétaires ?
 
-Champ interlocuteurs, circuit de validation, un seul lien espace prospect pour la bonne version.
+Champ interlocuteurs, circuit de validation, un seul lien espace prospect. Il n'y a pas de versions de devis.
 
 ### 7. Le funnel remplace-t-il le poseur ?
 
 Non. Il prépare le brief pour que le poseur et l’atelier ne perdent pas leur temps sur des incomplets.
 
-### 8. Quel SLA en haute saison ?
+### 8. Quel délai de réponse viser en haute saison ?
 
-Exemple : Hot < 2 h pour premier contact, Warm < 24 h. Sans file unique, le SLA reste théorique.
+Hors QuoteBuilder. Exemple d'équipe : premier contact sous 2 h pour un dossier prioritaire, sous 24 h pour le reste. Sans file unique, ce délai reste théorique. Le produit ne pose pas de SLA.
 
 ### 9. Comment éviter les reprises motorisation ?
 
-Liste moteur + accessoires + alimentation dès le funnel. Toute modif = nouvelle version du devis.
+Liste moteur + accessoires + alimentation dès le funnel. Toute modif met à jour le dossier courant. Il n'y a pas de versions.
 
 ### 10. Par où commencer concrètement ?
 
-Cartographiez vos 20 dernières demandes : champs manquants récurrents (hauteur, pente, moteur…). Construisez le funnel autour de ces champs. Branchez le widget. Formez l’équipe à saisir les appels dans le même pipeline.
+Cartographiez vos 20 dernières demandes : champs manquants récurrents (hauteur, pente, moteur…). Construisez le funnel autour de ces champs. Branchez le widget. Pour un appel, faites remplir le même funnel, y compris par lien prérempli.
 
 ## Conclusion
 

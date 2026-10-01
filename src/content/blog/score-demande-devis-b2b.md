@@ -38,11 +38,15 @@ Les taux de conversion B2B varient beaucoup selon le canal, le secteur et la dé
 
 Traduction opérationnelle : si 100 demandes entrent et que 2 à 5 deviennent clients, le temps passé sur les 95 autres doit être **proportionnel à leur qualité**. Un score sert exactement à ça.
 
-> Note QuoteBuilder. On évite les « +47 % de conversion magique » sans méthode. Un score n’augmente pas tout seul le close rate. Il réduit le temps perdu et accélère les bons dossiers.
+> Note QuoteBuilder. Le produit pose un libellé automatique Hot, Warm ou Cold. La formule est fixe : surface, charge, accès, type de projet, contraintes, et longueur du texte du besoin. Elle ignore photos, délai, zone et urgence. Elle n’est pas configurable. Il n’y a pas de SLA. La grille à cinq axes plus bas est une pratique générale, hors produit. Un score n’augmente pas tout seul le close rate.
+
+## Bonne pratique générale, hors QuoteBuilder
+
+La grille ci-dessous n’est pas la formule produit. QuoteBuilder ne la calcule pas et ne la laisse pas configurable.
 
 ## Les 5 axes d’un score devis B2B
 
-Voici une grille pragmatique. Chaque axe vaut 20 points. Total 100. Vous pouvez recalibrer les poids plus tard, une fois que vous avez 50–100 dossiers historiques.
+Voici une grille pragmatique, hors produit. Chaque axe vaut 20 points. Total 100. Vous pouvez recalibrer les poids plus tard, une fois que vous avez 50–100 dossiers historiques. L’urgence, la zone et le délai de réponse se trient dans l’équipe. Ils ne changent pas le libellé automatique.
 
 ### 1. Fit ICP (0–20)
 
@@ -166,7 +170,7 @@ Limite classique : le score n’est pas recalculé quand le prospect joint un pl
 
 ### Version parcours + pipeline
 
-Dans QuoteBuilder, l’idée est inverse : le [funnel](/fonctionnalites/funnel) capture les champs qui alimentent le score, le [pipeline de demandes](/fonctionnalites/demandes) affiche Hot / Warm / Cold, et l’[autopilote](/fonctionnalites/autopilote) traite le suivi sans dépendre de la mémoire du commercial.
+Dans QuoteBuilder, le [funnel](/fonctionnalites/funnel) collecte les réponses, et le [pipeline de demandes](/fonctionnalites/demandes) affiche le libellé Hot, Warm ou Cold issu de la formule fixe (surface, charge, accès, type de projet, contraintes, longueur du besoin). L’[autopilote](/fonctionnalites/autopilote) enchaîne les relances. La grille à cinq axes, elle, reste hors produit.
 
 Vous pouvez aussi tester la qualité d’entrée avec le mini-outil [score brief devis](/outils/score-brief-devis) avant même d’envoyer un chiffrage.
 
@@ -273,7 +277,7 @@ Ajoutez un bonus comportement si plusieurs contacts du même compte engagent. Le
 
 ### Comment lier score et pricing SaaS / outil ?
 
-Si vous industrialisez le parcours (funnel, catalogue, pipeline), un outil comme QuoteBuilder (Free puis Starter / Pro / Agency selon volume) sert surtout à **capturer** les champs du score et à **exécuter** les playbooks, pas à remplacer le jugement commercial.
+Si vous industrialisez le parcours (funnel, catalogue, pipeline), QuoteBuilder capture les réponses du formulaire et pose le libellé automatique. Il n’exécute pas la grille à cinq axes. Le jugement commercial, l’urgence et le délai de réponse restent dans l’équipe.
 
 ## Conclusion
 

@@ -24,19 +24,19 @@ const FAQ = [
   },
   {
     q: "Que mettre en premier : linéaire ou type de produit ?",
-    a: "Famille produit et typologie d’abord (pour brancher les questions), puis dimensions. Inverser pousse à un prix au mètre magique.",
+    a: "Famille produit et typologie d’abord, puis dimensions, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Inverser pousse à un prix au mètre magique.",
   },
   {
     q: "Comment scorer « urgent avant vente du bien » ?",
-    a: "Souvent Hot : date contrainte. Vérifiez décideur, accès, complétude du brief. SLA court.",
+    a: "Le libellé automatique ignore l’urgence. L’équipe, hors produit, vérifie la date, le décideur, l’accès et le brief. Il n’y a pas de SLA.",
   },
   {
     q: "Un seul funnel pour particulier et promoteur ?",
-    a: "Oui, avec une première question contexte et des branches (volumes, lots, interlocuteurs). Un monolithe sans branches redevient un formulaire flou.",
+    a: "Oui, avec une première question contexte, dans un ordre fixe (volumes, lots, interlocuteurs). Les règles Si/Alors suggèrent les produits. Un formulaire sans ordre redevient flou.",
   },
   {
     q: "Comment traiter syndic + copropriétaires ?",
-    a: "Champ interlocuteurs, circuit de validation, un seul lien espace prospect pour la bonne version.",
+    a: "Champ interlocuteurs, circuit de validation, un seul lien espace prospect. Il n’y a pas de versions de devis.",
   },
   {
     q: "Le funnel remplace-t-il le poseur ?",
@@ -44,7 +44,7 @@ const FAQ = [
   },
   {
     q: "Comment éviter les reprises motorisation ?",
-    a: "Liste moteur + accessoires + alimentation dès le funnel. Toute modif = nouvelle version du devis.",
+    a: "Liste moteur + accessoires + alimentation dès le funnel. Toute modif met à jour le dossier courant. Il n’y a pas de versions.",
   },
 ];
 
@@ -101,9 +101,9 @@ export default function CloturePortailLandingPage() {
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">La chaîne, sur ce métier</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
-              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches clôture, portail, grille, moteur." },
+              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Ordre fixe : clôture, portail, grille, moteur." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Panneaux, lames, motorisation + Si/Alors." },
-              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, SLA saison, assignation." },
+              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, métrage, relances." },
             ].map((item) => (
               <Link
@@ -121,8 +121,8 @@ export default function CloturePortailLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer le template clôture / portail"
-        text="Un parcours linéaire, hauteur, motorisation, pose. Le plan Free suffit pour voir l’interface, sans carte."
+        title="Essayer gratuitement"
+        text="Posez linéaire, hauteur, motorisation et pose dans un ordre fixe. Il n’y a pas de template clôture. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

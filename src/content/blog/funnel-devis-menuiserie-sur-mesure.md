@@ -27,7 +27,7 @@ Sans ces éléments, vous n’avez pas un devis : vous avez une estimation au do
 
 ## Définition : funnel de devis menuiserie
 
-Un **funnel de devis menuiserie** est un parcours guidé (wizard, parfois chat) qui pose les bonnes questions dans le bon ordre, avec des branches Si/Alors. Exemple : si « rénovation appartement » alors demander accès ascenseur / étage ; si « coulissant » alors demander rail et dégagement.
+Un **funnel de devis menuiserie** est un parcours guidé (wizard, parfois chat) qui pose les questions dans un ordre fixe : ouvrage, dimensions, vitrage, pose, photos. Les règles Si/Alors ne sautent pas d’étape. Elles suggèrent des produits (coulissant, rail, vitrage) selon les réponses. Le template Menuisier existe.
 
 La sortie n’est pas un e-mail libre. C’est un **dossier** : lignes produits / options, contraintes, pièces jointes (plan, photos), score Hot/Warm/Cold, owner.
 
@@ -81,7 +81,7 @@ Voici un enchaînement réaliste (à adapter) :
 3. **Quantité** et pièces concernées.
 4. **Matériau préféré** (ou « à conseiller »).
 5. **Dimensions** : saisie L × H + upload photo / plan.
-6. **Vitrage / perf** : thermique, phonique, sécurité (branches conditionnelles).
+6. **Vitrage / perf** : thermique, phonique, sécurité. Question posée à tous. Les règles Si/Alors suggèrent le vitrage.
 7. **Couleur / finition** : nuancier ou RAL.
 8. **Pose** : fournie, à charge client, dépose existant.
 9. **Contraintes site** : étage, accès, planning travaux.

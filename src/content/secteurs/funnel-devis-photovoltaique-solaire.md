@@ -116,15 +116,15 @@ Landing secteur ou widget. Pas un textarea. Wizard 8–11 étapes max.
 
 ### 2. Configuration guidée
 
-Branches Si/Alors (particulier vs pro vs syndic ; toiture vs sol ; avec / sans batterie). Catalogue de gammes modules / onduleurs / forfaits pose. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b).
+Questions dans un ordre fixe : type de client, toiture ou sol, option batterie, accès. Les règles Si/Alors ne changent pas cet ordre. Elles suggèrent des produits du catalogue : gammes modules, onduleurs, forfaits pose, options et produits liés. Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
 
 ### 3. Score et assignation
 
-Hot si toiture + orientation + conso ou facture + photos + délai proche + zone OK. Warm si incomplet mais sérieux. Cold si « juste un prix au kWc » hors zone. Owner clair, SLA de réponse. Voir [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b) et [assignation / SLA](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe).
+QuoteBuilder pose un libellé automatique Hot, Warm ou Cold. La formule est fixe : surface, charge, accès, type de projet, contraintes, et longueur du texte du besoin. Elle ignore photos, délai, zone et urgence. Elle n'est pas configurable. Il n'y a pas de SLA. Urgence, zone et délai de réponse se trient dans l'équipe, hors produit. Voir [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b) et [assignation / SLA](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe).
 
 ### 4. Chiffrage
 
-Estimateur assemble depuis le catalogue / forfaits pose. Options visibles (batterie, monitoring, optimisation). Prix HT cohérents. Mention « sous réserve de visite technique / étude d’implantation » quand c’est votre politique.
+L'estimateur assemble depuis le catalogue et les forfaits pose. Options visibles (batterie, monitoring, optimisation). Chaque ligne a un prix min et un prix max : l'affichage est une fourchette indicative, pas un catalogue HT ni une TVA. Mention « sous réserve de visite technique / étude d’implantation » quand c’est votre politique.
 
 ### 5. Envoi + espace prospect
 
@@ -165,11 +165,11 @@ Regroupez plutôt que de multiplier les étapes :
 
 Affichez-les comme options cochables. Le total bouge. Le prospect comprend. Vous évitez le « surprise chantier ».
 
-## Délai de pose, validité et acomptes
+## Délai de pose, durée de prix et acomptes
 
-Trois leviers à lier :
+**Hors QuoteBuilder pour la durée de prix.** Le produit n'affiche pas de validité. Trois leviers d'équipe :
 
-1. **Validité du devis** (ex. 30 jours) : matériel et planning bougent. Voir [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
+1. **Durée de prix** (ex. 30 jours), hors produit : matériel et planning bougent. Voir [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
 2. **Créneau pose** : réservé après accord commercial (statut Gagné) et acompte, pas sur un devis « peut-être ».
 3. **Acompte / échéances** : rassurer trésorerie et commande matériel. Voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b).
 
@@ -193,7 +193,7 @@ Les relecteurs invités répondent par « Valider le dossier » ou « Modificati
 | Délai moyen 1er devis | Compétitivité |
 | % visites techniques « inutiles » | Filtrage trop faible |
 | % options batterie présentes sur devis acceptés | Qualité du funnel options |
-| Taux d’acceptation sous validité | Cycle commercial |
+| Dossiers gagnés dans la durée de prix d'équipe | Cycle commercial, hors produit |
 | % demandes hors zone filtrées tôt | Santé du pipeline |
 
 ## Relances : le devis PV meurt souvent après l’envoi
@@ -204,7 +204,7 @@ Cadrez une séquence courte :
 
 - T+0 : confirmation + lien espace prospect ;
 - T+2 j : rappel options (batterie / monitoring) + délai pose restant ;
-- T+5 j : rappel validité + proposition créneau visite si besoin.
+- T+5 j : rappel de la durée de prix, hors produit, et proposition de créneau visite si besoin.
 
 Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les devis meurent sans relance](https://www.quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance) et [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
 
@@ -215,7 +215,7 @@ Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les de
 3. **Ignorer l’accès toiture et la hauteur** : le coût sort au chantier.
 4. **Un seul PDF sans suivi** : relances à l’aveugle. Préférez le [lien sécurisé](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email).
 5. **Réserver un créneau pose avant que le commercial pose Gagné** : vous bloquez l’équipe pour un comparateur.
-6. **Mélanger particulier, pro et syndic sur les mêmes champs** : branche « type de client » dès le début.
+6. **Mélanger particulier, pro et syndic sur les mêmes champs** : posez « type de client » dans l’ordre fixe, dès le début.
 
 ## Secteurs proches et maillage
 
@@ -240,7 +240,7 @@ Dangereux sans brief. Préférez un parcours qui aboutit à une estimation perso
 
 ### Comment gérer particulier, pro et syndic dans le même funnel ?
 
-Branche précoce « type de client », puis champs spécifiques (SIRET, lots, contact technique). Ne mélangez pas tout sur le même écran.
+Posez « type de client » dans l’ordre fixe, puis SIRET, lots et contact technique. Ne mélangez pas tout sur le même écran. Les règles Si/Alors suggèrent les produits.
 
 ### Comment parler des aides sans se tromper ?
 
@@ -248,7 +248,7 @@ Mention générique + collecte d’infos + traitement humain. Pas de barème inv
 
 ### La batterie doit-elle être obligatoire dans le parcours ?
 
-Non. Proposez-la en option ou en branche « je veux étudier le stockage ». Beaucoup de prospects veulent d’abord la production.
+Non. Posez-la en question optionnelle, dans l’ordre fixe. Beaucoup de prospects veulent d’abord la production. Les règles Si/Alors suggèrent la batterie, elles ne la rendent pas obligatoire.
 
 ### Comment éviter l’abandon à l’étape photos ?
 
@@ -256,7 +256,7 @@ Rendez l’upload optionnel mais valorisé (« avec photos toiture, réponse sou
 
 ### Quel lien avec le catalogue produits ?
 
-Les gammes modules / onduleurs / forfaits pose du funnel doivent mapper vos kits / articles. Sinon double saisie. Voir bibliothèque de lignes / kits.
+Les gammes modules, onduleurs et forfaits pose du funnel doivent mapper vos options, variantes et produits liés. Pas de kits. Sinon double saisie des lignes. Voir bibliothèque de lignes.
 
 ### Combien d’étapes idéales ?
 

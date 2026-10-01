@@ -22,7 +22,7 @@ updated: 2026-09-24
 
 Mardi 14 h 40. Vous envoyez `Devis_Martin_v3_FINAL.pdf`. Le prospect le forward à sa direction. Quelqu’un ouvre `Devis_Martin_v2.pdf` resté dans un vieux fil. Un autre répond sur WhatsApp : « On a pas le même total. » Vous n’avez aucune idée de qui a ouvert quoi. Vous relancez à l’aveugle. Trois jours plus tard, le concurrent a déjà fait signer sur un lien partagé.
 
-Ce guide ne reprend pas le sujet « comment créer le devis » (Excel vs configurateur). Il ne refait pas non plus la visite complète de l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne). Ici, l’angle est plus simple et plus douloureux : **le canal d’envoi**. PDF en pièce jointe contre **lien sécurisé** (page dédiée, statut, versions, relances, signature). Et le coût caché du PDF-only.
+Ce guide ne reprend pas le sujet « comment créer le devis » (Excel vs configurateur). Il ne refait pas non plus la visite complète de l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne). Ici, l’angle est plus simple et plus douloureux : **le canal d’envoi**. PDF en pièce jointe contre **lien sécurisé** (page dédiée, statut, relances, dernière consultation). Pas de versions, pas de signature en ligne. Et le coût caché du PDF-only.
 
 Public : dirigeants PME, commerciaux B2B, estimateurs, agences qui outillent des équipes devis (menuiserie, rayonnage, chauffage, location, agencement).
 
@@ -84,14 +84,14 @@ Le PDF n’est pas « mauvais ». Il est **muet**. Il ne parle pas à votre pipe
 
 Quand vous partagez un **lien** vers une page devis (souvent protégée par PIN), le prospect ouvre **la même référence** que votre équipe. Typiquement :
 
-- récap structuré (lignes, options, total, validité) ;
+- récap structuré (lignes, options, fourchette indicative) ;
 - barre de statut (reçu, en étude, devis proposé, etc.) ;
 - possibilité d’ajouter photos / plans / notes ;
 - messagerie légère attachée au dossier ;
 - accès multi-décideurs sans renvoyer un fichier ;
 - les relecteurs invités répondent par Valider le dossier ou Modifications ; le commercial pose Gagné.
 
-Côté vendeur, les ouvertures et l’activité nourrissent le dossier. Une relance Hot part depuis le même endroit. Voir [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier) et [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
+Côté vendeur, le champ Espace prospect montre la dernière consultation, en temps relatif. Pas de compteur, pas d’historique, pas de stats d’ouverture. Une relance Hot part depuis le même dossier. Voir [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier). La durée de prix est un process général, hors produit : [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
 
 Le PDF peut rester un **export** (bouton télécharger). Il n’est plus le contrat social de la négociation.
 
@@ -99,13 +99,13 @@ Le PDF peut rester un **export** (bouton télécharger). Il n’est plus le cont
 
 | Critère | PDF en pièce jointe | Lien sécurisé / espace prospect |
 |---------|---------------------|----------------------------------|
-| Source de vérité | Fichier local, souvent multiplié | Page unique, version courante |
-| Suivi d’ouverture | Faible ou nul | Visible côté dossier / stats |
+| Source de vérité | Fichier local, souvent multiplié | Page unique du dossier (pas d’historique de versions) |
+| Suivi d’ouverture | Faible ou nul | Dernière vue seulement, en temps relatif, dans le champ Espace prospect. Pas de compteur, pas d’historique, pas de stats |
 | Multi-décideurs | Forward de fichiers divergents | Même lien + PIN |
 | Compléments (photos, plans) | Autre mail / WhatsApp | Upload sur le dossier |
-| Relances | « Avez-vous reçu ? » | Relance contextuelle (ouvert / pas ouvert / options) |
-| Clôture | Scan, mail « ok », mauvaise version | Le commercial pose Gagné |
-| Validité affichée | Souvent oubliée dans le corps du mail | Visible sur la page |
+| Relances | « Avez-vous reçu ? » | Relance depuis le dossier (dernière vue, pastilles des relecteurs) |
+| Clôture | Scan, mail « ok », mauvaise version | Les relecteurs cliquent Valider le dossier ou Modifications. Le commercial pose Gagné |
+| Durée de prix | Souvent oubliée dans le corps du mail | Hors QuoteBuilder : à porter dans vos CGV ou votre PDF si votre process l’exige. Le produit ne l’affiche pas |
 | Charge anti-spam / PJ | Risque réel | Lien texte, plus léger |
 | Traçabilité équipe | Boîte perso du commercial | Dossier partagé pipeline |
 
@@ -156,10 +156,10 @@ Durée : souvent 7 à 15 jours. Mémoire commerciale : faible. Stress : élevé.
 
 1. Devis finalisé dans le dossier (catalogue / lignes / options).
 2. Envoi du **lien** (+ PIN si activé) avec un court message.
-3. Signal d’ouverture / activité sur le dossier.
-4. Prospect ajoute une photo ou une question dans l’espace.
-5. Relance Hot contextualisée si besoin.
-6. Acceptation sur la version affichée, validité claire.
+3. Dernière consultation visible sur la fiche (temps relatif), si l’espace a été ouvert. Pas de compteur ni de stats.
+4. Prospect dépose une photo par l’upload (funnel ou page prospect) et pose sa question dans le fil plat.
+5. Relance Hot depuis le dossier si besoin.
+6. Les relecteurs cliquent Valider le dossier ou Modifications. Le commercial pose Gagné. Pas de validité produit, pas de signature en ligne, pas de version à accepter.
 
 Durée : souvent plus courte. Mémoire : dans le dossier. Stress : plus bas, même quand le deal ne se fait pas (vous savez pourquoi).
 
@@ -186,7 +186,7 @@ Le lien n’est utile que s’il s’inscrit dans un fil cohérent :
 4. **Envoi** : lien sécurisé (ce guide).
 5. **Relances** : autopilote ou relance Hot depuis le dossier.
 6. **Clôture** : les relecteurs valident le dossier ou demandent des Modifications ; le commercial pose Gagné.
-7. **Validité** : date claire, pas de devis zombie.
+7. **Durée de prix, hors QuoteBuilder** : le produit n’a pas de date de validité. Si l’équipe en écrit une, c’est dans les CGV ou le PDF.
 
 Sans les étapes 1 à 3, le lien partage juste un mauvais brief plus joliment. Sans 5 à 7, vous avez un bel espace et un pipeline qui dort.
 
@@ -195,11 +195,11 @@ Sans les étapes 1 à 3, le lien partage juste un mauvais brief plus joliment. S
 | KPI | Lecture |
 |-----|---------|
 | % devis envoyés en lien (vs PDF seul) | Adoption du canal |
-| Taux d’ouverture de l’espace / lien | Qualité du premier contact |
-| Délai médian première ouverture | Friction mail / PIN |
-| % devis avec ≥1 version après envoi | Négociation réelle |
-| Taux d’acceptation sous validité | Cycle commercial |
+| Dernière consultation renseignée sur la fiche | Le lien a servi au moins une fois. Pas de taux, pas de première ouverture, pas de stats produit |
+| Pastilles relecteurs (Validé / Modifications) | Circuit client, pas une signature |
 | Temps moyen « renvoi de pièce jointe » | Friction PDF résiduelle |
+
+Taux d’ouverture, délai de première ouverture, nombre de versions et acceptation sous validité ne sont pas des stats QuoteBuilder. Si vous les suivez, c’est un tableur d’équipe, hors produit.
 
 Si vous n’avez aucun de ces chiffres, commencez par compter manuellement une semaine : combien de fois quelqu’un a demandé « renvoyez le PDF ».
 
@@ -212,7 +212,7 @@ Donnez-leur un PDF **depuis** l’espace. Ils ont le fichier. Vous gardez la sou
 Oui, légère. Elle évite qu’un lien forwardé ouvre le devis à toute la boîte partagée. Beaucoup de prospects s’y habituent en une fois.
 
 **« On n’a pas le temps de changer d’outil. »**  
-Vous n’avez pas besoin de tout refondre le jour J. Pilotez 20 % des devis Hot en lien. Mesurez les renvois de PJ et le délai de signature. Puis élargissez.
+Vous n’avez pas besoin de tout refondre le jour J. Pilotez 20 % des devis Hot en lien. Mesurez les renvois de PJ et le délai jusqu’au statut Gagné. Puis élargissez.
 
 **« Notre ERP exporte déjà un PDF. »**  
 Gardez l’export. Changez le **dernier kilomètre** : publier / partager via un dossier devis plutôt que coller le fichier dans Outlook.
@@ -220,10 +220,10 @@ Gardez l’export. Changez le **dernier kilomètre** : publier / partager via un
 ## Erreurs à éviter
 
 1. Envoyer lien **et** trois PDF divergents dans le même mail.
-2. Oublier la [validité](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b) sur la page.
-3. Relancer comme si c’était encore un PDF muet (« Avez-vous reçu ? ») alors que vous voyez l’ouverture.
-4. Laisser chaque commercial inventer son texte d’envoi (templates courts > improvisation).
-5. Confondre signature électronique lourde (eIDAS avancé) et **acceptation commerciale** en ligne : clarifiez ce dont vous avez besoin métier.
+2. Croire que la page affiche une [validité](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b) : le produit ne le fait pas. Une durée de prix vit dans les CGV, hors produit.
+3. Relancer « Avez-vous reçu ? » alors que le champ Espace prospect montre déjà la dernière consultation. Pas de compteur d’ouverture.
+4. Laisser chaque commercial inventer son texte d’envoi (modèles courts plutôt que l’improvisation).
+5. Confondre signature électronique lourde (eIDAS avancé) et le clic « Valider le dossier » : la signature est hors produit. Le commercial pose Gagné.
 
 ## FAQ
 

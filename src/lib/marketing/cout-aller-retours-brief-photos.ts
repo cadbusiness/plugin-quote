@@ -117,7 +117,7 @@ export function computeCoutAllerRetoursBrief(input: CoutAllerRetoursBriefInput):
     alertTone = "bad";
     alert = `Friction documents élevée · environ ${fmtEuro(total)} / mois (indicatif).`;
     tip =
-      "Priorité : upload photos / plans dans le funnel (optionnel mais valorisé), espace prospect pour les compléments, et SLA plus court quand le brief est documenté.";
+      "Priorité : upload photos / plans dans le funnel (le score ne les lit pas), espace prospect pour les compléments. Le délai de réponse se trie dans l’équipe, hors produit. Pas de SLA.";
   } else if (total >= 5000 || heures >= 5) {
     alertTone = "warn";
     alert = `Friction documents notable · environ ${fmtEuro(total)} / mois (indicatif).`;
@@ -164,9 +164,9 @@ export function computeCoutAllerRetoursBrief(input: CoutAllerRetoursBriefInput):
     `Statut : ${alert}`,
     "",
     "Checklist rapide :",
-    "- Upload photos / plans dans le funnel (optionnel + SLA différencié)",
+    "- Upload photos / plans dans le funnel (le score ne lit pas les photos)",
     "- Espace prospect pour compléter sans WhatsApp",
-    "- Légendes + version courante du plan",
+    "- Décrire l’accès dans le texte du besoin (pas de champ légende, pas de versions)",
     "- Filtrer les déplacements si accès illisible",
     "- Mesurer % dossiers documentés chaque mois",
     "",

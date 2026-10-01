@@ -1,7 +1,7 @@
 ---
 title: "Relancer un devis Hot depuis le dossier : SLA, owner et automations"
 slug: relancer-devis-hot-depuis-dossier
-description: "Process métier : relancer un devis Hot depuis le dossier QuoteBuilder. Score, owner, SLA, actions Écrire/Appeler/Relancer, automations vs jugement commercial, checklist équipe."
+description: "Relancer un devis Hot depuis le dossier. Libellé automatique, owner d’équipe, relances. Le délai de réponse est hors produit : pas de SLA QuoteBuilder."
 canonical: /blog/relancer-devis-hot-depuis-dossier
 locale: fr-FR
 word_count_target: 2200
@@ -18,7 +18,7 @@ updated: 2026-09-11
 
 # Relancer un devis Hot depuis le dossier : SLA, owner et automations
 
-Un devis marqué **Hot** n’est pas une médaille. C’est une alerte. Score élevé, brief déjà riche, signal d’urgence ou de fit. Si personne n’est owner, si le SLA n’est pas écrit, et si la prochaine action n’existe que dans la tête du commercial, ce dossier chaud meurt exactement comme un Cold : dans le silence.
+Un devis marqué **Hot** n’est pas une médaille, ni un signal d’urgence. C’est le libellé automatique d’une formule fixe : surface, charge, accès, type de projet, contraintes, et longueur du texte du besoin. Photos, délai, zone et urgence ne comptent pas. Il n’y a pas de SLA. Si personne n’est owner, ce dossier peut dormir comme un Cold : le délai de réponse se trie dans l’équipe, hors produit.
 
 Ce guide décrit le **vrai process** : lire la file Demandes filtrée Hot, ouvrir le dossier, comprendre pourquoi le score est haut, choisir Écrire / Appeler / Relancer, puis séparer ce que l’automation porte de ce que le jugement commercial doit décider. Captures issues de l’espace démo QuoteBuilder. Pas de cover abstraite : des écrans de travail.
 
@@ -30,7 +30,7 @@ Public : responsables commerciaux, fondateurs solo, PME et agences qui chiffrent
 
 ## Pourquoi un Hot sans owner ni SLA meurt
 
-Le score ne vend pas. Il **priorise**. Dans [comment scorer une demande de devis B2B](/blog/score-demande-devis-b2b), on pose une grille simple (fit, urgence, complétude, budget, comportement). Hot signifie en pratique : répondre vite, chiffrer en priorité, ne pas laisser le dossier dormir sous une pile de Warm.
+Le libellé ne vend pas. Il **priorise** selon la formule fixe. La grille fit, urgence, complétude, budget, comportement est une pratique générale, hors produit, dans [comment scorer une demande de devis B2B](/blog/score-demande-devis-b2b). Répondre vite reste un choix d’équipe, pas un SLA produit.
 
 Trois raisons fréquentes de mort d’un Hot :
 

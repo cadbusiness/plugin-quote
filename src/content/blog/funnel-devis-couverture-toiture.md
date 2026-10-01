@@ -98,16 +98,16 @@ Les options non choisies restent proposables plus tard en [variante](https://www
 
 ## Urgence fuite vs projet planifié : deux vitesses, un funnel
 
-Ne créez pas deux sites. Créez une **branche précoce** « contexte ».
+Ne créez pas deux sites. Posez le contexte comme une question, dans l'ordre fixe du parcours.
 
-| Branche | Priorité funnel | Suite typique |
+| Contexte | Priorité funnel | Suite typique |
 |---------|-----------------|---------------|
 | Urgence fuite | Photos dégâts + localisation + accès + créneau rappel court | Dépannage / mise en sécurité puis devis réfection |
 | Réfection partielle | Zone concernée, pans, photos, état | Visite ciblée + devis |
 | Réfection totale | Surface / pans, type couverture, accès, délai | Étude + devis + options |
 | Entretien / démoussage | Surface, accès, état | Devis plus simple, score Warm souvent |
 
-Le scoring change. Le process devis (dossier, validation, envoi, relance) reste le même.
+Le libellé automatique ne change pas : il ignore l'urgence. Le process devis (dossier, validation, envoi, relance) reste le même.
 
 ## Aides, assurance, DTU, prix au m² : ce qu'il ne faut pas inventer
 
@@ -131,15 +131,15 @@ Landing secteur ou widget. Pas un textarea. Wizard 8-11 étapes max.
 
 ### 2. Configuration guidée
 
-Branches Si/Alors (particulier vs pro vs syndic ; urgence vs projet ; tuiles vs zinc vs étanchéité ; accès simple vs nacelle). Catalogue de gammes / forfaits pose / options zinguerie. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b).
+Questions dans un ordre fixe : type de client, contexte (fuite, réfection, entretien), type d'intervention, accès. Les règles Si/Alors ne changent pas cet ordre. Elles suggèrent des produits du catalogue : gammes, forfaits pose, options zinguerie, variantes et produits liés. Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
 
 ### 3. Score et assignation
 
-Hot si type d'intervention + surface/pans ou photos + urgence ou délai proche + zone OK. Warm si incomplet mais sérieux. Cold si « juste un prix au m² » hors zone ou projet non voté sans horizon. Owner clair, SLA de réponse (surtout sur fuite). Voir [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b) et [assignation / SLA](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe).
+QuoteBuilder pose un libellé automatique Hot, Warm ou Cold. La formule est fixe : surface, charge, accès, type de projet, contraintes, et longueur du texte du besoin. Elle ignore photos, délai, zone et urgence. Elle n'est pas configurable. Il n'y a pas de SLA. Une fuite ne change pas le libellé : urgence, zone et délai de réponse se trient dans l'équipe, hors produit. Voir [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b) et [assignation / SLA](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe).
 
 ### 4. Chiffrage
 
-Estimateur assemble depuis le catalogue / forfaits. Options visibles (zinguerie, échafaudage, évacuation, isolation associée). Prix HT cohérents. Mention « sous réserve de visite / métré » quand c'est votre politique.
+L'estimateur assemble depuis le catalogue et les forfaits. Options visibles (zinguerie, échafaudage, évacuation, isolation associée). Chaque ligne a un prix min et un prix max : l'affichage est une fourchette indicative, pas un catalogue HT ni une TVA. Mention « sous réserve de visite / métré » quand c'est votre politique.
 
 Avant envoi, une [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b) (technique + marge) évite les devis toiture sortis trop tôt avec accès mal cadré.
 
@@ -171,11 +171,11 @@ Sans photo d'accès, vous multipliez les déplacements inutiles. L'[estimateur c
 
 <!-- PLACEHOLDER IMAGE: espace prospect devis toiture + upload photos pans / gouttières / accès (shoot Content) -->
 
-## Tuiles, ardoise, zinc, bac acier, étanchéité : une branche, pas cinq sites
+## Tuiles, ardoise, zinc, bac acier, étanchéité : une question, pas cinq sites
 
-Beaucoup d'entreprises font plusieurs familles. Évitez cinq landings qui se cannibalisent sans brief commun. Une branche précoce « type d'intervention » suffit :
+Beaucoup d'entreprises font plusieurs familles. Évitez cinq landings qui se cannibalisent sans brief commun. Posez le type d'intervention dans l'ordre fixe :
 
-| Branche | Infos critiques |
+| Type d'intervention | Infos critiques |
 |---------|-----------------|
 | Tuiles | m² ou pans, pente, état, faîtage / noues |
 | Ardoise | m² ou pans, type pose, accès, état support |
@@ -199,11 +199,11 @@ Regroupez plutôt que de multiplier les étapes :
 
 Affichez-les comme options cochables. Le total bouge. Le prospect comprend. Vous évitez le « surprise chantier ».
 
-## Délai de pose, validité et acomptes
+## Délai de pose, durée de prix et acomptes
 
-Trois leviers à lier :
+**Hors QuoteBuilder pour la durée de prix.** Le produit n'affiche pas de validité. Trois leviers d'équipe :
 
-1. **Validité du devis** (ex. 30 jours) : matériaux et planning bougent. Voir [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
+1. **Durée de prix** (ex. 30 jours), hors produit : matériaux et planning bougent. Voir [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
 2. **Créneau chantier** : réservé quand le dossier est gagné et que l'acompte est reçu, pas sur un devis « peut-être » (surtout en saison ou après orage).
 3. **Acompte / échéances** : rassurer trésorerie et commande matériaux. Voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b).
 
@@ -228,7 +228,7 @@ C'est le rôle de l'[espace prospect](https://www.quotebuilder.co/blog/espace-pr
 | Délai moyen 1er devis (urgence vs projet) | Compétitivité |
 | % visites « inutiles » (accès / hors scope) | Filtrage trop faible |
 | % options échafaudage / zinguerie présentes sur devis gagnés | Qualité du funnel options |
-| Part de dossiers gagnés sous validité | Cycle commercial |
+| Dossiers gagnés dans la durée de prix d'équipe | Cycle commercial, hors produit |
 | % demandes hors zone filtrées tôt | Santé du pipeline |
 
 ## Relances : le devis toiture meurt souvent après l'envoi
@@ -239,7 +239,7 @@ Cadrez une séquence courte :
 
 - T+0 : confirmation + lien espace prospect ;
 - T+1 j (urgence) ou T+2 j (projet) : rappel options (accès / zinguerie) + créneau visite si besoin ;
-- T+5 j : rappel validité + prochain créneau chantier indicatif.
+- T+5 j : rappel de la durée de prix, hors produit, et prochain créneau chantier indicatif.
 
 Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les devis meurent sans relance](https://www.quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance) et [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
 
@@ -248,10 +248,10 @@ Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les de
 1. **Promettre un prix au m² figé sans brief** : vous attirez des tireurs de prix.
 2. **Inventer aides / CEE / primes dans le wizard** : litige assuré.
 3. **Ignorer l'accès et la hauteur** : le coût sort au chantier.
-4. **Traiter une fuite comme un projet long** (SLA trop lent) : le prospect appelle le voisin.
+4. **Traiter une fuite comme un projet long** : le prospect appelle le voisin. Le libellé automatique ignore l'urgence. Le délai de réponse se trie dans l'équipe, hors produit.
 5. **Un seul PDF sans suivi** : relances à l'aveugle. Préférez le [lien sécurisé](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email).
 6. **Réserver un créneau équipe avant que le dossier soit gagné** : vous bloquez pour un comparateur.
-7. **Mélanger particulier, pro et syndic sur les mêmes champs** : branche « type de client » dès le début.
+7. **Mélanger particulier, pro et syndic sur les mêmes champs** : posez « type de client » dans l'ordre fixe, dès le début.
 8. **Envoyer sans validation technique** sur un Hot complexe : le devis revient à la charge. Voir [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
 
 ## Secteurs proches et maillage
@@ -278,7 +278,7 @@ Dangereux sans brief. Préférez un parcours qui aboutit à une estimation perso
 
 ### Comment gérer urgence fuite et projet long dans le même funnel ?
 
-Branche précoce « contexte ». SLA et scoring différents. Même dossier ensuite.
+Posez le contexte dans l'ordre fixe (fuite, réfection, entretien). Le libellé automatique ignore l'urgence. Le délai de réponse se trie dans l'équipe, hors produit. Même dossier ensuite.
 
 ### Comment parler des aides ou de l'assurance sans se tromper ?
 
@@ -286,7 +286,7 @@ Mention générique + collecte d'infos + traitement humain. Pas de barème inven
 
 ### Tuiles et étanchéité terrasse doivent-elles être deux funnels séparés ?
 
-Pas forcément. Une branche « type d'intervention » dans le même funnel suffit souvent. Séparez seulement si les équipes / catalogues sont vraiment distincts.
+Pas forcément. Posez le type d'intervention dans le même parcours, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Séparez seulement si les équipes ou les catalogues sont vraiment distincts.
 
 ### Comment éviter l'abandon à l'étape photos ?
 
@@ -294,7 +294,7 @@ Rendez l'upload optionnel mais valorisé (« avec photos toiture / accès, répo
 
 ### Quel lien avec le catalogue produits ?
 
-Les gammes couverture / zinguerie / forfaits pose du funnel doivent mapper vos kits / articles. Sinon double saisie. Voir bibliothèque de lignes / kits.
+Les gammes couverture, zinguerie et forfaits pose du funnel doivent mapper vos options, variantes et produits liés. Pas de kits. Sinon double saisie des lignes. Voir bibliothèque de lignes.
 
 ### Combien d'étapes idéales ?
 

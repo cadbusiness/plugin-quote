@@ -27,7 +27,7 @@ const FAQ = [
   },
   {
     q: "Comment relier ça à l’envoi par lien ?",
-    a: "Comparez le PDF en pièce jointe à un lien sécurisé (espace prospect, versions, relances, signature). Lire envoyer un devis par lien vs PDF, l’espace prospect, et les versions.",
+    a: "Comparez le PDF en pièce jointe à un lien sécurisé (espace prospect, dernière consultation, relances). Pas de versions, pas de signature en ligne. Lire envoyer un devis par lien vs PDF et l’espace prospect.",
   },
 ];
 

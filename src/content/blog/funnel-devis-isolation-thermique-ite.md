@@ -116,15 +116,15 @@ Landing secteur ou widget. Pas un textarea. Wizard 8-11 étapes max.
 
 ### 2. Configuration guidée
 
-Branches Si/Alors (particulier vs pro vs syndic ; ITE vs combles vs murs ; accès simple vs nacelle). Catalogue de gammes isolants / finitions / forfaits pose. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b).
+Questions dans un ordre fixe : type de client, type de travaux (ITE, combles, murs), accès. Les règles Si/Alors ne changent pas cet ordre. Elles suggèrent des produits du catalogue : gammes isolants, finitions, forfaits pose, options et produits liés. Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
 
 ### 3. Score et assignation
 
-Hot si type de travaux + m² ou métré + photos + délai proche + zone OK. Warm si incomplet mais sérieux. Cold si « juste un prix au m² » hors zone ou projet non voté sans horizon. Owner clair, SLA de réponse. Voir [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b) et [assignation / SLA](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe).
+QuoteBuilder pose un libellé automatique Hot, Warm ou Cold. La formule est fixe : surface, charge, accès, type de projet, contraintes, et longueur du texte du besoin. Elle ignore photos, délai, zone et urgence. Elle n'est pas configurable. Il n'y a pas de SLA. Urgence, zone et délai de réponse se trient dans l'équipe, hors produit. Voir [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b) et [assignation / SLA](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe).
 
 ### 4. Chiffrage
 
-Estimateur assemble depuis le catalogue / forfaits. Options visibles (finitions, échafaudage, points singuliers). Prix HT cohérents. Mention « sous réserve de visite / métré » quand c’est votre politique.
+L'estimateur assemble depuis le catalogue et les forfaits. Options visibles (finitions, échafaudage, points singuliers). Chaque ligne a un prix min et un prix max : l'affichage est une fourchette indicative, pas un catalogue HT ni une TVA. Mention « sous réserve de visite / métré » quand c’est votre politique.
 
 Avant envoi, une [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b) (technique + marge) évite les devis ITE sortis trop tôt avec accès mal cadré.
 
@@ -154,18 +154,18 @@ Sans photo d’accès, vous multipliez les déplacements inutiles. L’[estimate
 
 <!-- PLACEHOLDER IMAGE: espace prospect devis ITE + upload photos façade / échafaudage (shoot Content) -->
 
-## ITE, combles, murs, planchers : une branche, pas quatre sites
+## ITE, combles, murs, planchers : une question, pas quatre sites
 
-Beaucoup d’entreprises font plusieurs familles. Évitez quatre landings qui se cannibalisent sans brief commun. Une branche précoce « type de travaux » suffit :
+Beaucoup d’entreprises font plusieurs familles. Évitez quatre landings qui se cannibalisent sans brief commun. Posez le type de travaux dans l’ordre fixe :
 
-| Branche | Infos critiques |
+| Type de travaux | Infos critiques |
 |---------|-----------------|
 | ITE / façade | m² façade, hauteur, finition, accès, ouvertures |
 | Combles | perdus / aménagés, surface, accès trappe, état sous-toiture |
 | Murs intérieurs | pièces concernées, m², finitions, contraintes usage |
 | Planchers / vides | type support, accès, hauteur sous plancher |
 
-Le scoring et le catalogue changent. Le process devis (dossier, validation, envoi, relance) reste le même.
+Le catalogue suggère d’autres produits selon le type. Le libellé automatique, lui, ne change pas. Le process devis (dossier, validation, envoi, relance) reste le même.
 
 ## Options fréquentes à proposer (sans 15 écrans)
 
@@ -180,11 +180,11 @@ Regroupez plutôt que de multiplier les étapes :
 
 Affichez-les comme options cochables. Le total bouge. Le prospect comprend. Vous évitez le « surprise chantier ».
 
-## Délai de pose, validité et acomptes
+## Délai de pose, durée de prix et acomptes
 
-Trois leviers à lier :
+**Hors QuoteBuilder pour la durée de prix.** Le produit n'affiche pas de validité. Trois leviers d'équipe :
 
-1. **Validité du devis** (ex. 30 jours) : matériaux et planning bougent. Voir [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
+1. **Durée de prix** (ex. 30 jours), hors produit : matériaux et planning bougent. Voir [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
 2. **Créneau chantier** : réservé après accord commercial (statut Gagné) et acompte, pas sur un devis « peut-être » (surtout en saison ITE).
 3. **Acompte / échéances** : rassurer trésorerie et commande. Voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b).
 
@@ -200,7 +200,7 @@ Après envoi, le prospect doit pouvoir :
 
 Les relecteurs invités répondent par « Valider le dossier » ou « Modifications ». Le commercial pose Gagné. Moins de « vous avez bien reçu mon devis ? ». Voir l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
 
-Sur les dossiers syndic, l’espace partagé évite aussi les versions contradictoires entre conseil syndical et gestionnaire. Liez ça aux [versions / historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b) et à la [validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
+Sur les dossiers syndic, l’espace partagé évite les PDF contradictoires entre conseil syndical et gestionnaire. QuoteBuilder n’a pas de versions : un seul dossier courant. L’article [versions / historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b) décrit un process hors produit. La [validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b) reste un gate d’équipe.
 
 ## KPIs secteur (comité mensuel)
 
@@ -210,7 +210,7 @@ Sur les dossiers syndic, l’espace partagé évite aussi les versions contradic
 | Délai moyen 1er devis | Compétitivité |
 | % visites « inutiles » (accès / hors scope) | Filtrage trop faible |
 | % options échafaudage / finition présentes sur devis acceptés | Qualité du funnel options |
-| Taux d’acceptation sous validité | Cycle commercial |
+| Dossiers gagnés dans la durée de prix d'équipe | Cycle commercial, hors produit |
 | % demandes hors zone filtrées tôt | Santé du pipeline |
 
 ## Relances : le devis isolation meurt souvent après l’envoi
@@ -221,7 +221,7 @@ Cadrez une séquence courte :
 
 - T+0 : confirmation + lien espace prospect ;
 - T+2 j : rappel options (finition / accès) + créneau visite si besoin ;
-- T+5 j : rappel validité + prochain créneau chantier indicatif.
+- T+5 j : rappel de la durée de prix, hors produit, et prochain créneau chantier indicatif.
 
 Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les devis meurent sans relance](https://www.quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance) et [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
 
@@ -232,7 +232,7 @@ Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les de
 3. **Ignorer l’accès et la hauteur** : le coût sort au chantier.
 4. **Un seul PDF sans suivi** : relances à l’aveugle. Préférez le [lien sécurisé](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email).
 5. **Réserver un créneau échafaudage avant que le commercial pose Gagné** : vous bloquez l’équipe pour un comparateur.
-6. **Mélanger particulier, pro et syndic sur les mêmes champs** : branche « type de client » dès le début.
+6. **Mélanger particulier, pro et syndic sur les mêmes champs** : posez « type de client » dans l’ordre fixe, dès le début.
 7. **Envoyer sans validation technique** sur un Hot ITE complexe : V2 garantie. Voir [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
 
 ## Secteurs proches et maillage
@@ -259,7 +259,7 @@ Dangereux sans brief. Préférez un parcours qui aboutit à une estimation perso
 
 ### Comment gérer particulier, pro et syndic dans le même funnel ?
 
-Branche précoce « type de client », puis champs spécifiques (SIRET, lots, contact technique, vote AG). Ne mélangez pas tout sur le même écran.
+Posez « type de client » dans l’ordre fixe, puis SIRET, lots, contact technique, vote AG. Ne mélangez pas tout sur le même écran. Les règles Si/Alors suggèrent les produits.
 
 ### Comment parler des aides sans se tromper ?
 
@@ -267,7 +267,7 @@ Mention générique + collecte d’infos + traitement humain. Pas de barème inv
 
 ### Combles et ITE doivent-ils être deux funnels séparés ?
 
-Pas forcément. Une branche « type de travaux » dans le même funnel suffit souvent. Séparez seulement si les équipes / catalogues sont vraiment distincts.
+Pas forcément. Posez le type de travaux dans le même parcours, dans un ordre fixe. Les règles Si/Alors suggèrent les produits. Séparez seulement si les équipes ou les catalogues sont vraiment distincts.
 
 ### Comment éviter l’abandon à l’étape photos ?
 
@@ -275,7 +275,7 @@ Rendez l’upload optionnel mais valorisé (« avec photos façade / combles, r�
 
 ### Quel lien avec le catalogue produits ?
 
-Les gammes isolants / finitions / forfaits pose du funnel doivent mapper vos kits / articles. Sinon double saisie. Voir bibliothèque de lignes / kits.
+Les gammes isolants, finitions et forfaits pose du funnel doivent mapper vos options, variantes et produits liés. Pas de kits. Sinon double saisie des lignes. Voir bibliothèque de lignes.
 
 ### Combien d’étapes idéales ?
 

@@ -23,10 +23,12 @@ Mardi 9 h 20. Un commercial ouvre Excel pour le troisième devis de la journée.
 
 Ce n’est pas un problème de motivation. C’est un problème de **bibliothèque**.
 
-Quand les lignes récurrentes vivent dans des têtes et des classeurs, chaque devis repart de zéro. Quand elles vivent dans une **bibliothèque structurée** (articles, kits composés, prix HT, options), le chiffrage devient un assemblage contrôlé. Ce guide détaille pourquoi la reprise manuelle casse la marge et le délai, comment structurer un catalogue interne, comment construire des kits, comment gérer prix et options, comment synchroniser boutique et catalogue devis, quels KPIs suivre, et comment éviter les pièges classiques. Public : estimateurs, commerciaux, dirigeants de PME de pose, fabrication ou produits configurables.
+Quand les lignes récurrentes vivent dans des têtes et des classeurs, chaque devis repart de zéro. Une bibliothèque structurée accélère le chiffrage. Ce guide dit d’abord ce que fait QuoteBuilder, puis une pratique générale (kits, catalogue HT) qui n’est pas dans le produit. Public : estimateurs, commerciaux, dirigeants de PME de pose, fabrication ou produits configurables.
+
+**Dans QuoteBuilder.** Le catalogue porte des options, des variantes et des produits liés. Il n’y a pas de kits ni de bundles. Il n’y a pas de catalogue HT ni de TVA : chaque ligne a un prix minimum et un prix maximum, et l’affichage est une fourchette indicative. Voir la fonctionnalité [catalogue](https://www.quotebuilder.co/fonctionnalites/catalogue).
 
 
-**Testez un catalogue relié au parcours devis :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte).
+**Testez un catalogue d’options, de variantes et de fourchettes :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte). Pas de kits à activer.
 
 
 <!-- PLACEHOLDER IMAGE: capture démo bibliothèque / catalogue lignes + kits (shoot Content) -->
@@ -51,7 +53,7 @@ Le contraste avec un configurateur structuré est le même que celui décrit dan
 
 ## Qu’est-ce qu’une bibliothèque de lignes (et ce que ce n’est pas)
 
-Une **bibliothèque de lignes** pour devis B2B, c’est un catalogue d’articles et de kits prêts à être insérés dans un devis : référence, libellé, unité, prix HT, éventuellement coût, options, règles de quantité, tags métier.
+Une **bibliothèque de lignes** pour devis B2B, dans QuoteBuilder, c’est un catalogue d’articles prêts à entrer dans un devis : libellé, options, variantes, produits liés, prix minimum et prix maximum. L’affichage est une fourchette indicative.
 
 Ce n’est pas :
 
@@ -59,7 +61,11 @@ Ce n’est pas :
 - un Drive avec 40 modèles de devis ;
 - uniquement la boutique e-commerce (qui a d’autres contraintes : stock, SEO, panier).
 
-C’est plutôt la **source de vérité commerciale** pour chiffrer. Sur QuoteBuilder, cette couche s’appuie sur la fonctionnalité [catalogue](https://www.quotebuilder.co/fonctionnalites/catalogue).
+C’est la **source de vérité commerciale** pour chiffrer, dans la limite du produit : options, variantes, produits liés, fourchette min-max. Le lien [catalogue](https://www.quotebuilder.co/fonctionnalites/catalogue) décrit cette couche.
+
+## Bonne pratique générale, hors QuoteBuilder
+
+Kits composés, nomenclatures et prix catalogue HT relèvent d’un process général. QuoteBuilder ne les propose pas. La suite de cette section, jusqu’au retour produit en fin d’article, décrit cette pratique. Pas de bouton d’essai ici.
 
 ### Articles unitaires vs kits composés
 
@@ -130,15 +136,19 @@ Si vous renseignez un coût ou une marge indicative sur les lignes critiques, l�
 
 ml, m², forfait, unité : figez l’unité dans la fiche. Les écarts de reprise manuelle viennent souvent d’un « 12 » sans unité claire (12 ml ou 12 panneaux ?).
 
-## Options et variantes : ne pas tout mettre dans le kit de base
+## Retour produit : options, variantes, fourchette
 
-Le client veut souvent « le même, mais sans motorisation » ou « avec éclairage ». Si tout est figé dans un seul kit, vous créez un second kit, puis un troisième. Mieux vaut :
+QuoteBuilder reprend ici. Pas de kits. Pas de prix catalogue HT. Chaque ligne a un prix min et un prix max. L’affichage est une fourchette indicative.
 
-- un kit de base ;
+## Options et variantes
+
+Le client veut souvent « le même, mais sans motorisation » ou « avec éclairage ». Dans QuoteBuilder, vous ne créez pas un kit. Vous proposez :
+
 - des **options** cochables ;
-- parfois une **variante** (contenu différent, pas seulement un rabais).
+- une **variante** (contenu différent, pas seulement un rabais) ;
+- des **produits liés**.
 
-C’est le même levier que pour la négociation : changer le contenu avant de raboter le prix. Détail dans l’article options / variantes déjà cité.
+Le prix affiché reste une fourchette minimum – maximum. Détail dans l’article options / variantes déjà cité.
 
 ## Boutique e-commerce vs catalogue interne devis
 
@@ -147,23 +157,23 @@ Beaucoup d’équipes synchronisent WooCommerce ou Shopify. Utile. Mais la bouti
 | Besoin | Boutique | Catalogue devis |
 |--------|----------|-----------------|
 | SEO / panier / stock | Fort | Secondaire |
-| Kits pose + options métier | Souvent faible | Fort |
-| Prix B2B HT / grilles | Variable | Central |
+| Options, variantes, produits liés | Souvent faible | Dans QuoteBuilder |
+| Prix min et prix max (fourchette) | Variable | Dans QuoteBuilder. Pas de catalogue HT |
 | Libellés chiffrage atelier | Rare | Central |
-| Règles Si/Alors funnel | Hors scope | Souvent lié |
+| Règles Si/Alors (produits suggérés) | Hors scope | Dans le catalogue |
 
 La synchro doit être **bidirectionnelle ou maîtrisée** : quels champs viennent de la boutique, lesquels restent locaux au devis. Voir [sync catalogue WooCommerce / Shopify → parcours devis](https://www.quotebuilder.co/blog/sync-catalogue-woocommerce-shopify-parcours-devis).
 
-Sur le terrain : la boutique alimente photos et prix publics ; le catalogue devis ajoute kits pose, options, et lignes « non web » (déplacement, étude, reprise).
+Sur le terrain : la boutique alimente photos et prix publics. Le catalogue devis QuoteBuilder ajoute options, variantes, produits liés, et des lignes « non web » (déplacement, étude, reprise), chacune en fourchette min-max. Les kits de pose restent hors produit.
 
 
-**Reliez catalogue et parcours sans repartir d’Excel :** [essai Free](https://www.quotebuilder.co/signup?plan=free) · [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage).
+**Reliez options, variantes et parcours sans repartir d’Excel :** [essai Free](https://www.quotebuilder.co/signup?plan=free) · [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage).
 
 
 ## Erreurs classiques de reprise manuelle (et comment la biblio les coupe)
 
-1. **Prix obsolète** : ancien devis de mars recopié en septembre. Mitigé par prix catalogue daté / versionné.
-2. **Ligne oubliée** : visserie, joint, déplacement. Mitigé par kits avec nomenclature complète.
+1. **Prix obsolète** : ancien devis de mars recopié en septembre. Mitigé en tenant à jour le prix min et le prix max. Il n’y a pas de versions de prix.
+2. **Ligne oubliée** : visserie, joint, déplacement. Mitigé par des options et des produits liés, pas par un kit.
 3. **Libellé trop technique** : le prospect ne comprend pas, demande des précisions, le cycle s’allonge.
 4. **Double saisie web / devis** : le commercial reprend à la main ce que le prospect a déjà configuré. Mitigé par [préremplissage via URL](https://www.quotebuilder.co/blog/preremplir-devis-url-parametres) et parcours funnel relié au catalogue.
 5. **Remise « cachée » dans le prix** : au lieu d’un geste tracé, on baisse le prix unitaire. Impossible à auditer.
@@ -173,13 +183,13 @@ Sur le terrain : la boutique alimente photos et prix publics ; le catalogue devi
 ## Process métier : du brief au devis avec bibliothèque
 
 1. **Qualifier** le besoin (dimensions, contraintes, délai) avant de chiffrer. Voir [qualifier une demande avant chiffrage](https://www.quotebuilder.co/blog/qualifier-demande-devis-avant-chiffrage).
-2. **Choisir** familles / kits dans la bibliothèque (pas « ouvrir le dernier Excel »).
+2. **Choisir** familles, options, variantes et produits liés (pas « ouvrir le dernier Excel », et pas un kit).
 3. **Ajuster** quantités et options.
-4. **Contrôler** prix HT et éventuel plancher.
-5. **Envoyer** une version claire, avec validité et prochaines étapes.
-6. **Mesurer** le temps et la part de lignes issues de la biblio.
+4. **Contrôler** la fourchette min-max. Pas de catalogue HT.
+5. **Envoyer** le lien d’espace prospect. Pas de version, pas de date de validité dans le produit.
+6. **Mesurer** le temps et la part de lignes issues du catalogue.
 
-Le gain n’apparaît pas le jour 1. Il apparaît quand 70 % des devis du mois partent de kits stables.
+Le gain n’apparaît pas le jour 1. Il apparaît quand la plupart des devis du mois partent d’options et de produits liés stables.
 
 ## KPIs à suivre (simples, actionnables)
 
@@ -188,7 +198,7 @@ Le gain n’apparaît pas le jour 1. Il apparaît quand 70 % des devis du mois p
 | **Temps moyen / devis** (min) | Charge estimateur | ↓ 20-40 % après 2-3 mois de biblio |
 | **% lignes depuis bibliothèque** | Adoption réelle | ≥ 70 % sur devis « standards » |
 | **Écarts prix** (nb litiges / mois) | Qualité catalogue | ↓ après gel des références |
-| **Nb kits utilisés / mois** | Couverture métier | Stabilité, pas explosion de kits orphelins |
+| **Lignes issues d’options et de produits liés** | Couverture métier dans QuoteBuilder | Stabilité, sans kits |
 | **Délai 1er envoi** | Compétitivité commerciale | Amélioration dès que le brief est propre |
 
 Sans KPI, la bibliothèque devient un projet IT qu’on « a fait une fois ». Avec KPI, c’est un levier d’exploitation.
@@ -199,11 +209,11 @@ Pour le gain en heures et en euros, branchez l’[estimateur gain temps catalogu
 
 ### Semaine 1-2 : inventaire
 
-Listez les 30 lignes / kits les plus fréquents. Pas les 300. Partez du réel (exports devis, interviews estimateurs).
+Listez les 30 lignes les plus fréquentes (options, variantes, produits liés). Pas les 300. Partez du réel (exports devis, interviews estimateurs). Les assemblages « kit » restent une pratique générale, hors QuoteBuilder.
 
-### Semaine 3-4 : premiers kits
+### Semaine 3-4 : premières options
 
-Construisez 5 à 10 kits « cœur de métier ». Formez l’équipe : *on part du kit, on n’ouvre Excel que pour l’exception*.
+Posez 5 à 10 options et produits liés « cœur de métier ». Formez l’équipe : *on part du catalogue, on n’ouvre Excel que pour l’exception*. Pas de kit à créer dans QuoteBuilder.
 
 ### Mois 2 : règles et synchro
 
@@ -217,15 +227,15 @@ Temps / devis, % lignes biblio, écarts. Retirez les kits morts. Enrichissez ceu
 
 ### Quelle différence entre catalogue boutique et bibliothèque de devis ?
 
-La boutique sert l’achat en ligne et le SEO produit. La bibliothèque de devis sert le **chiffrage** : kits pose, options métier, prix HT B2B, lignes hors web. Les deux peuvent se synchroniser, mais leurs priorités diffèrent.
+La boutique sert l’achat en ligne et le SEO produit. Dans QuoteBuilder, le catalogue devis sert le chiffrage avec des options, des variantes, des produits liés et une fourchette min-max. Kits de pose et prix HT sont une pratique générale, hors produit. Les deux mondes peuvent se synchroniser, mais leurs priorités diffèrent.
 
 ### Faut-il tout mettre en kits ?
 
-Non. Kits pour les assemblages fréquents, articles unitaires pour le reste. Trop de kits = maintenance. Trop peu = chiffrage lent.
+Hors QuoteBuilder, des kits servent aux assemblages fréquents et les articles unitaires au reste. Dans le produit, il n’y a pas de kits : options, variantes et produits liés suffisent. Trop d’assemblages figés = maintenance. Trop peu d’options = chiffrage lent.
 
 ### Comment gérer les prix qui changent souvent (matière) ?
 
-Versionnez ou datez les prix catalogue. Ne laissez pas chaque commercial « ajuster au feeling ». Documentez qui peut modifier le prix de référence.
+Dans QuoteBuilder, mettez à jour le prix min et le prix max. Il n’y a pas de versions de prix ni de catalogue HT. Ne laissez pas chaque commercial ajuster au feeling. Documentez qui peut modifier la fourchette.
 
 ### Un commercial peut-il créer une ligne hors biblio ?
 
@@ -237,7 +247,7 @@ Le parcours guidé doit proposer les mêmes familles / options que le catalogue 
 
 ### Que faire des anciens modèles Excel ?
 
-Archivez-les en lecture seule après migration des kits critiques. Garder Excel « au cas où » prolonge la double vérité.
+Archivez-les en lecture seule après avoir repris les lignes critiques en options, variantes et produits liés. Garder Excel « au cas où » prolonge la double vérité. Les kits ne se migrent pas : le produit n’en a pas.
 
 ### Quels métiers en profitent le plus ?
 
@@ -253,10 +263,10 @@ Non. Elle accélère l’assemblage. Le jugement métier (contraintes site, risq
 
 ### Où voir ça concrètement dans QuoteBuilder ?
 
-Sur la fonctionnalité [catalogue](https://www.quotebuilder.co/fonctionnalites/catalogue), reliée au [funnel](https://www.quotebuilder.co/fonctionnalites/funnel) et aux demandes. Compte Free ou démo publique pour tester le principe.
+Sur la fonctionnalité [catalogue](https://www.quotebuilder.co/fonctionnalites/catalogue), reliée au [funnel](https://www.quotebuilder.co/fonctionnalites/funnel) et aux demandes : options, variantes, produits liés, fourchette minimum – maximum. Pas de kits. Pas de catalogue HT. Compte Free ou démo publique pour tester ce principe, pas les kits décrits plus haut.
 
 
-**Passez du copier-coller à une bibliothèque vivante :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) · [voir la démo](https://www.quotebuilder.co/c/demo/rayonnage).
+**Passez du copier-coller au catalogue QuoteBuilder (options, variantes, fourchette) :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) · [voir la démo](https://www.quotebuilder.co/c/demo/rayonnage).
 
 
 ## Pour aller plus loin

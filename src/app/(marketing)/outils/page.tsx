@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MarketingCta } from "@/components/marketing/marketing-shell";
+import { outilsHubIntro } from "@/lib/marketing/blog";
 import { pageMetadata } from "@/lib/marketing/site";
 
 export const metadata: Metadata = pageMetadata({
@@ -185,7 +186,7 @@ export default function OutilsIndexPage() {
             Chiffrer le trou. Rédiger les touches.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-mk-muted sm:text-lg">
-            Vingt-sept outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.
+            {outilsHubIntro()}
           </p>
         </div>
       </section>

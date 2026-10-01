@@ -22,7 +22,9 @@ updated: 2026-09-28
 
 Vendredi 16 h 40. Un commercial veut sortir le devis avant le week-end. Le prospect a dit « envoyez-moi ça vite ». Personne n’a relu les quantités. La remise de 12 % n’est pas passée par le manager. Une mention légale manque. Lundi matin, le prospect a déjà forwardé le PDF à son directeur achats. Vous découvrez l’erreur. Vous renvoyez une « V2 ». Confiance abîmée, marge abîmée, parfois le deal aussi.
 
-Ce guide traite d’un process banal et peu glamour : la **validation interne avant envoi**. Pas « comment écrire un beau devis ». Pas « comment convaincre ». Plutôt : qui relit quoi, dans quel ordre, avec quel SLA, et comment un logiciel de devis évite que la V1 parte trop tôt.
+Ce guide traite d’un process banal et peu glamour : la **validation interne avant envoi**. Pas « comment écrire un beau devis ». Pas « comment convaincre ». Plutôt : qui relit quoi, dans quel ordre, et comment éviter qu’un devis non relu parte trop tôt.
+
+**Hors QuoteBuilder pour le SLA et les versions.** Il n’y a pas de SLA produit, ni de versions de devis. La relecture avant envoi est un process d’équipe.
 
 Public : dirigeants PME, managers commerciaux, estimateurs, technico-commerciaux B2B (menuiserie, rayonnage, agencement, chauffage, isolation, clôture, cuisine…).
 
@@ -36,7 +38,7 @@ Dans beaucoup d’équipes, « validation » veut dire : le commercial relit vit
 
 Une validation interne utile, c’est un **gate** avant que le prospect voie le prix. Elle porte souvent sur trois axes :
 
-1. **Commercial** : offre claire, options cohérentes, ton, engagement de délai, validité.
+1. **Commercial** : offre claire, options cohérentes, ton, engagement de délai. Une durée de prix, si l’équipe en tient une, est hors produit.
 2. **Technique** : quantités, cotes, hypothèses, pièces jointes, accès chantier, exclusions.
 3. **Marge / remise** : prix HT, remises, plancher, exceptions manager.
 
@@ -277,19 +279,13 @@ Pour un ordre de grandeur financier, branchez l’[estimateur coût devis sans v
 
 ## Logiciel de devis : ce que ça change concrètement
 
-Un bon outil ne « valide » pas à votre place. Il **rend le gate visible** :
+Un bon outil ne « valide » pas à votre place. Il rend le dossier visible.
 
-- statut brouillon / en validation / prêt / envoyé ;
-- assignation + SLA ;
-- commentaires internes séparés de la vue prospect ;
-- versions figées à l’envoi ;
-- alerte remise > seuil ;
-- checklist / mentions avant publication ;
-- espace prospect après envoi (moins de PDF orphelins).
+**Dans QuoteBuilder.** Le dossier porte le libellé automatique, le fil prospect (fil plat), l’envoi par lien, et la dernière consultation dans le champ Espace prospect. Il n’y a pas de SLA, pas de versions figées à l’envoi, pas de suivi d’ouverture.
+
+**Hors produit.** Statuts de relecture interne, délai d’équipe, versions figées et alerte de remise : process d’équipe, pas des écrans QuoteBuilder.
 
 Excel peut calculer. Il ne porte pas le workflow. C’est le même écart que [configurateur vs Excel + PDF](https://www.quotebuilder.co/blog/configurateur-devis-vs-excel-pdf).
-
-QuoteBuilder (et des outils du même type) vise ce fil : dossier, commentaires, versions, envoi lien, suivi. Pas magique. Juste moins de V2 improvisées.
 
 ## Mise en place en 2 semaines
 
@@ -325,7 +321,7 @@ Owner deal = commercial sur le récit et le timing. Owner technique = estimateur
 
 ### Comment éviter que la validation tue la conversion ?
 
-SLA courts, seuils clairs, checklist courte, priorité Hot. Mesurez le délai validation comme un KPI commercial, pas seulement qualité.
+Délais d’équipe courts, hors produit : pas de SLA QuoteBuilder. Seuils clairs, checklist courte, priorité selon le libellé automatique. Mesurez le délai de validation comme un KPI commercial, pas seulement qualité.
 
 ### Les commentaires internes sont-ils visibles du prospect ?
 
@@ -333,11 +329,11 @@ Ils ne doivent pas l’être. Gardez annotations internes ≠ questions espace p
 
 ### Que faire si le prospect exige un devis « ce soir » ?
 
-Envoyez un **indicatif clairement marqué** ou un périmètre réduit, ou accélérez le gate Hot (créneau manager fixe). Évitez de lâcher une V1 non relue présentée comme ferme.
+Envoyez un **indicatif clairement marqué** ou un périmètre réduit, ou accélérez le gate d’équipe (créneau manager fixe). Évitez d’envoyer un dossier non relu présenté comme ferme. Il n’y a pas de versions.
 
 ### Comment lier validation et signature électronique ?
 
-La validation précède l’envoi. Le commercial pose ensuite Gagné, sur une version propre. L’article [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) décrit un process hors produit.
+La validation précède l’envoi. Il n’y a pas de signature en ligne ni de versions. Les relecteurs cliquent « Valider le dossier » ou « Modifications ». Le commercial pose Gagné. L’article [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) décrit un process hors produit.
 
 ### Quel lien avec les mentions obligatoires ?
 

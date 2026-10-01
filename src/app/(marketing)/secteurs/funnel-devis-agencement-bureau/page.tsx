@@ -20,11 +20,11 @@ const FAQ = [
   },
   {
     q: "Peut-on gérer mobilier seul et pack fit-out dans le même parcours ?",
-    a: "Oui, avec une branche « périmètre » dès le début. Les questions cloison / phasage n’apparaissent que si besoin.",
+    a: "Oui. Posez le périmètre (mobilier seul ou fit-out) dans un ordre fixe. Les questions cloison et phasage restent dans le parcours. Les règles Si/Alors suggèrent les produits.",
   },
   {
     q: "Comment traiter les appels d’offres formalisés ?",
-    a: "Parcours ou branche « AO » : délais, pièces, critères, contacts. Ne forcez pas le même flux qu’un devis express PME.",
+    a: "Même parcours, dans un ordre fixe : délais, pièces, critères, contacts. Les règles Si/Alors suggèrent les produits. Ne forcez pas le même discours qu’un devis express PME.",
   },
   {
     q: "Et les normes (accessibilité, incendie) ?",
@@ -103,7 +103,7 @@ export default function AgencementBureauLandingPage() {
             {[
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Steps postes, cloisons, planning, plans." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Gammes mobilier, finitions + Si/Alors." },
-              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, SLA chantier, assignation." },
+              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, visite, relances." },
             ].map((item) => (
               <Link
@@ -121,8 +121,8 @@ export default function AgencementBureauLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer le template agencement"
-        text="Un parcours postes, cloisons, planning. Le plan Free suffit pour voir l’interface, sans carte."
+        title="Essayer Aménagement industriel"
+        text="Pas de template bureau dédié : partez d’Aménagement industriel, option Bureaux / vestiaires. Posez postes, cloisons et planning dans un ordre fixe. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

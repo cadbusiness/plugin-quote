@@ -91,7 +91,7 @@ export default function LocationEvenementielLandingPage() {
             {[
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Steps événement, dates, catégories, logistique." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Packs + à la carte, Si/Alors." },
-              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, SLA dates, assignation." },
+              { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, option / hold, relances." },
             ].map((item) => (
               <Link
@@ -110,7 +110,7 @@ export default function LocationEvenementielLandingPage() {
       <MarketingFaq items={FAQ} />
       <MarketingCta
         title="Essayer le template événementiel"
-        text="Un parcours dates, matériel, logistique. Le plan Free suffit pour voir l’interface, sans carte."
+        text="Famille événementiel : Location matériel, Chapiteaux et agence, Traiteur, Catalogue événementiel. Posez dates, matériel et logistique dans un ordre fixe. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

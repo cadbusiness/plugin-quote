@@ -24,11 +24,11 @@ const FAQ = [
   },
   {
     q: "Comment gérer bioclimatique vs toile dans le même funnel ?",
-    a: "Branche précoce « type de pergola », puis questions spécifiques. Ne mélangez pas les options des deux familles sur le même écran.",
+    a: "Posez le type de pergola dans l’ordre fixe. Les questions suivantes restent affichées. Les règles Si/Alors suggèrent les produits de la famille choisie, sans mélanger les options sur le même écran.",
   },
   {
     q: "Les promoteurs et les particuliers ont-ils le même parcours ?",
-    a: "Même logique, champs différents (SIRET, nombre de lots, planning livraison). Deux funnels ou un funnel avec branche « type de client » dès le début.",
+    a: "Même logique, champs différents (SIRET, nombre de lots, planning livraison). Deux parcours, ou le même avec une question « type de client » dans l’ordre fixe.",
   },
   {
     q: "Comment éviter que le prospect abandonne à l’étape photos ?",
@@ -36,7 +36,7 @@ const FAQ = [
   },
   {
     q: "Quel lien avec le catalogue produits ?",
-    a: "Les structures et options du funnel doivent mapper vos kits / articles catalogue. Sinon double saisie.",
+    a: "Les structures et options du funnel doivent mapper vos options, variantes et produits liés. Pas de kits. Sinon double saisie des lignes.",
   },
   {
     q: "Combien d’étapes idéales ?",
@@ -101,7 +101,7 @@ export default function PergolaTerrasseLandingPage() {
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">La chaîne, sur ce métier</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
-              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches bioclimatique, toile, options, photos." },
+              { href: "/fonctionnalites/funnel", t: "Funnel", d: "Ordre fixe : bioclimatique, toile, options, photos." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Kits structure, options LED, lignes de pose." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, délai pose, assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
@@ -121,8 +121,8 @@ export default function PergolaTerrasseLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer le template pergola / terrasse"
-        text="Un parcours dimensions, matériaux, options, photos. Le plan Free suffit pour voir l’interface, sans carte."
+        title="Essayer le template Paysagiste"
+        text="Pas de template pergola dédié : partez du template Paysagiste, option Terrasse / salon d’été. Posez dimensions, matériaux, options et photos dans un ordre fixe. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

@@ -51,7 +51,7 @@ Sans dimensions et typologie, vous n’avez pas un devis : vous avez une fourche
 
 ## Définition : funnel de devis pergola / terrasse
 
-Un **funnel de devis** est un parcours guidé (wizard, parfois chat) qui pose les questions dans le bon ordre, avec des branches Si/Alors. Exemple : si « bioclimatique » alors demander orientation des lames et motorisation ; si « adossée » alors type de façade et étanchéité ; si « rénovation » alors état de la terrasse existante et photos.
+Un **funnel de devis** est un parcours guidé (wizard, parfois chat) qui pose les questions dans un ordre fixe : type, dimensions, implantation, options, photos. Les règles Si/Alors ne sautent pas d’étape. Elles suggèrent des produits (structure, lames, motorisation) selon les réponses.
 
 La sortie n’est pas un e-mail libre. C’est un **dossier** : lignes, contraintes, photos / cotes, score Hot / Warm / Cold, owner.
 
@@ -73,7 +73,7 @@ Sans photo ni côte, l’estimateur suppose. La visite technique devient obligat
 
 ### 4. Le délai de pose mal cadré
 
-« Pour cet été » sans date de décision, sans acompte, sans validité du devis : le planning se remplit de dossiers fantômes. Liez délai, [validité](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b) et prochaines étapes.
+« Pour cet été » sans date de décision ni acompte : le planning se remplit de dossiers fantômes. La durée de prix est hors produit. Liez délai, [validité](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b) (process d'équipe) et prochaines étapes.
 
 ### 5. Le closing qui traîne
 
@@ -106,15 +106,15 @@ Le prospect arrive sur une landing secteur ou un widget. Pas un textarea « mess
 
 ### 2. Configuration guidée
 
-Branches Si/Alors. Catalogue de structures et options (kits + articles). Le commercial retrouve les mêmes lignes en interne. Voir aussi la logique [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b).
+Questions dans un ordre fixe : type, dimensions, implantation, options. Les règles Si/Alors suggèrent des produits du catalogue (structures, options, variantes, produits liés). Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
 
 ### 3. Score et assignation
 
-Hot si dimensions + délai proche + budget cohérent + photos. Warm si incomplet mais sérieux. Cold si « juste un prix ». Owner clair, SLA de réponse.
+QuoteBuilder pose un libellé automatique Hot, Warm ou Cold. La formule est fixe : surface, charge, accès, type de projet, contraintes, et longueur du texte du besoin. Elle ignore photos, délai, zone et urgence. Elle n'est pas configurable. Il n'y a pas de SLA. Urgence, zone et délai de réponse se trient dans l'équipe, hors produit.
 
 ### 4. Chiffrage
 
-Estimateur assemble depuis le catalogue / kits. Moins de reprise Excel. Options visibles, prix HT cohérents.
+L'estimateur assemble depuis le catalogue (options, variantes, produits liés). Moins de reprise Excel. Chaque ligne a un prix min et un prix max : l'affichage est une fourchette indicative, pas un catalogue HT ni une TVA.
 
 ### 5. Envoi + espace prospect
 
@@ -161,11 +161,11 @@ Le funnel ne remplace pas toujours la visite. Il **filtre** :
 
 Clarifiez dans le parcours : « devis indicatif sous réserve de visite » vs « devis ferme ». Ça évite les litiges.
 
-## Délai de pose, validité et acomptes
+## Délai de pose, durée de prix et acomptes
 
-Trois leviers à lier :
+**Hors QuoteBuilder pour la durée de prix.** Le produit n'affiche pas de validité. Trois leviers d'équipe :
 
-1. **Validité du devis** (ex. 30 jours) : matière et planning bougent. Voir [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
+1. **Durée de prix** (ex. 30 jours), hors produit : matière et planning bougent. Voir [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
 2. **Créneau pose** : réservé après accord commercial (statut Gagné) et acompte, pas sur un devis « peut-être ».
 3. **Acompte / échéances** : rassurer atelier et trésorerie. Voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b).
 
@@ -190,18 +190,22 @@ Les relecteurs invités répondent par « Valider le dossier » ou « Modificati
 | Délai moyen 1er devis | Compétitivité |
 | Taux d’options présentes sur devis acceptés | Qualité du funnel options |
 | Taux de visite technique « inutile » | Filtrage trop faible |
-| Taux d’acceptation sous validité | Cycle commercial |
+| Dossiers gagnés dans la durée de prix d'équipe | Cycle commercial, hors produit |
 
 
-## Catalogue et kits : accélérer le chiffrage pergola
+## Catalogue : accélérer le chiffrage pergola
 
 Une fois le brief propre, le goulot se déplace vers l’estimateur. S’il reconstruit chaque pergola ligne à ligne dans Excel, vous avez gagné sur l’entrée et perdu sur la sortie.
 
-Pratique fréquente chez les poseurs structurés :
+Dans QuoteBuilder, le catalogue porte des options, des variantes et des produits liés. Chaque ligne a un prix min et un prix max. L'affichage est une fourchette indicative. Pas de kits, pas de catalogue HT, pas de TVA.
 
-- **kits structure** par gamme (ex. bioclimatique 3×4, 4×4, 5×3) ;
-- **kits options** (motorisation, LED, stores latéraux) ajoutables ;
-- **lignes pose** (forfait pose, déplacement zone, reprise façade) séparées.
+## Bonne pratique générale, hors QuoteBuilder
+
+Chez les poseurs qui gèrent un catalogue plus riche, hors produit :
+
+- assemblages de structure par gamme (ex. bioclimatique 3×4, 4×4, 5×3) ;
+- options ajoutables (motorisation, LED, stores latéraux) ;
+- lignes de pose (forfait pose, déplacement, reprise façade) séparées.
 
 Le commercial ajuste dimensions et options ; il ne réinvente pas la nomenclature. Pour la méthode générale, voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b). Pour estimer le gain de temps, l’[estimateur gain temps catalogue](https://www.quotebuilder.co/outils/estimateur-gain-temps-catalogue-devis) donne un ordre de grandeur en heures et en euros.
 
@@ -213,7 +217,7 @@ Cadrez une séquence courte :
 
 - T+0 : confirmation + lien espace prospect ;
 - T+2 j : rappel options / délai pose restant ;
-- T+5 j : rappel validité + proposition créneau visite si besoin.
+- T+5 j : rappel de la durée de prix, hors produit, et proposition de créneau visite si besoin.
 
 Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les devis meurent sans relance](https://www.quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance) et [relancer un devis Hot depuis le dossier](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
 
@@ -221,7 +225,7 @@ Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les de
 
 1. **Promettre un délai pose avant que le commercial pose Gagné** : vous bloquez l’atelier pour un prospect encore en comparaison.
 2. **Cacher les options dans le devis** : le client découvre la LED « en plus » et se sent piégé. Mieux vaut cocher / décocher dès le funnel.
-3. **Un seul PDF sans suivi d’ouverture** : vous relancez à l’aveugle. L’espace prospect réduit le flou.
+3. **Un seul PDF sans repère de consultation** : vous relancez à l’aveugle. L’espace prospect montre seulement la dernière vue, en temps relatif, dans le champ côté commercial. Pas de compteur, pas d’historique, pas de stats d’ouverture.
 4. **Prix au feeling sur les reprises de façade** : standardisez une ligne « reprise / étanchéité » avec fourchette, puis ajuste après visite.
 5. **Ignorer la zone géographique** : un lead hors rayon pose pourrit le pipeline. Filtrez le code postal tôt.
 
@@ -237,11 +241,11 @@ Dangereux sans brief. Préférez une fourchette large ou un parcours qui aboutit
 
 ### Comment gérer bioclimatique vs toile dans le même funnel ?
 
-Branche précoce « type de pergola », puis questions spécifiques. Ne mélangez pas les options des deux familles sur le même écran.
+Posez le type de pergola dans l’ordre fixe. Les questions suivantes restent affichées. Les règles Si/Alors suggèrent les produits de la famille choisie, sans mélanger les options sur le même écran.
 
 ### Les promoteurs et les particuliers ont-ils le même parcours ?
 
-Même logique, champs différents (SIRET, nombre de lots, planning livraison). Deux funnels ou un funnel avec branche « type de client » dès le début.
+Même logique, champs différents (SIRET, nombre de lots, planning livraison). Deux parcours, ou le même avec une question « type de client » dans l’ordre fixe.
 
 ### Comment éviter que le prospect abandonne à l’étape photos ?
 
@@ -249,7 +253,7 @@ Rendez l’upload optionnel mais valorisé (« avec photos, réponse sous 48 h �
 
 ### Quel lien avec le catalogue produits ?
 
-Les structures et options du funnel doivent mapper vos kits / articles catalogue. Sinon double saisie. Voir bibliothèque de lignes / kits.
+Les structures et options du funnel doivent mapper vos options, variantes et produits liés. Pas de kits. Sinon double saisie des lignes. Voir bibliothèque de lignes.
 
 ### Combien d’étapes idéales ?
 

@@ -24,9 +24,17 @@ Ce n’est pas un détail juridique collé en bas de page. C’est un levier de 
 
 Ce guide explique comment gérer la **durée de validité** et l’**expiration** des devis B2B : combien de jours selon le métier, quand prolonger sans risque, quand re-chiffrer, comment utiliser un statut « expiré », comment relancer avant la date, et comment éviter les disputes sur des prix « figés » trop longtemps. Public : responsables commerciaux, estimateurs, dirigeants de PME (menuiserie, rayonnage, cuisine, stores, clôtures, services configurables).
 
+**Dans QuoteBuilder.** Il n’y a pas de validité ni de date d’expiration de devis. Les relances partent du dossier. Le champ Espace prospect montre la dernière consultation, en temps relatif, côté commercial. Pas de compteur, pas d’historique, pas de stats d’ouverture. Les relecteurs cliquent « Valider le dossier » ou « Modifications ». Le commercial pose Gagné.
 
-**Cadrez validité + relances sur de vrais dossiers :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) pour tester envoi et suivi, ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte) pour voir un parcours déjà structuré.
 
+**Relancer depuis le dossier, sur de vrais parcours :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) pour tester l’envoi et l’espace prospect, ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte) pour voir un parcours déjà structuré.
+
+
+Ces trois gestes (relance, dernière consultation, passage en Gagné) sont dans le produit. Rien de plus sur la durée de prix.
+
+## Bonne pratique générale, hors QuoteBuilder
+
+Cette section décrit durée, expiration, prolongation et re-chiffrage. QuoteBuilder ne stocke pas de date de validité et n’expire pas un devis. Il n’affiche pas de validité sur l’espace prospect. Pas de bouton d’acceptation ni de signature en ligne.
 
 ## Pourquoi la validité est souvent oubliée
 
@@ -167,11 +175,7 @@ Séquence simple (à adapter) :
 
 Les Hot méritent la séquence complète. Les Cold n’ont pas besoin d’un sprint commercial le jour J-1. Utilisez le score : [score demande](https://www.quotebuilder.co/blog/score-demande-devis-b2b), [relances Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
 
-L’autopilote aide, mais la relance « avant expiration » doit être **explicite** dans le texte (date citée). Une relance générique « vous avez pu regarder ? » ne cadre pas la décision.
-
-
-**Tester validité + suivi de vue sur un parcours réel :** [essai Free](https://www.quotebuilder.co/signup?plan=free) ou [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage).
-
+L’autopilote aide, mais la relance « avant expiration » doit être **explicite** dans le texte (date citée). Une relance générique « vous avez pu regarder ? » ne cadre pas la décision. Ce calendrier est un process d’équipe, hors QuoteBuilder : le produit n’a pas de date d’expiration à surveiller.
 
 ## Litiges sur prix figés : comment se protéger sans être rigid
 
@@ -179,9 +183,9 @@ Scénario classique : devis de février, acceptation orale en mai, fournisseur a
 
 Pour limiter la casse :
 
-1. **Date de validité visible** (PDF + espace prospect + mail d’envoi).
-2. **Version claire** au moment où le commercial pose Gagné ([acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit).
-3. **Pas d’acceptation sur une version expirée** sans geste conscient (prolongation ou nouvelle version).
+1. **Date de validité visible** sur le PDF et dans le mail, si votre process le prévoit. QuoteBuilder ne l’affiche pas sur l’espace prospect.
+2. **Périmètre clair** au moment où le commercial pose Gagné. Il n’y a pas de versions de devis. L’[acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) est hors produit.
+3. **Pas d’accord sur une offre dont la durée de prix est passée** sans geste conscient (prolongation ou nouveau chiffrage). Hors produit : QuoteBuilder n’expire rien.
 4. **Clause de révision** si le projet dépasse une durée longue (matières, énergie, transport).
 5. **Trace** des échanges dans le dossier, pas seulement dans une boîte mail perso.
 
@@ -252,7 +256,7 @@ Liez ça à l’[assignation / SLA](https://www.quotebuilder.co/blog/assignation
 
 L’expiration fonctionne mieux si le prospect a **un lien unique** vers la bonne version. Sinon il signe un PDF mailé trois semaines plus tôt pendant que vous avez déjà une V3.
 
-Voir : [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne), [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) (hors produit). Le commercial ne pose pas Gagné sur une offre expirée sans prolongation ou nouvelle offre.
+Voir : [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne), [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) (hors produit). Hors produit, on ne fige pas un accord sur une offre dont la durée de prix est passée. Dans QuoteBuilder, le commercial pose Gagné sur le dossier courant : il n’y a pas de date d’expiration.
 
 ## FAQ
 
@@ -300,6 +304,4 @@ Le [simulateur coût devis expirés](https://www.quotebuilder.co/outils/simulate
 
 La validité d’un devis B2B n’est pas une phrase décorative. C’est une date qui protège votre marge, clarifie le pipeline et réduit les litiges sur prix « encore bons ». Choisissez des durées réalistes, expirez clairement, relancez avant la date, prolongez avec règles, re-chiffrez quand le monde a bougé, et gardez un historique de versions unique.
 
-Sans ça, vous vendez du fantôme : des PDF ouverts, des prix morts, des heures perdues.
-
-Pour mettre en place suivi, versions et acceptation sur un parcours structuré : [essai Free](https://www.quotebuilder.co/signup?plan=free) ou [démo](https://www.quotebuilder.co/c/demo/rayonnage).
+Sans ça, vous vendez du fantôme : des PDF ouverts, des prix morts, des heures perdues. Ce playbook reste une bonne pratique générale, hors QuoteBuilder.

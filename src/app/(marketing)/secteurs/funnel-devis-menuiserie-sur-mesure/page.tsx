@@ -24,7 +24,7 @@ const FAQ = [
   },
   {
     q: "Comment gérer les demandes architectes ?",
-    a: "Parcours dédié ou branche « professionnel » avec champs DCE, lot, délai chantier, et partage multi-contacts.",
+    a: "Même template Menuisier, dans un ordre fixe : type d’ouvrage, essence, dimensions. Ajoutez DCE, lot et délai chantier comme questions du parcours. Les règles Si/Alors suggèrent les produits.",
   },
   {
     q: "Et les aides / primes rénovation énergétique ?",

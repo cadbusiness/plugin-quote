@@ -112,15 +112,15 @@ Landing secteur ou widget. Pas un textarea. Wizard 7–10 étapes max.
 
 ### 2. Configuration guidée
 
-Branches Si/Alors (PAC air-eau vs air-air vs ballon). Catalogue de gammes / kits pose. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b).
+Questions dans un ordre fixe : type de système (air-eau, air-air, ballon), surface, énergie, accès. Les règles Si/Alors ne changent pas cet ordre. Elles suggèrent des produits du catalogue : gammes, options, variantes et produits liés. Pas de kits. Le commercial retrouve les mêmes lignes en interne. Voir [bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b) : les kits y sont une pratique générale, hors produit.
 
 ### 3. Score et assignation
 
-Hot si surface + énergie + accès photos + délai proche + zone OK. Warm si incomplet mais sérieux. Cold si « juste un prix » hors zone. Owner clair, SLA de réponse. Voir [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b) et [assignation / SLA](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe).
+QuoteBuilder pose un libellé automatique Hot, Warm ou Cold. La formule est fixe : surface, charge, accès, type de projet, contraintes, et longueur du texte du besoin. Elle ignore photos, délai, zone et urgence. Elle n'est pas configurable. Il n'y a pas de SLA. Urgence, zone et délai de réponse se trient dans l'équipe, hors produit. Voir [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b) et [assignation / SLA](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe).
 
 ### 4. Chiffrage
 
-Estimateur assemble depuis le catalogue / forfaits pose. Options visibles. Prix HT cohérents. Mention « sous réserve de visite technique » quand c’est votre politique.
+L'estimateur assemble depuis le catalogue et les forfaits pose. Options visibles. Chaque ligne a un prix min et un prix max : l'affichage est une fourchette indicative, pas un catalogue HT ni une TVA. Mention « sous réserve de visite technique » quand c’est votre politique.
 
 ### 5. Envoi + espace prospect
 
@@ -160,11 +160,11 @@ Regroupez plutôt que de multiplier les étapes :
 
 Affichez-les comme options cochables. Le total bouge. Le prospect comprend. Vous évitez le « surprise chantier ».
 
-## Délai de pose, validité et acomptes
+## Délai de pose, durée de prix et acomptes
 
-Trois leviers à lier :
+**Hors QuoteBuilder pour la durée de prix.** Le produit n'affiche pas de validité. Trois leviers d'équipe :
 
-1. **Validité du devis** (ex. 30 jours) : matériel et planning bougent. Voir [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
+1. **Durée de prix** (ex. 30 jours), hors produit : matériel et planning bougent. Voir [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
 2. **Créneau pose** : réservé après accord commercial (statut Gagné) et acompte, pas sur un devis « peut-être ».
 3. **Acompte / échéances** : rassurer trésorerie et commande matériel. Voir [acomptes et échéances](https://www.quotebuilder.co/blog/acomptes-echeances-devis-b2b).
 
@@ -188,7 +188,7 @@ Les relecteurs invités répondent par « Valider le dossier » ou « Modificati
 | Délai moyen 1er devis | Compétitivité |
 | % visites techniques « inutiles » | Filtrage trop faible |
 | Taux d’options présentes sur devis acceptés | Qualité du funnel options |
-| Taux d’acceptation sous validité | Cycle commercial |
+| Dossiers gagnés dans la durée de prix d'équipe | Cycle commercial, hors produit |
 | % demandes hors zone filtrées tôt | Santé du pipeline |
 
 ## Relances : le devis PAC meurt souvent après l’envoi
@@ -199,7 +199,7 @@ Cadrez une séquence courte :
 
 - T+0 : confirmation + lien espace prospect ;
 - T+2 j : rappel options / délai pose restant ;
-- T+5 j : rappel validité + proposition créneau visite si besoin.
+- T+5 j : rappel de la durée de prix, hors produit, et proposition de créneau visite si besoin.
 
 Adaptez selon le score Hot / Warm / Cold. Méthode générale : [pourquoi les devis meurent sans relance](https://www.quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance) et [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
 
@@ -234,7 +234,7 @@ Dangereux sans brief. Préférez un parcours qui aboutit à une estimation perso
 
 ### Comment gérer air-eau vs air-air dans le même funnel ?
 
-Branche précoce « type de système », puis questions spécifiques. Ne mélangez pas les options des deux familles sur le même écran.
+Posez le type de système dans l’ordre fixe. Les questions suivantes restent affichées. Les règles Si/Alors suggèrent les produits de la famille choisie, sans mélanger les options sur le même écran.
 
 ### Comment parler des aides sans se tromper ?
 
@@ -242,7 +242,7 @@ Mention générique + collecte d’infos + traitement humain. Pas de barème inv
 
 ### Les syndics et les particuliers ont-ils le même parcours ?
 
-Même logique, champs différents (lots, contacts, planning). Deux funnels ou une branche « type de client » dès le début.
+Même logique, champs différents (lots, contacts, planning). Deux parcours, ou le même avec une question « type de client » dans l’ordre fixe.
 
 ### Comment éviter l’abandon à l’étape photos ?
 
@@ -250,7 +250,7 @@ Rendez l’upload optionnel mais valorisé (« avec photos, réponse sous 48 h �
 
 ### Quel lien avec le catalogue produits ?
 
-Les gammes / forfaits pose du funnel doivent mapper vos kits / articles. Sinon double saisie. Voir bibliothèque de lignes / kits.
+Les gammes et forfaits pose du funnel doivent mapper vos options, variantes et produits liés. Pas de kits. Sinon double saisie des lignes. Voir bibliothèque de lignes.
 
 ### Combien d’étapes idéales ?
 
