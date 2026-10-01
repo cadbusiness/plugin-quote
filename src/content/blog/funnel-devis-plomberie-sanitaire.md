@@ -163,7 +163,7 @@ Sur syndic ou compte pro, invitez les relecteurs (Responsable technique, Directe
 
 ### 7. Relances
 
-Séquence adaptée au libellé automatique Hot, Warm ou Cold. Validité affichée clairement. Méthode : [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
+Séquence adaptée au libellé automatique Hot, Warm ou Cold. Méthode : [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
 
 
 **Cadrez la plomberie sans reconstruire chaque brief :** [essai Free](https://www.quotebuilder.co/signup?plan=free) · [démo publique](https://www.quotebuilder.co/c/demo/rayonnage).

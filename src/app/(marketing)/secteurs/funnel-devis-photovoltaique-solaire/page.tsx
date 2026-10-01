@@ -109,7 +109,7 @@ export default function PhotovoltaiqueSolaireLandingPage() {
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches toiture, kWc, type de client, photos." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Gammes modules, onduleurs, forfaits pose, batterie." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, délai pose, assignation." },
-              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances, validité." },
+              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
             ].map((item) => (
               <Link
                 key={item.href}

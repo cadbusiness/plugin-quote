@@ -78,9 +78,9 @@ La bonne cible n'est pas « forcer tout le monde vers le site ». C'est **aligne
 - surface / charge / puissance selon le métier (ce que votre catalogue sait lire) ;
 - besoin exprimé en quelques phrases utiles (pas un roman, pas trois mots) ;
 - type de site si pertinent (entrepôt, cuisine pro, commerce…) ;
-- photos ou plan si le métier en a besoin (collecte équipe ; le score produit QuoteBuilder, lui, ne lit pas les photos).
+- photos ou plan si le métier en a besoin (le prospect les dépose via le funnel ou sa page de suivi ; le score produit QuoteBuilder, lui, ne lit pas les photos).
 
-Ensuite seulement : bascule vers un lien funnel, un [préremplissage URL](https://www.quotebuilder.co/blog/preremplir-devis-url-parametres), ou une saisie directe du dossier.
+Ensuite seulement : bascule vers un lien funnel, un [préremplissage URL](https://www.quotebuilder.co/blog/preremplir-devis-url-parametres), ou le commercial remplit le funnel via le lien préfill.
 
 ## Script de qualification (appel et WhatsApp)
 
@@ -105,7 +105,7 @@ Adaptez au secteur, mais gardez des questions stables :
 
 ### Photos et suite
 
-- « Vous pouvez m'envoyer 2–3 photos / un plan sur ce fil ou via le lien que je vais vous envoyer ? »
+- « Vous pouvez déposer 2–3 photos / un plan via le lien que je vais vous envoyer ? »
 - « Je vous envoie un lien pour finaliser le brief (2 minutes), comme ça on ne se trompe pas sur le chiffrage. »
 
 Sur WhatsApp / SMS, le même script tient en messages courts. Une checklist collée en note interne évite le « on se rappelle » sans contenu.
@@ -145,17 +145,21 @@ Vous envoyez le lien public du parcours. Le prospect finit les questions que vou
 
 ### 2) Préremplissage URL
 
-Si vous avez déjà collecté des champs, un lien [prérempli par paramètres](https://www.quotebuilder.co/blog/preremplir-devis-url-parametres) évite de tout retaper. Utile aussi quand un commercial remplit pour le prospect en fin d'appel.
+Si vous avez déjà collecté des champs, un lien [prérempli par paramètres](https://www.quotebuilder.co/blog/preremplir-devis-url-parametres) évite de tout retaper. Le prospect finit le parcours sans ressaisir ce que l'appel a déjà donné.
 
-### 3) Saisie directe du dossier
+### 3) Le commercial remplit le funnel via le lien préfill
 
-Sur un Hot urgent, le commercial crée le dossier tout de suite avec la checklist. Le lien espace prospect vient au moment de l'envoi du devis.
+Sur un Hot urgent, en fin d'appel, le commercial ouvre ce lien prérempli et complète le funnel lui-même. Le dossier naît du parcours, comme une demande web. Le lien espace prospect vient au moment de l'envoi du devis.
 
 Dans les trois cas : **l'oral alimente le même objet** que le funnel. Important produit : le funnel QuoteBuilder suit des **étapes dans un ordre fixe** ; les règles If/Then choisissent surtout quelles **suggestions produits** afficher. Ce n'est pas un bot WhatsApp.
 
+
+**Capturer l'appel dans le funnel :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) · [voir la démo](https://www.quotebuilder.co/c/demo/rayonnage).
+
+
 ## Score Hot / Warm / Cold : ce que fait (et ne fait pas) le produit
 
-Sur QuoteBuilder, le score Hot / Warm / Cold est une **étiquette automatique** issue d'une formule fixe. Elle lit notamment : surface, charge (load), accès, type de projet (ex. entrepôt / cuisine pro / commerce), contraintes, et la **longueur du texte de besoin**. Elle **ignore** photos, zone, urgence et contexte libre. Elle n'est **pas configurable**. Il n'y a pas de SLA produit attaché à ce score : urgence, zone et délais de réponse restent du **triage équipe**.
+Sur QuoteBuilder, le score Hot / Warm / Cold est une **étiquette automatique** issue d'une formule fixe, calculée à la soumission. Elle lit notamment : surface, charge (load), accès, type de projet (ex. entrepôt / cuisine pro / commerce), contraintes, et la **longueur du texte de besoin**. Elle **ignore** photos, zone, urgence et contexte libre. Elle n'est **pas configurable**. Il n'y a pas de SLA produit attaché à ce score : urgence, zone et délais de réponse restent du **triage équipe**.
 
 Ça a une conséquence claire pour l'oral :
 
@@ -182,10 +186,10 @@ Le commercial pose **Gagné** ou **Perdu**. Pas d'acceptation en ligne inventée
 
 ## Process recommandé en 7 étapes (équipe)
 
-1. **Canal** : tout oral (tél, WhatsApp, SMS) crée ou met à jour un dossier le jour même.
+1. **Canal** : tout oral (tél, WhatsApp, SMS) aboutit le jour même à un dossier, via le funnel.
 2. **Script** : les 6–8 questions cœur sont obligatoires, même en dépannage.
 3. **Checklist** collée (CRM / note interne / chat équipe).
-4. **Bascule** : lien funnel, préfill URL, ou saisie directe.
+4. **Bascule** : lien funnel, préfill URL, ou le commercial remplit le funnel via le lien préfill.
 5. **Score + triage** : formule produit pour ordonner ; urgence / zone gérées à part par l'équipe.
 6. **Chiffrage / envoi** selon Hot / Warm / Cold et politique visite.
 7. **Clôture** : Gagné / Perdu posés ; pas de dossier zombie « on verra ».
@@ -194,10 +198,10 @@ Mesurez sur 30 jours : % d'oraux sans checklist, minutes de re-qualification, Ho
 
 ## Cas types (sans inventer de connecteur)
 
-- **Appel « tarif pour l'entrepôt »** : script court → surface / charge / accès / besoin → préfill ou dossier → photos → score + owner.
+- **Appel « tarif pour l'entrepôt »** : script court → surface / charge / accès / besoin → le commercial remplit le funnel via le lien préfill → photos déposées par le prospect → score + owner.
 - **WhatsApp photo floue** : 4 questions manquantes + lien funnel pour upload ; ne pas chiffrer hors contexte.
 - **SMS « devis électricité svp »** : 3 questions max + lien ; nurturing si silence. Voir [funnel électricité tertiaire](https://www.quotebuilder.co/secteurs/funnel-devis-electricite-tertiaire).
-- **Notes papier en rendez-vous** : checklist dans le dossier sous 30 minutes.
+- **Notes papier en rendez-vous** : checklist reportée dans le funnel via le lien préfill, sous 30 minutes.
 
 ## Erreurs fréquentes
 
@@ -227,7 +231,7 @@ Type de projet / intervention, accès, les grandeurs utiles (surface, charge, et
 
 ### Comment éviter la double saisie après un appel ?
 
-Une checklist unique qui alimente le dossier. Lien préfill ou saisie directe. Pas de copier-coller WhatsApp → Excel → CRM → devis.
+Une checklist unique, puis le funnel. Lien prérempli, ou le commercial remplit le funnel via le lien préfill. Pas de copier-coller WhatsApp → Excel → CRM → devis.
 
 ### Le score Hot / Warm / Cold remplace-t-il le feeling du commercial ?
 
@@ -239,7 +243,7 @@ Oui, via [paramètres d'URL](https://www.quotebuilder.co/blog/preremplir-devis-u
 
 ### Comment gérer les photos envoyées sur WhatsApp ?
 
-Demandez-les, stockez-les dans le dossier / pièces jointes du parcours, et évitez de chiffrer sur un fil de 40 messages non classés. Voir [pièces jointes, plans, photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b).
+Demandez au prospect de les déposer via le funnel ou sa page de suivi, et évitez de chiffrer sur un fil de 40 messages non classés. Voir [pièces jointes, plans, photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b).
 
 ### Quel statut CRM après un premier appel ?
 

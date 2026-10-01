@@ -112,7 +112,7 @@ export default function IsolationThermiqueIteLandingPage() {
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches ITE, combles, murs, type de client, photos." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Gammes isolants, finitions, forfaits pose, accès." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, délai chantier, assignation." },
-              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances, validité." },
+              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
             ].map((item) => (
               <Link
                 key={item.href}

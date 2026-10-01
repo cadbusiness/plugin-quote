@@ -1598,7 +1598,7 @@ for (const { file, dir } of contentFiles) {
   );
   assert.match(pacBody, /signup\?plan=free/);
   assert.doesNotMatch(pacBody, EM_DASH);
-  assert.equal(pacBody.split(/\s+/).filter(Boolean).length, 2066);
+  assert.equal(pacBody.split(/\s+/).filter(Boolean).length, 2063);
 }
 
 {
@@ -1657,7 +1657,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(oralBody, /dernière consultation/);
   assert.doesNotMatch(oralBody, /signature électronique/);
   assert.doesNotMatch(oralBody, EM_DASH);
-  assert.equal(oralBody.split(/\s+/).filter(Boolean).length, 2697);
+  assert.equal(oralBody.split(/\s+/).filter(Boolean).length, 2775);
 }
 
 {
@@ -1677,7 +1677,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(elecBody, /il n'existe pas de template secteur électricité/);
   assert.doesNotMatch(elecBody, /signature électronique/);
   assert.doesNotMatch(elecBody, EM_DASH);
-  assert.equal(elecBody.split(/\s+/).filter(Boolean).length, 2641);
+  assert.equal(elecBody.split(/\s+/).filter(Boolean).length, 2744);
 }
 
 {
@@ -1752,7 +1752,7 @@ for (const { file, dir } of contentFiles) {
   assert.doesNotMatch(plombBody, /template plomberie/i);
   assert.doesNotMatch(plombBody, /signature électronique/);
   assert.doesNotMatch(plombBody, EM_DASH);
-  assert.equal(plombBody.split(/\s+/).filter(Boolean).length, 2829);
+  assert.equal(plombBody.split(/\s+/).filter(Boolean).length, 2826);
 }
 
 {
@@ -1786,7 +1786,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(couvBody, /\/blog\/approbation-client-multi-decideurs-devis-b2b/);
   assert.match(couvBody, /\/outils\/estimateur-cout-devis-sans-validation/);
   assert.doesNotMatch(couvBody, EM_DASH);
-  assert.equal(couvBody.split(/\s+/).filter(Boolean).length, 2947);
+  assert.equal(couvBody.split(/\s+/).filter(Boolean).length, 2943);
 }
 
 {
@@ -1833,7 +1833,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(iteBody, /\/outils\/estimateur-cout-devis-sans-validation/);
   assert.match(iteBody, /\/blog\/validation-interne-avant-envoi-devis-b2b/);
   assert.doesNotMatch(iteBody, EM_DASH);
-  assert.equal(iteBody.split(/\s+/).filter(Boolean).length, 2575);
+  assert.equal(iteBody.split(/\s+/).filter(Boolean).length, 2572);
 }
 
 {
@@ -1863,7 +1863,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(pvBody, /signup\?plan=free/);
   assert.match(pvBody, /\/outils\/estimateur-cout-aller-retours-brief-photos/);
   assert.doesNotMatch(pvBody, EM_DASH);
-  assert.equal(pvBody.split(/\s+/).filter(Boolean).length, 2294);
+  assert.equal(pvBody.split(/\s+/).filter(Boolean).length, 2291);
 }
 
 {
@@ -1907,7 +1907,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(pergolaBody, /signup\?plan=free/);
   assert.doesNotMatch(pergolaBody, EM_DASH);
   const pergolaWords = pergolaBody.split(/\s+/).filter(Boolean).length;
-  assert.equal(pergolaWords, 2150);
+  assert.equal(pergolaWords, 2147);
 }
 
 {

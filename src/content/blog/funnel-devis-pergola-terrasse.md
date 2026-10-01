@@ -122,7 +122,7 @@ Lien magique : récap, options, questions, documents. Le prospect n’a pas à c
 
 ### 6. Relances + signature
 
-Séquence T+0 / T+2j / T+5j selon score. Acceptation en ligne quand le dossier est prêt. Validité affichée clairement.
+Séquence T+0 / T+2j / T+5j selon score. Acceptation en ligne quand le dossier est prêt.
 
 ## Configurateur / funnel vs Excel + PDF
 

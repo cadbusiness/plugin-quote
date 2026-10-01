@@ -113,7 +113,7 @@ export default function CouvertureToitureLandingPage() {
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches type d’intervention, surface, accès, photos, urgence." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Tuiles, zinc, étanchéité, forfaits pose, accès." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, urgence vs projet, assignation." },
-              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances, validité." },
+              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
             ].map((item) => (
               <Link
                 key={item.href}

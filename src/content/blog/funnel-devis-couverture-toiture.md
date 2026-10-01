@@ -151,7 +151,7 @@ Sur les comptes multi-décideurs (syndic, acheteur pro), le circuit de relecture
 
 ### 6. Relances
 
-Séquence adaptée au score et à l'urgence. Le dossier reste sur le lien de l'espace prospect. La validité est affichée. Quand le client a tranché, le commercial met à jour le statut du devis.
+Séquence adaptée au score et à l'urgence. Le dossier reste sur le lien de l'espace prospect. Quand le client a tranché, le commercial met à jour le statut du devis.
 
 
 **Cadrez la couverture sans reconstruire chaque brief :** [essai Free](https://www.quotebuilder.co/signup?plan=free) · [démo publique](https://www.quotebuilder.co/c/demo/rayonnage).

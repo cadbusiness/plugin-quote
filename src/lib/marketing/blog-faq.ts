@@ -16,7 +16,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Comment éviter la double saisie après un appel ?",
-      a: "Une checklist unique qui alimente le dossier. Lien prérempli ou saisie directe. Pas de copier-coller WhatsApp, puis Excel, puis CRM, puis devis.",
+      a: "Une checklist unique, puis le funnel. Lien prérempli, ou le commercial remplit le funnel via le lien préfill. Pas de copier-coller WhatsApp, puis Excel, puis CRM, puis devis.",
     },
     {
       q: "Le score Hot / Warm / Cold remplace-t-il le feeling du commercial ?",
@@ -28,7 +28,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Comment gérer les photos envoyées sur WhatsApp ?",
-      a: "Demandez-les, stockez-les dans le dossier ou les pièces jointes du parcours, et évitez de chiffrer sur un fil de messages non classés.",
+      a: "Demandez au prospect de les déposer via le funnel ou sa page de suivi, et évitez de chiffrer sur un fil de messages non classés.",
     },
     {
       q: "Quel statut CRM après un premier appel ?",

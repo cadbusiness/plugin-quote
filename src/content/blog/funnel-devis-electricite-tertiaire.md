@@ -79,7 +79,9 @@ Trop de questions tue la conversion. Trop peu tue le chiffrage. Compromis fréqu
 6. Délai souhaité (urgent / sous 48 h / sous 2 semaines / projet distant / vote syndic).
 7. Photos du tableau / des locaux / de la zone, ou « je n'ai pas encore de photo ».
 
-### Étape technique (secondaire, ou après score Hot)
+### Questions techniques (dans le même ordre fixe)
+
+Elles viennent après les questions cœur, toujours dans le même ordre. Le score Hot, Warm ou Cold n'est calculé qu'à la soumission. L'équipe trie les dossiers ensuite.
 
 - Nature du problème (coupure partielle, disjoncteur, prises / éclairage HS, extension, création points, remodelage…).
 - Contrainte existant / puissance perçue (tableau saturé, agrandissement, neuf, « à étudier sur place »).
@@ -107,7 +109,11 @@ Ne créez pas trois sites. Créez une **branche précoce** « contexte » (dans 
 | Éclairage | Locaux, usage, photos, contraintes hauteur | Indicatif possible avec bon brief |
 | Courants faibles / VDI léger | Besoin (réseau, contrôle d'accès léger…), site | À cadrer tôt pour ne pas mélanger avec le fort |
 
-L'urgence perçue guide le **triage équipe** (qui rappelle en premier). Sur QuoteBuilder, le score Hot / Warm / Cold reste une **formule fixe** (surface, load, access, project_type, constraints, longueur du besoin) : elle ignore photos, zone, urgence et contexte. Elle n'est pas configurable. Pas de SLA produit : vos délais de réponse dépannage sont les vôtres.
+L'urgence perçue guide le **triage équipe** (qui rappelle en premier). Sur QuoteBuilder, le score Hot / Warm / Cold reste une **formule fixe**, calculée à la soumission (surface, load, access, project_type, constraints, longueur du besoin) : elle ignore photos, zone, urgence et contexte. Elle n'est pas configurable. Pas de SLA produit : vos délais de réponse dépannage sont les vôtres.
+
+
+**Un brief électricité dans un ordre fixe :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) · [voir la démo](https://www.quotebuilder.co/c/demo/rayonnage).
+
 
 <!-- PLACEHOLDER IMAGE: tableau dépannage vs conformité vs neuf avec brief minimal (shoot Content) -->
 
@@ -134,13 +140,13 @@ Restez sobres dans les pages marketing et dans le wizard.
 
 ## Parcours type : du clic au statut Gagné
 
-1. **Entrée** : funnel site, widget, lien préfill, ou capture orale alignée ([préremplir via URL](https://www.quotebuilder.co/blog/preremplir-devis-url-parametres)).
+1. **Entrée** : funnel site, widget, lien préfill, ou capture orale : le commercial remplit le funnel via le lien préfill ([préremplir via URL](https://www.quotebuilder.co/blog/preremplir-devis-url-parametres)).
 2. **Brief** : type d'intervention, site, accès, photos si possible, besoin rédigé.
-3. **Score + owner** : étiquette Hot / Warm / Cold (formule fixe) + triage urgence / zone par l'équipe. Voir [score demande](https://www.quotebuilder.co/blog/score-demande-devis-b2b) et [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b).
+3. **Score + owner** : étiquette Hot / Warm / Cold calculée à la soumission (formule fixe) + triage urgence / zone par l'équipe. Voir [score demande](https://www.quotebuilder.co/blog/score-demande-devis-b2b) et [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b).
 4. **Décision visite** : Hot avec risque réel → visite courte ; Warm → photos / rappel ; Cold → pas de fourgon par défaut ([visite technique avant devis](https://www.quotebuilder.co/blog/visite-technique-avant-devis-b2b)). QuoteBuilder ne planifie pas les tournées.
 5. **Chiffrage** : lignes catalogue, options / variantes, fourchette indicative.
 6. **Envoi** : lien [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne). Sur syndic / compte pro, invitez les relecteurs (Responsable technique, Directeur financier…). Ils peuvent **Valider le dossier** ou demander des **Modifications** (commentaire + budget max). Chat en fil plat. Pas d'acceptation en ligne inventée : le commercial pose **Gagné**.
-7. **Relances** adaptées au score et à l'urgence. Validité claire. Méthode : [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
+7. **Relances** adaptées au score et à l'urgence. Méthode : [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
 8. **Clôture** : **Gagné** ou **Perdu**. Statuts CRM uniquement : Commencée, Nouveau, Contacté, En cours, Gagné, Perdu, En attente.
 
 ## Catalogue et options (sans kits inventés)
@@ -181,7 +187,7 @@ Adaptez selon Hot / Warm / Cold et votre triage urgence. Méthode générale : [
 
 ## Erreurs fréquentes en électricité tertiaire
 
-1. **Traiter toute demande comme une panne** (ou l'inverse) : branche « contexte » dès le début.
+1. **Traiter toute demande comme une panne** (ou l'inverse) : question « contexte » dès le début, dans l'ordre fixe.
 2. **Visiter sans photos** : vous payez pour collecter le brief.
 3. **Promettre un forfait « mise aux normes » national** sans existant ni accès.
 4. **Mélanger particulier, pro et syndic** sur les mêmes champs.
@@ -215,7 +221,7 @@ Dangereux sans brief. Préférez un parcours qui aboutit à une estimation perso
 
 ### Comment gérer dépannage et projet long dans le même funnel ?
 
-Branche précoce « contexte ». Triage et délais différents. Même dossier ensuite. Les étapes produit restent en ordre fixe ; vos priorités d'équipe font le reste.
+Une question « contexte », posée dans un ordre fixe. Le score Hot, Warm ou Cold est calculé à la soumission. L'équipe trie ensuite. Même dossier ensuite. Les étapes produit restent en ordre fixe ; vos priorités d'équipe font le reste.
 
 ### Comment parler de NF C 15-100 ou Consuel sans se tromper ?
 
@@ -223,7 +229,7 @@ Mention générique + collecte d'infos + traitement humain. Pas de promesse de c
 
 ### Dépannage et éclairage doivent-ils être deux funnels ?
 
-Pas forcément. Une branche « type d'intervention » dans le même funnel suffit souvent. Séparez seulement si les équipes / catalogues sont vraiment distincts.
+Pas forcément. Une question « type d'intervention », dans le même funnel et dans un ordre fixe, suffit souvent. Le score Hot, Warm ou Cold est calculé à la soumission. L'équipe trie ensuite. Séparez seulement si les équipes / catalogues sont vraiment distincts.
 
 ### Comment éviter l'abandon à l'étape photos ?
 
@@ -235,7 +241,7 @@ Non. Le produit aide à filtrer et scorer les demandes, chiffrer, partager l'esp
 
 ### Combien d'étapes idéales ?
 
-Souvent 8 à 11. Au-delà, découpez (cœur puis technique) ou repoussez le détail après le score Hot.
+Souvent 8 à 11 questions, dans un ordre fixe. Le score Hot, Warm ou Cold est calculé à la soumission. L'équipe trie les dossiers ensuite.
 
 ### Comment démarrer sans refondre tout le site ?
 

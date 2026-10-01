@@ -24,7 +24,7 @@ const FAQ = [
   },
   {
     q: "Comment gérer dépannage et projet long dans le même funnel ?",
-    a: "Une question « contexte », posée dans un ordre fixe. Triage et délais différents. Même dossier ensuite. Les étapes produit restent en ordre fixe ; vos priorités d’équipe font le reste.",
+    a: "Une question « contexte », posée dans un ordre fixe. Le score Hot, Warm ou Cold est calculé à la soumission. L’équipe trie ensuite. Même dossier ensuite. Les étapes produit restent en ordre fixe ; vos priorités d’équipe font le reste.",
   },
   {
     q: "Comment parler de NF C 15-100 ou Consuel sans se tromper ?",
@@ -32,7 +32,7 @@ const FAQ = [
   },
   {
     q: "Dépannage et éclairage doivent-ils être deux funnels ?",
-    a: "Pas forcément. Une question « type d’intervention » dans le même funnel, en ordre fixe, suffit souvent. Séparez seulement si les équipes ou les catalogues sont vraiment distincts.",
+    a: "Pas forcément. Une question « type d’intervention », dans le même funnel et dans un ordre fixe, suffit souvent. Le score Hot, Warm ou Cold est calculé à la soumission. L’équipe trie ensuite. Séparez seulement si les équipes ou les catalogues sont vraiment distincts.",
   },
   {
     q: "Comment éviter l’abandon à l’étape photos ?",
@@ -44,7 +44,7 @@ const FAQ = [
   },
   {
     q: "Combien d’étapes idéales ?",
-    a: "Souvent 8 à 11. Au-delà, découpez (cœur puis technique) ou repoussez le détail une fois le libellé posé.",
+    a: "Souvent 8 à 11 questions, dans un ordre fixe. Le score Hot, Warm ou Cold est calculé à la soumission. L’équipe trie les dossiers ensuite.",
   },
   {
     q: "Comment démarrer sans refondre tout le site ?",
@@ -112,7 +112,7 @@ export default function ElectriciteTertiaireLandingPage() {
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Questions en ordre fixe : type d’intervention, site, accès, photos, urgence." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Dépannage, tableau, éclairage. Si/Alors pour les produits suggérés." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Libellé automatique Hot, Warm ou Cold, et assignation." },
-              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances, validité." },
+              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
             ].map((item) => (
               <Link
                 key={item.href}

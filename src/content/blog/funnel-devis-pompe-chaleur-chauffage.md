@@ -128,7 +128,7 @@ Lien magique : récap, options, questions, documents. Le prospect n’a pas à c
 
 ### 6. Relances + signature
 
-Séquence T+0 / T+2j / T+5j selon score. Acceptation en ligne quand le dossier est prêt. Validité affichée clairement.
+Séquence T+0 / T+2j / T+5j selon score. Acceptation en ligne quand le dossier est prêt.
 
 
 **Cadrez PAC / chauffage sans reconstruire chaque brief :** [essai Free](https://www.quotebuilder.co/signup?plan=free) · [démo publique](https://www.quotebuilder.co/c/demo/rayonnage).

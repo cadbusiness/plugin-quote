@@ -108,7 +108,7 @@ export default function PompeChaleurChauffageLandingPage() {
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches air-eau, air-air, accès, photos." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Gammes PAC, forfaits pose, options." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, délai pose, assignation." },
-              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances, validité." },
+              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
             ].map((item) => (
               <Link
                 key={item.href}

@@ -104,7 +104,7 @@ export default function PergolaTerrasseLandingPage() {
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Branches bioclimatique, toile, options, photos." },
               { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Kits structure, options LED, lignes de pose." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, délai pose, assignation." },
-              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances, validité." },
+              { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "Confirm, relances." },
             ].map((item) => (
               <Link
                 key={item.href}
