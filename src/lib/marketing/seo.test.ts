@@ -73,6 +73,11 @@ import {
   computeCoutHandoff,
 } from "./cout-handoff-commercial-technique-devis";
 import {
+  COUT_CONTEXTE_HORS_DOSSIER_DEFAULTS,
+  COUT_CONTEXTE_HORS_DOSSIER_LABELS,
+  computeCoutContexteHorsDossier,
+} from "./cout-contexte-hors-dossier-devis";
+import {
   COUT_DOUBLE_SAISIE_DEFAULTS,
   COUT_DOUBLE_SAISIE_LABELS,
   computeCoutDoubleSaisie,
@@ -156,6 +161,8 @@ for (const required of [
   "/outils/estimateur-cout-demandes-orales-non-capturees",
   "/outils/estimateur-cout-double-saisie-devis",
   "/outils/estimateur-cout-handoff-commercial-technique-devis",
+  "/outils/estimateur-cout-contexte-hors-dossier-devis",
+  "/blog/notes-internes-dossier-devis-equipe-b2b",
   "/blog/transfert-brief-commercial-technique-devis-b2b",
   "/blog/sources-demande-devis-b2b-funnel-api",
   "/blog/telephone-whatsapp-vers-brief-devis-b2b",
@@ -215,22 +222,50 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 39);
-assert.equal(BLOG_TOOLS.length, 29);
+assert.equal(BLOG_POSTS.length, 40);
+assert.equal(BLOG_TOOLS.length, 30);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-demandes-orales-non-capturees"));
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-double-saisie-devis"));
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-handoff-commercial-technique-devis"));
+assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-contexte-hors-dossier-devis"));
 const outilsHub = readFileSync(new URL("../../app/(marketing)/outils/page.tsx", import.meta.url), "utf8");
 assert.match(outilsHub, /outilsHubIntro\(\)/);
 assert.equal(
   outilsHubIntro(),
-  "Vingt-neuf outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
+  "Trente outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
 );
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
-assert.doesNotMatch(outilsHub, /Vingt-quatre|Vingt-cinq|Vingt-six|Vingt-sept|Vingt-huit|Vingt-neuf/);
+assert.doesNotMatch(outilsHub, /Vingt-quatre|Vingt-cinq|Vingt-six|Vingt-sept|Vingt-huit|Vingt-neuf|Trente/);
 assert.match(outilsHub, /estimateur-cout-demandes-orales-non-capturees/);
 assert.match(outilsHub, /estimateur-cout-double-saisie-devis/);
 assert.match(outilsHub, /estimateur-cout-handoff-commercial-technique-devis/);
+assert.match(outilsHub, /estimateur-cout-contexte-hors-dossier-devis/);
+assert.deepEqual(
+  BLOG_POSTS.find((post) => post.slug === "notes-internes-dossier-devis-equipe-b2b")?.tags,
+  ["funnel", "scoring"],
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "notes-internes-dossier-devis-equipe-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "notes-internes-dossier-devis-equipe-b2b")?.cover,
+  BLOG_DEMO_SHOTS.devisDetail,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "notes-internes-dossier-devis-equipe-b2b")?.readingMinutes,
+  14,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "notes-internes-dossier-devis-equipe-b2b")?.publishedAt,
+  "2026-10-02",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "notes-internes-dossier-devis-equipe-b2b")?.pinned, false);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "notes-internes-dossier-devis-equipe-b2b")?.path,
+  "/blog/notes-internes-dossier-devis-equipe-b2b",
+);
+assert.equal(BLOG_FAQ["notes-internes-dossier-devis-equipe-b2b"]?.length, 10);
 assert.deepEqual(
   BLOG_POSTS.find((post) => post.slug === "transfert-brief-commercial-technique-devis-b2b")?.tags,
   ["funnel", "scoring"],
@@ -890,8 +925,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 20);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 20);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 21);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 21);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 7);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 6);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);
@@ -1159,6 +1194,17 @@ const requiredSources = {
     "/blog/formulaire-contact-vs-funnel-devis-b2b",
     "/secteurs/funnel-devis-plomberie-sanitaire",
     "/secteurs/funnel-devis-couverture-toiture",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "notes-internes-dossier-devis-equipe-b2b.md": [
+    "/outils/estimateur-cout-contexte-hors-dossier-devis",
+    "/outils/estimateur-cout-handoff-commercial-technique-devis",
+    "/outils/estimateur-cout-double-saisie-devis",
+    "/blog/transfert-brief-commercial-technique-devis-b2b",
+    "/blog/validation-interne-avant-envoi-devis-b2b",
+    "/blog/commentaires-annotations-devis-collaboratif-b2b",
+    "/fonctionnalites/espace-prospect",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -1757,6 +1803,32 @@ for (const { file, dir } of contentFiles) {
   assert.doesNotMatch(tvaBody, /blocs TVA/);
   assert.doesNotMatch(tvaBody, EM_DASH);
   assert.equal(tvaBody.split(/\s+/).filter(Boolean).length, 3314);
+}
+
+{
+  const notesRaw = readFileSync(join(blogDir, "notes-internes-dossier-devis-equipe-b2b.md"), "utf8");
+  assert.ok(notesRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const notesBody = stripFrontmatter(notesRaw);
+  assert.ok(
+    notesBody.startsWith("# Notes internes sur un dossier devis B2B"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(notesBody, /^title:/m);
+  assert.match(notesBody, /signup\?plan=free/);
+  assert.match(notesBody, /\/outils\/estimateur-cout-contexte-hors-dossier-devis/);
+  assert.match(notesBody, /\/fonctionnalites\/espace-prospect/);
+  assert.match(notesBody, /\/c\/demo\/rayonnage/);
+  assert.match(notesBody, /chat interne inventé|pas un chat interne/i);
+  assert.match(notesBody, /commentaires ancrés/);
+  assert.match(notesBody, /formule fixe/);
+  assert.match(notesBody, /Commencée/);
+  assert.match(notesBody, /En attente/);
+  assert.match(notesBody, /Accepté/);
+  assert.match(notesBody, /pas de versions Vn|Pas de versions Vn/i);
+  assert.match(notesBody, /dernière consultation relative|dernière vue relative/i);
+  assert.doesNotMatch(notesBody, /signature électronique/);
+  assert.doesNotMatch(notesBody, EM_DASH);
+  assert.equal(notesBody.split(/\s+/).filter(Boolean).length, 2693);
 }
 
 {
@@ -3737,6 +3809,121 @@ assert.equal(handoffClamp.panier, 0);
 assert.equal(handoffClamp.opp, null);
 assert.equal(handoffClamp.alertTone, "neutral");
 
+const contexteDefault = computeCoutContexteHorsDossier({ ...COUT_CONTEXTE_HORS_DOSSIER_DEFAULTS });
+assert.equal(contexteDefault.fragiles, 22.5);
+assert.equal(contexteDefault.heures, 8.3);
+assert.equal(contexteDefault.coutTemps, 498);
+assert.equal(contexteDefault.morts, 4);
+assert.equal(contexteDefault.opp, 24000);
+assert.equal(contexteDefault.total, 24498);
+assert.equal(contexteDefault.alertTone, "bad");
+assert.equal(contexteDefault.totalTone, "warn");
+assert.equal(contexteDefault.oppTone, "bad");
+assert.match(contexteDefault.alert, /Contexte hors dossier lourd/);
+assert.match(contexteDefault.recap, /Checklist rapide/);
+assert.match(contexteDefault.recap, /Notes internes sur le dossier/);
+assert.match(contexteDefault.recap, /chat plat/);
+assert.match(contexteDefault.recap, /formule fixe/);
+assert.match(contexteDefault.recap, /Commencée, Nouveau, Contacté, En cours, Gagné, Perdu, En attente/);
+assert.match(contexteDefault.recap, /pas Accepté \/ Signé comme statuts/);
+assert.match(contexteDefault.recap, /pas un chat interne inventé/);
+assert.match(contexteDefault.recap, /commentaires ancrés/);
+assert.match(contexteDefault.recap, /pas de TVA inventée/);
+assert.doesNotMatch(contexteDefault.recap, /signature électronique/);
+assert.doesNotMatch(contexteDefault.recap, EM_DASH);
+assert.equal(COUT_CONTEXTE_HORS_DOSSIER_LABELS.dossiers, "Dossiers devis / mois");
+assert.equal(COUT_CONTEXTE_HORS_DOSSIER_LABELS.fragiles, "Dossiers fragiles / mois (sans notes utiles)");
+assert.equal(COUT_CONTEXTE_HORS_DOSSIER_LABELS.total, "Coût total indicatif mensuel");
+
+const contexteEmpty = computeCoutContexteHorsDossier({ ...COUT_CONTEXTE_HORS_DOSSIER_DEFAULTS, dossiers: 0 });
+assert.equal(contexteEmpty.fragiles, 0);
+assert.equal(contexteEmpty.heures, 0);
+assert.equal(contexteEmpty.coutTemps, 0);
+assert.equal(contexteEmpty.morts, 0);
+assert.equal(contexteEmpty.opp, 0);
+assert.equal(contexteEmpty.total, 0);
+assert.equal(contexteEmpty.alertTone, "neutral");
+assert.match(contexteEmpty.alert, /volume de dossiers/);
+
+const contexteNoBasket = computeCoutContexteHorsDossier({ ...COUT_CONTEXTE_HORS_DOSSIER_DEFAULTS, panier: 0 });
+assert.equal(contexteNoBasket.opp, null);
+assert.equal(contexteNoBasket.oppLabel, "non calculé (panier = 0)");
+assert.equal(contexteNoBasket.total, contexteNoBasket.coutTemps);
+assert.equal(contexteNoBasket.oppTone, "neutral");
+assert.equal(contexteNoBasket.alertTone, "bad");
+assert.match(contexteNoBasket.recap, /Opportunités indicatives : n\/a/);
+
+const contexteLow = computeCoutContexteHorsDossier({
+  dossiers: 10,
+  pctSans: 10,
+  minutes: 10,
+  pctMorts: 1,
+  taux: 40,
+  panier: 500,
+});
+assert.equal(contexteLow.fragiles, 1);
+assert.equal(contexteLow.heures, 0.2);
+assert.equal(contexteLow.coutTemps, 8);
+assert.equal(contexteLow.morts, 0.1);
+assert.equal(contexteLow.opp, 50);
+assert.equal(contexteLow.total, 58);
+assert.equal(contexteLow.alertTone, "ok");
+assert.match(contexteLow.alert, /Contexte hors dossier plutôt contenu/);
+
+const contexteWarn = computeCoutContexteHorsDossier({
+  dossiers: 40,
+  pctSans: 30,
+  minutes: 30,
+  pctMorts: 2,
+  taux: 50,
+  panier: 1000,
+});
+assert.equal(contexteWarn.fragiles, 12);
+assert.equal(contexteWarn.heures, 6);
+assert.equal(contexteWarn.coutTemps, 300);
+assert.equal(contexteWarn.morts, 0.8);
+assert.equal(contexteWarn.opp, 800);
+assert.equal(contexteWarn.total, 1100);
+assert.equal(contexteWarn.alertTone, "warn");
+assert.equal(contexteWarn.totalTone, "ok");
+assert.match(contexteWarn.tip, /5 lignes de notes/);
+
+const contexteHigh = computeCoutContexteHorsDossier({
+  dossiers: 200,
+  pctSans: 80,
+  minutes: 40,
+  pctMorts: 10,
+  taux: 80,
+  panier: 8000,
+});
+assert.equal(contexteHigh.fragiles, 160);
+assert.equal(contexteHigh.heures, 106.7);
+assert.equal(contexteHigh.coutTemps, 8536);
+assert.equal(contexteHigh.morts, 20);
+assert.equal(contexteHigh.opp, 160000);
+assert.equal(contexteHigh.total, 168536);
+assert.equal(contexteHigh.alertTone, "bad");
+assert.equal(contexteHigh.totalTone, "bad");
+assert.equal(contexteHigh.oppTone, "bad");
+assert.match(contexteHigh.tip, /notes internes sur chaque dossier/);
+
+const contexteClamp = computeCoutContexteHorsDossier({
+  dossiers: -5,
+  pctSans: 140,
+  minutes: 2000,
+  pctMorts: 140,
+  taux: 20000,
+  panier: -1,
+});
+assert.equal(contexteClamp.dossiers, 0);
+assert.equal(contexteClamp.pctSans, 100);
+assert.equal(contexteClamp.minutes, 1440);
+assert.equal(contexteClamp.pctMorts, 100);
+assert.equal(contexteClamp.taux, 10000);
+assert.equal(contexteClamp.panier, 0);
+assert.equal(contexteClamp.opp, null);
+assert.equal(contexteClamp.alertTone, "neutral");
+
 const oralesClamp = computeCoutDemandesOrales({
   orales: -5,
   pctNonCapturees: 140,
@@ -4085,6 +4272,8 @@ for (const expected of [
   { path: "/outils/checklist-mentions-devis-france", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
   { path: "/blog/pieces-jointes-plans-photos-devis-b2b", priority: 0.8, lastmod: "2026-09-25" },
+  { path: "/blog/notes-internes-dossier-devis-equipe-b2b", priority: 0.8, lastmod: "2026-10-02" },
+  { path: "/outils/estimateur-cout-contexte-hors-dossier-devis", priority: 0.7, lastmod: "2026-10-02" },
   { path: "/blog/transfert-brief-commercial-technique-devis-b2b", priority: 0.8, lastmod: "2026-10-02" },
   { path: "/outils/estimateur-cout-handoff-commercial-technique-devis", priority: 0.7, lastmod: "2026-10-02" },
   { path: "/secteurs/funnel-devis-metallerie-serrurerie", priority: 0.8, lastmod: "2026-10-02" },
@@ -4140,6 +4329,8 @@ assert.ok(paths.includes("/blog/sources-demande-devis-b2b-funnel-api"));
 assert.ok(paths.includes("/outils/estimateur-cout-double-saisie-devis"));
 assert.ok(paths.includes("/blog/telephone-whatsapp-vers-brief-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-demandes-orales-non-capturees"));
+assert.ok(paths.includes("/blog/notes-internes-dossier-devis-equipe-b2b"));
+assert.ok(paths.includes("/outils/estimateur-cout-contexte-hors-dossier-devis"));
 assert.ok(paths.includes("/blog/transfert-brief-commercial-technique-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-handoff-commercial-technique-devis"));
 assert.ok(paths.includes("/secteurs/funnel-devis-metallerie-serrurerie"));
@@ -4548,9 +4739,11 @@ const llmsPaths = [
   "/blog/telephone-whatsapp-vers-brief-devis-b2b",
   "/secteurs/funnel-devis-electricite-tertiaire",
   "/outils/estimateur-cout-demandes-orales-non-capturees",
+  "/blog/notes-internes-dossier-devis-equipe-b2b",
   "/blog/transfert-brief-commercial-technique-devis-b2b",
   "/secteurs/funnel-devis-metallerie-serrurerie",
   "/outils/estimateur-cout-handoff-commercial-technique-devis",
+  "/outils/estimateur-cout-contexte-hors-dossier-devis",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -4930,6 +5123,8 @@ assert.equal(tvaSameRate.alertTone, "ok");
 assert.equal(tvaSameRate.showBreakdown, true);
 
 for (const [path, lastmod] of [
+  ["/blog/notes-internes-dossier-devis-equipe-b2b", "2026-10-02"],
+  ["/outils/estimateur-cout-contexte-hors-dossier-devis", "2026-10-02"],
   ["/blog/transfert-brief-commercial-technique-devis-b2b", "2026-10-02"],
   ["/outils/estimateur-cout-handoff-commercial-technique-devis", "2026-10-02"],
   ["/secteurs/funnel-devis-metallerie-serrurerie", "2026-10-02"],

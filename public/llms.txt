@@ -54,6 +54,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Notes internes sur un dossier devis B2B : https://www.quotebuilder.co/blog/notes-internes-dossier-devis-equipe-b2b
 - Transfert brief commercial → technique : https://www.quotebuilder.co/blog/transfert-brief-commercial-technique-devis-b2b
 - Sources d'une demande de devis B2B : funnel, API, intégrations : https://www.quotebuilder.co/blog/sources-demande-devis-b2b-funnel-api
 - Téléphone et WhatsApp vers brief devis B2B : https://www.quotebuilder.co/blog/telephone-whatsapp-vers-brief-devis-b2b
@@ -123,6 +124,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Estimateur coût des demandes orales non capturées : https://www.quotebuilder.co/outils/estimateur-cout-demandes-orales-non-capturees
 - Estimateur coût de la double saisie devis : https://www.quotebuilder.co/outils/estimateur-cout-double-saisie-devis
 - Estimateur coût handoff commercial → technique : https://www.quotebuilder.co/outils/estimateur-cout-handoff-commercial-technique-devis
+- Estimateur coût du contexte hors dossier devis : https://www.quotebuilder.co/outils/estimateur-cout-contexte-hors-dossier-devis
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 

@@ -103,6 +103,7 @@ export const BLOG_TOOL_PIPELINE_FANTOME = "/outils/estimateur-cout-pipeline-fant
 export const BLOG_TOOL_DEMANDES_ORALES = "/outils/estimateur-cout-demandes-orales-non-capturees";
 export const BLOG_TOOL_DOUBLE_SAISIE = "/outils/estimateur-cout-double-saisie-devis";
 export const BLOG_TOOL_HANDOFF = "/outils/estimateur-cout-handoff-commercial-technique-devis";
+export const BLOG_TOOL_CONTEXTE_HORS_DOSSIER = "/outils/estimateur-cout-contexte-hors-dossier-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -118,6 +119,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     27: "Vingt-sept",
     28: "Vingt-huit",
     29: "Vingt-neuf",
+    30: "Trente",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -298,9 +300,29 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Devis / mois concernés par un handoff, % de briefs incomplets, minutes, taux horaire, panier, % de devis retravaillés. Heures, coût temps, opportunités. Le % évitables est indicatif. Calcul 100 % local.",
     tags: ["funnel", "scoring"],
   },
+  {
+    href: BLOG_TOOL_CONTEXTE_HORS_DOSSIER,
+    title: "Estimateur coût du contexte hors dossier devis",
+    text: "Dossiers / mois, % sans notes internes utiles, minutes de re-brief, % morts ou clarifs faute de contexte, taux horaire, panier. Dossiers fragiles, heures, coût temps, opportunités. Calcul 100 % local.",
+    tags: ["funnel", "scoring"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "notes-internes-dossier-devis-equipe-b2b",
+    path: "/blog/notes-internes-dossier-devis-equipe-b2b",
+    title:
+      "Notes internes sur un dossier devis B2B : garder le contexte équipe sans polluer le fil prospect",
+    description:
+      "Notes internes sur un dossier devis B2B : comment garder le contexte équipe (marge, risque, handoff) hors du fil prospect. Process métier + modèle QuoteBuilder (notes sur le dossier, chat fil plat, relecteurs).",
+    publishedAt: "2026-10-02",
+    readingMinutes: 14,
+    tags: ["funnel", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "transfert-brief-commercial-technique-devis-b2b",
     path: "/blog/transfert-brief-commercial-technique-devis-b2b",
