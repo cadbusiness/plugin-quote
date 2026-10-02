@@ -128,7 +128,7 @@ L'estimateur assemble depuis le catalogue et les forfaits pose. Options visibles
 
 ### 5. Envoi + espace prospect
 
-Lien magique : récap, options, questions, documents (photos toiture, facture, plan). Le prospect n’a pas à chercher le bon PDF. Voir [envoyer devis lien vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) et [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+Lien magique : récap, options, questions, documents (photos toiture, facture, plan). Le prospect n’a pas à chercher le bon PDF. Voir [envoyer devis lien vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) et [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 
 ### 6. Relances
 
@@ -183,7 +183,7 @@ Après envoi, le prospect doit pouvoir :
 - poser une question sans relancer un e-mail perdu ;
 - déposer une facture d’énergie, une photo toiture ou un plan complémentaire.
 
-Les relecteurs invités répondent par « Valider le dossier » ou « Modifications ». Le commercial pose Gagné. Moins de « vous avez bien reçu mon devis ? ». Voir l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+Les relecteurs invités répondent par « Valider le dossier » ou « Modifications ». Le commercial pose Gagné. Moins de « vous avez bien reçu mon devis ? ». Voir l’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 
 ## KPIs secteur (comité mensuel)
 
@@ -278,7 +278,7 @@ Un widget funnel sur la page « Devis solaire / PV » + catalogue minimal (2–3
 - [Options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)
 - [Validité et expiration des devis](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b)
 - [Signature et acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit : le commercial pose Gagné
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Funnel devis pompe à chaleur / chauffage](https://www.quotebuilder.co/secteurs/funnel-devis-pompe-chaleur-chauffage)
 - [Estimateur coût brief incomplet](https://www.quotebuilder.co/outils/estimateur-cout-brief-incomplet)
 - [Estimateur coût aller-retours brief / photos](https://www.quotebuilder.co/outils/estimateur-cout-aller-retours-brief-photos)

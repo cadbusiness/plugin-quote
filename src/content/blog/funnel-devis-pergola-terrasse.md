@@ -77,7 +77,7 @@ Sans photo ni côte, l’estimateur suppose. La visite technique devient obligat
 
 ### 5. Le closing qui traîne
 
-Le devis PDF part par e-mail. Personne ne sait s’il a été ouvert. Relances dispersées. Un [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne), avec relecteurs et relances, raccourcit le cycle. Le commercial pose Gagné.
+Le devis PDF part par e-mail. Personne ne sait s’il a été ouvert. Relances dispersées. Un [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect), avec relecteurs et relances, raccourcit le cycle. Le commercial pose Gagné.
 
 ## Anatomie d’un brief pergola « chiffrable »
 
@@ -178,7 +178,7 @@ Après envoi, le prospect doit pouvoir :
 - relire le récap (dimensions, options, total) ;
 - poser une question sans relancer un e-mail perdu.
 
-Les relecteurs invités répondent par « Valider le dossier » ou « Modifications ». Le commercial pose Gagné. Moins de « vous avez bien reçu mon devis ? ». Voir l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+Les relecteurs invités répondent par « Valider le dossier » ou « Modifications ». Le commercial pose Gagné. Moins de « vous avez bien reçu mon devis ? ». Voir l’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 
 <!-- PLACEHOLDER IMAGE: espace prospect devis pergola et relecteurs (shoot Content) -->
 
@@ -273,6 +273,6 @@ Un widget funnel sur la page « Devis pergola » + catalogue minimal (5 structur
 - [Options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)
 - [Validité et expiration des devis](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b)
 - [Signature et acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit : le commercial pose Gagné
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Bibliothèque de lignes et kits](https://www.quotebuilder.co/blog/bibliotheque-lignes-kits-devis-b2b)
 - Hub [/secteurs](https://www.quotebuilder.co/secteurs)

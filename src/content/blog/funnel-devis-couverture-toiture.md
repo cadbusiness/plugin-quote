@@ -145,7 +145,7 @@ Avant envoi, une [validation interne](https://www.quotebuilder.co/blog/validatio
 
 ### 5. Envoi + espace prospect
 
-Lien magique : récap, options, questions, documents (photos toiture, plan, constat). Le prospect n'a pas à chercher le bon PDF. Voir [envoyer devis lien vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) et [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+Lien magique : récap, options, questions, documents (photos toiture, plan, constat). Le prospect n'a pas à chercher le bon PDF. Voir [envoyer devis lien vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) et [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 
 Sur les comptes multi-décideurs (syndic, acheteur pro), le circuit de relecture côté client compte autant que le brief. Voir [approbation client multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b).
 
@@ -218,7 +218,7 @@ Après envoi, le prospect doit pouvoir :
 - déposer une photo complémentaire ou un document syndic / assurance ;
 - inviter un relecteur (directeur financier, responsable technique, acheteur ou décideur) sur le même lien.
 
-C'est le rôle de l'[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne). Sur syndic ou compte pro, le circuit de relecture est décrit dans [approbation client multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b) : pastilles En attente / Consulté / Validé / Modifications, un commentaire et un budget max par personne. Le commercial pose ensuite le statut du devis.
+C'est le rôle de l'[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect). Sur syndic ou compte pro, le circuit de relecture est décrit dans [approbation client multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b) : pastilles En attente / Consulté / Validé / Modifications, un commentaire et un budget max par personne. Le commercial pose ensuite le statut du devis.
 
 ## KPIs secteur (comité mensuel)
 
@@ -321,7 +321,7 @@ Sur les Hot / paniers élevés / accès complexes, oui. Ça réduit les devis à
 - [Envoyer un devis : lien sécurisé vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email)
 - [Options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)
 - [Validité et expiration des devis](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b)
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Funnel devis isolation thermique / ITE](https://www.quotebuilder.co/secteurs/funnel-devis-isolation-thermique-ite)
 - [Funnel devis pompe à chaleur / chauffage](https://www.quotebuilder.co/secteurs/funnel-devis-pompe-chaleur-chauffage)
 - [Estimateur coût brief incomplet](https://www.quotebuilder.co/outils/estimateur-cout-brief-incomplet)

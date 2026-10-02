@@ -130,7 +130,7 @@ Avant envoi, une [validation interne](https://www.quotebuilder.co/blog/validatio
 
 ### 5. Envoi + espace prospect
 
-Lien magique : récap, options, questions, documents (photos façade, plan, diagnostic). Le prospect n’a pas à chercher le bon PDF. Voir [envoyer devis lien vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) et [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+Lien magique : récap, options, questions, documents (photos façade, plan, diagnostic). Le prospect n’a pas à chercher le bon PDF. Voir [envoyer devis lien vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) et [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 
 ### 6. Relances
 
@@ -198,7 +198,7 @@ Après envoi, le prospect doit pouvoir :
 - poser une question sans relancer un e-mail perdu ;
 - déposer une photo complémentaire, un plan ou un document syndic.
 
-Les relecteurs invités répondent par « Valider le dossier » ou « Modifications ». Le commercial pose Gagné. Moins de « vous avez bien reçu mon devis ? ». Voir l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+Les relecteurs invités répondent par « Valider le dossier » ou « Modifications ». Le commercial pose Gagné. Moins de « vous avez bien reçu mon devis ? ». Voir l’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 
 Sur les dossiers syndic, l’espace partagé évite les PDF contradictoires entre conseil syndical et gestionnaire. QuoteBuilder n’a pas de versions : un seul dossier courant. L’article [versions / historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b) décrit un process hors produit. La [validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b) reste un gate d’équipe.
 
@@ -302,7 +302,7 @@ Sur les Hot / paniers élevés / accès complexes, oui. Ça réduit les V2 et le
 - [Options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)
 - [Validité et expiration des devis](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b)
 - [Signature et acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit : le commercial pose Gagné
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Funnel devis pompe à chaleur / chauffage](https://www.quotebuilder.co/secteurs/funnel-devis-pompe-chaleur-chauffage)
 - [Funnel devis photovoltaïque / solaire](https://www.quotebuilder.co/secteurs/funnel-devis-photovoltaique-solaire)
 - [Estimateur coût brief incomplet](https://www.quotebuilder.co/outils/estimateur-cout-brief-incomplet)

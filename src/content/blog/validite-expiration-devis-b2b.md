@@ -166,7 +166,7 @@ Séquence simple (à adapter) :
 
 | Moment | Action |
 |--------|--------|
-| J+1 / J+2 après envoi | Vérifier vue / non vue ([espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)) |
+| J+1 / J+2 après envoi | Vérifier vue / non vue ([espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect)) |
 | Milieu de validité | Relance douce : questions, options, date de décision |
 | J-5 à J-3 | Relance **expiration** : « validité jusqu’au … ; on prolonge ou on ajuste ? » |
 | J-1 | Court rappel si Hot |
@@ -256,7 +256,7 @@ Liez ça à l’[assignation / SLA](https://www.quotebuilder.co/blog/assignation
 
 L’expiration fonctionne mieux si le prospect a **un lien unique** vers la bonne version. Sinon il signe un PDF mailé trois semaines plus tôt pendant que vous avez déjà une V3.
 
-Voir : [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne), [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) (hors produit). Hors produit, on ne fige pas un accord sur une offre dont la durée de prix est passée. Dans QuoteBuilder, le commercial pose Gagné sur le dossier courant : il n’y a pas de date d’expiration.
+Voir : [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect), [signature / acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) (hors produit). Hors produit, on ne fige pas un accord sur une offre dont la durée de prix est passée. Dans QuoteBuilder, le commercial pose Gagné sur le dossier courant : il n’y a pas de date d’expiration.
 
 ## FAQ
 

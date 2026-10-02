@@ -162,7 +162,7 @@ Clés de rapprochement : email, téléphone, SIRET, nom + ville. Si match → ra
 5. **Marketplace** : import planifié (quotidien au minimum).
 6. **Mesure** : % de demandes avec owner, % avec score, délai médian premier contact, taux de doublons détectés.
 
-Vue produit : [comment ça marche](https://www.quotebuilder.co/comment-ca-marche), [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) pour que le prospect ait aussi un lien unique (pas six PDF par canal).
+Vue produit : [comment ça marche](https://www.quotebuilder.co/comment-ca-marche), [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) pour que le prospect ait aussi un lien unique (pas six PDF par canal).
 
 ## Cas concrets (scénarios)
 

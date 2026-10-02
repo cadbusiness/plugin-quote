@@ -66,7 +66,7 @@ Le funnel demande photos + cotes (même approximatives) **avant** le chiffrage a
 
 ### 3. Multi-produits, multi-interlocuteurs
 
-Maison : stores salon + volets chambres + porte garage. Copro : devis syndic + validation AG. Le PDF circule. La mauvaise version revient « OK ». Un lien d’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) limite la casse.
+Maison : stores salon + volets chambres + porte garage. Copro : devis syndic + validation AG. Le PDF circule. La mauvaise version revient « OK ». Un lien d’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) limite la casse.
 
 ### 4. Remises « pour gagner le deal »
 

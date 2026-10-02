@@ -71,7 +71,7 @@ Le commercial chiffre. Le poseur découvre une pente, un regard, un mur mitoyen,
 
 ### 4. Multi-décideurs (couple, syndic, promoteur)
 
-Le PDF circule. La mauvaise version revient « OK ». Un lien d’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) limite la casse. Les [versions / historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b) évitent le double document.
+Le PDF circule. La mauvaise version revient « OK ». Un lien d’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) limite la casse. Les [versions / historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b) évitent le double document.
 
 ### 5. Devis morts après métrage
 

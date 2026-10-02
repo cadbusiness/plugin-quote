@@ -55,9 +55,20 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.8,
     lastModified: "2026-10-01",
   },
+  {
+    path: "/secteurs/funnel-devis-metallerie-serrurerie",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-02",
+  },
   { path: "/tarifs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  {
+    path: "/blog/transfert-brief-commercial-technique-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
   {
     path: "/blog/sources-demande-devis-b2b-funnel-api",
     changeFrequency: "monthly",
@@ -246,6 +257,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-01",
+  },
+  {
+    path: "/outils/estimateur-cout-handoff-commercial-technique-devis",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-02",
   },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },

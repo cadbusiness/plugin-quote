@@ -22,7 +22,7 @@ updated: 2026-09-24
 
 Mardi 14 h 40. Vous envoyez `Devis_Martin_v3_FINAL.pdf`. Le prospect le forward à sa direction. Quelqu’un ouvre `Devis_Martin_v2.pdf` resté dans un vieux fil. Un autre répond sur WhatsApp : « On a pas le même total. » Vous n’avez aucune idée de qui a ouvert quoi. Vous relancez à l’aveugle. Trois jours plus tard, le concurrent a déjà fait signer sur un lien partagé.
 
-Ce guide ne reprend pas le sujet « comment créer le devis » (Excel vs configurateur). Il ne refait pas non plus la visite complète de l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne). Ici, l’angle est plus simple et plus douloureux : **le canal d’envoi**. PDF en pièce jointe contre **lien sécurisé** (page dédiée, statut, relances, dernière consultation). Pas de versions, pas de signature en ligne. Et le coût caché du PDF-only.
+Ce guide ne reprend pas le sujet « comment créer le devis » (Excel vs configurateur). Il ne refait pas non plus la visite complète de l’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect). Ici, l’angle est plus simple et plus douloureux : **le canal d’envoi**. PDF en pièce jointe contre **lien sécurisé** (page dédiée, statut, relances, dernière consultation). Pas de versions, pas de signature en ligne. Et le coût caché du PDF-only.
 
 Public : dirigeants PME, commerciaux B2B, estimateurs, agences qui outillent des équipes devis (menuiserie, rayonnage, chauffage, location, agencement).
 
@@ -49,7 +49,7 @@ Le lien sécurisé (espace prospect, page devis partagée, PIN) résout le parco
 | Sujet | Question | Article / page |
 |-------|----------|----------------|
 | Outil de **création** | Excel / PDF vs configurateur / funnel | [Configurateur vs Excel + PDF](https://www.quotebuilder.co/blog/configurateur-devis-vs-excel-pdf) |
-| **Profondeur produit** espace client | Lien + PIN, uploads, messagerie | [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) |
+| **Profondeur produit** espace client | Lien + PIN, uploads, messagerie | [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect) |
 | **Canal d’envoi** (ce guide) | PDF joint vs lien sécurisé, coût du PDF-only | Vous êtes ici |
 
 Autrement dit : vous pouvez avoir un super configurateur et quand même perdre des deals parce que vous envoyez encore des PDF orphelins. Ou l’inverse : un lien propre autour d’un devis encore trop artisanal. Les deux se corrigent, mais pas avec le même levier.
@@ -273,7 +273,7 @@ Partiellement. Mieux créer le devis ne suffit pas si vous l’envoyez encore en
 
 ## Pour aller plus loin
 
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Signature et acceptation de devis en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b)
 - [Versions et historique des devis B2B](https://www.quotebuilder.co/blog/versions-historique-devis-b2b)
 - [Relancer un devis Hot depuis le dossier](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier)

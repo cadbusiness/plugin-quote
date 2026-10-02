@@ -157,7 +157,7 @@ Côté QuoteBuilder, l'affichage devis reste souvent une fourchette indicative e
 
 ### 6. Envoi + espace prospect + relecteurs
 
-Lien magique : récap, options, questions, documents (photos, plan si neuf). Le prospect n'a pas à chercher le bon PDF. Voir [envoyer devis lien vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) et [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+Lien magique : récap, options, questions, documents (photos, plan si neuf). Le prospect n'a pas à chercher le bon PDF. Voir [envoyer devis lien vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) et [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 
 Sur syndic ou compte pro, invitez les relecteurs (Responsable technique, Directeur financier…). Chacun a son propre lien. Ils peuvent **Valider le dossier** ou demander des **Modifications** (commentaire + budget max). Commentaires en fil plat. Pas d'acceptation en ligne inventée comme substitut au closing : le commercial pose le statut **Gagné** quand le deal est clos. « Accepté » n'est qu'un libellé d'espace prospect dans ce cas.
 
@@ -293,7 +293,7 @@ Sur les dossiers complexes, les paniers élevés, les accès difficiles et les s
 - [Qualifier une demande avant chiffrage](https://www.quotebuilder.co/blog/qualifier-demande-devis-avant-chiffrage)
 - [Score d'une demande de devis B2B](https://www.quotebuilder.co/blog/score-demande-devis-b2b)
 - [Pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b)
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b)
 - [Approbation client multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b)
 - [Envoyer un devis : lien sécurisé vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email)

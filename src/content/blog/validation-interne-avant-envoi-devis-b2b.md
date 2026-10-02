@@ -129,13 +129,12 @@ Avant le bouton Envoyer / Publier le lien :
 3. Prix HT, remises, total cohérents avec le plancher.
 4. Options / variantes affichées sans contradiction : [options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b).
 5. Mentions et conditions présentes.
-6. Validité affichée : [validité / expiration](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b).
-7. Documents attachés = version courante.
-8. Commentaires internes résolus ou explicitement reportés : [commentaires et annotations](https://www.quotebuilder.co/blog/commentaires-annotations-devis-collaboratif-b2b).
-9. Owner et SLA de suivi après envoi définis : [assignation / SLA](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe).
-10. Canal d’envoi choisi (lien sécurisé plutôt qu’un PDF orphelin) : [lien vs PDF e-mail](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email).
+6. Documents attachés = version courante.
+7. Commentaires internes résolus ou explicitement reportés : [commentaires et annotations](https://www.quotebuilder.co/blog/commentaires-annotations-devis-collaboratif-b2b).
+8. Owner et SLA de suivi après envoi définis : [assignation / SLA](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe).
+9. Canal d’envoi choisi (lien sécurisé plutôt qu’un PDF orphelin) : [lien vs PDF e-mail](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email).
 
-Dix points. Pas cinquante. Si votre checklist dépasse une page, personne ne l’utilise.
+Neuf points. Pas cinquante. Si votre checklist dépasse une page, personne ne l’utilise.
 
 <!-- PLACEHOLDER IMAGE: checklist validation 3 colonnes commercial / technique / marge (shoot Content) -->
 

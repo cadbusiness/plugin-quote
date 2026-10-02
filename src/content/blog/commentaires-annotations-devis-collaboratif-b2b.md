@@ -92,7 +92,7 @@ Une clarification propre n’est pas un roman. C’est un **paquet minimum** :
 | Lien version | Traçabilité | Signature sur vieux PDF |
 | Statut (ouvert / résolu) | Clôture | Fil qui traîne |
 
-L’[espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) joue ici un rôle simple : plusieurs décideurs voient le même devis, sans forward de pièce jointe. Les commentaires vivent **sur** le document, pas à côté dans une boîte perso.
+L’[espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect) joue ici un rôle simple : plusieurs décideurs voient le même devis, sans forward de pièce jointe. Les commentaires vivent **sur** le document, pas à côté dans une boîte perso.
 
 ## Multi-décideurs : le vrai test
 
@@ -265,7 +265,7 @@ Non. Interdisez-en le rôle de **salle de décision**. Un prospect peut vous ale
 
 ### Que faire si un décideur n’a pas accès au lien ?
 
-Renvoyez le lien sécurisé (ou un accès espace prospect), pas un PDF. Sinon vous recréez le double canal. Voir [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+Renvoyez le lien sécurisé (ou un accès espace prospect), pas un PDF. Sinon vous recréez le double canal. Voir [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 
 ### Comment gérer une demande qui change le chiffrage ?
 
@@ -306,7 +306,7 @@ L’[estimateur coût aller-retours brief / photos](https://www.quotebuilder.co/
 ## Pour aller plus loin
 
 - [Envoyer un devis : lien sécurisé vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email)
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Versions et historique des devis](https://www.quotebuilder.co/blog/versions-historique-devis-b2b)
 - [Signature et acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b), hors produit
 - [Options, variantes et alternatives](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)

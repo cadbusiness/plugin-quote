@@ -165,7 +165,7 @@ Les produits et les lignes de devis portent un prix minimum et un prix maximum. 
 Trois endroits montrent la même chose :
 
 - la **fiche devis**, avec le libellé « Total indicatif » et une fourchette minimum – maximum ;
-- l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne), avec le libellé « Total indicatif · min – max » ;
+- l’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect), avec le libellé « Total indicatif · min – max » ;
 - le **PDF**, avec le libellé « Fourchette indicative ».
 
 S’il n’y a ni minimum ni maximum, l’affichage devient « Sur devis ».

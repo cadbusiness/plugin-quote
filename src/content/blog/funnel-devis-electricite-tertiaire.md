@@ -145,7 +145,7 @@ Restez sobres dans les pages marketing et dans le wizard.
 3. **Score + owner** : étiquette Hot / Warm / Cold calculée à la soumission (formule fixe) + triage urgence / zone par l'équipe. Voir [score demande](https://www.quotebuilder.co/blog/score-demande-devis-b2b) et [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b).
 4. **Décision visite** : Hot avec risque réel → visite courte ; Warm → photos / rappel ; Cold → pas de fourgon par défaut ([visite technique avant devis](https://www.quotebuilder.co/blog/visite-technique-avant-devis-b2b)). QuoteBuilder ne planifie pas les tournées.
 5. **Chiffrage** : lignes catalogue, options / variantes, fourchette indicative.
-6. **Envoi** : lien [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne). Sur syndic / compte pro, invitez les relecteurs (Responsable technique, Directeur financier…). Ils peuvent **Valider le dossier** ou demander des **Modifications** (commentaire + budget max). Chat en fil plat. Pas d'acceptation en ligne inventée : le commercial pose **Gagné**.
+6. **Envoi** : lien [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect). Sur syndic / compte pro, invitez les relecteurs (Responsable technique, Directeur financier…). Ils peuvent **Valider le dossier** ou demander des **Modifications** (commentaire + budget max). Chat en fil plat. Pas d'acceptation en ligne inventée : le commercial pose **Gagné**.
 7. **Relances** adaptées au score et à l'urgence. Méthode : [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
 8. **Clôture** : **Gagné** ou **Perdu**. Statuts CRM uniquement : Commencée, Nouveau, Contacté, En cours, Gagné, Perdu, En attente.
 
@@ -262,7 +262,7 @@ Sur les Hot / paniers élevés / accès complexes / multi-sites, oui. Ça rédui
 - [Qualifier une demande avant chiffrage](https://www.quotebuilder.co/blog/qualifier-demande-devis-avant-chiffrage)
 - [Score d'une demande de devis B2B](https://www.quotebuilder.co/blog/score-demande-devis-b2b)
 - [Pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b)
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b)
 - [Approbation client multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b)
 - [Options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)

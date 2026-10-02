@@ -42,7 +42,7 @@ Le PDF n’est pas le problème en soi. Le problème, c’est l’absence de rep
 
 Résultat : des appels trop tôt, trop tard, ou sur le mauvais contact. Voir [envoyer un devis : lien sécurisé vs PDF email](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) et [pourquoi les devis meurent sans relance](https://www.quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance).
 
-Un [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) ne devine pas l’intention d’achat. Il donne un endroit unique pour la version en cours, et quelques signaux concrets pour décider de la prochaine action.
+Un [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) ne devine pas l’intention d’achat. Il donne un endroit unique pour la version en cours, et quelques signaux concrets pour décider de la prochaine action.
 
 ## Ce que la fiche devis montre
 
@@ -196,7 +196,7 @@ C’est le même esprit que l’[assignation et le délai de prise en charge](ht
 | Alerte utile | Aucune fiable | Invitation client, validation, demande de modifications, circuit complet |
 | Relance | Calendrier commun | À partir de ces faits |
 
-Beaucoup d’équipes gardent un PDF téléchargeable dans l’espace, pour les clients qui archivent encore un fichier. L’envoi de travail, lui, reste le lien. Voir [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+Beaucoup d’équipes gardent un PDF téléchargeable dans l’espace, pour les clients qui archivent encore un fichier. L’envoi de travail, lui, reste le lien. Voir [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 
 La consultation n’est pas une décision. Les relecteurs valident le dossier ou demandent des Modifications. Le commercial pose Gagné. L’article [acceptation en ligne](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b) est hors produit.
 
@@ -306,7 +306,7 @@ Volume de devis, part relancée sans signal utile, nombre de relances, minutes, 
 ## Pour aller plus loin
 
 - [Envoyer un devis : lien sécurisé vs PDF email](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email)
-- [Espace prospect pour un devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect pour un devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Relancer un devis Hot depuis le dossier](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier)
 - [Pourquoi les devis meurent sans relance](https://www.quotebuilder.co/blog/pourquoi-les-devis-meurent-sans-relance)
 - [Validité et expiration des devis B2B](https://www.quotebuilder.co/blog/validite-expiration-devis-b2b)

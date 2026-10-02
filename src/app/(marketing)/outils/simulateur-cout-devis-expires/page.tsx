@@ -117,7 +117,7 @@ export default function SimulateurCoutDevisExpiresPage() {
       <MarketingFaq items={FAQ} />
       <MarketingCta
         title="Passez de l’expiration au dossier relancé."
-        text="Date de validité visible, statut expiré, relance J-5, versions. Free sans carte."
+        text="Lien partagé, « vu … » sur la fiche devis côté commercial, relances, et les statuts Commencée, Nouveau, Contacté, En cours, Gagné, Perdu, En attente. Une date de validité, un statut expiré et des versions restent une bonne pratique hors produit. Free sans carte."
       />
     </>
   );

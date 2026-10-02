@@ -37,7 +37,7 @@ Accepter un devis en ligne, ce n’est pas « recevoir un PDF et répondre OK pa
 Concrètement, un bon parcours d’acceptation a :
 
 1. Une **version unique active** du devis (pas trois PDF concurrents). Voir [versions et historique des devis B2B](https://www.quotebuilder.co/blog/versions-historique-devis-b2b).
-2. Un **lien partagé** (souvent un espace prospect) plutôt qu’une pièce jointe qui circule hors contrôle. Voir [espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+2. Un **lien partagé** (souvent un espace prospect) plutôt qu’une pièce jointe qui circule hors contrôle. Voir [espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 3. Un **statut** lisible : envoyé, vu, en questions, accepté, refusé, expiré.
 4. Une **piste d’audit** minimale : qui a ouvert, qui a commenté, qui a cliqué Accepter.
 5. Un **prochain pas** clair après acceptation (acompte, planning pose, commande matière).

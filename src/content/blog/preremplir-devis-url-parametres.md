@@ -187,7 +187,7 @@ Le tracking UTM peut cohabiter avec `besoin` / `add` (query classique). Le prér
 
 ### QR code atelier / salon
 
-QR → `/c/votre-org/votre-funnel?besoin=rayonnages`. Moins de friction qu’un formulaire papier, et le commercial récupère un brief déjà amorcé dans l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+QR → `/c/votre-org/votre-funnel?besoin=rayonnages`. Moins de friction qu’un formulaire papier, et le commercial récupère un brief déjà amorcé dans l’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 
 ### Menuiserie / boutique sur mesure
 

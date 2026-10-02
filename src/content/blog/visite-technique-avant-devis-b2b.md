@@ -48,7 +48,7 @@ Ce n'est pas une « signature sur place ». Ce n'est pas non plus un rituel obli
 - un planning de tournées dans QuoteBuilder (il n'y en a pas) : la visite se décide et se réserve ailleurs (agenda, terrain, téléphone) ;
 - le libellé automatique ne décide pas de la visite ;
 - une excuse pour ne jamais chiffrer à distance quand le brief est bon ;
-- un suivi d'ouverture avancé du devis après envoi (première ouverture, compteur, historique, alertes consultation, pixel e-mail). Sur QuoteBuilder, la **dernière consultation** s'affiche seulement dans le champ « Espace prospect » de la fiche devis, côté commercial, en texte relatif (par exemple « vu il y a 2 h »). La page prospect ne la montre pas. Chaque relecteur a son propre lien. Les pastilles sont **En attente**, **Consulté**, **Validé** et **Modifications**. Le statut CRM (dont **Gagné** / **Perdu**) reste posé par le commercial. Voir [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+- un suivi d'ouverture avancé du devis après envoi (première ouverture, compteur, historique, alertes consultation, pixel e-mail). Sur QuoteBuilder, la **dernière consultation** s'affiche seulement dans le champ « Espace prospect » de la fiche devis, côté commercial, en texte relatif (par exemple « vu il y a 2 h »). La page prospect ne la montre pas. Chaque relecteur a son propre lien. Les pastilles sont **En attente**, **Consulté**, **Validé** et **Modifications**. Le statut CRM (dont **Gagné** / **Perdu**) reste posé par le commercial. Voir [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 
 <!-- PLACEHOLDER IMAGE: schéma décision d'équipe visite vs chiffrage distant (shoot Content) -->
 
@@ -162,7 +162,7 @@ La visite n'est pas la fin. C'est le début du cycle devis sérieux.
 
 ### Envoi
 
-Préférez un [lien sécurisé](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) plutôt qu'un PDF forwardé en chaîne. L'[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) centralise récap, documents, questions. Sur multi-décideurs côté client, invitez les relecteurs (ex. Responsable technique, Directeur financier) : ils peuvent **Valider le dossier** ou demander des **Modifications** avec commentaire et budget max. Commentaires en fil plat (pas ancrés ligne par ligne dans le produit actuel). Pas de versions Vn stockées comme feature « historique magique » inventée : le commercial met à jour le devis et renvoie ; le statut reste clair.
+Préférez un [lien sécurisé](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email) plutôt qu'un PDF forwardé en chaîne. L'[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) centralise récap, documents, questions. Sur multi-décideurs côté client, invitez les relecteurs (ex. Responsable technique, Directeur financier) : ils peuvent **Valider le dossier** ou demander des **Modifications** avec commentaire et budget max. Commentaires en fil plat (pas ancrés ligne par ligne dans le produit actuel). Pas de versions Vn stockées comme feature « historique magique » inventée : le commercial met à jour le devis et renvoie ; le statut reste clair.
 
 ### Relance
 
@@ -281,7 +281,7 @@ Sur les dossiers que l'équipe juge prioritaires, les paniers élevés et les ac
 - [Formulaire contact vs funnel devis B2B](https://www.quotebuilder.co/blog/formulaire-contact-vs-funnel-devis-b2b)
 - [Pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b)
 - [Délai de réponse à une demande de devis](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b)
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b)
 - [Approbation client multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b)
 - [Funnel devis plomberie sanitaire](https://www.quotebuilder.co/secteurs/funnel-devis-plomberie-sanitaire)

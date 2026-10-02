@@ -102,6 +102,7 @@ export const BLOG_TOOL_VISITES_INUTILES = "/outils/estimateur-cout-visites-techn
 export const BLOG_TOOL_PIPELINE_FANTOME = "/outils/estimateur-cout-pipeline-fantome-devis";
 export const BLOG_TOOL_DEMANDES_ORALES = "/outils/estimateur-cout-demandes-orales-non-capturees";
 export const BLOG_TOOL_DOUBLE_SAISIE = "/outils/estimateur-cout-double-saisie-devis";
+export const BLOG_TOOL_HANDOFF = "/outils/estimateur-cout-handoff-commercial-technique-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -116,6 +117,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
   const words: Record<number, string> = {
     27: "Vingt-sept",
     28: "Vingt-huit",
+    29: "Vingt-neuf",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -290,9 +292,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Demandes / mois en double saisie, minutes, % d’infos déformées, % qui meurent ou repartent en clarification, taux horaire, panier. Heures, coût temps, dossiers déformés, opportunités. Calcul 100 % local.",
     tags: ["funnel", "scoring"],
   },
+  {
+    href: BLOG_TOOL_HANDOFF,
+    title: "Estimateur coût handoff commercial → technique",
+    text: "Devis / mois concernés par un handoff, % de briefs incomplets, minutes, taux horaire, panier, % de devis retravaillés. Heures, coût temps, opportunités. Le % évitables est indicatif. Calcul 100 % local.",
+    tags: ["funnel", "scoring"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "transfert-brief-commercial-technique-devis-b2b",
+    path: "/blog/transfert-brief-commercial-technique-devis-b2b",
+    title: "Transfert brief commercial → technique : réduire les allers-retours sur un devis B2B",
+    description:
+      "Handoff commercial ↔ technique / bureau d'études sur un devis B2B : comment un brief funnel (photos, besoin, options, score Hot/Warm/Cold, espace prospect, relecteurs) réduit re-qualifs et erreurs de chiffrage. Sans inventer un chat interne.",
+    publishedAt: "2026-10-02",
+    readingMinutes: 13,
+    tags: ["funnel", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "sources-demande-devis-b2b-funnel-api",
     path: "/blog/sources-demande-devis-b2b-funnel-api",

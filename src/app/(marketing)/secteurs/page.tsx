@@ -149,6 +149,21 @@ export default function SecteursPage() {
             </p>
           </Link>
           <Link
+            href="/secteurs/funnel-devis-metallerie-serrurerie"
+            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
+              Landing secteur
+            </p>
+            <p className="mt-2 text-lg font-semibold tracking-tight">
+              Funnel de devis métallerie et serrurerie
+            </p>
+            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
+              Portails, garde-corps, escaliers, grilles, structures, dépannage. Dimensions, accès,
+              photos. Brief chiffrable, libellé automatique et espace prospect.
+            </p>
+          </Link>
+          <Link
             href="/secteurs/funnel-devis-electricite-tertiaire"
             className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
           >
