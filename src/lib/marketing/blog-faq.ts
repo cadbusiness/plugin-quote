@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "transfert-brief-commercial-technique-devis-b2b": [
+    {
+      q: "Faut-il un outil de chat interne pour le handoff devis ?",
+      a: "Non. Il faut un brief structuré partagé (funnel / dossier) et des règles d’équipe. Un chat sans brief multiplie les allers-retours. QuoteBuilder n’ajoute pas un module chat interne.",
+    },
+    {
+      q: "Que doit contenir un brief commercial pour le technique ?",
+      a: "Type de projet, grandeurs utiles, accès, contraintes, besoin rédigé, photos si pertinentes, options déjà évoquées, owner et prochaine action. Le score aide à ordonner ; il ne remplace pas les photos métier.",
+    },
+    {
+      q: "Le score Hot / Warm / Cold lit-il les photos ?",
+      a: "Non. Sur QuoteBuilder, la formule fixe ignore photos, zone, urgence et contexte. Elle lit notamment surface, load, access, project_type, constraints et la longueur du besoin. Elle n’est pas configurable. Pas de SLA produit.",
+    },
+    {
+      q: "Comment éviter que le technique rappelle le prospect « comme le commercial » ?",
+      a: "Checklist handoff obligatoire avant assignation. Si un champ manque, le commercial complète (ou envoie le lien funnel) avant de passer le dossier.",
+    },
+    {
+      q: "Les relecteurs remplacent-ils la validation interne ?",
+      a: "Non. Les relecteurs (Valider / Modifications + commentaire + budget max) aident côté prospect multi-décideurs, sur un chat fil plat. La validation interne est le garde-fou avant envoi (marge, faisabilité, accès).",
+    },
+    {
+      q: "Peut-on commenter une ligne précise du devis avec le prospect ?",
+      a: "Pas via des commentaires ancrés aux lignes dans QuoteBuilder. Le fil est plat. Pour une variante, mieux vaut une option ou une variante claire qu’un fil de messages sur une ligne.",
+    },
+    {
+      q: "Qui pose le statut Gagné ?",
+      a: "Le commercial (ou le rôle commercial défini dans l’équipe). Pas une acceptation en ligne. « Accepté » n’est qu’un libellé d’espace prospect quand le devis est Gagné ; « Signé » n’est qu’un libellé de graphique de stats.",
+    },
+    {
+      q: "Comment mesurer le coût des mauvais handoffs ?",
+      a: "Comptez les devis / mois concernés, le % de handoffs sales, les minutes perdues, le taux horaire, le % de devis annulés ou repris faute de brief, et un panier moyen. L’estimateur coût handoff formalise le calcul, indicatif et local.",
+    },
+    {
+      q: "Faut-il un funnel différent pour le commercial et pour le technique ?",
+      a: "Non. Même brief. Le commercial capture ; le technique consomme. Les étapes produit restent en ordre fixe ; les Si/Alors orientent surtout les suggestions produits.",
+    },
+    {
+      q: "Comment démarrer sans refondre toute l’orga ?",
+      a: "Une checklist handoff, un funnel sur la page devis et une règle « pas d’assignation technique sans brief minimum » suffisent pour un pilote. Mesurez les minutes de re-qualif avant et après.",
+    },
+  ],
   "sources-demande-devis-b2b-funnel-api": [
     {
       q: "Quelles sont les vraies sources d'une demande dans QuoteBuilder ?",

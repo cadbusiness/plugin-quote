@@ -68,6 +68,11 @@ import {
   computeCoutDemandesOrales,
 } from "./cout-demandes-orales-non-capturees";
 import {
+  COUT_HANDOFF_DEFAULTS,
+  COUT_HANDOFF_LABELS,
+  computeCoutHandoff,
+} from "./cout-handoff-commercial-technique-devis";
+import {
   COUT_DOUBLE_SAISIE_DEFAULTS,
   COUT_DOUBLE_SAISIE_LABELS,
   computeCoutDoubleSaisie,
@@ -150,6 +155,8 @@ for (const required of [
   "/outils/estimateur-cout-pipeline-fantome-devis",
   "/outils/estimateur-cout-demandes-orales-non-capturees",
   "/outils/estimateur-cout-double-saisie-devis",
+  "/outils/estimateur-cout-handoff-commercial-technique-devis",
+  "/blog/transfert-brief-commercial-technique-devis-b2b",
   "/blog/sources-demande-devis-b2b-funnel-api",
   "/blog/telephone-whatsapp-vers-brief-devis-b2b",
   "/blog/statuts-pipeline-devis-b2b",
@@ -175,6 +182,7 @@ for (const required of [
   "/secteurs/funnel-devis-couverture-toiture",
   "/secteurs/funnel-devis-plomberie-sanitaire",
   "/secteurs/funnel-devis-electricite-tertiaire",
+  "/secteurs/funnel-devis-metallerie-serrurerie",
   "/blog/pieces-jointes-plans-photos-devis-b2b",
   "/blog/envoyer-devis-lien-securise-vs-pdf-email",
   "/blog/mentions-obligatoires-devis-france",
@@ -207,20 +215,48 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 38);
-assert.equal(BLOG_TOOLS.length, 28);
+assert.equal(BLOG_POSTS.length, 39);
+assert.equal(BLOG_TOOLS.length, 29);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-demandes-orales-non-capturees"));
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-double-saisie-devis"));
+assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-handoff-commercial-technique-devis"));
 const outilsHub = readFileSync(new URL("../../app/(marketing)/outils/page.tsx", import.meta.url), "utf8");
 assert.match(outilsHub, /outilsHubIntro\(\)/);
 assert.equal(
   outilsHubIntro(),
-  "Vingt-huit outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
+  "Vingt-neuf outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
 );
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
-assert.doesNotMatch(outilsHub, /Vingt-quatre|Vingt-cinq|Vingt-six|Vingt-sept|Vingt-huit/);
+assert.doesNotMatch(outilsHub, /Vingt-quatre|Vingt-cinq|Vingt-six|Vingt-sept|Vingt-huit|Vingt-neuf/);
 assert.match(outilsHub, /estimateur-cout-demandes-orales-non-capturees/);
 assert.match(outilsHub, /estimateur-cout-double-saisie-devis/);
+assert.match(outilsHub, /estimateur-cout-handoff-commercial-technique-devis/);
+assert.deepEqual(
+  BLOG_POSTS.find((post) => post.slug === "transfert-brief-commercial-technique-devis-b2b")?.tags,
+  ["funnel", "scoring"],
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "transfert-brief-commercial-technique-devis-b2b")?.ctaHref,
+  "https://www.quotebuilder.co/signup?plan=free",
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "transfert-brief-commercial-technique-devis-b2b")?.cover,
+  BLOG_DEMO_SHOTS.devisDetail,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "transfert-brief-commercial-technique-devis-b2b")?.readingMinutes,
+  13,
+);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "transfert-brief-commercial-technique-devis-b2b")?.publishedAt,
+  "2026-10-02",
+);
+assert.equal(BLOG_POSTS.find((post) => post.slug === "transfert-brief-commercial-technique-devis-b2b")?.pinned, false);
+assert.equal(
+  BLOG_POSTS.find((post) => post.slug === "transfert-brief-commercial-technique-devis-b2b")?.path,
+  "/blog/transfert-brief-commercial-technique-devis-b2b",
+);
+assert.equal(BLOG_FAQ["transfert-brief-commercial-technique-devis-b2b"]?.length, 10);
 assert.deepEqual(
   BLOG_POSTS.find((post) => post.slug === "sources-demande-devis-b2b-funnel-api")?.tags,
   ["funnel", "scoring"],
@@ -249,6 +285,7 @@ assert.equal(
 assert.equal(BLOG_FAQ["sources-demande-devis-b2b-funnel-api"]?.length, 10);
 const secteursHub = readFileSync(new URL("../../app/(marketing)/secteurs/page.tsx", import.meta.url), "utf8");
 assert.match(secteursHub, /funnel-devis-electricite-tertiaire/);
+assert.match(secteursHub, /funnel-devis-metallerie-serrurerie/);
 assert.deepEqual(
   BLOG_POSTS.find((post) => post.slug === "telephone-whatsapp-vers-brief-devis-b2b")?.tags,
   ["funnel", "scoring"],
@@ -853,8 +890,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 19);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 19);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 20);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 20);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 7);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 6);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);
@@ -1122,6 +1159,24 @@ const requiredSources = {
     "/blog/formulaire-contact-vs-funnel-devis-b2b",
     "/secteurs/funnel-devis-plomberie-sanitaire",
     "/secteurs/funnel-devis-couverture-toiture",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "transfert-brief-commercial-technique-devis-b2b.md": [
+    "/outils/estimateur-cout-handoff-commercial-technique-devis",
+    "/blog/validation-interne-avant-envoi-devis-b2b",
+    "/blog/score-demande-devis-b2b",
+    "/blog/visite-technique-avant-devis-b2b",
+    "/secteurs/funnel-devis-metallerie-serrurerie",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "funnel-devis-metallerie-serrurerie.md": [
+    "/blog/transfert-brief-commercial-technique-devis-b2b",
+    "/blog/visite-technique-avant-devis-b2b",
+    "/blog/qualifier-demande-devis-avant-chiffrage",
+    "/secteurs/funnel-devis-menuiserie-sur-mesure",
+    "/outils/estimateur-cout-handoff-commercial-technique-devis",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -1702,6 +1757,51 @@ for (const { file, dir } of contentFiles) {
   assert.doesNotMatch(tvaBody, /blocs TVA/);
   assert.doesNotMatch(tvaBody, EM_DASH);
   assert.equal(tvaBody.split(/\s+/).filter(Boolean).length, 3314);
+}
+
+{
+  const handoffRaw = readFileSync(join(blogDir, "transfert-brief-commercial-technique-devis-b2b.md"), "utf8");
+  assert.ok(handoffRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const handoffBody = stripFrontmatter(handoffRaw);
+  assert.ok(
+    handoffBody.startsWith("# Transfert brief commercial → technique"),
+    "frontmatter must be stripped before render",
+  );
+  assert.doesNotMatch(handoffBody, /^title:/m);
+  assert.match(handoffBody, /signup\?plan=free/);
+  assert.match(handoffBody, /\/outils\/estimateur-cout-handoff-commercial-technique-devis/);
+  assert.match(handoffBody, /\/secteurs\/funnel-devis-metallerie-serrurerie/);
+  assert.match(handoffBody, /\/c\/demo\/rayonnage/);
+  assert.match(handoffBody, /module de chat interne/);
+  assert.match(handoffBody, /formule fixe/);
+  assert.match(handoffBody, /Gagné/);
+  assert.match(handoffBody, /fil plat|chat \*\*plat\*\*/);
+  assert.match(handoffBody, /Pas de versions Vn|pas de versions Vn/i);
+  assert.match(handoffBody, /pixel e-mail/);
+  assert.doesNotMatch(handoffBody, /signature électronique/);
+  assert.doesNotMatch(handoffBody, EM_DASH);
+  assert.equal(handoffBody.split(/\s+/).filter(Boolean).length, 3118);
+}
+
+{
+  const metalRaw = readFileSync(join(blogDir, "funnel-devis-metallerie-serrurerie.md"), "utf8");
+  assert.ok(metalRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
+  const metalBody = stripFrontmatter(metalRaw);
+  assert.ok(
+    metalBody.startsWith("# Funnel de devis métallerie et serrurerie"),
+    "frontmatter must be stripped before render",
+  );
+  assert.match(metalBody, /signup\?plan=free/);
+  assert.match(metalBody, /\/blog\/transfert-brief-commercial-technique-devis-b2b/);
+  assert.match(metalBody, /\/outils\/estimateur-cout-handoff-commercial-technique-devis/);
+  assert.match(metalBody, /ordre fixe/);
+  assert.match(metalBody, /il n'existe pas de template secteur/);
+  assert.match(metalBody, /\/c\/demo\/rayonnage/);
+  assert.match(metalBody, /menuiserie/);
+  assert.match(metalBody, /Gagné/);
+  assert.doesNotMatch(metalBody, /signature électronique/);
+  assert.doesNotMatch(metalBody, EM_DASH);
+  assert.equal(metalBody.split(/\s+/).filter(Boolean).length, 2963);
 }
 
 {
@@ -3508,6 +3608,134 @@ assert.equal(oralesHigh.totalTone, "bad");
 assert.equal(oralesHigh.oppTone, "bad");
 assert.match(oralesHigh.tip, /checklist collable/);
 
+const handoffDefault = computeCoutHandoff({ ...COUT_HANDOFF_DEFAULTS });
+assert.equal(handoffDefault.mauvais, 24);
+assert.equal(handoffDefault.heures, 14);
+assert.equal(handoffDefault.cout, 910);
+assert.equal(handoffDefault.deals, 3.6);
+assert.equal(handoffDefault.opp, 19800);
+assert.equal(handoffDefault.total, 20710);
+assert.equal(handoffDefault.evitables, 13.2);
+assert.equal(handoffDefault.alertTone, "bad");
+assert.equal(handoffDefault.totalTone, "bad");
+assert.equal(handoffDefault.oppTone, "bad");
+assert.match(handoffDefault.alert, /Friction handoff élevée/);
+assert.match(handoffDefault.recap, /Checklist rapide/);
+assert.match(handoffDefault.recap, /Gagné \/ Perdu posés par le commercial/);
+assert.match(handoffDefault.recap, /formule fixe/);
+assert.match(handoffDefault.recap, /chat fil plat/);
+assert.match(handoffDefault.recap, /pas de TVA inventée/);
+assert.doesNotMatch(handoffDefault.recap, /signature électronique/);
+assert.doesNotMatch(handoffDefault.recap, /première ouverture/);
+assert.equal(
+  COUT_HANDOFF_LABELS.devis,
+  "Devis / mois concernés par un handoff commercial→technique",
+);
+assert.equal(COUT_HANDOFF_LABELS.total, "Coût total indicatif mensuel");
+assert.equal(COUT_HANDOFF_LABELS.evitables, "Handoffs qui auraient pu être évités (indicatif)");
+
+const handoffEmpty = computeCoutHandoff({ ...COUT_HANDOFF_DEFAULTS, devis: 0 });
+assert.equal(handoffEmpty.mauvais, 0);
+assert.equal(handoffEmpty.heures, 0);
+assert.equal(handoffEmpty.cout, 0);
+assert.equal(handoffEmpty.opp, 0);
+assert.equal(handoffEmpty.total, 0);
+assert.equal(handoffEmpty.evitables, 0);
+assert.equal(handoffEmpty.alertTone, "neutral");
+assert.match(handoffEmpty.alert, /volume de devis/);
+
+const handoffNoBasket = computeCoutHandoff({ ...COUT_HANDOFF_DEFAULTS, panier: 0 });
+assert.equal(handoffNoBasket.opp, null);
+assert.equal(handoffNoBasket.oppLabel, "non calculé (panier = 0)");
+assert.equal(handoffNoBasket.total, handoffNoBasket.cout);
+assert.equal(handoffNoBasket.oppTone, "neutral");
+assert.equal(handoffNoBasket.alertTone, "warn");
+assert.match(handoffNoBasket.recap, /Opportunités indicatives : n\/a/);
+
+const handoffEvitablesIgnored = computeCoutHandoff({ ...COUT_HANDOFF_DEFAULTS, pctEvitables: 0 });
+assert.equal(handoffEvitablesIgnored.evitables, 0);
+assert.equal(handoffEvitablesIgnored.total, handoffDefault.total);
+assert.equal(handoffEvitablesIgnored.cout, handoffDefault.cout);
+assert.equal(handoffEvitablesIgnored.opp, handoffDefault.opp);
+
+const handoffLow = computeCoutHandoff({
+  devis: 10,
+  pctSales: 10,
+  minutes: 10,
+  pctEvitables: 20,
+  taux: 40,
+  pctRetrav: 1,
+  panier: 500,
+});
+assert.equal(handoffLow.mauvais, 1);
+assert.equal(handoffLow.heures, 0.2);
+assert.equal(handoffLow.cout, 8);
+assert.equal(handoffLow.deals, 0.1);
+assert.equal(handoffLow.opp, 50);
+assert.equal(handoffLow.total, 58);
+assert.equal(handoffLow.evitables, 0.2);
+assert.equal(handoffLow.alertTone, "ok");
+assert.match(handoffLow.alert, /Friction handoff contenue/);
+
+const handoffWarn = computeCoutHandoff({
+  devis: 40,
+  pctSales: 40,
+  minutes: 30,
+  pctEvitables: 10,
+  taux: 50,
+  pctRetrav: 2,
+  panier: 1000,
+});
+assert.equal(handoffWarn.mauvais, 16);
+assert.equal(handoffWarn.heures, 8);
+assert.equal(handoffWarn.cout, 400);
+assert.equal(handoffWarn.deals, 0.8);
+assert.equal(handoffWarn.opp, 800);
+assert.equal(handoffWarn.total, 1200);
+assert.equal(handoffWarn.alertTone, "warn");
+assert.equal(handoffWarn.totalTone, "ok");
+assert.match(handoffWarn.tip, /photos \/ grandeurs/);
+
+const handoffHigh = computeCoutHandoff({
+  devis: 200,
+  pctSales: 80,
+  minutes: 40,
+  pctEvitables: 70,
+  taux: 80,
+  pctRetrav: 10,
+  panier: 8000,
+});
+assert.equal(handoffHigh.mauvais, 160);
+assert.equal(handoffHigh.heures, 106.7);
+assert.equal(handoffHigh.cout, 8536);
+assert.equal(handoffHigh.deals, 20);
+assert.equal(handoffHigh.opp, 160000);
+assert.equal(handoffHigh.total, 168536);
+assert.equal(handoffHigh.evitables, 112);
+assert.equal(handoffHigh.alertTone, "bad");
+assert.equal(handoffHigh.totalTone, "bad");
+assert.equal(handoffHigh.oppTone, "bad");
+assert.match(handoffHigh.tip, /checklist handoff/);
+
+const handoffClamp = computeCoutHandoff({
+  devis: -5,
+  pctSales: 140,
+  minutes: 2000,
+  pctEvitables: 140,
+  taux: 20000,
+  pctRetrav: 140,
+  panier: -1,
+});
+assert.equal(handoffClamp.devis, 0);
+assert.equal(handoffClamp.pctSales, 100);
+assert.equal(handoffClamp.minutes, 1440);
+assert.equal(handoffClamp.pctEvitables, 100);
+assert.equal(handoffClamp.taux, 10000);
+assert.equal(handoffClamp.pctRetrav, 100);
+assert.equal(handoffClamp.panier, 0);
+assert.equal(handoffClamp.opp, null);
+assert.equal(handoffClamp.alertTone, "neutral");
+
 const oralesClamp = computeCoutDemandesOrales({
   orales: -5,
   pctNonCapturees: 140,
@@ -3856,6 +4084,9 @@ for (const expected of [
   { path: "/outils/checklist-mentions-devis-france", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
   { path: "/blog/pieces-jointes-plans-photos-devis-b2b", priority: 0.8, lastmod: "2026-09-25" },
+  { path: "/blog/transfert-brief-commercial-technique-devis-b2b", priority: 0.8, lastmod: "2026-10-02" },
+  { path: "/outils/estimateur-cout-handoff-commercial-technique-devis", priority: 0.7, lastmod: "2026-10-02" },
+  { path: "/secteurs/funnel-devis-metallerie-serrurerie", priority: 0.8, lastmod: "2026-10-02" },
   { path: "/blog/sources-demande-devis-b2b-funnel-api", priority: 0.8, lastmod: "2026-10-01" },
   { path: "/outils/estimateur-cout-double-saisie-devis", priority: 0.7, lastmod: "2026-10-01" },
   { path: "/blog/telephone-whatsapp-vers-brief-devis-b2b", priority: 0.8, lastmod: "2026-10-01" },
@@ -3908,6 +4139,9 @@ assert.ok(paths.includes("/blog/sources-demande-devis-b2b-funnel-api"));
 assert.ok(paths.includes("/outils/estimateur-cout-double-saisie-devis"));
 assert.ok(paths.includes("/blog/telephone-whatsapp-vers-brief-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-demandes-orales-non-capturees"));
+assert.ok(paths.includes("/blog/transfert-brief-commercial-technique-devis-b2b"));
+assert.ok(paths.includes("/outils/estimateur-cout-handoff-commercial-technique-devis"));
+assert.ok(paths.includes("/secteurs/funnel-devis-metallerie-serrurerie"));
 assert.ok(paths.includes("/secteurs/funnel-devis-electricite-tertiaire"));
 assert.ok(paths.includes("/blog/statuts-pipeline-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-pipeline-fantome-devis"));
@@ -4313,6 +4547,9 @@ const llmsPaths = [
   "/blog/telephone-whatsapp-vers-brief-devis-b2b",
   "/secteurs/funnel-devis-electricite-tertiaire",
   "/outils/estimateur-cout-demandes-orales-non-capturees",
+  "/blog/transfert-brief-commercial-technique-devis-b2b",
+  "/secteurs/funnel-devis-metallerie-serrurerie",
+  "/outils/estimateur-cout-handoff-commercial-technique-devis",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -4692,6 +4929,9 @@ assert.equal(tvaSameRate.alertTone, "ok");
 assert.equal(tvaSameRate.showBreakdown, true);
 
 for (const [path, lastmod] of [
+  ["/blog/transfert-brief-commercial-technique-devis-b2b", "2026-10-02"],
+  ["/outils/estimateur-cout-handoff-commercial-technique-devis", "2026-10-02"],
+  ["/secteurs/funnel-devis-metallerie-serrurerie", "2026-10-02"],
   ["/blog/sources-demande-devis-b2b-funnel-api", "2026-10-01"],
   ["/outils/estimateur-cout-double-saisie-devis", "2026-10-01"],
   ["/blog/telephone-whatsapp-vers-brief-devis-b2b", "2026-10-01"],
