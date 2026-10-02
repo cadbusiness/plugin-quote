@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "notes-internes-dossier-devis-equipe-b2b": [
+    {
+      q: "Qu'est-ce qu'une note interne sur un dossier devis ?",
+      a: "Un texte d'équipe collé au dossier (risque, décision, synthèse d'appel, handoff), visible à l'équipe seulement, séparé du fil prospect. Dans QuoteBuilder : notes sur l'enregistrement devis, pas un chat interne inventé.",
+    },
+    {
+      q: "Quelle différence avec le fil de l'espace prospect ?",
+      a: "Le fil prospect est un chat plat visible au prospect (clarifs, options, photos). Les réponses équipe n'y affichent pas de nom d'auteur. Les notes internes, elles, ne doivent pas y apparaître. Feature : espace prospect.",
+    },
+    {
+      q: "Et la validation interne / les relecteurs ?",
+      a: "La validation interne est votre garde-fou avant envoi. Les relecteurs (ex. Responsable technique, Directeur financier) ont chacun un lien 30 jours : Valider le dossier ou Modifications + commentaire + budget max. Les notes internes préparent ces arbitrages ; elles ne les remplacent pas.",
+    },
+    {
+      q: "QuoteBuilder a-t-il un chat interne d'équipe ?",
+      a: "Non au sens « module chat interne temps réel ». Il y a des notes internes sur le dossier, un fil prospect plat, et le flux relecteurs. Gardez Slack pour l'alerte, le dossier pour la mémoire.",
+    },
+    {
+      q: "Peut-on ancrer un commentaire sur une ligne du devis ?",
+      a: "Non dans le modèle produit actuel. Pas de commentaires ancrés aux lignes. Fil plat + notes sur le dossier + relecture Valider / Modifications.",
+    },
+    {
+      q: "Qui voit la dernière consultation du prospect ?",
+      a: "Une dernière vue relative apparaît côté fiche devis commercial / équipe. Ce n'est pas un open-tracking avancé dans l'espace prospect. Les notes internes aident à décider quoi faire après ce signal.",
+    },
+    {
+      q: "Comment lier notes internes, score et assignation ?",
+      a: "Le score Hot / Warm / Cold trie à la soumission (formule fixe). L'assignation donne un propriétaire. Les notes portent le contexte que le score n'encode pas (urgence perçue, risque marge, concurrent). Pas de SLA produit ; le délai reste une règle d'équipe.",
+    },
+    {
+      q: "Que faire du contexte capté au téléphone ou sur WhatsApp ?",
+      a: "Le convertir le jour même en brief (préfill / funnel) puis écrire 3-5 lignes en notes internes.",
+    },
+    {
+      q: "Comment estimer le coût du contexte hors dossier ?",
+      a: "Minutes de re-brief × volume × taux, plus une part de dossiers morts / clarifs faute de contexte × panier. L'estimateur coût du contexte hors dossier devis le fait en local dans le navigateur.",
+    },
+    {
+      q: "Accepté, Signé, versions, TVA : ça change les notes internes ?",
+      a: "Non. Accepté / Signé ne sont pas des statuts CRM ; Gagné / Perdu sont posés par le commercial ; pas de versions Vn ; pas d'acceptation en ligne prospect ; pas de TVA stockée (fourchette min-max). Les notes internes restent la mémoire équipe.",
+    },
+  ],
   "transfert-brief-commercial-technique-devis-b2b": [
     {
       q: "Faut-il un outil de chat interne pour le handoff devis ?",
