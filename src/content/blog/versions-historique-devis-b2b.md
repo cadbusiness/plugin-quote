@@ -111,7 +111,7 @@ Sans ce journal, la comparaison de versions devient une lecture ligne à ligne s
 
 ### Étape 4 : une seule version « active » pour le prospect
 
-À tout moment, dans ce process général, le dossier a **une** version active côté client. Les précédentes restent consultables (historique), marquées « remplacées ». Les relances d’équipe pointent vers cet envoi. L’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) QuoteBuilder, lui, montre le dossier courant, sans historique de versions. Sinon, hors produit, le prospect ouvre un vieux PDF pendant que vous négociez autre chose.
+À tout moment, dans ce process général, le dossier a **une** version active côté client. Les précédentes restent consultables (historique), marquées « remplacées ». Les relances d’équipe pointent vers cet envoi. L’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) QuoteBuilder, lui, montre le dossier courant, sans historique de versions. Sinon, hors produit, le prospect ouvre un vieux PDF pendant que vous négociez autre chose.
 
 ### Étape 5 : envoi tracé, pas « je pense que j’ai envoyé »
 
@@ -244,7 +244,7 @@ Traitez-le comme un incident process. Vérifiez le contenu signé, confirmez par
 
 ### PDF, lien magique, ou les deux ?
 
-L’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) QuoteBuilder montre le dossier courant. Il n’expose pas une version « active » parmi plusieurs, et il n’y a pas de numéro de version. Le PDF reste utile pour l’archivage. La signature en ligne est hors produit.
+L’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) QuoteBuilder montre le dossier courant. Il n’expose pas une version « active » parmi plusieurs, et il n’y a pas de numéro de version. Le PDF reste utile pour l’archivage. La signature en ligne est hors produit.
 
 ### Comment versionner quand plusieurs commerciaux touchent le dossier ?
 

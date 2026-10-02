@@ -1107,7 +1107,7 @@ const requiredSources = {
     "/signup?plan=free",
   ],
   "envoyer-devis-lien-securise-vs-pdf-email.md": [
-    "/blog/espace-prospect-devis-en-ligne",
+    "/fonctionnalites/espace-prospect",
     "/blog/configurateur-devis-vs-excel-pdf",
     "/blog/versions-historique-devis-b2b",
     "/blog/signature-acceptation-devis-en-ligne-b2b",
@@ -1138,7 +1138,7 @@ const requiredSources = {
     "/outils/estimateur-cout-relances-aveugles-devis",
     "/blog/envoyer-devis-lien-securise-vs-pdf-email",
     "/blog/relancer-devis-hot-depuis-dossier",
-    "/blog/espace-prospect-devis-en-ligne",
+    "/fonctionnalites/espace-prospect",
     "/c/demo/rayonnage",
     "/signup?plan=free",
   ],
@@ -1177,7 +1177,7 @@ const requiredSources = {
     "/blog/qualifier-demande-devis-avant-chiffrage",
     "/secteurs/funnel-devis-menuiserie-sur-mesure",
     "/outils/estimateur-cout-handoff-commercial-technique-devis",
-    "/c/demo/rayonnage",
+    "Escalier / garde-corps",
     "/signup?plan=free",
   ],
   "sources-demande-devis-b2b-funnel-api.md": [
@@ -1362,7 +1362,7 @@ const requiredSources = {
     "/blog/acomptes-echeances-devis-b2b/img-3.png",
     "/blog/acomptes-echeances-devis-b2b/img-4.png",
     "/blog/validite-expiration-devis-b2b",
-    "/blog/espace-prospect-devis-en-ligne",
+    "/fonctionnalites/espace-prospect",
     "/blog/signature-acceptation-devis-en-ligne-b2b",
     "/blog/options-variantes-alternatives-devis-b2b",
     "/blog/versions-historique-devis-b2b",
@@ -1428,7 +1428,7 @@ const requiredSources = {
   ],
   "signature-acceptation-devis-en-ligne-b2b.md": [
     "/blog/versions-historique-devis-b2b",
-    "/blog/espace-prospect-devis-en-ligne",
+    "/fonctionnalites/espace-prospect",
     "/blog/qualifier-demande-devis-avant-chiffrage",
     "/blog/relancer-devis-hot-depuis-dossier",
     "/blog/centraliser-demandes-devis-multi-canaux",
@@ -1780,7 +1780,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(handoffBody, /pixel e-mail/);
   assert.doesNotMatch(handoffBody, /signature électronique/);
   assert.doesNotMatch(handoffBody, EM_DASH);
-  assert.equal(handoffBody.split(/\s+/).filter(Boolean).length, 3118);
+  assert.equal(handoffBody.split(/\s+/).filter(Boolean).length, 3156);
 }
 
 {
@@ -1796,12 +1796,13 @@ for (const { file, dir } of contentFiles) {
   assert.match(metalBody, /\/outils\/estimateur-cout-handoff-commercial-technique-devis/);
   assert.match(metalBody, /ordre fixe/);
   assert.match(metalBody, /il n'existe pas de template secteur/);
-  assert.match(metalBody, /\/c\/demo\/rayonnage/);
+  assert.match(metalBody, /Escalier \/ garde-corps/);
+  assert.doesNotMatch(metalBody, /\/c\/demo\/rayonnage/);
   assert.match(metalBody, /menuiserie/);
   assert.match(metalBody, /Gagné/);
   assert.doesNotMatch(metalBody, /signature électronique/);
   assert.doesNotMatch(metalBody, EM_DASH);
-  assert.equal(metalBody.split(/\s+/).filter(Boolean).length, 2963);
+  assert.equal(metalBody.split(/\s+/).filter(Boolean).length, 2995);
 }
 
 {
@@ -1829,7 +1830,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(sourcesBody, /pas de kits/);
   assert.doesNotMatch(sourcesBody, /signature électronique/);
   assert.doesNotMatch(sourcesBody, EM_DASH);
-  assert.equal(sourcesBody.split(/\s+/).filter(Boolean).length, 2876);
+  assert.equal(sourcesBody.split(/\s+/).filter(Boolean).length, 2950);
 }
 
 {
@@ -2012,7 +2013,7 @@ for (const { file, dir } of contentFiles) {
   assert.match(validationBody, /\/outils\/estimateur-cout-devis-sans-validation/);
   assert.match(validationBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(validationBody, EM_DASH);
-  assert.equal(validationBody.split(/\s+/).filter(Boolean).length, 2760);
+  assert.equal(validationBody.split(/\s+/).filter(Boolean).length, 2753);
 }
 
 {

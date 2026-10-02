@@ -24,7 +24,7 @@ Mardi 10 h 40. Le commercial envoie un message dans le canal équipe : « Dossie
 
 Dans beaucoup d'équipes B2B, le devis passe par un handoff commercial → technique (ou bureau d'études, ou atelier, ou pose). Ce n'est pas un détail organisationnel. C'est là que se perdent les minutes, les marges et parfois le deal : re-qualification, reprise de lignes, [visite déclenchée trop tôt](https://www.quotebuilder.co/blog/visite-technique-avant-devis-b2b), fourchette trop large, ou devis trop optimiste faute de contraintes.
 
-Ce guide explique comment un **brief funnel** (photos prospect, besoin rédigé, options / variantes, score Hot / Warm / Cold à formule fixe, [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne), relecteurs Valider / Modifications) réduit les allers-retours sans inventer un module de chat interne ni une saisie manuelle magique.
+Ce guide explique comment un **brief funnel** (photos prospect, besoin rédigé, options / variantes, score Hot / Warm / Cold à formule fixe, [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect), relecteurs Valider / Modifications) réduit les allers-retours sans inventer un module de chat interne ni une saisie manuelle magique.
 
 
 **Moins de re-qualifs entre commercial et technique :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) (sans compte).
@@ -45,6 +45,8 @@ L'objectif n'est pas de supprimer le dialogue. C'est que le dialogue parte d'un 
 - une saisie / import manuel de devis inventé : les dossiers arrivent via funnel, API leads, plugins, agent chat ou [préremplissage URL](https://www.quotebuilder.co/blog/preremplir-devis-url-parametres) ;
 - une acceptation ou signature en ligne inventée comme substitut au closing ;
 - un score magique qui remplace le jugement métier, ni un SLA produit attaché au score.
+
+Sur la fiche devis, côté commercial, l'équipe a des **notes internes** : un texte de dossier, visible par l'équipe, pour le handoff (contrainte, prochaine action, point d'avancement).
 
 L'angle : **qualité du brief d'entrée** + process de [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b) + partage prospect clair. Pas un « collab chat » inventé.
 
@@ -121,7 +123,7 @@ Cette checklist n'est pas un gadget. C'est le **contrat** entre commercial et te
 4. **Handoff** : owner technique nommé ; checklist cochée ; pas de « à voir » sans objet.
 5. **Chiffrage** : lignes catalogue, options / variantes / produits liés (pas de kits / bundles magiques à inventer).
 6. **Validation interne** si Hot / panier élevé / accès complexe ([validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b)).
-7. **Envoi** : lien [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne). Relecteurs : **Valider le dossier** ou **Modifications** + commentaire + budget max ; chat en fil plat. Pas de commentaires ancrés aux lignes.
+7. **Envoi** : lien [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect). Relecteurs : **Valider le dossier** ou **Modifications** + commentaire + budget max ; chat en fil plat. Pas de commentaires ancrés aux lignes.
 8. **Clôture** : le commercial pose **Gagné** ou **Perdu**. Statuts CRM uniquement : Commencée, Nouveau, Contacté, En cours, Gagné, Perdu, En attente. Pas d'acceptation en ligne inventée. Pas de versions Vn à promettre.
 
 Sur la fiche, l'espace prospect peut afficher une **dernière consultation** en texte relatif. Pas de suivi d'ouverture avancé (première ouverture, compteur, historique, alertes, pixel e-mail). Les signaux utiles restent relecteurs + notifications + statut CRM.
@@ -216,7 +218,7 @@ Le [délai de réponse](https://www.quotebuilder.co/blog/delai-reponse-demande-d
 
 Règle simple pour éviter les doubles messages :
 - le **commercial** reste l'owner relation tant que le statut n'est pas Gagné / Perdu ;
-- le **technique** peut poser des questions ciblées (accès, cote manquante) via le commercial, ou dans le fil prospect si vous avez décidé que le chargé d'affaires est visible ;
+- le **technique** peut poser des questions ciblées (accès, cote manquante) via le commercial, ou écrire dans le fil prospect. Dans ce fil, la réponse de l'équipe part sans nom d'auteur : le chargé d'affaires reste anonyme pour le prospect ;
 - les **relecteurs** répondent sur Valider / Modifications ; ce n'est pas un canal de chiffrage libre.
 
 Les relances scorées restent courtes et métier ([relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier)). Évitez le « avez-vous lu ? » : préférez une question sur une option ou une contrainte. Sur QuoteBuilder, vous n'avez pas un historique d'ouvertures avancé : la dernière consultation relative aide un peu ; les badges relecteurs et les notifications aident davantage.
@@ -278,7 +280,7 @@ Une checklist handoff + un funnel sur la page devis + une règle « pas d'assign
 - [Validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b)
 - [Visite technique avant devis B2B](https://www.quotebuilder.co/blog/visite-technique-avant-devis-b2b)
 - [Score d'une demande de devis B2B](https://www.quotebuilder.co/blog/score-demande-devis-b2b)
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)
 - [Statuts d'un pipeline devis B2B](https://www.quotebuilder.co/blog/statuts-pipeline-devis-b2b)
 - [Téléphone et WhatsApp vers brief](https://www.quotebuilder.co/blog/telephone-whatsapp-vers-brief-devis-b2b)

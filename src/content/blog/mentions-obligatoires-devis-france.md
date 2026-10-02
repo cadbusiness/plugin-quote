@@ -118,7 +118,7 @@ Affichez de façon stable :
 
 Sujet voisin : la [remise commerciale et la marge](https://www.quotebuilder.co/blog/remise-commerciale-marge-devis-b2b). Une remise « -12 % » sans dire sur quoi, ni jusqu’à quand, crée des disputes après acceptation.
 
-Astuce process : le total affiché sur le devis, sur l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) et sur l’export PDF doit être **le même**. Si vous avez trois totaux selon le canal, le problème n’est plus juridique, il est opérationnel.
+Astuce process : le total affiché sur le devis, sur l’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) et sur l’export PDF doit être **le même**. Si vous avez trois totaux selon le canal, le problème n’est plus juridique, il est opérationnel.
 
 ## Validité et délais
 

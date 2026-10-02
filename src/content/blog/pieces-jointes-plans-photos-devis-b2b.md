@@ -88,7 +88,7 @@ Un brief chiffrable n’est pas un roman. C’est un **paquet minimum** :
 
 Vous n’avez pas toujours tout le jour J. L’important est de **savoir ce qui manque** et de le demander au même endroit, pas dans trois apps.
 
-Le funnel (wizard) peut déjà filtrer : « j’ai un plan », « j’ai des photos », « je n’ai rien encore ». L’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) complète ensuite : le prospect dépose ce qu’il a quand il l’a.
+Le funnel (wizard) peut déjà filtrer : « j’ai un plan », « j’ai des photos », « je n’ai rien encore ». L’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) complète ensuite : le prospect dépose ce qu’il a quand il l’a.
 
 ## Process métier : où placer les documents
 
@@ -179,7 +179,7 @@ Bon réflexe logiciel :
 
 ## Rôle de l’espace prospect pour les pièces jointes
 
-L’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) n’est pas un gadget « joli lien ». C’est le **tiroir partagé** :
+L’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) n’est pas un gadget « joli lien ». C’est le **tiroir partagé** :
 
 - le prospect dépose photos et plans sans créer un nouveau canal ;
 - plusieurs décideurs voient les mêmes fichiers ;
@@ -301,7 +301,7 @@ L’[estimateur coût aller-retours brief / photos](https://www.quotebuilder.co/
 
 ## Pour aller plus loin
 
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Qualifier une demande avant chiffrage](https://www.quotebuilder.co/blog/qualifier-demande-devis-avant-chiffrage)
 - [Versions et historique des devis](https://www.quotebuilder.co/blog/versions-historique-devis-b2b)
 - [Envoyer un devis : lien sécurisé vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email)

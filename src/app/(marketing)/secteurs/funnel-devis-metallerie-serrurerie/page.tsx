@@ -44,7 +44,7 @@ const FAQ = [
   },
   {
     q: "Existe-t-il un template « métallerie » dans QuoteBuilder ?",
-    a: "Non. La démo rayonnage et le funnel menuiserie montrent le principe, qui se transpose. Branchez votre catalogue (options, variantes, produits liés). Pas de template secteur métallerie à activer d’un clic.",
+    a: "Non. Le plus proche est le template Menuisier, option « Escalier / garde-corps ». Vous adaptez les questions et vous branchez votre catalogue (options, variantes, produits liés). Pas de template secteur métallerie à activer d’un clic.",
   },
   {
     q: "Combien d’étapes idéales ?",
@@ -129,8 +129,8 @@ export default function MetallerieSerrurerieLandingPage() {
 
       <MarketingFaq items={FAQ} />
       <MarketingCta
-        title="Essayer gratuitement"
-        text="Posez type d’ouvrage, dimensions, accès et photos dans un ordre fixe. Le plan Free suffit pour voir l’interface, sans carte. La démo rayonnage montre le principe ; il se transpose. Pas de template secteur métallerie."
+        title="Partir du template Menuisier"
+        text="Option « Escalier / garde-corps » : type d’ouvrage, dimensions, accès et photos, dans un ordre fixe. Adaptez le catalogue. Il n’existe pas de template métallerie dédié. Le plan Free suffit pour voir l’interface, sans carte."
       />
     </>
   );

@@ -68,7 +68,7 @@ Le funnel demande le plan (ou au minimum une photo + surface + schéma) **avant*
 
 ### 3. Multi-interlocuteurs
 
-Facility, RH, direction, architecte d’intérieur, entreprise générale. Le PDF circule. La mauvaise version revient « validée ». Un lien d’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) unique limite la casse.
+Facility, RH, direction, architecte d’intérieur, entreprise générale. Le PDF circule. La mauvaise version revient « validée ». Un lien d’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) unique limite la casse.
 
 ### 4. Chantier en site occupé
 

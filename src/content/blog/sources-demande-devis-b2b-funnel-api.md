@@ -81,11 +81,15 @@ Votre site, votre middleware ou un outil métier envoie un lead structuré. Mêm
 
 Le site vitrine ou la boutique pousse la demande vers QuoteBuilder. Pour WordPress, le playbook est dans [recevoir des demandes WordPress](https://www.quotebuilder.co/blog/recevoir-demandes-devis-wordpress-quotebuilder). Le catalogue peut rester synchronisé pour éviter une autre forme de double saisie (prix / variantes) : [sync catalogue Woo / Shopify](https://www.quotebuilder.co/blog/sync-catalogue-woocommerce-shopify-parcours-devis).
 
-### 4. Agent chat
+### 4. Devis démarrés côté plugin
+
+Le plugin peut ouvrir le dossier avant l'envoi. Quand le visiteur quitte le formulaire avec un e-mail valide, QuoteBuilder crée un devis au statut **Commencée**. L'envoi met à jour ce même dossier, sans en créer un second. Ce n'est pas une saisie commerciale dans le back-office : c'est le parcours commencé côté plugin.
+
+### 5. Agent chat
 
 Une conversation guidée peut aboutir à une demande structurée, sans passer par un mail libre. Ce n'est pas un « créer devis » back-office : c'est encore une **entrée** qui produit un dossier.
 
-### 5. Lien préfill pour le commercial (aide sans retyper hors funnel)
+### 6. Lien préfill pour le commercial (aide sans retyper hors funnel)
 
 Quand le prospect appelle ou envoie un WhatsApp, le vendeur n'ouvre pas un écran magique de création. Il peut **préremplir le funnel via URL** (paramètres) et envoyer le lien, ou le remplir avec le prospect. Le dossier naît toujours du funnel. Guide : [préremplir un devis via l'URL](https://www.quotebuilder.co/blog/preremplir-devis-url-parametres). Outil : [générateur d'URL préfill](https://www.quotebuilder.co/outils/generateur-url-prefill-devis).
 
@@ -129,7 +133,7 @@ Pour rester honnête sur le produit :
 - pas de TVA stockée sur les lignes (fourchette indicative min-max en euros) ;
 - pas de kits : seulement des options, des variantes et des produits liés ;
 - pas de branchement conditionnel du funnel : questions dans un ordre fixe, règles Si/Alors pour suggérer des produits sans sauter d'étape ;
-- pas de suivi d'ouverture avancé (seulement une dernière consultation relative sur l'espace prospect) ;
+- pas de suivi d'ouverture avancé (seulement le « vu … » affiché sur la fiche devis côté commercial) ;
 - statuts CRM fixes seulement : Commencée, Nouveau, Contacté, En cours, Gagné, Perdu, En attente (Accepté / Signé ne sont pas des statuts).
 
 Le modèle pousse à **naître juste**, pas à corriger après coup dans un éditeur fourre-tout.
@@ -202,7 +206,7 @@ Pont réel (plugin / widget) plutôt que mail vers devis@ : [widget](https://www
 
 - **Statut CRM** fixe : [statuts pipeline](https://www.quotebuilder.co/blog/statuts-pipeline-devis-b2b).
 - **Score** Hot / Warm / Cold à la soumission pour **ordonner**, pas remplacer le statut.
-- **Espace prospect** : dernière consultation relative seulement (pas d'open-tracking avancé).
+- **Fiche devis, côté commercial** : le « vu … » seulement (pas d'open-tracking avancé).
 - **Relecteurs** : Valider / Modifications (+ commentaire + budget max), chat fil plat.
 - **Gagné / Perdu** posés par le commercial (pas de signature prospect auto).
 
@@ -243,7 +247,7 @@ Un dossier resaisi ne se « soigne » pas avec plus de relances : la qualité se
 
 ### 1. Quelles sont les vraies sources d'une demande dans QuoteBuilder ?
 
-Funnel public, `/api/leads`, plugins / intégrations (WordPress, Woo, Shopify, etc.), agent chat, ou un commercial qui remplit / envoie un **lien préfill** vers le funnel. Pas d'écran « créer devis » manuel, pas d'import de devis.
+Funnel public, `/api/leads`, plugins / intégrations (WordPress, Woo, Shopify, etc.), devis démarrés côté plugin (statut Commencée), agent chat, ou un commercial qui remplit / envoie un **lien préfill** vers le funnel. Pas d'écran « créer devis » manuel, pas d'import de devis.
 
 ### 2. Pourquoi refuser la saisie manuelle si mon équipe est habituée à Excel ?
 
@@ -281,4 +285,4 @@ Un formulaire contact pauvre recrée la double saisie. Un funnel (ou un pont plu
 
 Non. Le produit ne les porte pas. Pas de date de validité, pas de versions Vn, pas de signature en ligne prospect, pas de kits (options, variantes, produits liés), pas de TVA stockée (fourchette min-max). Le funnel n'a pas de branchement conditionnel : ordre fixe, Si/Alors pour suggérer des produits. Accepté / Signé ne sont pas des statuts CRM. La priorité « sources » reste : naître juste, une fois, sans resaisie.
 
-<!-- PLACEHOLDER IMAGE: récap 5 sources saines + préfill vendeur (shoot Content) -->
+<!-- PLACEHOLDER IMAGE: récap 6 sources saines + préfill vendeur (shoot Content) -->

@@ -41,7 +41,7 @@ Chez vous, un gate interne évite d'envoyer trop tôt. Chez le client, plusieurs
 3. **Acheteur** : finalisation et conditions d'achat.
 4. **Décideur** : autre personne interne chez le prospect.
 
-Le contact principal n'est pas un cinquième rôle. C'est lui qui tient l'[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne). Il peut inviter ces personnes. Le commercial peut aussi les inviter depuis le dossier.
+Le contact principal n'est pas un cinquième rôle. C'est lui qui tient l'[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect). Il peut inviter ces personnes. Le commercial peut aussi les inviter depuis le dossier.
 
 Chaque relecteur ouvre son lien (valable 30 jours). Il voit la configuration. Il peut indiquer un budget max et écrire **un** commentaire. Ensuite il choisit **Valider le dossier** ou **Modifications** (le bouton dit « Demander des modifications »).
 
@@ -375,7 +375,7 @@ C'est le commercial qui passe le devis en **Gagné** (l'espace prospect affiche 
 
 - [Validation interne avant envoi d'un devis B2B](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b)
 - [Devis en ligne : dernière consultation, relecteurs et relances](https://www.quotebuilder.co/blog/suivi-ouverture-lecture-devis-en-ligne-b2b)
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Envoyer un devis : lien sécurisé vs PDF](https://www.quotebuilder.co/blog/envoyer-devis-lien-securise-vs-pdf-email)
 - Page séparée, qui décrit un autre niveau de détail que le fil plat et le commentaire unique du produit : [commentaires et annotations](https://www.quotebuilder.co/blog/commentaires-annotations-devis-collaboratif-b2b)
 - [Options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)

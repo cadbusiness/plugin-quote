@@ -123,7 +123,7 @@ C'est le point où beaucoup d'équipes se trompent.
 - **« Accepté »** : **libellé d'espace prospect** quand le devis est déjà **Gagné** côté CRM. Pas un statut que le prospect pose en cliquant. Pas une étape entre En cours et Gagné.
 - **« Signé »** : **libellé de graphique de stats**. Pas une colonne CRM. Pas une preuve de signature électronique.
 
-Conséquence produit : **pas d'acceptation / signature en ligne du prospect** qui change le CRM toute seule. Le commercial pose **Gagné** ou **Perdu**. L'[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) et les relecteurs aident à lire et se coordonner ; ils ne remplacent pas le jugement commercial.
+Conséquence produit : **pas d'acceptation / signature en ligne du prospect** qui change le CRM toute seule. Le commercial pose **Gagné** ou **Perdu**. L'[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) et les relecteurs aident à lire et se coordonner ; ils ne remplacent pas le jugement commercial.
 
 Relecteurs (DF, responsable technique…) : **Valider le dossier** ou **Modifications**, avec commentaire et budget max, badges vu / approuvé / modifs. Pas de signature prospect, pas de commentaires ancrés aux lignes (fil plat).
 
@@ -278,7 +278,7 @@ Souvent deux semaines pour le vocabulaire, le ménage des plus vieux, et la prem
 - [Revue de pipeline devis B2B](https://www.quotebuilder.co/blog/revue-pipeline-devis-b2b)
 - [Score d'une demande de devis B2B](https://www.quotebuilder.co/blog/score-demande-devis-b2b)
 - [Relancer un devis Hot depuis le dossier](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier)
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b)
 - [Suivi d'ouverture / lecture devis en ligne](https://www.quotebuilder.co/blog/suivi-ouverture-lecture-devis-en-ligne-b2b)
 - [Approbation client multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b)

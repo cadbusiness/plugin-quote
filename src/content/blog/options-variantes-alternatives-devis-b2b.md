@@ -232,7 +232,7 @@ Les options ne vivent pas seules :
 
 - **Versions / historique** : chaque changement d’option = nouvelle version ou amendement tracé. Voir [versions et historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b).
 - **Signature / acceptation** : le prospect accepte **une** configuration (variante + options cochées), pas un PDF ambigu. Voir [signature et acceptation](https://www.quotebuilder.co/blog/signature-acceptation-devis-en-ligne-b2b).
-- **Espace prospect** : questions centralisées plutôt que « encore une option par mail ». Voir [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+- **Espace prospect** : questions centralisées plutôt que « encore une option par mail ». Voir [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 - **Pipeline** : les dossiers bloqués sur « en attente choix option » doivent apparaître en revue. Voir [revue pipeline](https://www.quotebuilder.co/blog/revue-pipeline-devis-b2b).
 
 Sans ça, vos belles options restent du théâtre Excel.

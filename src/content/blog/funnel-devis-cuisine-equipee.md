@@ -76,7 +76,7 @@ Si ce n’est pas dans le devis (inclus, forfait, ou explicitement exclu), le cl
 
 ### 5. Multi-décideurs et versions PDF
 
-Couple, architecte, promoteur, gérant de restaurant. Le PDF circule. La mauvaise version revient « OK ». Un lien d’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) limite la casse. Les [versions / historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b) évitent le double document.
+Couple, architecte, promoteur, gérant de restaurant. Le PDF circule. La mauvaise version revient « OK ». Un lien d’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) limite la casse. Les [versions / historique](https://www.quotebuilder.co/blog/versions-historique-devis-b2b) évitent le double document.
 
 ### 6. Remises showroom
 

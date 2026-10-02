@@ -85,7 +85,7 @@ Exemple simple à 3 jalons sur un devis 12 000 € HT (TVA 20 %, total TTC 14 40
 | Livraison matière / début pose | 40 % | 5 760 € |
 | Réception | 30 % | 4 320 € |
 
-Adaptez. L’important n’est pas la grille « parfaite », c’est qu’elle soit **écrite**, **identique pour l’équipe**, et **visible** sur le devis et dans l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne).
+Adaptez. L’important n’est pas la grille « parfaite », c’est qu’elle soit **écrite**, **identique pour l’équipe**, et **visible** sur le devis et dans l’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 
 Pour estimer rapidement acompte, reste et répartition : [calculateur acompte devis](https://www.quotebuilder.co/outils/calculateur-acompte-devis).
 

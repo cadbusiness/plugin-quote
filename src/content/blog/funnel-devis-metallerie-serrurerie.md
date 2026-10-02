@@ -32,7 +32,7 @@ Ce n'est pas seulement un sujet commercial. C'est un sujet d'**entrée**.
 Cette page explique comment un **funnel de devis métallerie / serrurerie / ferronnerie** transforme une demande vague en **brief chiffrable** : type d'intervention, type d'ouvrage, dimensions approximatives, accès, photos, usage (particulier / pro / syndic / collectivité), options (pose, dépose, finition, galva / peinture, contrôle d'accès léger), puis dossier scoré, espace prospect et statut commercial clair (dont **Gagné** posé par vous). Public : métalliers, serruriers pro, ferronniers, entreprises multi-agences, bureaux qui outillent ces équipes.
 
 
-**Voir un parcours structuré :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) ou [ouvrir la démo funnel](https://www.quotebuilder.co/c/demo/rayonnage) pour comprendre funnel → dossier scoré (le principe se transpose à la métallerie / serrurerie ; il n'existe pas de template secteur « métallerie » à activer d'un clic).
+**Voir un parcours structuré :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) et partir du template Menuisier, option « Escalier / garde-corps », pour comprendre funnel → dossier scoré (le principe se transpose à la métallerie / serrurerie ; il n'existe pas de template secteur « métallerie » à activer d'un clic).
 
 
 <!-- PLACEHOLDER IMAGE: funnel métallerie étapes type ouvrage / dimensions / accès / photos (shoot Content) -->
@@ -140,13 +140,13 @@ Restez sobres dans les pages marketing et dans le wizard.
 4. **Handoff atelier / pose** : brief complet avant chiffrage ([transfert commercial → technique](https://www.quotebuilder.co/blog/transfert-brief-commercial-technique-devis-b2b)).
 5. **Décision visite / relevé** : Hot avec risque réel → relevé court ; Warm → photos / rappel ; Cold → pas de fourgon par défaut ([visite technique avant devis](https://www.quotebuilder.co/blog/visite-technique-avant-devis-b2b)). QuoteBuilder ne planifie pas les tournées.
 6. **Chiffrage** : lignes catalogue, options / variantes, fourchette indicative.
-7. **Envoi** : lien [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne). Sur syndic / collectivité / compte pro, invitez les relecteurs (Responsable technique, Directeur financier…). Ils peuvent **Valider le dossier** ou demander des **Modifications** (commentaire + budget max). Chat en fil plat. Pas d'acceptation en ligne inventée : le commercial pose **Gagné**.
+7. **Envoi** : lien [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect). Sur syndic / collectivité / compte pro, invitez les relecteurs (Responsable technique, Directeur financier…). Ils peuvent **Valider le dossier** ou demander des **Modifications** (commentaire + budget max). Chat en fil plat. Pas d'acceptation en ligne inventée : le commercial pose **Gagné**.
 8. **Relances** adaptées au score et à l'urgence. Méthode : [relancer un devis Hot](https://www.quotebuilder.co/blog/relancer-devis-hot-depuis-dossier).
 9. **Clôture** : **Gagné** ou **Perdu**. Statuts CRM uniquement : Commencée, Nouveau, Contacté, En cours, Gagné, Perdu, En attente.
 
 ## Catalogue et options (sans kits ni template inventés)
 
-Côté produit, travaillez avec **options, variantes et produits liés**, pas des « kits / bundles » magiques ni un CTA « Essayer le template métallerie » (il n'existe pas de template secteur métallerie dans QuoteBuilder). Pour comprendre le principe funnel → dossier scoré, appuyez-vous sur une démo existante ([rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) ou [menuiserie](https://www.quotebuilder.co/secteurs/funnel-devis-menuiserie-sur-mesure)) : le mécanisme se transpose, le catalogue reste le vôtre.
+Côté produit, travaillez avec **options, variantes et produits liés**, pas des « kits / bundles » magiques ni un CTA « Essayer le template métallerie » (il n'existe pas de template secteur métallerie dans QuoteBuilder). Pour démarrer, partez du template **Menuisier**, option « Escalier / garde-corps » ([funnel menuiserie](https://www.quotebuilder.co/secteurs/funnel-devis-menuiserie-sur-mesure)) : vous adaptez les questions, le catalogue reste le vôtre.
 
 Exemples de lignes / options à préparer dans *votre* catalogue :
 
@@ -184,14 +184,14 @@ Adaptez selon Hot / Warm / Cold et votre triage urgence. Méthode générale : [
 
 ## Erreurs fréquentes en métallerie / serrurerie
 
-1. **Traiter toute demande comme un dépannage** (ou l'inverse) : branche « contexte » dès le début.
+1. **Traiter toute demande comme un dépannage** (ou l'inverse) : une question « contexte » posée tôt (ordre fixe).
 2. **Visiter sans photos ni cotes** : vous payez pour collecter le brief.
 3. **Promettre un forfait portail national** sans ouverture ni accès.
 4. **Mélanger particulier, pro, syndic et collectivité** sur les mêmes champs.
 5. **Présenter normes / ERP comme feature logicielle** : restez sur le contexte métier.
 6. **Envoyer sans validation** sur un Hot complexe (accès, gros ouvrage, multi-sites) : voir [validation interne](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
 7. **Promettre une acceptation en ligne inventée** : espace prospect + relecteurs aident ; le commercial pose **Gagné**.
-8. **CTA « Essayer le template métallerie »** : il n'existe pas ; montrez une démo voisine et votre catalogue.
+8. **CTA « Essayer le template métallerie »** : il n'existe pas ; partez du template Menuisier (option « Escalier / garde-corps ») et de votre catalogue.
 9. **Un seul PDF forwardé** sur un syndic / Achats : préférez le lien et les invitations relecteurs ([approbation multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b)).
 
 ## Secteurs proches et maillage
@@ -225,7 +225,7 @@ Voir le guide dédié : [transfert brief commercial → technique](https://www.q
 Sur syndic / collectivité, le brief doit anticiper :
 - multi-décideurs (conseil syndical, Achats, AMO) ;
 - accès parties communes et créneaux ;
-- nécessité d'un lien [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) plutôt qu'un PDF forwardé ;
+- nécessité d'un lien [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) plutôt qu'un PDF forwardé ;
 - invitations relecteurs (Valider / Modifications + commentaire + budget max).
 
 Le commercial pose **Gagné** quand la décision est réelle. Pas d'acceptation en ligne inventée. Voir [approbation multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b).
@@ -237,7 +237,7 @@ Le commercial pose **Gagné** quand la décision est réelle. Pas d'acceptation 
 3. Checklist handoff collée dans le CRM / process atelier.
 4. Mesure 30 jours : % briefs avec photos ou cotes, minutes de re-qualif, visites « inutiles », taux Gagné.
 
-Pas de template secteur à activer. Le principe se voit déjà sur la [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) ou le [funnel menuiserie](https://www.quotebuilder.co/secteurs/funnel-devis-menuiserie-sur-mesure).
+Pas de template secteur à activer. Partez du template Menuisier, option « Escalier / garde-corps » ([funnel menuiserie](https://www.quotebuilder.co/secteurs/funnel-devis-menuiserie-sur-mesure)).
 
 ## FAQ
 
@@ -259,7 +259,7 @@ Mention générique + collecte d'infos + traitement humain. Pas de promesse de c
 
 ### Portail et garde-corps doivent-ils être deux funnels ?
 
-Pas forcément. Une branche « type d'ouvrage » dans le même funnel suffit souvent. Séparez seulement si les équipes / catalogues sont vraiment distincts.
+Pas forcément. Une question « type d'ouvrage », dans le même funnel et dans un ordre fixe, suffit souvent. Séparez seulement si les équipes / catalogues sont vraiment distincts.
 
 ### Comment éviter l'abandon à l'étape photos ?
 
@@ -271,7 +271,7 @@ Non. Le produit aide à filtrer et scorer les demandes, chiffrer, partager l'esp
 
 ### Existe-t-il un template « métallerie » dans QuoteBuilder ?
 
-Non. Les templates produit couvrent d'autres familles (cuisine, menuiserie, rayonnage, events, fitout, garden…). Pour démarrer, utilisez une démo voisine et branchez **votre** catalogue (options, variantes, produits liés).
+Non. Il n'y a pas de template secteur métallerie. Le plus proche est le template Menuisier, option « Escalier / garde-corps ». Vous adaptez les questions et vous branchez **votre** catalogue (options, variantes, produits liés).
 
 ### Combien d'étapes idéales ?
 
@@ -282,7 +282,7 @@ Souvent 8 à 11. Au-delà, découpez (cœur puis technique) ou repoussez le dét
 Sur les Hot / paniers élevés / accès complexes / multi-sites, oui. Ça réduit les devis trop optimistes. Voir [validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
 
 
-**Passez d'un « tarif métallerie » vague à un brief chiffrable :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) · [voir la démo](https://www.quotebuilder.co/c/demo/rayonnage).
+**Passez d'un « tarif métallerie » vague à un brief chiffrable :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) et partir du template Menuisier, option « Escalier / garde-corps ».
 
 
 ## Pour aller plus loin
@@ -293,7 +293,7 @@ Sur les Hot / paniers élevés / accès complexes / multi-sites, oui. Ça rédui
 - [Qualifier une demande avant chiffrage](https://www.quotebuilder.co/blog/qualifier-demande-devis-avant-chiffrage)
 - [Score d'une demande de devis B2B](https://www.quotebuilder.co/blog/score-demande-devis-b2b)
 - [Pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b)
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b)
 - [Approbation client multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b)
 - [Options et variantes](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b)

@@ -46,7 +46,7 @@ L'objectif n'est pas d'interdire le téléphone. Beaucoup de décideurs B2B appe
 - une promesse de « tout automatiser » sans humain à l'écoute ;
 - un score magique qui remplace le jugement métier ;
 - une acceptation ou signature en ligne inventée comme substitut au closing ;
-- un suivi d'ouverture avancé (première ouverture, compteur, historique, alertes, pixel e-mail). Sur un outil comme QuoteBuilder, la fiche / [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) peut afficher une **dernière consultation** en texte relatif ; les signaux utiles restent plutôt les **relecteurs** et les **notifications**, plus le statut CRM posé par le commercial (dont **Gagné** / **Perdu**).
+- un suivi d'ouverture avancé (première ouverture, compteur, historique, alertes, pixel e-mail). Sur un outil comme QuoteBuilder, la fiche / [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) peut afficher une **dernière consultation** en texte relatif ; les signaux utiles restent plutôt les **relecteurs** et les **notifications**, plus le statut CRM posé par le commercial (dont **Gagné** / **Perdu**).
 
 L'angle de ce guide : **process métier + outils d'entrée** (funnel, préremplissage URL, score de brief). Pas un connecteur WhatsApp inventé.
 
@@ -176,7 +176,7 @@ Une fois le brief capturé :
 1. **Statut CRM** dans la liste fixe : Commencée, Nouveau, Contacté, En cours, Gagné, Perdu, En attente. Pas « Accepté » ni « Signé » comme statuts pipeline : « Accepté » n'est qu'un libellé d'espace prospect quand le devis est **Gagné** ; « Signé » n'est qu'un libellé de graphique de stats.
 2. **Owner** clair (qui rappelle, qui chiffre). L'assignation et les délais restent process équipe ([assignation / SLA équipe](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe) : le SLA est le vôtre, pas un module magique).
 3. **Chiffrage** sur fourchette indicative (price_min / price_max en euros entiers côté produit ; pas de TVA stockée comme feature devis dans QuoteBuilder).
-4. **Envoi** via lien [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) plutôt qu'un PDF perdu dans les forwards.
+4. **Envoi** via lien [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) plutôt qu'un PDF perdu dans les forwards.
 5. **Relecteurs** si multi-décideurs : Valider le dossier / Modifications + commentaire + budget max ; chat en fil plat.
 6. **Relances** scorées et courtes, avec une question métier, pas un « avez-vous lu ? ».
 
@@ -268,7 +268,7 @@ Non. Mêmes questions cœur. Le téléphone est un canal d'entrée ; le funnel (
 - [Score d'une demande de devis B2B](https://www.quotebuilder.co/blog/score-demande-devis-b2b)
 - [Pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b)
 - [Préremplir un devis via paramètres d'URL](https://www.quotebuilder.co/blog/preremplir-devis-url-parametres)
-- [Espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne)
+- [Espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect)
 - [Délai de réponse à une demande de devis](https://www.quotebuilder.co/blog/delai-reponse-demande-devis-b2b)
 - [Centraliser les demandes de devis multi-canaux](https://www.quotebuilder.co/blog/centraliser-demandes-devis-multi-canaux)
 - [Visite technique avant devis B2B](https://www.quotebuilder.co/blog/visite-technique-avant-devis-b2b)

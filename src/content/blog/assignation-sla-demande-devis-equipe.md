@@ -89,7 +89,7 @@ Dès qu’une demande entre, **une personne** est responsable jusqu’à transfe
 - planifie les relances (ou laisse l’autopilote les envoyer) ;
 - clôture (gagné / perdu / snooze).
 
-Sans owner unique, vous avez des dossiers orphelins et des doubles réponses. Voir aussi l’[espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) : un lien unique côté client évite que trois PDF différents circulent.
+Sans owner unique, vous avez des dossiers orphelins et des doubles réponses. Voir aussi l’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) : un lien unique côté client évite que trois PDF différents circulent.
 
 ### Principe 2 : assigner après un minimum de structure
 
@@ -244,7 +244,7 @@ Quand la demande naît dans un funnel (catalogue, contraintes, score), l’assig
 - moins de mails libres à interpréter ;
 - score déjà posé → SLA déjà choisi ;
 - dossier unique → moins de double-travail ;
-- [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne) → le client voit la même chose que l’owner ;
+- [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) → le client voit la même chose que l’owner ;
 - pipeline lisible → le manager voit les orphelins sans harceler.
 
 Ce n’est pas magique. C’est de la mécanique. Les équipes qui souffrent le plus ont souvent de bons commerciaux et un entrée en désordre.

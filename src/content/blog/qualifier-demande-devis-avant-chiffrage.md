@@ -184,7 +184,7 @@ Le score priorise sans remplacer le jugement. Il dit « traite celui-là d’abo
 
 ### Espace prospect
 
-Le prospect reçoit un lien (souvent + PIN), voit le récap, peut uploader plans / photos, échanger sans 14 versions PDF. Guide : [espace prospect devis en ligne](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne). Produit : [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
+Le prospect reçoit un lien (souvent + PIN), voit le récap, peut uploader plans / photos, échanger sans 14 versions PDF. Guide : [espace prospect devis en ligne](https://www.quotebuilder.co/fonctionnalites/espace-prospect). Produit : [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 
 Ensemble, ces trois briques réduisent le chiffrage à l’aveugle : vous chiffrez quand le dossier est digne d’être chiffré.
 
@@ -305,4 +305,4 @@ Chiffrer n’est pas gratuit. Qualifier avant de chiffrer, ce n’est pas de la 
 
 Grille 6 axes, brief minimum, score Hot / Warm / Cold, interdiction du PDF lourd sur brief vide : ce sont des règles d’équipe, pas de la théorie. Un funnel, un score et un espace prospect aident à les tenir sans Excel parallèle.
 
-Pour aller plus loin : [score demande devis](https://www.quotebuilder.co/blog/score-demande-devis-b2b), [espace prospect](https://www.quotebuilder.co/blog/espace-prospect-devis-en-ligne), [estimateur pipeline](https://www.quotebuilder.co/outils/estimateur-valeur-pipeline-devis), hub [secteurs](https://www.quotebuilder.co/secteurs).
+Pour aller plus loin : [score demande devis](https://www.quotebuilder.co/blog/score-demande-devis-b2b), [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect), [estimateur pipeline](https://www.quotebuilder.co/outils/estimateur-valeur-pipeline-devis), hub [secteurs](https://www.quotebuilder.co/secteurs).

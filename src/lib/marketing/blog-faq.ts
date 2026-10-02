@@ -46,7 +46,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
   "sources-demande-devis-b2b-funnel-api": [
     {
       q: "Quelles sont les vraies sources d'une demande dans QuoteBuilder ?",
-      a: "Funnel public, /api/leads, plugins / intégrations (WordPress, Woo, Shopify, etc.), agent chat, ou un commercial qui remplit / envoie un lien préfill vers le funnel. Pas d'écran « créer devis » manuel, pas d'import de devis.",
+      a: "Funnel public, /api/leads, plugins / intégrations (WordPress, Woo, Shopify, etc.), devis démarrés côté plugin (statut Commencée), agent chat, ou un commercial qui remplit / envoie un lien préfill vers le funnel. Pas d'écran « créer devis » manuel, pas d'import de devis.",
     },
     {
       q: "Pourquoi refuser la saisie manuelle si mon équipe est habituée à Excel ?",
