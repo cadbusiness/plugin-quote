@@ -8,6 +8,7 @@ import { parseStorefrontCart, type StorefrontCartLine } from "@/lib/integrations
 import { applyStorefrontCart, suggestionFromProducts } from "@/lib/wizard/storefront-cart";
 import { applyFunnelPrefill } from "@/lib/configurator/prefill";
 import { CatalogBrowse } from "@/components/configurator/catalog-browse";
+import { HostedChatSubmit, shouldShowHostedChatSubmit } from "@/components/configurator/hosted-chat-submit";
 import { RfqForm } from "@/components/configurator/rfq-form";
 import { ProductHtml } from "@/components/catalog/product-html";
 import { ProductSheetLinks } from "@/components/catalog/product-sheet";
@@ -673,6 +674,10 @@ export function ConfiguratorApp({
     (session.mode === "chat" || chatOnly);
   const showWizard =
     session.mode === "wizard" && definition.configurator.wizardEnabled && !chatOnly;
+  const showHostedChatSubmit = shouldShowHostedChatSubmit({
+    chatOnly,
+    screenType: step?.screenType,
+  });
   const canSwitch =
     !isCatalog && definition.configurator.wizardEnabled && definition.configurator.chatEnabled && !done;
   const showChatSuggestions =
@@ -852,6 +857,20 @@ export function ConfiguratorApp({
               />
             ) : null}
           </div>
+        ) : null}
+
+        {showHostedChatSubmit && step ? (
+          <HostedChatSubmit
+            title={step.title}
+            subtitle={step.subtitle}
+            contact={contact}
+            busy={busy}
+            error={errors.submit}
+            accent={accent}
+            themed={theme.themed}
+            onChange={(patch) => setContact((current) => ({ ...current, ...patch }))}
+            onSubmit={() => void submit()}
+          />
         ) : null}
 
         {showWizard && step ? (
