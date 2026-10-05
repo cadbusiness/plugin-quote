@@ -19,7 +19,7 @@ const FAQ = [
   },
   {
     q: "Que mesure le total indicatif ?",
-    a: "Les dossiers chat = demandes × le % qui arrive par le chat. Les dossiers formulaire = le reste. Les dossiers à requalifier = ces volumes × le % de requalification du canal. Les heures = ces dossiers × minutes / 60. Le coût = ces heures × le taux horaire. Le total mensuel additionne les deux canaux. Sur 12 mois, ce total × 12. L'écart attribuable au chat = dossiers chat × (pourcentage chat moins pourcentage formulaire), converti en heures puis en euros. C'est indicatif, sur vos hypothèses, pas un conseil financier ni un benchmark.",
+    a: "Les dossiers chat = demandes × le % qui arrive par le chat. Les dossiers formulaire = le reste. Les dossiers à requalifier = ces volumes × le % de requalification du canal. Les heures = ces dossiers × minutes / 60. Le coût = ces heures × le taux horaire. Le total mensuel additionne les deux canaux. Sur 12 mois, ce total × 12. L'écart attribuable au chat = dossiers chat × (% de requalification chat moins % de requalification formulaire), converti en heures puis en euros. C'est indicatif, sur vos hypothèses, pas un conseil financier ni un benchmark.",
   },
   {
     q: "Pourquoi l'écart peut-il être négatif ?",
@@ -86,8 +86,7 @@ export default function EstimateurRequalificationChatVsFormulaireDevisPage() {
           reste. Les dossiers à requalifier = ces volumes × le pourcentage de requalification du
           canal. Les heures = ces dossiers × minutes ÷ 60. Le coût = ces heures × le taux horaire
           chargé. Le total mensuel additionne les deux canaux. Sur 12 mois, ce total × 12.
-          L&apos;écart attribuable au chat = dossiers chat × (pourcentage chat moins pourcentage
-          formulaire), puis en heures et en euros. Il peut être négatif. Ordre de grandeur pour une
+          L&apos;écart attribuable au chat = dossiers chat × (% de requalification chat moins % de requalification formulaire), puis en heures et en euros. Il peut être négatif. Ordre de grandeur pour une
           discussion d&apos;équipe, pas un conseil financier.
         </p>
         <p className="mt-4 text-[16px] leading-7 text-mk-muted">

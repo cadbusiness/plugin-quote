@@ -152,6 +152,16 @@ assert.equal(sectorPage.split("\n").filter((line) => line.includes("q:")).length
 assert.doesNotMatch(sectorPage, EM_DASH);
 assert.doesNotMatch(sectorPage, EN_DASH);
 
+const toolPage = readFileSync(
+  join(process.cwd(), "src/app/(marketing)/outils/estimateur-requalification-chat-vs-formulaire-devis/page.tsx"),
+  "utf8",
+);
+const ecartFormula = "% de requalification chat moins % de requalification formulaire";
+assert.equal(toolPage.split(ecartFormula).length - 1, 2);
+assert.doesNotMatch(toolPage, /pourcentage chat moins pourcentage formulaire/);
+assert.doesNotMatch(toolPage, EM_DASH);
+assert.doesNotMatch(toolPage, EN_DASH);
+
 const defaults = computeRequalificationChatVsFormulaire({ ...REQUALIFICATION_CHAT_VS_FORMULAIRE_DEFAULTS });
 assert.equal(defaults.dChat, 24);
 assert.equal(defaults.dForm, 56);
