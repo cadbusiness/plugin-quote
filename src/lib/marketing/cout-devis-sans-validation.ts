@@ -195,7 +195,7 @@ export function computeCoutDevisSansValidation(
     "",
     "Checklist rapide :",
     "- Statut brouillon / en validation / prêt avant envoi",
-    "- Checklist 10 points (quantités, mentions, docs, marge)",
+    "- Checklist 9 points (quantités, mentions, docs, marge)",
     "- Seuil de remise + owner manager au-delà",
     "- Commentaires internes séparés de la vue prospect",
     "- Version figée à l’envoi + mesure % V2 sous 7 j",

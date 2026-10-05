@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "regles-suggestion-produits-funnel-devis-b2b": [
+    {
+      q: "Une règle de suggestion peut-elle faire sauter une étape du funnel ?",
+      a: "Non. Les étapes et les questions suivent un ordre fixe. Les règles Si/Alors choisissent seulement les produits proposés à l'écran « Solutions recommandées ».",
+    },
+    {
+      q: "Peut-on combiner plusieurs conditions dans une règle ?",
+      a: "Oui, et elles doivent toutes être vraies. Pour exprimer un OU, créez deux règles ou utilisez « est parmi » sur une même question.",
+    },
+    {
+      q: "Combien de suggestions le prospect voit-il ?",
+      a: "Au maximum trois blocs, c'est-à-dire trois règles : celles qui correspondent à ses réponses, triées par priorité décroissante. Chaque bloc peut contenir plusieurs produits.",
+    },
+    {
+      q: "Quelle différence entre « inclut » et « est parmi » ?",
+      a: "« Inclut » pour une question à choix multiples : la valeur doit faire partie des réponses cochées. « Est parmi » pour une question à réponse unique : la réponse doit faire partie de votre liste.",
+    },
+    {
+      q: "Que se passe-t-il si aucune règle ne correspond ?",
+      a: "L'écran n'a rien à proposer pour ce prospect. C'est pour ça qu'on garde une règle filet « pour tout le monde » en priorité 0.",
+    },
+    {
+      q: "Les règles modifient-elles le prix ou le score ?",
+      a: "Non. Le prix reste une fourchette indicative min-max en euros entiers. Le score Hot / Warm / Cold est une formule fixe calculée à la soumission, non configurable.",
+    },
+    {
+      q: "Peut-on proposer un kit ou un pack ?",
+      a: "Il n'y a pas de kits ni de bundles dans QuoteBuilder. Mettez plusieurs produits dans la même règle, ou faites d'un complément une option du produit principal.",
+    },
+    {
+      q: "D'où viennent les produits liés ?",
+      a: "Pour une boutique WooCommerce reliée par le plugin WordPress, des up-sells, cross-sells et produits de même catégorie définis dans Woo. Le bloc « Souvent demandé avec » en affiche de 1 à 8, 4 par défaut.",
+    },
+    {
+      q: "Qui peut créer ou modifier les règles ?",
+      a: "Un administrateur de l'espace, dans Produits, onglet Règles. Les autres membres ne gèrent pas les règles.",
+    },
+    {
+      q: "Le mode chat utilise-t-il les mêmes règles ?",
+      a: "Oui pour l'évaluation : les réponses extraites de la conversation comptent. Si une réponse existe aussi dans le formulaire, c'est celle du formulaire qui prime.",
+    },
+  ],
   "notes-internes-dossier-devis-equipe-b2b": [
     {
       q: "Qu'est-ce qu'une note interne sur un dossier devis ?",
@@ -1138,7 +1180,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Qui doit poser le score : commercial ou automatisme ?",
-      a: "Les deux. L’automatisme propose, le commercial confirme. Recalibrez avec le close rate réel.",
+      a: "Le score Hot / Warm / Cold est calculé automatiquement à la soumission, avec une formule fixe et non configurable. Le commercial garde la main sur le triage (urgence, zone, contexte), et l’équipe compare avec le close rate réel.",
     },
     {
       q: "Combien de questions dans le funnel de qualification ?",

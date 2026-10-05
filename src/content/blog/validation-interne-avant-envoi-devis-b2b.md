@@ -291,7 +291,7 @@ Excel peut calculer. Il ne porte pas le workflow. C’est le même écart que [c
 ### Semaine 1
 
 - lister les 3 gates (commercial / technique / marge) et les seuils ;
-- écrire la checklist 10 points ;
+- écrire la checklist en neuf points ;
 - définir les SLA par type de dossier ;
 - choisir où vit le statut (outil devis, pas Slack seul).
 
