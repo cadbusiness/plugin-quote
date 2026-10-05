@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "funnel-devis-chat-ia-vs-formulaire-etapes-b2b": [
+    {
+      q: "Quels types de funnel existent dans QuoteBuilder ?",
+      a: "Trois : Formulaire, Chat IA et Catalogue. Le type se choisit à la création du funnel.",
+    },
+    {
+      q: "Existe-t-il un template pensé pour le chat ?",
+      a: "Oui, « Brief chat » dans la famille rayonnage. Il crée un funnel « Chat rayonnage » avec un bloc type d'espace, surface ou volume, contraintes, puis suggestions, personnalisation et coordonnées.",
+    },
+    {
+      q: "L'agent invente-t-il des produits ou des prix ?",
+      a: "Il ne doit citer que ce que renvoie votre catalogue. Les prix sont les fourchettes min et max de vos fiches. Il ne peut pas présenter de configuration sans avoir consulté le catalogue ou les règles.",
+    },
+    {
+      q: "Les règles de suggestion fonctionnent-elles en mode chat ?",
+      a: "Oui. L'agent évalue les mêmes règles Si/Alors sur le brief en cours : trois blocs au maximum, par priorité, conditions toutes vraies.",
+    },
+    {
+      q: "Si une réponse existe à la fois dans le formulaire et dans le chat, laquelle compte ?",
+      a: "Celle du formulaire, pour une même clé. Les valeurs extraites du chat complètent les clés que le formulaire n'a pas remplies.",
+    },
+    {
+      q: "Le commercial peut-il relire la conversation sur la fiche devis ?",
+      a: "Non. La fiche affiche les réponses structurées du dossier, les produits, les fichiers et la fourchette indicative. La conversation reste attachée à la session du prospect.",
+    },
+    {
+      q: "Le chat améliore-t-il le score Hot / Warm / Cold ?",
+      a: "Pas en soi. Le score est une formule fixe calculée à la soumission sur les réponses fusionnées. Il compte si les bonnes clés sont remplies (surface en nombre, type de projet, contraintes, longueur du besoin).",
+    },
+    {
+      q: "Peut-on faire parler l'agent sur un funnel de type Formulaire ?",
+      a: "Oui, avec le module « Discuter de votre projet ». Le funnel garde son type Formulaire ; le prospect discute, puis renseigne ses coordonnées et envoie sa demande.",
+    },
+    {
+      q: "L'agent peut-il prendre une commande ou un paiement ?",
+      a: "Non. Il prépare un brief de devis et collecte les coordonnées. Pas de commande, pas de paiement, pas d'envoi de devis à sa place.",
+    },
+    {
+      q: "Le prospect peut-il envoyer un plan pendant le chat ?",
+      a: "Pas dans la conversation. Le plan se joint à l'étape Personnalisation (PDF ou image, 10 Mo au maximum) ou depuis la page prospect après l'envoi de la demande.",
+    },
+  ],
   "regles-suggestion-produits-funnel-devis-b2b": [
     {
       q: "Une règle de suggestion peut-elle faire sauter une étape du funnel ?",

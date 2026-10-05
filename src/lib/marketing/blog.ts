@@ -105,6 +105,7 @@ export const BLOG_TOOL_DOUBLE_SAISIE = "/outils/estimateur-cout-double-saisie-de
 export const BLOG_TOOL_HANDOFF = "/outils/estimateur-cout-handoff-commercial-technique-devis";
 export const BLOG_TOOL_CONTEXTE_HORS_DOSSIER = "/outils/estimateur-cout-contexte-hors-dossier-devis";
 export const BLOG_TOOL_VALEUR_SUGGESTIONS = "/outils/estimateur-valeur-produits-suggeres-devis";
+export const BLOG_TOOL_REQUALIFICATION = "/outils/estimateur-requalification-chat-vs-formulaire-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -122,6 +123,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     29: "Vingt-neuf",
     30: "Trente",
     31: "Trente et un",
+    32: "Trente-deux",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -314,9 +316,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Demandes via le funnel / mois, % de dossiers avec suggestion retenue aujourd'hui et visé, valeur moyenne ajoutée, taux de transformation, minutes gagnées, taux horaire. Écart de valeur, valeur gagnée, temps libéré. Calcul 100 % local, sur vos hypothèses.",
     tags: ["funnel", "catalogue"],
   },
+  {
+    href: BLOG_TOOL_REQUALIFICATION,
+    title: "Estimateur requalification chat vs formulaire",
+    text: "Demandes de devis / mois, part qui arrive par le chat, % à requalifier selon le canal, minutes, taux horaire. Dossiers, heures, coût mensuel et écart attribuable au chat. Calcul 100 % local, sur vos hypothèses.",
+    tags: ["funnel", "scoring"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "funnel-devis-chat-ia-vs-formulaire-etapes-b2b",
+    path: "/blog/funnel-devis-chat-ia-vs-formulaire-etapes-b2b",
+    title: "Funnel de devis en chat IA ou formulaire par étapes : lequel choisir en B2B",
+    description:
+      "Chat IA ou formulaire par étapes pour vos demandes de devis B2B : ce que chaque mode capte, comment les réponses du chat alimentent le dossier (et pourquoi les réponses de formulaire priment), quand choisir l'un ou l'autre.",
+    publishedAt: "2026-10-05",
+    readingMinutes: 13,
+    tags: ["funnel", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.funnelPublic,
+    pinned: false,
+  },
   {
     slug: "regles-suggestion-produits-funnel-devis-b2b",
     path: "/blog/regles-suggestion-produits-funnel-devis-b2b",

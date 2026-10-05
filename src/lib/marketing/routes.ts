@@ -67,9 +67,21 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.8,
     lastModified: "2026-10-05",
   },
+  {
+    path: "/secteurs/funnel-devis-usinage-sous-traitance-pieces",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-05",
+  },
   { path: "/tarifs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  {
+    path: "/blog/funnel-devis-chat-ia-vs-formulaire-etapes-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-05",
+  },
   {
     path: "/blog/regles-suggestion-produits-funnel-devis-b2b",
     changeFrequency: "monthly",
@@ -289,6 +301,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/estimateur-valeur-produits-suggeres-devis",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-05",
+  },
+  {
+    path: "/outils/estimateur-requalification-chat-vs-formulaire-devis",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-05",
