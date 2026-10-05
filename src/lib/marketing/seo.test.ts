@@ -77,6 +77,7 @@ import {
   COUT_CONTEXTE_HORS_DOSSIER_LABELS,
   computeCoutContexteHorsDossier,
 } from "./cout-contexte-hors-dossier-devis";
+import "./seo-am-suggestions.test";
 import {
   COUT_DOUBLE_SAISIE_DEFAULTS,
   COUT_DOUBLE_SAISIE_LABELS,
@@ -162,6 +163,8 @@ for (const required of [
   "/outils/estimateur-cout-double-saisie-devis",
   "/outils/estimateur-cout-handoff-commercial-technique-devis",
   "/outils/estimateur-cout-contexte-hors-dossier-devis",
+  "/outils/estimateur-valeur-produits-suggeres-devis",
+  "/blog/regles-suggestion-produits-funnel-devis-b2b",
   "/blog/notes-internes-dossier-devis-equipe-b2b",
   "/blog/transfert-brief-commercial-technique-devis-b2b",
   "/blog/sources-demande-devis-b2b-funnel-api",
@@ -190,6 +193,7 @@ for (const required of [
   "/secteurs/funnel-devis-plomberie-sanitaire",
   "/secteurs/funnel-devis-electricite-tertiaire",
   "/secteurs/funnel-devis-metallerie-serrurerie",
+  "/secteurs/funnel-devis-paysagiste-amenagement-jardin",
   "/blog/pieces-jointes-plans-photos-devis-b2b",
   "/blog/envoyer-devis-lien-securise-vs-pdf-email",
   "/blog/mentions-obligatoires-devis-france",
@@ -222,17 +226,18 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 40);
-assert.equal(BLOG_TOOLS.length, 30);
+assert.equal(BLOG_POSTS.length, 41);
+assert.equal(BLOG_TOOLS.length, 31);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-demandes-orales-non-capturees"));
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-double-saisie-devis"));
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-handoff-commercial-technique-devis"));
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-contexte-hors-dossier-devis"));
+assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-valeur-produits-suggeres-devis"));
 const outilsHub = readFileSync(new URL("../../app/(marketing)/outils/page.tsx", import.meta.url), "utf8");
 assert.match(outilsHub, /outilsHubIntro\(\)/);
 assert.equal(
   outilsHubIntro(),
-  "Trente outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
+  "Trente et un outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
 );
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 assert.doesNotMatch(outilsHub, /Vingt-quatre|Vingt-cinq|Vingt-six|Vingt-sept|Vingt-huit|Vingt-neuf|Trente/);
@@ -240,6 +245,7 @@ assert.match(outilsHub, /estimateur-cout-demandes-orales-non-capturees/);
 assert.match(outilsHub, /estimateur-cout-double-saisie-devis/);
 assert.match(outilsHub, /estimateur-cout-handoff-commercial-technique-devis/);
 assert.match(outilsHub, /estimateur-cout-contexte-hors-dossier-devis/);
+assert.match(outilsHub, /estimateur-valeur-produits-suggeres-devis/);
 assert.deepEqual(
   BLOG_POSTS.find((post) => post.slug === "notes-internes-dossier-devis-equipe-b2b")?.tags,
   ["funnel", "scoring"],
@@ -321,6 +327,7 @@ assert.equal(BLOG_FAQ["sources-demande-devis-b2b-funnel-api"]?.length, 10);
 const secteursHub = readFileSync(new URL("../../app/(marketing)/secteurs/page.tsx", import.meta.url), "utf8");
 assert.match(secteursHub, /funnel-devis-electricite-tertiaire/);
 assert.match(secteursHub, /funnel-devis-metallerie-serrurerie/);
+assert.match(secteursHub, /funnel-devis-paysagiste-amenagement-jardin/);
 assert.deepEqual(
   BLOG_POSTS.find((post) => post.slug === "telephone-whatsapp-vers-brief-devis-b2b")?.tags,
   ["funnel", "scoring"],
@@ -928,7 +935,7 @@ assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meuren
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 21);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 21);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 7);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 6);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 7);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);
 assert.equal(midArticleHeadingIndex(12), 5);
 assert.ok(trimMetaDescription(BLOG_POSTS[0]!.description).length <= 155);
@@ -1224,6 +1231,24 @@ const requiredSources = {
     "/secteurs/funnel-devis-menuiserie-sur-mesure",
     "/outils/estimateur-cout-handoff-commercial-technique-devis",
     "Escalier / garde-corps",
+    "/signup?plan=free",
+  ],
+  "regles-suggestion-produits-funnel-devis-b2b.md": [
+    "/blog/options-variantes-alternatives-devis-b2b",
+    "/secteurs/funnel-devis-paysagiste-amenagement-jardin",
+    "/secteurs/funnel-devis-rayonnage-stockage",
+    "/fonctionnalites/catalogue",
+    "/fonctionnalites/funnel",
+    "/c/demo/rayonnage",
+    "/signup?plan=free",
+  ],
+  "funnel-devis-paysagiste-amenagement-jardin.md": [
+    "/blog/regles-suggestion-produits-funnel-devis-b2b",
+    "/secteurs/funnel-devis-pergola-terrasse",
+    "/secteurs/funnel-devis-cloture-portail",
+    "/outils/estimateur-valeur-produits-suggeres-devis",
+    "/outils/estimateur-cout-visites-techniques-inutiles",
+    "Paysagiste",
     "/signup?plan=free",
   ],
   "sources-demande-devis-b2b-funnel-api.md": [
@@ -2085,7 +2110,9 @@ for (const { file, dir } of contentFiles) {
   assert.match(validationBody, /\/outils\/estimateur-cout-devis-sans-validation/);
   assert.match(validationBody, /\/c\/demo\/rayonnage/);
   assert.doesNotMatch(validationBody, EM_DASH);
-  assert.equal(validationBody.split(/\s+/).filter(Boolean).length, 2753);
+  assert.equal(validationBody.split(/\s+/).filter(Boolean).length, 2754);
+  assert.match(validationBody, /checklist en neuf points/);
+  assert.doesNotMatch(validationBody, /checklist 10 points/);
 }
 
 {
@@ -3221,6 +3248,8 @@ assert.equal(sansValidDefault.totalTone, "warn");
 assert.equal(sansValidDefault.oppTone, "warn");
 assert.match(sansValidDefault.alert, /Friction validation notable/);
 assert.match(sansValidDefault.recap, /Checklist rapide/);
+assert.match(sansValidDefault.recap, /Checklist 9 points/);
+assert.doesNotMatch(sansValidDefault.recap, /Checklist 10 points/);
 assert.match(sansValidDefault.recap, /Coût total indicatif/);
 assert.equal(COUT_DEVIS_SANS_VALIDATION_LABELS.devis, "Devis envoyés / mois");
 assert.equal(COUT_DEVIS_SANS_VALIDATION_LABELS.total, "Coût total indicatif mensuel");
@@ -4272,6 +4301,9 @@ for (const expected of [
   { path: "/outils/checklist-mentions-devis-france", priority: 0.7, lastmod: "2026-09-24" },
   { path: "/secteurs/funnel-devis-pompe-chaleur-chauffage", priority: 0.8, lastmod: "2026-09-24" },
   { path: "/blog/pieces-jointes-plans-photos-devis-b2b", priority: 0.8, lastmod: "2026-09-25" },
+  { path: "/blog/regles-suggestion-produits-funnel-devis-b2b", priority: 0.8, lastmod: "2026-10-05" },
+  { path: "/outils/estimateur-valeur-produits-suggeres-devis", priority: 0.7, lastmod: "2026-10-05" },
+  { path: "/secteurs/funnel-devis-paysagiste-amenagement-jardin", priority: 0.8, lastmod: "2026-10-05" },
   { path: "/blog/notes-internes-dossier-devis-equipe-b2b", priority: 0.8, lastmod: "2026-10-02" },
   { path: "/outils/estimateur-cout-contexte-hors-dossier-devis", priority: 0.7, lastmod: "2026-10-02" },
   { path: "/blog/transfert-brief-commercial-technique-devis-b2b", priority: 0.8, lastmod: "2026-10-02" },
@@ -4334,6 +4366,9 @@ assert.ok(paths.includes("/outils/estimateur-cout-contexte-hors-dossier-devis"))
 assert.ok(paths.includes("/blog/transfert-brief-commercial-technique-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-handoff-commercial-technique-devis"));
 assert.ok(paths.includes("/secteurs/funnel-devis-metallerie-serrurerie"));
+assert.ok(paths.includes("/secteurs/funnel-devis-paysagiste-amenagement-jardin"));
+assert.ok(paths.includes("/blog/regles-suggestion-produits-funnel-devis-b2b"));
+assert.ok(paths.includes("/outils/estimateur-valeur-produits-suggeres-devis"));
 assert.ok(paths.includes("/secteurs/funnel-devis-electricite-tertiaire"));
 assert.ok(paths.includes("/blog/statuts-pipeline-devis-b2b"));
 assert.ok(paths.includes("/outils/estimateur-cout-pipeline-fantome-devis"));
@@ -4744,6 +4779,9 @@ const llmsPaths = [
   "/secteurs/funnel-devis-metallerie-serrurerie",
   "/outils/estimateur-cout-handoff-commercial-technique-devis",
   "/outils/estimateur-cout-contexte-hors-dossier-devis",
+  "/blog/regles-suggestion-produits-funnel-devis-b2b",
+  "/secteurs/funnel-devis-paysagiste-amenagement-jardin",
+  "/outils/estimateur-valeur-produits-suggeres-devis",
 ];
 for (const path of llmsPaths) {
   assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${path.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`));
@@ -5123,6 +5161,9 @@ assert.equal(tvaSameRate.alertTone, "ok");
 assert.equal(tvaSameRate.showBreakdown, true);
 
 for (const [path, lastmod] of [
+  ["/blog/regles-suggestion-produits-funnel-devis-b2b", "2026-10-05"],
+  ["/outils/estimateur-valeur-produits-suggeres-devis", "2026-10-05"],
+  ["/secteurs/funnel-devis-paysagiste-amenagement-jardin", "2026-10-05"],
   ["/blog/notes-internes-dossier-devis-equipe-b2b", "2026-10-02"],
   ["/outils/estimateur-cout-contexte-hors-dossier-devis", "2026-10-02"],
   ["/blog/transfert-brief-commercial-technique-devis-b2b", "2026-10-02"],

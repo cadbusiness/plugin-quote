@@ -104,6 +104,7 @@ export const BLOG_TOOL_DEMANDES_ORALES = "/outils/estimateur-cout-demandes-orale
 export const BLOG_TOOL_DOUBLE_SAISIE = "/outils/estimateur-cout-double-saisie-devis";
 export const BLOG_TOOL_HANDOFF = "/outils/estimateur-cout-handoff-commercial-technique-devis";
 export const BLOG_TOOL_CONTEXTE_HORS_DOSSIER = "/outils/estimateur-cout-contexte-hors-dossier-devis";
+export const BLOG_TOOL_VALEUR_SUGGESTIONS = "/outils/estimateur-valeur-produits-suggeres-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -120,6 +121,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     28: "Vingt-huit",
     29: "Vingt-neuf",
     30: "Trente",
+    31: "Trente et un",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -306,9 +308,29 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Dossiers / mois, % sans notes internes utiles, minutes de re-brief, % morts ou clarifs faute de contexte, taux horaire, panier. Dossiers fragiles, heures, coût temps, opportunités. Calcul 100 % local.",
     tags: ["funnel", "scoring"],
   },
+  {
+    href: BLOG_TOOL_VALEUR_SUGGESTIONS,
+    title: "Estimateur valeur des produits suggérés dans un devis",
+    text: "Demandes via le funnel / mois, % de dossiers avec suggestion retenue aujourd'hui et visé, valeur moyenne ajoutée, taux de transformation, minutes gagnées, taux horaire. Écart de valeur, valeur gagnée, temps libéré. Calcul 100 % local, sur vos hypothèses.",
+    tags: ["funnel", "catalogue"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "regles-suggestion-produits-funnel-devis-b2b",
+    path: "/blog/regles-suggestion-produits-funnel-devis-b2b",
+    title:
+      "Règles de suggestion produits dans un funnel de devis B2B : proposer le bon produit sans alourdir le formulaire",
+    description:
+      "Comment écrire les règles Si/Alors qui choisissent les produits suggérés dans un funnel de devis B2B : conditions, priorité, limite de 3 blocs, options et produits liés. Ce que les règles font, et ce qu'elles ne font pas.",
+    publishedAt: "2026-10-05",
+    readingMinutes: 13,
+    tags: ["funnel", "catalogue"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.produits,
+    pinned: false,
+  },
   {
     slug: "notes-internes-dossier-devis-equipe-b2b",
     path: "/blog/notes-internes-dossier-devis-equipe-b2b",
