@@ -2,8 +2,20 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` + `0059` + `0060` + `0061` + `0062` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` + `0059` + `0060` + `0061` + `0062` + `0063` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.31.1",
+    version: "1.31.1",
+    title: "Chat IA : envoi de la demande rétabli",
+    items: [
+      "Sur les funnels en mode Chat IA (page hébergée et intégration sur votre site), le visiteur voit de nouveau ses coordonnées et le bouton « Envoyer ma demande » quand le chat arrive à l'étape contact.",
+      "La demande envoyée depuis le chat arrive dans votre tableau de bord comme une demande issue du formulaire par étapes, avec les réponses collectées pendant la conversation.",
+      "Les funnels en mode formulaire par étapes ne changent pas.",
+    ],
+    releasedAt: "2026-10-05",
+    createdAt: "2026-10-05T00:00:00.000Z",
+  },
   {
     id: "seed-1.31.0",
     version: "1.31.0",
