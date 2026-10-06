@@ -3,6 +3,7 @@ import type { Database, Json } from "@/lib/db/database.types";
 import { appUrl } from "@/lib/prospect/access";
 import { publishedMemberSpaceUrl } from "@/lib/members/public";
 import { displayedQuoteRange, readQuotePrice, resolveDisplayCurrency } from "@/lib/quotes/price-range";
+import { sessionContactName } from "@/lib/email/greeting";
 import type { BranchCondition, RunContext, SubjectContext, WorkflowSubjectType } from "@/lib/workflows/types";
 
 type Client = SupabaseClient<Database>;
@@ -104,7 +105,6 @@ export async function loadSubjectContext(
 
   const draft = asRecord(session.contact_draft);
   const email = typeof draft.email === "string" ? draft.email : null;
-  const name = typeof draft.name === "string" ? draft.name : "bonjour";
   const company = typeof draft.company === "string" ? draft.company : "";
 
   return {
@@ -112,7 +112,7 @@ export async function loadSubjectContext(
     subjectId: session.id,
     organizationId: session.organization_id,
     configuratorId: session.configurator_id,
-    contactName: name,
+    contactName: sessionContactName(draft.name),
     contactEmail: email,
     contactCompany: company,
     score: null,

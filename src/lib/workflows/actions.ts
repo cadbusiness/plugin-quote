@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/db/database.types";
-import { fill, sendTemplateEmail } from "@/lib/email/send";
+import { fillProspectTemplate } from "@/lib/email/greeting";
+import { sendTemplateEmail } from "@/lib/email/send";
 import { logActivity, notifyUser } from "@/lib/crm/activity";
 import { renderQuotePdf } from "@/lib/pdf/render";
 import { formatPrice } from "@/lib/format";
@@ -76,8 +77,8 @@ export async function executeSendEmail(
 
   await sendTemplateEmail({
     to,
-    subject: fill(template.subject, vars),
-    body: fill(template.body, vars),
+    subject: fillProspectTemplate(template.subject, vars),
+    body: fillProspectTemplate(template.body, vars),
     attachments: pdf ? [{ filename: "recapitulatif.pdf", content: pdf }] : undefined,
   });
 

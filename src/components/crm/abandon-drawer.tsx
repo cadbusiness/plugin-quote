@@ -8,7 +8,7 @@ import { Chip } from "@/components/ui/chip";
 import { AbandonProgress } from "@/components/crm/abandon-gauges";
 import { formatDate, formatRelative } from "@/lib/format";
 import { deviceLabel } from "@/lib/stats/visit";
-import type { AbandonRow } from "@/lib/crm/abandons";
+import { staffSessionHref, type AbandonRow } from "@/lib/crm/abandons";
 
 function statusChip(row: AbandonRow) {
   if (row.recoverable) {
@@ -24,7 +24,7 @@ function Fact({ label, value }: { label: string; value: string | null | undefine
   return (
     <div className="min-w-0">
       <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-slate-400">{label}</p>
-      <p className="mt-0.5 truncate text-sm text-slate-900">{value || "—"}</p>
+      <p className="mt-0.5 truncate text-sm text-slate-900">{value || "-"}</p>
     </div>
   );
 }
@@ -150,11 +150,12 @@ export function AbandonDrawer({ row, onClose }: { row: AbandonRow; onClose: () =
 
         <div className="border-t border-slate-200 px-4 py-3 lg:px-5">
           <Link
-            href={`/reprendre/${row.token}`}
+            href={staffSessionHref(row.id)}
             className="inline-flex text-sm font-medium text-[#C2410C] hover:underline"
           >
             Voir le parcours
           </Link>
+          <p className="mt-1 text-xs text-slate-500">Lecture seule. La session du prospect n’est pas reprise.</p>
         </div>
       </aside>
     </div>,

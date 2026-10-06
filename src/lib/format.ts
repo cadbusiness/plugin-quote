@@ -1,3 +1,11 @@
+/** Whole euros stay without cents. Sub-euro amounts keep two decimals (0,90 €, not 1 €). */
+function priceFractionDigits(n: number) {
+  if (!Number.isFinite(n)) return 0;
+  const abs = Math.abs(n);
+  if (abs > 0 && abs < 1) return 2;
+  return 0;
+}
+
 export function formatPrice(
   min: number | null | undefined,
   max: number | null | undefined,
@@ -6,14 +14,17 @@ export function formatPrice(
   if (min == null && max == null) return "Sur devis";
   const code = (currency ?? "EUR").trim().toUpperCase() || "EUR";
   const fmt = (n: number) => {
+    const digits = priceFractionDigits(n);
     try {
       return new Intl.NumberFormat("fr-FR", {
         style: "currency",
         currency: code,
-        maximumFractionDigits: 0,
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits,
       }).format(n);
     } catch {
-      return `${Math.round(n)} ${code}`;
+      if (digits === 0) return `${Math.round(n)} ${code}`;
+      return `${n.toFixed(digits).replace(".", ",")} ${code}`;
     }
   };
   if (min != null && max != null) {

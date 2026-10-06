@@ -8,7 +8,7 @@ import { MonthChart } from "@/components/stats/month-chart";
 import { KpiStrip } from "@/components/stats/kpi-strip";
 import { nameInitials } from "@/lib/crm/quote-next-action";
 import { quoteTabHref } from "@/lib/crm/quote-tabs";
-import { abandonStory } from "@/lib/crm/abandons";
+import { abandonStory, leftVisitorCount } from "@/lib/crm/abandons";
 import { WORKFLOW_STATUS_LABELS } from "@/lib/workflows/labels";
 import type { WorkflowStatus } from "@/lib/workflows/types";
 import { HOME_PULSE_IDS, trendStory } from "@/lib/stats/dashboard";
@@ -246,7 +246,11 @@ function AbandonsModule({ data }: { data: HomeDashboard }) {
           {story.stress ? <span className="text-red-600">{story.stress}</span> : null}
         </p>
         <div className="mt-4 space-y-3">
-          <MeterRow label="Visites abandonnées" value={snapshot.started} max={snapshot.started} />
+          <MeterRow
+            label="Visites abandonnées"
+            value={leftVisitorCount(snapshot.rows)}
+            max={Math.max(snapshot.started, 1)}
+          />
           <MeterRow label="Email envoyé" value={snapshot.relanced} max={snapshot.started} />
           <MeterRow label="À relancer" value={pending} max={snapshot.started} />
         </div>

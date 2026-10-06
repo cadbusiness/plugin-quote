@@ -1,5 +1,17 @@
 import assert from "node:assert/strict";
-import { abandonStory, filterAbandonRows, visitStops, type AbandonRow } from "./abandons";
+import {
+  abandonStory,
+  filterAbandonRows,
+  inactiveAfterLabel,
+  inactiveHoursForFunnel,
+  isSuccessfulEmailStep,
+  leftVisitorCount,
+  relancedSessionIds,
+  sessionIsInactive,
+  staffSessionHref,
+  visitStops,
+  type AbandonRow,
+} from "./abandons";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 
 const base = {
@@ -81,23 +93,103 @@ assert.equal(widget.some((stop) => stop.label === "Widget"), false);
 assert.equal(widget.some((stop) => stop.label === "Cantilever lourd"), true);
 assert.equal(widget.some((stop) => stop.label === "Demande de devis"), true);
 
+const now = Date.parse("2026-09-13T12:00:00.000Z");
+assert.equal(sessionIsInactive("2026-09-13T11:30:00.000Z", 1, now), false);
+assert.equal(sessionIsInactive("2026-09-13T10:00:00.000Z", 1, now), true);
+assert.equal(sessionIsInactive("2026-09-13T10:00:00.000Z", 24, now), false);
+assert.equal(sessionIsInactive("2026-09-12T11:00:00.000Z", 24, now), true);
+assert.equal(inactiveAfterLabel(1), "1 h");
+assert.equal(inactiveAfterLabel(24), "24 h");
+assert.equal(inactiveHoursForFunnel("funnel-a", []), 1);
+assert.equal(inactiveHoursForFunnel("funnel-a", [{ hours: 24 }]), 24);
+assert.equal(
+  inactiveHoursForFunnel("funnel-a", [
+    { hours: 24, configuratorIds: ["funnel-a"] },
+    { hours: 1, configuratorIds: ["funnel-b"] },
+  ]),
+  24,
+);
+assert.equal(
+  inactiveHoursForFunnel("funnel-b", [
+    { hours: 24, configuratorIds: ["funnel-a"] },
+    { hours: 6, configuratorIds: ["funnel-b"] },
+  ]),
+  6,
+);
+
 const noneRelanced = abandonStory(
   {
     started: 24,
     baskets: 0,
-    stale: 0,
+    stale: 2,
     anonymous: 24,
     relanced: 0,
+    inactiveHours: 1,
+    inactiveMixed: false,
     rows: [
-      { relanced: false, lastActivity: "2026-09-07T10:00:00.000Z" } as AbandonRow,
-      { relanced: false, lastActivity: "2026-09-12T10:00:00.000Z" } as AbandonRow,
+      { relanced: false, stale: true, lastActivity: "2026-09-07T10:00:00.000Z" } as AbandonRow,
+      { relanced: false, stale: true, lastActivity: "2026-09-12T10:00:00.000Z" } as AbandonRow,
+      { relanced: false, stale: false, lastActivity: "2026-09-13T11:40:00.000Z" } as AbandonRow,
     ],
   },
-  Date.parse("2026-09-13T10:00:00.000Z"),
+  Date.parse("2026-09-13T12:00:00.000Z"),
 );
-assert.match(noneRelanced.lead, /24 visiteurs ont quitté/);
+assert.equal(staffSessionHref("ses_1"), "/sessions/ses_1");
+assert.equal(staffSessionHref("ses_1").includes("/reprendre/"), false);
+assert.equal(
+  leftVisitorCount([
+    { stale: true },
+    { stale: false },
+    { stale: true },
+  ]),
+  2,
+);
+assert.match(noneRelanced.lead, /2 visiteurs ont quitté/);
+assert.doesNotMatch(noneRelanced.lead, /24/);
+assert.doesNotMatch(noneRelanced.lead, /3 visiteur/);
 assert.equal(noneRelanced.stress, "Aucun n’a encore été relancé.");
 assert.equal(noneRelanced.waiting?.count, 2);
 assert.equal(noneRelanced.waiting?.days, 6);
+
+const stillActive = abandonStory(
+  {
+    started: 3,
+    baskets: 1,
+    stale: 0,
+    anonymous: 2,
+    relanced: 0,
+    inactiveHours: 24,
+    inactiveMixed: false,
+    rows: [
+      { relanced: false, stale: false, lastActivity: "2026-09-13T11:00:00.000Z" } as AbandonRow,
+      { relanced: false, stale: false, lastActivity: "2026-09-13T11:30:00.000Z" } as AbandonRow,
+    ],
+  },
+  now,
+);
+assert.equal(stillActive.lead, "Aucune visite abandonnée récemment.");
+assert.equal(stillActive.waiting, null);
+
+const runs = [
+  { id: "r-failed", subject_id: "s-failed" },
+  { id: "r-exited", subject_id: "s-exited" },
+  { id: "r-waiting", subject_id: "s-waiting" },
+  { id: "r-sent", subject_id: "s-sent" },
+];
+const steps = [
+  { run_id: "r-failed", status: "failed", output: { templateKind: "session_resume" } },
+  { run_id: "r-exited", status: "ok", output: { exit: true } },
+  { run_id: "r-waiting", status: "ok", output: { templateKind: "session_resume", to: "a@b.c" } },
+  { run_id: "r-sent", status: "ok", output: { waited: true } },
+  { run_id: "r-sent", status: "ok", output: { templateKind: "session_resume_late" } },
+];
+assert.equal(isSuccessfulEmailStep(steps[0]!), false);
+assert.equal(isSuccessfulEmailStep(steps[1]!), false);
+assert.equal(isSuccessfulEmailStep(steps[2]!), true);
+const relanced = relancedSessionIds(runs, steps);
+assert.equal(relanced.has("s-failed"), false);
+assert.equal(relanced.has("s-exited"), false);
+assert.equal(relanced.has("s-waiting"), true);
+assert.equal(relanced.has("s-sent"), true);
 
 console.log("crm/abandons.test.ts: ok");

@@ -3,6 +3,7 @@ import { createServiceClient } from "@/lib/supabase/service";
 import type { Tables } from "@/lib/db/database.types";
 import type { Answers } from "@/lib/wizard/types";
 import { fill } from "@/lib/email/fill";
+import { fillProspectTemplate, prospectDisplayName } from "@/lib/email/greeting";
 import { formatPrice } from "@/lib/format";
 
 function formatAnswers(answers: Answers) {
@@ -40,7 +41,7 @@ export async function sendQuoteEmails(input: {
 
   const contactEmail = input.quote.contact_email?.trim() ?? "";
   const vars = {
-    contact_name: input.quote.contact_name,
+    contact_name: prospectDisplayName(input.quote.contact_name ?? ""),
     contact_email: contactEmail,
     contact_company: input.quote.contact_company ?? "",
     score: String(input.quote.score ?? ""),
@@ -67,8 +68,8 @@ export async function sendQuoteEmails(input: {
     await resend.emails.send({
       from,
       to: contactEmail,
-      subject: fill(prospect.subject, vars),
-      text: fill(prospect.body, vars),
+      subject: fillProspectTemplate(prospect.subject, vars),
+      text: fillProspectTemplate(prospect.body, vars),
       attachments,
     });
   }

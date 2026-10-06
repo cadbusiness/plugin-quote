@@ -12,8 +12,9 @@ import {
   type VisitDevice,
 } from "@/lib/stats/visit";
 import type { Answers } from "@/lib/wizard/types";
-
-const STALE_MS = 60 * 60 * 1000;
+import { matchesFunnel } from "@/lib/workflows/evaluate";
+import { DEFAULT_ABANDON_HOURS, isSessionAbandonedDue, resolveAbandonHours } from "@/lib/workflows/policy";
+import { parseTriggerConfig, type WorkflowTriggerConfig } from "@/lib/workflows/types";
 
 export type AbandonDraft = {
   name?: string;
@@ -71,6 +72,10 @@ export type AbandonSnapshot = {
   stale: number;
   anonymous: number;
   relanced: number;
+  /** Shortest abandon wait in the org, in hours. Per-row staleness can be longer. */
+  inactiveHours: number;
+  /** True when active abandon parcours do not share one wait. */
+  inactiveMixed: boolean;
   rows: AbandonRow[];
 };
 
@@ -80,13 +85,78 @@ export type AbandonStory = {
   waiting: { count: number; days: number } | null;
 };
 
+/** Sessions past the inactivity window. A visit still inside that window has not left. */
+export function leftVisitorCount(rows: { stale?: boolean }[]): number {
+  return rows.filter((row) => row.stale).length;
+}
+
+export function sessionIsInactive(lastActivity: string, abandonHours: number, now = Date.now()): boolean {
+  return isSessionAbandonedDue(lastActivity, abandonHours, now);
+}
+
+export type AbandonTriggerWait = {
+  hours: number;
+  configuratorIds?: string[];
+};
+
+/** Wait of the abandon parcours that applies to this funnel. Default 1 h when none does. */
+export function inactiveHoursForFunnel(configuratorId: string | null, triggers: AbandonTriggerWait[]): number {
+  const matching = triggers.filter((trigger) => matchesFunnel(configuratorId, trigger.configuratorIds));
+  if (!matching.length) return DEFAULT_ABANDON_HOURS;
+  return Math.min(...matching.map((trigger) => trigger.hours));
+}
+
+export function abandonTriggerWaits(configs: WorkflowTriggerConfig[]): AbandonTriggerWait[] {
+  return configs.map((config) => ({
+    hours: resolveAbandonHours(config),
+    configuratorIds: config.configuratorIds,
+  }));
+}
+
+export function inactiveAfterLabel(hours: number): string {
+  if (!Number.isFinite(hours) || hours <= 0) return "immédiat";
+  if (hours < 1) {
+    const minutes = Math.max(1, Math.round(hours * 60));
+    return `${minutes} min`;
+  }
+  const rounded = Math.round(hours * 10) / 10;
+  const text = Number.isInteger(rounded) ? String(rounded) : String(rounded).replace(".", ",");
+  return `${text} h`;
+}
+
+/** A run counts as Relancé only after an email step actually succeeded. */
+export function isSuccessfulEmailStep(step: { status: string; output: unknown }): boolean {
+  if (step.status !== "ok") return false;
+  const output = step.output;
+  if (!output || typeof output !== "object" || Array.isArray(output)) return false;
+  const kind = (output as Record<string, unknown>).templateKind;
+  return typeof kind === "string" && kind.trim().length > 0;
+}
+
+/** Team inspection. Never the prospect resume URL (`/reprendre/{token}`). */
+export function staffSessionHref(sessionId: string) {
+  return `/sessions/${encodeURIComponent(sessionId)}`;
+}
+
+export function relancedSessionIds(
+  runs: { id: string; subject_id: string }[],
+  steps: { run_id: string; status: string; output: unknown }[],
+): Set<string> {
+  const sent = new Set(steps.filter((step) => isSuccessfulEmailStep(step)).map((step) => step.run_id));
+  const subjects = new Set<string>();
+  for (const run of runs) {
+    if (sent.has(run.id)) subjects.add(run.subject_id);
+  }
+  return subjects;
+}
+
 export function abandonStory(snapshot: AbandonSnapshot, now = Date.now()): AbandonStory {
-  const n = snapshot.started;
+  const n = leftVisitorCount(snapshot.rows);
   const lead =
     n === 0
       ? "Aucune visite abandonnée récemment."
       : `${n} visiteur${n > 1 ? "s ont" : " a"} quitté le funnel sans devis.`;
-  const pending = snapshot.rows.filter((row) => !row.relanced);
+  const pending = snapshot.rows.filter((row) => row.stale && !row.relanced);
   const stress = n > 0 && snapshot.relanced === 0 ? "Aucun n’a encore été relancé." : null;
   if (!pending.length) return { lead, stress, waiting: null };
   const oldest = Math.min(...pending.map((row) => new Date(row.lastActivity).getTime()));
@@ -260,7 +330,7 @@ export async function loadAbandonSnapshot(
     "id, token, contact_draft, current_step, last_activity_at, updated_at, created_at, configurator_id, visitor_id, utm_source, utm_medium, utm_campaign, referrer, landing_path, gclid, gbraid, wbraid, country, city, device, answers, chat_messages, mode";
   const sessionSelectLegacy = sessionSelect.replace(", country, city, device", "");
 
-  const [{ data: sessionsFull, error: sessionsError }, { data: funnels }, { data: steps }, { data: runs }, { data: events }] =
+  const [{ data: sessionsFull, error: sessionsError }, { data: funnels }, { data: steps }, { data: runs }, { data: events }, { data: abandonFlows }] =
     await Promise.all([
       supabase
         .from("quote_sessions")
@@ -277,7 +347,7 @@ export async function loadAbandonSnapshot(
         .order("sort_order", { ascending: true }),
       supabase
         .from("workflow_runs")
-        .select("subject_id")
+        .select("id, subject_id")
         .eq("organization_id", orgId)
         .eq("subject_type", "session")
         .limit(500),
@@ -287,6 +357,12 @@ export async function loadAbandonSnapshot(
         .eq("organization_id", orgId)
         .order("created_at", { ascending: false })
         .limit(2500),
+      supabase
+        .from("workflows")
+        .select("trigger_config")
+        .eq("organization_id", orgId)
+        .eq("trigger_type", "session.abandoned")
+        .eq("status", "active"),
     ]);
 
   let sessions = (sessionsFull ?? []) as unknown as SessionVisitRow[];
@@ -309,15 +385,19 @@ export async function loadAbandonSnapshot(
     stepTitles.set(step.configurator_id, list);
   }
   const stepCounts = countBy((steps ?? []).map((step) => step.configurator_id));
-  const relancedIds = new Set((runs ?? []).map((run) => run.subject_id));
+  const runRows = (runs ?? []).map((run) => ({ id: run.id, subject_id: run.subject_id }));
+  const relancedIds = relancedSessionIds(runRows, await loadEmailSteps(supabase, orgId, runRows.map((run) => run.id)));
   const visitEvents = (events ?? []) as VisitEvent[];
   const now = Date.now();
+  const triggers = abandonTriggerWaits((abandonFlows ?? []).map((flow) => parseTriggerConfig(flow.trigger_config)));
+  const inactiveHours = triggers.length ? Math.min(...triggers.map((trigger) => trigger.hours)) : DEFAULT_ABANDON_HOURS;
+  const inactiveMixed = new Set(triggers.map((trigger) => trigger.hours)).size > 1;
 
   const rows: AbandonRow[] = sessions.map((session) => {
     const draft = draftOf(session.contact_draft);
     const lastActivity = session.last_activity_at ?? session.updated_at;
     const startedAt = session.created_at;
-    const stale = now - new Date(lastActivity).getTime() >= STALE_MS;
+    const stale = sessionIsInactive(lastActivity, inactiveHoursForFunnel(session.configurator_id, triggers), now);
     const titles = stepTitles.get(session.configurator_id) ?? [];
     const stepCount = Math.max(1, stepCounts.get(session.configurator_id) ?? titles.length ?? 1);
     const step = session.current_step + 1;
@@ -401,6 +481,26 @@ export async function loadAbandonSnapshot(
     stale: recoverable.filter((row) => row.stale).length,
     anonymous: rows.filter((row) => !row.recoverable).length,
     relanced: recoverable.filter((row) => row.relanced).length,
+    inactiveHours,
+    inactiveMixed,
     rows,
   };
+}
+
+async function loadEmailSteps(
+  supabase: SupabaseClient<Database>,
+  orgId: string,
+  runIds: string[],
+): Promise<{ run_id: string; status: string; output: Json }[]> {
+  const steps: { run_id: string; status: string; output: Json }[] = [];
+  for (let index = 0; index < runIds.length; index += 80) {
+    const chunk = runIds.slice(index, index + 80);
+    const { data } = await supabase
+      .from("workflow_run_steps")
+      .select("run_id, status, output")
+      .eq("organization_id", orgId)
+      .in("run_id", chunk);
+    steps.push(...((data ?? []) as { run_id: string; status: string; output: Json }[]));
+  }
+  return steps;
 }
