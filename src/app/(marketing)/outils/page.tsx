@@ -7,7 +7,7 @@ import { pageMetadata } from "@/lib/marketing/site";
 export const metadata: Metadata = pageMetadata({
   title: "Outils devis B2B",
   description:
-    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage, impact remise, seuil de remise et plancher de marge, ROI logiciel, taux d’acceptation, coût d’un brief incomplet, coût des devis expirés, calculateur d’acompte, gain de temps catalogue, générateur d’URL de préremplissage, estimateur leads formulaire vs funnel WordPress, estimateur coût des devis PDF seuls, checklist mentions devis France, estimateur coût des allers-retours brief sans photos, estimateur coût des e-mails de clarification, estimateur coût des devis envoyés sans validation interne, estimateur coût des relances à l’aveugle, estimateur coût d’attente multi-décideurs, estimateur coût des visites techniques inutiles, estimateur coût du pipeline fantôme, calculateur TVA devis HT/TTC, estimateur coût des demandes orales non capturées, estimateur coût de la double saisie devis, estimateur coût handoff commercial vers technique, estimateur coût du contexte hors dossier devis, estimateur valeur des produits suggérés dans un devis, estimateur requalification chat vs formulaire. Outils gratuits QuoteBuilder.",
+    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage, impact remise, seuil de remise et plancher de marge, ROI logiciel, taux d’acceptation, coût d’un brief incomplet, coût des devis expirés, calculateur d’acompte, gain de temps catalogue, générateur d’URL de préremplissage, estimateur leads formulaire vs funnel WordPress, estimateur coût des devis PDF seuls, checklist mentions devis France, estimateur coût des allers-retours brief sans photos, estimateur coût des e-mails de clarification, estimateur coût des devis envoyés sans validation interne, estimateur coût des relances à l’aveugle, estimateur coût d’attente multi-décideurs, estimateur coût des visites techniques inutiles, estimateur coût du pipeline fantôme, calculateur TVA devis HT/TTC, estimateur coût des demandes orales non capturées, estimateur coût de la double saisie devis, estimateur coût handoff commercial vers technique, estimateur coût du contexte hors dossier devis, estimateur valeur des produits suggérés dans un devis, estimateur requalification chat vs formulaire, estimateur des demandes hors budget et de la fourchette de prix. Outils gratuits QuoteBuilder.",
   path: "/outils",
 });
 
@@ -203,6 +203,12 @@ const TOOLS = [
     eyebrow: "Pilotage",
     title: "Estimateur requalification chat vs formulaire",
     text: "Demandes de devis / mois, part qui arrive par le chat, % à requalifier selon le canal, minutes, taux horaire. Dossiers, heures, coût mensuel et écart attribuable au chat. Calcul 100 % local, sur vos hypothèses.",
+  },
+  {
+    href: "/outils/estimateur-demandes-hors-budget-fourchette-devis",
+    eyebrow: "Pilotage",
+    title: "Estimateur des demandes hors budget",
+    text: "Demandes de devis / mois, part qui s'arrête au prix, minutes, taux horaire, hypothèse de fourchette affichée plus tôt. Heures, coût, temps récupérable, aperçu du total indicatif d'une ligne. Calcul 100 % local, sur vos hypothèses.",
   },
 ] as const;
 
