@@ -1,3 +1,4 @@
+import { orderPriceBounds } from "@/lib/quotes/price-range";
 import type { ProductOption } from "@/lib/wizard/types";
 
 function toNumber(value: FormDataEntryValue | null) {
@@ -18,12 +19,8 @@ export function readPriceRange(formData: FormData) {
     const price = toNumber(formData.get("price_min"));
     return { priceMin: price, priceMax: price };
   }
-  const priceMin = toNumber(formData.get("price_min"));
-  const priceMax = toNumber(formData.get("price_max"));
-  if (priceMin !== null && priceMax !== null && priceMax < priceMin) {
-    return { priceMin: priceMax, priceMax: priceMin };
-  }
-  return { priceMin, priceMax };
+  const ordered = orderPriceBounds(toNumber(formData.get("price_min")), toNumber(formData.get("price_max")));
+  return { priceMin: ordered.min, priceMax: ordered.max };
 }
 
 export function priceModeOf(priceMin: number | null, priceMax: number | null) {

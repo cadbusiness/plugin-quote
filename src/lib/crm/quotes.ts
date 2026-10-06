@@ -5,6 +5,7 @@ import { labelAnswers } from "@/lib/crm/answers";
 import { dossierWhy, funnelContext, quoteInboxCue } from "@/lib/crm/quote-next-action";
 import { computeValidation } from "@/lib/prospect/collaborators";
 import { scoreReasons } from "@/lib/quotes/score";
+import { displayedQuoteRange, readQuotePrice, resolveDisplayCurrency, sumLineRanges } from "@/lib/quotes/price-range";
 import { classifySource } from "@/lib/stats/attribution";
 import type { Answers } from "@/lib/wizard/types";
 
@@ -95,7 +96,7 @@ export async function loadQuoteListExtras(
   if (!ids.length) return extras;
 
   const [{ data: items }, { data: rows }, collabResult, { data: messages }, { data: calls }] = await Promise.all([
-    supabase.from("quote_items").select("quote_id, name, quantity, price_min, price_max").in("quote_id", ids),
+    supabase.from("quote_items").select("quote_id, product_id, name, quantity, price_min, price_max").in("quote_id", ids),
     supabase.from("quotes").select("id, status, extracted_params").in("id", ids),
     supabase
       .from("quote_collaborators")
@@ -150,15 +151,38 @@ export async function loadQuoteListExtras(
     current.validationTotal = stats.validation_total_count;
   }
 
+  const linesByQuote = new Map<string, NonNullable<typeof items>>();
+  const productIds = new Set<string>();
   for (const item of items ?? []) {
     const current = extras.get(item.quote_id);
     if (!current) continue;
-    const qty = item.quantity || 1;
     current.itemCount += 1;
     if (!current.firstName) current.firstName = item.name;
-    if (item.price_min != null) current.priceMin = (current.priceMin ?? 0) + item.price_min * qty;
-    if (item.price_max != null) current.priceMax = (current.priceMax ?? 0) + item.price_max * qty;
-    else if (item.price_min != null) current.priceMax = (current.priceMax ?? 0) + item.price_min * qty;
+    const list = linesByQuote.get(item.quote_id) ?? [];
+    list.push(item);
+    linesByQuote.set(item.quote_id, list);
+    if (item.product_id) productIds.add(item.product_id);
+  }
+  const { data: pricedProducts } = productIds.size
+    ? await supabase.from("products").select("id, currency").in("id", [...productIds])
+    : { data: [] as { id: string; currency: string }[] };
+  const currencyByProduct = new Map((pricedProducts ?? []).map((row) => [row.id, row.currency]));
+  for (const [quoteId, lines] of linesByQuote) {
+    const current = extras.get(quoteId);
+    if (!current) continue;
+    const total = sumLineRanges(lines);
+    current.priceMin = total.min;
+    current.priceMax = total.max;
+    current.currency = resolveDisplayCurrency(lines.map((line) => (line.product_id ? currencyByProduct.get(line.product_id) : null)));
+  }
+  for (const row of rows ?? []) {
+    const stored = readQuotePrice(row.extracted_params);
+    const current = extras.get(row.id);
+    if (!current || !stored) continue;
+    const headline = displayedQuoteRange({ stored, lines: [] });
+    current.priceMin = headline.min;
+    current.priceMax = headline.max;
+    if (stored.currency) current.currency = stored.currency;
   }
 
   for (const quote of quotes) {

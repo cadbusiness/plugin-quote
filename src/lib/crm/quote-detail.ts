@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json, Tables } from "@/lib/db/database.types";
 import { classifySource } from "@/lib/stats/attribution";
 import { formatDate, formatPrice, formatRelative } from "@/lib/format";
+import { displayedQuoteRange, formatLineAmount, readQuotePrice, resolveDisplayCurrency } from "@/lib/quotes/price-range";
 import { nodeTitle, RUN_STATUS_LABELS, TRIGGER_LABELS } from "@/lib/workflows/labels";
 import { parseDefinition, type WorkflowRunStatus, type WorkflowTriggerType } from "@/lib/workflows/types";
 import { scoreReasons } from "@/lib/quotes/score";
@@ -18,6 +19,7 @@ export type QuoteItemView = Tables<"quote_items"> & {
   optionsLabel: string | null;
   productImage: string | null;
   productSku: string | null;
+  amountLabel: string;
 };
 
 export type QuoteActivityView = Tables<"quote_activities"> & {
@@ -86,7 +88,7 @@ export type QuoteDetail = {
   memberSpaceUrl: string | null;
   suiviLastAccess: string | null;
   received: { relative: string; exact: string };
-  totals: { min: number | null; max: number | null; label: string; count: number };
+  totals: { min: number | null; max: number | null; label: string; count: number; currency: string };
 };
 
 function asAnswers(value: Json): Answers {
@@ -100,33 +102,6 @@ function optionMeta(row: Tables<"wizard_questions">) {
     label: row.label,
     type: row.type,
     options: (row.options ?? {}) as QuestionOptions,
-  };
-}
-
-function rangeTotal(items: Tables<"quote_items">[]) {
-  let min = 0;
-  let max = 0;
-  let hasMin = false;
-  let hasMax = false;
-  for (const item of items) {
-    const qty = item.quantity || 1;
-    if (item.price_min != null) {
-      min += item.price_min * qty;
-      hasMin = true;
-    }
-    if (item.price_max != null) {
-      max += item.price_max * qty;
-      hasMax = true;
-    } else if (item.price_min != null) {
-      max += item.price_min * qty;
-      hasMax = true;
-    }
-  }
-  return {
-    min: hasMin ? min : null,
-    max: hasMax ? max : null,
-    label: formatPrice(hasMin ? min : null, hasMax ? max : null),
-    count: items.length,
   };
 }
 
@@ -283,7 +258,7 @@ export async function loadQuoteDetail(
       ? supabase.from("wizard_questions").select("*").in("step_id", stepIdList).order("sort_order")
       : Promise.resolve({ data: [] }),
     productIds.length
-      ? supabase.from("products").select("id, image_url, sku").in("id", productIds)
+      ? supabase.from("products").select("id, image_url, sku, currency").in("id", productIds)
       : Promise.resolve({ data: [] }),
     filePaths.length
       ? supabase.storage.from("quote-uploads").createSignedUrls(filePaths, 3600)
@@ -314,6 +289,10 @@ export async function loadQuoteDetail(
   const memberLabel = new Map(memberList.map((m) => [m.userId, m.label]));
 
   const answers = asAnswers(quote.answers);
+  const storedPrice = readQuotePrice(quote.extracted_params);
+  const headline = displayedQuoteRange({ stored: storedPrice, lines: items ?? [] });
+  const currency =
+    storedPrice?.currency || resolveDisplayCurrency((products ?? []).map((product) => product.currency));
   const status = (statuses ?? []).find((s) => s.id === quote.status_id);
   const suiviAlive = access && new Date(access.expires_at).getTime() > Date.now();
   const assigneeIds = (assigneeRows ?? []).map((row) => row.user_id);
@@ -343,6 +322,7 @@ export async function loadQuoteDetail(
         optionsLabel: formatItemOptions(item.options),
         productImage: product?.image_url ?? null,
         productSku: product?.sku ?? null,
+        amountLabel: formatLineAmount(item, product?.currency || currency),
       };
     }),
     files: filesWithUrls,
@@ -415,7 +395,13 @@ export async function loadQuoteDetail(
     suiviUrl: suiviAlive ? `${appUrl()}/suivi/${access.token}` : null,
     memberSpaceUrl: await publishedMemberSpaceUrl(supabase, orgId),
     suiviLastAccess: access?.last_accessed ? formatRelative(access.last_accessed) : null,
-    totals: rangeTotal(items ?? []),
+    totals: {
+      min: headline.min,
+      max: headline.max,
+      label: formatPrice(headline.min, headline.max, currency),
+      count: (items ?? []).length,
+      currency,
+    },
   };
 }
 

@@ -1,5 +1,7 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
-import { formatQuoteSpecs } from "@/lib/configurator/prefill";
+import { labelAnswers, type QuestionMeta } from "@/lib/crm/answers";
+import { formatPrice } from "@/lib/format";
+import { formatLineAmount } from "@/lib/quotes/price-range";
 import type { Answers } from "@/lib/wizard/types";
 
 const styles = StyleSheet.create({
@@ -15,22 +17,6 @@ const styles = StyleSheet.create({
   item: { marginBottom: 8 },
   footer: { position: "absolute", bottom: 28, left: 40, right: 40, fontSize: 9, color: "#94a3b8" },
 });
-
-function formatPrice(min: number | null, max: number | null) {
-  if (min == null && max == null) return "Sur devis";
-  const fmt = (n: number) =>
-    new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
-  if (min != null && max != null) return `${fmt(min)} – ${fmt(max)}`;
-  return fmt((min ?? max) as number);
-}
-
-function answerLabel(key: string, value: unknown): string {
-  if (key === "specs") return formatQuoteSpecs(value) ?? "-";
-  if (Array.isArray(value)) return value.map(String).join(", ");
-  if (value == null) return "-";
-  if (typeof value === "object") return JSON.stringify(value);
-  return String(value);
-}
 
 export function QuotePdf(props: {
   organizationName: string;
@@ -48,11 +34,15 @@ export function QuotePdf(props: {
     options: Record<string, string>;
     priceMin: number | null;
     priceMax: number | null;
+    currency?: string | null;
   }[];
   suggestionName: string;
   priceMin: number | null;
   priceMax: number | null;
+  currency?: string | null;
+  questions?: QuestionMeta[];
 }) {
+  const answers = labelAnswers(props.answers, props.questions ?? []);
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -80,23 +70,31 @@ export function QuotePdf(props: {
 
         <View style={styles.section}>
           <Text style={styles.heading}>Paramètres saisis</Text>
-          {Object.entries(props.answers).map(([key, value]) => (
-            <View key={key} style={styles.row}>
-              <Text style={styles.label}>{key}</Text>
-              <Text style={styles.value}>{answerLabel(key, value)}</Text>
-            </View>
-          ))}
+          {answers.length ? (
+            answers.map((row) => (
+              <View key={row.key} style={styles.row}>
+                <Text style={styles.label}>{row.label}</Text>
+                <Text style={styles.value}>{row.value}</Text>
+              </View>
+            ))
+          ) : (
+            <Text style={styles.muted}>Aucun paramètre saisi.</Text>
+          )}
         </View>
 
         <View style={styles.section}>
           <Text style={styles.heading}>{props.suggestionName}</Text>
-          <Text style={styles.muted}>Fourchette indicative : {formatPrice(props.priceMin, props.priceMax)}</Text>
-          {props.items.map((item) => (
-            <View key={item.name} style={styles.item}>
+          <Text style={styles.muted}>
+            Fourchette indicative : {formatPrice(props.priceMin, props.priceMax, props.currency)}
+          </Text>
+          {props.items.map((item, index) => (
+            <View key={`${item.name}-${index}`} style={styles.item}>
               <Text>
                 {item.quantity} × {item.name}
               </Text>
-              <Text style={styles.muted}>{formatPrice(item.priceMin, item.priceMax)}</Text>
+              <Text style={styles.muted}>
+                {formatLineAmount(item, item.currency ?? props.currency)}
+              </Text>
             </View>
           ))}
         </View>

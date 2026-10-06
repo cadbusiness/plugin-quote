@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { applyStorefrontCart } from "./storefront-cart";
+import { applyStorefrontCart, suggestionFromProducts } from "./storefront-cart";
 import type { Customization, Product } from "./types";
 
 function product(partial: Partial<Product> & Pick<Product, "id" | "name">): Product {
@@ -47,6 +47,16 @@ const empty: Customization = { quantities: {}, options: {} };
   const applied = applyStorefrontCart([], [{ id: "missing", qty: 1, name: "Inconnu" }], empty);
   assert.equal(applied.matched.length, 0);
   assert.equal(applied.customization.storefrontLines?.[0]?.externalId, "missing");
+}
+
+{
+  const suggestion = suggestionFromProducts([
+    product({ id: "a", name: "A", priceMin: 10, priceMax: 80 }),
+    product({ id: "b", name: "B", priceMin: 200, priceMax: 400 }),
+  ]);
+  assert.equal(suggestion?.priceMin, null);
+  assert.equal(suggestion?.priceMax, null);
+  assert.equal(suggestion?.products.length, 2);
 }
 
 console.log("wizard/storefront-cart ok");

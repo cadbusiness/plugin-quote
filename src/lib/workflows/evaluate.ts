@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/db/database.types";
 import { appUrl } from "@/lib/prospect/access";
 import { publishedMemberSpaceUrl } from "@/lib/members/public";
+import { displayedQuoteRange, readQuotePrice, resolveDisplayCurrency } from "@/lib/quotes/price-range";
 import type { BranchCondition, RunContext, SubjectContext, WorkflowSubjectType } from "@/lib/workflows/types";
 
 type Client = SupabaseClient<Database>;
@@ -39,11 +40,26 @@ export async function loadSubjectContext(
       quote.status_id
         ? supabase.from("quote_statuses").select("slug, is_closed").eq("id", quote.status_id).maybeSingle()
         : Promise.resolve({ data: null }),
-      supabase.from("quote_items").select("product_id, name, price_min, price_max").eq("quote_id", quote.id),
+      supabase.from("quote_items").select("product_id, name, price_min, price_max, quantity").eq("quote_id", quote.id),
       supabase.from("prospect_access").select("token").eq("quote_id", quote.id).maybeSingle(),
     ]);
 
-    const prices = (items ?? []).flatMap((item) => [item.price_min, item.price_max]).filter((n): n is number => n != null);
+    const storedPrice = readQuotePrice(quote.extracted_params);
+    const hasRunPrice = input.stored?.priceMin !== undefined || input.stored?.priceMax !== undefined;
+    const headline = hasRunPrice
+      ? { min: input.stored?.priceMin ?? null, max: input.stored?.priceMax ?? null }
+      : displayedQuoteRange({ stored: storedPrice, lines: items ?? [] });
+    const productIds = (items ?? []).map((item) => item.product_id).filter((id): id is string => Boolean(id));
+    let currency = input.stored?.currency || storedPrice?.currency || "";
+    if (!currency && productIds.length) {
+      const { data: priced } = await supabase
+        .from("products")
+        .select("currency")
+        .in("id", productIds)
+        .eq("organization_id", quote.organization_id);
+      currency = resolveDisplayCurrency((priced ?? []).map((row) => row.currency));
+    }
+    if (!currency) currency = "EUR";
     const suiviUrl = access?.token ? `${appUrl()}/suivi/${access.token}` : input.stored?.suiviUrl ?? "";
     const membresUrl = (await publishedMemberSpaceUrl(supabase, quote.organization_id)) ?? "";
 
@@ -62,10 +78,11 @@ export async function loadSubjectContext(
       assigned: Boolean(quote.assigned_to),
       assigneeUserId: quote.assigned_to,
       answers: asRecord(quote.answers),
-      productIds: (items ?? []).map((item) => item.product_id).filter((id): id is string => Boolean(id)),
+      productIds,
       productNames: (items ?? []).map((item) => item.name),
-      priceMin: input.stored?.priceMin ?? (prices.length ? Math.min(...prices) : null),
-      priceMax: input.stored?.priceMax ?? (prices.length ? Math.max(...prices) : null),
+      priceMin: headline.min,
+      priceMax: headline.max,
+      currency,
       lastActivityAt: quote.created_at,
       resumeUrl: input.stored?.resumeUrl ?? "",
       suiviUrl,
@@ -116,6 +133,7 @@ export async function loadSubjectContext(
     pin: "",
     salesEmail: org?.sales_email ?? null,
     salesName: org?.sales_name ?? "",
+    currency: "EUR",
     submitted: Boolean(session.submitted_quote_id),
   };
 }

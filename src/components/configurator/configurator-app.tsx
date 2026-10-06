@@ -891,6 +891,7 @@ export function ConfiguratorApp({
             {showChatSuggestions ? (
               <SuggestionsPanel
                 suggestions={suggestions}
+                quantities={session.customization.quantities}
                 loadState={suggestionsState}
                 selectedId={session.selectedSuggestionId}
                 onSelect={(id) => persist({ selectedSuggestionId: id })}
@@ -958,6 +959,7 @@ export function ConfiguratorApp({
             {step.screenType === "suggestions" && !isCatalog ? (
               <SuggestionsPanel
                 suggestions={suggestions}
+                quantities={session.customization.quantities}
                 loadState={suggestionsState}
                 selectedId={session.selectedSuggestionId}
                 onSelect={(id) => persist({ selectedSuggestionId: id })}
@@ -1254,7 +1256,7 @@ function CustomizePanel({
               <QuoteProductMedia name={product.name} images={product.images} imageUrl={product.imageUrl} compact />
               <div className="min-w-0">
                 <p className="font-medium text-mk-ink">{product.name}</p>
-                <p className="text-sm text-mk-faint">{formatPrice(product.priceMin, product.priceMax)}</p>
+                <p className="text-sm text-mk-faint">{formatPrice(product.priceMin, product.priceMax, product.currency)}</p>
                 <div className="mt-2">
                   <SpecChips specs={product.specs} />
                   <ProductSheetLinks sheet={product.sheet} compact />

@@ -3,6 +3,7 @@ import { logActivity, notifyUser } from "@/lib/crm/activity";
 import { ensureDefaultEmailTemplates } from "@/lib/crm/email-templates";
 import { sendQuoteEmails } from "@/lib/email/send";
 import type { PluginConnection } from "@/lib/integrations/plugin";
+import { quoteHeadlineRange, resolveDisplayCurrency, stampQuotePrice } from "@/lib/quotes/price-range";
 import { scoreQuote } from "@/lib/quotes/score";
 import { createServiceClient } from "@/lib/supabase/service";
 import { getAppUrl } from "@/lib/supabase/env";
@@ -60,6 +61,7 @@ export type PluginCatalogProduct = {
   sku: string | null;
   priceMin: number | null;
   priceMax: number | null;
+  currency?: string | null;
   variants: PluginCatalogVariant[];
 };
 
@@ -267,6 +269,14 @@ export async function receivePluginQuote(connection: PluginConnection, body: unk
     return { ok: false, status: 500, error: "Création impossible" };
   }
 
+  const headline = quoteHeadlineRange({ lines });
+  const currency = resolveDisplayCurrency(lines.map((line) => products.find((product) => product.id === line.productId)?.currency));
+  const { error: stampError } = await supabase
+    .from("quotes")
+    .update({ extracted_params: stampQuotePrice(quote.extracted_params, headline, currency) })
+    .eq("id", quote.id);
+  if (stampError) console.error("Plugin quote price stamp failed", stampError);
+
   if (lines.length) {
     const { error: itemsError } = await supabase.from("quote_items").insert(
       lines.map((line) => ({
@@ -323,6 +333,7 @@ export async function receivePluginQuote(connection: PluginConnection, body: unk
       answers,
       lines,
       suggestionName: suggestionName(parsed.quote, lines),
+      currency,
     });
   } catch (error) {
     console.error("Plugin quote notify failed", error);
@@ -359,7 +370,7 @@ async function loadCatalog(
   if (!ids.length) return [];
   const { data } = await supabase
     .from("products")
-    .select("id, name, external_id, sku, price_min, price_max, variants")
+    .select("id, name, external_id, sku, price_min, price_max, currency, variants")
     .eq("organization_id", connection.organization_id)
     .eq("connection_id", connection.id)
     .in("external_id", ids);
@@ -370,6 +381,7 @@ async function loadCatalog(
     sku: row.sku,
     priceMin: row.price_min,
     priceMax: row.price_max,
+    currency: row.currency,
     variants: readVariants(row.variants),
   }));
 }
@@ -382,6 +394,7 @@ async function notifySales(
     answers: Answers;
     lines: PluginQuoteLine[];
     suggestionName: string;
+    currency: string;
   },
 ) {
   const { data: members } = await supabase
@@ -413,13 +426,8 @@ async function notifySales(
     .single();
   if (!organization) return;
 
-  let priceMin: number | null = null;
-  let priceMax: number | null = null;
-  for (const line of input.lines) {
-    const qty = line.quantity || 1;
-    if (line.priceMin != null) priceMin = (priceMin ?? 0) + line.priceMin * qty;
-    if (line.priceMax != null) priceMax = (priceMax ?? 0) + line.priceMax * qty;
-  }
+  const headline = quoteHeadlineRange({ lines: input.lines });
+  const currency = input.currency;
 
   try {
     await sendQuoteEmails({
@@ -427,8 +435,9 @@ async function notifySales(
       quote: input.quote,
       answers: input.answers,
       suggestionName: input.suggestionName,
-      priceMin,
-      priceMax,
+      priceMin: headline.min,
+      priceMax: headline.max,
+      currency,
       pdf: null,
       includeProspect: false,
     });

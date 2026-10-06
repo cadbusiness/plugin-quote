@@ -3,7 +3,6 @@
 import { AutoSubmitSelect } from "@/components/crm/quote-controls";
 import { QuoteValidationSection } from "@/components/crm/quote-validation";
 import { Chip, scoreTone } from "@/components/ui/chip";
-import { formatPrice } from "@/lib/format";
 import {
   dossierJournal,
   dossierWhy,
@@ -144,7 +143,7 @@ export function DossierTab({
                   <span className="truncate font-medium text-slate-900">{item.name}</span>
                   <span className="tabular-nums text-slate-500">{item.quantity}</span>
                   <span className="tabular-nums text-slate-800">
-                    {formatPrice(item.price_min, item.price_max)}
+                    {item.amountLabel}
                   </span>
                 </li>
               ))}

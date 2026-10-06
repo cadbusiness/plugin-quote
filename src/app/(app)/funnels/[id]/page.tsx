@@ -52,7 +52,7 @@ export default async function FunnelEditorPage({
         .order("created_at", { ascending: false }),
       supabase
         .from("products")
-        .select("id, name, description, image_url, price_min, price_max, category, configurator_id")
+        .select("id, name, description, image_url, price_min, price_max, currency, category, configurator_id")
         .eq("organization_id", ctx.organization.id)
         .eq("is_active", true)
         .order("name")
@@ -102,6 +102,7 @@ export default async function FunnelEditorPage({
           imageUrl: product.image_url,
           priceMin: product.price_min,
           priceMax: product.price_max,
+          currency: product.currency,
           category: product.category,
         }));
       })()}

@@ -16,7 +16,6 @@ import { QuoteTabs, quoteTabHref, type QuoteCompose, type QuoteTab } from "@/com
 import { Chip, scoreTone, statusTone, type ChipTone } from "@/components/ui/chip";
 import { ClickableRow } from "@/components/ui/clickable-row";
 import { DataTable, ListPanel } from "@/components/ui/list-panel";
-import { formatPrice } from "@/lib/format";
 import type { QuoteAutomation, QuoteDetail } from "@/lib/crm/quote-detail";
 
 const AUTOMATION_TONE: Record<QuoteAutomation["state"], ChipTone> = {
@@ -161,7 +160,7 @@ function ProjetTab({ detail }: { detail: QuoteDetail }) {
         <SectionTitle>Configuration demandée</SectionTitle>
         {detail.items.length ? (
           <>
-            <DataTable headers={["Produit", "Qté", "Options", "Fourchette"]}>
+            <DataTable headers={["Produit", "Qté", "Options", "Montant"]}>
               {detail.items.map((item) => (
                 <tr key={item.id} className="border-b border-slate-100">
                   <td className="px-4 py-2.5 lg:px-6">
@@ -178,12 +177,12 @@ function ProjetTab({ detail }: { detail: QuoteDetail }) {
                   </td>
                   <td className="px-4 py-2.5 tabular-nums lg:px-6">{item.quantity}</td>
                   <td className="px-4 py-2.5 text-slate-500 lg:px-6">{item.optionsLabel ?? "-"}</td>
-                  <td className="px-4 py-2.5 tabular-nums lg:px-6">{formatPrice(item.price_min, item.price_max)}</td>
+                  <td className="px-4 py-2.5 tabular-nums lg:px-6">{item.amountLabel}</td>
                 </tr>
               ))}
             </DataTable>
             <div className="flex justify-between border-b border-slate-200 px-4 py-3 text-sm lg:px-6">
-              <span className="text-slate-500">Total indicatif</span>
+              <span className="text-slate-500">Fourchette indicative</span>
               <span className="font-semibold tabular-nums text-slate-900">{detail.totals.label}</span>
             </div>
           </>

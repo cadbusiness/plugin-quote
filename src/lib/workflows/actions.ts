@@ -4,6 +4,7 @@ import { fill, sendTemplateEmail } from "@/lib/email/send";
 import { logActivity, notifyUser } from "@/lib/crm/activity";
 import { renderQuotePdf } from "@/lib/pdf/render";
 import { formatPrice } from "@/lib/format";
+import { loadConfiguratorQuestionMeta } from "@/lib/quotes/question-meta";
 import type { SubjectContext, WorkflowNode } from "@/lib/workflows/types";
 
 type Client = SupabaseClient<Database>;
@@ -61,7 +62,7 @@ export async function executeSendEmail(
     sales_name: ctx.salesName,
     answers_text: answersText(ctx.answers),
     suggestion_name: extras.suggestionName ?? "",
-    price_range: formatPrice(ctx.priceMin, ctx.priceMax),
+    price_range: formatPrice(ctx.priceMin, ctx.priceMax, ctx.currency),
     suivi_url: ctx.suiviUrl,
     membres_url: ctx.membresUrl,
     resume_url: ctx.resumeUrl,
@@ -110,6 +111,7 @@ async function tryRenderPdf(supabase: Client, ctx: SubjectContext, suggestionNam
       supabase.from("quote_items").select("*").eq("quote_id", ctx.subjectId),
     ]);
     if (!org || !configurator || !quote) return null;
+    const questions = await loadConfiguratorQuestionMeta(supabase, configurator.id);
     return await renderQuotePdf({
       organization: org,
       configurator,
@@ -125,6 +127,8 @@ async function tryRenderPdf(supabase: Client, ctx: SubjectContext, suggestionNam
       suggestionName,
       priceMin: ctx.priceMin,
       priceMax: ctx.priceMax,
+      currency: ctx.currency,
+      questions,
     });
   } catch (error) {
     console.error("Workflow PDF failed", error);
