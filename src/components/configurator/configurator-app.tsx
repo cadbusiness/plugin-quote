@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { formatPrice } from "@/lib/format";
 import { parseAttribution, type Attribution } from "@/lib/stats/attribution";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
@@ -9,6 +9,12 @@ import { applyStorefrontCart, suggestionFromProducts } from "@/lib/wizard/storef
 import { applyFunnelPrefill } from "@/lib/configurator/prefill";
 import { CatalogBrowse } from "@/components/configurator/catalog-browse";
 import { HostedChatSubmit, shouldShowHostedChatSubmit } from "@/components/configurator/hosted-chat-submit";
+import {
+  SuggestionsPanel,
+  shouldLoadSuggestions,
+  shouldShowChatSuggestions,
+  type SuggestionsLoadState,
+} from "@/components/configurator/suggestions-panel";
 import { RfqForm } from "@/components/configurator/rfq-form";
 import { ProductHtml } from "@/components/catalog/product-html";
 import { ProductSheetLinks } from "@/components/catalog/product-sheet";
@@ -195,6 +201,8 @@ export function ConfiguratorApp({
   const [definition, setDefinition] = useState<ConfiguratorDefinition | null>(null);
   const [session, setSession] = useState<QuoteSession | null>(null);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [suggestionsState, setSuggestionsState] = useState<SuggestionsLoadState>("idle");
+  const suggestionsRequest = useRef(0);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -282,7 +290,10 @@ export function ConfiguratorApp({
           }).catch(() => null);
           sessionNext = patched ?? { ...sessionNext, customization: applied.customization };
           const seeded = suggestionFromProducts(applied.matched);
-          if (seeded) setSuggestions([seeded]);
+          if (seeded) {
+            setSuggestions([seeded]);
+            setSuggestionsState("ready");
+          }
         }
         if (productPrefill) {
           const match = matchCatalogPrefill(catalog, productPrefill);
@@ -461,12 +472,38 @@ export function ConfiguratorApp({
 
   async function loadSuggestions(current = session) {
     if (!current) return;
-    const data = await api<{ suggestions: Suggestion[] }>(
-      suggestionsUrl(current.id, orgSlug, shopSlug),
-      { token: current.token },
-    );
-    setSuggestions(data.suggestions);
+    const requestId = ++suggestionsRequest.current;
+    setSuggestionsState("loading");
+    try {
+      const data = await api<{ suggestions: Suggestion[] }>(
+        suggestionsUrl(current.id, orgSlug, shopSlug),
+        { token: current.token },
+      );
+      if (requestId !== suggestionsRequest.current) return;
+      setSuggestions(data.suggestions);
+      setSuggestionsState("ready");
+    } catch {
+      if (requestId !== suggestionsRequest.current) return;
+      setSuggestionsState("error");
+    }
   }
+
+  useEffect(() => {
+    if (!definition || !session) return;
+    if (
+      !shouldLoadSuggestions({
+        screenType: definition.steps[session.currentStep]?.screenType,
+        catalog: isCatalogQuoteMode(definition.configurator.quoteMode),
+        loadState: suggestionsState,
+        suggestionCount: suggestions.length,
+      })
+    ) {
+      return;
+    }
+    void loadSuggestions(session);
+    // loadSuggestions closes over the latest session token; the idle guard stops repeats.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [definition, session, suggestionsState, suggestions.length]);
 
   async function goNext() {
     if (!definition || !session || !step) return;
@@ -680,11 +717,14 @@ export function ConfiguratorApp({
   });
   const canSwitch =
     !isCatalog && definition.configurator.wizardEnabled && definition.configurator.chatEnabled && !done;
-  const showChatSuggestions =
-    showChat &&
-    suggestions.length > 0 &&
-    (session.currentStep === definition.steps.findIndex((s) => s.screenType === "suggestions") ||
-      Boolean(session.selectedSuggestionId));
+  const showChatSuggestions = shouldShowChatSuggestions({
+    showChat,
+    onSuggestionStep:
+      session.currentStep === definition.steps.findIndex((s) => s.screenType === "suggestions"),
+    hasSelectedSuggestion: Boolean(session.selectedSuggestionId),
+    suggestionCount: suggestions.length,
+    loadState: suggestionsState,
+  });
   const catalogBrowse = isCatalog && step?.screenType === "suggestions";
 
   if (done) {
@@ -851,9 +891,9 @@ export function ConfiguratorApp({
             {showChatSuggestions ? (
               <SuggestionsPanel
                 suggestions={suggestions}
+                loadState={suggestionsState}
                 selectedId={session.selectedSuggestionId}
                 onSelect={(id) => persist({ selectedSuggestionId: id })}
-                onNeedLoad={() => loadSuggestions()}
               />
             ) : null}
           </div>
@@ -918,9 +958,9 @@ export function ConfiguratorApp({
             {step.screenType === "suggestions" && !isCatalog ? (
               <SuggestionsPanel
                 suggestions={suggestions}
+                loadState={suggestionsState}
                 selectedId={session.selectedSuggestionId}
                 onSelect={(id) => persist({ selectedSuggestionId: id })}
-                onNeedLoad={() => loadSuggestions()}
               />
             ) : null}
 
@@ -1175,75 +1215,6 @@ function QuestionField({
       />
       {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
     </label>
-  );
-}
-
-function SuggestionsPanel({
-  suggestions,
-  selectedId,
-  onSelect,
-  onNeedLoad,
-}: {
-  suggestions: Suggestion[];
-  selectedId: string | null;
-  onSelect: (id: string) => void;
-  onNeedLoad: () => void;
-}) {
-  useEffect(() => {
-    if (!suggestions.length) onNeedLoad();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (!suggestions.length) {
-    return (
-      <div className="mt-8 flex items-center gap-2.5 text-sm text-mk-faint">
-        <span className="h-2 w-2 animate-pulse rounded-full bg-mk-accent" />
-        Calcul des configurations…
-      </div>
-    );
-  }
-
-  return (
-    <div className="mt-8 grid gap-4 md:grid-cols-3">
-      {suggestions.map((s) => {
-        const selected = selectedId === s.id;
-        return (
-          <button
-            key={s.id}
-            type="button"
-            onClick={() => onSelect(s.id)}
-            className={`rounded-2xl border p-5 text-left shadow-sm transition-all duration-150 ${
-              selected
-                ? "border-mk-accent bg-mk-accent-soft ring-2 ring-mk-accent/20"
-                : "border-mk-border bg-white hover:-translate-y-0.5 hover:shadow-md"
-            }`}
-          >
-            <span className="inline-flex rounded-full bg-mk-accent-soft px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-mk-accent">
-              Recommandé
-            </span>
-            <h3 className="mt-3 text-lg font-semibold tracking-tight text-mk-ink">{s.headline ?? s.name}</h3>
-            <p className="mt-2 text-sm text-mk-faint">{s.description}</p>
-            <p className="mt-4 text-sm font-semibold text-mk-ink">{formatPrice(s.priceMin, s.priceMax)}</p>
-            <ul className="mt-3 space-y-2 text-sm text-mk-faint">
-              {s.products.map((p) => (
-                <li key={p.id} className="flex items-center gap-2">
-                  {p.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={p.imageUrl}
-                      alt=""
-                      loading="lazy"
-                      className="h-9 w-9 shrink-0 rounded-md object-cover ring-1 ring-mk-border"
-                    />
-                  ) : null}
-                  <span className="min-w-0 flex-1 truncate">{p.name}</span>
-                </li>
-              ))}
-            </ul>
-          </button>
-        );
-      })}
-    </div>
   );
 }
 
