@@ -1,5 +1,16 @@
 import type { Answers } from "@/lib/wizard/types";
 
+const NO_CONSTRAINT = new Set(["none", "aucune", "aucun"]);
+
+/** « Aucune particulière » is stored as `none` in templates and `aucune` in older copy. */
+export function hasRealConstraint(value: unknown): boolean {
+  if (!Array.isArray(value)) return false;
+  return value.some((item) => {
+    const token = String(item ?? "").trim().toLowerCase();
+    return token.length > 0 && !NO_CONSTRAINT.has(token);
+  });
+}
+
 export function scoreQuote(answers: Answers): { score: number; label: "hot" | "warm" | "cold" } {
   let score = 30;
   const surface = Number(answers.surface ?? 0);
@@ -19,8 +30,7 @@ export function scoreQuote(answers: Answers): { score: number; label: "hot" | "w
 
   if (["entrepot", "cuisine_pro", "commerce"].includes(project)) score += 10;
 
-  const constraints = answers.constraints;
-  if (Array.isArray(constraints) && constraints.length > 0 && !constraints.includes("aucune")) {
+  if (hasRealConstraint(answers.constraints)) {
     score += 5;
   }
 
@@ -39,8 +49,6 @@ export function scoreReasons(answers: Answers): string[] {
   const load = Number(answers.load ?? 0);
   const access = String(answers.access ?? "");
   const project = String(answers.project_type ?? "");
-  const constraints = answers.constraints;
-
   if (surface >= 400) reasons.push("Grande surface (≥ 400 m²)");
   else if (surface >= 100) reasons.push("Surface significative");
   else if (surface > 0) reasons.push("Surface renseignée");
@@ -55,7 +63,7 @@ export function scoreReasons(answers: Answers): string[] {
     reasons.push("Projet professionnel");
   }
 
-  if (Array.isArray(constraints) && constraints.length > 0 && !constraints.includes("aucune")) {
+  if (hasRealConstraint(answers.constraints)) {
     reasons.push("Contraintes techniques");
   }
 
