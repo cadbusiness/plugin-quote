@@ -2,8 +2,22 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` + `0059` + `0060` + `0061` + `0062` + `0063` + `0064` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` + `0059` + `0060` + `0061` + `0062` + `0063` + `0064` + `0065` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.31.3",
+    version: "1.31.3",
+    title: "Fourchettes de prix identiques partout",
+    items: [
+      "La même fourchette indicative s'affiche désormais sur la carte solution, le PDF, l'email commercial, la fiche devis et l'espace prospect.",
+      "La fourchette de la règle de suggestion est prioritaire ; sinon c'est le total des lignes (prix unitaire × quantité), et « Sur devis » si rien n'est renseigné.",
+      "Un prix fixe s'affiche une seule fois, les fourchettes utilisent « à » et sont toujours rangées du plus bas au plus haut.",
+      "Le PDF reprend les libellés des questions au lieu des clés techniques.",
+      "La devise suit le catalogue au lieu d'être forcée en euros, et l'import CSV remet dans l'ordre un prix min/max inversé.",
+    ],
+    releasedAt: "2026-10-06",
+    createdAt: "2026-10-06T00:00:00.000Z",
+  },
   {
     id: "seed-1.31.2",
     version: "1.31.2",
