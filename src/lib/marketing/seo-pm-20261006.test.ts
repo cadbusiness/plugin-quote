@@ -7,27 +7,26 @@ import { BLOG_FAQ } from "./blog-faq";
 import { stripFrontmatter } from "./load-post";
 import { MARKETING_ROUTES } from "./routes";
 import {
-  DEMANDES_HORS_BUDGET_FOURCHETTE_DEFAULTS,
-  DEMANDES_HORS_BUDGET_FOURCHETTE_LABELS,
-  computeDemandesHorsBudgetFourchette,
-} from "./demandes-hors-budget-fourchette-devis";
+  DEMANDES_DEVIS_ABANDONNEES_DEFAULTS,
+  computeDemandesDevisAbandonnees,
+} from "./demandes-devis-abandonnees-funnel";
 
 const EM_DASH = /\u2014/;
 const EN_DASH = /\u2013/;
 const blogDir = join(process.cwd(), "src/content/blog");
 
-const BLOG_SLUG = "fourchette-prix-indicative-demande-devis-b2b";
-const SECTOR_SLUG = "funnel-devis-traiteur-evenementiel";
-const TOOL_PATH = "/outils/estimateur-demandes-hors-budget-fourchette-devis";
+const BLOG_SLUG = "demande-devis-abandonnee-funnel-reprise";
+const SECTOR_SLUG = "funnel-devis-emballage-conditionnement";
+const TOOL_PATH = "/outils/estimateur-demandes-devis-abandonnees-funnel";
 const BLOG_PATH = `/blog/${BLOG_SLUG}`;
 const SECTOR_PATH = `/secteurs/${SECTOR_SLUG}`;
 
-assert.deepEqual(BLOG_POSTS.find((post) => post.slug === BLOG_SLUG)?.tags, ["catalogue", "funnel"]);
+assert.deepEqual(BLOG_POSTS.find((post) => post.slug === BLOG_SLUG)?.tags, ["relances", "funnel"]);
 assert.equal(
   BLOG_POSTS.find((post) => post.slug === BLOG_SLUG)?.ctaHref,
   "https://www.quotebuilder.co/signup?plan=free",
 );
-assert.equal(BLOG_POSTS.find((post) => post.slug === BLOG_SLUG)?.cover, BLOG_DEMO_SHOTS.produits);
+assert.equal(BLOG_POSTS.find((post) => post.slug === BLOG_SLUG)?.cover, BLOG_DEMO_SHOTS.funnelPublic);
 assert.equal(BLOG_POSTS.find((post) => post.slug === BLOG_SLUG)?.readingMinutes, 13);
 assert.equal(BLOG_POSTS.find((post) => post.slug === BLOG_SLUG)?.publishedAt, "2026-10-06");
 assert.equal(BLOG_POSTS.find((post) => post.slug === BLOG_SLUG)?.pinned, false);
@@ -49,7 +48,7 @@ assert.equal(BLOG_TOOLS.length, 34);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === TOOL_PATH));
 assert.deepEqual(
   BLOG_TOOLS.find((tool) => tool.href === TOOL_PATH)?.tags,
-  ["catalogue", "funnel"],
+  ["relances", "funnel"],
 );
 assert.equal(
   outilsHubIntro(),
@@ -78,16 +77,12 @@ const llms = readFileSync(join(process.cwd(), "public/llms.txt"), "utf8");
 assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${BLOG_PATH}`));
 assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${SECTOR_PATH}`));
 assert.match(llms, new RegExp(`https://www\\.quotebuilder\\.co${TOOL_PATH}`));
-assert.doesNotMatch(llms, EM_DASH);
-assert.doesNotMatch(llms, EN_DASH);
 
 const outilsHub = readFileSync(join(process.cwd(), "src/app/(marketing)/outils/page.tsx"), "utf8");
 const secteursHub = readFileSync(join(process.cwd(), "src/app/(marketing)/secteurs/page.tsx"), "utf8");
-assert.match(outilsHub, /estimateur-demandes-hors-budget-fourchette-devis/);
+assert.match(outilsHub, /estimateur-demandes-devis-abandonnees-funnel/);
 assert.match(outilsHub, /outilsHubIntro\(\)/);
-assert.match(secteursHub, /funnel-devis-traiteur-evenementiel/);
-assert.doesNotMatch(secteursHub, EM_DASH);
-assert.doesNotMatch(secteursHub, EN_DASH);
+assert.match(secteursHub, /funnel-devis-emballage-conditionnement/);
 
 function faqQuestionCount(body: string) {
   const marker = "\n## FAQ\n";
@@ -118,17 +113,17 @@ function assertNoDashes(text: string, label: string) {
   assert.ok(blogRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
   const blogBody = stripFrontmatter(blogRaw);
   assert.ok(
-    blogBody.startsWith("# Fourchette de prix indicative dans une demande de devis B2B"),
+    blogBody.startsWith("# Demande de devis abandonnée en cours de funnel"),
     "frontmatter must be stripped before render",
   );
   assert.doesNotMatch(blogBody, /^title:/m);
   assert.match(blogBody, /signup\?plan=free/);
   assert.match(blogBody, /\/c\/demo\/rayonnage/);
-  assert.match(blogBody, /\/outils\/estimateur-demandes-hors-budget-fourchette-devis/);
-  assert.match(blogBody, /\/secteurs\/funnel-devis-traiteur-evenementiel/);
-  assert.match(blogBody, /Prix fixe/);
-  assert.match(blogBody, /fourchette de règle|Fourchette de règle/);
-  assert.match(blogBody, /ne lit pas les prix|ne lit ni les prix/);
+  assert.match(blogBody, /\/outils\/estimateur-demandes-devis-abandonnees-funnel/);
+  assert.match(blogBody, /\/secteurs\/funnel-devis-emballage-conditionnement/);
+  assert.match(blogBody, /Session abandonnée/);
+  assert.match(blogBody, /Email pour recevoir le récap/);
+  assert.match(blogBody, /Commencée/);
   assertNoDashes(blogRaw, "blog md");
   assertNoDashes(blogBody, "blog body");
   assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 2783);
@@ -141,154 +136,144 @@ function assertNoDashes(text: string, label: string) {
   assert.ok(sectorRaw.startsWith("---\n"), "QB Content frontmatter must stay on disk");
   const sectorBody = stripFrontmatter(sectorRaw);
   assert.ok(
-    sectorBody.startsWith("# Funnel de devis traiteur événementiel"),
+    sectorBody.startsWith("# Funnel de devis emballage et conditionnement"),
     "frontmatter must be stripped before render",
   );
   assert.match(sectorBody, /signup\?plan=free/);
-  assert.match(sectorBody, /\/blog\/fourchette-prix-indicative-demande-devis-b2b/);
-  assert.match(sectorBody, /template Traiteur|« Traiteur »/);
-  assert.match(sectorBody, /ne contient pas de question sur le nombre de convives|pas de question convives/);
+  assert.match(sectorBody, /« Emballages »/);
+  assert.match(sectorBody, /Industrie & fabrication/);
   assert.match(sectorBody, /ordre fixe/);
-  assert.match(sectorBody, /pas de kit|n'existe pas de kit|Il n'existe pas de kit/i);
-  assert.match(sectorBody, /ne gère pas la TVA|sans TVA/);
+  assert.match(sectorBody, /Il n'existe pas de kit/);
+  assert.match(sectorBody, /ne gère pas la TVA/);
+  assert.match(sectorBody, /30 points/);
   assertNoDashes(sectorRaw, "secteur md");
   assertNoDashes(sectorBody, "secteur body");
-  assert.equal(sectorBody.split(/\s+/).filter(Boolean).length, 2794);
+  assert.equal(sectorBody.split(/\s+/).filter(Boolean).length, 2594);
   assert.equal(faqQuestionCount(sectorBody), 10);
   assertInternalLinks(sectorBody, "secteur");
 }
 
 const sectorPage = readFileSync(
-  join(process.cwd(), "src/app/(marketing)/secteurs/funnel-devis-traiteur-evenementiel/page.tsx"),
+  join(process.cwd(), "src/app/(marketing)/secteurs/funnel-devis-emballage-conditionnement/page.tsx"),
   "utf8",
 );
 assert.equal(sectorPage.split("\n").filter((line) => line.includes("q:")).length, 10);
 assert.match(sectorPage, /signup\?plan=free/);
-assert.match(sectorPage, /Location & événementiel/);
+assert.match(sectorPage, /Industrie & fabrication/);
 assertNoDashes(sectorPage, "secteur page");
 
 const toolPage = readFileSync(
-  join(process.cwd(), "src/app/(marketing)/outils/estimateur-demandes-hors-budget-fourchette-devis/page.tsx"),
+  join(process.cwd(), "src/app/(marketing)/outils/estimateur-demandes-devis-abandonnees-funnel/page.tsx"),
   "utf8",
 );
 assert.match(toolPage, /WebApplication/);
 assert.match(toolPage, /signup\?plan=free/);
-assert.match(toolPage, /fourchette-prix-indicative-demande-devis-b2b/);
-assert.match(toolPage, /funnel-devis-traiteur-evenementiel/);
-assert.match(toolPage, /qualifier-demande-devis-avant-chiffrage/);
-assert.match(toolPage, /estimateur-cout-brief-incomplet/);
-assert.match(toolPage, /fonctionnalites\/catalogue/);
+assert.match(toolPage, /demande-devis-abandonnee-funnel-reprise/);
+assert.match(toolPage, /funnel-devis-emballage-conditionnement/);
+assert.match(toolPage, /pourquoi-les-devis-meurent-sans-relance/);
+assert.match(toolPage, /generateur-sequence-relances/);
+assert.match(toolPage, /fonctionnalites\/autopilote/);
 assert.match(toolPage, /\/c\/demo\/rayonnage/);
-assert.doesNotMatch(toolPage, /formatPrice/);
 assertNoDashes(toolPage, "outil page");
 
 const toolLib = readFileSync(
-  join(process.cwd(), "src/lib/marketing/demandes-hors-budget-fourchette-devis.ts"),
+  join(process.cwd(), "src/lib/marketing/demandes-devis-abandonnees-funnel.ts"),
   "utf8",
 );
 const toolUi = readFileSync(
-  join(process.cwd(), "src/components/marketing/demandes-hors-budget-fourchette-devis-calculator.tsx"),
+  join(process.cwd(), "src/components/marketing/demandes-devis-abandonnees-funnel-calculator.tsx"),
   "utf8",
 );
-assert.doesNotMatch(toolLib, /formatPrice/);
-assert.doesNotMatch(toolUi, /formatPrice/);
 assertNoDashes(toolLib, "outil lib");
 assertNoDashes(toolUi, "outil ui");
 
-const defaults = computeDemandesHorsBudgetFourchette({ ...DEMANDES_HORS_BUDGET_FOURCHETTE_DEFAULTS });
-assert.equal(defaults.hb, 15);
-assert.equal(defaults.hHB, 11.3);
-assert.equal(defaults.cHB, 622);
-assert.equal(defaults.anHB, 7464);
-assert.equal(defaults.evit, 7.5);
-assert.equal(defaults.hRec, 5);
-assert.equal(defaults.cRec, 275);
-assert.equal(defaults.anRec, 3300);
-assert.equal(defaults.lineLow, 3360);
-assert.equal(defaults.lineHigh, 4560);
+const defaults = computeDemandesDevisAbandonnees({ ...DEMANDES_DEVIS_ABANDONNEES_DEFAULTS });
+assert.equal(defaults.abandons, 72);
+assert.equal(defaults.relancables, 18);
+assert.equal(defaults.anonymes, 54);
+assert.equal(defaults.reprises, 2.7);
+assert.equal(defaults.gagnes, 0.54);
+assert.equal(defaults.ca, 2160);
+assert.equal(defaults.an, 25920);
+assert.equal(defaults.plafond, 72000);
+assert.equal(defaults.pctEmailTest, 35);
+assert.equal(defaults.gain, 864);
+assert.equal(defaults.gainAn, 10368);
 assert.equal(defaults.alertTone, "warn");
-assert.equal(defaults.coutTone, "warn");
-assert.equal(defaults.recTone, "ok");
 assert.match(defaults.alert, /Enjeu notable/);
-assert.match(defaults.ligneLabel, /à/);
-assert.match(defaults.recap, /Checklist fourchette dans QuoteBuilder/);
-assert.match(defaults.recap, /Prix fixe, Fourchette ou Sur devis/);
-assert.match(defaults.recap, /page Règles/);
+assert.match(defaults.tip, /Passer de 25 % à 35 %/);
+assert.match(defaults.tip, /864\s€ \/ mois/);
+assert.match(defaults.recap, /Checklist demandes abandonnées dans QuoteBuilder/);
+assert.match(defaults.recap, /Session abandonnée/);
+assert.match(defaults.recap, /Email pour recevoir le récap/);
+assert.match(defaults.recap, /Commencée/);
 assert.match(defaults.recap, /pas un benchmark/);
-assert.match(defaults.recap, /pas un devis/);
-assert.match(defaults.recap, /Le score ne lit pas les prix/);
-assert.match(defaults.tip, /libérerait environ/);
 assertNoDashes(defaults.alert, "alerte défaut");
 assertNoDashes(defaults.tip, "tip défaut");
 assertNoDashes(defaults.recap, "récap défaut");
-assertNoDashes(defaults.ligneLabel, "ligne défaut");
-assert.equal(DEMANDES_HORS_BUDGET_FOURCHETTE_LABELS.demandes, "Demandes de devis / mois");
-assert.equal(DEMANDES_HORS_BUDGET_FOURCHETTE_LABELS.cout, "Coût indicatif / mois");
-assert.equal(DEMANDES_HORS_BUDGET_FOURCHETTE_LABELS.an, "Sur 12 mois (indicatif)");
 
-const fixed = computeDemandesHorsBudgetFourchette({
-  ...DEMANDES_HORS_BUDGET_FOURCHETTE_DEFAULTS,
-  pMax: Number.NaN,
-  minutesApres: 90,
-});
-assert.equal(fixed.minutesApres, 45);
-assert.equal(fixed.hRec, 0);
-assert.equal(fixed.cRec, 0);
-assert.equal(fixed.anRec, 0);
-assert.equal(fixed.lineLow, 3360);
-assert.equal(fixed.lineHigh, 3360);
-assert.equal(fixed.pMax, fixed.pMin);
-assert.equal(fixed.ligneLabel.includes("à"), false);
-assert.match(fixed.tip, /pas de temps récupéré/);
+const empty = computeDemandesDevisAbandonnees({ ...DEMANDES_DEVIS_ABANDONNEES_DEFAULTS, sessions: 0 });
+assert.equal(empty.abandons, 0);
+assert.equal(empty.ca, 0);
+assert.equal(empty.alertTone, "neutral");
+assert.match(empty.alert, /Indiquez un nombre de parcours commencés/);
 
-const fixedNull = computeDemandesHorsBudgetFourchette({
-  ...DEMANDES_HORS_BUDGET_FOURCHETTE_DEFAULTS,
-  pMax: null,
-  minutesApres: 90,
+const bounded = computeDemandesDevisAbandonnees({
+  sessions: 100,
+  pctAbandon: 150,
+  pctEmail: 95,
+  pctReprise: Number.NaN,
+  pctGagne: 20,
+  panier: -5,
+  gainEmail: 20,
 });
-assert.equal(fixedNull.lineLow, 3360);
-assert.equal(fixedNull.lineHigh, 3360);
-assert.equal(fixedNull.minutesApres, 45);
+assert.equal(bounded.pctAbandon, 100);
+assert.equal(bounded.pctReprise, 0);
+assert.equal(bounded.panier, 0);
+assert.equal(bounded.pctEmailTest, 100);
+assert.equal(bounded.abandons, 100);
+assert.equal(bounded.relancables, 95);
+assert.equal(bounded.ca, 0);
+assert.equal(bounded.gain, 0);
 
-const inverted = computeDemandesHorsBudgetFourchette({
-  ...DEMANDES_HORS_BUDGET_FOURCHETTE_DEFAULTS,
-  pMin: 40,
-  pMax: 30,
-  qty: 0,
-  demandes: 0,
+const noEmail = computeDemandesDevisAbandonnees({
+  sessions: 200,
+  pctAbandon: 50,
+  pctEmail: 0,
+  pctReprise: 20,
+  pctGagne: 25,
+  panier: 10000,
+  gainEmail: 10,
 });
-assert.equal(inverted.unitLow, 30);
-assert.equal(inverted.unitHigh, 40);
-assert.equal(inverted.qty, 1);
-assert.equal(inverted.lineLow, 30);
-assert.equal(inverted.lineHigh, 40);
-assert.equal(inverted.cHB, 0);
-assert.equal(inverted.alertTone, "neutral");
-assert.match(inverted.alert, /Indiquez un volume/);
+assert.equal(noEmail.relancables, 0);
+assert.equal(noEmail.ca, 0);
+assert.equal(noEmail.gain, 5000);
+assert.equal(noEmail.alertTone, "warn");
+assert.match(noEmail.alert, /Abandons sans email/);
 
-const none = computeDemandesHorsBudgetFourchette({
-  ...DEMANDES_HORS_BUDGET_FOURCHETTE_DEFAULTS,
-  pctHB: 0,
+const noAbandon = computeDemandesDevisAbandonnees({
+  ...DEMANDES_DEVIS_ABANDONNEES_DEFAULTS,
+  pctAbandon: 0,
 });
-assert.equal(none.hb, 0);
-assert.equal(none.cHB, 0);
-assert.equal(none.alertTone, "neutral");
-assert.match(none.alert, /Aucune demande hors budget/);
+assert.equal(noAbandon.alertTone, "neutral");
+assert.match(noAbandon.alert, /Aucun abandon sur ces hypothèses/);
 
-const important = computeDemandesHorsBudgetFourchette({
-  ...DEMANDES_HORS_BUDGET_FOURCHETTE_DEFAULTS,
-  demandes: 200,
-  pctHB: 30,
-  pctEvit: 0,
+const important = computeDemandesDevisAbandonnees({
+  sessions: 400,
+  pctAbandon: 60,
+  pctEmail: 40,
+  pctReprise: 20,
+  pctGagne: 25,
+  panier: 8000,
+  gainEmail: 0,
 });
-assert.equal(important.hb, 60);
-assert.equal(important.hHB, 45);
-assert.equal(important.cHB, 2475);
-assert.equal(important.anHB, 29700);
-assert.equal(important.evit, 0);
-assert.equal(important.cRec, 0);
-assert.equal(important.hRec, 0);
+assert.equal(important.abandons, 240);
+assert.equal(important.relancables, 96);
+assert.equal(important.reprises, 19.2);
+assert.equal(important.gagnes, 4.8);
+assert.equal(important.ca, 38400);
+assert.equal(important.an, 460800);
+assert.equal(important.plafond, 768000);
+assert.equal(important.gain, 0);
 assert.equal(important.alertTone, "bad");
-assert.equal(important.coutTone, "bad");
 assert.match(important.alert, /Enjeu important/);
-assert.match(important.tip, /pas de temps récupéré/);

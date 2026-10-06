@@ -58,7 +58,7 @@ export const DEMANDES_HORS_BUDGET_FOURCHETTE_LABELS = {
   evit: "Dossiers écartés ou recadrés plus tôt / mois (hypothèse)",
   rec: "Temps et coût récupérables / mois",
   anRec: "Récupérable sur 12 mois (indicatif)",
-  ligne: "Total indicatif de la ligne (prix × quantité)",
+  ligne: "Montant de la ligne (prix × quantité)",
 } as const;
 
 export type DemandesHorsBudgetFourchetteInput = {
@@ -199,9 +199,10 @@ export function computeDemandesHorsBudgetFourchette(
     "- Chaque produit : Prix fixe, Fourchette ou Sur devis (champs prix min / prix max)",
     "- Unité dans le nom ou la description (par convive, par m², par jour)",
     "- Mention HT à écrire vous-même : pas de gestion de TVA",
-    "- Total indicatif (fiche devis, espace prospect) = somme prix × quantité",
+    "- Montant de ligne (fiche devis, espace prospect, PDF) = prix × quantité",
+    "- Fourchette indicative du dossier = fourchette de la règle si saisie, sinon somme des lignes",
     "- Fourchette de règle : à saisir dans l'édition de la règle, page Règles",
-    "- Vérifier que fourchette de règle et total indicatif racontent la même histoire",
+    "- Une fourchette de règle remplace la somme des lignes : la garder cohérente avec les montants",
     "- Le score ne lit pas les prix ; le devis définitif reste dans votre outil",
     "",
     "Calcul local · vos hypothèses, pas un benchmark · fourchette indicative, pas un devis.",

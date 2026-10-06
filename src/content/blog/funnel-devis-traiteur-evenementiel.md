@@ -1,7 +1,7 @@
 ---
 title: "Funnel de devis traiteur événementiel : des demandes avec date, convives, format et régimes"
 slug: funnel-devis-traiteur-evenementiel
-description: "Landing SEO traiteur événementiel et réceptions d'entreprise : funnel de devis (type de prestation, date, lieu, convives, régimes et allergies), template Traiteur QuoteBuilder, formules par convive, total indicatif, relecture et validation client. Sans barème inventé."
+description: "Landing SEO traiteur événementiel et réceptions d'entreprise : funnel de devis (type de prestation, date, lieu, convives, régimes et allergies), template Traiteur QuoteBuilder, formules par convive, fourchette indicative, relecture et validation client. Sans barème inventé."
 canonical: /secteurs/funnel-devis-traiteur-evenementiel
 locale: fr-FR
 word_count_target: 2400
@@ -100,11 +100,11 @@ Le règlement (UE) n° 1169/2011, dit INCO, liste en annexe II quatorze substanc
 
 Le funnel ne fait pas de conformité. Il vous aide à recevoir, dès la demande, les allergies et régimes déclarés, pour en tenir compte dans le menu et le chiffrage. L'information sur les allergènes de vos plats reste votre obligation. Pour le détail, référez-vous aux textes cités en sources.
 
-## Formules par convive : catalogue et total indicatif
+## Formules par convive : catalogue et fourchette indicative
 
 Dans QuoteBuilder, un produit annonce son prix de trois façons : Prix fixe, Fourchette ou Sur devis. Pour un traiteur, la fourchette par convive est souvent la plus juste.
 
-Exemple : un produit « Cocktail déjeunatoire, 12 pièces par personne » entre 28 et 38 € par convive. Le client le choisit, saisit 120 en quantité à l'étape Personnalisation. La fiche devis et son espace prospect affichent un total indicatif de 3 360 à 4 560 € (28 × 120 et 38 × 120). L'étape Personnalisation et le PDF montrent la fourchette unitaire.
+Exemple : un produit « Cocktail déjeunatoire, 12 pièces par personne » entre 28 et 38 € par convive. Le client le choisit, saisit 120 en quantité à l'étape Personnalisation, qui montre la fourchette unitaire. Sur la fiche devis, dans l'espace prospect et dans le PDF, la ligne porte un montant de 3 360 à 4 560 € (28 × 120 et 38 × 120). Sans fourchette sur la règle, c'est aussi la fourchette indicative du dossier.
 
 Quelques conseils propres au métier :
 
@@ -128,7 +128,7 @@ Exemples pour un traiteur :
 - **Nombre de convives est au moins 150** : proposer la formule buffet grand format et le forfait équipe de service.
 - **Régimes et allergies inclut Végétarien** : ajouter la formule végétarienne en suggestion.
 
-Chaque règle porte un titre vu par le prospect (« Cocktail déjeunatoire pour votre séminaire ») et une description. Vous pouvez aussi lui donner une fourchette, avec « Prix min » et « Prix max », dans le formulaire d'édition de la page Règles. Attention, si aucune règle ne correspond aux réponses, l'étape n'affiche aucune formule : prévoyez une règle « Proposer à tout le monde, sans condition » avec votre formule d'appel. Le détail est dans notre article sur les [règles de suggestion produits](https://www.quotebuilder.co/blog/regles-suggestion-produits-funnel-devis-b2b).
+Chaque règle porte un titre vu par le prospect (« Cocktail déjeunatoire pour votre séminaire ») et une description. Vous pouvez aussi lui donner une fourchette, avec « Prix min » et « Prix max », dans le formulaire d'édition de la page Règles. Elle remplace alors la somme des lignes : pour un prix par convive, laissez-la vide. Si aucune règle ne correspond aux réponses, le client lit « Aucune solution ne correspond à vos réponses. Vous pouvez continuer. L’équipe vous proposera une solution avec le devis. » Prévoyez donc une règle « Proposer à tout le monde, sans condition » avec votre formule d'appel. Le détail est dans notre article sur les [règles de suggestion produits](https://www.quotebuilder.co/blog/regles-suggestion-produits-funnel-devis-b2b).
 
 ## Le score sur un dossier traiteur : ce qu'il lit vraiment
 
@@ -140,7 +140,7 @@ Conséquence : un dossier traiteur reçoit le score de base, 30 points, soit Col
 
 Souvent, la personne qui reçoit la demande n'est pas celle qui compose le menu. Dans QuoteBuilder, un dossier peut être assigné à un ou plusieurs membres de l'équipe, et chacun peut y ajouter des notes internes (« Vérifier dispo du chef le 12 », « Client venu l'an dernier »). Ces notes restent sur le dossier, invisibles pour le client.
 
-Le dossier rassemble réponses, lignes choisies, total indicatif et pièces jointes : la cheffe le lit sans ressaisie. Pour aller plus loin sur ce passage de relais : [transfert du brief commercial vers le technique](https://www.quotebuilder.co/blog/transfert-brief-commercial-technique-devis-b2b).
+Le dossier rassemble réponses, lignes choisies, fourchette indicative et pièces jointes : la cheffe le lit sans ressaisie. Pour aller plus loin sur ce passage de relais : [transfert du brief commercial vers le technique](https://www.quotebuilder.co/blog/transfert-brief-commercial-technique-devis-b2b).
 
 ## Côté client : assistante, responsable événement, direction financière
 
@@ -164,7 +164,7 @@ Si vous louez aussi du mobilier ou des structures, la famille propose « Locatio
 
 - **Garder le template tel quel**, sans question sur le nombre de convives.
 - **Laisser « Durée : 1 mois et + »** dans un funnel de réception.
-- **Ne mettre aucune règle sans condition**, et laisser le client face à une étape vide.
+- **Ne mettre aucune règle sans condition**, et laisser le client face à « Aucune solution ne correspond à vos réponses ».
 - **Vendre le service en option** alors qu'il change le prix.
 - **Trier sur le score** alors qu'il ne lit aucune réponse traiteur.
 - **Confier la conformité allergènes au formulaire.** Il recueille les besoins, il ne remplace pas votre information.
@@ -185,7 +185,7 @@ Non. Les questions s'enchaînent dans un ordre fixe, sans branchement. Seules le
 
 ### Peut-on proposer un prix par personne ?
 
-Oui, avec un produit en fourchette ou en prix fixe par convive, et la quantité égale au nombre de personnes. Le total indicatif multiplie le prix par la quantité.
+Oui, avec un produit en fourchette ou en prix fixe par convive, et la quantité égale au nombre de personnes. Le montant de la ligne multiplie le prix par la quantité.
 
 ### Les prix sont-ils HT ?
 
