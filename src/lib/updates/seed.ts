@@ -2,8 +2,22 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` + `0059` + `0060` + `0061` + `0062` + `0063` + `0064` + `0065` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` + `0059` + `0060` + `0061` + `0062` + `0063` + `0064` + `0065` + `0066` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.31.4",
+    version: "1.31.4",
+    title: "Relances d'abandon et parcours plus fiables",
+    items: [
+      "Les relances d'abandon sans prénom disent simplement « Bonjour, » au lieu de « Bonjour bonjour ».",
+      "« Voir le parcours » ouvre une vue en lecture seule de la session (réponses, étapes, chat) sans toucher à la reprise du prospect.",
+      "Un visiteur n'est marqué « Relancé » que si un e-mail est vraiment parti, et le seuil d'inactivité suit le délai de votre parcours d'abandon (1 h par défaut).",
+      "Les montants sous 1 € affichent leurs centimes (0,90 €).",
+      "Répondre « aucune » à une question de contrainte n'augmente plus le score du lead.",
+    ],
+    releasedAt: "2026-10-06",
+    createdAt: "2026-10-06T00:00:00.000Z",
+  },
   {
     id: "seed-1.31.3",
     version: "1.31.3",
