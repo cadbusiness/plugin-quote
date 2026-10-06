@@ -30,6 +30,14 @@ assert.equal(ranged.includes("–"), false);
 assert.equal(ranged.includes("—"), false);
 assert.equal(formatPrice(18.2, 18.4).includes("à"), false);
 
+const subEuro = formatPrice(0.9, null);
+assert.match(subEuro, /0,90/);
+assert.notEqual(subEuro, formatPrice(1, null));
+assert.doesNotMatch(formatPrice(12, null), /,/);
+assert.match(formatPrice(0.4, 0.9), /0,40/);
+assert.match(formatPrice(0.4, 0.9), /0,90/);
+assert.equal(formatPrice(0.4, 0.9).includes("à"), true);
+
 const usd = formatPrice(10, 20, "USD");
 assert.equal(usd.includes("€"), false);
 assert.equal(usd.includes("à"), true);
