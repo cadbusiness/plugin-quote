@@ -286,7 +286,7 @@ export function CatalogBrowse({
 export function CatalogBrowsePreview({
   products,
 }: {
-  products: { id: string; name: string; imageUrl: string | null; priceMin: number | null; priceMax: number | null; category?: string | null }[];
+  products: { id: string; name: string; imageUrl: string | null; priceMin: number | null; priceMax: number | null; currency?: string | null; category?: string | null }[];
 }) {
   const groups = groupProductsByCategory(products);
   if (!products.length) {
@@ -313,6 +313,7 @@ export function CatalogBrowsePreview({
           imageUrl={product.imageUrl}
           priceMin={product.priceMin}
           priceMax={product.priceMax}
+          currency={product.currency}
         />
       ))}
     </div>

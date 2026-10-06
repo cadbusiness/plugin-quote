@@ -3,19 +3,12 @@ import { createServiceClient } from "@/lib/supabase/service";
 import type { Tables } from "@/lib/db/database.types";
 import type { Answers } from "@/lib/wizard/types";
 import { fill } from "@/lib/email/fill";
+import { formatPrice } from "@/lib/format";
 
 function formatAnswers(answers: Answers) {
   return Object.entries(answers)
     .map(([key, value]) => `- ${key}: ${Array.isArray(value) ? value.join(", ") : String(value ?? "-")}`)
     .join("\n");
-}
-
-function formatPrice(min: number | null, max: number | null) {
-  if (min == null && max == null) return "Sur devis";
-  const fmt = (n: number) =>
-    new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
-  if (min != null && max != null) return `${fmt(min)} – ${fmt(max)}`;
-  return fmt((min ?? max) as number);
 }
 
 export async function sendQuoteEmails(input: {
@@ -25,6 +18,7 @@ export async function sendQuoteEmails(input: {
   suggestionName: string;
   priceMin: number | null;
   priceMax: number | null;
+  currency?: string | null;
   pdf: Buffer | null;
   suiviUrl?: string;
   pin?: string;
@@ -54,7 +48,7 @@ export async function sendQuoteEmails(input: {
     sales_name: input.organization.sales_name ?? "",
     answers_text: formatAnswers(input.answers),
     suggestion_name: input.suggestionName,
-    price_range: formatPrice(input.priceMin, input.priceMax),
+    price_range: formatPrice(input.priceMin, input.priceMax, input.currency),
     suivi_url: input.suiviUrl ?? "",
     membres_url: input.membresUrl ?? "",
     pin: input.pin ?? "",

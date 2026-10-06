@@ -101,6 +101,7 @@ export type RunContext = {
   suggestionName?: string;
   priceMin?: number | null;
   priceMax?: number | null;
+  currency?: string;
   triggerStatus?: string;
 };
 
@@ -123,6 +124,7 @@ export type SubjectContext = {
   productNames: string[];
   priceMin: number | null;
   priceMax: number | null;
+  currency: string;
   lastActivityAt: string;
   resumeUrl: string;
   suiviUrl: string;
@@ -204,6 +206,7 @@ export function parseRunContext(value: Json | null | undefined): RunContext {
     suggestionName: typeof raw.suggestionName === "string" ? raw.suggestionName : undefined,
     priceMin: typeof raw.priceMin === "number" ? raw.priceMin : raw.priceMin === null ? null : undefined,
     priceMax: typeof raw.priceMax === "number" ? raw.priceMax : raw.priceMax === null ? null : undefined,
+    currency: typeof raw.currency === "string" && raw.currency.trim() ? raw.currency.trim().toUpperCase() : undefined,
     triggerStatus: typeof raw.triggerStatus === "string" ? raw.triggerStatus : undefined,
   };
 }

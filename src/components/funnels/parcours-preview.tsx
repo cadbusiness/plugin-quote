@@ -30,6 +30,7 @@ export type PreviewProduct = {
   imageUrl: string | null;
   priceMin: number | null;
   priceMax: number | null;
+  currency?: string | null;
   category?: string | null;
 };
 
@@ -252,6 +253,7 @@ export function CatalogPreview({ products }: { products: PreviewProduct[] }) {
           imageUrl={product.imageUrl}
           priceMin={product.priceMin}
           priceMax={product.priceMax}
+          currency={product.currency}
           badge="Recommandé"
         />
       ))}
@@ -275,7 +277,7 @@ function CustomizePreview({ products }: { products: PreviewProduct[] }) {
           )}
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium">{product.name}</p>
-            <p className="text-xs text-slate-500">{formatPrice(product.priceMin, product.priceMax)}</p>
+            <p className="text-xs text-slate-500">{formatPrice(product.priceMin, product.priceMax, product.currency)}</p>
           </div>
           <input readOnly value="1" className="w-12 rounded-md border border-slate-200 px-2 py-1 text-sm" />
         </div>

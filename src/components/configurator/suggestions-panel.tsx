@@ -1,6 +1,7 @@
 "use client";
 
 import { formatPrice } from "@/lib/format";
+import { resolveDisplayCurrency, suggestionCardRange } from "@/lib/quotes/price-range";
 import type { Suggestion } from "@/lib/wizard/types";
 
 export type SuggestionsLoadState = "idle" | "loading" | "ready" | "error";
@@ -58,11 +59,13 @@ export function shouldShowChatSuggestions(input: {
 
 export function SuggestionsPanel({
   suggestions,
+  quantities = {},
   loadState,
   selectedId,
   onSelect,
 }: {
   suggestions: Suggestion[];
+  quantities?: Record<string, number>;
   loadState: SuggestionsLoadState;
   selectedId: string | null;
   onSelect: (id: string) => void;
@@ -98,6 +101,8 @@ export function SuggestionsPanel({
     <div className="mt-8 grid gap-4 md:grid-cols-3">
       {suggestions.map((s) => {
         const selected = selectedId === s.id;
+        const range = suggestionCardRange(s, quantities);
+        const currency = resolveDisplayCurrency(s.products.map((product) => product.currency));
         return (
           <button
             key={s.id}
@@ -114,7 +119,7 @@ export function SuggestionsPanel({
             </span>
             <h3 className="mt-3 text-lg font-semibold tracking-tight text-mk-ink">{s.headline ?? s.name}</h3>
             <p className="mt-2 text-sm text-mk-faint">{s.description}</p>
-            <p className="mt-4 text-sm font-semibold text-mk-ink">{formatPrice(s.priceMin, s.priceMax)}</p>
+            <p className="mt-4 text-sm font-semibold text-mk-ink">{formatPrice(range.min, range.max, currency)}</p>
             <ul className="mt-3 space-y-2 text-sm text-mk-faint">
               {s.products.map((p) => (
                 <li key={p.id} className="flex items-center gap-2">

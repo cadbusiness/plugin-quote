@@ -7,6 +7,8 @@ import { sendQuoteEmails } from "@/lib/email/send";
 import { cancelSessionRuns, startWorkflows } from "@/lib/workflows/engine";
 import { dispatchQuoteWebhooks } from "@/lib/webhooks/dispatch";
 import { renderQuotePdf } from "@/lib/pdf/render";
+import { loadConfiguratorQuestionMeta } from "@/lib/quotes/question-meta";
+import { quoteHeadlineRange, resolveDisplayCurrency, stampQuotePrice } from "@/lib/quotes/price-range";
 import type { ContactPayload, Customization } from "@/lib/wizard/types";
 import type { Json, Tables } from "@/lib/db/database.types";
 import { createProspectAccess } from "@/lib/prospect/access";
@@ -220,6 +222,24 @@ export async function submitQuote(input: {
     await supabase.from("quote_items").insert(items);
   }
 
+  const headline = quoteHeadlineRange({
+    lines: items,
+    ruleMin: selected?.priceMin,
+    ruleMax: selected?.priceMax,
+  });
+  const currency = resolveDisplayCurrency(catalogItems.map((product) => product.currency));
+  try {
+    const stamped = stampQuotePrice(quote.extracted_params, headline, currency);
+    const { error: stampError } = await supabase
+      .from("quotes")
+      .update({ extracted_params: stamped })
+      .eq("id", quote.id);
+    if (stampError) console.error("Quote price stamp failed", stampError);
+    else quote = { ...quote, extracted_params: stamped };
+  } catch (error) {
+    console.error("Quote price stamp failed", error);
+  }
+
   await supabase
     .from("quote_files")
     .update({ quote_id: quote.id })
@@ -237,6 +257,8 @@ export async function submitQuote(input: {
 
   let pdfBuffer: Buffer | null = null;
   try {
+    const questions = configurator ? await loadConfiguratorQuestionMeta(supabase, configurator.id) : [];
+    const currencyByProduct = new Map(catalogItems.map((product) => [product.id, product.currency]));
     pdfBuffer = await renderQuotePdf({
       organization: org!,
       configurator: configurator!,
@@ -247,11 +269,14 @@ export async function submitQuote(input: {
         options: item.options as Record<string, string>,
         priceMin: item.price_min,
         priceMax: item.price_max,
+        currency: item.product_id ? currencyByProduct.get(item.product_id) : currency,
       })),
       answers,
       suggestionName: requestName,
-      priceMin: selected?.priceMin ?? null,
-      priceMax: selected?.priceMax ?? null,
+      priceMin: headline.min,
+      priceMax: headline.max,
+      currency,
+      questions,
     });
   } catch (error) {
     console.error("PDF generation failed", error);
@@ -278,8 +303,9 @@ export async function submitQuote(input: {
       suiviUrl: access?.url,
       pin: access?.pin,
       suggestionName: requestName,
-      priceMin: selected?.priceMin ?? null,
-      priceMax: selected?.priceMax ?? null,
+      priceMin: headline.min,
+      priceMax: headline.max,
+      currency,
       pdf: pdfBuffer,
     });
     if (started.started === 0) {
@@ -288,8 +314,9 @@ export async function submitQuote(input: {
         quote,
         answers,
         suggestionName: requestName,
-        priceMin: selected?.priceMin ?? null,
-        priceMax: selected?.priceMax ?? null,
+        priceMin: headline.min,
+        priceMax: headline.max,
+        currency,
         pdf: pdfBuffer,
         suiviUrl: access?.url,
         pin: access?.pin,
@@ -304,8 +331,9 @@ export async function submitQuote(input: {
         quote,
         answers,
         suggestionName: requestName,
-        priceMin: selected?.priceMin ?? null,
-        priceMax: selected?.priceMax ?? null,
+        priceMin: headline.min,
+        priceMax: headline.max,
+        currency,
         pdf: pdfBuffer,
         suiviUrl: access?.url,
         pin: access?.pin,

@@ -23,4 +23,10 @@ assert.equal(bad.missingNameColumn, true);
 const empty = inspectProductCsv("");
 assert.equal(empty.ok, false);
 
+const swapped = inspectProductCsv("name,price_min,price_max\nBac,420,189\nFixe,18,18\n");
+assert.equal(swapped.rows[0]?.price_min, 189);
+assert.equal(swapped.rows[0]?.price_max, 420);
+assert.equal(swapped.rows[1]?.price_min, 18);
+assert.equal(swapped.rows[1]?.price_max, 18);
+
 console.log("catalog/csv ok");

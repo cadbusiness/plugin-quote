@@ -4,7 +4,7 @@ export function formatPrice(
   currency?: string | null,
 ) {
   if (min == null && max == null) return "Sur devis";
-  const code = (currency ?? "EUR").trim() || "EUR";
+  const code = (currency ?? "EUR").trim().toUpperCase() || "EUR";
   const fmt = (n: number) => {
     try {
       return new Intl.NumberFormat("fr-FR", {
@@ -16,7 +16,12 @@ export function formatPrice(
       return `${Math.round(n)} ${code}`;
     }
   };
-  if (min != null && max != null) return `${fmt(min)} – ${fmt(max)}`;
+  if (min != null && max != null) {
+    const low = fmt(Math.min(min, max));
+    const high = fmt(Math.max(min, max));
+    if (low === high) return low;
+    return `${low} à ${high}`;
+  }
   return fmt((min ?? max) as number);
 }
 

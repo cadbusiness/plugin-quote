@@ -38,6 +38,7 @@ export type StartWorkflowsInput = {
   suggestionName?: string;
   priceMin?: number | null;
   priceMax?: number | null;
+  currency?: string | null;
   pdf?: Buffer | null;
 };
 
@@ -111,6 +112,7 @@ export async function startWorkflows(input: StartWorkflowsInput) {
       suggestionName: input.suggestionName,
       priceMin: input.priceMin ?? ctx.priceMin,
       priceMax: input.priceMax ?? ctx.priceMax,
+      currency: input.currency ?? ctx.currency,
       triggerStatus: input.statusSlug,
     };
 

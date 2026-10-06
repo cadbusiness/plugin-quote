@@ -2,6 +2,7 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { fill, sendTemplateEmail } from "@/lib/email/send";
 import { logActivity } from "@/lib/crm/activity";
 import { formatPrice } from "@/lib/format";
+import { displayedQuoteRange, readQuotePrice, resolveDisplayCurrency } from "@/lib/quotes/price-range";
 import { appUrl } from "@/lib/prospect/access";
 
 export type FollowupTemplate = "reminder_24h" | "nudge_3d" | "reactivation_30d";
@@ -23,7 +24,7 @@ export async function apiTriggerFollowup(
   const { data: quote } = await supabase
     .from("quotes")
     .select(
-      "id, contact_name, contact_email, contact_company, score, score_label, answers, organization_id, status",
+      "id, contact_name, contact_email, contact_company, score, score_label, answers, organization_id, status, extracted_params",
     )
     .eq("id", input.lead_id)
     .eq("organization_id", organizationId)
@@ -46,18 +47,24 @@ export async function apiTriggerFollowup(
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle(),
-    supabase.from("quote_items").select("price_min, price_max, quantity").eq("quote_id", quote.id),
+    supabase.from("quote_items").select("price_min, price_max, quantity, product_id").eq("quote_id", quote.id),
   ]);
 
   if (!template) throw new Error(`Template email ${kind} introuvable`);
 
-  let priceMin: number | null = null;
-  let priceMax: number | null = null;
-  for (const item of items ?? []) {
-    if (item.price_min != null) priceMin = (priceMin ?? 0) + item.price_min * (item.quantity || 1);
-    if (item.price_max != null) priceMax = (priceMax ?? 0) + item.price_max * (item.quantity || 1);
-    else if (item.price_min != null) priceMax = (priceMax ?? 0) + item.price_min * (item.quantity || 1);
+  const storedPrice = readQuotePrice(quote.extracted_params);
+  const headline = displayedQuoteRange({ stored: storedPrice, lines: items ?? [] });
+  const productIds = [...new Set((items ?? []).map((item) => item.product_id).filter(Boolean))] as string[];
+  let currency = storedPrice?.currency ?? "";
+  if (!currency && productIds.length) {
+    const { data: priced } = await supabase
+      .from("products")
+      .select("currency")
+      .in("id", productIds)
+      .eq("organization_id", organizationId);
+    currency = resolveDisplayCurrency((priced ?? []).map((row) => row.currency));
   }
+  if (!currency) currency = "EUR";
 
   const suivi = access?.token ? `${appUrl()}/suivi/${access.token}` : "";
   const answers =
@@ -77,7 +84,7 @@ export async function apiTriggerFollowup(
     sales_name: org?.sales_name ?? "",
     answers_text: answersText,
     suggestion_name: "",
-    price_range: formatPrice(priceMin, priceMax),
+    price_range: formatPrice(headline.min, headline.max, currency),
     suivi_url: suivi,
     resume_url: "",
     pin: "",

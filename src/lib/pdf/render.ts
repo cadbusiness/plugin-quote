@@ -1,6 +1,7 @@
 import { createElement } from "react";
 import { renderToBuffer } from "@react-pdf/renderer";
 import { QuotePdf } from "@/lib/pdf/quote-pdf";
+import type { QuestionMeta } from "@/lib/crm/answers";
 import type { Tables } from "@/lib/db/database.types";
 import type { Answers } from "@/lib/wizard/types";
 
@@ -14,11 +15,14 @@ export async function renderQuotePdf(input: {
     options: Record<string, string>;
     priceMin: number | null;
     priceMax: number | null;
+    currency?: string | null;
   }[];
   answers: Answers;
   suggestionName: string;
   priceMin: number | null;
   priceMax: number | null;
+  currency?: string | null;
+  questions?: QuestionMeta[];
 }) {
   return renderToBuffer(
     createElement(QuotePdf, {
@@ -35,6 +39,8 @@ export async function renderQuotePdf(input: {
       suggestionName: input.suggestionName,
       priceMin: input.priceMin,
       priceMax: input.priceMax,
+      currency: input.currency,
+      questions: input.questions,
     }) as Parameters<typeof renderToBuffer>[0],
   );
 }

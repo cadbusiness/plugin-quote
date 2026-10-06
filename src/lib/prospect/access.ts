@@ -7,9 +7,11 @@ export type ProspectViewer =
   | { kind: "primary"; accessId: string }
   | { kind: "collaborator"; collaborator: Tables<"quote_collaborators"> };
 
+export type ProspectQuoteItem = Tables<"quote_items"> & { currency: string | null };
+
 export type ProspectBundle = {
   quote: Tables<"quotes">;
-  items: Tables<"quote_items">[];
+  items: ProspectQuoteItem[];
   files: Tables<"quote_files">[];
   statuses: Tables<"quote_statuses">[];
   messages: Tables<"prospect_messages">[];
@@ -127,9 +129,17 @@ async function loadProspectBundle(
     supabase.from("quote_collaborators").select("*").eq("quote_id", quoteId).order("created_at"),
   ]);
   if (!quote) return null;
+  const productIds = [...new Set((items ?? []).map((item) => item.product_id).filter(Boolean))] as string[];
+  const { data: priced } = productIds.length
+    ? await supabase.from("products").select("id, currency").in("id", productIds).eq("organization_id", organizationId)
+    : { data: [] as { id: string; currency: string }[] };
+  const currencyById = new Map((priced ?? []).map((row) => [row.id, row.currency]));
   return {
     quote,
-    items: items ?? [],
+    items: (items ?? []).map((item) => ({
+      ...item,
+      currency: item.product_id ? (currencyById.get(item.product_id) ?? null) : null,
+    })),
     files: files ?? [],
     statuses: statuses ?? [],
     messages: messages ?? [],

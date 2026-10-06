@@ -11,6 +11,12 @@ import {
 } from "@/lib/prospect/collaborators";
 import { Chip, type ChipTone } from "@/components/ui/chip";
 import { formatPrice } from "@/lib/format";
+import {
+  displayedQuoteRange,
+  formatLineAmount,
+  readQuotePrice,
+  resolveDisplayCurrency,
+} from "@/lib/quotes/price-range";
 
 const PIPELINE = ["Reçu", "En étude", "Devis envoyé", "Accepté"];
 
@@ -53,7 +59,10 @@ export function ProspectSpace({
   const [pending, start] = useTransition();
   const status = bundle.statuses.find((s) => s.id === bundle.quote.status_id);
   const stage = stageIndex(status);
-  const totals = rangeTotal(bundle.items);
+  const storedPrice = readQuotePrice(bundle.quote.extracted_params);
+  const headline = displayedQuoteRange({ stored: storedPrice, lines: bundle.items });
+  const currency =
+    storedPrice?.currency || resolveDisplayCurrency(bundle.items.map((item) => item.currency));
   const decided = me?.status === "approved" || me?.status === "changes_requested";
 
   async function sendMessage(e: React.FormEvent) {
@@ -161,9 +170,7 @@ export function ProspectSpace({
               <span>
                 {item.name} × {item.quantity}
               </span>
-              <span className="text-slate-500">
-                {item.price_min ?? "-"} – {item.price_max ?? "-"} €
-              </span>
+              <span className="text-slate-500">{formatLineAmount(item, item.currency ?? currency)}</span>
             </li>
           ))}
           {!bundle.items.length ? (
@@ -171,7 +178,9 @@ export function ProspectSpace({
           ) : null}
         </ul>
         {bundle.items.length ? (
-          <p className="mt-2 text-sm font-medium text-slate-900">Total indicatif · {formatPrice(totals.min, totals.max)}</p>
+          <p className="mt-2 text-sm font-medium text-slate-900">
+            Fourchette indicative · {formatPrice(headline.min, headline.max, currency)}
+          </p>
         ) : null}
       </section>
 
@@ -373,24 +382,3 @@ export function ProspectSpace({
   );
 }
 
-function rangeTotal(items: ProspectBundle["items"]) {
-  let min = 0;
-  let max = 0;
-  let hasMin = false;
-  let hasMax = false;
-  for (const item of items) {
-    const qty = item.quantity || 1;
-    if (item.price_min != null) {
-      min += item.price_min * qty;
-      hasMin = true;
-    }
-    if (item.price_max != null) {
-      max += item.price_max * qty;
-      hasMax = true;
-    } else if (item.price_min != null) {
-      max += item.price_min * qty;
-      hasMax = true;
-    }
-  }
-  return { min: hasMin ? min : null, max: hasMax ? max : null };
-}

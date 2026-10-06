@@ -1,3 +1,5 @@
+import { orderPriceBounds } from "@/lib/quotes/price-range";
+
 export type CsvProductRow = {
   name: string;
   sku: string | null;
@@ -145,12 +147,13 @@ export function inspectProductCsv(text: string): CsvInspection {
     if (priceMaxRaw && parseNumber(priceMaxRaw) === null) {
       issues.push({ line: lineNo, message: `Prix max illisible (${priceMaxRaw}).` });
     }
+    const ordered = orderPriceBounds(parseNumber(priceMinRaw), parseNumber(priceMaxRaw));
     rows.push({
       name,
       sku: get("sku") || null,
       description: get("description") || null,
-      price_min: parseNumber(priceMinRaw),
-      price_max: parseNumber(priceMaxRaw),
+      price_min: ordered.min,
+      price_max: ordered.max,
       tags: get("tags")
         .split(/[|,;]/)
         .map((t) => t.trim())

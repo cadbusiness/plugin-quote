@@ -47,15 +47,16 @@ export function applyStorefrontCart(
 
 export function suggestionFromProducts(products: Product[], id = "storefront"): Suggestion | null {
   if (!products.length) return null;
-  const prices = products.flatMap((p) => [p.priceMin, p.priceMax]).filter((n): n is number => n != null);
   return {
     id,
     name: "Votre sélection",
     headline: "Produits de votre liste",
     description: null,
     imageUrl: products[0]?.imageUrl ?? null,
-    priceMin: prices.length ? Math.min(...prices) : null,
-    priceMax: prices.length ? Math.max(...prices) : null,
+    // Pas de fourchette inventée (écart min/max des prix unitaires). La carte
+    // somme les lignes, et le devis reprend cette somme × quantité.
+    priceMin: null,
+    priceMax: null,
     products,
   };
 }

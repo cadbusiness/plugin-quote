@@ -8,6 +8,7 @@ export type QuoteListExtras = {
   firstName: string | null;
   priceMin: number | null;
   priceMax: number | null;
+  currency: string;
   opened: boolean;
   validationStatus: string;
   validationApproved: number;
@@ -32,6 +33,7 @@ export function emptyQuoteExtras(opened: boolean): QuoteListExtras {
     firstName: null,
     priceMin: null,
     priceMax: null,
+    currency: "EUR",
     opened,
     validationStatus: "none",
     validationApproved: 0,
@@ -95,7 +97,7 @@ export function QuoteProjectCell({ extras }: { extras: QuoteListExtras }) {
   return (
     <td className="px-4 py-3.5 lg:px-6">
       <div className="font-medium text-slate-900">
-        {count ? `${count} produit${count > 1 ? "s" : ""} · ${formatPrice(extras.priceMin, extras.priceMax)}` : "Pas encore de configuration"}
+        {count ? `${count} produit${count > 1 ? "s" : ""} · ${formatPrice(extras.priceMin, extras.priceMax, extras.currency)}` : "Pas encore de configuration"}
       </div>
       {count && extras.firstName ? <p className="mt-0.5 text-sm text-slate-500">{extras.firstName}</p> : null}
       {extras.reasons.length ? (
