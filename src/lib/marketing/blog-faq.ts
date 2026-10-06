@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "fourchette-prix-indicative-demande-devis-b2b": [
+    {
+      q: "Faut-il afficher un prix sur un site B2B ?",
+      a: "Ce n'est pas obligatoire, mais les tests du Nielsen Norman Group montrent que l'absence totale de prix frustre les acheteurs B2B. Une fourchette ou quelques scénarios chiffrés donnent un ordre de grandeur.",
+    },
+    {
+      q: "Une fourchette affichée m'engage-t-elle ?",
+      a: "Elle n'a pas la valeur d'un devis accepté. Présentez-la comme indicative, comme le fait le PDF de QuoteBuilder. Pour une question juridique précise, consultez un professionnel du droit.",
+    },
+    {
+      q: "Quelle différence entre fourchette produit et fourchette de règle ?",
+      a: "La fourchette produit est unitaire et sert au total indicatif (prix × quantité). La fourchette de règle est un montant que vous fixez pour une solution recommandée. Elle apparaît sur la carte de solution, en tête du PDF et dans l'email de brief.",
+    },
+    {
+      q: "Où saisir la fourchette d'une règle ?",
+      a: "Sur la page Règles, dans le formulaire d'édition de la règle, avec les champs « Prix min » et « Prix max », puis « Enregistrer la règle ». La fenêtre de création ne propose pas ces champs.",
+    },
+    {
+      q: "Le prospect voit-il le total multiplié par la quantité ?",
+      a: "Oui, dans son espace prospect, sous la forme d'un « Total indicatif ». À l'étape Personnalisation du parcours, il voit le prix unitaire de chaque produit. Dans le PDF, chaque ligne affiche la fourchette unitaire.",
+    },
+    {
+      q: "Peut-on afficher un prix fixe plutôt qu'une fourchette ?",
+      a: "Oui. À la création du produit, choisissez « Prix fixe » : le même montant est enregistré en minimum et en maximum. En import CSV, mettez la même valeur dans `price_min` et `price_max`.",
+    },
+    {
+      q: "Les prix sont-ils HT ou TTC ?",
+      a: "QuoteBuilder ne gère pas la TVA et n'affiche ni HT ni TTC. Les montants sont ceux que vous saisissez. Indiquez vous-même « HT » dans la description du produit ou de la règle si c'est le cas.",
+    },
+    {
+      q: "Les options d'un produit modifient-elles la fourchette ?",
+      a: "Non. Le calcul ne repose que sur le prix minimum, le prix maximum et la quantité. Pour une option qui change vraiment le prix, créez un produit séparé.",
+    },
+    {
+      q: "La fourchette influence-t-elle le score Hot, Warm ou Cold ?",
+      a: "Non. Le score suit une formule fixe qui ne lit pas les prix.",
+    },
+    {
+      q: "Que voit le prospect si je ne mets aucun prix ?",
+      a: "« Sur devis » sur la carte de solution et dans le PDF. Expliquez alors dans la description ce qui détermine le prix.",
+    },
+  ],
   "funnel-devis-chat-ia-vs-formulaire-etapes-b2b": [
     {
       q: "Quels types de funnel existent dans QuoteBuilder ?",
