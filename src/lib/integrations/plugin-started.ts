@@ -1,6 +1,7 @@
 import { randomBytes } from "crypto";
 import type { PluginConnection } from "@/lib/integrations/plugin";
 import { createSession, updateSession } from "@/lib/public/session";
+import { prospectDisplayName } from "@/lib/email/greeting";
 import { sendHtmlEmail } from "@/lib/email/send";
 import { createServiceClient } from "@/lib/supabase/service";
 import type { Json } from "@/lib/db/database.types";
@@ -325,14 +326,15 @@ export async function remindAndPurgeStartedQuotes(now = Date.now()) {
       .maybeSingle();
     if (!claimed) continue;
     const name = orgName.get(row.organization_id) || "notre équipe";
-    const greeting = row.contact_name && row.contact_name !== "Demande commencée" ? `Bonjour ${row.contact_name},` : "Bonjour,";
+    const shown = prospectDisplayName(row.contact_name);
+    const greeting = shown ? `Bonjour ${shown},` : "Bonjour,";
     const safeName = escapeHtml(name);
     const safeGreeting = escapeHtml(greeting);
     const safeLink = escapeHtml(link);
     try {
       await sendHtmlEmail({
         to: row.contact_email,
-        subject: `Votre demande de devis — ${name}`,
+        subject: `Votre demande de devis - ${name}`,
         text: `${greeting}\n\nVous avez commencé une demande de devis. Reprenez-la là où vous vous êtes arrêté :\n${link}\n\nCeci est le seul rappel. Si vous n'envoyez pas la demande, nous la supprimons sous 30 jours.\n\n${name}`,
         html: `<p>${safeGreeting}</p><p>Vous avez commencé une demande de devis. Reprenez-la là où vous vous êtes arrêté :</p><p><a href="${safeLink}">${safeLink}</a></p><p>Ceci est le seul rappel. Si vous n'envoyez pas la demande, nous la supprimons sous 30 jours.</p><p>${safeName}</p>`,
       });
