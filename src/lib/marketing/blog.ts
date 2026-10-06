@@ -107,6 +107,7 @@ export const BLOG_TOOL_CONTEXTE_HORS_DOSSIER = "/outils/estimateur-cout-contexte
 export const BLOG_TOOL_VALEUR_SUGGESTIONS = "/outils/estimateur-valeur-produits-suggeres-devis";
 export const BLOG_TOOL_REQUALIFICATION = "/outils/estimateur-requalification-chat-vs-formulaire-devis";
 export const BLOG_TOOL_HORS_BUDGET_FOURCHETTE = "/outils/estimateur-demandes-hors-budget-fourchette-devis";
+export const BLOG_TOOL_ABANDONS_FUNNEL = "/outils/estimateur-demandes-devis-abandonnees-funnel";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -126,6 +127,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     31: "Trente et un",
     32: "Trente-deux",
     33: "Trente-trois",
+    34: "Trente-quatre",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -327,12 +329,31 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
   {
     href: BLOG_TOOL_HORS_BUDGET_FOURCHETTE,
     title: "Estimateur des demandes hors budget",
-    text: "Demandes de devis / mois, part qui s'arrête au prix, minutes, taux horaire, hypothèse de fourchette affichée plus tôt. Heures, coût, temps récupérable, aperçu du total indicatif d'une ligne. Calcul 100 % local, sur vos hypothèses.",
+    text: "Demandes de devis / mois, part qui s'arrête au prix, minutes, taux horaire, hypothèse de fourchette affichée plus tôt. Heures, coût, temps récupérable, aperçu du montant d'une ligne. Calcul 100 % local, sur vos hypothèses.",
     tags: ["catalogue", "funnel"],
+  },
+  {
+    href: BLOG_TOOL_ABANDONS_FUNNEL,
+    title: "Estimateur des demandes de devis abandonnées",
+    text: "Parcours commencés / mois, part abandonnée avant l'envoi, part avec email, hypothèses de reprise et de signature, panier. Relançables, reprises, devis gagnés, chiffre d'affaires et plafond. Calcul 100 % local, sur vos hypothèses.",
+    tags: ["relances", "funnel"],
   },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "demande-devis-abandonnee-funnel-reprise",
+    path: "/blog/demande-devis-abandonnee-funnel-reprise",
+    title: "Demande de devis abandonnée en cours de funnel : capter l'email, relancer, faire reprendre",
+    description:
+      "Une demande de devis B2B commencée puis laissée en plan n'est pas perdue si l'email a été laissé. Pourquoi les prospects s'arrêtent, ce qu'on peut récupérer, comment QuoteBuilder sauvegarde la session, la relance après une heure d'inactivité, le lien de reprise, la page Sessions et les limites à connaître.",
+    publishedAt: "2026-10-06",
+    readingMinutes: 13,
+    tags: ["relances", "funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.funnelPublic,
+    pinned: false,
+  },
   {
     slug: "fourchette-prix-indicative-demande-devis-b2b",
     path: "/blog/fourchette-prix-indicative-demande-devis-b2b",

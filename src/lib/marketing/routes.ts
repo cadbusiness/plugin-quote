@@ -79,9 +79,21 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.8,
     lastModified: "2026-10-06",
   },
+  {
+    path: "/secteurs/funnel-devis-emballage-conditionnement",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-06",
+  },
   { path: "/tarifs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  {
+    path: "/blog/demande-devis-abandonnee-funnel-reprise",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-06",
+  },
   {
     path: "/blog/fourchette-prix-indicative-demande-devis-b2b",
     changeFrequency: "monthly",
@@ -325,6 +337,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/estimateur-demandes-hors-budget-fourchette-devis",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-06",
+  },
+  {
+    path: "/outils/estimateur-demandes-devis-abandonnees-funnel",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-06",

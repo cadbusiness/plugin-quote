@@ -5,6 +5,9 @@ import { SITE_URL } from "@/lib/marketing/site";
 
 /** Dates éditoriales hors articles (le blog passe par publishedAt). */
 const CONTENT_LASTMOD: Record<string, string> = {
+  "/blog/demande-devis-abandonnee-funnel-reprise": "2026-10-06",
+  "/outils/estimateur-demandes-devis-abandonnees-funnel": "2026-10-06",
+  "/secteurs/funnel-devis-emballage-conditionnement": "2026-10-06",
   "/blog/fourchette-prix-indicative-demande-devis-b2b": "2026-10-06",
   "/outils/estimateur-demandes-hors-budget-fourchette-devis": "2026-10-06",
   "/secteurs/funnel-devis-traiteur-evenementiel": "2026-10-06",

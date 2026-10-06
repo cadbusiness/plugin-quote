@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "demande-devis-abandonnee-funnel-reprise": [
+    {
+      q: "Qu'est-ce qu'une demande de devis abandonnée ?",
+      a: "Un parcours commencé dans votre funnel puis laissé en plan avant l'envoi. Le prospect a répondu à une partie des questions sans transmettre sa demande.",
+    },
+    {
+      q: "Peut-on relancer un prospect qui n'a laissé aucun email ?",
+      a: "Non. La session reste visible dans la page Sessions, avec son avancement et ses réponses, mais sans moyen de contact.",
+    },
+    {
+      q: "Quand QuoteBuilder propose-t-il de sauvegarder la configuration ?",
+      a: "À partir de la deuxième étape du funnel, tant que la demande n'est pas envoyée, avec un bandeau facultatif « Prénom » et « Email pour recevoir le récap ».",
+    },
+    {
+      q: "Au bout de combien de temps part la relance ?",
+      a: "Après une heure d'inactivité dans le parcours abandon par défaut, puis une seconde après vingt-quatre heures. Le seuil se règle dans le déclencheur, en heures. Les automatisations sont examinées toutes les quinze minutes.",
+    },
+    {
+      q: "Le prospect doit-il tout ressaisir ?",
+      a: "Non. Le lien de reprise rouvre le funnel avec ses réponses déjà données. S'il a envoyé sa demande entre-temps, il arrive sur la page de suivi.",
+    },
+    {
+      q: "Que se passe-t-il si le prospect envoie sa demande avant la seconde relance ?",
+      a: "La séquence s'arrête. Une automatisation déclenchée par un abandon ne continue pas sur une session envoyée.",
+    },
+    {
+      q: "Une session abandonnée apparaît-elle dans le pipeline ?",
+      a: "Pas pour le funnel hébergé : elle reste dans la page Sessions jusqu'à l'envoi. Avec le plugin WordPress, un email valide crée un dossier au statut Commencée.",
+    },
+    {
+      q: "Combien de relances envoie le plugin WordPress ?",
+      a: "Une seule, deux heures après la saisie de l'email, tant que le dossier est au statut Commencée. Un dossier jamais envoyé est supprimé au bout de trente jours.",
+    },
+    {
+      q: "Le montant « récupérable » de la page Stats est-il fiable ?",
+      a: "C'est un plafond : abandons avec email multipliés par le panier moyen. Pour une estimation réaliste, appliquez vos taux de reprise et de signature.",
+    },
+    {
+      q: "Faut-il un consentement pour relancer un professionnel ?",
+      a: "La CNIL admet l'intérêt légitime pour une prospection en rapport avec la profession, avec information à la collecte et opposition simple. Informez clairement au moment où l'email est saisi.",
+    },
+  ],
   "fourchette-prix-indicative-demande-devis-b2b": [
     {
       q: "Faut-il afficher un prix sur un site B2B ?",
@@ -12,7 +54,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Quelle différence entre fourchette produit et fourchette de règle ?",
-      a: "La fourchette produit est unitaire et sert au total indicatif (prix × quantité). La fourchette de règle est un montant que vous fixez pour une solution recommandée. Elle apparaît sur la carte de solution, en tête du PDF et dans l'email de brief.",
+      a: "La fourchette produit est unitaire : multipliée par la quantité, elle donne le montant de chaque ligne. La fourchette de règle, si vous la saisissez, devient la fourchette indicative du dossier ; sinon, c'est la somme des lignes.",
     },
     {
       q: "Où saisir la fourchette d'une règle ?",
@@ -20,7 +62,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Le prospect voit-il le total multiplié par la quantité ?",
-      a: "Oui, dans son espace prospect, sous la forme d'un « Total indicatif ». À l'étape Personnalisation du parcours, il voit le prix unitaire de chaque produit. Dans le PDF, chaque ligne affiche la fourchette unitaire.",
+      a: "Oui. Dans son espace prospect et dans le PDF, chaque ligne affiche prix × quantité. À l'étape Personnalisation, il voit le prix unitaire.",
     },
     {
       q: "Peut-on afficher un prix fixe plutôt qu'une fourchette ?",
@@ -40,7 +82,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Que voit le prospect si je ne mets aucun prix ?",
-      a: "« Sur devis » sur la carte de solution et dans le PDF. Expliquez alors dans la description ce qui détermine le prix.",
+      a: "« Sur devis », partout où la fourchette indicative apparaît. Expliquez alors dans la description ce qui détermine le prix.",
     },
   ],
   "funnel-devis-chat-ia-vs-formulaire-etapes-b2b": [

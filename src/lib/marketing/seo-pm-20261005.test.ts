@@ -39,7 +39,7 @@ assert.ok(
 );
 assert.equal(BLOG_FAQ[BLOG_SLUG]?.length, 10);
 
-assert.equal(BLOG_TOOLS.length, 33);
+assert.equal(BLOG_TOOLS.length, 34);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === TOOL_PATH));
 assert.deepEqual(
   BLOG_TOOLS.find((tool) => tool.href === TOOL_PATH)?.tags,
@@ -47,7 +47,7 @@ assert.deepEqual(
 );
 assert.equal(
   outilsHubIntro(),
-  "Trente-trois outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
+  "Trente-quatre outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
 );
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 

@@ -54,9 +54,11 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Funnel devis paysagiste et aménagement de jardin : https://www.quotebuilder.co/secteurs/funnel-devis-paysagiste-amenagement-jardin
 - Funnel devis usinage et sous-traitance pièces : https://www.quotebuilder.co/secteurs/funnel-devis-usinage-sous-traitance-pieces
 - Funnel devis traiteur événementiel : https://www.quotebuilder.co/secteurs/funnel-devis-traiteur-evenementiel
+- Funnel devis emballage et conditionnement : https://www.quotebuilder.co/secteurs/funnel-devis-emballage-conditionnement
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Demande de devis abandonnée en cours de funnel : https://www.quotebuilder.co/blog/demande-devis-abandonnee-funnel-reprise
 - Fourchette de prix indicative dans une demande de devis B2B : https://www.quotebuilder.co/blog/fourchette-prix-indicative-demande-devis-b2b
 - Funnel de devis en chat IA ou formulaire par étapes : https://www.quotebuilder.co/blog/funnel-devis-chat-ia-vs-formulaire-etapes-b2b
 - Règles de suggestion produits dans un funnel de devis B2B : https://www.quotebuilder.co/blog/regles-suggestion-produits-funnel-devis-b2b
@@ -134,6 +136,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Estimateur valeur des produits suggérés dans un devis : https://www.quotebuilder.co/outils/estimateur-valeur-produits-suggeres-devis
 - Estimateur requalification chat vs formulaire : https://www.quotebuilder.co/outils/estimateur-requalification-chat-vs-formulaire-devis
 - Estimateur des demandes hors budget et fourchette de prix : https://www.quotebuilder.co/outils/estimateur-demandes-hors-budget-fourchette-devis
+- Estimateur des demandes de devis abandonnées en cours de funnel : https://www.quotebuilder.co/outils/estimateur-demandes-devis-abandonnees-funnel
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 

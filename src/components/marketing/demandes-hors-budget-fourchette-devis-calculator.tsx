@@ -185,8 +185,9 @@ export function DemandesHorsBudgetFourchetteDevisCalculator() {
           <p className="mt-4 text-sm font-semibold">{DEMANDES_HORS_BUDGET_FOURCHETTE_LABELS.ligne}</p>
           <p className="mt-1 text-2xl font-semibold tracking-tight text-mk-accent">{result.ligneLabel}</p>
           <p className="mt-2 text-[12px] leading-5 text-mk-faint">
-            Même principe que le total indicatif de la fiche devis et de l&apos;espace prospect : somme des prix min ×
-            quantité, somme des prix max × quantité. Les options d&apos;un produit ne changent pas le montant.
+            Même principe que le montant de ligne de QuoteBuilder (fiche devis, espace prospect, PDF) : prix min ×
+            quantité, prix max × quantité. Sans fourchette de règle, la fourchette indicative du dossier est la somme de
+            ces lignes. Les options d&apos;un produit ne changent pas le montant.
           </p>
           <button
             type="button"
@@ -222,8 +223,8 @@ export function DemandesHorsBudgetFourchetteDevisCalculator() {
           n&apos;est envoyée. Aucun chiffre de référence n&apos;est inventé : toutes les valeurs sont les vôtres. Une
           fourchette indicative n&apos;est pas un devis. Côté QuoteBuilder : chaque produit s&apos;annonce en Prix fixe,
           Fourchette ou Sur devis ; la fourchette d&apos;une règle de suggestion se saisit dans le formulaire
-          d&apos;édition de la page Règles ; les montants sont affichés en euros, sans gestion de TVA ni mention HT ou
-          TTC ; le score Hot / Warm / Cold ne lit pas les prix.
+          d&apos;édition de la page Règles ; les montants sont affichés dans la devise du produit (l&apos;euro par
+          défaut), sans gestion de TVA ni mention HT ou TTC ; le score Hot / Warm / Cold ne lit pas les prix.
         </p>
 
         <label className="mt-6 block text-[12px] leading-5 text-mk-on-dark/50">

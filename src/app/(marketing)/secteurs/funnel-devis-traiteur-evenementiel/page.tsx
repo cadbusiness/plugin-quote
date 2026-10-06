@@ -9,7 +9,7 @@ import { SITE_URL, pageMetadata } from "@/lib/marketing/site";
 export const metadata: Metadata = pageMetadata({
   title: "Funnel de devis traiteur événementiel : des demandes avec date, convives, format et régimes",
   description:
-    "Landing SEO traiteur événementiel et réceptions d'entreprise : funnel de devis (type de prestation, date, lieu, convives, régimes et allergies), template Traiteur QuoteBuilder, formules par convive, total indicatif, relecture et validation client. Sans barème inventé.",
+    "Landing SEO traiteur événementiel et réceptions d'entreprise : funnel de devis (type de prestation, date, lieu, convives, régimes et allergies), template Traiteur QuoteBuilder, formules par convive, fourchette indicative, relecture et validation client. Sans barème inventé.",
   path: "/secteurs/funnel-devis-traiteur-evenementiel",
 });
 
@@ -28,7 +28,7 @@ const FAQ = [
   },
   {
     q: "Peut-on proposer un prix par personne ?",
-    a: "Oui, avec un produit en fourchette ou en prix fixe par convive, et la quantité égale au nombre de personnes. Le total indicatif multiplie le prix par la quantité.",
+    a: "Oui, avec un produit en fourchette ou en prix fixe par convive, et la quantité égale au nombre de personnes. Le montant de la ligne multiplie le prix par la quantité.",
   },
   {
     q: "Les prix sont-ils HT ?",

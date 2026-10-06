@@ -8,7 +8,7 @@ import { SITE_URL, pageMetadata } from "@/lib/marketing/site";
 export const metadata: Metadata = pageMetadata({
   title: "Estimateur des demandes de devis hors budget et de la fourchette de prix",
   description:
-    "Estimez le temps et le coût des demandes de devis qui s'arrêtent au prix, et ce qu'une fourchette indicative affichée plus tôt pourrait éviter. Aperçu du total indicatif d'une ligne (prix min, prix max, quantité). Vos chiffres, calcul 100 % local.",
+    "Estimez le temps et le coût des demandes de devis qui s'arrêtent au prix, et ce qu'une fourchette indicative affichée plus tôt pourrait éviter. Aperçu du montant d'une ligne (prix min, prix max, quantité). Vos chiffres, calcul 100 % local.",
   path: "/outils/estimateur-demandes-hors-budget-fourchette-devis",
 });
 
@@ -27,7 +27,7 @@ const FAQ = [
   },
   {
     q: "Une fourchette indicative est-elle un devis ?",
-    a: "Non. C'est un ordre de grandeur. Dans QuoteBuilder, chaque produit s'annonce en Prix fixe, Fourchette ou Sur devis. La fourchette d'une règle se saisit dans l'édition de la règle (page Règles). Les montants sont en euros, sans TVA ni mention HT ou TTC. Le score Hot / Warm / Cold ne lit pas les prix.",
+    a: "Non. C'est un ordre de grandeur. Dans QuoteBuilder, chaque produit s'annonce en Prix fixe, Fourchette ou Sur devis. La fourchette d'une règle se saisit dans l'édition de la règle (page Règles). Les montants sont dans la devise du produit (l'euro par défaut), sans TVA ni mention HT ou TTC. Le score Hot / Warm / Cold ne lit pas les prix.",
   },
 ];
 
@@ -40,7 +40,7 @@ export default function EstimateurDemandesHorsBudgetFourchetteDevisPage() {
     operatingSystem: "Web",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
     description:
-      "Estime le temps et le coût des demandes de devis B2B qui s'arrêtent au prix, la part récupérable avec une fourchette indicative affichée plus tôt, et le total indicatif d'une ligne. Calcul local sur vos hypothèses.",
+      "Estime le temps et le coût des demandes de devis B2B qui s'arrêtent au prix, la part récupérable avec une fourchette indicative affichée plus tôt, et le montant d'une ligne. Calcul local sur vos hypothèses.",
     inLanguage: "fr-FR",
     url: `${SITE_URL}/outils/estimateur-demandes-hors-budget-fourchette-devis`,
   };
@@ -86,15 +86,16 @@ export default function EstimateurDemandesHorsBudgetFourchetteDevisPage() {
           un conseil financier.
         </p>
         <p className="mt-4 text-[16px] leading-7 text-mk-muted">
-          L&apos;aperçu de ligne reprend le total indicatif de la fiche devis et de l&apos;espace prospect : prix minimum
-          × quantité et prix maximum × quantité. Si le prix maximum est vide, le prix est fixe. Une fourchette saisie à
-          l&apos;envers est remise dans l&apos;ordre. La quantité est ramenée à 1 au minimum. Les options d&apos;un
-          produit ne changent pas le montant.
+          L&apos;aperçu de ligne reprend le montant de ligne de la fiche devis, de l&apos;espace prospect et du PDF : prix
+          minimum × quantité et prix maximum × quantité. Si le prix maximum est vide, le prix est fixe. Une fourchette
+          saisie à l&apos;envers est remise dans l&apos;ordre. La quantité est ramenée à 1 au minimum. Les options
+          d&apos;un produit ne changent pas le montant.
         </p>
         <p className="mt-4 text-[16px] leading-7 text-mk-muted">
           Une fourchette indicative n&apos;est pas un devis. Chaque produit s&apos;annonce en Prix fixe, Fourchette ou
           Sur devis. La fourchette d&apos;une règle de suggestion se saisit dans l&apos;édition de la règle, page Règles,
-          pas dans la fenêtre de création. Les montants sont en euros, sans TVA ni mention HT ou TTC. Le score Hot, Warm
+          pas dans la fenêtre de création. Les montants sont dans la devise du produit (l&apos;euro par défaut), sans TVA
+          ni mention HT ou TTC. Le score Hot, Warm
           ou Cold suit une formule fixe qui ne lit pas les prix.
         </p>
         <p className="mt-4 text-[16px] leading-7 text-mk-muted">

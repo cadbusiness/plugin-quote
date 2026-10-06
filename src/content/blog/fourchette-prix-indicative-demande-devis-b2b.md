@@ -58,44 +58,49 @@ C'est pourquoi le PDF généré par QuoteBuilder s'intitule « Récapitulatif de
 
 Ce n'est pas non plus un tarif : entre professionnels, vos CGV doivent comporter votre barème de prix unitaires, selon la même fiche Service Public.
 
-Enfin, une fourchette n'indique pas d'elle-même si elle est hors taxes ou toutes taxes comprises. QuoteBuilder ne gère pas la TVA : les produits n'ont qu'un prix minimum et un prix maximum, sans taux, et les écrans affichent des montants en euros sans mention HT ou TTC. Si vos prix sont hors taxes, écrivez-le vous-même dans la description du produit, dans le titre de la règle ou dans le texte d'aide de la question. Notre article sur la [TVA, le HT et le TTC dans un devis B2B](https://www.quotebuilder.co/blog/tva-ht-ttc-devis-b2b-france) détaille les mentions à prévoir dans le vrai devis.
+Enfin, une fourchette n'indique pas d'elle-même si elle est hors taxes ou toutes taxes comprises. QuoteBuilder ne gère pas la TVA : les produits n'ont qu'un prix minimum et un prix maximum, sans taux, et les écrans affichent des montants dans la devise du produit (l'euro par défaut), sans mention HT ou TTC. Si vos prix sont hors taxes, écrivez-le vous-même dans la description du produit, dans le titre de la règle ou dans le texte d'aide de la question. Notre article sur la [TVA, le HT et le TTC dans un devis B2B](https://www.quotebuilder.co/blog/tva-ht-ttc-devis-b2b-france) détaille les mentions à prévoir dans le vrai devis.
 
 ## Où la fourchette apparaît dans un parcours QuoteBuilder
 
-Il existe en réalité deux fourchettes différentes, et c'est le point à comprendre avant de configurer quoi que ce soit.
+Deux sources de prix coexistent : la fourchette de chaque produit et, en option, celle d'une règle de suggestion. QuoteBuilder en tire une seule « Fourchette indicative » par dossier, la même sur tous les écrans.
 
 ### La fourchette du produit
 
-C'est celle que vous saisissez sur la fiche produit. Sur la fiche d'un produit existant, les champs s'appellent « Prix min », « Prix max » et « Devise ». Vous pouvez aussi les remplir par import CSV : les colonnes reconnues sont `price_min` et `price_max` (ou `prix_min` et `prix_max`). Un produit synchronisé depuis WooCommerce avec des déclinaisons prend le prix exact de la déclinaison quand la combinaison choisie par le prospect existe.
+Vous la saisissez sur la fiche produit, dans les champs « Prix min », « Prix max » et « Devise », ou par import CSV : les colonnes reconnues sont `price_min` et `price_max` (ou `prix_min` et `prix_max`). Un maximum inférieur au minimum est remis dans l'ordre. Un produit synchronisé depuis WooCommerce avec des déclinaisons prend le prix exact de la déclinaison quand la combinaison choisie par le prospect existe.
 
-Cette fourchette produit est unitaire. Elle apparaît :
+Cette fourchette produit est unitaire. Elle apparaît telle quelle à l'étape « Personnalisation » du parcours, à côté de chaque produit, avec le champ de quantité. Ailleurs, chaque ligne affiche son montant, c'est-à-dire le prix unitaire multiplié par la quantité :
 
-- à l'étape « Personnalisation » du parcours, à côté de chaque produit, avec le champ de quantité ;
-- sur la fiche devis, dans le tableau « Configuration demandée » (colonnes Produit, Qté, Options, Fourchette) ;
+- sur la fiche devis, dans le tableau « Configuration demandée » (colonnes Produit, Qté, Options, Montant) ;
 - dans l'espace prospect, dans la section « Configuration », ligne par ligne ;
 - dans le PDF récapitulatif, sous chaque ligne « quantité × produit ».
 
-### Le total indicatif
-
-À partir des lignes, la fiche devis et l'espace prospect calculent un « Total indicatif » : la somme des prix minimum multipliés par les quantités, et la somme des prix maximum multipliés par les quantités. Si une ligne n'a qu'un prix minimum, il sert aussi de maximum pour le calcul. C'est le chiffre que le prospect retrouve dans son espace.
+Un prix fixe s'affiche une seule fois, une fourchette sous la forme « 1 000 € à 2 400 € ».
 
 ### La fourchette de la règle de suggestion
 
-La deuxième fourchette vient des règles de suggestion. Une règle décide quels produits proposer selon les réponses du prospect (voir notre article sur les [règles de suggestion produits](https://www.quotebuilder.co/blog/regles-suggestion-produits-funnel-devis-b2b)). Chaque règle peut porter sa propre fourchette, avec les champs « Prix min » et « Prix max » du formulaire d'édition, sur la page Règles. Attention : ces champs n'existent pas dans la fenêtre de création de la règle. On crée d'abord la règle, puis on renseigne sa fourchette en l'éditant.
+Une règle de suggestion décide quels produits proposer selon les réponses du prospect (voir notre article sur les [règles de suggestion produits](https://www.quotebuilder.co/blog/regles-suggestion-produits-funnel-devis-b2b)). Chaque règle peut porter sa propre fourchette, avec les champs « Prix min » et « Prix max » du formulaire d'édition, sur la page Règles. Ces champs n'existent pas dans la fenêtre de création : on crée la règle, puis on l'édite.
 
-Cette fourchette de règle apparaît :
+Cette fourchette de règle est une estimation de lot pour une configuration type. Quand elle est renseignée, elle passe avant le calcul des lignes.
 
-- sur la carte de la solution, à l'étape « Solutions recommandées », sous le titre vu par le prospect ;
-- dans le PDF récapitulatif, en tête de la section de la solution choisie, sous la forme « Fourchette indicative : » suivie des montants ;
-- dans l'email de brief envoyé à votre équipe, à la ligne « Fourchette ».
+### La fourchette indicative du dossier
 
-Quand la règle n'a pas de prix, ces trois endroits affichent « Sur devis ».
+La règle de calcul est simple :
+
+- si la solution choisie porte une fourchette de règle, c'est elle ;
+- sinon, c'est la somme des lignes : prix minimum × quantité d'un côté, prix maximum × quantité de l'autre. Si une ligne n'a qu'un prix minimum, il sert aussi de maximum.
+
+Elle est figée au moment où la demande est envoyée, puis reprise :
+
+- sur la carte de la solution, à l'étape « Solutions recommandées » (sans fourchette de règle et avant la saisie des quantités, la carte compte une unité par produit) ;
+- dans le PDF récapitulatif, sous la forme « Fourchette indicative : » suivie des montants ;
+- dans l'email de brief envoyé à votre équipe, à la ligne « Fourchette » ;
+- sur la fiche devis et dans l'espace prospect, sous le libellé « Fourchette indicative ».
+
+Sans aucun prix, ni sur la règle ni sur les produits, ces endroits affichent « Sur devis ».
 
 ### Ce que cela implique
 
-Les deux ne se calculent pas l'une à partir de l'autre. La fourchette de règle est un chiffre que vous posez pour une configuration type ; le total indicatif dépend des produits et des quantités choisies. Une formule annoncée « 2 500 à 4 000 € » sur la carte, puis un total de 6 000 € dans l'espace prospect parce que le client a mis 200 convives, demande une explication. Choisissez une référence : quand la quantité fait le prix, laissez le total indicatif travailler et donnez à la règle une fourchette prudente ou aucune.
-
-Notez aussi que dans le PDF, chaque ligne montre la fourchette unitaire du produit, pas le montant multiplié par la quantité. Le total multiplié se trouve dans l'espace prospect et sur la fiche devis.
+Une fourchette de règle remplace le calcul des lignes, elle ne s'y ajoute pas. Quand la quantité fait le prix (convives, mètres, pièces), laissez la règle sans fourchette : la fourchette du dossier suivra les quantités. Sinon, gardez-la cohérente avec les montants de ligne, visibles juste en dessous : « 2 500 à 4 000 € » au-dessus de lignes qui totalisent 6 000 € demande une explication.
 
 ## Exemple chiffré : une formule cocktail facturée par convive
 
@@ -104,8 +109,8 @@ Prenons un traiteur qui vend une formule cocktail entre 28 et 38 € par personn
 Le prospect sélectionne la formule, puis indique 120 à l'étape Personnalisation. Côté QuoteBuilder :
 
 - l'étape Personnalisation affiche la fourchette unitaire, 28 à 38 € ;
-- la fiche devis et l'espace prospect affichent un total indicatif de 3 360 à 4 560 € (28 × 120 et 38 × 120) ;
-- le PDF montre « 120 × Cocktail déjeunatoire » avec la fourchette unitaire, et en tête la fourchette de la règle si vous en avez saisi une.
+- la ligne « 120 × Cocktail déjeunatoire » porte un montant de 3 360 à 4 560 € (28 × 120 et 38 × 120), sur la fiche devis, dans l'espace prospect et dans le PDF ;
+- sans fourchette de règle, la fourchette indicative du dossier est la même ; avec, c'est celle de la règle qui s'affiche en tête.
 
 Les options du produit n'ajoutent rien au montant. Si une option change fortement le prix, faites-en un produit séparé. Pour un exemple complet dans ce métier, voir notre page [funnel de devis traiteur événementiel](https://www.quotebuilder.co/secteurs/funnel-devis-traiteur-evenementiel).
 
@@ -130,11 +135,11 @@ En B2B, la personne qui remplit la demande n'est pas toujours celle qui signe. D
 
 Le relecteur voit la configuration. Il peut renseigner une « Contrainte budgétaire (€) », ajouter un commentaire, puis « Valider le dossier » ou « Demander des modifications ». Votre équipe est notifiée de la décision.
 
-Si le total indicatif est de 3 360 à 4 560 € et que le directeur financier indique 3 500 €, vous savez avant de chiffrer qu'il faudra viser le bas de la fourchette ou proposer une formule plus légère. Sans fourchette, cette information arrive après l'envoi du devis, sous la forme d'un silence. Notre article sur l'[approbation client multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b) détaille ce circuit.
+Si la fourchette indicative est de 3 360 à 4 560 € et que le directeur financier indique 3 500 €, vous savez avant de chiffrer qu'il faudra viser le bas de la fourchette ou proposer une formule plus légère. Sans fourchette, cette information arrive après l'envoi du devis, sous la forme d'un silence. Notre article sur l'[approbation client multi-décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b) détaille ce circuit.
 
 ## Ce que la fourchette ne change pas
 
-**Le score.** Le score Hot, Warm ou Cold de QuoteBuilder repose sur une formule fixe qui lit certaines réponses (surface, charge, accès, type de projet, contraintes, longueur de la description du besoin). Il ne lit ni les prix ni le total indicatif. Un dossier à 50 000 € n'est pas « plus chaud » qu'un dossier à 2 000 € aux yeux du score. Voir notre article sur le [score d'une demande de devis](https://www.quotebuilder.co/blog/score-demande-devis-b2b).
+**Le score.** Le score Hot, Warm ou Cold de QuoteBuilder repose sur une formule fixe qui lit certaines réponses (surface, charge, accès, type de projet, contraintes, longueur de la description du besoin). Il ne lit ni les prix ni la fourchette indicative. Un dossier à 50 000 € n'est pas « plus chaud » qu'un dossier à 2 000 € aux yeux du score. Voir notre article sur le [score d'une demande de devis](https://www.quotebuilder.co/blog/score-demande-devis-b2b).
 
 **Le statut.** Les statuts du pipeline restent les vôtres : Commencée, Nouveau, Contacté, En cours, Gagné, Perdu, En attente. Une fourchette acceptée par le prospect ne fait pas passer le dossier en Gagné.
 
@@ -144,7 +149,7 @@ Si le total indicatif est de 3 360 à 4 560 € et que le directeur financier in
 
 - **Afficher une fourchette sans unité.** « 2 000 à 6 000 € » pour une formule traiteur ne dit pas si c'est par personne ou au total. Mettez l'unité dans le nom du produit ou sa description.
 - **Oublier de préciser HT.** Un acheteur professionnel raisonne souvent hors taxes, un particulier en TTC. Écrivez-le.
-- **Laisser des règles sans prix et des produits avec prix.** Le prospect voit « Sur devis » sur la carte puis un total chiffré plus loin. Choisissez une logique et tenez-la.
+- **Poser une fourchette de règle qui contredit les lignes.** Elle s'affiche en tête, les montants de ligne en dessous : si les deux divergent, le prospect le voit. Choisissez une logique et tenez-la.
 - **Ne jamais mettre à jour** une fourchette de l'an dernier.
 - **Compter sur la fourchette pour remplacer la qualification.** Elle filtre les écarts de budget, pas les besoins mal décrits. Les bonnes questions restent nécessaires : voir [qualifier une demande de devis avant chiffrage](https://www.quotebuilder.co/blog/qualifier-demande-devis-avant-chiffrage).
 
@@ -160,7 +165,7 @@ Elle n'a pas la valeur d'un devis accepté. Présentez-la comme indicative, comm
 
 ### Quelle différence entre fourchette produit et fourchette de règle ?
 
-La fourchette produit est unitaire et sert au total indicatif (prix × quantité). La fourchette de règle est un montant que vous fixez pour une solution recommandée. Elle apparaît sur la carte de solution, en tête du PDF et dans l'email de brief.
+La fourchette produit est unitaire : multipliée par la quantité, elle donne le montant de chaque ligne. La fourchette de règle, si vous la saisissez, devient la fourchette indicative du dossier ; sinon, c'est la somme des lignes.
 
 ### Où saisir la fourchette d'une règle ?
 
@@ -168,7 +173,7 @@ Sur la page Règles, dans le formulaire d'édition de la règle, avec les champs
 
 ### Le prospect voit-il le total multiplié par la quantité ?
 
-Oui, dans son espace prospect, sous la forme d'un « Total indicatif ». À l'étape Personnalisation du parcours, il voit le prix unitaire de chaque produit. Dans le PDF, chaque ligne affiche la fourchette unitaire.
+Oui. Dans son espace prospect et dans le PDF, chaque ligne affiche prix × quantité. À l'étape Personnalisation, il voit le prix unitaire.
 
 ### Peut-on afficher un prix fixe plutôt qu'une fourchette ?
 
@@ -188,7 +193,7 @@ Non. Le score suit une formule fixe qui ne lit pas les prix.
 
 ### Que voit le prospect si je ne mets aucun prix ?
 
-« Sur devis » sur la carte de solution et dans le PDF. Expliquez alors dans la description ce qui détermine le prix.
+« Sur devis », partout où la fourchette indicative apparaît. Expliquez alors dans la description ce qui détermine le prix.
 
 **Donnez un ordre de grandeur dès la demande :** [créer un compte Free](https://www.quotebuilder.co/signup?plan=free) · [voir la démo](https://www.quotebuilder.co/c/demo/rayonnage) · [estimer vos demandes hors budget](https://www.quotebuilder.co/outils/estimateur-demandes-hors-budget-fourchette-devis) · [options, variantes et alternatives dans un devis](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b).
 
