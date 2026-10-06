@@ -11,6 +11,8 @@ import { LocalPills, replaceClientUrl } from "@/components/ui/local-tabs";
 import { formatRelative } from "@/lib/format";
 import {
   filterAbandonRows,
+  inactiveAfterLabel,
+  staffSessionHref,
   type AbandonRow,
   type AbandonSnapshot,
   type AbandonView,
@@ -61,6 +63,11 @@ export function AbandonSessionsView({
   return (
     <>
       <ListToolbar>
+        <p className="mr-auto text-xs text-slate-500">
+          {snapshot.inactiveMixed
+            ? "Inactif selon le délai de chaque parcours"
+            : `Inactif après ${inactiveAfterLabel(snapshot.inactiveHours)}`}
+        </p>
         <LocalPills
           items={VIEWS.map((item) => ({ ...item, count: viewCount(item.id, snapshot) }))}
           active={view}
@@ -88,7 +95,7 @@ export function AbandonSessionsView({
           {rows.map((row) => (
             <ClickableRow
               key={row.id}
-              href={`/reprendre/${row.token}`}
+              href={staffSessionHref(row.id)}
               onSelect={() => setOpenId(row.id)}
               className={row.recoverable && row.stale && !row.relanced ? "bg-amber-50/40" : ""}
             >
@@ -114,7 +121,9 @@ export function AbandonSessionsView({
       ) : (
         <p className="px-4 py-10 text-sm text-slate-500 lg:px-6">
           {view === "relance"
-            ? "Rien à relancer. Les paniers inactifs avec email arriveront ici."
+            ? snapshot.inactiveMixed
+              ? "Rien à relancer. Les paniers inactifs depuis le délai de leur parcours arriveront ici."
+              : `Rien à relancer. Les paniers inactifs après ${inactiveAfterLabel(snapshot.inactiveHours)} avec email arriveront ici.`
             : view === "email"
               ? "Aucun email capturé pour l’instant."
               : "Aucun abandon pour le moment."}
