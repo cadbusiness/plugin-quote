@@ -7,7 +7,7 @@ import { pageMetadata } from "@/lib/marketing/site";
 export const metadata: Metadata = pageMetadata({
   title: "Outils devis B2B",
   description:
-    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage, impact remise, seuil de remise et plancher de marge, ROI logiciel, taux d’acceptation, coût d’un brief incomplet, coût des devis expirés, calculateur d’acompte, gain de temps catalogue, générateur d’URL de préremplissage, estimateur leads formulaire vs funnel WordPress, estimateur coût des devis PDF seuls, checklist mentions devis France, estimateur coût des allers-retours brief sans photos, estimateur coût des e-mails de clarification, estimateur coût des devis envoyés sans validation interne, estimateur coût des relances à l’aveugle, estimateur coût d’attente multi-décideurs, estimateur coût des visites techniques inutiles, estimateur coût du pipeline fantôme, calculateur TVA devis HT/TTC, estimateur coût des demandes orales non capturées, estimateur coût de la double saisie devis, estimateur coût handoff commercial vers technique, estimateur coût du contexte hors dossier devis, estimateur valeur des produits suggérés dans un devis, estimateur requalification chat vs formulaire, estimateur des demandes hors budget et de la fourchette de prix, estimateur des demandes de devis abandonnées en cours de funnel. Outils gratuits QuoteBuilder.",
+    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage, impact remise, seuil de remise et plancher de marge, ROI logiciel, taux d’acceptation, coût d’un brief incomplet, coût des devis expirés, calculateur d’acompte, gain de temps catalogue, générateur d’URL de préremplissage, estimateur leads formulaire vs funnel WordPress, estimateur coût des devis PDF seuls, checklist mentions devis France, estimateur coût des allers-retours brief sans photos, estimateur coût des e-mails de clarification, estimateur coût des devis envoyés sans validation interne, estimateur coût des relances à l’aveugle, estimateur coût d’attente multi-décideurs, estimateur coût des visites techniques inutiles, estimateur coût du pipeline fantôme, calculateur TVA devis HT/TTC, estimateur coût des demandes orales non capturées, estimateur coût de la double saisie devis, estimateur coût handoff commercial vers technique, estimateur coût du contexte hors dossier devis, estimateur valeur des produits suggérés dans un devis, estimateur requalification chat vs formulaire, estimateur des demandes hors budget et de la fourchette de prix, estimateur des demandes de devis abandonnées en cours de funnel, estimateur des fuites d'un entonnoir de devis. Outils gratuits QuoteBuilder.",
   path: "/outils",
 });
 
@@ -215,6 +215,12 @@ const TOOLS = [
     eyebrow: "Pilotage",
     title: "Estimateur des demandes de devis abandonnées",
     text: "Parcours commencés / mois, part abandonnée avant l'envoi, part avec email, hypothèses de reprise et de signature, panier. Relançables, reprises, devis gagnés, chiffre d'affaires et plafond. Calcul 100 % local, sur vos hypothèses.",
+  },
+  {
+    href: "/outils/estimateur-fuites-entonnoir-funnel-devis",
+    eyebrow: "Pilotage",
+    title: "Estimateur des fuites d'un entonnoir de devis",
+    text: "Sept marches sur une période, montant moyen d'une affaire gagnée, marche à améliorer et gain en points. Taux de passage, volume perdu, effet de l'hypothèse. Calcul 100 % local, sur vos chiffres.",
   },
 ] as const;
 

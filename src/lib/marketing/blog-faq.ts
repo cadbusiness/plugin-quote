@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "mesurer-funnel-devis-b2b-entonnoir-statistiques": [
+    {
+      q: "Quelles sont les étapes d'un entonnoir de demande de devis ?",
+      a: "Sept marches : Visiteurs, Commencé, Email, Complété, Devis, Rappelé, Gagné. Les quatre premières mesurent le funnel, la cinquième la conversion, les deux dernières l'équipe commerciale.",
+    },
+    {
+      q: "Comment calcule-t-on le taux de conversion d'un funnel de devis ?",
+      a: "Demandes envoyées divisées par visiteurs, sur la même période et le même funnel. Pour trouver où agir, calculez aussi le taux de passage de chaque marche.",
+    },
+    {
+      q: "Où voir l'entonnoir complet dans QuoteBuilder ?",
+      a: "Dans le rapport PDF de la page Statistiques, rubrique « Tunnel de conversion ». L'onglet Vue affiche les indicateurs principaux : visites, devis, conversion, CA et rappel.",
+    },
+    {
+      q: "Que compte la marche Rappelé ?",
+      a: "Les demandes au statut Contacté, En cours, En attente ou Gagné. Une demande passée directement à Perdu n'est pas comptée.",
+    },
+    {
+      q: "Pourquoi mes affaires gagnées des 30 derniers jours paraissent-elles si faibles ?",
+      a: "Parce que la période compte les demandes créées pendant ces 30 jours. Une affaire signée hier sur une demande de juillet n'y figure pas. Comparez des mois plus anciens.",
+    },
+    {
+      q: "Le chiffre d'affaires affiché est-il mon chiffre d'affaires signé ?",
+      a: "Non. C'est une estimation à partir des lignes choisies : milieu de la fourchette multiplié par la quantité, et une valeur moyenne pour les demandes sans prix.",
+    },
+    {
+      q: "Faut-il Google Analytics pour mesurer un funnel QuoteBuilder ?",
+      a: "Non. Les Statistiques fonctionnent seules. GA4 et Tag Manager se branchent dans l'onglet Suivi Google si vous voulez retrouver les événements dans vos outils.",
+    },
+    {
+      q: "Peut-on savoir quelle campagne Google Ads apporte des clients ?",
+      a: "Oui, si Google Ads est connecté : l'onglet Campagnes affiche le coût d'une demande et d'un client, et la conversion « affaire gagnée » est envoyée à Google Ads quand vous posez le statut Gagné.",
+    },
+    {
+      q: "Peut-on faire un test A/B sur un funnel ?",
+      a: "Pas d'outil intégré. Créez un second funnel avec la variante, envoyez une partie du trafic vers chacun, et comparez-les dans l'onglet Funnels.",
+    },
+    {
+      q: "Combien de temps attendre avant de juger un changement ?",
+      a: "Au moins 30 jours, et assez de visiteurs pour que les écarts dépassent quelques unités. Avec de petits volumes, prenez plusieurs mois.",
+    },
+  ],
   "demande-devis-abandonnee-funnel-reprise": [
     {
       q: "Qu'est-ce qu'une demande de devis abandonnée ?",
@@ -35,7 +77,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
       a: "Une seule, deux heures après la saisie de l'email, tant que le dossier est au statut Commencée. Un dossier jamais envoyé est supprimé au bout de trente jours.",
     },
     {
-      q: "Le montant « récupérable » de la page Stats est-il fiable ?",
+      q: "Le montant « récupérable » du rapport Statistiques est-il fiable ?",
       a: "C'est un plafond : abandons avec email multipliés par le panier moyen. Pour une estimation réaliste, appliquez vos taux de reprise et de signature.",
     },
     {

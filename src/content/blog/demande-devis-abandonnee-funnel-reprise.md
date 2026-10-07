@@ -62,7 +62,7 @@ Ce bandeau ne remplace pas l'étape « Vos coordonnées » de fin de parcours. I
 
 Les sessions commencées et non envoyées apparaissent dans la page Sessions de l'application. Trois onglets les filtrent :
 
-- **À relancer** : un email a été laissé et la session est inactive depuis au moins une heure ;
+- **À relancer** : un email a été laissé et la session est inactive depuis le délai de votre parcours d'abandon, une heure par défaut ;
 - **Emails** : toutes les sessions avec un email, actives ou non ;
 - **Tous** : toutes les sessions non envoyées, y compris anonymes.
 
@@ -107,9 +107,9 @@ Le plugin envoie une seule relance, deux heures après la saisie, avec un lien q
 
 ## Mesurer : l'entonnoir et le montant récupérable
 
-La page Stats de QuoteBuilder présente un entonnoir en sept marches : Visiteurs, Commencé, Email, Complété, Devis, Rappelé, Signé. L'écart entre Commencé et Complété donne votre volume d'abandons ; l'écart entre Commencé et Email montre combien de ces abandons sont relançables.
+Le rapport PDF de la page Statistiques de QuoteBuilder contient un « Tunnel de conversion » en sept marches : Visiteurs, Commencé, Email, Complété, Devis, Rappelé, Signé. À l'écran, l'onglet Vue affiche Visiteurs, Devis, Rappel et Signé, et un encart compte les abandons. L'écart entre Commencé et Complété donne votre volume d'abandons ; l'écart entre Commencé et Email montre combien de ces abandons sont relançables.
 
-Quand des sessions abandonnées portent un email, un bandeau l'indique, par exemple « 8 personnes à rappeler, elles ont laissé leur email. », avec un montant « récupérable » et un bouton « Relancer » qui ouvre la page Sessions. Ce montant multiplie le nombre d'abandons avec email par votre panier moyen. Lisez-le comme un plafond : il suppose que chaque prospect relancé reprendrait et signerait, ce qui n'arrive jamais.
+Quand des sessions abandonnées portent un email et qu'aucune demande n'attend de rappel, la page Statistiques affiche en haut un lien « Relancer » suivi du nombre de sessions, qui ouvre la page Sessions. L'en-tête du rapport PDF le formule ainsi, par exemple « 8 personnes à rappeler, elles ont laissé leur email. », avec un montant « récupérable ». Ce montant multiplie le nombre d'abandons avec email par votre panier moyen. Lisez-le comme un plafond : il suppose que chaque prospect relancé reprendrait et signerait, ce qui n'arrive jamais.
 
 Pour un ordre de grandeur réaliste, il faut deux hypothèses de plus : la part des relancés qui reprennent et envoient, et la part des demandes envoyées qui deviennent un devis gagné. Notre [estimateur des demandes de devis abandonnées](https://www.quotebuilder.co/outils/estimateur-demandes-devis-abandonnees-funnel) fait ce calcul à partir de vos chiffres, et montre aussi ce que rapporterait une meilleure capture d'email.
 
@@ -180,7 +180,7 @@ Pas pour le funnel hébergé : elle reste dans la page Sessions jusqu'à l'envoi
 
 Une seule, deux heures après la saisie de l'email, tant que le dossier est au statut Commencée. Un dossier jamais envoyé est supprimé au bout de trente jours.
 
-### Le montant « récupérable » de la page Stats est-il fiable ?
+### Le montant « récupérable » du rapport Statistiques est-il fiable ?
 
 C'est un plafond : abandons avec email multipliés par le panier moyen. Pour une estimation réaliste, appliquez vos taux de reprise et de signature.
 

@@ -121,7 +121,7 @@ Une bonne fourchette vient de vos propres devis, pas d'un benchmark sectoriel.
 1. **Reprenez vos derniers devis signés** pour une même prestation. Vingt suffisent pour commencer, dix si l'activité est plus rare.
 2. **Ramenez-les à la même unité** : par personne, par mètre carré, par jour, par pièce. Une fourchette sans unité ne veut rien dire.
 3. **Écartez les cas extrêmes**, le chantier hors norme ou le client avec une remise exceptionnelle. Gardez la zone où se trouve la grande majorité des devis.
-4. **Arrondissez.** Le parcours, la fiche devis et le PDF arrondissent à l'euro : inutile de saisir 27,85 €.
+4. **Arrondissez.** Le parcours, la fiche devis et le PDF arrondissent à l'euro les montants de 1 € et plus : inutile de saisir 27,85 €. Seuls les montants sous 1 € gardent leurs centimes.
 5. **Écrivez ce qui fait varier le prix** dans la description du produit : nombre de pièces, distance, finition, saison. Le prospect comprend pourquoi la fourchette est large.
 6. **Révisez tous les trimestres**, ou dès que vos prix d'achat changent.
 
