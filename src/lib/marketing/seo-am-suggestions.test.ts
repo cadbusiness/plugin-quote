@@ -59,7 +59,7 @@ assert.equal(BLOG_FAQ["regles-suggestion-produits-funnel-devis-b2b"]?.length, 10
   assert.match(reglesBody, /Solutions recommandées/);
   assert.doesNotMatch(reglesBody, /signature électronique/);
   assert.doesNotMatch(reglesBody, EM_DASH);
-  assert.equal(reglesBody.split(/\s+/).filter(Boolean).length, 2834);
+  assert.equal(reglesBody.split(/\s+/).filter(Boolean).length, 2831);
 }
 
 {

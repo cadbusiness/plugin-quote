@@ -108,6 +108,7 @@ export const BLOG_TOOL_VALEUR_SUGGESTIONS = "/outils/estimateur-valeur-produits-
 export const BLOG_TOOL_REQUALIFICATION = "/outils/estimateur-requalification-chat-vs-formulaire-devis";
 export const BLOG_TOOL_HORS_BUDGET_FOURCHETTE = "/outils/estimateur-demandes-hors-budget-fourchette-devis";
 export const BLOG_TOOL_ABANDONS_FUNNEL = "/outils/estimateur-demandes-devis-abandonnees-funnel";
+export const BLOG_TOOL_FUITES_ENTONNOIR = "/outils/estimateur-fuites-entonnoir-funnel-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -128,6 +129,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     32: "Trente-deux",
     33: "Trente-trois",
     34: "Trente-quatre",
+    35: "Trente-cinq",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -338,9 +340,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Parcours commencés / mois, part abandonnée avant l'envoi, part avec email, hypothèses de reprise et de signature, panier. Relançables, reprises, devis gagnés, chiffre d'affaires et plafond. Calcul 100 % local, sur vos hypothèses.",
     tags: ["relances", "funnel"],
   },
+  {
+    href: BLOG_TOOL_FUITES_ENTONNOIR,
+    title: "Estimateur des fuites d'un entonnoir de devis",
+    text: "Sept marches sur une période, montant moyen d'une affaire gagnée, marche à améliorer et gain en points. Taux de passage, volume perdu, effet de l'hypothèse. Calcul 100 % local, sur vos chiffres.",
+    tags: ["funnel", "integrations"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "mesurer-funnel-devis-b2b-entonnoir-statistiques",
+    path: "/blog/mesurer-funnel-devis-b2b-entonnoir-statistiques",
+    title: "Mesurer un funnel de devis B2B : de la visite à l'affaire gagnée, marche par marche",
+    description:
+      "Comment mesurer un funnel de demande de devis B2B : les sept marches de l'entonnoir (visiteurs, commencé, email, complété, devis, rappelé, gagné), les taux de passage à suivre, où les lire dans les Statistiques de QuoteBuilder, les pièges de lecture et ce que GA4 ou Google Ads ajoutent.",
+    publishedAt: "2026-10-07",
+    readingMinutes: 13,
+    tags: ["funnel", "integrations"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.accueil,
+    pinned: false,
+  },
   {
     slug: "demande-devis-abandonnee-funnel-reprise",
     path: "/blog/demande-devis-abandonnee-funnel-reprise",

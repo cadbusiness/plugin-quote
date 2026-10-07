@@ -127,7 +127,7 @@ La page [funnel de devis paysagiste](https://www.quotebuilder.co/secteurs/funnel
 
 **Les règles** choisissent quels produits suggérer, selon les réponses du prospect. C'est ce qui précède.
 
-**Les options et variantes** sont portées par le produit lui-même : finition, dimension, essence, couleur. Le prospect les ajuste à l'étape « Personnalisation », avec les quantités et ses précisions. Une règle ne crée pas d'option. Pour structurer ce que le prospect compare, voir [options, variantes et alternatives sur un devis B2B](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b).
+**Les options et variantes** sont portées par le produit lui-même : finition, dimension, essence, couleur. Le prospect les ajuste à l'étape « Personnalisation », avec les quantités. Une règle ne crée pas d'option. Pour structurer ce que le prospect compare, voir [options, variantes et alternatives sur un devis B2B](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b).
 
 **Les produits liés** concernent surtout les boutiques WooCommerce reliées par le plugin WordPress. Sur la fiche produit, un bloc « Souvent demandé avec » (titre modifiable) peut afficher des compléments. Ils sont classés à partir de vos réglages Woo : les montées en gamme (up-sells) d'abord, puis les ventes croisées (cross-sells), puis les produits de même catégorie. On peut en afficher de 1 à 8, 4 par défaut. Ces liens se configurent dans l'onglet « Produits liés » de WooCommerce ([documentation WooCommerce](https://woocommerce.com/document/related-products-up-sells-and-cross-sells/)). Pour le lien entre boutique et devis : [synchroniser le catalogue WooCommerce / Shopify](https://www.quotebuilder.co/blog/sync-catalogue-woocommerce-shopify-parcours-devis).
 

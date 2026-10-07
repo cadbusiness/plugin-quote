@@ -53,7 +53,7 @@ export function DemandesDevisAbandonneesFunnelCalculator() {
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <NumberField
               label={DEMANDES_DEVIS_ABANDONNEES_LABELS.sessions}
-              hint="Dans QuoteBuilder, la marche « Commencé » de l'entonnoir de la page Stats."
+              hint="Dans QuoteBuilder, la marche « Commencé » du Tunnel de conversion, dans le rapport PDF de la page Statistiques."
               value={sessions}
               min={0}
               max={1000000}

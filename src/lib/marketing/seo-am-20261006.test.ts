@@ -45,7 +45,7 @@ for (const item of BLOG_FAQ[BLOG_SLUG] ?? []) {
   assert.doesNotMatch(item.a, EN_DASH);
 }
 
-assert.equal(BLOG_TOOLS.length, 34);
+assert.equal(BLOG_TOOLS.length, 35);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === TOOL_PATH));
 assert.deepEqual(
   BLOG_TOOLS.find((tool) => tool.href === TOOL_PATH)?.tags,
@@ -53,9 +53,9 @@ assert.deepEqual(
 );
 assert.equal(
   outilsHubIntro(),
-  "Trente-quatre outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
+  "Trente-cinq outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
 );
-assert.equal(outilsHubIntro(34), outilsHubIntro());
+assert.equal(outilsHubIntro(35), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
 const paths = MARKETING_ROUTES.map((route) => route.path);
@@ -64,11 +64,11 @@ assert.ok(paths.includes(SECTOR_PATH));
 assert.ok(paths.includes(TOOL_PATH));
 assert.equal(MARKETING_ROUTES.find((route) => route.path === SECTOR_PATH)?.lastModified, "2026-10-06");
 assert.equal(MARKETING_ROUTES.find((route) => route.path === TOOL_PATH)?.lastModified, "2026-10-06");
-assert.equal(MARKETING_ROUTES.find((route) => route.path === BLOG_PATH)?.lastModified, "2026-10-06");
+assert.equal(MARKETING_ROUTES.find((route) => route.path === BLOG_PATH)?.lastModified, "2026-10-07");
 
 const sitemapSrc = readFileSync(join(process.cwd(), "src/app/sitemap.ts"), "utf8");
 for (const path of [BLOG_PATH, SECTOR_PATH, TOOL_PATH]) {
-  assert.match(sitemapSrc, new RegExp(`"${path}": "2026-10-06"`));
+  assert.match(sitemapSrc, new RegExp(`"${path}": "${path === BLOG_PATH ? "2026-10-07" : "2026-10-06"}"`));
   const entry = sitemap().find((item) => item.url === `https://www.quotebuilder.co${path}`);
   assert.ok(entry, `sitemap missing ${path}`);
   assert.equal(entry?.lastModified, "2026-10-06");
@@ -131,7 +131,7 @@ function assertNoDashes(text: string, label: string) {
   assert.match(blogBody, /ne lit pas les prix|ne lit ni les prix/);
   assertNoDashes(blogRaw, "blog md");
   assertNoDashes(blogBody, "blog body");
-  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 2783);
+  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 2799);
   assert.equal(faqQuestionCount(blogBody), 10);
   assertInternalLinks(blogBody, "blog");
 }

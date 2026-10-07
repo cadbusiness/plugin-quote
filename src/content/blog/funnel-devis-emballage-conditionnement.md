@@ -55,7 +55,7 @@ QuoteBuilder propose un template « Emballages », dans la famille « Industrie 
 
 **2. Solutions recommandées** (« Solutions de votre catalogue »). Le prospect voit les produits que vos règles lui proposent.
 
-**3. Personnalisation** (« Quantités, options et précisions »). Il règle les quantités, choisit les options, ajoute des précisions et peut joindre des fichiers.
+**3. Personnalisation** (« Quantités, options et précisions »). Il règle les quantités, choisit les options et peut joindre un fichier dans la zone « Plan (PDF ou image) ».
 
 **4. Vos coordonnées** (« Recevez le récapitulatif de votre projet »).
 
@@ -85,7 +85,7 @@ N'utilisez pas une question de type fichier dans l'étape de questions pour cela
 
 Dans QuoteBuilder, chaque produit annonce son prix de trois façons : Prix fixe, Fourchette ou Sur devis. Pour un emballage sur mesure, la fourchette est souvent la plus honnête : elle couvre l'écart entre une caisse nue et la même avec un logo.
 
-Le calcul reste simple. À l'étape Personnalisation, le prospect voit le prix unitaire et saisit une quantité. Le montant de chaque ligne est le prix multiplié par la quantité, et la fourchette indicative du dossier est la somme des lignes, sauf si la règle qui a proposé la solution porte sa propre fourchette. Attention, les montants s'affichent arrondis à l'euro : une caisse à 0,90 € apparaîtrait à 1 €. Pour des prix unitaires de quelques centimes ou euros, vendez par lot. Exemple : « Caisse sur mesure, lot de 1 000 » entre 900 et 1 400 €, 3 lots, soit une ligne de 2 700 à 4 200 €. Prix d'illustration, pas un barème.
+Le calcul reste simple. À l'étape Personnalisation, le prospect voit le prix unitaire et saisit une quantité. Le montant de chaque ligne est le prix multiplié par la quantité, et la fourchette indicative du dossier est la somme des lignes, sauf si la règle qui a proposé la solution porte sa propre fourchette. Attention, les montants de 1 € et plus s'affichent arrondis à l'euro : une caisse à 1,40 € apparaîtrait à 1 €. Seuls les montants sous 1 € gardent leurs centimes. Pour des prix unitaires de quelques centimes ou euros, vendez par lot. Exemple : « Caisse sur mesure, lot de 1 000 » entre 900 et 1 400 €, 3 lots, soit une ligne de 2 700 à 4 200 €. Prix d'illustration, pas un barème.
 
 Quelques points propres au métier :
 
@@ -126,7 +126,7 @@ Côté client, depuis son espace prospect, l'acheteur peut « Partager pour vali
 
 Une demande d'emballage s'interrompt souvent quand l'acheteur n'a pas les dimensions sous la main. Il part mesurer et ne revient pas.
 
-QuoteBuilder propose, à partir de la deuxième étape, de sauvegarder la configuration avec un prénom et un email. Si le prospect l'a fait, une relance automatique part après une heure d'inactivité, avec un lien qui rouvre le funnel là où il s'était arrêté. Le détail est dans notre article sur les [demandes de devis abandonnées](https://www.quotebuilder.co/blog/demande-devis-abandonnee-funnel-reprise), et notre [estimateur des demandes abandonnées](https://www.quotebuilder.co/outils/estimateur-demandes-devis-abandonnees-funnel) chiffre ce qu'elles représentent avec vos hypothèses.
+QuoteBuilder propose, à partir de la deuxième étape, de sauvegarder la configuration avec un prénom et un email. Si le prospect l'a fait, une relance automatique part après le délai d'inactivité de votre parcours d'abandon, une heure par défaut, avec un lien qui rouvre le funnel là où il s'était arrêté. Le détail est dans notre article sur les [demandes de devis abandonnées](https://www.quotebuilder.co/blog/demande-devis-abandonnee-funnel-reprise), et notre [estimateur des demandes abandonnées](https://www.quotebuilder.co/outils/estimateur-demandes-devis-abandonnees-funnel) chiffre ce qu'elles représentent avec vos hypothèses.
 
 ## Le contexte réglementaire, sans en faire un argument
 
@@ -153,7 +153,7 @@ La famille « Industrie & fabrication » contient aussi « Pièces & sous-traita
 - **Garder le template tel quel**, sans question sur les dimensions ni sur l'usage.
 - **Laisser l'exemple « 1 série proto »** dans le champ quantité.
 - **Demander les plans par une question de type fichier**, qui n'offre pas de téléversement.
-- **Saisir des prix unitaires en centimes**, arrondis à l'euro à l'écran.
+- **Saisir des prix unitaires à l'unité de quelques euros**, arrondis à l'euro à l'écran dès 1 €.
 - **Ne mettre aucune règle sans condition.**
 - **Trier sur le score** alors qu'il ne lit aucune réponse emballage.
 

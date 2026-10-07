@@ -136,7 +136,7 @@ export function computeDemandesDevisAbandonnees(
 
   if (sessions <= 0) {
     alert = "Indiquez un nombre de parcours commencés / mois pour estimer les demandes abandonnées.";
-    tip = "Partez du mois dernier : la page Stats donne les marches Commencé, Email et Complété de votre entonnoir.";
+    tip = "Partez du mois dernier : le rapport PDF de la page Statistiques donne les marches Commencé, Email et Complété de votre entonnoir.";
   } else if (abandons <= 0) {
     alert = "Aucun abandon sur ces hypothèses : rien à relancer de ce côté.";
     tip =
