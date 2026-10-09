@@ -194,6 +194,36 @@ export default function SecteursPage() {
             </p>
           </Link>
           <Link
+            href="/secteurs/funnel-devis-laboratoire-faconnage-cosmetique"
+            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
+              Landing secteur
+            </p>
+            <p className="mt-2 text-lg font-semibold tracking-tight">
+              Funnel de devis laboratoire et façonnage
+            </p>
+            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
+              Type de besoin, contrainte, volume, échéance. Template Labos &amp; fabrication. Formule et
+              contenant s&apos;ajoutent. Score fixe à 30 points.
+            </p>
+          </Link>
+          <Link
+            href="/secteurs/funnel-devis-formation-professionnelle"
+            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
+              Landing secteur
+            </p>
+            <p className="mt-2 text-lg font-semibold tracking-tight">
+              Funnel de devis formation professionnelle
+            </p>
+            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
+              Format, contexte, échéance. Template Formation. Participants et financement s&apos;ajoutent.
+              Score fixe à 30 points.
+            </p>
+          </Link>
+          <Link
             href="/secteurs/funnel-devis-usinage-sous-traitance-pieces"
             className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
           >

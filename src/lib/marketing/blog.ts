@@ -109,6 +109,8 @@ export const BLOG_TOOL_REQUALIFICATION = "/outils/estimateur-requalification-cha
 export const BLOG_TOOL_HORS_BUDGET_FOURCHETTE = "/outils/estimateur-demandes-hors-budget-fourchette-devis";
 export const BLOG_TOOL_ABANDONS_FUNNEL = "/outils/estimateur-demandes-devis-abandonnees-funnel";
 export const BLOG_TOOL_FUITES_ENTONNOIR = "/outils/estimateur-fuites-entonnoir-funnel-devis";
+export const BLOG_TOOL_MENTION_RGPD = "/outils/generateur-mention-rgpd-formulaire-devis";
+export const BLOG_TOOL_SIGNATURE_WEBHOOK = "/outils/verificateur-signature-webhook-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -130,6 +132,8 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     33: "Trente-trois",
     34: "Trente-quatre",
     35: "Trente-cinq",
+    36: "Trente-six",
+    37: "Trente-sept",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -346,9 +350,47 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Sept marches sur une période, montant moyen d'une affaire gagnée, marche à améliorer et gain en points. Taux de passage, volume perdu, effet de l'hypothèse. Calcul 100 % local, sur vos chiffres.",
     tags: ["funnel", "integrations"],
   },
+  {
+    href: BLOG_TOOL_MENTION_RGPD,
+    title: "Générateur de mention RGPD pour formulaire de devis",
+    text: "Mention courte près du bouton d'envoi et texte complet pour la page de confidentialité. Responsable, durée, droits. Calcul 100 % local.",
+    tags: ["funnel", "integrations"],
+  },
+  {
+    href: BLOG_TOOL_SIGNATURE_WEBHOOK,
+    title: "Vérificateur de signature webhook (HMAC SHA-256)",
+    text: "Corps brut, secret, en-tête X-QuoteBuilder-Signature. Comparaison HMAC SHA-256 locale et causes d'écart courantes. Rien n'est envoyé.",
+    tags: ["integrations", "funnel"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "rgpd-demande-devis-b2b-consentement-conservation",
+    path: "/blog/rgpd-demande-devis-b2b-consentement-conservation",
+    title: "RGPD et demande de devis B2B : ce que votre formulaire doit dire, garder et effacer",
+    description:
+      "Base légale, mention d'information, case de consentement, durée de conservation, effacement, fichiers joints et cookies : ce que QuoteBuilder fait aujourd'hui et ce qui reste à votre charge.",
+    publishedAt: "2026-10-09",
+    readingMinutes: 13,
+    tags: ["funnel", "integrations"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.accueil,
+    pinned: false,
+  },
+  {
+    slug: "webhook-demande-devis-crm-signature-hmac",
+    path: "/blog/webhook-demande-devis-crm-signature-hmac",
+    title: "Webhook de demande de devis : envoyer chaque demande vers votre CRM, signée et vérifiable",
+    description:
+      "Ce que le webhook QuoteBuilder envoie à chaque demande, comment vérifier la signature HMAC SHA-256, pourquoi il n'y a qu'une tentative et comment faire remonter les statuts par l'API.",
+    publishedAt: "2026-10-07",
+    readingMinutes: 13,
+    tags: ["integrations", "funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.integrations,
+    pinned: false,
+  },
   {
     slug: "mesurer-funnel-devis-b2b-entonnoir-statistiques",
     path: "/blog/mesurer-funnel-devis-b2b-entonnoir-statistiques",
