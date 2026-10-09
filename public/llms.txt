@@ -61,6 +61,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Google Ads et demande de devis B2B : mesurer le coût par devis et le coût par client : https://www.quotebuilder.co/blog/google-ads-demande-devis-b2b-cout-par-client
 - RGPD et demande de devis B2B : https://www.quotebuilder.co/blog/rgpd-demande-devis-b2b-consentement-conservation
 - Webhook de demande de devis vers le CRM : https://www.quotebuilder.co/blog/webhook-demande-devis-crm-signature-hmac
 - Mesurer un funnel de devis B2B : https://www.quotebuilder.co/blog/mesurer-funnel-devis-b2b-entonnoir-statistiques
@@ -146,6 +147,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Estimateur des fuites d'un entonnoir de devis : https://www.quotebuilder.co/outils/estimateur-fuites-entonnoir-funnel-devis
 - Générateur de mention RGPD pour formulaire de devis : https://www.quotebuilder.co/outils/generateur-mention-rgpd-formulaire-devis
 - Vérificateur de signature webhook (HMAC SHA-256) : https://www.quotebuilder.co/outils/verificateur-signature-webhook-devis
+- Calculateur de coût par devis et par client Google Ads : https://www.quotebuilder.co/outils/calculateur-cout-par-client-google-ads-devis
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 

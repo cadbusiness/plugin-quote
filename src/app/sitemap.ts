@@ -5,6 +5,8 @@ import { SITE_URL } from "@/lib/marketing/site";
 
 /** Dates éditoriales hors articles (le blog passe par publishedAt). */
 const CONTENT_LASTMOD: Record<string, string> = {
+  "/blog/google-ads-demande-devis-b2b-cout-par-client": "2026-10-09",
+  "/outils/calculateur-cout-par-client-google-ads-devis": "2026-10-09",
   "/blog/rgpd-demande-devis-b2b-consentement-conservation": "2026-10-09",
   "/secteurs/funnel-devis-laboratoire-faconnage-cosmetique": "2026-10-09",
   "/outils/generateur-mention-rgpd-formulaire-devis": "2026-10-09",

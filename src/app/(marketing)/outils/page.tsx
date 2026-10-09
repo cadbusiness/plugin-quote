@@ -7,7 +7,7 @@ import { pageMetadata } from "@/lib/marketing/site";
 export const metadata: Metadata = pageMetadata({
   title: "Outils devis B2B",
   description:
-    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage, impact remise, seuil de remise et plancher de marge, ROI logiciel, taux d’acceptation, coût d’un brief incomplet, coût des devis expirés, calculateur d’acompte, gain de temps catalogue, générateur d’URL de préremplissage, estimateur leads formulaire vs funnel WordPress, estimateur coût des devis PDF seuls, checklist mentions devis France, estimateur coût des allers-retours brief sans photos, estimateur coût des e-mails de clarification, estimateur coût des devis envoyés sans validation interne, estimateur coût des relances à l’aveugle, estimateur coût d’attente multi-décideurs, estimateur coût des visites techniques inutiles, estimateur coût du pipeline fantôme, calculateur TVA devis HT/TTC, estimateur coût des demandes orales non capturées, estimateur coût de la double saisie devis, estimateur coût handoff commercial vers technique, estimateur coût du contexte hors dossier devis, estimateur valeur des produits suggérés dans un devis, estimateur requalification chat vs formulaire, estimateur des demandes hors budget et de la fourchette de prix, estimateur des demandes de devis abandonnées en cours de funnel, estimateur des fuites d'un entonnoir de devis, générateur de mention RGPD pour formulaire de devis, vérificateur de signature webhook devis. Outils gratuits QuoteBuilder.",
+    "Calculateur de CA perdu sans relance, générateur de séquence, score de brief, simulateur de conversion, capacité équipe, temps de chiffrage, impact remise, seuil de remise et plancher de marge, ROI logiciel, taux d’acceptation, coût d’un brief incomplet, coût des devis expirés, calculateur d’acompte, gain de temps catalogue, générateur d’URL de préremplissage, estimateur leads formulaire vs funnel WordPress, estimateur coût des devis PDF seuls, checklist mentions devis France, estimateur coût des allers-retours brief sans photos, estimateur coût des e-mails de clarification, estimateur coût des devis envoyés sans validation interne, estimateur coût des relances à l’aveugle, estimateur coût d’attente multi-décideurs, estimateur coût des visites techniques inutiles, estimateur coût du pipeline fantôme, calculateur TVA devis HT/TTC, estimateur coût des demandes orales non capturées, estimateur coût de la double saisie devis, estimateur coût handoff commercial vers technique, estimateur coût du contexte hors dossier devis, estimateur valeur des produits suggérés dans un devis, estimateur requalification chat vs formulaire, estimateur des demandes hors budget et de la fourchette de prix, estimateur des demandes de devis abandonnées en cours de funnel, estimateur des fuites d'un entonnoir de devis, générateur de mention RGPD pour formulaire de devis, vérificateur de signature webhook devis, calculateur de coût par devis et par client Google Ads. Outils gratuits QuoteBuilder.",
   path: "/outils",
 });
 
@@ -233,6 +233,12 @@ const TOOLS = [
     eyebrow: "Intégrations",
     title: "Vérificateur de signature webhook (HMAC SHA-256)",
     text: "Corps brut, secret, en-tête X-QuoteBuilder-Signature. Comparaison HMAC SHA-256 locale et causes d'écart courantes. Rien n'est envoyé.",
+  },
+  {
+    href: "/outils/calculateur-cout-par-client-google-ads-devis",
+    eyebrow: "Pilotage",
+    title: "Calculateur de coût par devis et par client Google Ads",
+    text: "Budget, coût par clic, deux taux, panier, marge, délai de signature. Coût par devis, coût par client, plafond à l'équilibre. Calcul 100 % local.",
   },
 ] as const;
 
