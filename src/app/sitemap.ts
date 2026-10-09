@@ -5,6 +5,12 @@ import { SITE_URL } from "@/lib/marketing/site";
 
 /** Dates éditoriales hors articles (le blog passe par publishedAt). */
 const CONTENT_LASTMOD: Record<string, string> = {
+  "/blog/rgpd-demande-devis-b2b-consentement-conservation": "2026-10-09",
+  "/secteurs/funnel-devis-laboratoire-faconnage-cosmetique": "2026-10-09",
+  "/outils/generateur-mention-rgpd-formulaire-devis": "2026-10-09",
+  "/blog/webhook-demande-devis-crm-signature-hmac": "2026-10-07",
+  "/secteurs/funnel-devis-formation-professionnelle": "2026-10-07",
+  "/outils/verificateur-signature-webhook-devis": "2026-10-07",
   "/blog/mesurer-funnel-devis-b2b-entonnoir-statistiques": "2026-10-07",
   "/secteurs/funnel-devis-imprimerie-signaletique": "2026-10-07",
   "/outils/estimateur-fuites-entonnoir-funnel-devis": "2026-10-07",

@@ -91,9 +91,33 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.8,
     lastModified: "2026-10-07",
   },
+  {
+    path: "/secteurs/funnel-devis-laboratoire-faconnage-cosmetique",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-09",
+  },
+  {
+    path: "/secteurs/funnel-devis-formation-professionnelle",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-07",
+  },
   { path: "/tarifs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  {
+    path: "/blog/rgpd-demande-devis-b2b-consentement-conservation",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-09",
+  },
+  {
+    path: "/blog/webhook-demande-devis-crm-signature-hmac",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-07",
+  },
   {
     path: "/blog/mesurer-funnel-devis-b2b-entonnoir-statistiques",
     changeFrequency: "monthly",
@@ -361,6 +385,18 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/estimateur-fuites-entonnoir-funnel-devis",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-07",
+  },
+  {
+    path: "/outils/generateur-mention-rgpd-formulaire-devis",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-09",
+  },
+  {
+    path: "/outils/verificateur-signature-webhook-devis",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-07",

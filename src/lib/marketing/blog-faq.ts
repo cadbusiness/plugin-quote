@@ -1,6 +1,90 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "rgpd-demande-devis-b2b-consentement-conservation": [
+    {
+      q: "Faut-il une case à cocher obligatoire pour envoyer une demande de devis ?",
+      a: "Non. Traiter les données pour répondre à la demande ne repose pas sur le consentement. Une case obligatoire pour pouvoir envoyer la demande serait même une mauvaise pratique si elle sert aussi à la prospection.",
+    },
+    {
+      q: "La case de consentement de QuoteBuilder est-elle cochée par défaut ?",
+      a: "Non. Elle est décochée et facultative. Le prospect peut envoyer sa demande sans la cocher.",
+    },
+    {
+      q: "Peut-on modifier le texte de la case de consentement ?",
+      a: "Pas aujourd'hui. Utilisez le sous-titre de l'étape Vos coordonnées pour la mention d'information.",
+    },
+    {
+      q: "Combien de temps garder les données d'un prospect ?",
+      a: "Le repère de la CNIL est de trois ans après la collecte ou le dernier contact venant du prospect. Les devis signés et factures suivent les règles comptables, dix ans pour les pièces justificatives.",
+    },
+    {
+      q: "QuoteBuilder supprime-t-il les vieux dossiers automatiquement ?",
+      a: "Non. Il n'y a pas de purge automatique. Prévoyez une revue régulière et anonymisez les dossiers concernés.",
+    },
+    {
+      q: "Comment effacer les données d'un prospect qui le demande ?",
+      a: "Un administrateur va dans Paramètres, section Données personnelles (RGPD), saisit l'email et clique sur Anonymiser. Vérifiez ensuite les fichiers joints, les notes internes et les outils où la demande a été transmise.",
+    },
+    {
+      q: "Le bouton Anonymiser supprime-t-il les plans et photos ?",
+      a: "Non. Les fichiers joints restent sur le dossier. Traitez-les à part.",
+    },
+    {
+      q: "Peut-on envoyer une campagne à un prospect qui n'a pas coché la case ?",
+      a: "Non. QuoteBuilder l'écarte automatiquement de l'envoi, avec le motif « pas de consentement marketing ».",
+    },
+    {
+      q: "Google Analytics sur le funnel demande-t-il un consentement ?",
+      a: "Selon la CNIL, oui pour les traceurs non exemptés. QuoteBuilder n'affiche pas de bandeau : laissez les champs Suivi Google vides ou faites gérer le consentement par votre propre outil.",
+    },
+    {
+      q: "Une adresse contact@entreprise.fr est-elle une donnée personnelle ?",
+      a: "Une adresse générique qui désigne une société n'est pas soumise aux règles de prospection rappelées par la CNIL. Une adresse nominative, prenom.nom@entreprise.fr, est une donnée personnelle.",
+    },
+  ],
+  "webhook-demande-devis-crm-signature-hmac": [
+    {
+      q: "Quel événement le webhook de QuoteBuilder envoie-t-il ?",
+      a: "Un seul : `quote.submitted`, quand une demande est envoyée depuis un funnel ou transmise par le plugin WordPress en envoi direct. Il n'y a pas d'événement pour les changements de statut.",
+    },
+    {
+      q: "Comment vérifier la signature d'un webhook QuoteBuilder ?",
+      a: "Calculez le HMAC SHA-256 du corps brut avec votre secret, en hexadécimal, et comparez-le à l'en-tête `X-QuoteBuilder-Signature` avec une fonction à temps constant. S'ils diffèrent, refusez la requête.",
+    },
+    {
+      q: "Pourquoi ma signature ne correspond-elle jamais ?",
+      a: "Le plus souvent, le corps a été parsé puis reconstruit avant le calcul. Signez les octets reçus, sans les transformer. Vérifiez ensuite le secret, sans espace en trop.",
+    },
+    {
+      q: "QuoteBuilder renvoie-t-il un webhook en échec ?",
+      a: "Non. Chaque webhook actif reçoit un seul envoi par demande. Un échec apparaît dans le tableau des envois, et se rattrape par l'API `/api/leads`.",
+    },
+    {
+      q: "Peut-on tester un webhook sans vraie demande ?",
+      a: "Il n'y a pas de bouton de test. Envoyez une demande depuis votre funnel avec une adresse interne, puis regardez la ligne correspondante dans le tableau des envois.",
+    },
+    {
+      q: "Les fichiers joints sont-ils envoyés au CRM ?",
+      a: "Non. Le JSON donne leur nom et leur chemin de stockage, qui n'est pas un lien public. Les fichiers se consultent dans le dossier QuoteBuilder.",
+    },
+    {
+      q: "Les réponses arrivent-elles avec leurs libellés ?",
+      a: "Non, avec les valeurs des options. « Ce trimestre » arrive sous la forme `quarter`. Prévoyez une table de correspondance côté CRM.",
+    },
+    {
+      q: "Une demande créée par l'API déclenche-t-elle le webhook ?",
+      a: "Non. Seuls les envois de funnel et du plugin WordPress en envoi direct déclenchent `quote.submitted`. Ce que vous créez par `/api/leads`, vous le connaissez déjà.",
+    },
+    {
+      q: "Comment faire remonter un statut gagné du CRM vers QuoteBuilder ?",
+      a: "Appelez `PATCH /api/leads/{id}` avec `{\"status\": \"won\"}` et votre clé API. Le dossier change de statut et les automatisations « Statut modifié » se déclenchent.",
+    },
+    {
+      q: "Peut-on changer l'URL ou le secret d'un webhook ?",
+      a: "Pas directement. Ajoutez un nouveau webhook, vérifiez qu'il reçoit bien, puis désactivez l'ancien.",
+    },
+  ],
   "mesurer-funnel-devis-b2b-entonnoir-statistiques": [
     {
       q: "Quelles sont les étapes d'un entonnoir de demande de devis ?",

@@ -56,9 +56,13 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Funnel devis traiteur événementiel : https://www.quotebuilder.co/secteurs/funnel-devis-traiteur-evenementiel
 - Funnel devis emballage et conditionnement : https://www.quotebuilder.co/secteurs/funnel-devis-emballage-conditionnement
 - Funnel devis imprimerie et signalétique : https://www.quotebuilder.co/secteurs/funnel-devis-imprimerie-signaletique
+- Funnel devis laboratoire et façonnage cosmétique : https://www.quotebuilder.co/secteurs/funnel-devis-laboratoire-faconnage-cosmetique
+- Funnel devis formation professionnelle : https://www.quotebuilder.co/secteurs/funnel-devis-formation-professionnelle
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- RGPD et demande de devis B2B : https://www.quotebuilder.co/blog/rgpd-demande-devis-b2b-consentement-conservation
+- Webhook de demande de devis vers le CRM : https://www.quotebuilder.co/blog/webhook-demande-devis-crm-signature-hmac
 - Mesurer un funnel de devis B2B : https://www.quotebuilder.co/blog/mesurer-funnel-devis-b2b-entonnoir-statistiques
 - Demande de devis abandonnée en cours de funnel : https://www.quotebuilder.co/blog/demande-devis-abandonnee-funnel-reprise
 - Fourchette de prix indicative dans une demande de devis B2B : https://www.quotebuilder.co/blog/fourchette-prix-indicative-demande-devis-b2b
@@ -140,6 +144,8 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Estimateur des demandes hors budget et fourchette de prix : https://www.quotebuilder.co/outils/estimateur-demandes-hors-budget-fourchette-devis
 - Estimateur des demandes de devis abandonnées en cours de funnel : https://www.quotebuilder.co/outils/estimateur-demandes-devis-abandonnees-funnel
 - Estimateur des fuites d'un entonnoir de devis : https://www.quotebuilder.co/outils/estimateur-fuites-entonnoir-funnel-devis
+- Générateur de mention RGPD pour formulaire de devis : https://www.quotebuilder.co/outils/generateur-mention-rgpd-formulaire-devis
+- Vérificateur de signature webhook (HMAC SHA-256) : https://www.quotebuilder.co/outils/verificateur-signature-webhook-devis
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 
