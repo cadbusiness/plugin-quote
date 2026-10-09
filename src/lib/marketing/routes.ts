@@ -107,6 +107,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   {
+    path: "/blog/google-ads-demande-devis-b2b-cout-par-client",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-09",
+  },
+  {
     path: "/blog/rgpd-demande-devis-b2b-consentement-conservation",
     changeFrequency: "monthly",
     priority: 0.8,
@@ -400,6 +406,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-07",
+  },
+  {
+    path: "/outils/calculateur-cout-par-client-google-ads-devis",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-09",
   },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },

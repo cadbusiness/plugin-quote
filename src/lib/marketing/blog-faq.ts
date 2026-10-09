@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "google-ads-demande-devis-b2b-cout-par-client": [
+    {
+      q: "Quelle différence entre coût par devis et coût par client ?",
+      a: "Le coût par devis divise la dépense publicitaire par le nombre de demandes reçues depuis les annonces. Le coût par client la divise par le nombre de dossiers passés au statut Gagné.",
+    },
+    {
+      q: "Comment calculer le coût par client maximum acceptable ?",
+      a: "Partez de la marge brute moyenne d'une affaire signée : c'est le coût par client à l'équilibre. Multipliez-le par votre taux de demandes gagnées pour obtenir le coût par devis maximum, puis par votre taux de clics transformés en demandes pour obtenir le coût par clic maximum.",
+    },
+    {
+      q: "Comment Google Ads sait-il qu'une demande de devis a été signée ?",
+      a: "Il ne le sait que si vous le lui renvoyez. Avec Google Ads connecté, QuoteBuilder envoie la conversion « Affaire gagnée » quand un dossier passe au statut Gagné, à condition que la demande d'origine porte un identifiant de clic Google.",
+    },
+    {
+      q: "Qu'est-ce que le gclid et pourquoi est-il indispensable ?",
+      a: "C'est l'identifiant de clic que Google ajoute à l'URL quand le marquage automatique est activé. Sans lui, la demande ne peut pas être rattachée à l'annonce, ni la conversion renvoyée.",
+    },
+    {
+      q: "Faut-il des UTM si le gclid est présent ?",
+      a: "Oui pour le coût par devis. Le `gclid` suffit à classer la demande en source Google Ads et à renvoyer les conversions, mais c'est le `utm_campaign` qui permet de rapprocher la demande du nom de campagne Google Ads et donc de sa dépense.",
+    },
+    {
+      q: "QuoteBuilder envoie-t-il le montant du devis à Google Ads ?",
+      a: "Non. Les conversions « Devis soumis » et « Affaire gagnée » partent sans valeur : on peut viser un coût par conversion, pas un retour sur dépense en valeur.",
+    },
+    {
+      q: "Que se passe-t-il si la signature arrive plus de 90 jours après le clic ?",
+      a: "Les actions créées par QuoteBuilder ont une fenêtre de 90 jours après clic. Une signature plus tardive reste visible dans QuoteBuilder, mais Google Ads ne la rattachera pas à l'annonce.",
+    },
+    {
+      q: "Pourquoi mon coût par client change-t-il autant d'un mois à l'autre ?",
+      a: "Parce que le nombre de clients est petit : avec deux ou trois signatures par mois, une affaire de plus ou de moins change tout. Jugez-le sur trois mois et pilotez au coût par devis entre-temps.",
+    },
+    {
+      q: "Peut-on voir les campagnes sans connecter Google Ads ?",
+      a: "Oui. Les demandes arrivées avec des UTM apparaissent dans l'onglet Campagnes des Statistiques, avec les devis et les gagnés. Il manque seulement la dépense, donc le coût par devis et le coût par client.",
+    },
+    {
+      q: "QuoteBuilder peut-il créer ou optimiser mes campagnes Google Ads ?",
+      a: "Non. Annonces, budgets et enchères se gèrent dans Google Ads. QuoteBuilder prépare le lien suivi et des mots-clés par métier, crée les deux actions de conversion et mesure les coûts.",
+    },
+  ],
   "rgpd-demande-devis-b2b-consentement-conservation": [
     {
       q: "Faut-il une case à cocher obligatoire pour envoyer une demande de devis ?",

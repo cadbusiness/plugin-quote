@@ -111,6 +111,7 @@ export const BLOG_TOOL_ABANDONS_FUNNEL = "/outils/estimateur-demandes-devis-aban
 export const BLOG_TOOL_FUITES_ENTONNOIR = "/outils/estimateur-fuites-entonnoir-funnel-devis";
 export const BLOG_TOOL_MENTION_RGPD = "/outils/generateur-mention-rgpd-formulaire-devis";
 export const BLOG_TOOL_SIGNATURE_WEBHOOK = "/outils/verificateur-signature-webhook-devis";
+export const BLOG_TOOL_COUT_CLIENT_GOOGLE_ADS = "/outils/calculateur-cout-par-client-google-ads-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -134,6 +135,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     35: "Trente-cinq",
     36: "Trente-six",
     37: "Trente-sept",
+    38: "Trente-huit",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -362,9 +364,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Corps brut, secret, en-tête X-QuoteBuilder-Signature. Comparaison HMAC SHA-256 locale et causes d'écart courantes. Rien n'est envoyé.",
     tags: ["integrations", "funnel"],
   },
+  {
+    href: BLOG_TOOL_COUT_CLIENT_GOOGLE_ADS,
+    title: "Calculateur de coût par devis et par client Google Ads",
+    text: "Budget, coût par clic, deux taux, panier, marge, délai de signature. Coût par devis, coût par client, plafond à l'équilibre. Calcul 100 % local.",
+    tags: ["integrations", "funnel"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "google-ads-demande-devis-b2b-cout-par-client",
+    path: "/blog/google-ads-demande-devis-b2b-cout-par-client",
+    title: "Google Ads et demande de devis B2B : mesurer le coût par devis et le coût par client",
+    description:
+      "Coût par devis, coût par client, plafond calculé sur la marge, rattachement au clic (gclid, UTM), conversions renvoyées à Google Ads et lecture des chiffres : ce que fait QuoteBuilder et ce qu'il ne fait pas.",
+    publishedAt: "2026-10-09",
+    readingMinutes: 13,
+    tags: ["integrations", "funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.integrations,
+    pinned: false,
+  },
   {
     slug: "rgpd-demande-devis-b2b-consentement-conservation",
     path: "/blog/rgpd-demande-devis-b2b-consentement-conservation",
