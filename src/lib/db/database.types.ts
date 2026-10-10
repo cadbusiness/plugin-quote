@@ -1283,6 +1283,8 @@ export type Database = {
           expires_at: string
           last_accessed: string | null
           created_at: string
+          pin_failed_attempts: number
+          pin_locked_until: string | null
         }
         Insert: {
           id?: string
@@ -1293,9 +1295,13 @@ export type Database = {
           expires_at: string
           last_accessed?: string | null
           created_at?: string
+          pin_failed_attempts?: number
+          pin_locked_until?: string | null
         }
         Update: {
           last_accessed?: string | null
+          pin_failed_attempts?: number
+          pin_locked_until?: string | null
         }
         Relationships: []
       }

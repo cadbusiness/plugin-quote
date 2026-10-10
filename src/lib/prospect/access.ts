@@ -86,19 +86,69 @@ export async function loadProspectByToken(token: string): Promise<ProspectBundle
   });
 }
 
-export async function loadProspectByPin(pin: string) {
+const PIN_MAX_FAILURES = 5;
+const PIN_LOCK_MS = 15 * 60 * 1000;
+
+function escapeLike(value: string) {
+  return value.replace(/[\\%_]/g, (c) => `\\${c}`);
+}
+
+/**
+ * PIN alone is not an identifier: it is checked only against the access rows of
+ * quotes sent to this email, and repeated failures lock those rows for 15 minutes.
+ */
+export async function loadProspectByPin(email: string, pin: string) {
   const supabase = createServiceClient();
+  const normalized = email.trim().toLowerCase();
+  if (!normalized || !pin) return null;
+
+  const { data: quotes } = await supabase
+    .from("quotes")
+    .select("id")
+    .ilike("contact_email", escapeLike(normalized))
+    .order("created_at", { ascending: false })
+    .limit(50);
+  const quoteIds = (quotes ?? []).map((q) => q.id);
+  if (quoteIds.length === 0) return null;
+
+  const now = Date.now();
   const { data: rows } = await supabase
     .from("prospect_access")
     .select("*")
-    .gt("expires_at", new Date().toISOString())
-    .limit(200);
-  const match = (rows ?? []).find((row) => row.pin_hash === hashPin(pin, row.quote_id));
-  if (!match) return null;
+    .in("quote_id", quoteIds)
+    .gt("expires_at", new Date(now).toISOString());
+  const candidates = (rows ?? []).filter(
+    (row) => !row.pin_locked_until || new Date(row.pin_locked_until).getTime() <= now,
+  );
+  if (candidates.length === 0) return null;
+
+  const match = candidates.find((row) => row.pin_hash === hashPin(pin, row.quote_id));
+  if (!match) {
+    // Count the failure on every row this email could open. Errors are ignored so
+    // the check still works before migration 0067 is applied.
+    await Promise.all(
+      candidates.map((row) => {
+        const failures = (row.pin_failed_attempts ?? 0) + 1;
+        const locked = failures >= PIN_MAX_FAILURES;
+        return supabase
+          .from("prospect_access")
+          .update({
+            pin_failed_attempts: locked ? 0 : failures,
+            pin_locked_until: locked ? new Date(now + PIN_LOCK_MS).toISOString() : null,
+          })
+          .eq("id", row.id);
+      }),
+    );
+    return null;
+  }
+
   await supabase
     .from("prospect_access")
-    .update({ last_accessed: new Date().toISOString() })
+    .update({ last_accessed: new Date(now).toISOString() })
     .eq("id", match.id);
+  if (match.pin_failed_attempts) {
+    await supabase.from("prospect_access").update({ pin_failed_attempts: 0 }).eq("id", match.id);
+  }
   const bundle = await loadProspectBundle(match.quote_id, match.organization_id, {
     kind: "primary",
     accessId: match.id,
