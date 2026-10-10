@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { loadProspectByToken } from "@/lib/prospect/access";
+import { exitActiveQuoteRuns } from "@/lib/workflows/engine";
 
 export async function POST(req: Request, { params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
@@ -19,5 +20,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ token: 
     sender: "prospect",
     content,
   });
+  // The prospect answered: a human takes over, automated follow-ups stop.
+  await exitActiveQuoteRuns(bundle.quote.organization_id, bundle.quote.id);
   return NextResponse.json({ ok: true });
 }

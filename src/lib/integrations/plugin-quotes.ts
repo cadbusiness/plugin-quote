@@ -5,9 +5,11 @@ import { sendQuoteEmails } from "@/lib/email/send";
 import type { PluginConnection } from "@/lib/integrations/plugin";
 import { quoteHeadlineRange, resolveDisplayCurrency, stampQuotePrice } from "@/lib/quotes/price-range";
 import { scoreQuote } from "@/lib/quotes/score";
+import { createProspectAccess } from "@/lib/prospect/access";
 import { createServiceClient } from "@/lib/supabase/service";
 import { getAppUrl } from "@/lib/supabase/env";
 import { dispatchQuoteWebhooks } from "@/lib/webhooks/dispatch";
+import { startWorkflows } from "@/lib/workflows/engine";
 import type { Answers } from "@/lib/wizard/types";
 
 /** Shown by classifySource as « Site Web » — origin of a WordPress inbound quote. */
@@ -429,20 +431,50 @@ async function notifySales(
   const headline = quoteHeadlineRange({ lines: input.lines });
   const currency = input.currency;
 
+  // Same follow-up as a funnel quote: confirmation, sales brief, reminders.
+  // Without an active workflow, fall back to the sales-only email.
+  let workflowsStarted = 0;
   try {
-    await sendQuoteEmails({
-      organization,
-      quote: input.quote,
-      answers: input.answers,
+    const access = await createProspectAccess({
+      organizationId: input.organizationId,
+      quoteId: input.quote.id,
+    }).catch((error) => {
+      console.error("Plugin quote prospect access failed", error);
+      return null;
+    });
+    const started = await startWorkflows({
+      triggerType: "quote.submitted",
+      organizationId: input.organizationId,
+      subjectType: "quote",
+      subjectId: input.quote.id,
+      suiviUrl: access?.url,
+      pin: access?.pin,
       suggestionName: input.suggestionName,
       priceMin: headline.min,
       priceMax: headline.max,
       currency,
-      pdf: null,
-      includeProspect: false,
     });
+    workflowsStarted = started.started;
   } catch (error) {
-    console.error("Plugin quote sales email failed", error);
+    console.error("Plugin quote workflow start failed", error);
+  }
+
+  if (workflowsStarted === 0) {
+    try {
+      await sendQuoteEmails({
+        organization,
+        quote: input.quote,
+        answers: input.answers,
+        suggestionName: input.suggestionName,
+        priceMin: headline.min,
+        priceMax: headline.max,
+        currency,
+        pdf: null,
+        includeProspect: false,
+      });
+    } catch (error) {
+      console.error("Plugin quote sales email failed", error);
+    }
   }
 
   try {
