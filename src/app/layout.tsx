@@ -69,7 +69,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className={`${geistSans.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}>
-      <body className="min-h-full">{children}</body>
+      {/* Browser extensions (ClickUp, etc.) inject classes on <body> before hydration. */}
+      <body className="min-h-full" suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }
