@@ -11,10 +11,20 @@ export function hasRealConstraint(value: unknown): boolean {
   });
 }
 
+/** Template funnels store the load as a band; the Quickly seed stores kilograms. */
+const LOAD_BAND_KG: Record<string, number> = { light: 150, medium: 500, heavy: 900 };
+
+export function loadKg(value: unknown): number {
+  const band = LOAD_BAND_KG[String(value ?? "").trim().toLowerCase()];
+  if (band !== undefined) return band;
+  const kg = Number(value ?? 0);
+  return Number.isFinite(kg) ? kg : 0;
+}
+
 export function scoreQuote(answers: Answers): { score: number; label: "hot" | "warm" | "cold" } {
   let score = 30;
   const surface = Number(answers.surface ?? 0);
-  const load = Number(answers.load ?? 0);
+  const load = loadKg(answers.load);
   const access = String(answers.access ?? "");
   const project = String(answers.project_type ?? "");
 
@@ -46,7 +56,7 @@ export function scoreQuote(answers: Answers): { score: number; label: "hot" | "w
 export function scoreReasons(answers: Answers): string[] {
   const reasons: string[] = [];
   const surface = Number(answers.surface ?? 0);
-  const load = Number(answers.load ?? 0);
+  const load = loadKg(answers.load);
   const access = String(answers.access ?? "");
   const project = String(answers.project_type ?? "");
   if (surface >= 400) reasons.push("Grande surface (≥ 400 m²)");
@@ -56,8 +66,9 @@ export function scoreReasons(answers: Answers): string[] {
   if (load >= 600) reasons.push("Charge lourde");
   else if (load >= 200) reasons.push("Charge moyenne");
 
-  if (access === "haute") reasons.push("Accès difficile");
-  else if (access === "moyenne") reasons.push("Accès contraint");
+  // `access` is the picking frequency (faible / moyenne / haute), not site access.
+  if (access === "haute") reasons.push("Rotation élevée (picking quotidien)");
+  else if (access === "moyenne") reasons.push("Rotation régulière");
 
   if (["entrepot", "cuisine_pro", "commerce"].includes(project)) {
     reasons.push("Projet professionnel");

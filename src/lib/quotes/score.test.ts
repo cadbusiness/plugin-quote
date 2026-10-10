@@ -17,3 +17,13 @@ assert.equal(scoreReasons({ constraints: ["aucune"] }).includes("Contraintes tec
 assert.equal(scoreReasons({ constraints: ["height"] }).includes("Contraintes techniques"), true);
 
 console.log("quotes/score.test.ts: ok");
+
+// Template funnels store the load as a band: it must score like the kg values.
+{
+  const heavy = scoreQuote({ surface: 0, load: "heavy" });
+  const kg = scoreQuote({ surface: 0, load: 900 });
+  assert.equal(heavy.score, kg.score);
+  assert.ok(scoreQuote({ load: "medium" }).score > scoreQuote({ load: "light" }).score);
+  assert.ok(scoreReasons({ load: "heavy" }).includes("Charge lourde"));
+  assert.ok(!scoreReasons({ access: "haute" }).includes("Accès difficile"));
+}

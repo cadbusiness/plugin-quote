@@ -75,7 +75,8 @@ export function registerLeadTools(
   server.registerTool(
     "create_lead",
     {
-      description: "Crée une demande de devis manuelle (contact + réponses wizard).",
+      description:
+        "Crée une demande de devis manuelle (contact + réponses wizard). N’envoie aucun email sauf si run_autopilot vaut true.",
       inputSchema: {
         name: z.string(),
         email: z.string().email(),
@@ -83,11 +84,15 @@ export function registerLeadTools(
         company: z.string().optional().describe("Société (B2B)"),
         funnel_id: z.string().describe("ID du funnel / configurateur"),
         data: z.record(z.string(), z.unknown()).optional().describe("Réponses wizard (clé → valeur)"),
+        run_autopilot: z
+          .boolean()
+          .optional()
+          .describe("Si true, déclenche les workflows quote.submitted (emails au prospect). Défaut false."),
       },
     },
     async (args) => {
       try {
-        return textResult(await qb.createLead({ ...args, run_autopilot: true }));
+        return textResult(await qb.createLead({ ...args, run_autopilot: args.run_autopilot === true }));
       } catch (error) {
         return errorResult(error);
       }
