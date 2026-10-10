@@ -324,6 +324,7 @@ export async function decideAsCollaborator(input: {
       .eq("id", input.organizationId)
       .maybeSingle();
     if (org?.sales_email) {
+      // The decision is already stored: a failed notification must not fail it.
       await sendTemplateEmail({
         to: org.sales_email,
         subject: body,
@@ -332,7 +333,7 @@ export async function decideAsCollaborator(input: {
           "",
           `Ouvrir la demande : ${appUrl()}/devis/${input.quoteId}`,
         ].join("\n"),
-      });
+      }).catch((error) => console.error("Decision notification failed", error));
     }
   }
 

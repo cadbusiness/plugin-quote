@@ -242,6 +242,7 @@ export async function replyToProspect(quoteId: string, content: string) {
     const suivi = access ? `${getAppUrl()}/suivi/${access.token}` : "";
     await sendTemplateEmail({
       to: quote.contact_email,
+      replyTo: ctx.organization.sales_email,
       subject: `Message, ${ctx.organization.name}`,
       body: suivi ? `${trimmed}\n\nRépondre : ${suivi}` : trimmed,
     });

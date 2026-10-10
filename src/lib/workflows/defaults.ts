@@ -57,7 +57,7 @@ export function quoteSubmittedDefinition(): WorkflowDefinition {
         recipient: "prospect",
       }),
       node("exit-24", "exit", 1200, 480, { label: "Dossier clos" }),
-      node("wait-photo", "wait", 1400, 160, { label: "Attendre 24 h", waitHours: 24, waitFrom: "now" }),
+      node("wait-photo", "wait", 1400, 160, { label: "Attendre 2 j", waitHours: 48, waitFrom: "now" }),
       node("branch-photo", "branch", 1400, 320, {
         label: "Dossier ouvert ?",
         conditions: [{ id: "open", field: "is_closed", op: "eq", value: false }],
