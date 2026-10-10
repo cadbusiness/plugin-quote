@@ -1,384 +1,97 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { LandingSectors } from "@/components/marketing/landing-sectors";
+import { Reveal } from "@/components/marketing/agentic/motion";
+import { FitChecklist, VerticalFocus } from "@/components/marketing/agentic/vertical-focus";
 import { MarketingCta } from "@/components/marketing/marketing-shell";
 import { pageMetadata } from "@/lib/marketing/site";
 
 export const metadata: Metadata = pageMetadata({
   title: "Secteurs",
   description:
-    "Familles de métiers et templates de parcours. Rayonnage, habitat, événementiel, industrie, services.",
+    "Rayonnage et stockage, mezzanines, manutention, mobilier pro, équipement d’atelier, emballage. Agents de devis pour les vendeurs d’équipement professionnel.",
   path: "/secteurs",
 });
+
+/** Every sector landing stays linked from the hub (SEO), core market first. */
+const ALL_TEMPLATES = [
+  { href: "/secteurs/funnel-devis-rayonnage-stockage", label: "Rayonnage et stockage" },
+  { href: "/secteurs/funnel-devis-agencement-bureau", label: "Agencement de bureau" },
+  { href: "/secteurs/funnel-devis-emballage-conditionnement", label: "Emballage et conditionnement" },
+  { href: "/secteurs/funnel-devis-menuiserie-sur-mesure", label: "Menuiserie sur mesure" },
+  { href: "/secteurs/funnel-devis-location-evenementiel", label: "Location événementielle" },
+  { href: "/secteurs/funnel-devis-traiteur-evenementiel", label: "Traiteur événementiel" },
+  { href: "/secteurs/funnel-devis-stores-fermetures", label: "Stores et fermetures" },
+  { href: "/secteurs/funnel-devis-cuisine-equipee", label: "Cuisine équipée" },
+  { href: "/secteurs/funnel-devis-pompe-chaleur-chauffage", label: "Pompe à chaleur et chauffage" },
+  { href: "/secteurs/funnel-devis-photovoltaique-solaire", label: "Photovoltaïque et solaire" },
+  { href: "/secteurs/funnel-devis-imprimerie-signaletique", label: "Imprimerie et signalétique" },
+  { href: "/secteurs/funnel-devis-laboratoire-faconnage-cosmetique", label: "Laboratoire et façonnage" },
+  { href: "/secteurs/funnel-devis-formation-professionnelle", label: "Formation professionnelle" },
+  { href: "/secteurs/funnel-devis-usinage-sous-traitance-pieces", label: "Usinage et sous-traitance" },
+  { href: "/secteurs/funnel-devis-paysagiste-amenagement-jardin", label: "Paysagiste et aménagement de jardin" },
+  { href: "/secteurs/funnel-devis-metallerie-serrurerie", label: "Métallerie et serrurerie" },
+  { href: "/secteurs/funnel-devis-electricite-tertiaire", label: "Électricité tertiaire" },
+  { href: "/secteurs/funnel-devis-plomberie-sanitaire", label: "Plomberie et sanitaire" },
+  { href: "/secteurs/funnel-devis-couverture-toiture", label: "Couverture et toiture" },
+  { href: "/secteurs/funnel-devis-isolation-thermique-ite", label: "Isolation thermique et ITE" },
+  { href: "/secteurs/funnel-devis-pergola-terrasse", label: "Pergola et terrasse" },
+  { href: "/secteurs/funnel-devis-cloture-portail", label: "Clôture et portail" },
+];
 
 export default function SecteursPage() {
   return (
     <>
-      <section className="px-6 pb-8 pt-12 sm:pt-16">
-        <div className="mx-auto max-w-3xl text-center">
+      <section className="relative overflow-hidden px-6 pb-10 pt-12 sm:pt-16">
+        <div aria-hidden className="marketing-grid pointer-events-none absolute inset-0" />
+        <div className="relative mx-auto max-w-3xl text-center">
           <p className="text-sm font-medium text-mk-accent">Secteurs</p>
-          <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight sm:text-4xl">
-            Fait pour le sur-mesure.
+          <h1 className="mt-3 text-[1.95rem] font-semibold tracking-tight sm:text-5xl">
+            Fait pour les vendeurs d’équipement pro.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base text-mk-muted sm:text-lg">
-            Une famille, quelques templates : questionnaire, catalogue ou brief. Prêts en moins d’une heure.
+            Rayonnage, manutention, agencement. Des produits qui se configurent, des devis à
+            plusieurs milliers d’euros, des acheteurs pros à relancer.
           </p>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-8 sm:py-12">
-        <LandingSectors />
-        <div className="mx-auto mt-10 grid max-w-3xl gap-4">
-          <Link
-            href="/secteurs/funnel-devis-rayonnage-stockage"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis rayonnage & stockage
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Charge, travées, surface, dossier, relances. Template pour fabricants et revendeurs.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-menuiserie-sur-mesure"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis menuiserie sur mesure
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Fenêtres, portes, agencement. Cotes, matériaux, pose, brief chiffrable, score et
-              relances.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-location-evenementiel"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis location événementielle
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Sono, lumière, structure, mobilier. Dates, volumes, livraison, brief chiffrable,
-              score et relances.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-traiteur-evenementiel"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis traiteur événementiel
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Type de prestation, durée, date ou lieu. Template Traiteur, brief chiffrable,
-              fourchette indicative et relecture. Pas de question convives dans le template.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-agencement-bureau"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis agencement de bureau
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Postes, cloisons, fit-out. Plans, délais chantier, brief chiffrable, score et
-              relances.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-stores-fermetures"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis stores et fermetures
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Stores, volets, BSO, portes de garage. Dimensions, motorisation, pose, brief
-              chiffrable, score et relances.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-cuisine-equipee"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis cuisine équipée
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Linéaire, U, îlot, électroménager, plan de travail, pose. Brief chiffrable, score
-              et relances.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-pompe-chaleur-chauffage"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis pompe à chaleur et chauffage
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Surface, énergie, isolation, accès, aides, photos, délai de pose. Brief chiffrable,
-              score et relances.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-photovoltaique-solaire"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis photovoltaïque et solaire
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Toiture, kWc, orientation, conso, type de client, accès, option batterie, photos.
-              Brief chiffrable, score et relances.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-emballage-conditionnement"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis emballage et conditionnement
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Type d&apos;emballage, matière, volume, échéance. Template Emballages, brief chiffrable,
-              fourchette indicative. Pas de question dimensions dans le template.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-imprimerie-signaletique"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis imprimerie et signalétique
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Type de besoin, contexte, échéance. Template Studio &amp; imprimerie. Format, quantité et
-              fichier s&apos;ajoutent. Score fixe à 30 points.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-laboratoire-faconnage-cosmetique"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis laboratoire et façonnage
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Type de besoin, contrainte, volume, échéance. Template Labos &amp; fabrication. Formule et
-              contenant s&apos;ajoutent. Score fixe à 30 points.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-formation-professionnelle"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis formation professionnelle
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Format, contexte, échéance. Template Formation. Participants et financement s&apos;ajoutent.
-              Score fixe à 30 points.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-usinage-sous-traitance-pieces"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis usinage et sous-traitance
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Type de besoin, matière, quantité, échéance, plan. Template Pièces & sous-traitance,
-              brief chiffrable et relecture technique.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-paysagiste-amenagement-jardin"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis paysagiste et aménagement de jardin
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Usage, surface, entretien, accès, photos, saison. Template Paysagiste, brief
-              chiffrable, libellé automatique et espace prospect.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-metallerie-serrurerie"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis métallerie et serrurerie
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Portails, garde-corps, escaliers, grilles, structures, dépannage. Dimensions, accès,
-              photos. Brief chiffrable, libellé automatique et espace prospect.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-electricite-tertiaire"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis électricité tertiaire
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Dépannage, conformité, tableau, neuf, éclairage, type de site, accès, photos.
-              Brief chiffrable, libellé automatique et espace prospect.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-plomberie-sanitaire"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis plomberie et sanitaire
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Fuite, rénovation, neuf, pièce, accès, photos, urgence, type de client. Brief
-              chiffrable, libellé automatique et espace prospect.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-couverture-toiture"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis couverture et toiture
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Tuiles, ardoise, zinc, étanchéité, surface, accès, photos, urgence fuite vs projet.
-              Brief chiffrable, score et espace prospect.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-isolation-thermique-ite"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis isolation thermique et ITE
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Façade, combles, surface, support, accès chantier, photos, type de client. Brief
-              chiffrable, score et relances.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-pergola-terrasse"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis pergola et terrasse
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Dimensions, matériaux, motorisation, éclairage, photos site, délai de pose. Brief
-              chiffrable, score et relances.
-            </p>
-          </Link>
-          <Link
-            href="/secteurs/funnel-devis-cloture-portail"
-            className="block rounded-2xl bg-white p-5 ring-1 ring-mk-border transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(60,30,8,0.4)] sm:p-6"
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mk-accent">
-              Landing secteur
-            </p>
-            <p className="mt-2 text-lg font-semibold tracking-tight">
-              Funnel de devis clôture et portail
-            </p>
-            <p className="mt-2 text-[15px] leading-7 text-mk-muted">
-              Linéaire, hauteur, motorisation, matériaux, pose. Brief chiffrable, score et
-              relances.
-            </p>
-          </Link>
-        </div>
+      <section className="mx-auto max-w-6xl px-6 pb-16 sm:pb-20">
+        <VerticalFocus />
+        <Reveal className="mx-auto mt-14 max-w-3xl">
+          <p className="mb-4 text-center text-sm font-semibold text-mk-ink">
+            QuoteBuilder est fait pour vous si :
+          </p>
+          <FitChecklist />
+        </Reveal>
       </section>
 
       <section className="border-y border-mk-border bg-mk-band px-6 py-10">
-        <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
-          <div>
-            <p className="text-lg font-semibold tracking-tight">Votre secteur n’est pas listé ?</p>
-            <p className="mt-1 text-sm text-mk-muted">
-              Le funnel se construit sur votre catalogue. On part d’un template générique.
+        <div className="mx-auto max-w-4xl">
+          <details className="group">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-mk-ink">
+              Tous les templates ({ALL_TEMPLATES.length})
+              <span className="text-mk-faint transition group-open:rotate-45">+</span>
+            </summary>
+            <p className="mt-3 text-sm text-mk-muted">
+              Le funnel fonctionne aussi hors équipement pro. Tous les templates restent disponibles.
             </p>
-          </div>
-          <Link
-            href="/signup"
-            className="rounded-full bg-mk-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-mk-accent-hover"
-          >
-            Créer mon funnel
-          </Link>
+            <ul className="mt-5 grid gap-x-6 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
+              {ALL_TEMPLATES.map((t) => (
+                <li key={t.href}>
+                  <Link href={t.href} className="text-sm text-mk-muted hover:text-mk-ink hover:underline">
+                    {t.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </details>
         </div>
       </section>
 
-      <MarketingCta />
+      <MarketingCta
+        title="Vos devis d’équipement, en pilote automatique."
+        text="Un agent pour le prospect. Un autopilote pour les relances. Free sans carte."
+      />
     </>
   );
 }

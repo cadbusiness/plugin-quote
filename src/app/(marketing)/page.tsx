@@ -4,9 +4,9 @@ import { AgentConsole } from "@/components/marketing/agentic/agent-console";
 import { AgentPipeline } from "@/components/marketing/agentic/agent-pipeline";
 import { McpShowcase } from "@/components/marketing/agentic/mcp-showcase";
 import { CountUp, Reveal } from "@/components/marketing/agentic/motion";
+import { FitChecklist, VerticalFocus } from "@/components/marketing/agentic/vertical-focus";
 import { AutopilotStage } from "@/components/marketing/autopilot-stage";
 import { CopyButton } from "@/components/marketing/copy-button";
-import { LandingSectors } from "@/components/marketing/landing-sectors";
 import { MarketingCta } from "@/components/marketing/marketing-shell";
 import { SystemCinema } from "@/components/marketing/system-cinema";
 import { FEATURE_MENU_GROUPS, STATS } from "@/lib/marketing/content";
@@ -64,7 +64,7 @@ export default function HomePage() {
             <div className="qb-enter" style={{ "--qb-delay": "0ms" } as React.CSSProperties}>
               <p className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[12px] font-medium text-white/75">
                 <span className="qb-live-dot h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                Agents de devis B2B · serveur MCP inclus
+                Rayonnage · manutention · équipement pro
               </p>
             </div>
             <div className="qb-enter" style={{ "--qb-delay": "80ms" } as React.CSSProperties}>
@@ -76,9 +76,9 @@ export default function HomePage() {
             </div>
             <div className="qb-enter" style={{ "--qb-delay": "160ms" } as React.CSSProperties}>
               <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg lg:mx-0">
-                Un agent qualifie le prospect sur votre catalogue et monte le dossier. L’autopilote
-                relance jusqu’à la réponse. Et votre propre IA, Claude, ChatGPT ou Cursor, pilote le
-                tout via MCP.
+                Vos prospects configurent rayonnages, mezzanines ou postes de travail sur votre
+                catalogue. Un agent qualifie et chiffre le dossier, l’autopilote relance jusqu’à la
+                réponse, et votre IA pilote le tout via MCP.
               </p>
             </div>
             <div className="qb-enter" style={{ "--qb-delay": "240ms" } as React.CSSProperties}>
@@ -312,31 +312,30 @@ export default function HomePage() {
 
       <section className="border-y border-mk-border bg-mk-band px-6 py-16 sm:py-24">
         <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="text-sm font-medium text-mk-accent">Secteurs</p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-              Votre métier. Votre offre.
+          <Reveal className="mx-auto max-w-2xl text-center">
+            <p className="text-sm font-medium text-mk-accent">Pour qui</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+              Fait pour ceux qui vendent de l’équipement pro.
             </h2>
-            <p className="mt-3 text-[16px] leading-7 text-mk-muted">
-              Le funnel s’appuie sur ce que vous livrez vraiment. Pas un formulaire générique.
+            <p className="mt-4 text-[16px] leading-7 text-mk-muted sm:text-[17px]">
+              Des produits qui se configurent, des devis à plusieurs milliers d’euros, des acheteurs
+              pros qu’il faut relancer. C’est là que l’agent fait la différence.
             </p>
+          </Reveal>
+          <div className="mt-12">
+            <VerticalFocus />
           </div>
-          <div className="mt-10">
-            <LandingSectors />
-          </div>
-          <div className="mt-8 text-center">
-            <Link
-              href="/secteurs"
-              className="text-sm font-semibold text-mk-ink underline-offset-4 hover:underline"
-            >
-              Voir tous les secteurs →
-            </Link>
-          </div>
+          <Reveal className="mx-auto mt-12 max-w-3xl">
+            <p className="mb-4 text-center text-sm font-semibold text-mk-ink">
+              QuoteBuilder est fait pour vous si :
+            </p>
+            <FitChecklist />
+          </Reveal>
         </div>
       </section>
 
       <MarketingCta
-        title="Mettez vos devis en pilote automatique."
+        title="Vos devis d’équipement, en pilote automatique."
         text="Un agent pour le prospect. Un autopilote pour les relances. Votre IA aux commandes. Free sans carte."
       />
     </>

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { funnelDocumentTitle, funnelPageMetadata } from "./public-title";
 
-const SLOGAN = "Arrêtez de perdre vos devis";
+const SLOGAN = "Agents de devis IA pour l’équipement professionnel";
 
 const quickly = funnelDocumentTitle({
   orgName: "Quickly International",

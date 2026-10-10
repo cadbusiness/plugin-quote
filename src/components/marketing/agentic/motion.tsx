@@ -53,7 +53,7 @@ export function Reveal({
   className?: string;
   as?: "div" | "section" | "article" | "li" | "p" | "h2";
 }) {
-  const { ref, inView } = useInView<HTMLElement>(0.15);
+  const { ref, inView } = useInView<HTMLElement>(0);
   return (
     <Tag
       ref={ref as React.Ref<never>}

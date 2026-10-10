@@ -15,9 +15,9 @@ export const COMPANY = {
   tagline: "La plateforme de devis B2B qui ne s’arrête pas au formulaire.",
 } as const;
 
-export const DEFAULT_TITLE = "Arrêtez de perdre vos devis";
+export const DEFAULT_TITLE = "Agents de devis IA pour l’équipement professionnel";
 export const DEFAULT_DESCRIPTION =
-  "Parcours de devis pour le prospect, autopilote de relances pour vous. Dossiers complets, score, suivi. Plus de devis morts dans la boîte mail.";
+  "Rayonnage, manutention, mobilier pro : un agent IA qualifie vos demandes sur votre catalogue, livre un dossier scoré et relance jusqu’à la réponse. Serveur MCP inclus.";
 
 export const OG_IMAGE = "/marketing/landing-hero.jpg";
 
