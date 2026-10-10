@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { fetchAllRows } from "@/lib/supabase/paginate";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { parseRelated } from "@/lib/catalog/affinity";
 import { mergeImageRoles, parseGallery, productCover } from "@/lib/catalog/media";
@@ -186,12 +187,16 @@ export async function runCatalogSync({
     .single();
 
   try {
-    const { data: existing } = await supabase
-      .from("products")
-      .select("id, external_id, content_hash, is_active, archived_by_sync, updated_at, synced_at, sync_lock, specs, images, sheet, options, variants")
-      .eq("connection_id", connection.id);
+    const existing = await fetchAllRows((from, to) =>
+      supabase
+        .from("products")
+        .select("id, external_id, content_hash, is_active, archived_by_sync, updated_at, synced_at, sync_lock, specs, images, sheet, options, variants")
+        .eq("connection_id", connection.id)
+        .order("id")
+        .range(from, to),
+    );
     const known = new Map(
-      (existing ?? [])
+      existing
         .filter((p): p is typeof p & { external_id: string } => Boolean(p.external_id))
         .map((p) => [p.external_id, p]),
     );
@@ -232,11 +237,12 @@ export async function runCatalogSync({
           else result.created += 1;
           pending.push(built);
         }
+        // Write each page as it comes: a sync that hits the time limit keeps
+        // what it already read instead of writing nothing.
+        result.failed += await writeChunks(supabase, pending.splice(0));
         cursor = batch.cursor;
         if (!cursor) break;
       }
-
-      result.failed += await writeChunks(supabase, pending);
 
       // Produits revenus en boutique après avoir disparu.
       for (const part of chunk(toReactivate, CHUNK)) {
@@ -264,12 +270,16 @@ export async function runCatalogSync({
     }
 
     if (connection.settings.pushToStore && adapter.pushProduct) {
-      const { data: outbound } = await supabase
-        .from("products")
-        .select("id, external_id, name, sku, description, price_min, images, specs, sheet, updated_at, synced_at, sync_lock")
-        .eq("connection_id", connection.id)
-        .not("external_id", "is", null);
-      for (const row of outbound ?? []) {
+      const outbound = await fetchAllRows((from, to) =>
+        supabase
+          .from("products")
+          .select("id, external_id, name, sku, description, price_min, images, specs, sheet, updated_at, synced_at, sync_lock")
+          .eq("connection_id", connection.id)
+          .not("external_id", "is", null)
+          .order("id")
+          .range(from, to),
+      );
+      for (const row of outbound) {
         if (!row.external_id || !shouldPushLocal(row, connection.settings)) continue;
         try {
           await adapter.pushProduct(connection, {

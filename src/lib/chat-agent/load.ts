@@ -1,4 +1,5 @@
 import { publicProductSpecs } from "@/lib/catalog/specs";
+import { fetchAllRows } from "@/lib/supabase/paginate";
 import { parseProductSheet } from "@/lib/catalog/sheet";
 import type { ChatDraft, ChatTurnMessage } from "@/lib/chat-agent/draft";
 import { appendChatTranscript, phoneKey, pickExistingDraft } from "@/lib/chat-agent/draft";
@@ -66,19 +67,26 @@ function mapProduct(row: {
   };
 }
 
+/** Whole catalogue for a typical equipment seller; was 300, which hid most ranges. */
+const CHAT_CATALOG_MAX = 5000;
+
 export async function loadConnectionSources(connection: PluginConnection) {
   const supabase = createServiceClient();
-  const { data, error } = await supabase
-    .from("products")
-    .select("id, name, description, price_min, price_max, currency, tags, category, options, specs, sheet, stock_status, external_id")
-    .eq("organization_id", connection.organization_id)
-    .eq("connection_id", connection.id)
-    .eq("is_active", true)
-    .eq("archived_by_sync", false)
-    .order("name", { ascending: true })
-    .limit(300);
-  if (error) throw new Error(error.message);
-  return sourcesFromCatalog((data ?? []).map(mapProduct));
+  const data = await fetchAllRows(
+    (from, to) =>
+      supabase
+        .from("products")
+        .select("id, name, description, price_min, price_max, currency, tags, category, options, specs, sheet, stock_status, external_id")
+        .eq("organization_id", connection.organization_id)
+        .eq("connection_id", connection.id)
+        .eq("is_active", true)
+        .eq("archived_by_sync", false)
+        .order("name", { ascending: true })
+        .order("id")
+        .range(from, to),
+    { max: CHAT_CATALOG_MAX },
+  );
+  return sourcesFromCatalog(data.map(mapProduct));
 }
 
 const DRAFT_COLUMNS =

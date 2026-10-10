@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { fetchAllRows } from "@/lib/supabase/paginate";
 import { COMMERCE_AGENT_CONFIG } from "@/lib/commerce-agent/config";
 import { searchCatalog } from "@/lib/commerce-agent/catalog";
 import type { Json } from "@/lib/db/database.types";
@@ -288,15 +289,18 @@ function json(body: unknown, status: number, extra?: Headers) {
 
 async function loadConnectionCatalog(connection: PluginConnection): Promise<WidgetCatalogRow[]> {
   const supabase = createServiceClient();
-  const { data } = await supabase
-    .from("products")
-    .select("external_id, name")
-    .eq("organization_id", connection.organization_id)
-    .eq("connection_id", connection.id)
-    .eq("is_active", true)
-    .not("external_id", "is", null)
-    .limit(200);
-  return (data ?? []).flatMap((row) => {
+  const data = await fetchAllRows((from, to) =>
+    supabase
+      .from("products")
+      .select("external_id, name")
+      .eq("organization_id", connection.organization_id)
+      .eq("connection_id", connection.id)
+      .eq("is_active", true)
+      .not("external_id", "is", null)
+      .order("id")
+      .range(from, to),
+  ).catch(() => []);
+  return data.flatMap((row) => {
     const externalId = row.external_id?.trim() ?? "";
     const name = row.name?.trim() ?? "";
     return externalId && name ? [{ externalId, name }] : [];
