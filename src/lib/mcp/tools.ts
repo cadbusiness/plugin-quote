@@ -95,7 +95,8 @@ export function registerQuoteBuilderTools(server: McpServer) {
     "create_lead",
     {
       title: "Créer une demande",
-      description: "Crée une demande de devis manuelle (contact + réponses wizard) et déclenche les workflows.",
+      description:
+        "Crée une demande de devis manuelle (contact + réponses wizard). N’envoie aucun email sauf si run_autopilot vaut true.",
       inputSchema: z.object({
         name: z.string(),
         email: z.string().email(),
@@ -103,12 +104,20 @@ export function registerQuoteBuilderTools(server: McpServer) {
         company: z.string().optional().describe("Société (B2B)"),
         funnel_id: z.string().describe("ID du funnel / configurateur"),
         data: z.record(z.string(), z.unknown()).optional().describe("Réponses wizard (clé → valeur)"),
+        run_autopilot: z
+          .boolean()
+          .optional()
+          .describe("Si true, déclenche les workflows quote.submitted (emails au prospect). Défaut false."),
       }),
     },
     async (args, ctx) => {
       try {
+        // Same default as create_quote: an assistant must opt in before emailing a prospect.
         return textResult({
-          lead: await apiCreateLead(orgId(ctx.http?.authInfo), { ...args, run_autopilot: true }),
+          lead: await apiCreateLead(orgId(ctx.http?.authInfo), {
+            ...args,
+            run_autopilot: args.run_autopilot === true,
+          }),
         });
       } catch (error) {
         return errorResult(error);
