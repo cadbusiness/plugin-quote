@@ -368,6 +368,7 @@ export type FeatureSlug =
   | "stats"
   | "equipe"
   | "integrations"
+  | "mcp"
   | "ads";
 
 export type Feature = {
@@ -681,6 +682,39 @@ export const FEATURES: Feature[] = [
     ],
     proof: "Installation en minutes. Valeur en jours.",
   },
+  {
+    slug: "mcp",
+    title: "Agents IA & MCP",
+    menuLabel: "Agents IA & MCP",
+    menuBlurb: "Claude, ChatGPT ou Cursor pilotent vos devis.",
+    eyebrow: "Organisation",
+    headline: "Votre IA pilote vos devis.",
+    lead: "QuoteBuilder expose un serveur MCP. Branchez Claude, ChatGPT, Cursor ou Codex : votre assistant lit le pipeline, crée des demandes et déclenche les relances, avec les droits de votre espace.",
+    outcomes: [
+      "Le pipeline interrogé en langage naturel",
+      "Relances déclenchées depuis le chat",
+      "Connexion OAuth ou clé API, révocable",
+    ],
+    capabilities: [
+      {
+        title: "Lire le pipeline",
+        text: "get_leads, get_lead_detail, list_quotes, get_quote_status. Statut, score, réponses, notes.",
+      },
+      {
+        title: "Agir",
+        text: "create_quote, update_lead_status, trigger_followup. Les workflows partent comme depuis l’app.",
+      },
+      {
+        title: "Mesurer",
+        text: "get_stats, list_funnels, get_funnel_performance, get_pending_followups.",
+      },
+      {
+        title: "Deux portes",
+        text: "Serveur HTTP distant (OAuth 2.1 ou Bearer) et package stdio pour Claude Desktop.",
+      },
+    ],
+    proof: "Vos devis deviennent un outil de plus pour votre agent. Pas un onglet de plus pour vous.",
+  },
 ];
 
 export const SITE = {
@@ -710,7 +744,7 @@ const MENU_GROUP_DEFS: {
     id: "organisation",
     label: "Organisation",
     blurb: "Équipe, chiffres, stack. Tout relié.",
-    slugs: ["stats", "equipe", "integrations"],
+    slugs: ["stats", "equipe", "integrations", "mcp"],
   },
 ];
 
