@@ -9,7 +9,6 @@ import { createProspectAccess } from "@/lib/prospect/access";
 import { createServiceClient } from "@/lib/supabase/service";
 import { getAppUrl } from "@/lib/supabase/env";
 import { dispatchQuoteWebhooks } from "@/lib/webhooks/dispatch";
-import { startWorkflows } from "@/lib/workflows/engine";
 import type { Answers } from "@/lib/wizard/types";
 
 /** Shown by classifySource as « Site Web » — origin of a WordPress inbound quote. */
@@ -442,6 +441,8 @@ async function notifySales(
       console.error("Plugin quote prospect access failed", error);
       return null;
     });
+    // Lazy: the engine pulls in the PDF renderer.
+    const { startWorkflows } = await import("@/lib/workflows/engine");
     const started = await startWorkflows({
       triggerType: "quote.submitted",
       organizationId: input.organizationId,

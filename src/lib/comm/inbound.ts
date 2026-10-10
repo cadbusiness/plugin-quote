@@ -1,6 +1,5 @@
 import type { Json } from "@/lib/db/database.types";
 import { createServiceClient } from "@/lib/supabase/service";
-import { exitActiveQuoteRuns } from "@/lib/workflows/engine";
 
 function asString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -73,6 +72,7 @@ export async function ingestInboundEmail(input: {
 
   if (quote) {
     // The prospect answered: a human takes over, automated follow-ups stop.
+    const { exitActiveQuoteRuns } = await import("@/lib/workflows/engine");
     await exitActiveQuoteRuns(channel.organization_id, quote.id);
     await supabase.from("quote_activities").insert({
       organization_id: channel.organization_id,

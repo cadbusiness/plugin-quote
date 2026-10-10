@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { fetchAllRows } from "@/lib/supabase/paginate";
 import { parseRelated } from "@/lib/catalog/affinity";
 import type { Database, Json } from "@/lib/db/database.types";
 import { normalizeAttributes, toProspectOptions } from "@/lib/catalog/attributes";
@@ -88,16 +89,18 @@ async function assembleDefinition(
         .order("sort_order", { ascending: true })
     : { data: [] };
 
-  let productQuery = supabase
-    .from("products")
-    .select("*")
-    .eq("configurator_id", configurator.id)
-    .eq("is_active", true);
-  if (shopScope) {
-    productQuery = productQuery.eq("organization_id", shopScope.organizationId);
-  }
-  const { data: products } = await productQuery;
-  const scopedProducts = (products ?? []).filter((row) => {
+  const products = await fetchAllRows((from, to) => {
+    let productQuery = supabase
+      .from("products")
+      .select("*")
+      .eq("configurator_id", configurator.id)
+      .eq("is_active", true);
+    if (shopScope) {
+      productQuery = productQuery.eq("organization_id", shopScope.organizationId);
+    }
+    return productQuery.order("id").range(from, to);
+  });
+  const scopedProducts = products.filter((row) => {
     if (row.configurator_id !== configurator.id) return false;
     if (shopScope && row.organization_id !== shopScope.organizationId) return false;
     if (shopScope && row.configurator_id !== shopScope.configuratorId) return false;
