@@ -39,3 +39,6 @@ supabase/.temp/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Données commerciales (listes de prospects) : jamais dans le dépôt public
+docs/prospects/
