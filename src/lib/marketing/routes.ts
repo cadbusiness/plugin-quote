@@ -107,6 +107,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   {
+    path: "/blog/autopilote-workflows-relance-demande-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-12",
+  },
+  {
     path: "/blog/google-ads-demande-devis-b2b-cout-par-client",
     changeFrequency: "monthly",
     priority: 0.8,
@@ -412,6 +418,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-09",
+  },
+  {
+    path: "/outils/estimateur-charge-relances-manuelles-vs-autopilote",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-12",
   },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },

@@ -112,6 +112,7 @@ export const BLOG_TOOL_FUITES_ENTONNOIR = "/outils/estimateur-fuites-entonnoir-f
 export const BLOG_TOOL_MENTION_RGPD = "/outils/generateur-mention-rgpd-formulaire-devis";
 export const BLOG_TOOL_SIGNATURE_WEBHOOK = "/outils/verificateur-signature-webhook-devis";
 export const BLOG_TOOL_COUT_CLIENT_GOOGLE_ADS = "/outils/calculateur-cout-par-client-google-ads-devis";
+export const BLOG_TOOL_CHARGE_AUTOPILOTE = "/outils/estimateur-charge-relances-manuelles-vs-autopilote";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -136,6 +137,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     36: "Trente-six",
     37: "Trente-sept",
     38: "Trente-huit",
+    39: "Trente-neuf",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -370,9 +372,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Budget, coût par clic, deux taux, panier, marge, délai de signature. Coût par devis, coût par client, plafond à l'équilibre. Calcul 100 % local.",
     tags: ["integrations", "funnel"],
   },
+  {
+    href: BLOG_TOOL_CHARGE_AUTOPILOTE,
+    title: "Estimateur de charge : relances manuelles ou Autopilote",
+    text: "Demandes par mois, touches à la main, minutes, coût horaire, part où une touche saute, panier, taux de signature, mise en place. Temps, affaires perdues, coût mensuel évité. Calcul 100 % local.",
+    tags: ["relances", "funnel"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "autopilote-workflows-relance-demande-devis-b2b",
+    path: "/blog/autopilote-workflows-relance-demande-devis-b2b",
+    title: "Autopilote et workflows : relancer chaque demande de devis B2B sans y penser",
+    description:
+      "Confirmation, rappel interne, relances et reprise des abandons : le canvas de l'Autopilote, ses trois déclencheurs, ses sept étapes, les huit emails fournis, les deux parcours livrés par défaut et ce que l'outil ne fait pas.",
+    publishedAt: "2026-10-12",
+    readingMinutes: 15,
+    tags: ["relances", "funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.automations,
+    pinned: false,
+  },
   {
     slug: "google-ads-demande-devis-b2b-cout-par-client",
     path: "/blog/google-ads-demande-devis-b2b-cout-par-client",
