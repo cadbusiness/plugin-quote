@@ -65,7 +65,7 @@ for (const slug of [RGPD_SLUG, WEBHOOK_SLUG]) {
   }
 }
 
-assert.equal(BLOG_TOOLS.length, 38);
+assert.equal(BLOG_TOOLS.length, 39);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === RGPD_TOOL));
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === SIGNATURE_TOOL));
 assert.deepEqual(BLOG_TOOLS.find((tool) => tool.href === RGPD_TOOL)?.tags, ["funnel", "integrations"]);
@@ -73,9 +73,9 @@ assert.deepEqual(BLOG_TOOLS.find((tool) => tool.href === SIGNATURE_TOOL)?.tags, 
 for (const tool of BLOG_TOOLS) {
   assert.ok(tool.tags.every((tag) => BLOG_TAG_DEFS.some((def) => def.slug === tag)));
 }
-assert.equal(outilsHubIntro(), "Trente-huit outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(), "Trente-neuf outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
 assert.equal(outilsHubIntro(36), "Trente-six outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(38), outilsHubIntro());
+assert.equal(outilsHubIntro(39), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
 const paths = MARKETING_ROUTES.map((route) => route.path);
@@ -89,7 +89,8 @@ for (const path of CATCHUP_PATHS) {
 
 const sitemapSrc = readFileSync(join(process.cwd(), "src/app/sitemap.ts"), "utf8");
 for (const path of DAY_PATHS) {
-  assert.match(sitemapSrc, new RegExp(`"${path}": "2026-10-09"`));
+  const sourceDate = path === `/blog/${RGPD_SLUG}` ? "2026-10-12" : "2026-10-09";
+  assert.match(sitemapSrc, new RegExp(`"${path}": "${sourceDate}"`));
   const entry = sitemap().find((item) => item.url === `https://www.quotebuilder.co${path}`);
   assert.ok(entry, `sitemap missing ${path}`);
   assert.equal(entry?.lastModified, "2026-10-09");
@@ -148,13 +149,14 @@ function assertNoDashes(text: string, label: string) {
   assert.match(blogBody, /\/c\/demo\/rayonnage/);
   assert.match(blogBody, /Données personnelles \(RGPD\)/);
   assert.match(blogBody, /Anonymiser/);
-  assert.match(blogBody, /pas de consentement marketing/);
+  assert.match(blogBody, /compté parmi les ignorés dans le bilan de la campagne/);
+  assert.doesNotMatch(blogBody, /avec le motif « pas de consentement marketing »/);
   assert.match(blogBody, /trois ans/);
   assert.match(blogBody, /L123-22/);
   assert.match(blogBody, /\/outils\/generateur-mention-rgpd-formulaire-devis/);
   assertNoDashes(blogRaw, "rgpd md");
   assertNoDashes(blogBody, "rgpd body");
-  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 3436);
+  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 3438);
   assert.equal(faqQuestionCount(blogBody), 10);
   assertInternalLinks(blogBody, "rgpd");
 }

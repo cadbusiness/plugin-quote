@@ -55,7 +55,7 @@ Beaucoup de vos demandes viennent pourtant de particuliers, même sur un site B2
 
 La même case figure dans les funnels formulaire, dans le parcours avec chat IA et dans le formulaire de demande simple. La réponse est enregistrée sur le dossier. Si la case n'est pas cochée, la demande part quand même : le consentement est facultatif, ce qui est exactement ce que demande le RGPD.
 
-Cette case a un effet concret dans le produit. Quand vous envoyez une campagne email depuis QuoteBuilder à un segment de prospects, chaque contact qui n'a pas coché la case est écarté. L'envoi est noté « ignoré » avec le motif « pas de consentement marketing ». Vous ne pouvez donc pas, par erreur, envoyer une campagne à quelqu'un qui ne l'a pas accepté.
+Cette case a un effet concret dans le produit. Quand vous envoyez une campagne email depuis QuoteBuilder à un segment de prospects, chaque contact qui n'a pas coché la case est écarté avant l'envoi et compté parmi les ignorés dans le bilan de la campagne. Vous ne pouvez donc pas, par erreur, envoyer une campagne à quelqu'un qui ne l'a pas accepté.
 
 Deux limites à connaître :
 
@@ -240,7 +240,7 @@ Non. Les fichiers joints restent sur le dossier. Traitez-les à part.
 
 ### Peut-on envoyer une campagne à un prospect qui n'a pas coché la case ?
 
-Non. QuoteBuilder l'écarte automatiquement de l'envoi, avec le motif « pas de consentement marketing ».
+Non. QuoteBuilder l'écarte automatiquement de l'envoi, et il est compté parmi les ignorés dans le bilan de la campagne.
 
 ### Google Analytics sur le funnel demande-t-il un consentement ?
 

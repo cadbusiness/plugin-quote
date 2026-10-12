@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "autopilote-workflows-relance-demande-devis-b2b": [
+    {
+      q: "Qu'est-ce que l'Autopilote de QuoteBuilder ?",
+      a: "C'est le module de parcours automatiques, accessible dans le menu Automatisations par les administrateurs. Un parcours enchaîne sur un canvas des emails, des attentes, des conditions, des assignations et des changements de statut, à partir d'un déclencheur.",
+    },
+    {
+      q: "Quels déclencheurs peut-on utiliser ?",
+      a: "Trois : Soumission (une demande est envoyée), Abandon (une session avec email reste inactive le temps fixé, 1 heure par défaut) et Changement de statut (le statut d'une demande change, éventuellement vers un statut précis).",
+    },
+    {
+      q: "Que contient le parcours installé par défaut ?",
+      a: "Le Parcours demande envoie la confirmation avec le PDF et le brief commercial tout de suite, un rappel interne à 4 heures si la demande est encore au statut Nouveau, un email rassurant et une demande de photo à 24 heures et une relance douce à 72 heures si le dossier est toujours ouvert. Le Parcours abandon envoie une reprise de session 1 heure après la dernière activité, puis une seconde relance à 24 heures.",
+    },
+    {
+      q: "Le prospect reçoit-il des relances après avoir signé ?",
+      a: "Non, si le dossier passe à un statut clos comme Gagné ou Perdu. Les branches vérifient que le dossier est ouvert avant chaque message, et passer un dossier à un statut clos interrompt ses exécutions en attente.",
+    },
+    {
+      q: "Peut-on modifier le texte des emails ?",
+      a: "Oui. L'objet et le corps de chaque email se modifient dans Paramètres, rubrique Emails. Les variables comme le nom du contact, le lien de suivi ou le code PIN sont remplies à l'envoi.",
+    },
+    {
+      q: "Les délais tiennent-ils compte des week-ends ?",
+      a: "Non. Les attentes sont comptées en heures pleines, et le moteur passe toutes les 15 minutes. Une attente de 4 heures après une demande envoyée le vendredi à 18 h se termine le vendredi vers 22 h.",
+    },
+    {
+      q: "Comment savoir si un email est bien parti ?",
+      a: "Ouvrez le dossier, onglet Automatisations : chaque étape affiche Fait, En attente, Échec ou Ignoré. Sur le canvas du parcours, chaque email affiche aussi ses compteurs « ok » et « erreur ».",
+    },
+    {
+      q: "Que se passe-t-il si je désactive le Parcours demande ?",
+      a: "Si aucun parcours de soumission n'est actif, une demande envoyée depuis un funnel déclenche quand même la confirmation au prospect et le brief à l'adresse commerciale. Les rappels internes et les relances ne partent plus.",
+    },
+    {
+      q: "L'Autopilote envoie-t-il des SMS ou fait-il des tests A/B ?",
+      a: "Non. Les envois sont des emails en texte simple, avec un seul texte par étape. Il n'y a ni SMS, ni WhatsApp, ni LinkedIn, ni test A/B.",
+    },
+    {
+      q: "Les relances d'abandon respectent-elles le RGPD ?",
+      a: "Elles répondent à une action du prospect, qui a commencé une demande et donné son email, et restent liées à cette demande. Ne réutilisez pas ces adresses pour une campagne commerciale sans consentement marketing. La conservation des données reste à définir de votre côté.",
+    },
+  ],
   "google-ads-demande-devis-b2b-cout-par-client": [
     {
       q: "Quelle différence entre coût par devis et coût par client ?",
@@ -74,7 +116,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Peut-on envoyer une campagne à un prospect qui n'a pas coché la case ?",
-      a: "Non. QuoteBuilder l'écarte automatiquement de l'envoi, avec le motif « pas de consentement marketing ».",
+      a: "Non. QuoteBuilder l'écarte automatiquement de l'envoi, et il est compté parmi les ignorés dans le bilan de la campagne.",
     },
     {
       q: "Google Analytics sur le funnel demande-t-il un consentement ?",
