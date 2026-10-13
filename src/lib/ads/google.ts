@@ -18,14 +18,16 @@ export const GOOGLE_ADS_API = process.env.GOOGLE_ADS_API_VERSION?.trim() || "v24
 export type GoogleAdsEnv = {
   clientId: string;
   clientSecret: string;
-  developerToken: string;
+  // Google retired developer tokens on 2026-09-09: access now follows the Cloud
+  // project of the OAuth client. Still sent when set, for older API versions.
+  developerToken: string | null;
 };
 
 export function googleAdsEnv(): GoogleAdsEnv | null {
   const clientId = process.env.GOOGLE_ADS_CLIENT_ID?.trim();
   const clientSecret = process.env.GOOGLE_ADS_CLIENT_SECRET?.trim();
-  const developerToken = process.env.GOOGLE_ADS_DEVELOPER_TOKEN?.trim();
-  if (!clientId || !clientSecret || !developerToken) return null;
+  const developerToken = process.env.GOOGLE_ADS_DEVELOPER_TOKEN?.trim() || null;
+  if (!clientId || !clientSecret) return null;
   return { clientId, clientSecret, developerToken };
 }
 
@@ -171,7 +173,7 @@ async function adsFetch(path: string, accessToken: string, init?: RequestInit & 
     ...rest,
     headers: {
       authorization: `Bearer ${accessToken}`,
-      "developer-token": env.developerToken,
+      ...(env.developerToken ? { "developer-token": env.developerToken } : {}),
       "content-type": "application/json",
       ...(loginCustomerId ? { "login-customer-id": digits(loginCustomerId) } : {}),
       ...(rest.headers ?? {}),
