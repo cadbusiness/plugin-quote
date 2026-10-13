@@ -402,7 +402,7 @@ export const BLOG_POSTS: BlogPost[] = [
     path: "/blog/roles-permissions-equipe-demande-devis-b2b",
     title: "Rôles et permissions d'équipe : traiter les demandes de devis B2B sans tout ouvrir à tout le monde",
     description:
-      "Propriétaire, Admin, Commercial : ce que chaque rôle ouvre écran par écran, comment inviter, changer un rôle ou suspendre un accès depuis Équipe, ce que le rôle Commercial ne cache pas et une répartition simple selon la taille de l'équipe.",
+      "Propriétaire, Admin, Commercial : ce que chaque rôle ouvre écran par écran, comment inviter, changer un rôle ou retirer un accès depuis Équipe, ce que le rôle Commercial ne cache pas et une répartition simple selon la taille de l'équipe.",
     publishedAt: "2026-10-13",
     readingMinutes: 16,
     tags: ["funnel", "catalogue"],

@@ -151,7 +151,7 @@ export function computeAccessCost(input: AccessCostInput): AccessCostResult {
     };
   } else if (coutNetMensuelEvite >= 1000) {
     verdict = {
-      tone: "ok",
+      tone: "bad",
       text:
         "Sur ces hypothèses, des accès mal cadrés vous coûtent environ " +
         fmtEur(coutNetMensuelEvite) +
@@ -167,7 +167,7 @@ export function computeAccessCost(input: AccessCostInput): AccessCostResult {
     };
   } else {
     verdict = {
-      tone: "bad",
+      tone: "ok",
       text:
         "Coût faible sur ces hypothèses (" +
         fmtEur(coutNetMensuelEvite) +

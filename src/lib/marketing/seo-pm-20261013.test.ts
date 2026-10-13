@@ -11,6 +11,7 @@ import {
   fmtEur,
   fmtNum,
 } from "./cout-acces-mal-cadres-equipe-devis";
+import { CAMPAIGN_WASTE_DEFAULTS, computeCampaignWaste } from "./cout-campagnes-email-sans-segmentation";
 import { stripFrontmatter } from "./load-post";
 import { MARKETING_ROUTES } from "./routes";
 
@@ -32,7 +33,7 @@ assert.equal(
 );
 assert.equal(
   BLOG_POSTS.find((post) => post.slug === BLOG_SLUG)?.description,
-  "Propriétaire, Admin, Commercial : ce que chaque rôle ouvre écran par écran, comment inviter, changer un rôle ou suspendre un accès depuis Équipe, ce que le rôle Commercial ne cache pas et une répartition simple selon la taille de l'équipe.",
+  "Propriétaire, Admin, Commercial : ce que chaque rôle ouvre écran par écran, comment inviter, changer un rôle ou retirer un accès depuis Équipe, ce que le rôle Commercial ne cache pas et une répartition simple selon la taille de l'équipe.",
 );
 assert.equal(
   BLOG_POSTS.find((post) => post.slug === BLOG_SLUG)?.ctaHref,
@@ -179,11 +180,22 @@ function assertNoDashes(text: string, label: string) {
   assert.match(blogBody, /Responsable technique/);
   assert.match(blogBody, /30 jours/);
   assert.match(blogBody, /Le rôle Commercial limite l'accès aux réglages, pas aux dossiers\./);
+  assert.match(blogBody, /\| Google Ads \| Connexion, conversions, ROI \| Oui \| Lecture seule \|/);
+  assert.match(blogBody, /La page Google Ads \(\/acquisition\) ne redirige pas/);
+  assert.doesNotMatch(blogBody, /renvoyé vers la liste des Demandes/);
+  assert.match(blogBody, /retirer l'accès \(révoquer\)/);
+  assert.match(blogBody, /vérifier dans la liste Équipe que le statut a bien changé/);
+  assert.match(blogBody, /Le bouton Suspendre ne coupe pas un accès de façon fiable/);
+  assert.doesNotMatch(blogBody, /réassignez-les, puis suspendez/);
+  assert.doesNotMatch(blogBody, /suspendez ensuite/);
+  assert.doesNotMatch(blogBody, /cliquez sur Suspendre/);
+  assert.match(blogBody, /L'email n'est envoyé qu'aux membres qui ont une adresse d'invitation/);
+  assert.match(blogBody, /Le Propriétaire n'en a pas : il ne reçoit jamais cet email/);
   assert.doesNotMatch(blogBody, /\/blog\/espace-prospect-devis-en-ligne/);
   assert.doesNotMatch(blogBody, /ACCESS_MATRIX/);
   assertNoDashes(blogRaw, "roles md");
   assertNoDashes(blogBody, "roles body");
-  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 3757);
+  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 3882);
   assert.equal(faqQuestionCount(blogBody), 10);
   assert.deepEqual(faqFromMarkdown(blogBody), BLOG_FAQ[BLOG_SLUG]);
   assertInternalLinks(blogBody, "roles");
@@ -228,7 +240,7 @@ close(r.coutMiseEnOrdreMensuel, 3.75);
 close(r.heuresNettes, 5.5 - 1 / 12);
 close(r.coutNetMensuelEvite, 1143.75);
 close(r.coutNetAnnuelEvite, 13725);
-assert.strictEqual(r.verdict.tone, "ok");
+assert.strictEqual(r.verdict.tone, "bad");
 assert.ok(r.verdict.text.includes("1" + NB + "144" + NB + "€ par mois"));
 assert.ok(r.conseils.some((item) => item.startsWith("Le chiffre d'affaires manqué pèse plus de trois fois")));
 assert.ok(r.conseils.some((item) => item.includes("le rôle Commercial ferme les réglages, pas les dossiers")));
@@ -359,7 +371,7 @@ r = computeAccessCost({
 });
 close(r.coutTemps, 40 / 3);
 close(r.coutNetMensuelEvite, 10);
-assert.strictEqual(r.verdict.tone, "bad");
+assert.strictEqual(r.verdict.tone, "ok");
 assert.ok(r.verdict.text.startsWith("Coût faible"));
 assert.ok(r.conseils.some((item) => item.startsWith("Aucun Admin en trop")));
 assert.ok(!r.conseils.some((item) => item.startsWith("Le chiffre d'affaires manqué")));
@@ -400,7 +412,7 @@ r = computeAccessCost({
 });
 close(r.coutNetMensuelEvite, -150);
 assert.strictEqual(r.heuresNettes, 0);
-assert.strictEqual(r.verdict.tone, "bad");
+assert.strictEqual(r.verdict.tone, "ok");
 assert.ok(r.verdict.text.includes("-150" + NB + "€"));
 assert.ok(r.recap.includes("0 blocage par mois de 0 min"));
 
@@ -418,10 +430,44 @@ const at = (target: number) =>
     panierMoyen: target,
     heuresMiseEnOrdre: 0,
   });
-assert.strictEqual(at(1000).verdict.tone, "ok");
+assert.strictEqual(at(1000).verdict.tone, "bad");
 assert.strictEqual(at(999).verdict.tone, "warn");
 assert.strictEqual(at(250).verdict.tone, "warn");
-assert.strictEqual(at(249).verdict.tone, "bad");
+assert.strictEqual(at(249).verdict.tone, "ok");
+
+function assertCostVerdictColors(relative: string) {
+  const source = readFileSync(join(process.cwd(), relative), "utf8");
+  assert.match(source, /tone === "bad" \? "text-rose-700"/);
+  assert.match(source, /tone === "ok" \? "text-emerald-700"/);
+  assert.match(source, /if \(tone === "ok"\) return "bg-emerald-50 text-emerald-800"/);
+  assert.match(source, /if \(tone === "bad"\) return "bg-rose-50 text-rose-800"/);
+  assertNoDashes(source, relative);
+}
+
+assertCostVerdictColors("src/components/marketing/cout-acces-mal-cadres-equipe-devis-calculator.tsx");
+assert.ok(computeAccessCost(base).coutNetMensuelEvite >= 1000);
+assert.strictEqual(computeAccessCost(base).verdict.tone, "bad");
+assert.ok(at(249).coutNetMensuelEvite < 250);
+assert.strictEqual(at(249).verdict.tone, "ok");
+
+assertCostVerdictColors("src/components/marketing/cout-campagnes-email-sans-segmentation-calculator.tsx");
+const campaignHigh = computeCampaignWaste(CAMPAIGN_WASTE_DEFAULTS);
+assert.ok(campaignHigh.coutMensuel >= 2000);
+assert.strictEqual(campaignHigh.verdict.tone, "bad");
+const campaignLow = computeCampaignWaste({
+  campagnesParMois: 1,
+  tailleListe: 1,
+  pctSansSegment: 0,
+  minutesPreparation: 0,
+  pctPlaintes: 0,
+  minutesParPlainte: 0,
+  pctDejaAutopilote: 0,
+  tauxHoraire: 0,
+  panierMoyen: 0,
+  pctDealsFroids: 0,
+});
+assert.ok(campaignLow.coutMensuel < 400);
+assert.strictEqual(campaignLow.verdict.tone, "ok");
 
 assert.ok(
   !/[\u2013\u2014]/.test(

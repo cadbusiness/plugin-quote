@@ -24,7 +24,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Un Admin peut-il modifier le rôle d'un autre Admin ?",
-      a: "Oui. Un Admin peut changer le rôle d'un Commercial ou d'un autre Admin, et les suspendre. Il ne peut modifier ni le Propriétaire ni son propre compte.",
+      a: "Oui. Un Admin peut changer le rôle d'un Commercial ou d'un autre Admin. Il ne peut modifier ni le Propriétaire ni son propre compte. Le bouton Suspendre ne coupe pas un accès de façon fiable : vérifiez le statut dans la liste Équipe.",
     },
     {
       q: "Que se passe-t-il quand on change le rôle d'un membre ?",
@@ -32,7 +32,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Comment gérer le départ d'un commercial ?",
-      a: "Filtrez la liste des Demandes sur son nom, réassignez ses dossiers ouverts, puis cliquez sur Suspendre dans la section Gestion de sa fiche. Vérifiez ensuite que la fiche affiche bien le statut Suspendu. Son historique reste consultable.",
+      a: "Filtrez la liste des Demandes sur son nom, réassignez ses dossiers ouverts, puis retirez l'accès (révoquer). Vérifiez dans la liste Équipe que le statut a bien changé. Son historique reste consultable.",
     },
     {
       q: "Le Directeur financier ou le Responsable technique invité sur un dossier fait-il partie de l'équipe ?",

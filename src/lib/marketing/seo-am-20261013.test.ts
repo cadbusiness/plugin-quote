@@ -241,7 +241,7 @@ assert.strictEqual(r.coutTemps, 150);
 close(r.dealsFroids, 5.625);
 assert.strictEqual(r.opportunites, 27000);
 assert.strictEqual(r.coutMensuel, 27150);
-assert.strictEqual(r.verdict.tone, "ok");
+assert.strictEqual(r.verdict.tone, "bad");
 assert.ok(r.verdict.text.includes("27" + NB + "150" + NB + "€ par mois"));
 assert.ok(r.conseils.some((item) => item.startsWith("Au moins 60 % de la liste")));
 assert.ok(r.conseils.some((item) => item.startsWith("Au moins un quart de la liste")));
@@ -309,7 +309,7 @@ assert.strictEqual(r.opportunites, 0);
 assert.strictEqual(r.dealsFroids, 0);
 close(r.heuresPerdues, 80 / 60);
 close(r.coutTemps, 60);
-assert.strictEqual(r.verdict.tone, "bad");
+assert.strictEqual(r.verdict.tone, "ok");
 assert.ok(r.conseils.some((item) => item.startsWith("Vous estimez qu'aucune affaire")));
 assert.ok(r.conseils.some((item) => item.startsWith("Vous estimez que personne ne part sans segment")));
 
@@ -351,7 +351,7 @@ r = computeCampaignWaste({
 close(r.heuresPerdues, 8);
 assert.strictEqual(r.coutTemps, 240);
 assert.strictEqual(r.coutMensuel, 240);
-assert.strictEqual(r.verdict.tone, "bad");
+assert.strictEqual(r.verdict.tone, "ok");
 assert.ok(r.conseils.some((item) => item.startsWith("Plus de 90 minutes")));
 
 const at = (target: number) =>
@@ -367,10 +367,10 @@ const at = (target: number) =>
     panierMoyen: target,
     pctDealsFroids: 100,
   });
-assert.strictEqual(at(2000).verdict.tone, "ok");
+assert.strictEqual(at(2000).verdict.tone, "bad");
 assert.strictEqual(at(1999).verdict.tone, "warn");
 assert.strictEqual(at(400).verdict.tone, "warn");
-assert.strictEqual(at(399).verdict.tone, "bad");
+assert.strictEqual(at(399).verdict.tone, "ok");
 
 assert.ok(
   !/[\u2013\u2014]/.test(

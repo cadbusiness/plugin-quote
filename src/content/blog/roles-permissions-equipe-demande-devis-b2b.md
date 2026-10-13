@@ -1,7 +1,7 @@
 ---
 title: "Rôles et permissions d'équipe : traiter les demandes de devis B2B sans tout ouvrir à tout le monde"
 slug: roles-permissions-equipe-demande-devis-b2b
-description: "Propriétaire, Admin, Commercial : ce que chaque rôle ouvre dans QuoteBuilder, écran par écran, comment inviter un membre depuis Équipe, changer un rôle ou suspendre un accès, ce que le rôle Commercial ne cache pas, et une répartition simple selon la taille de l'équipe."
+description: "Propriétaire, Admin, Commercial : ce que chaque rôle ouvre dans QuoteBuilder, écran par écran, comment inviter un membre depuis Équipe, changer un rôle ou retirer un accès, ce que le rôle Commercial ne cache pas, et une répartition simple selon la taille de l'équipe."
 canonical: /blog/roles-permissions-equipe-demande-devis-b2b
 locale: fr-FR
 word_count_target: 2800
@@ -74,7 +74,7 @@ Sur la fiche de chaque membre, l'onglet **Accès** affiche la liste « Ce que ce
 | Espace membres | Portail client, documents, plugins | Oui | Non |
 | Funnels | Créer et éditer les parcours devis | Oui | Non |
 | Catalogue | Produits, Si/Alors, imports | Oui | Non |
-| Google Ads | Connexion, conversions, ROI | Oui | Non |
+| Google Ads | Connexion, conversions, ROI | Oui | Lecture seule |
 | Boutiques | Mini-site, Woo, Shopify | Oui | Non |
 | Automatisations | Canvas, parcours, exécutions | Oui | Non |
 | Équipe | Inviter, rôles, accès, journal | Oui | Non |
@@ -82,7 +82,7 @@ Sur la fiche de chaque membre, l'onglet **Accès** affiche la liste « Ce que ce
 | API et webhooks | Clés MCP Claude / ChatGPT, exports | Oui | Non |
 | Paramètres | Templates, suivi, RGPD | Oui | Non |
 
-Concrètement, un Commercial ne voit pas les entrées Funnels, Catalogue, Ads, Boutiques, Espace membres, Automatisations et Équipe dans le menu. S'il ouvre directement l'adresse d'un de ces écrans, il est renvoyé vers la liste des Demandes. Dans les Statistiques, il a les onglets Vue, Funnels, Campagnes, Pipeline et Sources, mais pas Suivi Google. Dans les Paramètres, il ne trouve que les Mises à jour : les templates d'emails, l'équipe, l'API, le suivi Google, les boutiques et l'effacement RGPD restent réservés aux Admins. Pour les canaux, il peut brancher sa propre boîte mail, pas la boîte partagée de l'organisation.
+Concrètement, un Commercial ne voit pas les entrées Funnels, Catalogue, Ads, Boutiques, Espace membres, Automatisations et Équipe dans le menu. S'il ouvre l'adresse d'un écran de réglage (Funnels, Catalogue, Boutiques, Espace membres, Automatisations ou Équipe), il arrive sur la liste des Demandes. La page Google Ads (/acquisition) ne redirige pas : le Commercial peut la lire, et seuls les contrôles d'administration (connexion, synchronisation) restent masqués. Dans les Statistiques, il a les onglets Vue, Funnels, Campagnes, Pipeline et Sources, mais pas Suivi Google. Dans les Paramètres, il ne trouve que les Mises à jour : les templates d'emails, l'équipe, l'API, le suivi Google, les boutiques et l'effacement RGPD restent réservés aux Admins. Pour les canaux, il peut brancher sa propre boîte mail, pas la boîte partagée de l'organisation.
 
 Les actions qui modifient ces réglages sont, elles aussi, refusées côté serveur pour un Commercial. Masquer un bouton ne suffirait pas : la vérification est faite à chaque enregistrement.
 
@@ -117,13 +117,13 @@ Quelques cas utiles à connaître :
 
 La connexion se fait par email et mot de passe. Pour un membre actif qui a perdu le sien, le bouton **Mot de passe** de sa fiche lui envoie un lien pour le définir ou le réinitialiser. Le lien expire après quelques heures.
 
-## Gérer un compte : rôle, suspension, départ
+## Gérer un compte : rôle, accès, départ
 
 La fiche d'un membre comporte, dans l'onglet Compte, une section **Gestion** avec deux actions.
 
 **Changer le rôle.** Une liste déroulante propose Commercial ou Admin, puis **Enregistrer le rôle**. Le nouveau rôle s'applique au prochain chargement de page de la personne : le menu et les écrans accessibles changent sans qu'elle ait à se reconnecter. Aucun email ne la prévient, pensez à le lui dire.
 
-**Suspendre ou réactiver.** Le bouton **Suspendre** coupe l'accès d'un membre actif sans supprimer sa fiche ni son historique. **Réactiver** le rétablit. Après une suspension, vérifiez sur la fiche que le statut affiché est bien Suspendu.
+**Le bouton Suspendre.** Il apparaît sur la fiche d'un membre actif. Ne comptez pas dessus pour couper un accès : l'écran peut annoncer que le statut est mis à jour alors que rien n'a changé. **Réactiver** est le libellé affiché quand le statut est déjà Suspendu. Après toute action sur un accès, ouvrez la liste Équipe et vérifiez que le statut affiché a bien changé.
 
 Trois règles encadrent ces actions :
 
@@ -133,7 +133,7 @@ Trois règles encadrent ces actions :
 
 Ce dernier point mérite attention. Si vous nommez trois Admins, chacun peut changer le rôle des deux autres. Dans une petite équipe, c'est rarement un problème. Mais c'est une raison de plus pour garder le rôle Admin à ceux qui configurent vraiment l'outil.
 
-**Quand quelqu'un quitte l'équipe**, l'ordre qui évite les oublis est le suivant : filtrez la liste des Demandes sur son nom pour voir ses dossiers ouverts, réassignez-les, puis suspendez son compte. La suspension ne réassigne rien d'elle-même : ses dossiers restent à son nom tant que personne ne les reprend.
+**Quand quelqu'un quitte l'équipe**, l'ordre fiable est le suivant : filtrez la liste des Demandes sur son nom pour voir ses dossiers ouverts, réassignez-les, puis retirez l'accès (révoquer). Vérifiez dans la liste Équipe que le statut a bien changé. Retirer l'accès ne réassigne rien : les dossiers restent au nom de la personne tant que personne ne les reprend.
 
 ## Les quatre onglets d'une fiche membre
 
@@ -150,7 +150,7 @@ Le Journal ne retrace que les actions sur les demandes. Les changements de rôle
 
 Le rôle dit ce qu'une personne peut ouvrir. L'assignation dit de quels dossiers elle est responsable. Les deux se confondent souvent, à tort.
 
-Depuis la fiche d'une demande, n'importe quel membre actif peut assigner le dossier à un ou plusieurs collègues, Commercial ou Admin. La personne assignée reçoit une notification dans l'application (« Demande assignée : » suivi du nom du contact) et un email sur son adresse d'invitation. Le dossier apparaît dans l'onglet Demandes de sa fiche membre et dans ses statistiques.
+Depuis la fiche d'une demande, n'importe quel membre actif peut assigner le dossier à un ou plusieurs collègues, Commercial ou Admin. La personne assignée reçoit une notification dans l'application (« Demande assignée : » suivi du nom du contact). L'email n'est envoyé qu'aux membres qui ont une adresse d'invitation. Le Propriétaire n'en a pas : il ne reçoit jamais cet email, seulement la notification dans l'application. Le dossier apparaît dans l'onglet Demandes de sa fiche membre et dans ses statistiques.
 
 Les règles de répartition (qui reçoit quoi, en combien de temps, que faire le week-end) sont un sujet à part, traité dans [assignation et SLA des demandes de devis en équipe](https://www.quotebuilder.co/blog/assignation-sla-demande-devis-equipe). Pour dimensionner l'équipe elle-même, le [calculateur de capacité équipe devis](https://www.quotebuilder.co/outils/calculateur-capacite-equipe-devis) aide à estimer combien de demandes une personne peut traiter par semaine.
 
@@ -188,7 +188,7 @@ Dans tous les cas, posez-vous la question pour chaque Admin : a-t-il modifié un
 
 **Laisser traîner les invitations.** Une invitation en attente envoyée à une mauvaise adresse ou à un candidat qui n'a finalement pas rejoint l'entreprise reste dans la liste. Filtrez par statut Invitation une fois par mois et révoquez celles qui ne servent plus.
 
-**Oublier les dossiers d'un départ.** Suspendre un compte ne réassigne pas ses demandes. Réassignez d'abord, suspendez ensuite.
+**Oublier les dossiers d'un départ.** Retirer l'accès ne réassigne pas les demandes. Réassignez les dossiers, puis retirez l'accès (révoquer), puis vérifiez dans la liste Équipe que le statut a bien changé.
 
 ## Checklist avant d'inviter l'équipe
 
@@ -200,7 +200,7 @@ Dans tous les cas, posez-vous la question pour chaque Admin : a-t-il modifié un
 - [ ] Chaque nouveau venu a vu l'onglet Accès de sa fiche
 - [ ] L'équipe sait que tous les membres voient toutes les demandes
 - [ ] Les relecteurs côté client passent par l'invitation sur le dossier, pas par la page Équipe
-- [ ] Une procédure de départ écrite : réassigner, puis suspendre, puis vérifier le statut
+- [ ] Une procédure de départ écrite : réassigner les dossiers, puis retirer l'accès (révoquer), puis vérifier dans la liste Équipe que le statut a bien changé
 - [ ] Une revue mensuelle des invitations en attente et des Admins réellement utiles
 
 ## Ce que QuoteBuilder ne fait pas
@@ -245,7 +245,7 @@ Si vous avez réinvité la même adresse ou cliqué sur Renvoyer l'accès, un no
 
 ### Un Admin peut-il modifier le rôle d'un autre Admin ?
 
-Oui. Un Admin peut changer le rôle d'un Commercial ou d'un autre Admin, et les suspendre. Il ne peut modifier ni le Propriétaire ni son propre compte.
+Oui. Un Admin peut changer le rôle d'un Commercial ou d'un autre Admin. Il ne peut modifier ni le Propriétaire ni son propre compte. Le bouton Suspendre ne coupe pas un accès de façon fiable : vérifiez le statut dans la liste Équipe.
 
 ### Que se passe-t-il quand on change le rôle d'un membre ?
 
@@ -253,7 +253,7 @@ Le nouveau rôle s'applique à son prochain chargement de page : le menu et les 
 
 ### Comment gérer le départ d'un commercial ?
 
-Filtrez la liste des Demandes sur son nom, réassignez ses dossiers ouverts, puis cliquez sur Suspendre dans la section Gestion de sa fiche. Vérifiez ensuite que la fiche affiche bien le statut Suspendu. Son historique reste consultable.
+Filtrez la liste des Demandes sur son nom, réassignez ses dossiers ouverts, puis retirez l'accès (révoquer). Vérifiez dans la liste Équipe que le statut a bien changé. Son historique reste consultable.
 
 ### Le Directeur financier ou le Responsable technique invité sur un dossier fait-il partie de l'équipe ?
 

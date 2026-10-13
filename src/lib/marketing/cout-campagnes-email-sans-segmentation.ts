@@ -117,7 +117,7 @@ export function computeCampaignWaste(input: CampaignWasteInput): CampaignWasteRe
     };
   } else if (coutMensuel >= 2000) {
     verdict = {
-      tone: "ok",
+      tone: "bad",
       text:
         "Sur ces hypothèses, écrire sans segment coûte environ " +
         fmtEur(coutMensuel) +
@@ -133,7 +133,7 @@ export function computeCampaignWaste(input: CampaignWasteInput): CampaignWasteRe
     };
   } else {
     verdict = {
-      tone: "bad",
+      tone: "ok",
       text:
         "Écart faible sur ces hypothèses (" +
         fmtEur(coutMensuel) +
