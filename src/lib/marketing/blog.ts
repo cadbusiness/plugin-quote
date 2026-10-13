@@ -113,6 +113,7 @@ export const BLOG_TOOL_MENTION_RGPD = "/outils/generateur-mention-rgpd-formulair
 export const BLOG_TOOL_SIGNATURE_WEBHOOK = "/outils/verificateur-signature-webhook-devis";
 export const BLOG_TOOL_COUT_CLIENT_GOOGLE_ADS = "/outils/calculateur-cout-par-client-google-ads-devis";
 export const BLOG_TOOL_CHARGE_AUTOPILOTE = "/outils/estimateur-charge-relances-manuelles-vs-autopilote";
+export const BLOG_TOOL_COUT_CAMPAGNES_EMAIL = "/outils/estimateur-cout-campagnes-email-sans-segmentation";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -138,6 +139,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     37: "Trente-sept",
     38: "Trente-huit",
     39: "Trente-neuf",
+    40: "Quarante",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -378,9 +380,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Demandes par mois, touches à la main, minutes, coût horaire, part où une touche saute, panier, taux de signature, mise en place. Temps, affaires perdues, coût mensuel évité. Calcul 100 % local.",
     tags: ["relances", "funnel"],
   },
+  {
+    href: BLOG_TOOL_COUT_CAMPAGNES_EMAIL,
+    title: "Estimateur coût des campagnes email sans segmentation",
+    text: "Campagnes par mois, taille de liste, part sans segment, minutes, plaintes, part déjà en parcours Autopilote, taux horaire, panier, affaires qui refroidissent. Heures, coût temps, contacts mal ciblés, opportunités. Calcul 100 % local.",
+    tags: ["funnel", "integrations"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "segments-campagnes-email-demande-devis-b2b",
+    path: "/blog/segments-campagnes-email-demande-devis-b2b",
+    title: "Segments et campagnes email sur des demandes de devis B2B : écrire à un groupe sans polluer le parcours",
+    description:
+      "Autopilote, campagnes et segments ne font pas le même travail. Champs, opérateurs, consentement marketing, fenêtre de 30 jours, et ce que le bilan d'envoi affiche vraiment.",
+    publishedAt: "2026-10-13",
+    readingMinutes: 16,
+    tags: ["funnel", "integrations"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisListe,
+    pinned: false,
+  },
   {
     slug: "autopilote-workflows-relance-demande-devis-b2b",
     path: "/blog/autopilote-workflows-relance-demande-devis-b2b",

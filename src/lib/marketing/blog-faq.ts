@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "segments-campagnes-email-demande-devis-b2b": [
+    {
+      q: "Quelle différence entre l'Autopilote et une campagne email ?",
+      a: "L'Autopilote attache un parcours à une demande : confirmation, relances, reprise d'abandon, selon un déclencheur. Une campagne envoie un email à un segment de contacts, quand vous lancez l'envoi. L'un ne remplace pas l'autre.",
+    },
+    {
+      q: "Où se règlent les segments et les campagnes ?",
+      a: "Dans le menu Commercial : Segmentation pour les règles, Emails pour le message et l'envoi. L'Autopilote est dans Automatisations, visible par les administrateurs. Un commercial voit Emails et Segmentation.",
+    },
+    {
+      q: "Quels critères peut-on combiner ?",
+      a: "Funnel, score, statut, audience, une réponse de funnel, et le dernier email marketing. Toutes les règles du segment doivent être vraies. Une liste de règles vide matche tout le monde.",
+    },
+    {
+      q: "Comment QuoteBuilder distingue-t-il le B2B du B2C ?",
+      a: "B2B veut dire qu'une société est renseignée sur la demande. B2C veut dire que le champ est vide. Il n'y a pas d'autre drapeau. L'opérateur « n'est pas » n'est pas appliqué sur ces deux valeurs.",
+    },
+    {
+      q: "Le score Hot, Warm ou Cold se configure-t-il ?",
+      a: "Non. Il est calculé à la soumission par une formule fixe, puis stocké. Le segment lit ce libellé. Il ne se recalcule pas le jour de la campagne, et vous ne réglez pas les points.",
+    },
+    {
+      q: "Que veut dire « déjà relancés » ?",
+      a: "La fenêtre, 30 jours par défaut, regarde la date du dernier envoi de campagne marketing. Elle ne regarde pas les emails de l'Autopilote. Mettre 0 désactive l'exclusion. Le libellé du bilan après envoi réutilise « déjà relancés » pour tous les ignorés, y compris le défaut de consentement.",
+    },
+    {
+      q: "Un contact sans case marketing reçoit-il la campagne ?",
+      a: "Non. Il est écarté de l'envoi. Il est compté parmi les ignorés dans le bilan. Le motif précis n'est pas affiché dans ce bilan.",
+    },
+    {
+      q: "Peut-on envoyer la campagne par SMS ou WhatsApp ?",
+      a: "Non. L'envoi est un email, depuis l'adresse QuoteBuilder ou une boîte Gmail, Outlook ou IMAP. Il n'y a pas de SMS dans ce module. WhatsApp n'est pas un mode d'envoi de campagne.",
+    },
+    {
+      q: "Une campagne sans segment part-elle quand même ?",
+      a: "Oui, vers les contacts qui ont un email, parmi les demandes lues (les 2 000 plus récentes), sous réserve du consentement et de la fenêtre de jours. L'option s'appelle « Tous les contacts avec un email ».",
+    },
+    {
+      q: "La newsletter segmentée est-elle incluse dans tous les plans ?",
+      a: "Sur la page Tarifs, la ligne est cochée pour Pro et Agency, pas pour Free ni Starter. Il n'y a pas de plan « Pro+ ». Les écrans Emails et Segmentation ne vérifient pas le plan à l'ouverture.",
+    },
+  ],
   "autopilote-workflows-relance-demande-devis-b2b": [
     {
       q: "Qu'est-ce que l'Autopilote de QuoteBuilder ?",

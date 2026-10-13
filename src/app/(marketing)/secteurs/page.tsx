@@ -27,6 +27,7 @@ const ALL_TEMPLATES = [
   { href: "/secteurs/funnel-devis-imprimerie-signaletique", label: "Imprimerie et signalétique" },
   { href: "/secteurs/funnel-devis-laboratoire-faconnage-cosmetique", label: "Laboratoire et façonnage" },
   { href: "/secteurs/funnel-devis-formation-professionnelle", label: "Formation professionnelle" },
+  { href: "/secteurs/funnel-devis-architecte-bet", label: "Architecte / BET" },
   { href: "/secteurs/funnel-devis-usinage-sous-traitance-pieces", label: "Usinage et sous-traitance" },
   { href: "/secteurs/funnel-devis-paysagiste-amenagement-jardin", label: "Paysagiste et aménagement de jardin" },
   { href: "/secteurs/funnel-devis-metallerie-serrurerie", label: "Métallerie et serrurerie" },
