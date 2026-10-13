@@ -41,7 +41,7 @@ await writeFile(
       requires_php: requiresPhp,
       tested: "6.8",
       author: "QuoteBuilder",
-      changelog: `<h4>${version}</h4><ul><li>Le formulaire enregistre l’e-mail dès qu’on quitte le champ, avec une mention visible, au statut Commencée.</li><li>L’envoi complète le même dossier. Une seule relance avec lien de reprise, suppression après 30 jours.</li><li>Les événements Google Tag Manager restent anonymes. L’e-mail crypté ne part vers Google Ads qu’à l’envoi, si les cookies publicitaires sont acceptés.</li></ul>`,
+      changelog: `<h4>${version}</h4><ul><li>Le formulaire enregistre l’e-mail dès qu’on quitte le champ, avec une mention visible, au statut Commencée.</li><li>L’envoi complète le même dossier. Une seule relance avec lien de reprise, suppression après 30 jours.</li><li>Les événements Google Tag Manager restent anonymes. L’e-mail crypté ne part vers Google Ads qu’à l’envoi, si les cookies publicitaires sont acceptés.</li><li>La source de la visite (gclid, gbraid, wbraid, UTM, page d’arrivée, site référent) est gardée 90 jours et jointe à la demande. Les identifiants de clic ne sont pas conservés si les cookies publicitaires sont refusés.</li></ul>`,
     },
     null,
     2,

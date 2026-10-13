@@ -6,6 +6,7 @@ import {
   listAccessibleCustomers,
   readOAuthState,
   ensureConversionActions,
+  parseAdsSettings,
 } from "@/lib/ads/google";
 import { storeRefreshToken, syncAdsCampaigns } from "@/lib/ads/sync";
 import type { Json } from "@/lib/db/database.types";
@@ -31,20 +32,29 @@ export async function GET(req: Request) {
     const credentials = storeRefreshToken(tokens.refresh_token);
     const { data: existing } = await supabase
       .from("ads_connections")
-      .select("id")
+      .select("id, customer_id, customer_name, settings")
       .eq("organization_id", parsed.orgId)
       .eq("provider", "google_ads")
       .maybeSingle();
+
+    // Reconnect keeps the chosen account and its conversion actions when still reachable.
+    const kept = existing?.customer_id ? customers.find((c) => c.id === existing.customer_id) : undefined;
+    const chosen = kept ?? (customers.length === 1 ? customers[0] : undefined);
+    const previous = parseAdsSettings(existing?.settings);
+    const rawPrevious =
+      existing?.settings && typeof existing.settings === "object" && !Array.isArray(existing.settings)
+        ? (existing.settings as Record<string, Json>)
+        : {};
 
     const payload = {
       organization_id: parsed.orgId,
       provider: "google_ads" as const,
       credentials,
       credentials_hint: "Google Ads",
-      status: customers.length === 1 ? "active" : "pending",
-      customer_id: customers[0]?.id ?? null,
-      customer_name: customers[0]?.name ?? null,
-      settings: { pendingCustomers: customers } as Json,
+      status: chosen ? "active" : "pending",
+      customer_id: chosen?.id ?? null,
+      customer_name: chosen?.name ?? null,
+      settings: { ...rawPrevious, pendingCustomers: customers } as Json,
       last_error: null,
       updated_at: new Date().toISOString(),
     };
@@ -55,11 +65,16 @@ export async function GET(req: Request) {
       await supabase.from("ads_connections").insert(payload);
     }
 
-    if (customers.length === 1 && customers[0]) {
-      const settings = await ensureConversionActions(tokens.access_token, customers[0].id, {});
+    if (chosen) {
+      const settings = await ensureConversionActions(
+        tokens.access_token,
+        chosen.id,
+        previous,
+        chosen.loginCustomerId ?? null,
+      );
       await supabase
         .from("ads_connections")
-        .update({ settings: settings as Json, status: "active" })
+        .update({ settings: { ...rawPrevious, ...settings, pendingCustomers: customers } as Json, status: "active" })
         .eq("organization_id", parsed.orgId)
         .eq("provider", "google_ads");
       await syncAdsCampaigns(supabase, parsed.orgId);

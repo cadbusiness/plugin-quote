@@ -7,6 +7,11 @@ import { createServiceClient } from "@/lib/supabase/service";
 import type { Json } from "@/lib/db/database.types";
 import type { Answers, StorefrontLine } from "@/lib/wizard/types";
 import {
+  hasPluginAttributionExtras,
+  pluginQuoteAttributionColumns,
+  resolvePluginAttribution,
+} from "@/lib/integrations/plugin-attribution";
+import {
   STARTED_LABEL,
   STARTED_STATUS,
   hashEmailForAds,
@@ -175,12 +180,8 @@ export async function captureStartedQuote(row: PluginConnection, body: unknown) 
     return { ok: false as const, status: 404, error: "Funnel introuvable", code: "funnel_missing" };
   }
 
-  const session = await createSession(org.slug, funnel.slug, {
-    utmSource: "wordpress",
-    utmMedium: "plugin",
-    referrer: quote.page || null,
-    landingPath: quote.page || null,
-  });
+  const tracked = resolvePluginAttribution(body, quote.page);
+  const session = await createSession(org.slug, funnel.slug, tracked.attribution);
   if (!session) return { ok: false as const, status: 404, error: "Funnel introuvable", code: "funnel_missing" };
 
   await updateSession(session.id, session.token, {
@@ -202,9 +203,10 @@ export async function captureStartedQuote(row: PluginConnection, body: unknown) 
       answers: answers as Json,
       status: STARTED_STATUS,
       status_id: statusId,
-      utm_source: "wordpress",
-      utm_medium: "plugin",
-      referrer: quote.page || null,
+      ...pluginQuoteAttributionColumns(tracked.attribution),
+      ...(hasPluginAttributionExtras(tracked.extras)
+        ? { extracted_params: { attribution: tracked.extras } as Json }
+        : {}),
     })
     .select("id")
     .single();

@@ -70,7 +70,7 @@ export async function pluginPayload(row: PluginConnection) {
       function: "quotebuilder_submit",
       auth: "Authorization: Bearer, X-QuoteBuilder-Connection",
       body: PLUGIN_QUOTE_EXAMPLE,
-      consentAds: "true seulement si le visiteur a accepté les cookies publicitaires, et seulement à l'envoi",
+      consentAds: "true si le visiteur a accepté les cookies publicitaires, false s'il les a refusés, absent si inconnu. Seulement à l'envoi",
     },
     site_key: row.public_key,
     public_submit: {

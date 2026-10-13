@@ -348,6 +348,106 @@
     return false;
   }
 
+  var ATTR_COOKIE = "quotebuilder_attr";
+  var ATTR_CLICK_KEYS = ["gclid", "gbraid", "wbraid", "fbclid", "msclkid"];
+  var ATTR_UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+  var ATTR_MAX_AGE = 90 * 24 * 60 * 60;
+
+  function adsDenied() {
+    try {
+      if (window.qbAdsConsent === false) return true;
+      if (window.Cookiebot && window.Cookiebot.hasResponse && window.Cookiebot.consent && window.Cookiebot.consent.marketing === false) return true;
+      if (/cookieyes-consent=[^;]*advertisement:no/.test(document.cookie || "")) return true;
+      var layer = window.dataLayer || [];
+      for (var i = layer.length - 1; i >= 0; i--) {
+        var item = layer[i];
+        if (item && item[0] === "consent" && item[1] === "update" && item[2] && item[2].ad_storage) {
+          return item[2].ad_storage === "denied";
+        }
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  function readAttribution() {
+    try {
+      var match = document.cookie.match(new RegExp("(?:^|; )" + ATTR_COOKIE + "=([^;]*)"));
+      if (!match) return {};
+      var saved = JSON.parse(decodeURIComponent(match[1]));
+      return saved && typeof saved === "object" && !Array.isArray(saved) ? saved : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function writeAttribution(data) {
+    try {
+      var value = encodeURIComponent(JSON.stringify(data));
+      if (value.length > 3800) return;
+      document.cookie = ATTR_COOKIE + "=" + value + "; max-age=" + ATTR_MAX_AGE + "; path=/; SameSite=Lax" +
+        (window.location.protocol === "https:" ? "; Secure" : "");
+    } catch (e) {}
+  }
+
+  function externalReferrer() {
+    var ref = document.referrer || "";
+    if (!ref) return "";
+    try {
+      return new URL(ref).hostname.replace(/^www\./, "") === window.location.hostname.replace(/^www\./, "") ? "" : ref.slice(0, 500);
+    } catch (e) {
+      return "";
+    }
+  }
+
+  // Last click: a new click ID replaces the old ones, a new UTM set replaces the whole set.
+  function captureAttribution() {
+    var params;
+    try { params = new URLSearchParams(window.location.search); } catch (e) { return; }
+    var denied = adsDenied();
+    var saved = readAttribution();
+    var next = {};
+    Object.keys(saved).forEach(function (key) { next[key] = saved[key]; });
+    var touched = !saved.first_seen;
+    var clicks = denied ? [] : ATTR_CLICK_KEYS.filter(function (key) { return params.get(key); });
+    if (clicks.length) {
+      ATTR_CLICK_KEYS.forEach(function (key) { delete next[key]; });
+      clicks.forEach(function (key) { next[key] = String(params.get(key)).slice(0, 255); });
+      touched = true;
+    }
+    var utms = ATTR_UTM_KEYS.filter(function (key) { return params.get(key); });
+    if (utms.length) {
+      ATTR_UTM_KEYS.forEach(function (key) { delete next[key]; });
+      utms.forEach(function (key) { next[key] = String(params.get(key)).slice(0, 255); });
+      touched = true;
+    }
+    var referrer = externalReferrer();
+    if (touched) {
+      next.landing = window.location.href.slice(0, 500);
+      if (referrer) next.referrer = referrer;
+      else if (clicks.length || utms.length) delete next.referrer;
+    }
+    if (!next.first_seen) next.first_seen = Math.floor(Date.now() / 1000);
+    if (denied) {
+      ATTR_CLICK_KEYS.forEach(function (key) { delete next[key]; });
+      if (next.landing) {
+        try {
+          var landing = new URL(next.landing);
+          ATTR_CLICK_KEYS.forEach(function (key) { landing.searchParams.delete(key); });
+          next.landing = landing.toString();
+        } catch (e) {
+          delete next.landing;
+        }
+      }
+    }
+    writeAttribution(next);
+  }
+
+  function attributionJson() {
+    var data = readAttribution();
+    if (adsDenied()) ATTR_CLICK_KEYS.forEach(function (key) { delete data[key]; });
+    return Object.keys(data).length ? JSON.stringify(data) : "";
+  }
+
   function sha256Email(email) {
     var value = String(email || "").trim().toLowerCase();
     var at = value.lastIndexOf("@");
@@ -418,6 +518,8 @@
         body.append("action", "quotebuilder_quote");
         body.append("nonce", cfg.nonce);
         body.append("quote_action", "start_lead");
+        var startAttribution = attributionJson();
+        if (startAttribution) body.append("attribution", startAttribution);
         fetch(cfg.ajax, { method: "POST", body: body, credentials: "same-origin" })
           .then(function (res) { return res.json(); })
           .then(function (json) {
@@ -444,6 +546,9 @@
       body.append("nonce", cfg.nonce);
       body.append("quote_action", "submit_lead");
       if (allowedAds) body.append("consent_ads", "1");
+      else if (adsDenied()) body.append("consent_ads", "0");
+      var submitAttribution = attributionJson();
+      if (submitAttribution) body.append("attribution", submitAttribution);
       var button = form.querySelector("[data-submit]");
       if (button) button.disabled = true;
       fetch(cfg.ajax, { method: "POST", body: body, credentials: "same-origin" })
@@ -524,6 +629,10 @@
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") closeDrawer();
   });
+
+  captureAttribution();
+  window.addEventListener("CookiebotOnConsentReady", captureAttribution);
+  document.addEventListener("cookieyes_consent_update", captureAttribution);
 
   if (window.requestIdleCallback) {
     window.requestIdleCallback(trackVisit, { timeout: 2500 });

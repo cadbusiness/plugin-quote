@@ -1,8 +1,10 @@
 import { CopyField } from "@/components/integrations/copy-field";
+import { SITE_URL } from "@/lib/marketing/site";
 import { mcpResourceUrl } from "@/lib/mcp/urls";
 
 export function McpSetupPanel() {
-  const url = mcpResourceUrl();
+  // Production: the www host (OAuth discovery answers on it too); previews / local: their own origin.
+  const url = mcpResourceUrl(process.env.VERCEL_ENV === "production" ? SITE_URL : undefined);
   return (
     <div className="mb-4 space-y-3 text-sm text-slate-600">
       <div>
@@ -11,6 +13,11 @@ export function McpSetupPanel() {
           <CopyField value={url} label="Copier l’URL" />
         </div>
       </div>
+      <p>
+        <span className="font-medium text-slate-800">Claude (claude.ai, Desktop, mobile)</span> : Paramètres →
+        Connecteurs → Ajouter un connecteur personnalisé. Collez l’URL, puis connectez-vous et autorisez
+        (compte admin).
+      </p>
       <p>
         <span className="font-medium text-slate-800">ChatGPT (web)</span> : Paramètres → Applications et
         connecteurs → mode développeur → Créer. Collez l’URL, authentification OAuth (laissez client id /

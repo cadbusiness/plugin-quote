@@ -559,8 +559,12 @@ class QuoteBuilder_Quote {
             'height' => sanitize_text_field(wp_unslash($_POST['height'] ?? '')),
             'products' => $products,
         ];
-        if ($consent_ads) {
-            $payload['consentAds'] = true;
+        if ($consent_ads !== null) {
+            $payload['consentAds'] = (bool) $consent_ads;
+        }
+        $attribution = QuoteBuilder_Pairing::attribution(wp_unslash($_POST['attribution'] ?? ''));
+        if ($attribution) {
+            $payload['attribution'] = $attribution;
         }
         return $payload;
     }
@@ -569,7 +573,7 @@ class QuoteBuilder_Quote {
         if (trim((string) wp_unslash($_POST['qb_website'] ?? '')) !== '') {
             wp_send_json_error(['message' => 'Envoi impossible.'], 400);
         }
-        $payload = self::request_payload(false);
+        $payload = self::request_payload(null);
         if (!is_email($payload['email'])) {
             wp_send_json_error(['message' => 'L\'e-mail est requis.'], 400);
         }
@@ -609,7 +613,8 @@ class QuoteBuilder_Quote {
         if (trim((string) wp_unslash($_POST['qb_website'] ?? '')) !== '') {
             wp_send_json_error(['message' => 'Envoi impossible.'], 400);
         }
-        $payload = self::request_payload(isset($_POST['consent_ads']) && (string) wp_unslash($_POST['consent_ads']) === '1');
+        $consent = isset($_POST['consent_ads']) ? (string) wp_unslash($_POST['consent_ads']) : '';
+        $payload = self::request_payload($consent === '1' ? true : ($consent === '0' ? false : null));
         if (strlen($payload['need']) < 2 || strlen($payload['name']) < 2 || !is_email($payload['email']) || $payload['phone'] === '') {
             wp_send_json_error(['message' => 'Il manque le projet, votre nom, un e-mail valide ou votre téléphone.'], 400);
         }

@@ -1,10 +1,10 @@
 {
   "slug": "quotebuilder-wp",
   "name": "QuoteBuilder",
-  "version": "2.3.20",
+  "version": "2.3.21",
   "requires": "6.0",
   "requires_php": "7.4",
   "tested": "6.8",
   "author": "QuoteBuilder",
-  "changelog": "<h4>2.3.20</h4><ul><li>Le formulaire enregistre l’e-mail dès qu’on quitte le champ, avec une mention visible, au statut Commencée.</li><li>L’envoi complète le même dossier. Une seule relance avec lien de reprise, suppression après 30 jours.</li><li>Les événements Google Tag Manager restent anonymes. L’e-mail crypté ne part vers Google Ads qu’à l’envoi, si les cookies publicitaires sont acceptés.</li></ul>"
+  "changelog": "<h4>2.3.21</h4><ul><li>Le formulaire enregistre l’e-mail dès qu’on quitte le champ, avec une mention visible, au statut Commencée.</li><li>L’envoi complète le même dossier. Une seule relance avec lien de reprise, suppression après 30 jours.</li><li>Les événements Google Tag Manager restent anonymes. L’e-mail crypté ne part vers Google Ads qu’à l’envoi, si les cookies publicitaires sont acceptés.</li><li>La source de la visite (gclid, gbraid, wbraid, UTM, page d’arrivée, site référent) est gardée 90 jours et jointe à la demande. Les identifiants de clic ne sont pas conservés si les cookies publicitaires sont refusés.</li></ul>"
 }

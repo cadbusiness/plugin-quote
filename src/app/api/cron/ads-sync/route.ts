@@ -13,13 +13,16 @@ export async function GET(req: Request) {
   const supabase = createServiceClient();
   const { data: connections } = await supabase
     .from("ads_connections")
-    .select("organization_id")
+    .select("organization_id, status")
     .eq("provider", "google_ads")
-    .eq("status", "active")
+    .in("status", ["active", "error"])
+    .not("customer_id", "is", null)
+    .order("status", { ascending: true })
     .limit(40);
   const results = [];
+  // Errored connections get one retry per run; a successful sync sets them back to active.
   for (const row of connections ?? []) {
-    results.push(await syncAdsCampaigns(supabase, row.organization_id));
+    results.push({ status: row.status, ...(await syncAdsCampaigns(supabase, row.organization_id)) });
   }
   return NextResponse.json({ connections: results.length, results });
 }

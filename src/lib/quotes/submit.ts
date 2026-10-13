@@ -163,23 +163,6 @@ export async function submitQuote(input: {
     event_type: "quotebuilder_submitted",
   });
 
-  try {
-    const { reportAdsConversion } = await import("@/lib/ads/sync");
-    await reportAdsConversion({
-      supabase,
-      organizationId: session.organization_id,
-      quoteId: quote.id,
-      kind: "quote",
-      gclid: session.gclid,
-      gbraid: session.gbraid,
-      wbraid: session.wbraid,
-      occurredAt: quote.created_at,
-      hashedEmail: input.consentAds ? hashEmailForAds(input.contact.email) : undefined,
-    });
-  } catch (error) {
-    console.error("Ads conversion upload failed", error);
-  }
-
   const fromQuantities = products.filter((product) => (customization.quantities[product.id] ?? 0) > 0);
   const fromSuggestion = selected?.products ?? [];
   const seen = new Set<string>();
@@ -238,6 +221,26 @@ export async function submitQuote(input: {
     else quote = { ...quote, extracted_params: stamped };
   } catch (error) {
     console.error("Quote price stamp failed", error);
+  }
+
+  try {
+    const { reportAdsConversion } = await import("@/lib/ads/sync");
+    const { adsConversionValue } = await import("@/lib/ads/conversions");
+    await reportAdsConversion({
+      supabase,
+      organizationId: session.organization_id,
+      quoteId: quote.id,
+      kind: "quote",
+      gclid: session.gclid,
+      gbraid: session.gbraid,
+      wbraid: session.wbraid,
+      occurredAt: quote.created_at,
+      value: adsConversionValue({ kind: "quote", extractedParams: quote.extracted_params, lines: items, currency }),
+      consentAds: input.consentAds,
+      hashedEmail: input.consentAds ? hashEmailForAds(input.contact.email) : undefined,
+    });
+  } catch (error) {
+    console.error("Ads conversion upload failed", error);
   }
 
   await supabase

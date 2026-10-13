@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { syncAdsCampaigns, loadAdsConnection, accessTokenFor } from "@/lib/ads/sync";
 import { ensureConversionActions, listAccessibleCustomers, parseAdsSettings } from "@/lib/ads/google";
+import { parsePendingCustomers } from "@/lib/ads/conversions";
 import type { Json } from "@/lib/db/database.types";
 
 async function requireAdmin() {
@@ -22,7 +23,13 @@ export async function pickAdsCustomer(customerId: string, customerName: string) 
   if (!row) redirect("/acquisition?error=noconnect");
   try {
     const access = await accessTokenFor(row);
-    const settings = await ensureConversionActions(access, customerId, parseAdsSettings(row.settings));
+    const listed = parsePendingCustomers(row.settings).find((customer) => customer.id === customerId);
+    const settings = await ensureConversionActions(
+      access,
+      customerId,
+      parseAdsSettings(row.settings),
+      listed?.loginCustomerId ?? null,
+    );
     await supabase
       .from("ads_connections")
       .update({

@@ -1,9 +1,19 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { getAppUrl } from "@/lib/supabase/env";
 import { encryptSecret, decryptSecret } from "@/lib/integrations/secrets";
+import {
+  adsConsent,
+  mergeCustomers,
+  parseCustomerClients,
+  parseUploadResults,
+  resourceBelongsTo,
+  type AdsConversionValue,
+  type AdsCustomer,
+} from "@/lib/ads/conversions";
 
 export const GOOGLE_ADS_SCOPE = "https://www.googleapis.com/auth/adwords";
-export const GOOGLE_ADS_API = process.env.GOOGLE_ADS_API_VERSION?.trim() || "v19";
+// v24 (Apr 2026) is supported until ~May 2027; override with GOOGLE_ADS_API_VERSION.
+export const GOOGLE_ADS_API = process.env.GOOGLE_ADS_API_VERSION?.trim() || "v24";
 
 export type GoogleAdsEnv = {
   clientId: string;
@@ -136,6 +146,8 @@ export function decryptRefreshToken(stored: string) {
 export type AdsConnectionSettings = {
   quoteActionResource?: string;
   wonActionResource?: string;
+  /** Manager account id sent as login-customer-id when the client is reached through an MCC. */
+  loginCustomerId?: string;
 };
 
 export function parseAdsSettings(raw: unknown): AdsConnectionSettings {
@@ -144,21 +156,25 @@ export function parseAdsSettings(raw: unknown): AdsConnectionSettings {
   return {
     quoteActionResource: typeof row.quoteActionResource === "string" ? row.quoteActionResource : undefined,
     wonActionResource: typeof row.wonActionResource === "string" ? row.wonActionResource : undefined,
+    loginCustomerId:
+      typeof row.loginCustomerId === "string" && row.loginCustomerId ? digits(row.loginCustomerId) : undefined,
   };
 }
 
 type AdsJson = Record<string, unknown>;
 
-async function adsFetch(path: string, accessToken: string, init?: RequestInit) {
+async function adsFetch(path: string, accessToken: string, init?: RequestInit & { loginCustomerId?: string | null }) {
   const env = googleAdsEnv();
   if (!env) throw new Error("Google Ads n’est pas configuré sur l’instance.");
+  const { loginCustomerId, ...rest } = init ?? {};
   const res = await fetch(`https://googleads.googleapis.com/${GOOGLE_ADS_API}/${path}`, {
-    ...init,
+    ...rest,
     headers: {
       authorization: `Bearer ${accessToken}`,
       "developer-token": env.developerToken,
       "content-type": "application/json",
-      ...(init?.headers ?? {}),
+      ...(loginCustomerId ? { "login-customer-id": digits(loginCustomerId) } : {}),
+      ...(rest.headers ?? {}),
     },
   });
   const data = (await res.json().catch(() => ({}))) as AdsJson;
@@ -173,37 +189,62 @@ async function adsFetch(path: string, accessToken: string, init?: RequestInit) {
   return data;
 }
 
-export type AdsCustomer = { id: string; name: string };
+export type { AdsCustomer };
 
 function digits(resource: string) {
   return resource.replace(/[^0-9]/g, "");
 }
 
+/** Accessible accounts; managers are replaced by their client accounts (with loginCustomerId). */
 export async function listAccessibleCustomers(accessToken: string): Promise<AdsCustomer[]> {
   const data = await adsFetch("customers:listAccessibleCustomers", accessToken);
   const names = Array.isArray(data.resourceNames) ? data.resourceNames.filter((n): n is string => typeof n === "string") : [];
-  const customers: AdsCustomer[] = [];
+  const direct: AdsCustomer[] = [];
+  const viaManagers: AdsCustomer[][] = [];
   for (const resource of names) {
     const id = digits(resource);
     if (!id) continue;
+    let name = `Compte ${id}`;
+    let manager = false;
     try {
-      const search = await searchAds(accessToken, id, "SELECT customer.id, customer.descriptive_name FROM customer LIMIT 1");
-      const row = search[0]?.customer as AdsJson | undefined;
-      customers.push({
+      const search = await searchAds(
+        accessToken,
         id,
-        name: typeof row?.descriptiveName === "string" && row.descriptiveName ? row.descriptiveName : `Compte ${id}`,
-      });
+        "SELECT customer.id, customer.descriptive_name, customer.manager FROM customer LIMIT 1",
+      );
+      const row = search[0]?.customer as AdsJson | undefined;
+      if (typeof row?.descriptiveName === "string" && row.descriptiveName) name = row.descriptiveName;
+      manager = row?.manager === true;
     } catch {
-      customers.push({ id, name: `Compte ${id}` });
+      // Not readable directly (cancelled, no access): still listed.
+    }
+    if (!manager) {
+      direct.push({ id, name });
+      continue;
+    }
+    try {
+      const rows = await searchAds(
+        accessToken,
+        id,
+        `SELECT customer_client.id, customer_client.descriptive_name, customer_client.manager, customer_client.level, customer_client.status
+         FROM customer_client
+         WHERE customer_client.manager = false
+           AND customer_client.status = 'ENABLED'`,
+        id,
+      );
+      viaManagers.push(parseCustomerClients(rows, id));
+    } catch {
+      // Manager without readable children: nothing to upload to.
     }
   }
-  return customers;
+  return mergeCustomers([direct, ...viaManagers]);
 }
 
-export async function searchAds(accessToken: string, customerId: string, query: string) {
+export async function searchAds(accessToken: string, customerId: string, query: string, loginCustomerId?: string | null) {
   const data = await adsFetch(`customers/${customerId}/googleAds:search`, accessToken, {
     method: "POST",
     body: JSON.stringify({ query }),
+    loginCustomerId,
   });
   return Array.isArray(data.results) ? (data.results as AdsJson[]) : [];
 }
@@ -222,6 +263,7 @@ export async function fetchCampaignPerformance(
   customerId: string,
   from: string,
   to: string,
+  loginCustomerId?: string | null,
 ): Promise<AdsCampaignDay[]> {
   const results = await searchAds(
     accessToken,
@@ -230,6 +272,7 @@ export async function fetchCampaignPerformance(
      FROM campaign
      WHERE segments.date BETWEEN '${from}' AND '${to}'
        AND campaign.status != 'REMOVED'`,
+    loginCustomerId,
   );
   return results.map((row) => {
     const campaign = (row.campaign ?? {}) as AdsJson;
@@ -246,11 +289,15 @@ export async function fetchCampaignPerformance(
   });
 }
 
+export const QUOTE_ACTION_NAME = "QuoteBuilder — Devis soumis";
+export const WON_ACTION_NAME = "QuoteBuilder — Affaire gagnée";
+
 async function mutateConversionAction(
   accessToken: string,
   customerId: string,
   name: string,
   category: string,
+  loginCustomerId?: string | null,
 ) {
   const data = await adsFetch(`customers/${customerId}/conversionActions:mutate`, accessToken, {
     method: "POST",
@@ -268,54 +315,117 @@ async function mutateConversionAction(
         },
       ],
     }),
+    loginCustomerId,
   });
   const results = Array.isArray(data.results) ? (data.results as AdsJson[]) : [];
   const resource = results[0]?.resourceName;
   return typeof resource === "string" ? resource : null;
 }
 
-export async function ensureConversionActions(accessToken: string, customerId: string, existing: AdsConnectionSettings) {
-  const next = { ...existing };
-  if (!next.quoteActionResource) {
-    try {
-      next.quoteActionResource =
-        (await mutateConversionAction(accessToken, customerId, "QuoteBuilder — Devis soumis", "SUBMIT_LEAD_FORM")) ??
-        undefined;
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "";
-      if (!/already exists|DUPLICATE/i.test(message)) throw error;
+/** Existing QuoteBuilder upload actions, by name (suffixed copies included). */
+async function findConversionActions(accessToken: string, customerId: string, loginCustomerId?: string | null) {
+  const rows = await searchAds(
+    accessToken,
+    customerId,
+    `SELECT conversion_action.resource_name, conversion_action.name, conversion_action.status
+     FROM conversion_action
+     WHERE conversion_action.name LIKE 'QuoteBuilder — %'
+       AND conversion_action.status != 'REMOVED'`,
+    loginCustomerId,
+  );
+  const byName = new Map<string, string>();
+  for (const row of rows) {
+    const action = (row.conversionAction ?? {}) as AdsJson;
+    if (typeof action.name === "string" && typeof action.resourceName === "string") {
+      byName.set(action.name, action.resourceName);
     }
   }
-  if (!next.wonActionResource) {
-    try {
-      next.wonActionResource =
-        (await mutateConversionAction(accessToken, customerId, "QuoteBuilder — Affaire gagnée", "CONVERTED_LEAD")) ??
-        undefined;
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "";
-      if (!/already exists|DUPLICATE/i.test(message)) throw error;
-    }
+  const pick = (base: string) => {
+    if (byName.has(base)) return byName.get(base);
+    for (const [name, resource] of byName) if (name.startsWith(`${base} (`)) return resource;
+    return undefined;
+  };
+  return { quote: pick(QUOTE_ACTION_NAME), won: pick(WON_ACTION_NAME) };
+}
+
+async function createConversionAction(
+  accessToken: string,
+  customerId: string,
+  name: string,
+  category: string,
+  loginCustomerId?: string | null,
+) {
+  try {
+    const created = await mutateConversionAction(accessToken, customerId, name, category, loginCustomerId);
+    if (created) return created;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "";
+    if (!/already exists|DUPLICATE/i.test(message)) throw error;
+    // Name held by a removed action: create a dated copy instead.
+    const dated = `${name} (${new Date().toISOString().slice(0, 10)})`;
+    const created = await mutateConversionAction(accessToken, customerId, dated, category, loginCustomerId);
+    if (created) return created;
   }
+  throw new Error(`Action de conversion Google Ads « ${name} » introuvable et impossible à créer.`);
+}
+
+/**
+ * Resolves both upload actions for the customer: stored resource if it belongs to this
+ * customer, else an existing action found by name, else a new one. Throws rather than
+ * returning empty resources.
+ */
+export async function ensureConversionActions(
+  accessToken: string,
+  customerId: string,
+  existing: AdsConnectionSettings,
+  loginCustomerId: string | null | undefined = existing.loginCustomerId,
+): Promise<AdsConnectionSettings> {
+  const next: AdsConnectionSettings = { ...existing, loginCustomerId: loginCustomerId || undefined };
+  if (!resourceBelongsTo(next.quoteActionResource, customerId)) next.quoteActionResource = undefined;
+  if (!resourceBelongsTo(next.wonActionResource, customerId)) next.wonActionResource = undefined;
+  if (next.quoteActionResource && next.wonActionResource) return next;
+
+  const found = await findConversionActions(accessToken, customerId, loginCustomerId);
+  next.quoteActionResource ??= found.quote;
+  next.wonActionResource ??= found.won;
+  next.quoteActionResource ??= await createConversionAction(
+    accessToken,
+    customerId,
+    QUOTE_ACTION_NAME,
+    "SUBMIT_LEAD_FORM",
+    loginCustomerId,
+  );
+  next.wonActionResource ??= await createConversionAction(
+    accessToken,
+    customerId,
+    WON_ACTION_NAME,
+    "CONVERTED_LEAD",
+    loginCustomerId,
+  );
   return next;
 }
 
 export async function uploadClickConversion(input: {
   accessToken: string;
   customerId: string;
+  loginCustomerId?: string | null;
   conversionAction: string;
   gclid?: string | null;
   gbraid?: string | null;
   wbraid?: string | null;
   conversionDateTime: string;
-  value?: number | null;
+  value?: AdsConversionValue | null;
+  consentAds?: boolean | null;
   hashedEmail?: string | null;
 }) {
   const conversion: AdsJson = {
     conversionAction: input.conversionAction,
     conversionDateTime: input.conversionDateTime,
-    currencyCode: "EUR",
   };
-  if (input.value && input.value > 0) conversion.conversionValue = input.value;
+  if (input.value && input.value.value > 0) {
+    conversion.conversionValue = input.value.value;
+    conversion.currencyCode = input.value.currency;
+  }
   if (input.gclid) conversion.gclid = input.gclid;
   else if (input.gbraid) conversion.gbraid = input.gbraid;
   else if (input.wbraid) conversion.wbraid = input.wbraid;
@@ -323,14 +433,19 @@ export async function uploadClickConversion(input: {
   if (input.hashedEmail && /^[a-f0-9]{64}$/.test(input.hashedEmail)) {
     conversion.userIdentifiers = [{ hashedEmail: input.hashedEmail }];
   }
+  const consent = adsConsent(input.consentAds);
+  if (consent) conversion.consent = consent;
 
-  await adsFetch(`customers/${input.customerId}:uploadClickConversions`, input.accessToken, {
+  const data = await adsFetch(`customers/${input.customerId}:uploadClickConversions`, input.accessToken, {
     method: "POST",
     body: JSON.stringify({
       conversions: [conversion],
       partialFailure: true,
     }),
+    loginCustomerId: input.loginCustomerId,
   });
+  const [outcome] = parseUploadResults(data, 1);
+  if (outcome && !outcome.ok) throw new Error(outcome.error);
 }
 
 export function adsDateTime(iso: string) {

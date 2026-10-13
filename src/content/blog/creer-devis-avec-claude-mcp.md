@@ -98,7 +98,7 @@ Dans `claude_desktop_config.json` (config Claude Desktop), un bloc type ressembl
       "args": ["-y", "quotebuilder-mcp"],
       "env": {
         "QB_API_KEY": "qb_live_votre_cle",
-        "QB_API_URL": "https://app.quotebuilder.io",
+        "QB_API_URL": "https://www.quotebuilder.co",
         "MCP_DEVIS_V0": "1"
       }
     }
@@ -109,7 +109,7 @@ Dans `claude_desktop_config.json` (config Claude Desktop), un bloc type ressembl
 Notes de configuration :
 
 - **`QB_API_KEY`** : obligatoire, clé `qb_live_…`.
-- **`QB_API_URL`** : URL de base de l’API documentée dans le README du package `quotebuilder-mcp` (défaut documenté : `https://app.quotebuilder.io`). Le site marketing / app canonique reste [https://www.quotebuilder.co](https://www.quotebuilder.co). En local : `http://localhost:3000`.
+- **`QB_API_URL`** : URL de base de l’API documentée dans le README du package `quotebuilder-mcp` (défaut documenté : `https://www.quotebuilder.co`). Le site marketing / app canonique reste [https://www.quotebuilder.co](https://www.quotebuilder.co). En local : `http://localhost:3000`.
 - **`MCP_DEVIS_V0=1`** : active les tools devis v0.
 
 Redémarrez Claude Desktop après sauvegarde. Dans un nouveau chat, Claude doit voir les tools QuoteBuilder (dont les trois devis si le flag est bien passé).
@@ -216,7 +216,7 @@ Autrement dit : MCP v0 = **créer et suivre des dossiers vendeur** depuis Claude
 2. Clé API créée dans **Paramètres → API & webhooks** (`qb_live_…`), stockée en gestionnaire de secrets.
 3. Claude Desktop installé ; `npx` / Node OK.
 4. Bloc `mcpServers.quotebuilder` ajouté dans `claude_desktop_config.json`.
-5. `QB_API_URL` = valeur documentée du package (défaut README : `https://app.quotebuilder.io`) ; site utilisateur : `https://www.quotebuilder.co`.
+5. `QB_API_URL` = valeur documentée du package (défaut README : `https://www.quotebuilder.co`) ; site utilisateur : `https://www.quotebuilder.co`.
 6. `MCP_DEVIS_V0=1` présent dans `env`.
 7. Redémarrage Claude Desktop ; tools visibles dans un nouveau chat.
 8. Premier test : `create_quote` avec `run_autopilot` false sur un contact fictif.
@@ -238,7 +238,7 @@ Non pour démarrer : [créez un compte Free](https://www.quotebuilder.co/signup?
 
 ### Quelle URL mettre dans `QB_API_URL` ?
 
-Celle documentée par le package / README MCP. Aujourd’hui le défaut documenté est `https://app.quotebuilder.io`. L’URL canonique du produit web reste `https://www.quotebuilder.co`. En doute, recopiez exactement la valeur de votre doc interne ou du README du package, ne « corrigez » pas au feeling.
+Celle documentée par le package / README MCP. Aujourd’hui le défaut documenté est `https://www.quotebuilder.co`. L’URL canonique du produit web reste `https://www.quotebuilder.co`. En doute, recopiez exactement la valeur de votre doc interne ou du README du package, ne « corrigez » pas au feeling.
 
 ### `create_quote` envoie-t-il un e-mail au prospect ?
 

@@ -10,6 +10,11 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { getAppUrl } from "@/lib/supabase/env";
 import { dispatchQuoteWebhooks } from "@/lib/webhooks/dispatch";
 import type { Answers } from "@/lib/wizard/types";
+import {
+  hasPluginAttributionExtras,
+  pluginQuoteAttributionColumns,
+  resolvePluginAttribution,
+} from "@/lib/integrations/plugin-attribution";
 
 /** Shown by classifySource as « Site Web » — origin of a WordPress inbound quote. */
 export const PLUGIN_QUOTE_SOURCE = "site web";
@@ -225,6 +230,8 @@ export async function receivePluginQuote(connection: PluginConnection, body: unk
   const lines = pluginQuoteLines(parsed.quote.items, products);
   const answers = pluginQuoteAnswers(parsed.quote);
   const { score, label } = scoreQuote(answers);
+  const tracked = resolvePluginAttribution(body, parsed.quote.pageUrl);
+  const trackedColumns = pluginQuoteAttributionColumns(tracked.attribution);
 
   const { data: defaultStatus } = await supabase
     .from("quote_statuses")
@@ -252,15 +259,20 @@ export async function receivePluginQuote(connection: PluginConnection, body: unk
         org: parsed.quote.org || null,
         funnel: parsed.quote.funnel || null,
         created_at: parsed.quote.createdAt,
+        ...(hasPluginAttributionExtras(tracked.extras) ? { attribution: tracked.extras } : {}),
       } as Json,
       score,
       score_label: label,
       status: defaultStatus?.slug ?? "new",
       status_id: defaultStatus?.id ?? null,
-      utm_source: PLUGIN_QUOTE_SOURCE,
-      utm_medium: PLUGIN_QUOTE_MEDIUM,
-      utm_content: parsed.quote.context || null,
-      referrer: parsed.quote.pageUrl || null,
+      ...(tracked.present
+        ? { ...trackedColumns, utm_content: trackedColumns.utm_content ?? (parsed.quote.context || null) }
+        : {
+            utm_source: PLUGIN_QUOTE_SOURCE,
+            utm_medium: PLUGIN_QUOTE_MEDIUM,
+            utm_content: parsed.quote.context || null,
+            referrer: parsed.quote.pageUrl || null,
+          }),
       ...(parsed.quote.createdAt ? { created_at: parsed.quote.createdAt } : {}),
     })
     .select("*")

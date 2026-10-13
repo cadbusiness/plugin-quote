@@ -3,7 +3,7 @@ import { pkceChallengeS256, verifyPkceS256 } from "./pkce";
 import { isAllowedRedirectUri, isPublicHttpsUrl } from "./cimd";
 import { parseAuthorizeRequest } from "./oauth";
 import { organizationIdFromAuth } from "./auth";
-import { MCP_PATH, mcpResourceUrl } from "./urls";
+import { MCP_PATH, MCP_RESOURCE_METADATA_PATH_FOR_RESOURCE, allowedPublicOrigin, mcpResourceUrl, originFromRequest } from "./urls";
 import { errorResult, textResult } from "./results";
 
 const verifier = "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk";
@@ -41,6 +41,28 @@ assert.throws(() => organizationIdFromAuth(undefined), /Organisation introuvable
 
 assert.equal(MCP_PATH, "/api/mcp");
 assert.match(mcpResourceUrl("https://www.quotebuilder.co"), /\/api\/mcp$/);
+assert.equal(MCP_RESOURCE_METADATA_PATH_FOR_RESOURCE, "/.well-known/oauth-protected-resource/api/mcp");
+
+// Discovery URLs follow the host the client typed, but only allow-listed hosts.
+assert.equal(allowedPublicOrigin("www.quotebuilder.co", "https"), "https://www.quotebuilder.co");
+assert.equal(allowedPublicOrigin("quotebuilder-weld.vercel.app", "http"), "https://quotebuilder-weld.vercel.app");
+assert.equal(allowedPublicOrigin("WWW.QUOTEBUILDER.CO, proxy.internal", "https"), "https://www.quotebuilder.co");
+assert.equal(allowedPublicOrigin("localhost:3000", "http"), "http://localhost:3000");
+assert.equal(allowedPublicOrigin("evil.example", "https"), null);
+assert.equal(allowedPublicOrigin("www.quotebuilder.co.evil.example", "https"), null);
+assert.equal(allowedPublicOrigin("www.quotebuilder.co:8443", "https"), null);
+assert.equal(allowedPublicOrigin("evil.example/@www.quotebuilder.co", "https"), null);
+assert.equal(allowedPublicOrigin("", "https"), null);
+
+const viaWww = new Request("https://quotebuilder-weld.vercel.app/api/mcp", {
+  headers: { "x-forwarded-host": "www.quotebuilder.co", "x-forwarded-proto": "https" },
+});
+assert.equal(originFromRequest(viaWww), "https://www.quotebuilder.co");
+assert.equal(originFromRequest(new Request("https://quotebuilder-weld.vercel.app/api/mcp")), "https://quotebuilder-weld.vercel.app");
+const spoofed = originFromRequest(
+  new Request("https://evil.example/api/mcp", { headers: { "x-forwarded-host": "evil.example" } }),
+);
+assert.notEqual(spoofed, "https://evil.example");
 
 const payload = textResult({ id: "q1" });
 assert.equal(payload.content[0]?.type, "text");

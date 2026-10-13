@@ -10,6 +10,7 @@ import {
   uploadClickConversion,
   type AdsConnectionSettings,
 } from "@/lib/ads/google";
+import { adsConversionValue, type AdsConversionValue } from "@/lib/ads/conversions";
 
 export type AdsConnectionView = {
   id: string;
@@ -77,14 +78,24 @@ export async function syncAdsCampaigns(
   if (!row?.customer_id || row.status === "disabled") {
     return { ok: false as const, error: "Compte Google Ads non connecté." };
   }
+  if (row.status === "pending") {
+    return { ok: false as const, error: "Choisissez le compte Google Ads à relier." };
+  }
   try {
     const access = await accessTokenFor(row);
+    const raw = row.settings && typeof row.settings === "object" && !Array.isArray(row.settings) ? row.settings : {};
     const settings = parseAdsSettings(row.settings);
     const ensured = await ensureConversionActions(access, row.customer_id, settings);
     const to = new Date();
     const from = new Date(to.getTime() - days * 86400000);
     const iso = (d: Date) => d.toISOString().slice(0, 10);
-    const daysRows = await fetchCampaignPerformance(access, row.customer_id, iso(from), iso(to));
+    const daysRows = await fetchCampaignPerformance(
+      access,
+      row.customer_id,
+      iso(from),
+      iso(to),
+      ensured.loginCustomerId,
+    );
     if (daysRows.length) {
       await supabase
         .from("ads_campaign_stats")
@@ -108,7 +119,7 @@ export async function syncAdsCampaigns(
         status: "active",
         last_sync_at: new Date().toISOString(),
         last_error: null,
-        settings: ensured as Json,
+        settings: { ...raw, ...ensured } as Json,
         updated_at: new Date().toISOString(),
       })
       .eq("id", row.id);
@@ -123,6 +134,50 @@ export async function syncAdsCampaigns(
   }
 }
 
+async function recordUpload(
+  supabase: SupabaseClient<Database>,
+  row: {
+    organizationId: string;
+    quoteId: string;
+    kind: "quote" | "won";
+    gclid: string | null;
+    status: "uploaded" | "skipped" | "error";
+    error: string | null;
+  },
+) {
+  await supabase.from("ads_conversion_uploads").upsert(
+    {
+      organization_id: row.organizationId,
+      quote_id: row.quoteId,
+      kind: row.kind,
+      gclid: row.gclid,
+      status: row.status,
+      error: row.error,
+      uploaded_at: row.status === "uploaded" ? new Date().toISOString() : null,
+    },
+    { onConflict: "quote_id,kind" },
+  );
+}
+
+async function estimateFromQuote(
+  supabase: SupabaseClient<Database>,
+  organizationId: string,
+  quoteId: string,
+  kind: "quote" | "won",
+) {
+  const { data: quote } = await supabase
+    .from("quotes")
+    .select("extracted_params")
+    .eq("id", quoteId)
+    .eq("organization_id", organizationId)
+    .maybeSingle();
+  const { data: lines } = await supabase
+    .from("quote_items")
+    .select("price_min, price_max, quantity")
+    .eq("quote_id", quoteId);
+  return adsConversionValue({ kind, extractedParams: quote?.extracted_params, lines: lines ?? [] });
+}
+
 export async function reportAdsConversion(input: {
   supabase: SupabaseClient<Database>;
   organizationId: string;
@@ -132,66 +187,63 @@ export async function reportAdsConversion(input: {
   gbraid?: string | null;
   wbraid?: string | null;
   occurredAt: string;
-  value?: number | null;
+  /** Omitted: estimated from the quote price. Null: send no value. */
+  value?: AdsConversionValue | null;
+  /** Ads cookie consent when known; omitted means unknown and no consent is sent. */
+  consentAds?: boolean;
   hashedEmail?: string;
 }) {
+  const base = { organizationId: input.organizationId, quoteId: input.quoteId, kind: input.kind };
   if (!input.gclid && !input.gbraid && !input.wbraid) {
-    await input.supabase.from("ads_conversion_uploads").upsert(
-      {
-        organization_id: input.organizationId,
-        quote_id: input.quoteId,
-        kind: input.kind,
-        gclid: null,
-        status: "skipped",
-        error: "Pas de gclid",
-      },
-      { onConflict: "quote_id,kind" },
-    );
+    await recordUpload(input.supabase, { ...base, gclid: null, status: "skipped", error: "Pas de gclid" });
     return;
   }
+  const clickId = input.gclid ?? input.gbraid ?? input.wbraid ?? null;
   const row = await loadAdsConnection(input.supabase, input.organizationId);
   if (!row?.customer_id || row.status === "disabled") return;
+  if (row.status === "pending") {
+    await recordUpload(input.supabase, {
+      ...base,
+      gclid: clickId,
+      status: "error",
+      error: "Compte Google Ads à choisir : conversion non envoyée.",
+    });
+    return;
+  }
   const settings = parseAdsSettings(row.settings);
   const action = input.kind === "won" ? settings.wonActionResource : settings.quoteActionResource;
-  if (!action) return;
+  if (!action) {
+    const message = "Action de conversion Google Ads absente : relancez la synchronisation ou reconnectez le compte.";
+    await recordUpload(input.supabase, { ...base, gclid: clickId, status: "error", error: message });
+    await input.supabase
+      .from("ads_connections")
+      .update({ status: "error", last_error: message, updated_at: new Date().toISOString() })
+      .eq("id", row.id);
+    return;
+  }
   try {
+    const value =
+      input.value !== undefined
+        ? input.value
+        : await estimateFromQuote(input.supabase, input.organizationId, input.quoteId, input.kind);
     const access = await accessTokenFor(row);
     await uploadClickConversion({
       accessToken: access,
       customerId: row.customer_id,
+      loginCustomerId: settings.loginCustomerId,
       conversionAction: action,
       gclid: input.gclid,
       gbraid: input.gbraid,
       wbraid: input.wbraid,
       conversionDateTime: adsDateTime(input.occurredAt),
-      value: input.value,
+      value,
+      consentAds: input.consentAds,
       hashedEmail: input.hashedEmail,
     });
-    await input.supabase.from("ads_conversion_uploads").upsert(
-      {
-        organization_id: input.organizationId,
-        quote_id: input.quoteId,
-        kind: input.kind,
-        gclid: input.gclid ?? input.gbraid ?? input.wbraid,
-        status: "uploaded",
-        uploaded_at: new Date().toISOString(),
-        error: null,
-      },
-      { onConflict: "quote_id,kind" },
-    );
+    await recordUpload(input.supabase, { ...base, gclid: clickId, status: "uploaded", error: null });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Upload conversion impossible.";
-    await input.supabase.from("ads_conversion_uploads").upsert(
-      {
-        organization_id: input.organizationId,
-        quote_id: input.quoteId,
-        kind: input.kind,
-        gclid: input.gclid ?? input.gbraid ?? input.wbraid,
-        status: "error",
-        error: message,
-      },
-      { onConflict: "quote_id,kind" },
-    );
+    await recordUpload(input.supabase, { ...base, gclid: clickId, status: "error", error: message });
   }
 }
 

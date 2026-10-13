@@ -3,27 +3,41 @@ import { PLUGIN_QUOTE_EXAMPLE, parsePluginQuote } from "@/lib/integrations/plugi
 import { createSession, updateSession } from "@/lib/public/session";
 import { submitQuote } from "@/lib/quotes/submit";
 import { createServiceClient } from "@/lib/supabase/service";
+import type { Json } from "@/lib/db/database.types";
 import type { Answers, StorefrontLine } from "@/lib/wizard/types";
+import {
+  hasPluginAttributionExtras,
+  pluginQuoteAttributionColumns,
+  resolvePluginAttribution,
+} from "@/lib/integrations/plugin-attribution";
+import { attributionColumns } from "@/lib/stats/attribution";
 
 export { PLUGIN_QUOTE_EXAMPLE, parsePluginQuote };
+
+function asRecord(value: unknown): Record<string, unknown> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  return value as Record<string, unknown>;
+}
 
 async function findExisting(organizationId: string, externalId: string) {
   if (!externalId) return null;
   const supabase = createServiceClient();
   const { data } = await supabase
     .from("quotes")
-    .select("id, status, answers, session_id")
+    .select("id, status, answers, session_id, extracted_params")
     .eq("organization_id", organizationId)
     .contains("answers", { external_id: externalId })
     .limit(1)
     .maybeSingle();
   if (!data?.id) return null;
   const answers = data.answers && typeof data.answers === "object" ? (data.answers as Record<string, unknown>) : {};
+  const params = asRecord(data.extracted_params);
   return {
     id: data.id,
     status: data.status,
     sessionId: data.session_id,
     reference: typeof answers.reference === "string" ? answers.reference : "",
+    attributionExtras: asRecord(params.attribution),
   };
 }
 
@@ -66,6 +80,7 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
   }
 
   const supabase = createServiceClient();
+  const tracked = resolvePluginAttribution(body, parsed.quote.page);
   let session: { id: string; token: string } | null = null;
   if (existing?.status === "started" && existing.sessionId) {
     const { data: priorSession } = await supabase
@@ -74,6 +89,16 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
       .eq("id", existing.sessionId)
       .maybeSingle();
     if (priorSession?.token) session = { id: priorSession.id, token: priorSession.token };
+    // Last click wins: the final submit overrides what the e-mail capture stored.
+    if (session && tracked.present) {
+      const { visitor_id: _visitor, ...columns } = attributionColumns(tracked.attribution);
+      await supabase.from("quote_sessions").update(columns).eq("id", session.id);
+      await supabase
+        .from("quotes")
+        .update(pluginQuoteAttributionColumns(tracked.attribution))
+        .eq("id", existing.id)
+        .eq("organization_id", row.organization_id);
+    }
   }
   if (!session) {
     const [{ data: org }, { data: funnel }] = await Promise.all([
@@ -83,12 +108,7 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
     if (!org?.slug || !funnel?.slug) {
       return { ok: false as const, status: 404, error: "Funnel introuvable", code: "funnel_missing" };
     }
-    const created = await createSession(org.slug, funnel.slug, {
-      utmSource: "wordpress",
-      utmMedium: "plugin",
-      referrer: parsed.quote.page || null,
-      landingPath: parsed.quote.page || null,
-    });
+    const created = await createSession(org.slug, funnel.slug, tracked.attribution);
     if (!created) return { ok: false as const, status: 404, error: "Funnel introuvable", code: "funnel_missing" };
     session = { id: created.id, token: created.token };
   }
@@ -137,6 +157,23 @@ export async function ingestPluginQuote(row: PluginConnection, body: unknown) {
       consentMarketing: false,
     },
   });
+  const extras = { ...(existing?.attributionExtras ?? {}), ...tracked.extras };
+  if (hasPluginAttributionExtras(extras)) {
+    try {
+      const { data: stored } = await supabase
+        .from("quotes")
+        .select("extracted_params")
+        .eq("id", result.quoteId)
+        .maybeSingle();
+      await supabase
+        .from("quotes")
+        .update({ extracted_params: { ...asRecord(stored?.extracted_params), attribution: extras } as Json })
+        .eq("id", result.quoteId)
+        .eq("organization_id", row.organization_id);
+    } catch (error) {
+      console.error("plugin quote attribution", error);
+    }
+  }
   let reference = "";
   try {
     reference = await assignReference(row.organization_id, result.quoteId);

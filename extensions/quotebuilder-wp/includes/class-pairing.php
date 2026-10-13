@@ -638,8 +638,11 @@ class QuoteBuilder_Pairing {
         if ($space) {
             $payload['space'] = $space;
         }
-        if (!empty($data['consentAds']) || !empty($data['consent_ads'])) {
+        $consent = $data['consentAds'] ?? $data['consent_ads'] ?? null;
+        if ($consent === true || $consent === 1 || $consent === '1' || $consent === 'true') {
             $payload['consentAds'] = true;
+        } elseif ($consent === false || $consent === 0 || $consent === '0' || $consent === 'false') {
+            $payload['consentAds'] = false;
         }
         $products = self::product_lines($data['products'] ?? $data['produits'] ?? $data['lines'] ?? $data['items'] ?? []);
         if ($products) {
@@ -648,7 +651,70 @@ class QuoteBuilder_Pairing {
         if ($payload['need'] === '' && $needs) {
             $payload['need'] = implode(' · ', $needs);
         }
+        $attribution = self::attribution($data['attribution'] ?? null);
+        if (!$attribution) {
+            $attribution = self::attribution_cookie();
+        }
+        if ($attribution) {
+            $payload['attribution'] = $attribution;
+        }
         return $payload;
+    }
+
+    /**
+     * Click IDs, UTM, landing page and external referrer stored by storefront.js.
+     * Allow-listed keys only; the cookie is never trusted beyond that.
+     */
+    public static function attribution($value) {
+        if (is_string($value)) {
+            $value = json_decode($value, true);
+        }
+        if (!is_array($value)) {
+            return [];
+        }
+        $out = [];
+        foreach (['gclid', 'gbraid', 'wbraid', 'fbclid', 'msclkid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as $key) {
+            if (!isset($value[$key]) || is_array($value[$key])) {
+                continue;
+            }
+            $text = substr(sanitize_text_field(wp_strip_all_tags((string) $value[$key])), 0, 255);
+            if ($text !== '') {
+                $out[$key] = $text;
+            }
+        }
+        foreach (['landing', 'referrer'] as $key) {
+            if (!isset($value[$key]) || is_array($value[$key])) {
+                continue;
+            }
+            $url = esc_url_raw(substr(trim((string) $value[$key]), 0, 500), ['http', 'https']);
+            if ($url !== '') {
+                $out[$key] = $url;
+            }
+        }
+        if (isset($value['first_seen']) && is_numeric($value['first_seen'])) {
+            $seen = (int) $value['first_seen'];
+            if ($seen > 1000000000000) {
+                $seen = (int) floor($seen / 1000);
+            }
+            if ($seen > 0) {
+                $out['first_seen'] = gmdate('c', $seen);
+            }
+        }
+        if (count($out) === 1 && isset($out['first_seen'])) {
+            return [];
+        }
+        return $out;
+    }
+
+    public static function attribution_cookie() {
+        if (empty($_COOKIE['quotebuilder_attr']) || !is_string($_COOKIE['quotebuilder_attr'])) {
+            return [];
+        }
+        $raw = wp_unslash($_COOKIE['quotebuilder_attr']);
+        if (strlen($raw) > 4096) {
+            return [];
+        }
+        return self::attribution($raw);
     }
 
     public static function quotes() {

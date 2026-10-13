@@ -62,7 +62,7 @@ Dans `claude_desktop_config.json` :
       "args": ["-y", "quotebuilder-mcp"],
       "env": {
         "QB_API_KEY": "qb_live_votre_cle",
-        "QB_API_URL": "https://app.quotebuilder.io",
+        "QB_API_URL": "https://www.quotebuilder.co",
         "MCP_DEVIS_V0": "1"
       }
     }
@@ -116,6 +116,16 @@ Valeurs acceptées : `1`, `true`, `on`, `yes` (insensible à la casse). Absent o
 | `get_funnel_performance` | Perf 30 j d’un funnel |
 | `trigger_followup` | Relance `reminder_24h` / `nudge_3d` / `reactivation_30d` |
 | `get_pending_followups` | Leads à relancer |
+| `get_lead_timeline` | Chronologie d’une demande (statuts, notes, messages, conversions Ads) |
+| `add_lead_note` | Note interne (écriture, aucun email) |
+| `list_team` | Membres actifs assignables |
+| `assign_lead` | Assigner / remplacer / retirer un commercial (écriture) |
+| `get_ads_performance` | Google Ads par campagne : dépense, clics, devis, gagnés, coût par devis / par gagné |
+| `get_attribution_breakdown` | Devis et valeur par canal / utm / campagne, part avec gclid |
+| `get_conversion_uploads` | Diagnostic des conversions hors ligne Google Ads |
+| `search_catalog` | Catalogue synchronisé : prix, stock, variations |
+
+Guide non-développeur (marchand, agence) : `docs/mcp-installation.md` du dépôt QuoteBuilder.
 
 ## Exemples
 
@@ -136,6 +146,9 @@ Le client appelle l’API QuoteBuilder authentifiée par Bearer :
 - `GET /api/funnels/:id/performance`
 - `POST /api/automation/trigger`
 - `GET /api/automation/pending`
+- `GET /api/leads/:id/timeline`, `POST /api/leads/:id/notes`, `POST /api/leads/:id/assign`, `GET /api/team`
+- `GET /api/insights/ads-performance`, `GET /api/insights/attribution`, `GET /api/insights/conversion-uploads` (`days` ou `from`/`to`)
+- `GET /api/catalog/search?q=`
 
 ## Publier (mainteneurs)
 

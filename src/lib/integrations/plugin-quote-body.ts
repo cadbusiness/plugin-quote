@@ -90,6 +90,13 @@ function extraAnswers(body: Record<string, unknown>): Answers {
   return answers;
 }
 
+/** Tri-state: no CMP on the site means unknown, not refused. */
+export function readConsent(value: unknown): boolean | undefined {
+  if (value === true || value === 1 || value === "1" || value === "true" || value === "granted") return true;
+  if (value === false || value === 0 || value === "0" || value === "false" || value === "denied") return false;
+  return undefined;
+}
+
 export type PluginQuoteLine = {
   id: string;
   name: string;
@@ -112,8 +119,8 @@ export type ParsedPluginQuote = {
   space: Record<string, string>;
   products: PluginQuoteLine[];
   answers: Answers;
-  /** True only when the visitor accepted advertising cookies. Never implied. */
-  consentAds: boolean;
+  /** True only when the visitor accepted advertising cookies, false only when refused. Undefined when unknown. */
+  consentAds: boolean | undefined;
 };
 
 export function parsePluginQuote(
@@ -140,13 +147,7 @@ export function parsePluginQuote(
     if (value && !space[key]) space[key] = value.slice(0, 80);
   }
   const products = productLines(record.products ?? record.produits ?? record.lines ?? record.items);
-  const consentAds =
-    record.consentAds === true ||
-    record.consentAds === 1 ||
-    record.consentAds === "1" ||
-    record.consent_ads === true ||
-    record.consent_ads === 1 ||
-    record.consent_ads === "1";
+  const consentAds = readConsent(record.consentAds ?? record.consent_ads);
 
   const needText = need.length >= 2 ? need : needs.join(" · ");
   if (needText.length < 2) {

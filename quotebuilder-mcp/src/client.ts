@@ -11,7 +11,7 @@ export class QuoteBuilderClient {
   private readonly baseUrl: string;
   private readonly apiKey: string;
 
-  constructor(apiKey: string, baseUrl = process.env.QB_API_URL ?? "https://app.quotebuilder.io") {
+  constructor(apiKey: string, baseUrl = process.env.QB_API_URL || "https://www.quotebuilder.co") {
     if (!apiKey) {
       throw new Error("QB_API_KEY manquante");
     }
@@ -117,6 +117,85 @@ export class QuoteBuilderClient {
   getPendingFollowups() {
     return this.request<{ followups: unknown[] }>("GET", "/api/automation/pending");
   }
+
+  getLeadTimeline(leadId: string, limit?: number) {
+    const qs = limit ? `?limit=${limit}` : "";
+    return this.request<{ timeline: unknown }>("GET", `/api/leads/${encodeURIComponent(leadId)}/timeline${qs}`);
+  }
+
+  addLeadNote(args: { lead_id: string; content: string }) {
+    return this.request<{ note: unknown }>("POST", `/api/leads/${encodeURIComponent(args.lead_id)}/notes`, {
+      content: args.content,
+    });
+  }
+
+  assignLead(args: { lead_id: string; assignee: string; mode?: AssignMode; notify?: boolean }) {
+    return this.request<{ assignment: unknown }>("POST", `/api/leads/${encodeURIComponent(args.lead_id)}/assign`, {
+      assignee: args.assignee,
+      mode: args.mode,
+      notify: args.notify,
+    });
+  }
+
+  listTeam() {
+    return this.request<{ members: unknown[] }>("GET", "/api/team");
+  }
+
+  getAdsPerformance(args: PeriodArgs & { campaign?: string }) {
+    const params = periodParams(args);
+    if (args.campaign) params.set("campaign", args.campaign);
+    return this.request<{ performance: unknown }>("GET", withQuery("/api/insights/ads-performance", params));
+  }
+
+  getAttributionBreakdown(args: PeriodArgs & { group_by?: AttributionGroupBy; limit?: number }) {
+    const params = periodParams(args);
+    if (args.group_by) params.set("group_by", args.group_by);
+    if (args.limit != null) params.set("limit", String(args.limit));
+    return this.request<{ attribution: unknown }>("GET", withQuery("/api/insights/attribution", params));
+  }
+
+  getConversionUploads(args: PeriodArgs & { status?: string }) {
+    const params = periodParams(args);
+    if (args.status) params.set("status", args.status);
+    return this.request<{ diagnostics: unknown }>("GET", withQuery("/api/insights/conversion-uploads", params));
+  }
+
+  searchCatalog(args: {
+    query?: string;
+    category?: string;
+    funnel_id?: string;
+    in_stock_only?: boolean;
+    include_inactive?: boolean;
+    limit?: number;
+    max_variants?: number;
+  }) {
+    const params = new URLSearchParams();
+    if (args.query) params.set("q", args.query);
+    if (args.category) params.set("category", args.category);
+    if (args.funnel_id) params.set("funnel_id", args.funnel_id);
+    if (args.in_stock_only) params.set("in_stock_only", "1");
+    if (args.include_inactive) params.set("include_inactive", "1");
+    if (args.limit != null) params.set("limit", String(args.limit));
+    if (args.max_variants != null) params.set("max_variants", String(args.max_variants));
+    return this.request<{ catalog: unknown }>("GET", withQuery("/api/catalog/search", params));
+  }
+}
+
+export type PeriodArgs = { days?: number; from?: string; to?: string };
+export type AttributionGroupBy = "source" | "source_medium" | "campaign" | "full";
+export type AssignMode = "add" | "replace" | "remove";
+
+function periodParams(args: PeriodArgs) {
+  const params = new URLSearchParams();
+  if (args.days != null) params.set("days", String(args.days));
+  if (args.from) params.set("from", args.from);
+  if (args.to) params.set("to", args.to);
+  return params;
+}
+
+function withQuery(path: string, params: URLSearchParams) {
+  const qs = params.toString();
+  return qs ? `${path}?${qs}` : path;
 }
 
 export const leadStatusSchema = z.enum(["new", "contacted", "in_progress", "won", "lost", "waiting"]);

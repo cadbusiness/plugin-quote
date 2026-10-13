@@ -7,6 +7,7 @@ import { registerLeadTools } from "./tools/leads.js";
 import { registerStatsTools } from "./tools/stats.js";
 import { registerFunnelTools } from "./tools/funnels.js";
 import { registerAutomationTools } from "./tools/automation.js";
+import { registerInsightTools } from "./tools/insights.js";
 
 const devisV0 = isMcpDevisV0Enabled();
 
@@ -23,7 +24,7 @@ const server = new McpServer(
   {
     instructions: devisV0
       ? "QuoteBuilder MCP : CRM devis B2B. Outils devis (MCP_DEVIS_V0) : create_quote, list_quotes, get_quote_status. create_quote n’envoie pas les emails workflow sauf run_autopilot=true. Ne pas soumettre de session / PDF."
-      : "QuoteBuilder MCP : CRM devis B2B. Utilisez get_leads / get_stats / list_funnels / trigger_followup pour agir dans le compte.",
+      : "QuoteBuilder MCP : CRM devis B2B. Utilisez get_leads / get_stats / list_funnels / trigger_followup pour agir dans le compte ; get_ads_performance, get_attribution_breakdown, get_conversion_uploads pour Google Ads ; search_catalog pour préparer un devis.",
   },
 );
 
@@ -31,6 +32,7 @@ registerLeadTools(server, qb, { devisV0 });
 registerStatsTools(server, qb);
 registerFunnelTools(server, qb);
 registerAutomationTools(server, qb);
+registerInsightTools(server, qb);
 
 const transport = new StdioServerTransport();
 await server.connect(transport);

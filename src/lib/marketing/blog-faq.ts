@@ -1558,7 +1558,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Quelle URL mettre dans QB_API_URL ?",
-      a: "Celle documentée par le package / README MCP. Aujourd’hui le défaut documenté est https://app.quotebuilder.io. L’URL canonique du produit web reste https://www.quotebuilder.co. En doute, recopiez exactement la valeur de votre doc interne ou du README du package, ne « corrigez » pas au feeling.",
+      a: "Celle documentée par le package / README MCP. Aujourd’hui le défaut documenté est https://www.quotebuilder.co. L’URL canonique du produit web reste https://www.quotebuilder.co. En doute, recopiez exactement la valeur de votre doc interne ou du README du package, ne « corrigez » pas au feeling.",
     },
     {
       q: "create_quote envoie-t-il un e-mail au prospect ?",
