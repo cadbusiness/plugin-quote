@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/service";
+import { isAdminRole } from "@/lib/auth/org";
 import { getAppUrl } from "@/lib/supabase/env";
 import {
   exchangeCode,
@@ -22,7 +23,19 @@ export async function GET(req: Request) {
   const parsed = readOAuthState(state);
   if (!parsed) return NextResponse.redirect(new URL("/acquisition?error=state", origin));
 
-  const supabase = await createClient();
+  // Google returns to NEXT_PUBLIC_APP_URL, which may not be the host holding the
+  // session cookie: trust the signed state, then re-check the admin membership.
+  const supabase = createServiceClient();
+  const { data: membership } = await supabase
+    .from("memberships")
+    .select("role")
+    .eq("organization_id", parsed.orgId)
+    .eq("user_id", parsed.userId)
+    .eq("status", "active")
+    .maybeSingle();
+  if (!membership || !isAdminRole(membership.role)) {
+    return NextResponse.redirect(new URL("/acquisition?error=state", origin));
+  }
   try {
     const tokens = await exchangeCode(code);
     if (!tokens.refresh_token) {
