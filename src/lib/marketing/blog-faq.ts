@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "roles-permissions-equipe-demande-devis-b2b": [
+    {
+      q: "Quels sont les rôles d'équipe dans QuoteBuilder ?",
+      a: "Trois : Propriétaire, Admin et Commercial. Le Propriétaire a tout l'espace et ne peut être ni rétrogradé ni suspendu. L'Admin configure funnels, catalogue, équipe et automatisations, et traite aussi les demandes. Le Commercial traite les demandes, relance les abandons et envoie des emails, sans accès aux réglages.",
+    },
+    {
+      q: "Un Commercial peut-il voir les demandes assignées à ses collègues ?",
+      a: "Oui. Le rôle Commercial limite l'accès aux réglages, pas aux dossiers. Tous les membres actifs voient toutes les demandes de l'espace. Le filtre par assigné de la liste des Demandes sert à n'afficher que ses dossiers, mais ce n'est pas une restriction d'accès.",
+    },
+    {
+      q: "Peut-on inviter quelqu'un comme Propriétaire ?",
+      a: "Non. La fenêtre d'invitation propose uniquement Commercial et Admin. Le Propriétaire est la personne qui a créé l'espace, et l'interface ne propose pas de transfert de propriété.",
+    },
+    {
+      q: "Comment inviter un commercial ?",
+      a: "Page Équipe, bouton Inviter, choix du rôle Commercial, saisie de son email, puis Envoyer l'invitation. Il reçoit un email avec un lien pour créer son accès ou se connecter. Il doit utiliser l'adresse invitée, sinon l'invitation est refusée.",
+    },
+    {
+      q: "Le lien d'invitation ne fonctionne plus, que faire ?",
+      a: "Si vous avez réinvité la même adresse ou cliqué sur Renvoyer l'accès, un nouveau lien a été généré et l'ancien ne fonctionne plus. Demandez à la personne d'utiliser le dernier email reçu. Vérifiez aussi qu'elle se connecte avec l'adresse invitée.",
+    },
+    {
+      q: "Un Admin peut-il modifier le rôle d'un autre Admin ?",
+      a: "Oui. Un Admin peut changer le rôle d'un Commercial ou d'un autre Admin. Il ne peut modifier ni le Propriétaire ni son propre compte. Aujourd'hui, l'application ne coupe pas de façon fiable l'accès d'un membre actif : Suspendre peut annoncer un succès sans changer le statut. Vérifiez dans la liste Équipe et, si rien ne change, contactez le support. Révoquer l'invitation ne concerne qu'une invitation en attente.",
+    },
+    {
+      q: "Que se passe-t-il quand on change le rôle d'un membre ?",
+      a: "Le nouveau rôle s'applique à son prochain chargement de page : le menu et les écrans accessibles changent sans reconnexion. Aucun email ne le prévient automatiquement, prévenez-le vous-même.",
+    },
+    {
+      q: "Comment gérer le départ d'un commercial ?",
+      a: "Filtrez la liste des Demandes sur son nom, réassignez ses dossiers ouverts, puis essayez Suspendre. Vérifiez dans la liste Équipe que le statut a bien changé. S'il n'a pas changé, contactez le support : aujourd'hui l'application ne coupe pas de façon fiable l'accès d'un membre actif. Son historique reste consultable.",
+    },
+    {
+      q: "Le Directeur financier ou le Responsable technique invité sur un dossier fait-il partie de l'équipe ?",
+      a: "Non. Ce sont des relecteurs côté client, invités sur une demande précise avec un lien personnel valable 30 jours. Ils n'ont pas de compte dans votre espace et n'apparaissent pas sur la page Équipe.",
+    },
+    {
+      q: "Faut-il donner le rôle Admin à tous les commerciaux pour gagner du temps ?",
+      a: "Non. Le rôle Admin ouvre les réglages qui touchent chaque prospect : funnels, catalogue, automatisations. Un commercial traite ses demandes avec le rôle Commercial. Gardez un ou deux Admins qui maintiennent réellement l'outil, dont un de secours.",
+    },
+  ],
   "segments-campagnes-email-demande-devis-b2b": [
     {
       q: "Quelle différence entre l'Autopilote et une campagne email ?",

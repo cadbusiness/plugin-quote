@@ -113,6 +113,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   {
+    path: "/blog/roles-permissions-equipe-demande-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-13",
+  },
+  {
     path: "/blog/segments-campagnes-email-demande-devis-b2b",
     changeFrequency: "monthly",
     priority: 0.8,
@@ -439,6 +445,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/estimateur-cout-campagnes-email-sans-segmentation",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-13",
+  },
+  {
+    path: "/outils/estimateur-cout-acces-mal-cadres-equipe-devis",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-13",

@@ -114,6 +114,7 @@ export const BLOG_TOOL_SIGNATURE_WEBHOOK = "/outils/verificateur-signature-webho
 export const BLOG_TOOL_COUT_CLIENT_GOOGLE_ADS = "/outils/calculateur-cout-par-client-google-ads-devis";
 export const BLOG_TOOL_CHARGE_AUTOPILOTE = "/outils/estimateur-charge-relances-manuelles-vs-autopilote";
 export const BLOG_TOOL_COUT_CAMPAGNES_EMAIL = "/outils/estimateur-cout-campagnes-email-sans-segmentation";
+export const BLOG_TOOL_ACCES_EQUIPE = "/outils/estimateur-cout-acces-mal-cadres-equipe-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -140,6 +141,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     38: "Trente-huit",
     39: "Trente-neuf",
     40: "Quarante",
+    41: "Quarante-et-un",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -386,9 +388,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Campagnes par mois, taille de liste, part sans segment, minutes, plaintes, part déjà en parcours Autopilote, taux horaire, panier, affaires qui refroidissent. Heures, coût temps, contacts mal ciblés, opportunités. Calcul 100 % local.",
     tags: ["funnel", "integrations"],
   },
+  {
+    href: BLOG_TOOL_ACCES_EQUIPE,
+    title: "Estimateur du coût des accès mal cadrés",
+    text: "Admins en trop, commerciaux bloqués, réponses retardées. Le coût mensuel et ce qu'une répartition propre des rôles évite.",
+    tags: ["funnel", "catalogue"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "roles-permissions-equipe-demande-devis-b2b",
+    path: "/blog/roles-permissions-equipe-demande-devis-b2b",
+    title: "Rôles et permissions d'équipe : traiter les demandes de devis B2B sans tout ouvrir à tout le monde",
+    description:
+      "Propriétaire, Admin, Commercial : ce que chaque rôle ouvre écran par écran, comment inviter, changer un rôle ou retirer un accès depuis Équipe, ce que le rôle Commercial ne cache pas et une répartition simple selon la taille de l'équipe.",
+    publishedAt: "2026-10-13",
+    readingMinutes: 16,
+    tags: ["funnel", "catalogue"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.accueil,
+    pinned: false,
+  },
   {
     slug: "segments-campagnes-email-demande-devis-b2b",
     path: "/blog/segments-campagnes-email-demande-devis-b2b",
