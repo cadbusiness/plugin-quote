@@ -24,7 +24,7 @@ const server = new McpServer(
   {
     instructions: devisV0
       ? "QuoteBuilder MCP : CRM devis B2B. Outils devis (MCP_DEVIS_V0) : create_quote, list_quotes, get_quote_status. create_quote n’envoie pas les emails workflow sauf run_autopilot=true. Ne pas soumettre de session / PDF."
-      : "QuoteBuilder MCP : CRM devis B2B. Utilisez get_leads / get_stats / list_funnels / trigger_followup pour agir dans le compte ; get_ads_performance, get_attribution_breakdown, get_conversion_uploads pour Google Ads ; search_catalog pour préparer un devis.",
+      : "QuoteBuilder MCP : CRM devis B2B. Utilisez get_leads / get_stats / list_funnels / trigger_followup pour agir dans le compte ; get_ads_performance, get_attribution_breakdown, get_conversion_uploads pour Google Ads ; search_catalog pour préparer un devis ; get_funnel, list_funnel_templates, create_funnel (non publié), update_funnel_steps, set_suggestion_rules, set_chat_agent, set_funnel_tracking, get_embed_code et publish_funnel (confirm=true seulement après accord explicite) pour configurer un funnel.",
   },
 );
 

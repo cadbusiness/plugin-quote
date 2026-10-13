@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/db/database.types";
 import type { ScreenType } from "@/lib/wizard/types";
 import { uniqueSlug } from "@/lib/org/slug";
+import { fetchAllRows } from "@/lib/supabase/paginate";
 import { CATALOG_FUNNEL_STEPS, getFunnelTemplate, type TemplateStep } from "@/lib/funnels/templates";
 import type { FunnelKind } from "@/lib/funnels/builder";
 import { funnelKindFlags, isFunnelKind, themeForNewFunnel } from "@/lib/funnels/kind";
@@ -14,6 +15,8 @@ export type CreateFunnelInput = {
   chatEnabled: boolean;
   screens: ScreenType[];
   catalogFromId: string | null;
+  /** Defaults to true (UI creates live funnels); the MCP creates unpublished drafts. */
+  isActive?: boolean;
 };
 
 const ALL_SCREENS: ScreenType[] = ["questions", "suggestions", "customize", "contact"];
@@ -71,6 +74,7 @@ export async function insertFunnelFromTemplate(
       wizard_enabled: input.wizardEnabled,
       chat_enabled: input.chatEnabled,
       theme: themeForNewFunnel(input.kind),
+      is_active: input.isActive ?? true,
     })
     .select("id")
     .single();
@@ -109,15 +113,21 @@ export async function insertFunnelFromTemplate(
     await supabase.from("wizard_questions").insert(questions);
   }
 
-  if (input.catalogFromId) {
-    const { data: products } = await supabase
-      .from("products")
-      .select("name, description, image_url, price_min, price_max, currency, tags, options, sku, category, is_active, specs")
-      .eq("organization_id", organizationId)
-      .eq("configurator_id", input.catalogFromId);
-    if (products?.length) {
+  const sourceId = input.catalogFromId;
+  if (sourceId) {
+    // Paged: PostgREST stops at 1 000 rows and a synced catalogue is often larger.
+    const products = await fetchAllRows((from, to) =>
+      supabase
+        .from("products")
+        .select("name, description, image_url, price_min, price_max, currency, tags, options, sku, category, is_active, specs")
+        .eq("organization_id", organizationId)
+        .eq("configurator_id", sourceId)
+        .order("id")
+        .range(from, to),
+    );
+    for (let index = 0; index < products.length; index += 500) {
       await supabase.from("products").insert(
-        products.map((product) => ({
+        products.slice(index, index + 500).map((product) => ({
           ...product,
           organization_id: organizationId,
           configurator_id: funnel.id,

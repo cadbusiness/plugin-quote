@@ -87,4 +87,34 @@ export function registerQuoteBuilderPrompts(server: McpServer) {
       );
     },
   );
+
+  server.registerPrompt(
+    "configurer_mon_funnel",
+    {
+      title: "Configurer mon funnel",
+      description:
+        "Construit un funnel (formulaire, chat IA ou catalogue) à partir du site et du catalogue : plan validé avec vous, brouillon, codes d’intégration, publication sur confirmation.",
+      argsSchema: z.object({
+        site: z.string().optional().describe("URL du site du marchand"),
+        mode: z.string().optional().describe("form, chat ou catalog (défaut : à proposer)"),
+        funnel_id: z.string().optional().describe("Funnel existant à retravailler (optionnel)"),
+      }),
+    },
+    ({ site, mode, funnel_id }) => {
+      const wanted = mode && ["form", "chat", "catalog"].includes(mode.trim()) ? mode.trim() : null;
+      return userMessage(
+        [
+          funnel_id
+            ? `Aide-moi à retravailler le funnel QuoteBuilder ${funnel_id} (commence par get_funnel).`
+            : `Configure-moi un funnel QuoteBuilder${wanted ? ` en mode ${wanted}` : ""} pour mon site à partir de mon catalogue.`,
+          `1. Site : ${site?.trim() ? `lis ${site.trim()} si tu peux naviguer` : "demande-moi l’URL de mon site et lis-la si tu peux naviguer"} (offre, clients cibles, ton, gammes).`,
+          "2. Appelle list_funnel_templates et list_funnels, puis search_catalog (plusieurs requêtes : gammes principales, SKU, catégories) pour comprendre les produits et repérer le funnel qui porte le catalogue.",
+          "3. Propose un plan en français : mode (form / chat / catalog) et modèle, étapes et questions (types, options), règles « si réponse → produits » avec les produits réels trouvés, et pour un funnel chat les consignes de ton et le message d’accueil. Puis ARRÊTE-TOI et attends ma validation explicite.",
+          "4. Après validation seulement : create_funnel (toujours non publié, avec from_catalog pour un funnel chat ou catalogue), update_funnel_steps, set_suggestion_rules, set_chat_agent si chat, set_funnel_tracking si je te donne mes IDs GA4 / GTM / Pixel. Si un outil refuse (produit introuvable, clé inconnue…), montre l’erreur et propose une correction, ne devine pas.",
+          "5. Montre le résultat (get_funnel : étapes, règles, publish_check) puis get_embed_code : code recommandé pour mon site, shortcode WordPress et lien de test, en précisant qu’ils ne répondent qu’après publication.",
+          "6. Ne publie (publish_funnel avec confirm=true) qu’après mon accord explicite dans cette conversation. Si le funnel est déjà publié, n’utilise confirm_published=true qu’après m’avoir montré le changement et obtenu mon accord.",
+        ].join("\n"),
+      );
+    },
+  );
 }

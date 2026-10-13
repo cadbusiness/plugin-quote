@@ -4,7 +4,7 @@
 
 ## En deux lignes
 
-Le connecteur QuoteBuilder (protocole MCP) permet à votre assistant IA de **lire vos demandes de devis, vos statistiques, vos campagnes Google Ads et votre catalogue**, et, si vous le lui demandez, d’**ajouter une note, assigner un commercial ou changer un statut**. Vous posez la question en français, l’assistant va chercher les chiffres dans QuoteBuilder.
+Le connecteur QuoteBuilder (protocole MCP) permet à votre assistant IA de **lire vos demandes de devis, vos statistiques, vos campagnes Google Ads et votre catalogue**, et, si vous le lui demandez, d’**ajouter une note, assigner un commercial, changer un statut ou configurer un funnel** (questions, produits proposés, agent chat, suivi, codes d’intégration). Vous posez la question en français, l’assistant va chercher les chiffres dans QuoteBuilder.
 
 ## L’adresse à copier
 
@@ -147,12 +147,31 @@ Pour Claude Desktop **en local** sans compte Claude payant, le package `quotebui
 | `update_lead_status` | Change le statut (+ note) ; peut déclencher vos automatisations et la conversion « gagné » Google Ads | Écriture |
 | `create_quote` / `create_lead` | Crée une demande manuelle (aucun email sauf demande explicite) | Écriture |
 | `trigger_followup` | **Envoie** un email de relance au prospect | Écriture (email) |
+| `get_funnel` | Détail d’un funnel : mode, publié ou non, étapes et questions, règles produits, agent chat, suivi, codes d’intégration, points bloquants | Lecture |
+| `list_funnel_templates` | Modes (formulaire, chat IA, catalogue) et modèles de départ (rayonnage, cuisine, menuiserie, générique…) | Lecture |
+| `get_embed_code` | Lien public, widget JS, module chat, iframe, shortcode WordPress (mêmes codes que l’onglet « Lien & embed ») | Lecture |
+| `create_funnel` | Crée un funnel **non publié** à partir d’un modèle, avec copie du catalogue si demandé | Écriture |
+| `update_funnel_steps` | Remplace les étapes et questions (mêmes règles que l’éditeur : une étape contact en dernier, options obligatoires…) | Écriture |
+| `set_suggestion_rules` | Règles « si le prospect répond X, proposer ces produits » ; un produit introuvable est signalé, jamais deviné | Écriture |
+| `set_chat_agent` | Funnel chat : consignes de ton et message d’accueil de l’agent | Écriture |
+| `set_funnel_tracking` | GA4, Google Tag Manager, Pixel Meta du funnel (formats vérifiés) | Écriture |
+| `publish_funnel` | Publie ou retire un funnel, **uniquement avec votre accord explicite** | Écriture |
 
 Prompts prêts à l’emploi (menu « + » dans Claude) :
 
 - **rapport_hebdo_ads** : rapport Google Ads de la semaine, comparé à la semaine précédente.
 - **leads_a_relancer** : demandes à relancer aujourd’hui avec un message proposé.
 - **preparer_devis** : proposition de produits / quantités / prix à partir d’une demande ou d’un besoin.
+- **configurer_mon_funnel** : lit votre site et votre catalogue, propose un funnel (étapes, questions, produits, ton du chat), attend votre validation, le crée en brouillon, donne les codes d’intégration, publie seulement si vous le confirmez.
+
+### Configurer un funnel : ce que l’assistant peut et ne peut pas faire
+
+- Tout funnel créé par l’assistant est **non publié** : aucun visiteur ne le voit. Vous le relisez dans QuoteBuilder (Funnels → le funnel, onglet Parcours) ou via `get_funnel`.
+- Le lien public et les codes d’intégration ne répondent qu’**après publication**. L’assistant ne publie qu’après votre « oui » explicite dans la conversation (`confirm=true`).
+- Un funnel **déjà publié** se modifie comme dans l’éditeur : le changement est immédiat pour les visiteurs. L’assistant doit donc vous montrer la modification et obtenir votre accord avant de l’appliquer (`confirm_published=true`), ou dépublier d’abord.
+- Un funnel ne propose que **les produits de son propre catalogue**. Pour un funnel chat ou catalogue, l’assistant copie le catalogue d’un funnel existant (`from_catalog`, par exemple celui relié à WooCommerce / Shopify). Cette copie est un instantané : elle n’est pas resynchronisée ensuite.
+- Agent chat : on règle les consignes (ton, priorités, vocabulaire) et le message d’accueil. Les garde-fous restent actifs : prix et produits uniquement depuis le catalogue, pas de paiement. Il n’existe pas encore de FAQ / réponses validées, de choix de langue ni d’email d’escalade par funnel.
+- Les règles d’accès sont les mêmes que l’app : une connexion OAuth doit appartenir à un propriétaire ou un admin ; une clé API (créée par un admin) peut configurer les funnels de l’organisation.
 
 ---
 
@@ -189,6 +208,14 @@ Prompts prêts à l’emploi (menu « + » dans Claude) :
 18. « Trouve le produit dont le SKU est RML-2010 et ses variations. »
 19. « À partir de la demande de Dupont Logistique, propose une liste de produits et un total HT. » *(ou le prompt `preparer_devis`)*
 20. « Le prospect veut 40 mètres linéaires d’étagères charge lourde : que proposes-tu dans notre catalogue ? »
+
+### Configuration de funnel
+
+21. « Configure-moi un funnel chat pour mon site www.mon-site.fr à partir de mon catalogue. » *(ou le prompt `configurer_mon_funnel`)*
+22. « Montre-moi les questions et les règles produits de mon funnel rayonnage, et dis-moi ce qui empêche de le publier. »
+23. « Ajoute une question “Hauteur sous plafond (m)” après le type d’espace, et propose les rayonnages lourds quand la hauteur dépasse 4 m. »
+24. « Donne au chat un ton plus direct, vouvoiement, et propose toujours un rappel téléphonique pour les projets de plus de 200 m². »
+25. « Ajoute mon GTM-ABC1234 au funnel, puis donne-moi le shortcode WordPress et le lien de test. Publie-le si tout est bon : je confirme. »
 
 ---
 

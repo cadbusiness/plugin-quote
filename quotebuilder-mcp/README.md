@@ -114,6 +114,15 @@ Valeurs acceptées : `1`, `true`, `on`, `yes` (insensible à la casse). Absent o
 | `get_stats` | Conversion, hot/warm/cold, abandons, CA |
 | `list_funnels` | Funnels de l’org |
 | `get_funnel_performance` | Perf 30 j d’un funnel |
+| `get_funnel` | Définition complète : étapes, questions, règles, agent chat, suivi, codes d’intégration |
+| `list_funnel_templates` | Modes et modèles de départ (rayonnage, cuisine, générique…) |
+| `create_funnel` | Crée un funnel **non publié** (option `from_catalog`) |
+| `update_funnel_steps` | Remplace étapes / questions (validation serveur ; `confirm_published` si publié) |
+| `set_suggestion_rules` | Règles réponse → produits (ID / SKU / nom exact, jamais deviné) |
+| `set_chat_agent` | Consignes et message d’accueil d’un funnel chat |
+| `set_funnel_tracking` | GA4 / GTM / Pixel Meta du funnel |
+| `get_embed_code` | Lien, widget JS, iframe, shortcodes WordPress |
+| `publish_funnel` | Publier / dépublier (`confirm: true` obligatoire) |
 | `trigger_followup` | Relance `reminder_24h` / `nudge_3d` / `reactivation_30d` |
 | `get_pending_followups` | Leads à relancer |
 | `get_lead_timeline` | Chronologie d’une demande (statuts, notes, messages, conversions Ads) |

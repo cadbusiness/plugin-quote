@@ -28,6 +28,7 @@ import {
 import { shopConfiguratorApiPath, shopSuggestionsApiPath } from "@/lib/shops/catalog-scope";
 import { isCatalogQuoteMode, isRfqQuoteMode, matchCatalogPrefill, scopeQuoteCatalog } from "@/lib/quotes/quote-mode";
 import { syncVisitorDraft } from "@/lib/visitor-requests/sync-client";
+import { parseFunnelAgentSettings } from "@/lib/funnels/agent-settings";
 import type {
   Answers,
   ConfiguratorDefinition,
@@ -885,6 +886,7 @@ export function ConfiguratorApp({
               busy={busy}
               error={errors.chat}
               orgName={definition.organization.name}
+              greeting={parseFunnelAgentSettings(definition.configurator.theme).greeting}
               accent={accent}
               themed={theme.themed}
             />
@@ -1371,6 +1373,7 @@ function ChatPanel({
   busy,
   error,
   orgName,
+  greeting,
   accent,
   themed,
 }: {
@@ -1381,6 +1384,7 @@ function ChatPanel({
   busy: boolean;
   error?: string;
   orgName: string;
+  greeting?: string;
   accent: string;
   themed: boolean;
 }) {
@@ -1390,7 +1394,7 @@ function ChatPanel({
         {messages.length === 0 ? (
           <div className="space-y-2">
             <p className="font-medium text-mk-ink">
-              Bonjour, décrivez-moi votre projet{orgName ? ` pour ${orgName}` : ""}.
+              {greeting || `Bonjour, décrivez-moi votre projet${orgName ? ` pour ${orgName}` : ""}.`}
             </p>
             <p className="text-sm text-mk-faint">
               Une phrase suffit — surface, charges, hauteur, budget, délai. L’agent consulte le

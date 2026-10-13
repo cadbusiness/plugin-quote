@@ -10,13 +10,14 @@ const handler = createMcpHandler(
     registerQuoteBuilderPrompts(server);
   },
   {
-    serverInfo: { name: "quotebuilder-mcp", version: "1.3.0" },
+    serverInfo: { name: "quotebuilder-mcp", version: "1.4.0" },
     instructions: [
       "QuoteBuilder MCP : CRM devis B2B d’un marchand (une organisation par connexion).",
       "Devis : list_quotes / get_leads, get_lead_detail, get_lead_timeline, get_quote_status, create_quote (aucun email sauf run_autopilot=true).",
       "Pilotage : get_stats, list_funnels, get_funnel_performance, get_pending_followups.",
       "Google Ads : get_ads_performance (dépense → devis → gagnés par campagne), get_attribution_breakdown (utm / gclid), get_conversion_uploads (diagnostic des conversions hors ligne).",
       "Catalogue : search_catalog (prix, stock, variations) pour préparer un devis.",
+      "Configuration de funnel : get_funnel, list_funnel_templates, create_funnel (toujours non publié), update_funnel_steps, set_suggestion_rules, set_chat_agent, set_funnel_tracking, get_embed_code, publish_funnel (confirm=true seulement après accord explicite du marchand). Proposez le plan et attendez la validation avant d’écrire ; prompt configurer_mon_funnel.",
       "Écriture : update_lead_status, add_lead_note, assign_lead (list_team pour trouver le commercial), trigger_followup (envoie un email au prospect : demander confirmation avant).",
       "revenue_estimate = estimation à partir des lignes de devis (moyenne des devis chiffrés si non chiffré), pas un CA facturé.",
     ].join(" "),

@@ -19,6 +19,7 @@ import { apiAddLeadNote, apiAssignLead, apiGetLeadTimeline, apiListTeam } from "
 import { ASSIGN_MODES, NOTE_MAX_LENGTH } from "@/lib/api/crm-core";
 import { organizationIdFromAuth } from "@/lib/mcp/auth";
 import { errorResult, textResult } from "@/lib/mcp/results";
+import { registerFunnelConfigTools } from "@/lib/mcp/funnel-tools";
 
 const leadStatusSchema = z.enum(["new", "contacted", "in_progress", "won", "lost", "waiting"]);
 const leadScoreSchema = z.enum(["hot", "warm", "cold"]);
@@ -273,7 +274,7 @@ export function registerQuoteBuilderTools(server: McpServer) {
     "list_funnels",
     {
       title: "Lister les funnels",
-      description: "Liste les funnels / configurateurs de l’organisation.",
+      description: "Liste les funnels / configurateurs de l’organisation (get_funnel pour le détail).",
       inputSchema: z.object({}),
       annotations: READ_ONLY,
     },
@@ -536,4 +537,5 @@ export function registerQuoteBuilderTools(server: McpServer) {
       }
     },
   );
+  registerFunnelConfigTools(server);
 }

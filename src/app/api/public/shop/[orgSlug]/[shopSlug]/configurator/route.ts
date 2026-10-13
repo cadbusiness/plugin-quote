@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/service";
+import { publicDefinitionTheme } from "@/lib/funnels/agent-settings";
 import { gateShopCatalogRequest, resolveShopCatalog } from "@/lib/shops/catalog-scope";
 import { loadShopDefinition } from "@/lib/wizard/definition";
 
@@ -25,5 +26,8 @@ export async function GET(
   if (!definition) {
     return NextResponse.json({ error: "Catalogue de cette boutique introuvable" }, { status: 404 });
   }
-  return NextResponse.json(definition);
+  return NextResponse.json({
+    ...definition,
+    configurator: { ...definition.configurator, theme: publicDefinitionTheme(definition.configurator.theme) },
+  });
 }

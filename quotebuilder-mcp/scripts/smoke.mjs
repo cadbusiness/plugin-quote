@@ -78,18 +78,33 @@ globalThis.fetch = async (input, init) => {
       headers: { "Content-Type": "application/json" },
     });
   }
+  if (path.startsWith("/api/funnels")) {
+    return new Response(JSON.stringify({ funnel: { id: "f1", status: "unpublished" } }), {
+      status: method === "POST" && path === "/api/funnels" ? 201 : 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
   return new Response(JSON.stringify({ error: `unexpected ${method} ${path}` }), { status: 500 });
 };
 
 const CORE_TOOLS = [
+  "create_funnel",
   "create_lead",
+  "get_embed_code",
+  "get_funnel",
   "get_funnel_performance",
   "get_lead_detail",
   "get_leads",
   "get_pending_followups",
   "get_stats",
+  "list_funnel_templates",
   "list_funnels",
+  "publish_funnel",
+  "set_chat_agent",
+  "set_funnel_tracking",
+  "set_suggestion_rules",
   "trigger_followup",
+  "update_funnel_steps",
   "update_lead_status",
 ];
 
@@ -227,6 +242,41 @@ const leads = await withClient(false, async (client) => {
 });
 
 void leads;
+
+await withClient(false, async (client) => {
+  const tools = (await client.listTools()).tools;
+  const byName = new Map(tools.map((tool) => [tool.name, tool]));
+  for (const name of ["get_funnel", "list_funnel_templates", "get_embed_code"]) {
+    if (byName.get(name)?.annotations?.readOnlyHint !== true) {
+      console.error("read-only annotation missing", name);
+      process.exit(1);
+    }
+  }
+  if (byName.get("update_funnel_steps")?.annotations?.destructiveHint !== true) {
+    console.error("update_funnel_steps must be destructive (replace)");
+    process.exit(1);
+  }
+  const created = await client.callTool({ name: "create_funnel", arguments: { name: "Chat rayonnage", mode: "chat", from_catalog: "auto" } });
+  const steps = await client.callTool({
+    name: "update_funnel_steps",
+    arguments: { funnel_id: "f1", steps: [{ type: "contact", title: "Vos coordonnées" }] },
+  });
+  const published = await client.callTool({ name: "publish_funnel", arguments: { funnel_id: "f1", publish: true, confirm: true } });
+  if (created.isError || steps.isError || published.isError) {
+    console.error({ created, steps, published });
+    process.exit(1);
+  }
+  const put = calls.find((c) => c.method === "PUT" && c.path === "/api/funnels/f1/steps");
+  const pub = calls.find((c) => c.method === "POST" && c.path === "/api/funnels/f1/publish");
+  if (!put || put.body.steps?.[0]?.type !== "contact" || "funnel_id" in put.body) {
+    console.error("update_funnel_steps body", put);
+    process.exit(1);
+  }
+  if (!pub || pub.body.confirm !== true || pub.body.publish !== true) {
+    console.error("publish_funnel body", pub);
+    process.exit(1);
+  }
+});
 
 console.log(JSON.stringify({ tools_core: CORE_TOOLS.length, tools_devis: DEVIS_TOOLS.length, calls }, null, 2));
 console.log("smoke ok");

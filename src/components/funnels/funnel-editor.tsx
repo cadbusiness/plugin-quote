@@ -6,7 +6,7 @@ import { ChevronLeft } from "lucide-react";
 import { ListPanel } from "@/components/ui/list-panel";
 import { Chip } from "@/components/ui/chip";
 import { LocalTabNav, replaceClientUrl } from "@/components/ui/local-tabs";
-import { agentShortcode, agentWidgetSnippet, captureShortcode, captureWidgetSnippet } from "@/lib/configurator/capture-embed";
+import { funnelEmbedCodes } from "@/lib/configurator/capture-embed";
 import { CopyBlock } from "@/components/funnels/copy-block";
 import { FunnelAutomations } from "@/components/funnels/funnel-automations";
 import { FunnelStatsPanel } from "@/components/funnels/funnel-stats-panel";
@@ -63,15 +63,22 @@ export function FunnelEditor({
 }) {
   const [pending, startTransition] = useTransition();
   const [tab, setTab] = useState(initialTab);
-  const embedUrl = publicUrl.replace("/c/", "/embed/");
-  const widgetOrigin = new URL("/widget.js", publicUrl).origin;
-  const widget = `<div data-quotebuilder data-org="${orgSlug}" data-id="${funnel.slug}"></div>\n<script src="${widgetOrigin}/widget.js" async></script>`;
-  const capture = captureWidgetSnippet(widgetOrigin, orgSlug, funnel.slug);
-  const agent = agentWidgetSnippet(widgetOrigin, orgSlug, funnel.slug);
-  const iframe = `<iframe src="${embedUrl}" title="${funnel.name}" style="width:100%;min-height:720px;border:0"></iframe>`;
-  const shortcode = `[quotebuilder org="${orgSlug}" id="${funnel.slug}"]`;
-  const captureCode = captureShortcode(orgSlug, funnel.slug);
-  const agentCode = agentShortcode(orgSlug, funnel.slug);
+  const origin = new URL(publicUrl).origin;
+  const {
+    widget,
+    capture,
+    agent,
+    iframe,
+    shortcode,
+    captureShortcode: captureCode,
+    agentShortcode: agentCode,
+  } = funnelEmbedCodes({
+    pageOrigin: origin,
+    widgetOrigin: origin,
+    orgSlug,
+    funnelSlug: funnel.slug,
+    funnelName: funnel.name,
+  });
 
   function commitName(value: string) {
     const next = value.trim();

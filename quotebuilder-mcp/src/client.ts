@@ -110,6 +110,31 @@ export class QuoteBuilderClient {
     );
   }
 
+  getFunnel(funnelId: string) {
+    return this.request<{ funnel: unknown }>("GET", `/api/funnels/${encodeURIComponent(funnelId)}`);
+  }
+
+  listFunnelTemplates() {
+    return this.request<{ templates: unknown[] }>("GET", "/api/funnels/templates");
+  }
+
+  createFunnel(args: Record<string, unknown>) {
+    return this.request<{ funnel: unknown }>("POST", "/api/funnels", args);
+  }
+
+  /** PUT /api/funnels/:id/{steps,rules,chat-agent,tracking}; body is validated server-side. */
+  updateFunnel(funnelId: string, part: "steps" | "rules" | "chat-agent" | "tracking", body: Record<string, unknown>) {
+    return this.request<unknown>("PUT", `/api/funnels/${encodeURIComponent(funnelId)}/${part}`, body);
+  }
+
+  getEmbedCode(funnelId: string) {
+    return this.request<{ embed: unknown }>("GET", `/api/funnels/${encodeURIComponent(funnelId)}/embed`);
+  }
+
+  publishFunnel(funnelId: string, body: { publish: boolean; confirm: boolean }) {
+    return this.request<{ funnel: unknown }>("POST", `/api/funnels/${encodeURIComponent(funnelId)}/publish`, body);
+  }
+
   triggerFollowup(args: { lead_id: string; template: FollowupTemplate }) {
     return this.request<{ followup: unknown }>("POST", "/api/automation/trigger", args);
   }

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { parseAttribution, type Attribution } from "@/lib/stats/attribution";
 import { ANALYTICS_EVENTS } from "@/lib/stats/events";
 import type { ChatMessage, ConfiguratorDefinition, ContactDraft, QuoteSession } from "@/lib/wizard/types";
+import { parseFunnelAgentSettings } from "@/lib/funnels/agent-settings";
 
 type Contact = { name: string; email: string; phone: string; company: string };
 
@@ -251,7 +252,8 @@ export function SiteAgent({
       <div className="flex min-h-[220px] flex-1 flex-col gap-2 overflow-y-auto px-4 py-3">
         {messages.length === 0 ? (
           <p className="rounded-xl bg-mk-band px-3 py-2 text-sm text-mk-ink">
-            Bonjour, décrivez-moi votre projet. Je cherche dans le catalogue et je prépare le devis.
+            {parseFunnelAgentSettings(definition.configurator.theme).greeting ||
+              "Bonjour, décrivez-moi votre projet. Je cherche dans le catalogue et je prépare le devis."}
           </p>
         ) : null}
         {messages.map((message, index) => (
