@@ -31,6 +31,15 @@ const nextConfig: NextConfig = {
         destination: "https://www.quotebuilder.co/:path*",
         permanent: true,
       },
+      // Pages only: installed widgets, WordPress plugins, MCP OAuth clients and
+      // crons still call the vercel.app host, and a redirect would break them.
+      {
+        source:
+          "/:path((?!api/|_next/|widget\\.js|embed/|oauth/|\\.well-known/|quotebuilder-wp|wp-plugin/).*)",
+        has: [{ type: "host", value: "quotebuilder-weld.vercel.app" }],
+        destination: "https://www.quotebuilder.co/:path",
+        permanent: true,
+      },
       { source: "/wizard", destination: "/funnels", permanent: false },
     ];
   },
