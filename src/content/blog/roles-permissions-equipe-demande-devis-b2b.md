@@ -123,7 +123,7 @@ La fiche d'un membre comporte, dans l'onglet Compte, une section **Gestion** ave
 
 **Changer le rôle.** Une liste déroulante propose Commercial ou Admin, puis **Enregistrer le rôle**. Le nouveau rôle s'applique au prochain chargement de page de la personne : le menu et les écrans accessibles changent sans qu'elle ait à se reconnecter. Aucun email ne la prévient, pensez à le lui dire.
 
-**Le bouton Suspendre.** Il apparaît sur la fiche d'un membre actif. Ne comptez pas dessus pour couper un accès : l'écran peut annoncer que le statut est mis à jour alors que rien n'a changé. **Réactiver** est le libellé affiché quand le statut est déjà Suspendu. Après toute action sur un accès, ouvrez la liste Équipe et vérifiez que le statut affiché a bien changé.
+**Le bouton Suspendre.** Il apparaît sur la fiche d'un membre actif. C'est le seul bouton proposé pour ce statut : **Révoquer l'invitation** n'existe que pour une invitation en attente. Aujourd'hui, l'application ne coupe pas de façon fiable l'accès d'un membre actif. L'écran peut annoncer que le statut est mis à jour alors que rien n'a changé. **Réactiver** est le libellé affiché quand le statut est déjà Suspendu. Après toute action sur un accès, ouvrez la liste Équipe et vérifiez que le statut affiché a bien changé. S'il n'a pas changé, contactez le support.
 
 Trois règles encadrent ces actions :
 
@@ -133,7 +133,7 @@ Trois règles encadrent ces actions :
 
 Ce dernier point mérite attention. Si vous nommez trois Admins, chacun peut changer le rôle des deux autres. Dans une petite équipe, c'est rarement un problème. Mais c'est une raison de plus pour garder le rôle Admin à ceux qui configurent vraiment l'outil.
 
-**Quand quelqu'un quitte l'équipe**, l'ordre fiable est le suivant : filtrez la liste des Demandes sur son nom pour voir ses dossiers ouverts, réassignez-les, puis retirez l'accès (révoquer). Vérifiez dans la liste Équipe que le statut a bien changé. Retirer l'accès ne réassigne rien : les dossiers restent au nom de la personne tant que personne ne les reprend.
+**Quand quelqu'un quitte l'équipe**, filtrez la liste des Demandes sur son nom pour voir ses dossiers ouverts, réassignez-les, puis essayez Suspendre. Vérifiez dans la liste Équipe que le statut a bien changé. S'il n'a pas changé, contactez le support : aujourd'hui l'application ne coupe pas de façon fiable l'accès d'un membre actif. Suspendre ne réassigne rien : les dossiers restent au nom de la personne tant que personne ne les reprend.
 
 ## Les quatre onglets d'une fiche membre
 
@@ -188,7 +188,7 @@ Dans tous les cas, posez-vous la question pour chaque Admin : a-t-il modifié un
 
 **Laisser traîner les invitations.** Une invitation en attente envoyée à une mauvaise adresse ou à un candidat qui n'a finalement pas rejoint l'entreprise reste dans la liste. Filtrez par statut Invitation une fois par mois et révoquez celles qui ne servent plus.
 
-**Oublier les dossiers d'un départ.** Retirer l'accès ne réassigne pas les demandes. Réassignez les dossiers, puis retirez l'accès (révoquer), puis vérifiez dans la liste Équipe que le statut a bien changé.
+**Oublier les dossiers d'un départ.** Suspendre un compte ne réassigne pas les demandes, et aujourd'hui l'application ne coupe pas de façon fiable l'accès d'un membre actif. Réassignez les dossiers, essayez Suspendre, vérifiez le statut dans la liste Équipe et, si rien ne change, contactez le support.
 
 ## Checklist avant d'inviter l'équipe
 
@@ -200,7 +200,7 @@ Dans tous les cas, posez-vous la question pour chaque Admin : a-t-il modifié un
 - [ ] Chaque nouveau venu a vu l'onglet Accès de sa fiche
 - [ ] L'équipe sait que tous les membres voient toutes les demandes
 - [ ] Les relecteurs côté client passent par l'invitation sur le dossier, pas par la page Équipe
-- [ ] Une procédure de départ écrite : réassigner les dossiers, puis retirer l'accès (révoquer), puis vérifier dans la liste Équipe que le statut a bien changé
+- [ ] Une procédure de départ écrite : réassigner les dossiers, essayer Suspendre, vérifier le statut dans Équipe et, si rien ne change, contacter le support
 - [ ] Une revue mensuelle des invitations en attente et des Admins réellement utiles
 
 ## Ce que QuoteBuilder ne fait pas
@@ -213,7 +213,8 @@ Pour décider en connaissance de cause, voici les limites constatées à ce jour
 - pas de transfert de propriété depuis l'interface ;
 - pas de connexion par authentification unique (SSO) : chaque membre se connecte par email et mot de passe ;
 - pas de journal des changements de rôle et des suspensions ;
-- pas d'email au membre quand son rôle change.
+- pas d'email au membre quand son rôle change ;
+- pas de coupure fiable de l'accès d'un membre actif : Suspendre peut annoncer un succès sans changer le statut, et Révoquer l'invitation ne s'applique qu'à une invitation en attente.
 
 ## Estimer ce que vous coûtent des accès mal cadrés
 
@@ -245,7 +246,7 @@ Si vous avez réinvité la même adresse ou cliqué sur Renvoyer l'accès, un no
 
 ### Un Admin peut-il modifier le rôle d'un autre Admin ?
 
-Oui. Un Admin peut changer le rôle d'un Commercial ou d'un autre Admin. Il ne peut modifier ni le Propriétaire ni son propre compte. Le bouton Suspendre ne coupe pas un accès de façon fiable : vérifiez le statut dans la liste Équipe.
+Oui. Un Admin peut changer le rôle d'un Commercial ou d'un autre Admin. Il ne peut modifier ni le Propriétaire ni son propre compte. Aujourd'hui, l'application ne coupe pas de façon fiable l'accès d'un membre actif : Suspendre peut annoncer un succès sans changer le statut. Vérifiez dans la liste Équipe et, si rien ne change, contactez le support. Révoquer l'invitation ne concerne qu'une invitation en attente.
 
 ### Que se passe-t-il quand on change le rôle d'un membre ?
 
@@ -253,7 +254,7 @@ Le nouveau rôle s'applique à son prochain chargement de page : le menu et les 
 
 ### Comment gérer le départ d'un commercial ?
 
-Filtrez la liste des Demandes sur son nom, réassignez ses dossiers ouverts, puis retirez l'accès (révoquer). Vérifiez dans la liste Équipe que le statut a bien changé. Son historique reste consultable.
+Filtrez la liste des Demandes sur son nom, réassignez ses dossiers ouverts, puis essayez Suspendre. Vérifiez dans la liste Équipe que le statut a bien changé. S'il n'a pas changé, contactez le support : aujourd'hui l'application ne coupe pas de façon fiable l'accès d'un membre actif. Son historique reste consultable.
 
 ### Le Directeur financier ou le Responsable technique invité sur un dossier fait-il partie de l'équipe ?
 

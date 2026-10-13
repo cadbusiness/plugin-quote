@@ -183,9 +183,14 @@ function assertNoDashes(text: string, label: string) {
   assert.match(blogBody, /\| Google Ads \| Connexion, conversions, ROI \| Oui \| Lecture seule \|/);
   assert.match(blogBody, /La page Google Ads \(\/acquisition\) ne redirige pas/);
   assert.doesNotMatch(blogBody, /renvoyé vers la liste des Demandes/);
-  assert.match(blogBody, /retirer l'accès \(révoquer\)/);
-  assert.match(blogBody, /vérifier dans la liste Équipe que le statut a bien changé/);
-  assert.match(blogBody, /Le bouton Suspendre ne coupe pas un accès de façon fiable/);
+  assert.doesNotMatch(blogBody, /retirer l'accès \(révoquer\)/);
+  assert.match(blogBody, /Révoquer l'invitation/);
+  assert.match(blogBody, /n'existe que pour une invitation en attente/);
+  assert.match(blogBody, /aujourd'hui l'application ne coupe pas de façon fiable l'accès d'un membre actif/);
+  assert.match(blogBody, /essayez Suspendre/);
+  assert.match(blogBody, /contactez le support/);
+  assert.match(blogBody, /pas de coupure fiable de l'accès d'un membre actif/);
+  assert.match(blogBody, /Vérifiez dans la liste Équipe que le statut a bien changé/);
   assert.doesNotMatch(blogBody, /réassignez-les, puis suspendez/);
   assert.doesNotMatch(blogBody, /suspendez ensuite/);
   assert.doesNotMatch(blogBody, /cliquez sur Suspendre/);
@@ -195,7 +200,7 @@ function assertNoDashes(text: string, label: string) {
   assert.doesNotMatch(blogBody, /ACCESS_MATRIX/);
   assertNoDashes(blogRaw, "roles md");
   assertNoDashes(blogBody, "roles body");
-  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 3882);
+  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 4010);
   assert.equal(faqQuestionCount(blogBody), 10);
   assert.deepEqual(faqFromMarkdown(blogBody), BLOG_FAQ[BLOG_SLUG]);
   assertInternalLinks(blogBody, "roles");
