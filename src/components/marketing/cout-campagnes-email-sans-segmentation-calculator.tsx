@@ -186,7 +186,7 @@ export function CoutCampagnesEmailSansSegmentationCalculator() {
             <MetricLight
               label="Coût mensuel (temps + opportunités)"
               value={fmtEur(result.coutMensuel)}
-              tone={result.coutMensuel < 0 ? "bad" : "ok"}
+              tone={result.verdict.tone === "bad" ? "bad" : result.verdict.tone === "ok" ? "ok" : undefined}
             />
           </dl>
           <p className={`mt-6 rounded-xl px-3 py-3 text-sm font-semibold ${alertClass(result.verdict.tone)}`}>

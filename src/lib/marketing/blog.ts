@@ -115,6 +115,7 @@ export const BLOG_TOOL_COUT_CLIENT_GOOGLE_ADS = "/outils/calculateur-cout-par-cl
 export const BLOG_TOOL_CHARGE_AUTOPILOTE = "/outils/estimateur-charge-relances-manuelles-vs-autopilote";
 export const BLOG_TOOL_COUT_CAMPAGNES_EMAIL = "/outils/estimateur-cout-campagnes-email-sans-segmentation";
 export const BLOG_TOOL_ACCES_EQUIPE = "/outils/estimateur-cout-acces-mal-cadres-equipe-devis";
+export const BLOG_TOOL_CSV_CATALOGUE = "/outils/verificateur-csv-catalogue-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -142,6 +143,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     39: "Trente-neuf",
     40: "Quarante",
     41: "Quarante-et-un",
+    42: "Quarante-deux",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -394,9 +396,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Admins en trop, commerciaux bloqués, réponses retardées. Le coût mensuel et ce qu'une répartition propre des rôles évite.",
     tags: ["funnel", "catalogue"],
   },
+  {
+    href: BLOG_TOOL_CSV_CATALOGUE,
+    title: "Vérificateur de fichier CSV catalogue",
+    text: "Séparateur, colonnes reconnues, SKU en double, prix lus à 0 €. Ce que l'import QuoteBuilder fera de votre fichier, avant de cliquer.",
+    tags: ["catalogue", "integrations"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "import-catalogue-csv-funnel-devis-b2b",
+    path: "/blog/import-catalogue-csv-funnel-devis-b2b",
+    title: "Importer son catalogue en CSV pour un funnel de devis B2B : colonnes, SKU, prix et pièges d'Excel",
+    description:
+      "Colonnes reconnues, rôle du SKU, prix fixes ou en fourchette, ce que la mise à jour efface, et les pièges d'un fichier Excel français : point-virgule, encodage, zéros perdus. Avec un vérificateur gratuit.",
+    publishedAt: "2026-10-14",
+    readingMinutes: 15,
+    tags: ["catalogue", "integrations"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.produits,
+    pinned: false,
+  },
   {
     slug: "roles-permissions-equipe-demande-devis-b2b",
     path: "/blog/roles-permissions-equipe-demande-devis-b2b",
