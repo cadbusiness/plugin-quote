@@ -1,16 +1,18 @@
 import { createServiceClient } from "@/lib/supabase/service";
 import { appUrl } from "@/lib/prospect/access";
+import { isMemberLoginEmail, memberEmailIlikePattern } from "@/lib/members/email";
 import { clientQuoteStageLabel } from "@/lib/members/parse";
 import type { MemberQuoteCard } from "@/lib/members/types";
 
 export async function loadMemberQuotes(organizationId: string, email: string): Promise<MemberQuoteCard[]> {
+  if (!isMemberLoginEmail(email)) return [];
   const supabase = createServiceClient();
   const [{ data: quotes }, { data: statuses }] = await Promise.all([
     supabase
       .from("quotes")
       .select("id, created_at, contact_name, contact_company, status, status_id")
       .eq("organization_id", organizationId)
-      .ilike("contact_email", email.trim().toLowerCase())
+      .ilike("contact_email", memberEmailIlikePattern(email))
       .order("created_at", { ascending: false }),
     supabase.from("quote_statuses").select("id, label, slug").eq("organization_id", organizationId),
   ]);

@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/db/database.types";
+import { escapeLike } from "@/lib/prospect/access";
 
 type Client = SupabaseClient<Database>;
 
@@ -16,15 +17,16 @@ export async function eraseContactByEmail(
   input: { organizationId: string; email: string; actorId: string | null },
 ) {
   const email = normalizeEmail(input.email);
-  if (!email.includes("@")) {
+  if (!email.includes("@") || email.includes("%") || email.includes("\\")) {
     throw new Error("Email invalide");
   }
+  const emailPattern = escapeLike(email);
 
   const { data: quotes } = await supabase
     .from("quotes")
     .select("id, session_id")
     .eq("organization_id", input.organizationId)
-    .ilike("contact_email", email);
+    .ilike("contact_email", emailPattern);
 
   const quoteIds = (quotes ?? []).map((q) => q.id);
   const sessionIds = (quotes ?? []).map((q) => q.session_id).filter(Boolean) as string[];
@@ -74,7 +76,7 @@ export async function eraseContactByEmail(
       contact_name: "Anonymisé",
     })
     .eq("organization_id", input.organizationId)
-    .ilike("contact_email", email);
+    .ilike("contact_email", emailPattern);
 
   if (quoteIds.length) {
     await supabase.from("prospect_access").delete().in("quote_id", quoteIds);
@@ -85,7 +87,7 @@ export async function eraseContactByEmail(
     .from("member_space_sessions")
     .delete()
     .eq("organization_id", input.organizationId)
-    .ilike("email", email);
+    .ilike("email", emailPattern);
 
   return { quotes: quoteIds.length, sessions: sessionIds.length };
 }

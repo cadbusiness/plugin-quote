@@ -1,5 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/db/database.types";
+import { memberDocStoragePath } from "@/lib/members/docs";
+import { deleteMemberDocPaths } from "@/lib/members/upload";
 import { asJson, type MemberPageDraft, type MemberResourceDraft, type MemberSpaceDocument } from "@/lib/members/types";
 import { parseBlocks, parsePageKind, parseResourceKind, parseStatus, parseTheme } from "@/lib/members/parse";
 
@@ -70,7 +72,7 @@ export async function persistMemberSpaceDocument(
 
   const { data: existingResources } = await supabase
     .from("member_space_resources")
-    .select("id")
+    .select("id, href")
     .eq("space_id", doc.space.id);
   const keepResourceIds = new Set(drafts.resources.map((item) => item.id));
   for (const row of existingResources ?? []) {
@@ -95,6 +97,22 @@ export async function persistMemberSpaceDocument(
       await supabase.from("member_space_resources").update(payload).eq("id", resource.id).eq("space_id", doc.space.id);
     } else {
       await supabase.from("member_space_resources").insert({ ...payload, id: resource.id });
+    }
+  }
+
+  const keptPaths = new Set(
+    drafts.resources
+      .map((item) => memberDocStoragePath(item.href))
+      .filter((path): path is string => Boolean(path)),
+  );
+  const stalePaths = (existingResources ?? [])
+    .map((row) => memberDocStoragePath(row.href))
+    .filter((path): path is string => path !== null && !keptPaths.has(path));
+  if (stalePaths.length) {
+    try {
+      await deleteMemberDocPaths(stalePaths);
+    } catch {
+      // A missing bucket must not roll back the saved space.
     }
   }
 }

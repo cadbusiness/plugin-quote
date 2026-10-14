@@ -1,13 +1,14 @@
 import { randomBytes } from "crypto";
 import { cookies } from "next/headers";
 import { createServiceClient } from "@/lib/supabase/service";
-import { hashPin } from "@/lib/prospect/access";
+import { isMemberLoginEmail, normalizeMemberEmail, sessionEmailFromMatchedQuote } from "@/lib/members/email";
+import { escapeLike, hashPin, PIN_LOCK_MS, PIN_MAX_FAILURES } from "@/lib/prospect/access";
 
 export const MEMBER_COOKIE = "qb-member";
 const SESSION_DAYS = 30;
 
 function normalizeEmail(email: string) {
-  return email.trim().toLowerCase();
+  return normalizeMemberEmail(email);
 }
 
 export async function createMemberSession(input: {
@@ -69,23 +70,59 @@ export async function loginMemberWithPin(input: {
   email: string;
   pin: string;
 }) {
-  const email = normalizeEmail(input.email);
+  const typedEmail = normalizeEmail(input.email);
   const pin = input.pin.replace(/\D/g, "").slice(0, 6);
-  if (!email.includes("@") || pin.length !== 6) return { ok: false as const };
+  if (!isMemberLoginEmail(typedEmail) || pin.length !== 6) return { ok: false as const };
   const supabase = createServiceClient();
   const { data: quotes } = await supabase
     .from("quotes")
-    .select("id")
+    .select("id, contact_email")
     .eq("organization_id", input.organizationId)
-    .ilike("contact_email", email);
+    .ilike("contact_email", escapeLike(typedEmail));
   const quoteIds = (quotes ?? []).map((row) => row.id);
   if (!quoteIds.length) return { ok: false as const };
 
+  const now = Date.now();
   const { data: accessRows } = await supabase.from("prospect_access").select("*").in("quote_id", quoteIds);
-  const match = (accessRows ?? []).find(
-    (row) => new Date(row.expires_at).getTime() >= Date.now() && row.pin_hash === hashPin(pin, row.quote_id),
+  const candidates = (accessRows ?? []).filter(
+    (row) =>
+      new Date(row.expires_at).getTime() >= now &&
+      (!row.pin_locked_until || new Date(row.pin_locked_until).getTime() <= now),
   );
-  if (!match) return { ok: false as const };
+  if (!candidates.length) return { ok: false as const };
+
+  const match = candidates.find((row) => row.pin_hash === hashPin(pin, row.quote_id));
+  if (!match) {
+    await Promise.all(
+      candidates.map((row) => {
+        const failures = (row.pin_failed_attempts ?? 0) + 1;
+        const locked = failures >= PIN_MAX_FAILURES;
+        return supabase
+          .from("prospect_access")
+          .update({
+            pin_failed_attempts: locked ? 0 : failures,
+            pin_locked_until: locked ? new Date(now + PIN_LOCK_MS).toISOString() : null,
+          })
+          .eq("id", row.id);
+      }),
+    );
+    return { ok: false as const };
+  }
+
+  await supabase
+    .from("prospect_access")
+    .update({ last_accessed: new Date(now).toISOString() })
+    .eq("id", match.id);
+  if (match.pin_failed_attempts || match.pin_locked_until) {
+    await supabase
+      .from("prospect_access")
+      .update({ pin_failed_attempts: 0, pin_locked_until: null })
+      .eq("id", match.id);
+  }
+
+  const matchedQuote = (quotes ?? []).find((row) => row.id === match.quote_id);
+  const email = sessionEmailFromMatchedQuote(typedEmail, matchedQuote?.contact_email);
+  if (!email) return { ok: false as const };
   await createMemberSession({ organizationId: input.organizationId, spaceId: input.spaceId, email });
   return { ok: true as const };
 }
@@ -104,7 +141,7 @@ export async function loginMemberWithProspectToken(input: {
     .select("contact_email")
     .eq("id", access.quote_id)
     .maybeSingle();
-  const email = quote?.contact_email?.trim();
+  const email = sessionEmailFromMatchedQuote("", quote?.contact_email);
   if (!email) return { ok: false as const };
   await createMemberSession({ organizationId: input.organizationId, spaceId: input.spaceId, email });
   return { ok: true as const };

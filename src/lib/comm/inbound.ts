@@ -1,4 +1,5 @@
 import type { Json } from "@/lib/db/database.types";
+import { escapeLike } from "@/lib/prospect/access";
 import { createServiceClient } from "@/lib/supabase/service";
 
 function asString(value: unknown) {
@@ -41,7 +42,7 @@ export async function ingestInboundEmail(input: {
     .from("quotes")
     .select("id, assigned_to, contact_name")
     .eq("organization_id", channel.organization_id)
-    .ilike("contact_email", from)
+    .ilike("contact_email", escapeLike(from))
     .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle();

@@ -5,6 +5,7 @@ import { ArrowRight, Calendar, ChevronRight, ExternalLink } from "lucide-react";
 import { Chip, statusTone } from "@/components/ui/chip";
 import { IconWell, MEMBER_BLOCK_ICON, resourceIcon } from "@/components/members/member-icons";
 import { resourcesOfKind } from "@/lib/members/blocks";
+import { memberResourceHref } from "@/lib/members/docs";
 import { memberImageSrc, memberVideoEmbed } from "@/lib/members/embed";
 import { formatDate } from "@/lib/format";
 import { clientQuoteStageLabel } from "@/lib/members/parse";
@@ -41,6 +42,10 @@ export function MemberSpaceView({
   onOpenQuotes?: () => void;
 }) {
   const base = memberSpaceBasePath(orgSlug, spaceSlug);
+  const linkedResources = resources.map((item) => ({
+    ...item,
+    href: memberResourceHref(orgSlug, spaceSlug, item.href),
+  }));
   const headerBackground = theme.headerBackground || theme.background;
   return (
     <div className="min-h-full" style={{ background: theme.background, color: theme.text }}>
@@ -101,7 +106,7 @@ export function MemberSpaceView({
                 block={block}
                 theme={theme}
                 quotes={quotes}
-                resources={resources}
+                resources={linkedResources}
                 quotesHref={preview ? undefined : `${base}/devis`}
                 onOpenQuotes={preview ? onOpenQuotes : undefined}
               />
