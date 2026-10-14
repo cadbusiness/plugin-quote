@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "import-catalogue-csv-funnel-devis-b2b": [
+    {
+      q: "Quelles colonnes l'import CSV de QuoteBuilder reconnaît-il ?",
+      a: "Sept champs : nom, SKU, catégorie, prix min, prix max, tags et description, chacun sous quelques noms de colonne, par exemple `nom`, `reference`, `categorie` ou `prix_min`. Les en-têtes sont comparés sans majuscules ni accents.",
+    },
+    {
+      q: "Pourquoi mon fichier Excel est-il refusé ?",
+      a: "Le plus souvent, à cause du point-virgule. L'import ne découpe qu'à la virgule : l'en-tête devient une seule colonne et la colonne nom est introuvable. Convertissez le fichier en virgules.",
+    },
+    {
+      q: "Ma colonne « Prix » est ignorée, pourquoi ?",
+      a: "« Prix » ne fait pas partie des noms reconnus. Renommez-la en « Prix min », et ajoutez une colonne « Prix max » avec la même valeur pour un prix fixe.",
+    },
+    {
+      q: "Que se passe-t-il si je réimporte le même fichier ?",
+      a: "Les lignes dont le SKU existe déjà dans le funnel mettent à jour leur fiche. Les lignes sans SKU sont créées une seconde fois. Sans colonne SKU, réimporter double le catalogue.",
+    },
+    {
+      q: "Une colonne absente garde-t-elle l'ancienne valeur ?",
+      a: "Non. Pour un SKU existant, l'import réécrit nom, description, prix min, prix max, tags et catégorie avec les valeurs du fichier. Une colonne absente ou une cellule vide efface le champ.",
+    },
+    {
+      q: "Comment écrire un prix avec des centimes ?",
+      a: "Avec un point (18.42) ou une virgule entre guillemets (\"18,42\"), sans séparateur de milliers. Le prix est enregistré au centime, mais QuoteBuilder affiche les montants d'un euro ou plus sans centimes.",
+    },
+    {
+      q: "Peut-on importer les photos, les options ou le stock ?",
+      a: "Non. Le CSV porte le nom, le SKU, la catégorie, les prix, les tags et la description. Photos, documents et options se règlent sur la fiche produit. Le stock vient seulement d'une boutique synchronisée.",
+    },
+    {
+      q: "Qui peut importer un catalogue ?",
+      a: "Le Propriétaire et les Admins. Le menu Catalogue n'apparaît pas pour un Commercial.",
+    },
+    {
+      q: "Un produit retiré du fichier est-il supprimé ?",
+      a: "Non. L'import crée et met à jour, il ne supprime rien. Un produit qui ne doit plus être proposé se désactive ou se supprime depuis le catalogue.",
+    },
+    {
+      q: "Faut-il un funnel avant d'importer ?",
+      a: "Oui. Les produits sont rattachés au funnel choisi à l'étape 1 de l'import. Sans funnel, l'import s'arrête avec le message « Créez d'abord un funnel : le catalogue s'y rattache. »",
+    },
+  ],
   "roles-permissions-equipe-demande-devis-b2b": [
     {
       q: "Quels sont les rôles d'équipe dans QuoteBuilder ?",
