@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "espace-membres-portail-client-devis-b2b": [
+    {
+      q: "Quelle différence entre l'espace prospect et l'espace membres ?",
+      a: "L'espace prospect est la page d'une seule demande : statut, récapitulatif, fichiers, messages. Il est créé automatiquement à chaque envoi. L'espace membres est la page d'un client : la liste de toutes ses demandes chez vous, plus des documents et des liens communs. Il est créé une fois par un Admin.",
+    },
+    {
+      q: "Le client doit-il créer un compte ?",
+      a: "Non. Il se connecte avec l'adresse email utilisée pour sa demande et le code PIN à 6 chiffres reçu par email. Depuis la page de suivi d'une demande, un lien l'amène dans l'espace déjà connecté.",
+    },
+    {
+      q: "Quelles demandes le client voit-il ?",
+      a: "Toutes les demandes envoyées chez vous avec l'adresse email qui sert à la connexion, de la plus récente à la plus ancienne, avec la date et un statut écrit pour lui. Il ne voit pas les demandes envoyées depuis une autre adresse, même dans la même société.",
+    },
+    {
+      q: "Pourquoi une demande n'est-elle plus cliquable ?",
+      a: "Le lien de suivi d'une demande est valable 30 jours. Passé ce délai, la demande reste dans la liste avec son statut, mais sans lien vers sa page de suivi.",
+    },
+    {
+      q: "Le client peut-il se connecter avec un ancien code PIN ?",
+      a: "Seulement si la demande correspondante a moins de 30 jours. Le code d'une demande plus ancienne n'ouvre plus l'espace. Chaque nouvelle demande génère un nouveau code, envoyé dans son email de confirmation.",
+    },
+    {
+      q: "Qui peut créer et modifier l'espace membres ?",
+      a: "Le Propriétaire et les Admins. Le rôle Commercial ne voit pas l'entrée Espace membres dans le menu et ne peut pas modifier l'espace.",
+    },
+    {
+      q: "Les documents déposés sont-ils protégés ?",
+      a: "Ils ne sont listés qu'aux clients connectés, mais l'adresse d'un fichier déposé s'ouvre sans code une fois connue. N'y mettez que des documents que vous pourriez envoyer à n'importe quel client.",
+    },
+    {
+      q: "Un relecteur invité sur une demande a-t-il accès à l'espace membres ?",
+      a: "Non. Le lien vers l'espace membres n'est pas affiché aux relecteurs. Ils gardent leur lien personnel, valable 30 jours, vers la demande pour laquelle ils ont été invités.",
+    },
+    {
+      q: "Peut-on avoir plusieurs espaces membres ?",
+      a: "Oui, mais les emails et la page de suivi renvoient vers le dernier espace publié. Si vous en gardez plusieurs en ligne, vérifiez lequel part dans vos emails.",
+    },
+    {
+      q: "L'espace membres apparaît-il dans Google ?",
+      a: "Non. Ses pages portent une directive noindex. Il sert vos clients existants, pas votre référencement.",
+    },
+  ],
   "import-catalogue-csv-funnel-devis-b2b": [
     {
       q: "Quelles colonnes l'import CSV de QuoteBuilder reconnaît-il ?",
