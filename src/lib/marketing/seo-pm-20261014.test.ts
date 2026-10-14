@@ -198,6 +198,14 @@ for (const label of ["Documents", "Plugins et liens", "Comment ça marche", "Lie
   assert.match(blogBody, /\/fonctionnalites\/espace-prospect/);
   assert.match(blogBody, /\/outils\/estimateur-temps-demandes-suivi-devis-clients/);
   assert.match(blogBody, /Une ressource publiée est visible par toute personne connectée à l'espace\./);
+  assert.match(blogBody, /Les essais de connexion sont limités/);
+  assert.match(blogBody, /lien signé de courte durée/);
+  assert.match(blogBody, /Un fichier déposé est privé/);
+  assert.doesNotMatch(blogBody, /s'ouvre sans code/);
+  assert.doesNotMatch(blogBody, /a une adresse publique/);
+  assert.doesNotMatch(blogBody, /verrouill/i);
+  assert.doesNotMatch(blogBody, /bucket/i);
+  assert.doesNotMatch(blogBody, /ilike/);
   assert.match(blogBody, /signup\?plan=free/);
   assert.match(blogBody, /\/c\/demo\/rayonnage/);
   assert.match(blogBody, /\/fonctionnalites\/autopilote/);
@@ -214,7 +222,7 @@ for (const label of ["Documents", "Plugins et liens", "Comment ça marche", "Lie
   assert.doesNotMatch(blogBody, /\/blog\/espace-prospect-devis-en-ligne/);
   assertNoDashes(blogRaw, "membres md");
   assertNoDashes(blogBody, "membres body");
-  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 3470);
+  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 3567);
   assert.equal(faqQuestionCount(blogBody), 10);
   assert.deepEqual(faqFromMarkdown(blogBody), BLOG_FAQ[BLOG_SLUG]);
   assertInternalLinks(blogBody, "membres");
@@ -227,6 +235,10 @@ const addedSources = [
   "src/app/(marketing)/outils/estimateur-temps-demandes-suivi-devis-clients/page.tsx",
   "src/content/blog/espace-membres-portail-client-devis-b2b.md",
 ];
+assertNoDashes(
+  (BLOG_FAQ[BLOG_SLUG] ?? []).map((item) => `${item.q}\n${item.a}`).join("\n"),
+  "membres faq",
+);
 for (const relative of addedSources) {
   assertNoDashes(readFileSync(join(process.cwd(), relative), "utf8"), relative);
 }
@@ -290,6 +302,8 @@ close(r.moisRetour, 1.428571);
 assert.strictEqual(r.verdict.tone, "warn");
 assert.ok(r.verdict.text.startsWith("Gain modeste : environ 111" + NB + "€ par mois."));
 assert.ok(r.conseils.some((item) => item.startsWith("Les documents de l'espace sont les mêmes pour tous les clients connectés")));
+assert.ok(r.conseils.some((item) => item.includes("Un fichier déposé est privé et s'ouvre par un lien signé.")));
+assert.ok(!r.conseils.some((item) => item.includes("adresse publique")));
 assert.ok(r.conseils.some((item) => item.startsWith("L'espace membres regroupe les demandes d'une même adresse email.")));
 assert.ok(!r.conseils.some((item) => item.startsWith("Moins de cinq clients")));
 assert.ok(!r.conseils.some((item) => item.startsWith("Plus de la moitié des questions")));

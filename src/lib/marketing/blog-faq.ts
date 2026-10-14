@@ -8,7 +8,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Le client doit-il créer un compte ?",
-      a: "Non. Il se connecte avec l'adresse email utilisée pour sa demande et le code PIN à 6 chiffres reçu par email. Depuis la page de suivi d'une demande, un lien l'amène dans l'espace déjà connecté.",
+      a: "Non. Il se connecte avec l'adresse email utilisée pour sa demande et le code PIN à 6 chiffres reçu par email. Les essais de connexion sont limités : trop de tentatives rapprochées sont refusées, le temps de réessayer. Depuis la page de suivi d'une demande, un lien l'amène dans l'espace déjà connecté.",
     },
     {
       q: "Quelles demandes le client voit-il ?",
@@ -28,7 +28,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Les documents déposés sont-ils protégés ?",
-      a: "Ils ne sont listés qu'aux clients connectés, mais l'adresse d'un fichier déposé s'ouvre sans code une fois connue. N'y mettez que des documents que vous pourriez envoyer à n'importe quel client.",
+      a: "Oui. Un fichier déposé est privé : il s'ouvre pour un client connecté, ou pour l'équipe, par un lien signé de courte durée. La ressource publiée reste visible par tous les clients connectés. N'y mettez que des documents que vous pourriez envoyer à chacun d'eux.",
     },
     {
       q: "Un relecteur invité sur une demande a-t-il accès à l'espace membres ?",

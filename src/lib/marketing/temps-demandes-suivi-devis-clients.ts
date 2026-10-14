@@ -209,7 +209,7 @@ export function computeSuiviClients(input: SuiviClientsInput): SuiviClientsResul
   }
   if (documents > 0) {
     conseils.push(
-      "Les documents de l'espace sont les mêmes pour tous les clients connectés, et un fichier déposé a une adresse publique. N'y mettez que des notices, guides ou conditions que vous pourriez envoyer à n'importe quel client.",
+      "Les documents de l'espace sont les mêmes pour tous les clients connectés. Un fichier déposé est privé et s'ouvre par un lien signé. N'y mettez que des notices, guides ou conditions que vous pourriez envoyer à n'importe quel client.",
     );
   }
   if (clients > 0 && minutesEntretien === 0) {

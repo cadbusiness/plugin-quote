@@ -88,7 +88,7 @@ Le client n'a pas de compte à créer ni de mot de passe à retenir. Il y a troi
 
 **Depuis la page de suivi d'une demande.** Quand un espace membres est publié, la page de suivi affiche en haut un lien « Voir tous vos devis dans l'espace membres ». Un clic suffit : le client arrive connecté, sans ressaisir son code. Ce lien n'est pas affiché aux relecteurs invités sur la demande (directeur financier, responsable technique, acheteur, décideur) : ils voient la demande pour laquelle on les a invités, pas l'historique du client.
 
-**Par l'adresse directe.** L'espace a une adresse du type `/m/votre-entreprise/espace-devis`. Sans connexion, elle affiche un écran simple : l'email utilisé pour le devis, le code PIN à 6 chiffres reçu par email, et un bouton Ouvrir mon espace. Si l'email ou le code ne correspond pas, le message est : « E-mail ou code introuvable. Utilisez l'e-mail du devis et le PIN à 6 chiffres. »
+**Par l'adresse directe.** L'espace a une adresse du type `/m/votre-entreprise/espace-devis`. Sans connexion, elle affiche un écran simple : l'email utilisé pour le devis, le code PIN à 6 chiffres reçu par email, et un bouton Ouvrir mon espace. Si l'email ou le code ne correspond pas, le message est : « E-mail ou code introuvable. Utilisez l'e-mail du devis et le PIN à 6 chiffres. » Les essais de connexion sont limités : trop de tentatives rapprochées sont refusées, le temps de réessayer.
 
 **Depuis un email.** Le modèle d'email de confirmation envoyé au prospect contient une ligne « Tous vos devis » suivie du lien de l'espace membres, entre le lien de suivi et le code PIN. La variable `{{membres_url}}` est aussi disponible dans l'éditeur d'emails, pour vos campagnes et vos parcours d'[Autopilote](https://www.quotebuilder.co/fonctionnalites/autopilote). Le modèle de campagne Offre contient d'ailleurs un bouton Ouvrir mon espace qui pointe vers ce lien.
 
@@ -135,13 +135,13 @@ L'espace membres est utile s'il répond aux questions que vos clients posent ent
 
 Un fabricant de rayonnages, par exemple, peut mettre sur l'accueil la liste des devis, un guide de prise de cotes, la notice de montage la plus demandée et un lien vers son funnel pour une nouvelle implantation. Un client qui revient pour une extension trouve tout au même endroit.
 
-## Documents : communs à tous, et à adresse publique
+## Documents : communs aux clients connectés, et privés
 
 Deux points à garder en tête avant de déposer un fichier.
 
 **Les documents sont les mêmes pour tous les clients connectés.** L'espace membres n'a pas de dossier par client. Une ressource publiée est visible par toute personne connectée à l'espace. Un document propre à un client n'a donc rien à y faire.
 
-**Un fichier déposé a une adresse publique.** Le fichier n'est listé qu'après connexion, mais son adresse, une fois connue, s'ouvre sans code. Ne déposez que ce que vous pourriez envoyer à n'importe quel client : notices, guides, conditions générales, fiches produit. Pas de devis signé, de plan client, de tarif négocié ni de document interne.
+**Un fichier déposé est privé.** Il s'ouvre pour un client connecté à l'espace, ou pour l'équipe, par un lien signé de courte durée. Il n'a pas d'adresse consultable sans cette session. Comme la ressource est commune, n'y mettez que ce que vous pourriez envoyer à n'importe quel client : notices, guides, conditions générales, fiches produit. Pas de devis propre à un client, de plan, de tarif négocié ni de document interne.
 
 Pour les échanges propres à une demande, la page de suivi reste le bon endroit : le client y ajoute ses plans et photos, et l'équipe lui répond dans la messagerie de la demande.
 
@@ -157,7 +157,7 @@ Côté équipe, la fiche d'une demande affiche un lien Espace membres à côté 
 
 Les pages de l'espace membres ne sont pas indexées par les moteurs de recherche : elles portent une directive noindex. L'espace ne contient pas de contenu pour le référencement, il sert vos clients existants.
 
-L'accès repose sur deux éléments : l'adresse email du devis et un code PIN envoyé sur cette adresse. QuoteBuilder ne conserve pas ce code en clair : il garde seulement une empreinte qui sert à le vérifier.
+L'accès repose sur deux éléments : l'adresse email du devis et un code PIN envoyé sur cette adresse. QuoteBuilder ne conserve pas ce code en clair : il garde seulement une empreinte qui sert à le vérifier. Les essais de connexion sont limités : trop de tentatives rapprochées sont refusées, le temps de réessayer.
 
 Quand vous effacez les données d'un contact au titre du RGPD, les connexions à l'espace membres liées à son adresse email sont supprimées avec le reste. L'article sur le [RGPD des demandes de devis](https://www.quotebuilder.co/blog/rgpd-demande-devis-b2b-consentement-conservation) détaille ce que couvre l'effacement.
 
@@ -180,7 +180,7 @@ Pour décider en connaissance de cause, voici les limites constatées à ce jour
 
 **Passer une demande en « En cours » trop tôt.** Le client lit « Devis envoyé ». Gardez « Contacté » pendant le chiffrage.
 
-**Déposer un document confidentiel.** L'adresse d'un fichier déposé est publique. Gardez l'espace pour les documents communs.
+**Déposer un document propre à un seul client.** Le fichier est privé, mais une ressource publiée est visible par tous les clients connectés. Gardez l'espace pour les documents communs.
 
 **Utiliser le lien dans les emails avant de publier.** La ligne « Tous vos devis » part vide. Publiez d'abord, ou retirez la variable.
 
@@ -191,7 +191,7 @@ Pour décider en connaissance de cause, voici les limites constatées à ce jour
 ## Checklist avant de publier
 
 - [ ] Les ressources d'exemple sont remplacées ou retirées
-- [ ] Chaque ressource publiée a une adresse qui s'ouvre
+- [ ] Chaque ressource publiée s'ouvre : lien externe, ou fichier une fois connecté
 - [ ] Aucun fichier déposé n'est propre à un client ou confidentiel
 - [ ] La page « Comment ça marche » explique l'email du devis et le code PIN
 - [ ] Un lien vers votre funnel permet d'envoyer une nouvelle demande
@@ -215,7 +215,7 @@ L'espace prospect est la page d'une seule demande : statut, récapitulatif, fich
 
 ### Le client doit-il créer un compte ?
 
-Non. Il se connecte avec l'adresse email utilisée pour sa demande et le code PIN à 6 chiffres reçu par email. Depuis la page de suivi d'une demande, un lien l'amène dans l'espace déjà connecté.
+Non. Il se connecte avec l'adresse email utilisée pour sa demande et le code PIN à 6 chiffres reçu par email. Les essais de connexion sont limités : trop de tentatives rapprochées sont refusées, le temps de réessayer. Depuis la page de suivi d'une demande, un lien l'amène dans l'espace déjà connecté.
 
 ### Quelles demandes le client voit-il ?
 
@@ -235,7 +235,7 @@ Le Propriétaire et les Admins. Le rôle Commercial ne voit pas l'entrée Espace
 
 ### Les documents déposés sont-ils protégés ?
 
-Ils ne sont listés qu'aux clients connectés, mais l'adresse d'un fichier déposé s'ouvre sans code une fois connue. N'y mettez que des documents que vous pourriez envoyer à n'importe quel client.
+Oui. Un fichier déposé est privé : il s'ouvre pour un client connecté, ou pour l'équipe, par un lien signé de courte durée. La ressource publiée reste visible par tous les clients connectés. N'y mettez que des documents que vous pourriez envoyer à chacun d'eux.
 
 ### Un relecteur invité sur une demande a-t-il accès à l'espace membres ?
 
