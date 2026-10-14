@@ -6,7 +6,7 @@ import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { insertMemberSpaceFromTemplate, parseCreateMemberSpaceForm } from "@/lib/members/create";
 import { loadMemberSpaceDocument, persistMemberSpaceDocument } from "@/lib/members/document";
 import { asJson } from "@/lib/members/types";
-import { uploadMemberDoc } from "@/lib/members/upload";
+import { deleteMemberSpaceFiles, uploadMemberDoc } from "@/lib/members/upload";
 import { memberSpaceBasePath } from "@/lib/members/urls";
 import {
   memberStatusAfterArchiveToggle,
@@ -151,6 +151,13 @@ export async function removeMemberSpace(spaceId: string) {
     .eq("id", spaceId)
     .eq("organization_id", ctx.organization.id)
     .maybeSingle();
+  if (space) {
+    try {
+      await deleteMemberSpaceFiles(ctx.organization.id, spaceId);
+    } catch {
+      // The row still goes away if storage is unreachable.
+    }
+  }
   await supabase.from("member_spaces").delete().eq("id", spaceId).eq("organization_id", ctx.organization.id);
   if (space?.slug) revalidateSpace(ctx.organization.slug, space.slug, spaceId);
   else revalidatePath("/membres");

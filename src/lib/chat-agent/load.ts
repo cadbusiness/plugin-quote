@@ -8,6 +8,7 @@ import { sourcesFromCatalog } from "@/lib/chat-agent/sources";
 import type { Json } from "@/lib/db/database.types";
 import type { PluginConnection } from "@/lib/integrations/plugin";
 import { notifyUser } from "@/lib/crm/activity";
+import { escapeLike } from "@/lib/prospect/access";
 import { createServiceClient } from "@/lib/supabase/service";
 import type { VisitorContact } from "@/lib/visitor-requests/types";
 import type { Product } from "@/lib/wizard/types";
@@ -133,13 +134,13 @@ export async function findChatDraft(input: {
     if (error) throw new Error(error.message);
     if (data) rows.push(data);
   }
-  const email = input.email?.trim().toLowerCase().replace(/[%_\\]/g, "") ?? "";
-  if (email.includes("@")) {
+  const email = input.email?.trim().toLowerCase() ?? "";
+  if (email.includes("@") && !email.includes("%") && !email.includes("\\")) {
     const { data, error } = await supabase
       .from("visitor_requests")
       .select(DRAFT_COLUMNS)
       .eq("organization_id", input.organizationId)
-      .ilike("contact_email", email)
+      .ilike("contact_email", escapeLike(email))
       .order("updated_at", { ascending: false })
       .limit(1);
     if (error) throw new Error(error.message);

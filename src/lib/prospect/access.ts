@@ -86,10 +86,11 @@ export async function loadProspectByToken(token: string): Promise<ProspectBundle
   });
 }
 
-const PIN_MAX_FAILURES = 5;
-const PIN_LOCK_MS = 15 * 60 * 1000;
+export const PIN_MAX_FAILURES = 5;
+export const PIN_LOCK_MS = 15 * 60 * 1000;
 
-function escapeLike(value: string) {
+/** Literal ILIKE pattern. `_` is a valid email character and a LIKE wildcard. */
+export function escapeLike(value: string) {
   return value.replace(/[\\%_]/g, (c) => `\\${c}`);
 }
 
