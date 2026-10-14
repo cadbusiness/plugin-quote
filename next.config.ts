@@ -41,6 +41,9 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       { source: "/wizard", destination: "/funnels", permanent: false },
+      { source: "/pricing", destination: "/tarifs", permanent: true },
+      { source: "/prix", destination: "/tarifs", permanent: true },
+      { source: "/register", destination: "/signup", permanent: true },
     ];
   },
   async headers() {
