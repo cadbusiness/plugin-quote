@@ -116,6 +116,7 @@ export const BLOG_TOOL_CHARGE_AUTOPILOTE = "/outils/estimateur-charge-relances-m
 export const BLOG_TOOL_COUT_CAMPAGNES_EMAIL = "/outils/estimateur-cout-campagnes-email-sans-segmentation";
 export const BLOG_TOOL_ACCES_EQUIPE = "/outils/estimateur-cout-acces-mal-cadres-equipe-devis";
 export const BLOG_TOOL_CSV_CATALOGUE = "/outils/verificateur-csv-catalogue-devis";
+export const BLOG_TOOL_SUIVI_CLIENTS = "/outils/estimateur-temps-demandes-suivi-devis-clients";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -144,6 +145,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     40: "Quarante",
     41: "Quarante-et-un",
     42: "Quarante-deux",
+    43: "Quarante-trois",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -402,9 +404,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Séparateur, colonnes reconnues, SKU en double, prix lus à 0 €. Ce que l'import QuoteBuilder fera de votre fichier, avant de cliquer.",
     tags: ["catalogue", "integrations"],
   },
+  {
+    href: BLOG_TOOL_SUIVI_CLIENTS,
+    title: "Estimateur du temps passé sur les demandes de suivi des clients",
+    text: "Questions « où en est mon devis ? », notices renvoyées. Le temps mensuel et ce qu'un espace membres en libre-service vous rend.",
+    tags: ["funnel", "relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "espace-membres-portail-client-devis-b2b",
+    path: "/blog/espace-membres-portail-client-devis-b2b",
+    title: "Espace membres : un portail où vos clients B2B retrouvent tous leurs devis, documents et liens",
+    description:
+      "Ce que voit un client connecté à l'espace membres, comment il s'y connecte avec l'email du devis et son code PIN, comment créer et remplir l'espace, ce que lisent vos clients quand vous changez un statut, et les limites à connaître avant de publier.",
+    publishedAt: "2026-10-14",
+    readingMinutes: 15,
+    tags: ["funnel", "relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "import-catalogue-csv-funnel-devis-b2b",
     path: "/blog/import-catalogue-csv-funnel-devis-b2b",

@@ -119,6 +119,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   {
+    path: "/blog/espace-membres-portail-client-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-14",
+  },
+  {
     path: "/blog/import-catalogue-csv-funnel-devis-b2b",
     changeFrequency: "monthly",
     priority: 0.8,
@@ -469,6 +475,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/verificateur-csv-catalogue-devis",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-14",
+  },
+  {
+    path: "/outils/estimateur-temps-demandes-suivi-devis-clients",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-14",
