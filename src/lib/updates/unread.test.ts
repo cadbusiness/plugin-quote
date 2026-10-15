@@ -103,8 +103,8 @@ async function testLoadSnapshot() {
   const { BUNDLED_UPDATES } = await import("./seed");
   const bundled = await resolveProductUpdates(missing as never, "user-1", "1.7.0");
   assert.equal(bundled.source, "missing");
-  assert.equal(bundled.unread, 32);
-  assert.equal(bundled.latest, "1.31.4");
+  assert.equal(bundled.unread, 33);
+  assert.equal(bundled.latest, "1.32.0");
   assert.ok(BUNDLED_UPDATES.some((entry) => entry.version === "1.20.0"));
   assert.ok(BUNDLED_UPDATES.some((entry) => entry.version === "1.21.0"));
   assert.ok(BUNDLED_UPDATES.some((entry) => entry.version === "1.22.0"));
@@ -121,6 +121,7 @@ async function testLoadSnapshot() {
   assert.ok(BUNDLED_UPDATES.some((entry) => entry.version === "1.31.2"));
   assert.ok(BUNDLED_UPDATES.some((entry) => entry.version === "1.31.3"));
   assert.ok(BUNDLED_UPDATES.some((entry) => entry.version === "1.31.4"));
+  assert.ok(BUNDLED_UPDATES.some((entry) => entry.version === "1.32.0"));
 }
 
 testLoadSnapshot()
