@@ -5,6 +5,9 @@ import { SITE_URL } from "@/lib/marketing/site";
 
 /** Dates éditoriales hors articles (le blog passe par publishedAt). */
 const CONTENT_LASTMOD: Record<string, string> = {
+  "/blog/devis-payant-etude-prealable-b2b": "2026-10-15",
+  "/secteurs/funnel-devis-geometre-expert-bornage": "2026-10-15",
+  "/outils/calculateur-devis-payant-etude-prealable": "2026-10-15",
   "/blog/espace-membres-portail-client-devis-b2b": "2026-10-14",
   "/outils/estimateur-temps-demandes-suivi-devis-clients": "2026-10-14",
   "/blog/import-catalogue-csv-funnel-devis-b2b": "2026-10-14",

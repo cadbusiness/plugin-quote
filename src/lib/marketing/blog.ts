@@ -117,6 +117,7 @@ export const BLOG_TOOL_COUT_CAMPAGNES_EMAIL = "/outils/estimateur-cout-campagnes
 export const BLOG_TOOL_ACCES_EQUIPE = "/outils/estimateur-cout-acces-mal-cadres-equipe-devis";
 export const BLOG_TOOL_CSV_CATALOGUE = "/outils/verificateur-csv-catalogue-devis";
 export const BLOG_TOOL_SUIVI_CLIENTS = "/outils/estimateur-temps-demandes-suivi-devis-clients";
+export const BLOG_TOOL_DEVIS_PAYANT = "/outils/calculateur-devis-payant-etude-prealable";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -146,6 +147,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     41: "Quarante-et-un",
     42: "Quarante-deux",
     43: "Quarante-trois",
+    44: "Quarante-quatre",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -410,9 +412,29 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Questions « où en est mon devis ? », notices renvoyées. Le temps mensuel et ce qu'un espace membres en libre-service vous rend.",
     tags: ["funnel", "relances"],
   },
+  {
+    href: BLOG_TOOL_DEVIS_PAYANT,
+    title: "Calculateur devis payant et étude préalable",
+    text: "Études facturées, temps récupéré, contrats perdus : faire payer l'étude vous rapporte-t-il plus qu'il ne vous coûte ?",
+    tags: ["funnel", "catalogue"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "devis-payant-etude-prealable-b2b",
+    path: "/blog/devis-payant-etude-prealable-b2b",
+    title:
+      "Devis payant en B2B : quand faire payer l'étude, comment l'annoncer et ce que ça change sur vos demandes",
+    description:
+      "Faire payer un devis ou une étude préalable entre professionnels : ce que dit la règle, les cas où ça se justifie, comment l'annoncer avant le chiffrage, combien demander, la déduction de la commande, et comment le poser dans un funnel QuoteBuilder.",
+    publishedAt: "2026-10-15",
+    readingMinutes: 16,
+    tags: ["funnel", "catalogue"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.funnelPublic,
+    pinned: false,
+  },
   {
     slug: "espace-membres-portail-client-devis-b2b",
     path: "/blog/espace-membres-portail-client-devis-b2b",

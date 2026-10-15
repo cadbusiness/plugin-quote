@@ -57,8 +57,8 @@ for (const item of BLOG_FAQ[BLOG_SLUG] ?? []) {
   assert.doesNotMatch(item.a, EN_DASH);
 }
 
-assert.equal(BLOG_POSTS.length, 53);
-assert.equal(BLOG_TOOLS.length, 43);
+assert.equal(BLOG_POSTS.length, 54);
+assert.equal(BLOG_TOOLS.length, 44);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === TOOL_PATH));
 assert.equal(
   BLOG_TOOLS.find((tool) => tool.href === TOOL_PATH)?.title,
@@ -72,9 +72,9 @@ assert.equal(
 for (const tool of BLOG_TOOLS) {
   assert.ok(tool.tags.every((tag) => BLOG_TAG_DEFS.some((def) => def.slug === tag)));
 }
-assert.ok(outilsHubIntro().startsWith("Quarante-trois outils publics."));
-assert.equal(outilsHubIntro(), "Quarante-trois outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(43), outilsHubIntro());
+assert.ok(outilsHubIntro().startsWith("Quarante-quatre outils publics."));
+assert.equal(outilsHubIntro(), "Quarante-quatre outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(44), outilsHubIntro());
 assert.equal(outilsHubIntro(42), "Quarante-deux outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
@@ -187,6 +187,9 @@ for (const label of ["Documents", "Plugins et liens", "Comment ça marche", "Lie
   assert.match(blogBody, /Brouillon/);
   assert.match(blogBody, /Publier/);
   assert.match(blogBody, /Dépublier/);
+  assert.match(blogBody, /Prévisualiser ouvre l'adresse publique d'un espace publié/);
+  assert.match(blogBody, /Un brouillon renvoie une page introuvable/);
+  assert.doesNotMatch(blogBody, /permet aussi de prévisualiser/);
   assert.match(blogBody, /Devis envoyé/);
   assert.match(blogBody, /En étude/);
   assert.match(blogBody, /Clôturé/);
@@ -222,7 +225,7 @@ for (const label of ["Documents", "Plugins et liens", "Comment ça marche", "Lie
   assert.doesNotMatch(blogBody, /\/blog\/espace-prospect-devis-en-ligne/);
   assertNoDashes(blogRaw, "membres md");
   assertNoDashes(blogBody, "membres body");
-  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 3567);
+  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 3579);
   assert.equal(faqQuestionCount(blogBody), 10);
   assert.deepEqual(faqFromMarkdown(blogBody), BLOG_FAQ[BLOG_SLUG]);
   assertInternalLinks(blogBody, "membres");

@@ -121,7 +121,7 @@ Le constructeur a trois onglets à gauche et un aperçu à droite. L'aperçu aff
 
 Pour ajouter une page, cinq modèles sont proposés : Documents, Plugins et liens, Comment ça marche, Liens utiles, Page vide. Les pages Accueil et Mes devis ne peuvent pas être supprimées.
 
-En haut du constructeur, Mettre à jour enregistre vos changements, Publier met l'espace en ligne et Dépublier le repasse en Brouillon. Depuis la liste des espaces, chaque ligne permet aussi de prévisualiser, copier le lien, archiver, restaurer ou supprimer l'espace.
+En haut du constructeur, Mettre à jour enregistre vos changements, Publier met l'espace en ligne et Dépublier le repasse en Brouillon. Depuis la liste des espaces, chaque ligne permet aussi de copier le lien, archiver, restaurer ou supprimer l'espace. Prévisualiser ouvre l'adresse publique d'un espace publié. Un brouillon renvoie une page introuvable.
 
 ## Ce qu'il faut mettre dedans
 

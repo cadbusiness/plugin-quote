@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "devis-payant-etude-prealable-b2b": [
+    {
+      q: "Est-ce légal de faire payer un devis ?",
+      a: "Oui. En dehors des cas encadrés par un texte, un professionnel peut proposer un devis payant, notamment s'il y a déplacement ou étude approfondie. Il doit informer le client du prix avant d'établir le devis. Faites valider vos conditions par votre conseil.",
+    },
+    {
+      q: "Faut-il annoncer le devis payant avant la demande ?",
+      a: "Oui, avant que le client accepte le travail d'étude. Le plus simple est de l'écrire dans le formulaire de demande, puis dans l'email de confirmation, puis de le confirmer par écrit au premier échange.",
+    },
+    {
+      q: "Quelle différence entre un devis payant et une étude préalable ?",
+      a: "Le devis est le prix. L'étude est un travail technique qui permet de donner ce prix : relevé, plan, note de calcul, visite. Facturer l'étude est plus facile à expliquer, parce que le client reçoit un document utile même sans commande.",
+    },
+    {
+      q: "Combien faire payer une étude ?",
+      a: "Au plus le temps réellement passé, multiplié par votre taux horaire. Beaucoup d'entreprises en facturent une partie, ou un forfait par type d'étude. Évitez les montants symboliques et les montants sans rapport avec la taille du projet.",
+    },
+    {
+      q: "Faut-il déduire l'étude de la commande ?",
+      a: "C'est ce qui la fait accepter le plus facilement. Le client qui signe ne paie rien de plus. Fixez une durée de déduction, par exemple trois ou six mois, et écrivez-la avec le prix.",
+    },
+    {
+      q: "Est-ce que je vais perdre des clients ?",
+      a: "Probablement quelques-uns. Certains clients sérieux refusent par principe. La question est de savoir si le temps récupéré et les études facturées valent plus que la marge de ces contrats perdus. Le calculateur fait ce bilan avec vos chiffres.",
+    },
+    {
+      q: "QuoteBuilder peut-il encaisser l'étude ?",
+      a: "Non. QuoteBuilder n'a ni paiement en ligne ni facturation. Il annonce l'étude dans le funnel, enregistre la réponse du client et la met dans la fiche. Le règlement passe par votre circuit habituel.",
+    },
+    {
+      q: "Peut-on proposer l'étude seulement pour les gros projets ?",
+      a: "Oui, avec une règle Si/Alors qui suggère le produit « Étude » selon les réponses, par exemple au-delà d'une surface. La règle choisit les produits proposés. Elle n'ajoute pas d'étape et ne masque pas de question.",
+    },
+    {
+      q: "Le score tient-il compte de l'accord pour l'étude payante ?",
+      a: "Non. Le score suit une formule fixe qui ne lit pas cette réponse. Filtrez et triez les demandes sur la réponse elle-même, visible dans la fiche.",
+    },
+    {
+      q: "Où écrire les conditions de l'étude ?",
+      a: "Dans la description du produit « Étude », dans le texte d'aide de la question d'accord, dans l'email de confirmation et dans vos conditions générales. Le pied de page du PDF de QuoteBuilder est fixe et ne sert pas à ça.",
+    },
+  ],
   "espace-membres-portail-client-devis-b2b": [
     {
       q: "Quelle différence entre l'espace prospect et l'espace membres ?",
@@ -780,7 +822,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Que mettre en cas d’exonération ou d’autoliquidation ?",
-      a: "Uniquement le libellé validé par votre expert-comptable ou votre avocat. Ne recopiez pas une phrase trouvée en ligne. Sur votre modèle de devis, figez ce texte. Dans QuoteBuilder, les mentions peuvent aller dans le pied de page libre du PDF. Il n’y a pas de champ SIRET ni de numéro de TVA.",
+      a: "Uniquement le libellé validé par votre expert-comptable ou votre avocat. Ne recopiez pas une phrase trouvée en ligne. Sur votre modèle de devis, figez ce texte. Dans QuoteBuilder, le pied de page du PDF est fixe : les mentions vont sur votre devis définitif. Il n’y a pas de champ SIRET ni de numéro de TVA.",
     },
     {
       q: "L’acompte se calcule sur le HT ou le TTC ?",
@@ -796,7 +838,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Par quoi commencer demain matin ?",
-      a: "Ouvrez trois devis récents. Vérifiez qu’aucune ligne ne mélange HT et TTC, que la ventilation de TVA est lisible s’il y a plusieurs taux, et faites valider les libellés sensibles par votre expert-comptable. Sur QuoteBuilder, vérifiez que la fourchette min-max se lit pareil sur la fiche, dans l’espace prospect et sur le PDF, et relisez le pied de page libre. Le prospect a son lien. Chaque relecteur reçoit le sien, valable 30 jours, vers la même page.",
+      a: "Ouvrez trois devis récents. Vérifiez qu’aucune ligne ne mélange HT et TTC, que la ventilation de TVA est lisible s’il y a plusieurs taux, et faites valider les libellés sensibles par votre expert-comptable. Sur QuoteBuilder, vérifiez que la fourchette min-max se lit pareil sur la fiche, dans l’espace prospect et sur le PDF, et sachez que le pied de page du PDF est fixe. Le prospect a son lien. Chaque relecteur reçoit le sien, valable 30 jours, vers la même page.",
     },
   ],
   "visite-technique-avant-devis-b2b": [
