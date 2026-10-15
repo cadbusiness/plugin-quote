@@ -297,6 +297,11 @@ for (const file of readdirSync(blogDir)) {
   assert.doesNotMatch(readFileSync(join(blogDir, file), "utf8"), /pied de page libre/, file);
 }
 assert.doesNotMatch(readFileSync(join(process.cwd(), "src/lib/marketing/blog-faq.ts"), "utf8"), /pied de page libre/);
+assert.doesNotMatch(llms, /pied de page libre/);
+assert.match(
+  llms,
+  /Le pied de page du PDF est fixe \(« Document indicatif, non contractuel » \+ nom de l’entreprise\) et n’est pas personnalisable\./,
+);
 
 const addedSources = [
   "src/lib/marketing/calculateur-devis-payant-etude-prealable.ts",

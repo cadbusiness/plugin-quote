@@ -187,6 +187,9 @@ for (const label of ["Documents", "Plugins et liens", "Comment ça marche", "Lie
   assert.match(blogBody, /Brouillon/);
   assert.match(blogBody, /Publier/);
   assert.match(blogBody, /Dépublier/);
+  assert.match(blogBody, /Prévisualiser ouvre l'adresse publique d'un espace publié/);
+  assert.match(blogBody, /Un brouillon renvoie une page introuvable/);
+  assert.doesNotMatch(blogBody, /permet aussi de prévisualiser/);
   assert.match(blogBody, /Devis envoyé/);
   assert.match(blogBody, /En étude/);
   assert.match(blogBody, /Clôturé/);
@@ -222,7 +225,7 @@ for (const label of ["Documents", "Plugins et liens", "Comment ça marche", "Lie
   assert.doesNotMatch(blogBody, /\/blog\/espace-prospect-devis-en-ligne/);
   assertNoDashes(blogRaw, "membres md");
   assertNoDashes(blogBody, "membres body");
-  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 3567);
+  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 3579);
   assert.equal(faqQuestionCount(blogBody), 10);
   assert.deepEqual(faqFromMarkdown(blogBody), BLOG_FAQ[BLOG_SLUG]);
   assertInternalLinks(blogBody, "membres");
