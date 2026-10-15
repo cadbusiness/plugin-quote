@@ -18,7 +18,7 @@ function Submit({ label }: { label: string }) {
   );
 }
 
-export function CreateSpaceForm({ next = "" }: { next?: string }) {
+export function CreateSpaceForm({ next = "", userEmail = "" }: { next?: string; userEmail?: string }) {
   const [state, action] = useActionState(createSpace, { error: "" });
   return (
     <form action={action} className="border-t border-slate-200 pt-6">
@@ -33,6 +33,29 @@ export function CreateSpaceForm({ next = "" }: { next?: string }) {
           placeholder="Atelier Dupont"
           className="mt-1 w-full border border-slate-200 bg-white px-3 py-2 text-sm"
         />
+      </label>
+      <label className="mt-3 block text-sm text-slate-600">
+        Email commercial
+        <input
+          name="sales_email"
+          type="email"
+          defaultValue={userEmail}
+          autoComplete="email"
+          placeholder="vous@entreprise.fr"
+          className="mt-1 w-full border border-slate-200 bg-white px-3 py-2 text-sm"
+        />
+        <span className="mt-1 block text-xs text-slate-500">
+          Reçoit le brief d’équipe. Les réponses des prospects arrivent ici.
+        </span>
+      </label>
+      <label className="mt-3 block text-sm text-slate-600">
+        Nom de l’expéditeur
+        <input
+          name="sales_name"
+          placeholder="Nom de l’entreprise si vide"
+          className="mt-1 w-full border border-slate-200 bg-white px-3 py-2 text-sm"
+        />
+        <span className="mt-1 block text-xs text-slate-500">Affiché en signature des emails prospect.</span>
       </label>
       <fieldset className="mt-4">
         <legend className="text-sm text-slate-600">Votre métier</legend>

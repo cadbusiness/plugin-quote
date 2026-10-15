@@ -4,6 +4,7 @@ import { appUrl } from "@/lib/prospect/access";
 import { publishedMemberSpaceUrl } from "@/lib/members/public";
 import { displayedQuoteRange, readQuotePrice, resolveDisplayCurrency } from "@/lib/quotes/price-range";
 import { sessionContactName } from "@/lib/email/greeting";
+import { loadSalesIdentity } from "@/lib/org/sales-identity";
 import type { BranchCondition, RunContext, SubjectContext, WorkflowSubjectType } from "@/lib/workflows/types";
 
 type Client = SupabaseClient<Database>;
@@ -22,11 +23,7 @@ export async function loadSubjectContext(
     stored?: RunContext;
   },
 ): Promise<SubjectContext | null> {
-  const { data: org } = await supabase
-    .from("organizations")
-    .select("sales_email, sales_name")
-    .eq("id", input.organizationId)
-    .maybeSingle();
+  const sales = await loadSalesIdentity(supabase, input.organizationId);
 
   if (input.subjectType === "quote") {
     const { data: quote } = await supabase
@@ -89,8 +86,8 @@ export async function loadSubjectContext(
       suiviUrl,
       membresUrl,
       pin: input.stored?.pin ?? "",
-      salesEmail: org?.sales_email ?? null,
-      salesName: org?.sales_name ?? "",
+      salesEmail: sales.email,
+      salesName: sales.name,
       submitted: true,
     };
   }
@@ -131,8 +128,8 @@ export async function loadSubjectContext(
     suiviUrl: "",
     membresUrl: (await publishedMemberSpaceUrl(supabase, session.organization_id)) ?? "",
     pin: "",
-    salesEmail: org?.sales_email ?? null,
-    salesName: org?.sales_name ?? "",
+    salesEmail: sales.email,
+    salesName: sales.name,
     currency: "EUR",
     submitted: Boolean(session.submitted_quote_id),
   };

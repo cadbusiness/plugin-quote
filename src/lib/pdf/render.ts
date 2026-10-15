@@ -4,6 +4,7 @@ import { QuotePdf } from "@/lib/pdf/quote-pdf";
 import type { QuestionMeta } from "@/lib/crm/answers";
 import type { Tables } from "@/lib/db/database.types";
 import type { Answers } from "@/lib/wizard/types";
+import { resolveSalesName } from "@/lib/org/sales-identity";
 
 export async function renderQuotePdf(input: {
   organization: Tables<"organizations">;
@@ -27,7 +28,7 @@ export async function renderQuotePdf(input: {
   return renderToBuffer(
     createElement(QuotePdf, {
       organizationName: input.organization.name,
-      salesName: input.organization.sales_name,
+      salesName: resolveSalesName(input.organization.sales_name, input.organization.name),
       salesEmail: input.organization.sales_email,
       salesPhone: input.organization.sales_phone,
       configuratorName: input.configurator.name,

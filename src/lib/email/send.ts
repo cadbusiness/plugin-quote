@@ -5,6 +5,7 @@ import type { Answers } from "@/lib/wizard/types";
 import { fill } from "@/lib/email/fill";
 import { fillProspectTemplate, prospectDisplayName } from "@/lib/email/greeting";
 import { formatPrice } from "@/lib/format";
+import { loadSalesIdentity } from "@/lib/org/sales-identity";
 
 function formatAnswers(answers: Answers) {
   return Object.entries(answers)
@@ -40,13 +41,14 @@ export async function sendQuoteEmails(input: {
     .eq("organization_id", input.organization.id);
 
   const contactEmail = input.quote.contact_email?.trim() ?? "";
+  const sales = await loadSalesIdentity(supabase, input.organization.id);
   const vars = {
     contact_name: prospectDisplayName(input.quote.contact_name ?? ""),
     contact_email: contactEmail,
     contact_company: input.quote.contact_company ?? "",
     score: String(input.quote.score ?? ""),
     score_label: input.quote.score_label ?? "",
-    sales_name: input.organization.sales_name ?? "",
+    sales_name: sales.name,
     answers_text: formatAnswers(input.answers),
     suggestion_name: input.suggestionName,
     price_range: formatPrice(input.priceMin, input.priceMax, input.currency),
@@ -59,7 +61,7 @@ export async function sendQuoteEmails(input: {
   const from = senderAddress();
   const includeProspect = input.includeProspect !== false;
   const prospect = includeProspect ? templates?.find((t) => t.kind === "prospect_confirm") : undefined;
-  const sales = templates?.find((t) => t.kind === "sales_brief");
+  const salesTemplate = templates?.find((t) => t.kind === "sales_brief");
   const attachments = input.pdf
     ? [{ filename: "recapitulatif.pdf", content: input.pdf }]
     : [];
@@ -69,7 +71,7 @@ export async function sendQuoteEmails(input: {
     const { error } = await resend.emails.send({
       from,
       to: contactEmail,
-      replyTo: input.organization.sales_email ?? undefined,
+      replyTo: sales.email ?? undefined,
       subject: fillProspectTemplate(prospect.subject, vars),
       text: fillProspectTemplate(prospect.body, vars),
       attachments,
@@ -79,13 +81,13 @@ export async function sendQuoteEmails(input: {
   }
 
   let salesSent = false;
-  if (sales && input.organization.sales_email) {
+  if (salesTemplate && sales.email) {
     const { error } = await resend.emails.send({
       from,
-      to: input.organization.sales_email,
+      to: sales.email,
       replyTo: contactEmail ?? undefined,
-      subject: fill(sales.subject, vars),
-      text: fill(sales.body, vars),
+      subject: fill(salesTemplate.subject, vars),
+      text: fill(salesTemplate.body, vars),
       attachments,
     });
     if (error) console.error("Sales brief email failed", error.message);

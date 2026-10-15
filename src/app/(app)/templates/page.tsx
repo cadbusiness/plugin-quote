@@ -4,10 +4,16 @@ import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { ListPanel, ListToolbar } from "@/components/ui/list-panel";
 import { saveEmailTemplate, savePdfTemplate } from "@/app/(app)/actions";
 
-export default async function TemplatesPage() {
+export default async function TemplatesPage({
+  searchParams,
+}: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");
   if (!isAdminRole(ctx.role)) redirect("/devis");
+  const params = (await searchParams) ?? {};
+  const saved = typeof params.saved === "string" ? params.saved : null;
   const supabase = await createClient();
   const [{ data: emails }, { data: pdfs }] = await Promise.all([
     supabase.from("email_templates").select("*").eq("organization_id", ctx.organization.id),
@@ -18,6 +24,13 @@ export default async function TemplatesPage() {
     <ListPanel>
       <ListToolbar />
       <div className="space-y-8 px-4 py-6 lg:px-6">
+        {saved === "ok" ? <p className="text-sm text-emerald-700">Template enregistré.</p> : null}
+        {saved === "invalid" ? (
+          <p className="text-sm text-amber-700">Objet et message sont requis.</p>
+        ) : null}
+        {saved === "error" ? (
+          <p className="text-sm text-red-600">Enregistrement impossible.</p>
+        ) : null}
         {(emails ?? []).map((tpl) => (
           <form key={tpl.id} action={saveEmailTemplate} className="space-y-3">
             <input type="hidden" name="id" value={tpl.id} />
