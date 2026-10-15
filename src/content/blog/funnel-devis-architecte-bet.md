@@ -140,7 +140,7 @@ Les notes internes sont un texte ajouté sur le dossier, visible par l'équipe, 
 
 L'espace prospect donne au contact un lien vers le récapitulatif. Il peut inviter des relecteurs (un associé, un maître d'ouvrage, un économiste). Chaque relecteur reçoit son lien, valable 30 jours, vers la même page. Il peut consulter, commenter, indiquer un budget maximum, valider ou demander des modifications. Ce n'est pas une signature de contrat. Le passage à Gagné reste un geste de votre côté, sur le statut du dossier.
 
-Il n'y a pas de validité produit sur la mission : pas de date « offre valable 30 jours » posée par le catalogue. Si vous voulez une durée, écrivez-la dans le contrat, ou dans le pied de page libre du PDF. Le PDF du funnel est un récapitulatif de configuration, pas un devis d'honoraires au sens de votre ordre ou de votre assureur.
+Il n'y a pas de validité produit sur la mission : pas de date « offre valable 30 jours » posée par le catalogue. Si vous voulez une durée, écrivez-la dans le contrat : le pied de page du PDF est fixe. Le PDF du funnel est un récapitulatif de configuration, pas un devis d'honoraires au sens de votre ordre ou de votre assureur.
 
 L'Autopilote peut confirmer la demande et relancer si le dossier reste ouvert. Ce n'est pas une relance d'honoraires impayés, et ce n'est pas une newsletter. Pour un envoi groupé aux maîtres d'ouvrage qui ont déjà une demande, passez par les segments, avec leur consentement marketing. Le cadre est dans l'article sur les [segments et campagnes](https://www.quotebuilder.co/blog/segments-campagnes-email-demande-devis-b2b).
 
