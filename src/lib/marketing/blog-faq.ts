@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "email-confirmation-demande-devis-b2b": [
+    {
+      q: "Faut-il envoyer un email de confirmation après une demande de devis ?",
+      a: "Oui. C'est le premier message que le client reçoit après sa demande. Il confirme la réception, annonce le délai et la prochaine étape, et donne un moyen de compléter la demande. Sans lui, le client ne sait pas si sa demande est partie.",
+    },
+    {
+      q: "Que mettre dans l'objet ?",
+      a: "Le mot « demande », l'idée de réception et, si possible, le nom de votre entreprise. Par exemple « Demande de devis reçue, Atelier Martin ». Évitez les objets vagues comme « Récapitulatif ».",
+    },
+    {
+      q: "Quel délai annoncer ?",
+      a: "Celui que votre équipe tient vraiment, en jours ouvrés, en précisant s'il s'agit d'un premier contact ou du devis chiffré. Mesurez-le sur vos dernières demandes avant de l'écrire.",
+    },
+    {
+      q: "Peut-on mettre le prix dans la confirmation ?",
+      a: "Une fourchette indicative, oui, si votre funnel en calcule une, en précisant que ce n'est pas encore un devis. Dans QuoteBuilder, la variable `{{price_range}}` affiche la fourchette ou « Sur devis ».",
+    },
+    {
+      q: "La confirmation remplace-t-elle le devis ?",
+      a: "Non. C'est un accusé de réception. Les mentions obligatoires et le prix ferme vont sur le devis que vous envoyez ensuite.",
+    },
+    {
+      q: "Où modifier l'email de confirmation dans QuoteBuilder ?",
+      a: "Dans Paramètres, rubrique Emails, réservée aux administrateurs. Le bloc « Email · prospect_confirm » contient l'objet et le corps du message.",
+    },
+    {
+      q: "Peut-on avoir un texte différent par funnel ?",
+      a: "Non. QuoteBuilder utilise un seul modèle de confirmation par organisation. Écrivez un texte valable pour tous vos funnels, ou nommez la demande avec `{{suggestion_name}}`.",
+    },
+    {
+      q: "Le récapitulatif PDF est-il toujours joint ?",
+      a: "Il est joint quand l'option « Joindre le récapitulatif » est cochée sur l'étape d'envoi du Parcours demande, ce qui est le cas par défaut. Si vous la décochez, retirez la phrase « ci-joint » de votre texte.",
+    },
+    {
+      q: "À qui arrive la réponse du client ?",
+      a: "À l'adresse indiquée en « Répondre à » sur le message, pas à l'adresse d'envoi de QuoteBuilder. Vérifiez-le avec une demande de test, et écrivez une adresse et un numéro joignables dans le corps de l'email.",
+    },
+    {
+      q: "Peut-on mettre un logo ou une mise en page ?",
+      a: "Non. La confirmation part en texte simple. Les liens apparaissent en clair. Un texte court et bien espacé se lit très bien sur téléphone.",
+    },
+  ],
   "devis-payant-etude-prealable-b2b": [
     {
       q: "Est-ce légal de faire payer un devis ?",

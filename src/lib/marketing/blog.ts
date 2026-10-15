@@ -118,6 +118,7 @@ export const BLOG_TOOL_ACCES_EQUIPE = "/outils/estimateur-cout-acces-mal-cadres-
 export const BLOG_TOOL_CSV_CATALOGUE = "/outils/verificateur-csv-catalogue-devis";
 export const BLOG_TOOL_SUIVI_CLIENTS = "/outils/estimateur-temps-demandes-suivi-devis-clients";
 export const BLOG_TOOL_DEVIS_PAYANT = "/outils/calculateur-devis-payant-etude-prealable";
+export const BLOG_TOOL_EMAIL_CONFIRMATION = "/outils/generateur-email-confirmation-demande-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -148,6 +149,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     42: "Quarante-deux",
     43: "Quarante-trois",
     44: "Quarante-quatre",
+    45: "Quarante-cinq",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -418,9 +420,29 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Études facturées, temps récupéré, contrats perdus : faire payer l'étude vous rapporte-t-il plus qu'il ne vous coûte ?",
     tags: ["funnel", "catalogue"],
   },
+  {
+    href: BLOG_TOOL_EMAIL_CONFIRMATION,
+    title: "Générateur d'email de confirmation de demande de devis",
+    text: "Délai, prochaine étape, lien de suivi, signature : l'accusé de réception prêt à coller, avec les promesses incohérentes signalées.",
+    tags: ["relances", "funnel"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "email-confirmation-demande-devis-b2b",
+    path: "/blog/email-confirmation-demande-devis-b2b",
+    title:
+      "Email de confirmation d'une demande de devis B2B : quoi écrire, trois modèles et les réglages à vérifier",
+    description:
+      "L'accusé de réception d'une demande de devis entre professionnels : ce que le client y cherche, les sept éléments à mettre, ce qu'il faut laisser dehors, trois modèles à adapter, et comment QuoteBuilder envoie ce message.",
+    publishedAt: "2026-10-15",
+    readingMinutes: 15,
+    tags: ["relances", "funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.automations,
+    pinned: false,
+  },
   {
     slug: "devis-payant-etude-prealable-b2b",
     path: "/blog/devis-payant-etude-prealable-b2b",
