@@ -7,6 +7,7 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { getOrgContext, isAdminRole } from "@/lib/auth/org";
 import { logActivity, notifyUser } from "@/lib/crm/activity";
 import { sendTemplateEmail } from "@/lib/email/send";
+import { loadSalesIdentity } from "@/lib/org/sales-identity";
 import { getAppUrl } from "@/lib/supabase/env";
 import { exitActiveQuoteRuns, startWorkflows } from "@/lib/workflows/engine";
 import { mergeOrgGtm, normalizeGaId, normalizeGtmId } from "@/lib/funnels/tracking";
@@ -240,9 +241,10 @@ export async function replyToProspect(quoteId: string, content: string) {
       .gt("expires_at", new Date().toISOString())
       .maybeSingle();
     const suivi = access ? `${getAppUrl()}/suivi/${access.token}` : "";
+    const sales = await loadSalesIdentity(supabase, ctx.organization.id);
     await sendTemplateEmail({
       to: quote.contact_email,
-      replyTo: ctx.organization.sales_email,
+      replyTo: sales.email,
       subject: `Message, ${ctx.organization.name}`,
       body: suivi ? `${trimmed}\n\nRépondre : ${suivi}` : trimmed,
     });

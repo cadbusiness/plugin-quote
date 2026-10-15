@@ -5,12 +5,14 @@ import { uniqueSlug } from "@/lib/org/slug";
 import { seedOrgCrm } from "@/lib/crm/seed";
 import { isFunnelFamilyId, mergeOrgFamily, type FunnelFamilyId } from "@/lib/funnels/families";
 import { defaultTemplateForFamily } from "@/lib/funnels/templates";
+import { normalizeSalesEmail, resolveSalesName } from "@/lib/org/sales-identity";
 
 export async function createOrganizationForUser(
   supabase: SupabaseClient<Database>,
   userId: string,
   name: string,
   familyInput?: string | null,
+  identity?: { userEmail?: string | null; salesEmail?: string | null; salesName?: string | null },
 ) {
   const trimmed = name.trim();
   if (trimmed.length < 2) {
@@ -30,10 +32,23 @@ export async function createOrganizationForUser(
   const rawFamily = familyInput ?? "";
   const family: FunnelFamilyId = isFunnelFamilyId(rawFamily) ? rawFamily : "custom";
   const firstTemplate = defaultTemplateForFamily(family);
+  const typedEmail = identity?.salesEmail?.trim() ?? "";
+  if (typedEmail && !normalizeSalesEmail(typedEmail)) {
+    throw new Error("Email commercial invalide");
+  }
+  const salesEmail = normalizeSalesEmail(typedEmail) ?? normalizeSalesEmail(identity?.userEmail);
+  const salesName = resolveSalesName(identity?.salesName, trimmed);
 
   const { data: org, error: orgError } = await supabase
     .from("organizations")
-    .insert({ name: trimmed, slug, plan: "pro", branding: mergeOrgFamily(null, family) })
+    .insert({
+      name: trimmed,
+      slug,
+      plan: "pro",
+      branding: mergeOrgFamily(null, family),
+      sales_email: salesEmail,
+      sales_name: salesName || null,
+    })
     .select("*")
     .single();
   if (orgError || !org) {
@@ -67,6 +82,7 @@ export async function joinOrganizationForUser(
   supabase: SupabaseClient<Database>,
   userId: string,
   slug: string,
+  identity?: { userEmail?: string | null },
 ) {
   const clean = slugifyInput(slug);
   const admin = createServiceClient();
@@ -94,6 +110,17 @@ export async function joinOrganizationForUser(
     role: "owner",
   });
   if (error) throw new Error(error.message);
+
+  const patch: { sales_email?: string; sales_name?: string } = {};
+  if (!org.sales_name?.trim()) patch.sales_name = org.name;
+  if (!normalizeSalesEmail(org.sales_email)) {
+    const email = normalizeSalesEmail(identity?.userEmail);
+    if (email) patch.sales_email = email;
+  }
+  if (Object.keys(patch).length) {
+    const { error: identityError } = await supabase.from("organizations").update(patch).eq("id", org.id);
+    if (identityError) throw new Error(identityError.message);
+  }
   return org;
 }
 

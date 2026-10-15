@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getOrgContext } from "@/lib/auth/org";
+import { loadSalesIdentity } from "@/lib/org/sales-identity";
 import { designJson, parseDesign, starterDesign, type CampaignKind } from "@/lib/emails/blocks";
 import { sendCampaign } from "@/lib/emails/send-campaign";
 import { createClient } from "@/lib/supabase/server";
@@ -97,14 +98,15 @@ export async function sendCampaignNow(
     .eq("organization_id", ctx.organization.id)
     .maybeSingle();
   try {
+    const sales = await loadSalesIdentity(supabase, ctx.organization.id);
     const result = await sendCampaign(supabase, {
       organizationId: ctx.organization.id,
       campaignId: id,
       actorId: ctx.userId,
       orgName: ctx.organization.name,
-      salesName: ctx.organization.sales_name ?? "",
-      fromAddress: channel?.address ?? ctx.organization.sales_email,
-      replyTo: channel?.address ?? ctx.organization.sales_email,
+      salesName: sales.name,
+      fromAddress: channel?.address ?? sales.email,
+      replyTo: channel?.address ?? sales.email,
     });
     revalidatePath(`/emails/${id}`);
     revalidatePath("/emails");

@@ -1,4 +1,5 @@
 import type { Json } from "@/lib/db/database.types";
+import { loadSalesIdentity } from "@/lib/org/sales-identity";
 import { createServiceClient } from "@/lib/supabase/service";
 import type { VisitorQuoteInput, VisitorRequestStore } from "@/lib/visitor-requests/store";
 import type { VisitorLine, VisitorRequestRecord } from "@/lib/visitor-requests/types";
@@ -229,8 +230,8 @@ export function createSupabaseVisitorStore(): VisitorRequestStore {
     },
 
     async salesContext(organizationId) {
-      const [{ data: org }, { data: template }] = await Promise.all([
-        supabase.from("organizations").select("sales_email, sales_name").eq("id", organizationId).maybeSingle(),
+      const [sales, { data: template }] = await Promise.all([
+        loadSalesIdentity(supabase, organizationId),
         supabase
           .from("email_templates")
           .select("subject, body")
@@ -239,8 +240,8 @@ export function createSupabaseVisitorStore(): VisitorRequestStore {
           .maybeSingle(),
       ]);
       return {
-        salesEmail: org?.sales_email ?? null,
-        salesName: org?.sales_name ?? null,
+        salesEmail: sales.email,
+        salesName: sales.name || null,
         template: template ? { subject: template.subject, body: template.body } : null,
       };
     },

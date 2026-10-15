@@ -54,17 +54,25 @@ export async function toggleWebhook(id: string, isActive: boolean) {
 export async function saveEmailTemplate(formData: FormData) {
   const ctx = await getOrgContext();
   if (!ctx) redirect("/onboarding");
-  const supabase = await createClient();
+  if (!isAdminRole(ctx.role)) redirect("/devis");
   const id = String(formData.get("id") ?? "");
-  await supabase
+  const subject = String(formData.get("subject") ?? "");
+  const body = String(formData.get("body") ?? "");
+  if (!id || !subject.trim() || !body.trim()) redirect("/templates?saved=invalid");
+  const supabase = await createClient();
+  const { data, error } = await supabase
     .from("email_templates")
-    .update({
-      subject: String(formData.get("subject") ?? ""),
-      body: String(formData.get("body") ?? ""),
-    })
+    .update({ subject: subject.trim(), body })
     .eq("id", id)
-    .eq("organization_id", ctx.organization.id);
+    .eq("organization_id", ctx.organization.id)
+    .select("id")
+    .maybeSingle();
+  if (error || !data) {
+    console.error("saveEmailTemplate", error?.message ?? "aucune ligne");
+    redirect("/templates?saved=error");
+  }
   revalidatePath("/templates");
+  redirect("/templates?saved=ok");
 }
 
 export async function savePdfTemplate(formData: FormData) {

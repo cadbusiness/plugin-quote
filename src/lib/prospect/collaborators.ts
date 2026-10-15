@@ -5,6 +5,7 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { appUrl } from "@/lib/prospect/access";
 import { logActivity, notifyUser } from "@/lib/crm/activity";
 import { sendTemplateEmail } from "@/lib/email/send";
+import { loadSalesIdentity } from "@/lib/org/sales-identity";
 
 export type CollaboratorRole = "finance" | "technical" | "buyer" | "other";
 export type CollaboratorStatus = "pending" | "viewed" | "approved" | "changes_requested";
@@ -318,15 +319,11 @@ export async function decideAsCollaborator(input: {
       body,
     });
 
-    const { data: org } = await supabase
-      .from("organizations")
-      .select("sales_email, name")
-      .eq("id", input.organizationId)
-      .maybeSingle();
-    if (org?.sales_email) {
+    const sales = await loadSalesIdentity(supabase, input.organizationId);
+    if (sales.email) {
       // The decision is already stored: a failed notification must not fail it.
       await sendTemplateEmail({
-        to: org.sales_email,
+        to: sales.email,
         subject: body,
         body: [
           body,

@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, Json } from "@/lib/db/database.types";
 import { fillProspectTemplate } from "@/lib/email/greeting";
 import { sendTemplateEmail } from "@/lib/email/send";
+import { outboundReplyTo } from "@/lib/org/sales-identity";
 import { logActivity, notifyUser } from "@/lib/crm/activity";
 import { renderQuotePdf } from "@/lib/pdf/render";
 import { formatPrice } from "@/lib/format";
@@ -77,8 +78,11 @@ export async function executeSendEmail(
 
   await sendTemplateEmail({
     to,
-    // A prospect's reply goes to the sales inbox, not to the no-reply sender.
-    replyTo: to === ctx.contactEmail ? ctx.salesEmail : ctx.contactEmail,
+    replyTo: outboundReplyTo({
+      toProspect: node.data.recipient === "prospect" || to === ctx.contactEmail,
+      contactEmail: ctx.contactEmail,
+      salesEmail: ctx.salesEmail,
+    }),
     subject: fillProspectTemplate(template.subject, vars),
     body: fillProspectTemplate(template.body, vars),
     attachments: pdf ? [{ filename: "recapitulatif.pdf", content: pdf }] : undefined,

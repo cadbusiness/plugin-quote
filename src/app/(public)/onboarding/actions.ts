@@ -25,6 +25,11 @@ export async function createSpace(
       user.id,
       String(formData.get("name") ?? ""),
       String(formData.get("family") ?? ""),
+      {
+        userEmail: user.email,
+        salesEmail: String(formData.get("sales_email") ?? ""),
+        salesName: String(formData.get("sales_name") ?? ""),
+      },
     );
   } catch (error) {
     return { error: error instanceof Error ? error.message : "Création impossible" };
@@ -43,7 +48,9 @@ export async function joinSpace(
   if (!user) redirect("/login");
 
   try {
-    await joinOrganizationForUser(supabase, user.id, String(formData.get("slug") ?? ""));
+    await joinOrganizationForUser(supabase, user.id, String(formData.get("slug") ?? ""), {
+      userEmail: user.email,
+    });
   } catch (error) {
     return { error: error instanceof Error ? error.message : "Impossible de rejoindre" };
   }

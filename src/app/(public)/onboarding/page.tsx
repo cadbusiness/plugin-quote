@@ -30,7 +30,7 @@ export default async function OnboardingPage({
               : "Créez l’espace de votre entreprise, ou rejoignez un espace encore vide."}
           </p>
         </div>
-        <CreateSpaceForm next={next ?? ""} />
+        <CreateSpaceForm next={next ?? ""} userEmail={user.email ?? ""} />
         <JoinSpaceForm next={next ?? ""} />
       </div>
     </main>

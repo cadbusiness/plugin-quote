@@ -9,6 +9,7 @@ import type { Json } from "@/lib/db/database.types";
 import type { PluginConnection } from "@/lib/integrations/plugin";
 import { notifyUser } from "@/lib/crm/activity";
 import { escapeLike } from "@/lib/prospect/access";
+import { loadSalesIdentity } from "@/lib/org/sales-identity";
 import { createServiceClient } from "@/lib/supabase/service";
 import type { VisitorContact } from "@/lib/visitor-requests/types";
 import type { Product } from "@/lib/wizard/types";
@@ -192,8 +193,8 @@ export async function saveChatTranscript(draft: ChatDraft, messages: ChatTurnMes
 
 export async function loadMerchantInbox(organizationId: string, draft: ChatDraft | null): Promise<MerchantInbox> {
   const supabase = createServiceClient();
-  const [{ data: org }, { data: template }, { data: channel }] = await Promise.all([
-    supabase.from("organizations").select("name, sales_email, sales_name").eq("id", organizationId).maybeSingle(),
+  const [sales, { data: template }, { data: channel }] = await Promise.all([
+    loadSalesIdentity(supabase, organizationId),
     supabase
       .from("email_templates")
       .select("subject, body")
@@ -239,11 +240,11 @@ export async function loadMerchantInbox(organizationId: string, draft: ChatDraft
   return {
     assigneeEmail,
     assigneeUserId,
-    salesEmail: org?.sales_email ?? null,
-    salesName: org?.sales_name ?? null,
+    salesEmail: sales.email,
+    salesName: sales.name || null,
     channelAddress: channel?.address ?? null,
     template: template ? { subject: template.subject, body: template.body } : null,
-    organizationName: org?.name ?? null,
+    organizationName: sales.orgName || null,
   };
 }
 

@@ -2,6 +2,7 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { fill, sendTemplateEmail } from "@/lib/email/send";
 import { logActivity } from "@/lib/crm/activity";
 import { formatPrice } from "@/lib/format";
+import { loadSalesIdentity } from "@/lib/org/sales-identity";
 import { displayedQuoteRange, readQuotePrice, resolveDisplayCurrency } from "@/lib/quotes/price-range";
 import { appUrl } from "@/lib/prospect/access";
 
@@ -32,14 +33,14 @@ export async function apiTriggerFollowup(
   if (!quote) throw new Error("Lead introuvable");
   if (!quote.contact_email) throw new Error("Pas d’email prospect");
 
-  const [{ data: template }, { data: org }, { data: access }, { data: items }] = await Promise.all([
+  const [{ data: template }, sales, { data: access }, { data: items }] = await Promise.all([
     supabase
       .from("email_templates")
       .select("subject, body")
       .eq("organization_id", organizationId)
       .eq("kind", kind)
       .maybeSingle(),
-    supabase.from("organizations").select("sales_name").eq("id", organizationId).maybeSingle(),
+    loadSalesIdentity(supabase, organizationId),
     supabase
       .from("prospect_access")
       .select("token")
@@ -81,7 +82,7 @@ export async function apiTriggerFollowup(
     contact_company: quote.contact_company ?? "",
     score: String(quote.score ?? ""),
     score_label: quote.score_label ?? "",
-    sales_name: org?.sales_name ?? "",
+    sales_name: sales.name,
     answers_text: answersText,
     suggestion_name: "",
     price_range: formatPrice(headline.min, headline.max, currency),
@@ -92,6 +93,7 @@ export async function apiTriggerFollowup(
 
   await sendTemplateEmail({
     to: quote.contact_email,
+    replyTo: sales.email,
     subject: fill(template.subject, vars),
     body: fill(template.body, vars),
   });
