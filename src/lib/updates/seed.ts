@@ -2,8 +2,22 @@ import type { ProductUpdate } from "./load";
 import { latestVersion, sortByVersionDesc, unreadCount } from "./unread";
 import type { ProductUpdatesSnapshot } from "./load";
 
-/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` + `0059` + `0060` + `0061` + `0062` + `0063` + `0064` + `0065` + `0066` migrations. Used when the table is not applied yet. */
+/** Same notes as `0024` + `0025` + `0026` + `0027` + `0028` + `0029` + `0030` + `0031` + `0032` + `0033` + `0034` + `0035` + `0038` + `0040` + `0042` + `0044` + `0045` + `0047` + `0048` + `0049` + `0050` + `0052` + `0056` + `0057` + `0059` + `0060` + `0061` + `0062` + `0063` + `0064` + `0065` + `0066` + `0071` migrations. Used when the table is not applied yet. */
 export const BUNDLED_UPDATES: ProductUpdate[] = sortByVersionDesc([
+  {
+    id: "seed-1.32.0",
+    version: "1.32.0",
+    title: "Email commercial et nom d'expéditeur",
+    items: [
+      "Dans Paramètres, owner et admin renseignent l'email commercial et le nom d'expéditeur (signature des emails).",
+      "À l'inscription, ces champs sont proposés : l'email est prérempli avec le vôtre ; un nom vide devient le nom de l'organisation.",
+      "Les briefs commerciaux et les réponses des prospects utilisent cette boîte au lieu de celle de la plateforme.",
+      "Si rien n'est renseigné, le brief et le reply-to tombent sur l'email du propriétaire, et la signature sur le nom de l'organisation.",
+      "Seuls owner et admin peuvent modifier les templates email.",
+    ],
+    releasedAt: "2026-10-15",
+    createdAt: "2026-10-15T00:00:00.000Z",
+  },
   {
     id: "seed-1.31.4",
     version: "1.31.4",
