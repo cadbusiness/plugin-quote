@@ -64,6 +64,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Email de confirmation d'une demande de devis B2B : quoi écrire, trois modèles et les réglages à vérifier : https://www.quotebuilder.co/blog/email-confirmation-demande-devis-b2b
 - Devis payant en B2B : quand faire payer l'étude, comment l'annoncer et ce que ça change sur vos demandes : https://www.quotebuilder.co/blog/devis-payant-etude-prealable-b2b
 - Espace membres : un portail où vos clients B2B retrouvent tous leurs devis, documents et liens : https://www.quotebuilder.co/blog/espace-membres-portail-client-devis-b2b
 - Importer son catalogue en CSV pour un funnel de devis B2B : colonnes, SKU, prix et pièges d'Excel : https://www.quotebuilder.co/blog/import-catalogue-csv-funnel-devis-b2b
@@ -163,6 +164,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Vérificateur de fichier CSV catalogue avant import : https://www.quotebuilder.co/outils/verificateur-csv-catalogue-devis
 - Estimateur du temps passé sur les demandes de suivi des clients : https://www.quotebuilder.co/outils/estimateur-temps-demandes-suivi-devis-clients
 - Calculateur devis payant et étude préalable : https://www.quotebuilder.co/outils/calculateur-devis-payant-etude-prealable
+- Générateur d'email de confirmation de demande de devis : https://www.quotebuilder.co/outils/generateur-email-confirmation-demande-devis
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 
