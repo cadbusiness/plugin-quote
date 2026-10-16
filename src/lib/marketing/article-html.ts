@@ -91,6 +91,17 @@ export function articleHtml(source: string) {
       blocks.push(table);
       continue;
     }
+    const quoteLines = block.split("\n");
+    if (quoteLines.every((line) => line.startsWith(">"))) {
+      const text = quoteLines
+        .map((line) => line.replace(/^>\s?/, "").trim())
+        .filter(Boolean)
+        .join(" ");
+      blocks.push(
+        `<blockquote class="mt-10 border-l-2 border-mk-accent pl-5 text-[1.15rem] font-medium leading-8 text-mk-ink sm:text-xl sm:leading-9">${inlineHtml(text)}</blockquote>`,
+      );
+      continue;
+    }
     if (/^[-*]\s/m.test(block) || /^\d+\.\s/m.test(block)) {
       const items = block
         .split("\n")

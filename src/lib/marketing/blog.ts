@@ -120,6 +120,7 @@ export const BLOG_TOOL_SUIVI_CLIENTS = "/outils/estimateur-temps-demandes-suivi-
 export const BLOG_TOOL_DEVIS_PAYANT = "/outils/calculateur-devis-payant-etude-prealable";
 export const BLOG_TOOL_EMAIL_CONFIRMATION = "/outils/generateur-email-confirmation-demande-devis";
 export const BLOG_TOOL_ROI_SALON = "/outils/calculateur-roi-salon-professionnel-devis";
+export const BLOG_TOOL_FRAIS_DEPLACEMENT = "/outils/calculateur-frais-deplacement-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -152,6 +153,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     44: "Quarante-quatre",
     45: "Quarante-cinq",
     46: "Quarante-six",
+    47: "Quarante-sept",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -434,9 +436,29 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Stand, déplacements, journées d'équipe : combien vous coûte chaque demande de devis venue d'un salon, et à partir de combien de clients il est remboursé ?",
     tags: ["funnel", "relances"],
   },
+  {
+    href: BLOG_TOOL_FRAIS_DEPLACEMENT,
+    title: "Calculateur des frais de déplacement par zone",
+    text: "Véhicule, temps de route, allers-retours : ce que coûte le trajet d'un chantier dans chaque zone, le forfait à afficher et la commande minimum.",
+    tags: ["funnel", "catalogue"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "zone-intervention-frais-deplacement-devis-b2b",
+    path: "/blog/zone-intervention-frais-deplacement-devis-b2b",
+    title:
+      "Zone d'intervention et frais de déplacement : chiffrer le trajet, dessiner ses zones et l'annoncer dès la demande de devis",
+    description:
+      "Frais de déplacement dans un devis B2B : le vrai coût d'un trajet (véhicule, temps d'équipe, allers-retours, péages), des zones d'intervention simples, absorber, forfaitiser ou refacturer, quoi écrire sur le devis, et comment poser la zone dans un funnel de demande de devis.",
+    publishedAt: "2026-10-16",
+    readingMinutes: 19,
+    tags: ["funnel", "catalogue"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.produits,
+    pinned: false,
+  },
   {
     slug: "salon-professionnel-demandes-devis-b2b",
     path: "/blog/salon-professionnel-demandes-devis-b2b",

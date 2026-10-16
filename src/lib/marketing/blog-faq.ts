@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "zone-intervention-frais-deplacement-devis-b2b": [
+    {
+      q: "Comment calculer des frais de déplacement pour un devis ?",
+      a: "Additionnez le coût du véhicule (kilomètres aller et retour × coût au kilomètre), le temps de route de chaque personne au coût horaire chargé, et les péages ou parkings. Multipliez par le nombre d'allers-retours du chantier. Le calculateur des frais de déplacement par zone fait ce calcul avec vos chiffres.",
+    },
+    {
+      q: "Faut-il facturer le déplacement à part ou l'inclure dans le prix ?",
+      a: "Les deux se défendent. Dans une zone proche, l'inclure simplifie le devis. Plus loin, une ligne à part, nommée clairement, évite de perdre de l'argent et se discute plus facilement qu'un prix global plus élevé.",
+    },
+    {
+      q: "Comment définir sa zone d'intervention ?",
+      a: "Calculez le coût du trajet en kilomètres ou en temps, puis traduisez les cercles en noms de lieux que le client comprend. Trois zones et un « au-delà » suffisent presque toujours.",
+    },
+    {
+      q: "Comment fixer un forfait de déplacement par zone ?",
+      a: "Calculez le coût du trajet au bord extérieur de la zone, pour tous les allers-retours d'un chantier type, puis arrondissez. Vous pouvez aussi absorber la part que votre marge supporte et ne facturer que le reste.",
+    },
+    {
+      q: "Les frais de déplacement doivent-ils figurer sur le devis ?",
+      a: "Pour le dépannage, la réparation et l'entretien dans le bâtiment et l'équipement de la maison, l'arrêté du 24 janvier 2017 l'exige vis-à-vis des consommateurs. Entre professionnels, l'écrire sur une ligne à part reste la façon la plus simple d'éviter un litige.",
+    },
+    {
+      q: "Que répondre à une demande de devis hors de sa zone ?",
+      a: "Répondez vite : oui à conditions (forfait, minimum, tournée), oui à distance si c'est possible, ou non avec une piste. Le silence est la seule mauvaise réponse.",
+    },
+    {
+      q: "QuoteBuilder calcule-t-il la distance jusqu'au chantier ?",
+      a: "Non. Le funnel ne lit pas d'adresse et ne calcule pas de distance. Vous posez une question de zone avec des noms de lieux, et c'est le prospect qui choisit.",
+    },
+    {
+      q: "Peut-on afficher une fourchette de prix qui inclut le déplacement ?",
+      a: "Oui, avec les règles de suggestion : une règle par couple solution et zone, qui propose aussi un produit « forfait déplacement », ou dont la fourchette Prix min et Prix max inclut le trajet.",
+    },
+    {
+      q: "Peut-on bloquer les demandes hors zone dans le funnel ?",
+      a: "Non. Le funnel n'a pas de branchement conditionnel et le prospect peut toujours envoyer sa demande. Vous pouvez seulement ne pas lui proposer de solution, puis lui répondre au cas par cas.",
+    },
+    {
+      q: "Peut-on assigner automatiquement une demande selon la zone ?",
+      a: "Pas simplement pour une question créée dans l'éditeur : la condition « Réponse funnel » de l'Autopilote demande la clé et la valeur techniques, que l'éditeur n'affiche pas. L'assignation se fait depuis la fiche, ou par le parcours si le funnel est configuré par l'API avec des clés lisibles.",
+    },
+  ],
   "salon-professionnel-demandes-devis-b2b": [
     {
       q: "Comment transformer les contacts d'un salon en demandes de devis ?",
