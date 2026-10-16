@@ -39,7 +39,7 @@ assert.ok(
 );
 assert.equal(BLOG_FAQ[BLOG_SLUG]?.length, 10);
 
-assert.equal(BLOG_TOOLS.length, 45);
+assert.equal(BLOG_TOOLS.length, 46);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === TOOL_PATH));
 assert.deepEqual(
   BLOG_TOOLS.find((tool) => tool.href === TOOL_PATH)?.tags,
@@ -47,7 +47,7 @@ assert.deepEqual(
 );
 assert.equal(
   outilsHubIntro(),
-  "Quarante-cinq outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
+  "Quarante-six outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
 );
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
@@ -139,7 +139,7 @@ function assertInternalLinks(body: string, label: string) {
   assert.doesNotMatch(sectorRaw, EN_DASH);
   assert.doesNotMatch(sectorBody, EM_DASH);
   assert.doesNotMatch(sectorBody, EN_DASH);
-  assert.equal(sectorBody.split(/\s+/).filter(Boolean).length, 2651);
+  assert.equal(sectorBody.split(/\s+/).filter(Boolean).length, 2679);
   assert.equal(faqQuestionCount(sectorBody), 10);
   assertInternalLinks(sectorBody, "secteur");
 }

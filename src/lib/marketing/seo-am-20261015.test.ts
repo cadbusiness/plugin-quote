@@ -61,8 +61,8 @@ for (const item of BLOG_FAQ[BLOG_SLUG] ?? []) {
   assert.doesNotMatch(item.a, EN_DASH);
 }
 
-assert.equal(BLOG_POSTS.length, 55);
-assert.equal(BLOG_TOOLS.length, 45);
+assert.equal(BLOG_POSTS.length, 56);
+assert.equal(BLOG_TOOLS.length, 46);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === TOOL_PATH));
 assert.equal(
   BLOG_TOOLS.find((tool) => tool.href === TOOL_PATH)?.title,
@@ -76,9 +76,9 @@ assert.equal(
 for (const tool of BLOG_TOOLS) {
   assert.ok(tool.tags.every((tag) => BLOG_TAG_DEFS.some((def) => def.slug === tag)));
 }
-assert.ok(outilsHubIntro().startsWith("Quarante-cinq outils publics."));
-assert.equal(outilsHubIntro(), "Quarante-cinq outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(45), outilsHubIntro());
+assert.ok(outilsHubIntro().startsWith("Quarante-six outils publics."));
+assert.equal(outilsHubIntro(), "Quarante-six outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(46), outilsHubIntro());
 assert.equal(outilsHubIntro(43), "Quarante-trois outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
@@ -207,8 +207,8 @@ function alphaTokens(body: string) {
   assert.match(blogBody, /\/c\/demo\/rayonnage/);
   assertNoDashes(blogRaw, "devis payant md");
   assertNoDashes(blogBody, "devis payant body");
-  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 3829);
-  assert.equal(alphaTokens(blogBody), 3611);
+  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 3856);
+  assert.equal(alphaTokens(blogBody), 3637);
   assert.equal(faqQuestionCount(blogBody), 10);
   assert.deepEqual(faqFromMarkdown(blogBody), BLOG_FAQ[BLOG_SLUG]);
   assertInternalLinks(blogBody, "devis payant");
@@ -241,8 +241,8 @@ function alphaTokens(body: string) {
   assert.match(sectorBody, /Essayer le template Géomètre/);
   assert.doesNotMatch(sectorBody, /\/blog\/espace-prospect-devis-en-ligne/);
   assertNoDashes(sectorRaw, "geometre md");
-  assert.equal(sectorBody.split(/\s+/).filter(Boolean).length, 3686);
-  assert.equal(alphaTokens(sectorBody), 3399);
+  assert.equal(sectorBody.split(/\s+/).filter(Boolean).length, 3697);
+  assert.equal(alphaTokens(sectorBody), 3409);
   assert.equal(faqQuestionCount(sectorBody), 10);
   assertInternalLinks(sectorBody, "geometre");
 

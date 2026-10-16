@@ -24,7 +24,7 @@ const FAQ = [
   },
   {
     q: "Et un fichier STEP ?",
-    a: "Pas à l'étape Personnalisation, qui n'accepte que PDF et images. Le contact principal peut l'ajouter depuis sa page prospect avec « Compléter la demande », jusqu'à 10 Mo.",
+    a: "Pas à l'étape Personnalisation, qui n'accepte que PDF, JPEG, PNG et WebP. La page prospect (« Compléter la demande ») accepte les mêmes formats, jusqu'à 10 Mo. Convenez de l'envoi du fichier 3D après le premier échange.",
   },
   {
     q: "Peut-on afficher des questions différentes pour un prototype et une série ?",
