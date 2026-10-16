@@ -152,7 +152,7 @@ Les règles choisissent des produits. Elles ne changent pas l'ordre des étapes 
 
 Ajoutez une question de type liste ou choix visuel à la première étape : « Si une étude sur site est nécessaire, êtes-vous d'accord pour qu'elle soit facturée 300 € HT, déduits de la commande ? » Réponses : « Oui », « Je préfère en parler d'abord », « Non, je souhaite seulement une estimation ».
 
-Chaque question a un texte d'aide, affiché sous le libellé. Mettez-y ce que contient l'étude. Le sous-titre de l'étape se modifie aussi. Le client lit l'information avant de répondre, pas en petits caractères en bas de page.
+Posez-la en choix visuel : c'est le seul type de question dont le texte d'aide s'affiche sous le libellé (pour une liste, il est enregistré mais pas montré). Mettez-y ce que contient l'étude. Le sous-titre de l'étape se modifie aussi. Le client lit l'information avant de répondre, pas en petits caractères en bas de page.
 
 Cette réponse arrive dans la fiche de la demande, avec les autres. Votre équipe sait, avant d'appeler, si le client a déjà accepté le principe. Elle ne passe plus dix minutes au téléphone pour découvrir que le client ne voulait qu'un prix au mètre carré.
 
@@ -241,7 +241,7 @@ Non. Le score suit une formule fixe qui ne lit pas cette réponse. Filtrez et tr
 
 ### Où écrire les conditions de l'étude ?
 
-Dans la description du produit « Étude », dans le texte d'aide de la question d'accord, dans l'email de confirmation et dans vos conditions générales. Le pied de page du PDF de QuoteBuilder est fixe et ne sert pas à ça.
+Dans la description du produit « Étude », dans le texte d'aide de la question d'accord (posée en choix visuel, seul type dont l'aide s'affiche), dans l'email de confirmation et dans vos conditions générales. Le pied de page du PDF de QuoteBuilder est fixe et ne sert pas à ça.
 
 ## Sources
 

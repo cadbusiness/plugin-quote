@@ -90,7 +90,7 @@ Les questions se modifient dans le constructeur de parcours : libellé, texte d'
 
 **Vous êtes**, liste : Propriétaire, Notaire, Agent immobilier, Syndic de copropriété, Promoteur ou aménageur, Autre. Un notaire qui demande un plan de division pour une vente a souvent une date de signature. Un propriétaire seul a souvent une question avant tout.
 
-**Surface approximative du terrain (m²)**, nombre, facultatif. Si vous lui donnez la clé `surface`, la formule de score la lira (voir plus bas). Sinon, donnez-lui une clé explicite comme `surface_terrain` et acceptez que le score ne bouge pas.
+**Surface approximative du terrain (m²)**, nombre, facultatif. Ajoutée dans le constructeur, elle reçoit une clé automatique (par exemple `number_x7k2p9`) que la formule de score ne lit pas : le score ne bougera pas (voir plus bas).
 
 **Bornes existantes**, liste : Oui, visibles ; Non ; Je ne sais pas.
 
@@ -142,7 +142,7 @@ Le score part de 30 points. Il devient warm à 45 et hot à 70. Il lit la surfac
 
 Le template Géomètre ne pose aucune de ces questions. Son champ Contexte a pour clé `notes`, que le score ne lit pas. Résultat, tel que le template est livré : chaque demande sort à 30 points, libellé cold. Ce n'est pas un jugement sur la demande. C'est la formule, fixe et non réglable, appliquée à des réponses qu'elle ne connaît pas.
 
-Si vous ajoutez une question dont la clé est exactement `surface`, le score bougera : 8 points dès que la surface dépasse 0, 15 à partir de 100, 25 à partir de 400. Un terrain de 600 m² ferait passer la demande à 55, donc warm. Ce n'est pas un indicateur de priorité pour un géomètre : la surface ne dit pas si le notaire attend pour la semaine prochaine. Triez sur l'échéance, le motif et le demandeur, pas sur la pastille.
+Seule une question de clé exactement `surface`, créée par l'API ou les outils MCP (le constructeur ne permet pas de choisir la clé), fait bouger le score : 8 points dès que la surface dépasse 0, 15 à partir de 100, 25 à partir de 400. Un terrain de 600 m² ferait passer la demande à 55, donc warm. Ce n'est pas un indicateur de priorité pour un géomètre : la surface ne dit pas si le notaire attend pour la semaine prochaine. Triez sur l'échéance, le motif et le demandeur, pas sur la pastille.
 
 Le score est calculé à l'envoi et stocké. Un segment ou une campagne filtré sur « hot » ne verra pas ces demandes. Le détail du calcul est dans [le score d'une demande de devis](https://www.quotebuilder.co/blog/score-demande-devis-b2b).
 

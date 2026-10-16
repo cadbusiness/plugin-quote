@@ -67,7 +67,7 @@ Le funnel avance en ordre fixe. Chaque prospect voit les mêmes étapes, dans le
 
 Le template est un point de départ. Les ajouts qui changent le plus la qualité des demandes :
 
-**Surface approximative**, question de type nombre. Si vous lui donnez la clé `surface`, la formule de score la lira (voir plus bas). Sinon, donnez-lui une clé explicite, par exemple `surface_plancher`, et acceptez que le score ne bouge pas. Demandez une surface de plancher ou une emprise, avec l'unité dans le libellé. Rendez-la facultative si beaucoup de prospects ne la connaissent pas encore : un champ obligatoire vide fait abandonner.
+**Surface approximative**, question de type nombre. Ajoutée dans le constructeur, elle reçoit une clé automatique (par exemple `number_x7k2p9`) que la formule de score ne lit pas : le score ne bougera pas (voir plus bas). Demandez une surface de plancher ou une emprise, avec l'unité dans le libellé. Rendez-la facultative si beaucoup de prospects ne la connaissent pas encore : un champ obligatoire vide fait abandonner.
 
 **Nature de l'opération**, liste : Neuf, Extension, Réhabilitation, Aménagement intérieur, Autre. Le template n'a pas cette question. « Conception / PC » ne dit pas si le bâtiment existe.
 
@@ -106,7 +106,7 @@ Exemples que vous pouvez créer, ce ne sont pas des règles livrées avec le tem
 - Type de mission est Étude / BET (`study`) : proposer les études que vous vendez vraiment (structure, fluides), pas une mission d'architecte.
 - Type de mission est Autre : ne rien forcer, ou proposer un échange. « Autre » est une réponse honnête, pas un défaut à punir.
 
-Les opérateurs des règles de suggestion sont : égal, différent, supérieur ou égal, inférieur ou égal, dans une liste, contient. « Contient » s'applique à une réponse qui est une liste (plusieurs cases), pas à un texte libre. Si vous ajoutez une surface avec la clé `surface`, une règle « surface supérieure ou égale à 150 » peut proposer une mission plus longue. Cela ne cache pas l'étape suivante.
+Les opérateurs des règles de suggestion sont : égal, différent, supérieur ou égal, inférieur ou égal, dans une liste, contient. « Contient » s'applique à une réponse qui est une liste (plusieurs cases), pas à un texte libre. Si vous ajoutez une question de surface (type Mesure), une règle « surface supérieure ou égale à 150 » peut proposer une mission plus longue. Cela ne cache pas l'étape suivante.
 
 Le template n'a pas de branche entre étapes. Vous ne pouvez pas montrer « lots techniques » seulement quand la mission est Étude / BET. Posez la question à tout le monde, ou acceptez qu'un suivi de chantier voie aussi cette question. Formulez-la pour qu'elle reste compréhensible dans les quatre cas (« des études techniques sont-elles déjà prévues ? »).
 
@@ -118,7 +118,7 @@ Le template Architecte / BET n'a aucune de ces clés. Son type de mission est `d
 
 Résultat, tel que le template est livré : chaque demande sort à 30 points, libellé cold. Ce n'est pas un jugement sur la mission. C'est la formule, fixe, non réglable, appliquée à des réponses qu'elle ne connaît pas. Triez sur le type de mission et l'échéance, pas sur la pastille.
 
-Si vous ajoutez une question dont la clé est exactement `surface`, le score bougera : un peu dès que la surface est supérieure à 0, davantage à partir de 100, encore plus à partir de 400. Ce n'est pas un barème d'honoraires. C'est le même barème que pour un entrepôt. À 400 m² vous gagnez 25 points, ce qui peut faire passer le dossier en warm (30 + 25 = 55), toujours pas en hot. N'ajoutez pas cette clé seulement pour « réveiller » le score. Ajoutez-la si la surface vous sert, et lisez la pastille en sachant d'où elle vient.
+Seule une question de clé exactement `surface`, créée par l'API ou les outils MCP (le constructeur ne permet pas de choisir la clé), fait bouger le score : un peu dès que la surface est supérieure à 0, davantage à partir de 100, encore plus à partir de 400. Ce n'est pas un barème d'honoraires. C'est le même barème que pour un entrepôt. À 400 m² vous gagnez 25 points, ce qui peut faire passer le dossier en warm (30 + 25 = 55), toujours pas en hot. N'ajoutez pas cette clé seulement pour « réveiller » le score. Ajoutez-la si la surface vous sert, et lisez la pastille en sachant d'où elle vient.
 
 Le score est calculé à la soumission et stocké. Un segment ou une campagne qui filtre « hot » ne verra pas ces dossiers. Ce n'est pas le sujet de cette page, mais c'est la raison pour laquelle un envoi groupé aux « chauds » rate une agence qui n'a que ce template. Le détail des campagnes est dans [segments et campagnes email](https://www.quotebuilder.co/blog/segments-campagnes-email-demande-devis-b2b).
 
@@ -151,7 +151,7 @@ Hypothèse d'illustration, sans chiffre de référence et sans barème d'honorai
 1. Un maître d'ouvrage arrive sur votre page « permis de construire » et ouvre le funnel.
 2. Il choisit « Conception / PC », écrit dans Contexte « extension, maison des années 70, PLU en zone UC », échéance « Dans le mois ». Vous avez ajouté une surface (180) et « Réhabilitation / extension ».
 3. La règle « Type de mission est Conception / PC » lui propose deux missions. Il en garde une, quantité 1, et dépose un plan de l'existant en PDF, sous 10 Mo.
-4. Il laisse ses coordonnées, ne coche pas la case marketing, et envoie. Le dossier arrive au statut Nouveau, à 30 points si vous n'avez pas utilisé la clé `surface`, ou un peu plus si vous l'avez utilisée. Il n'est pas hot pour autant.
+4. Il laisse ses coordonnées, ne coche pas la case marketing, et envoie. Le dossier arrive au statut Nouveau, à 30 points, sauf si une question de clé `surface` a été créée par l'API. Il n'est pas hot pour autant.
 5. L'architecte ouvre la fiche, voit le type de mission et le plan, passe le dossier en Contacté, ajoute une note interne « vérifier le recul en limite ».
 6. Il rédige la proposition d'honoraires dans son outil habituel.
 7. Le maître d'ouvrage invite son conjoint ou son associé comme relecteur, lien 30 jours.

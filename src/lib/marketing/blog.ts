@@ -119,6 +119,7 @@ export const BLOG_TOOL_CSV_CATALOGUE = "/outils/verificateur-csv-catalogue-devis
 export const BLOG_TOOL_SUIVI_CLIENTS = "/outils/estimateur-temps-demandes-suivi-devis-clients";
 export const BLOG_TOOL_DEVIS_PAYANT = "/outils/calculateur-devis-payant-etude-prealable";
 export const BLOG_TOOL_EMAIL_CONFIRMATION = "/outils/generateur-email-confirmation-demande-devis";
+export const BLOG_TOOL_ROI_SALON = "/outils/calculateur-roi-salon-professionnel-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -150,6 +151,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     43: "Quarante-trois",
     44: "Quarante-quatre",
     45: "Quarante-cinq",
+    46: "Quarante-six",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -426,9 +428,29 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Délai, prochaine étape, lien de suivi, signature : l'accusé de réception prêt à coller, avec les promesses incohérentes signalées.",
     tags: ["relances", "funnel"],
   },
+  {
+    href: BLOG_TOOL_ROI_SALON,
+    title: "Calculateur ROI salon professionnel",
+    text: "Stand, déplacements, journées d'équipe : combien vous coûte chaque demande de devis venue d'un salon, et à partir de combien de clients il est remboursé ?",
+    tags: ["funnel", "relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "salon-professionnel-demandes-devis-b2b",
+    path: "/blog/salon-professionnel-demandes-devis-b2b",
+    title:
+      "Salon professionnel : transformer les contacts du stand en demandes de devis, avec un QR code, un funnel et une relance qui part le jour même",
+    description:
+      "Salon professionnel B2B : pourquoi les badges et les cartes de visite donnent si peu de devis, comment prendre une vraie demande sur le stand (QR code vers un funnel, lien tagué utm, tablette en navigation privée), relancer le soir même et calculer le coût par demande et par client.",
+    publishedAt: "2026-10-16",
+    readingMinutes: 19,
+    tags: ["funnel", "relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.funnelPublic,
+    pinned: false,
+  },
   {
     slug: "email-confirmation-demande-devis-b2b",
     path: "/blog/email-confirmation-demande-devis-b2b",

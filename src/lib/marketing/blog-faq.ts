@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "salon-professionnel-demandes-devis-b2b": [
+    {
+      q: "Comment transformer les contacts d'un salon en demandes de devis ?",
+      a: "Faites remplir une vraie demande pendant que le visiteur est sur le stand : un QR code vers un funnel court, ou une tablette avec un commercial qui remplit avec lui. Pour les autres, un email le soir même avec le lien du funnel. Puis rappelez dans les 48 heures.",
+    },
+    {
+      q: "Faut-il un QR code sur un stand de salon ?",
+      a: "C'est le moyen le plus simple de faire passer un visiteur du stand à un formulaire sur son propre téléphone. Mettez-le à hauteur des yeux, avec une phrase qui dit ce que le visiteur obtient, et testez le scan avant d'imprimer.",
+    },
+    {
+      q: "QuoteBuilder génère-t-il le QR code ?",
+      a: "Non. Vous copiez le lien public du funnel dans l'onglet « Lien & embed », vous ajoutez les paramètres utm, et vous générez le QR code avec l'outil de votre choix.",
+    },
+    {
+      q: "Comment savoir quelles demandes viennent du salon ?",
+      a: "Ajoutez `utm_source=salon` et `utm_campaign` au nom du salon dans le lien du QR code. QuoteBuilder garde ces valeurs avec la demande, les affiche dans la rubrique Attribution de la fiche et dans les onglets Sources et Campagnes des statistiques.",
+    },
+    {
+      q: "Peut-on utiliser une tablette partagée sur le stand ?",
+      a: "Oui, en ouvrant le funnel dans une fenêtre de navigation privée, fermée après chaque demande envoyée. Sinon, le navigateur garde la session du visiteur précédent.",
+    },
+    {
+      q: "Peut-on saisir à la main une demande après le salon ?",
+      a: "Pas dans le back-office : il n'y a pas de saisie manuelle de demande. Le commercial peut remplir le funnel lui-même avec les informations du visiteur, en gardant le lien tagué salon.",
+    },
+    {
+      q: "Peut-on relancer automatiquement les visiteurs du salon ?",
+      a: "Oui, ceux qui ont envoyé une demande ou commencé une demande avec leur email, via les parcours d'Autopilote. Un funnel dédié au salon permet un parcours avec ses propres délais. Les contacts qui n'ont rien rempli se relancent depuis votre messagerie.",
+    },
+    {
+      q: "Le score tient-il compte du salon ?",
+      a: "Non. Le score suit une formule fixe qui lit quelques réponses du funnel. Il ne lit ni la source, ni la campagne, ni ce qui s'est dit sur le stand. Ajoutez une note interne sur la fiche.",
+    },
+    {
+      q: "Comment calculer le ROI d'un salon professionnel ?",
+      a: "Additionnez tous les coûts, temps de l'équipe compris. Divisez par le nombre de demandes, puis par le nombre de clients signés sur le cycle de vente. Comparez avec la marge brute de ces commandes. Le calculateur ROI salon professionnel fait ce calcul avec vos chiffres.",
+    },
+    {
+      q: "Peut-on envoyer un email aux visiteurs dont on a scanné le badge ?",
+      a: "En B2B, la CNIL admet la prospection par email sur la base de l'intérêt légitime si le message concerne la profession de la personne, à condition de l'informer et de lui permettre de s'opposer simplement, à chaque envoi. Faites valider votre pratique par votre conseil.",
+    },
+  ],
   "email-confirmation-demande-devis-b2b": [
     {
       q: "Faut-il envoyer un email de confirmation après une demande de devis ?",
@@ -82,7 +124,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Où écrire les conditions de l'étude ?",
-      a: "Dans la description du produit « Étude », dans le texte d'aide de la question d'accord, dans l'email de confirmation et dans vos conditions générales. Le pied de page du PDF de QuoteBuilder est fixe et ne sert pas à ça.",
+      a: "Dans la description du produit « Étude », dans le texte d'aide de la question d'accord (posée en choix visuel, seul type dont l'aide s'affiche), dans l'email de confirmation et dans vos conditions générales. Le pied de page du PDF de QuoteBuilder est fixe et ne sert pas à ça.",
     },
   ],
   "espace-membres-portail-client-devis-b2b": [

@@ -87,7 +87,7 @@ Quatre questions, c'est volontairement court. Quelques ajouts séparent une dema
 
 ### Le plan et le fichier 3D
 
-À l'étape Personnalisation, le prospect joint le plan coté en PDF ou image, jusqu'à 10 Mo. Le fichier 3D (STEP par exemple) n'entre pas dans ces formats : après l'envoi, le contact principal peut l'ajouter depuis sa page prospect avec « Compléter la demande », tout type de fichier jusqu'à 10 Mo. Dites-le dans le texte d'aide.
+À l'étape Personnalisation, le prospect joint le plan coté en PDF ou image, jusqu'à 10 Mo. Le fichier 3D (STEP par exemple) n'entre pas dans ces formats : la page prospect (« Compléter la demande ») accepte les mêmes formats, PDF, JPEG, PNG ou WebP, jusqu'à 10 Mo. Demandez un plan coté en PDF dans le libellé de la question ou le sous-titre de l'étape, et convenez de l'envoi du fichier 3D après le premier échange.
 
 Les fichiers viennent toujours du prospect : votre équipe n'en joint pas au dossier, et les images n'ont pas de légende. Méthode détaillée : [pièces jointes, plans et photos dans un devis](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b).
 
@@ -179,7 +179,7 @@ Oui, à l'étape Personnalisation (PDF ou image, 10 Mo au maximum), ou depuis sa
 
 ### Et un fichier STEP ?
 
-Pas à l'étape Personnalisation, qui n'accepte que PDF et images. Le contact principal peut l'ajouter depuis sa page prospect avec « Compléter la demande », jusqu'à 10 Mo.
+Pas à l'étape Personnalisation, qui n'accepte que PDF, JPEG, PNG et WebP. La page prospect (« Compléter la demande ») accepte les mêmes formats, jusqu'à 10 Mo. Convenez de l'envoi du fichier 3D après le premier échange.
 
 ### Peut-on afficher des questions différentes pour un prototype et une série ?
 
