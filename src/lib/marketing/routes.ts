@@ -131,6 +131,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   {
+    path: "/blog/zone-intervention-frais-deplacement-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-16",
+  },
+  {
     path: "/blog/salon-professionnel-demandes-devis-b2b",
     changeFrequency: "monthly",
     priority: 0.8,
@@ -529,6 +535,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/calculateur-roi-salon-professionnel-devis",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-16",
+  },
+  {
+    path: "/outils/calculateur-frais-deplacement-devis",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-16",
