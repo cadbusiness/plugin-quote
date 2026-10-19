@@ -121,7 +121,7 @@ Le statut Perdu n'a pas de champ « motif ». Rien ne vous le demande au moment 
 
 Le motif se note dans les notes internes de la fiche, onglet Échanges, rubrique « Notes internes » : un champ texte, puis « Ajouter ». Les notes sont visibles par l'équipe, pas par le client. Elles sont en texte brut. Une note ajoutée ne se modifie pas et ne se supprime pas ensuite : relisez avant de valider, et ajoutez une deuxième note si le motif change.
 
-Si le motif vient d'un appel, l'action « Appel » de la fiche permet aussi d'enregistrer l'appel avec une note. Pour l'analyse, gardez la convention : une note qui commence par « Motif : ».
+Si le motif vient d'un appel, le bouton « Appeler » de la fiche ouvre un champ de compte-rendu, à enregistrer avec « Noter l'appel ». Pour l'analyse, gardez la convention : une note qui commence par « Motif : ».
 
 ### Compter les pertes
 
@@ -131,7 +131,7 @@ Le bouton « Export CSV » reprend les filtres de la liste. Le fichier contient 
 
 ### Ce que les statistiques montrent, et ce qu'elles ne montrent pas
 
-L'écran Statistiques ne compte pas les pertes. L'onglet Vue affiche les visites, les devis reçus, la conversion, le montant estimé, la part de demandes rappelées et les demandes signées. L'onglet Pipeline montre les dossiers ouverts (Nouveau, Contacté, En cours, En attente) et le montant signé. Les dossiers Perdu n'apparaissent nulle part, et la période la plus longue est de 30 jours.
+L'écran Statistiques ne compte pas les pertes. L'onglet Vue affiche les visites, les devis reçus, la conversion, le montant estimé, la part de demandes rappelées et les demandes signées. L'onglet Pipeline montre les dossiers ouverts (Nouveau, Contacté, En cours, En attente) et le montant signé. Les dossiers Perdu n'apparaissent nulle part. Les indicateurs se calculent sur aujourd'hui, 7 jours ou 30 jours au plus, et le graphique Tendance montre six mois de devis reçus, de signés et d'abandons, sans les pertes.
 
 Un détail à connaître : l'indicateur « Rappel » compte les demandes passées en Contacté, En cours, En attente ou Gagné. Une demande rappelée puis perdue n'y figure plus. Si vous classez beaucoup de dossiers en Perdu, le taux de rappel affiché baisse, alors que l'équipe a bien rappelé. Pour le taux de gain, faites le calcul vous-même à partir des deux exports.
 
@@ -255,7 +255,7 @@ Ces exemples sont des illustrations, pas des cas clients.
 
 - Pas de champ motif sur le statut Perdu, et aucune demande de motif au moment du changement.
 - Pas de statut personnalisé (« Perdu prix », « Sans suite ») : les sept statuts sont fixes.
-- Pas de statistique de pertes : aucun compte des dossiers Perdu dans l'écran Statistiques, et une période limitée à 30 jours.
+- Pas de statistique de pertes : aucun compte des dossiers Perdu dans l'écran Statistiques, des indicateurs sur 30 jours au plus, et une tendance sur six mois qui ne montre que les devis reçus, les signés et les abandons.
 - Pas de filtre par motif ni par note dans la liste des demandes, et pas de notes ni de réponses dans l'export CSV.
 - Pas de message automatique au client lors d'un passage en Perdu, et pas de nouveau modèle d'email (les modèles existants se modifient).
 - Pas d'étape de clôture sur l'espace prospect : un dossier perdu y apparaît à l'étape « Reçu ».

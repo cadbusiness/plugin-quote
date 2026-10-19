@@ -234,8 +234,8 @@ function close(actual: number | null, expected: number, eps = 1e-4) {
   assert.match(blogBody, /\/c\/demo\/rayonnage/);
   assertNoDashes(blogRaw, "pertes md");
   assertNoDashes(blogBody, "pertes body");
-  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 4994);
-  assert.equal(alphaTokens(blogBody), 4597);
+  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 5038);
+  assert.equal(alphaTokens(blogBody), 4639);
   assert.equal(faqQuestionCount(blogBody), 10);
   assert.deepEqual(faqFromMarkdown(blogBody), BLOG_FAQ[BLOG_SLUG]);
   assertInternalLinks(blogBody, "pertes");
