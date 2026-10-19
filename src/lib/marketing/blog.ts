@@ -122,6 +122,7 @@ export const BLOG_TOOL_EMAIL_CONFIRMATION = "/outils/generateur-email-confirmati
 export const BLOG_TOOL_ROI_SALON = "/outils/calculateur-roi-salon-professionnel-devis";
 export const BLOG_TOOL_FRAIS_DEPLACEMENT = "/outils/calculateur-frais-deplacement-devis";
 export const BLOG_TOOL_MOTIFS_PERDUS = "/outils/analyseur-motifs-devis-perdus";
+export const BLOG_TOOL_REVISION_PRIX = "/outils/calculateur-revision-prix-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -156,6 +157,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     46: "Quarante-six",
     47: "Quarante-sept",
     48: "Quarante-huit",
+    49: "Quarante-neuf",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -450,9 +452,29 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Prix, délai, concurrent, pas de réponse : comment se répartissent vos devis perdus, ce qu'ils représentent, et ce que rapporterait d'en récupérer une partie ?",
     tags: ["relances", "scoring"],
   },
+  {
+    href: BLOG_TOOL_REVISION_PRIX,
+    title: "Calculateur de révision de prix",
+    text: "Partie fixe, indices pondérés, seuil et plafond : le coefficient de révision, le prix révisé et l'effet de chaque indice sur votre devis.",
+    tags: ["catalogue", "funnel"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "revision-prix-indexation-devis-b2b",
+    path: "/blog/revision-prix-indexation-devis-b2b",
+    title:
+      "Révision de prix dans un devis B2B : choisir l'indice, écrire la formule et l'annoncer dès la demande",
+    description:
+      "Prix ferme, actualisable ou révisable : quand une clause de révision vaut la peine, comment choisir un indice (BT, TP, prix de production, matières), écrire la formule avec ou sans partie fixe, fixer les mois de référence, un seuil et un plafond, et ce qu'on annonce au client dès la demande de devis. Avec un exemple chiffré et ce que QuoteBuilder permet pour des prix qui bougent.",
+    publishedAt: "2026-10-19",
+    readingMinutes: 21,
+    tags: ["catalogue", "funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.produits,
+    pinned: false,
+  },
   {
     slug: "analyser-devis-perdus-motifs-perte-b2b",
     path: "/blog/analyser-devis-perdus-motifs-perte-b2b",
