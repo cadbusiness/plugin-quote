@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "revision-prix-indexation-devis-b2b": [
+    {
+      q: "Qu'est-ce qu'une clause de révision de prix ?",
+      a: "C'est une clause du devis ou du contrat qui fixe à l'avance comment le prix évolue entre la date du devis et l'exécution, en fonction d'un ou plusieurs indices publiés. Elle précise l'indice, la formule, les mois de référence et la fréquence de révision, et joue à la hausse comme à la baisse.",
+    },
+    {
+      q: "Quelle est la différence entre prix ferme, actualisable et révisable ?",
+      a: "Un prix ferme ne change pas. Un prix ferme actualisable est recalé une seule fois, au démarrage, si l'exécution commence longtemps après l'offre, puis reste ferme. Un prix révisable suit une formule pendant toute l'exécution, à une fréquence prévue.",
+    },
+    {
+      q: "Quelle formule utiliser pour réviser un prix ?",
+      a: "La plus simple : nouveau prix = prix initial × indice du mois de révision / indice du mois de départ. Quand le prix mélange plusieurs postes, on utilise une formule à plusieurs termes, avec éventuellement une partie fixe, dont les coefficients font 1 au total.",
+    },
+    {
+      q: "Quel indice choisir pour indexer un devis ?",
+      a: "Un indice qui suit vos coûts ou votre marché, publié régulièrement et consultable par le client. Dans le bâtiment, l'index BT ou TP le plus proche du travail réalisé. Ailleurs, un indice de prix de production de votre branche, un cours de matière ou un indice du coût du travail.",
+    },
+    {
+      q: "Peut-on indexer un devis sur l'inflation ?",
+      a: "L'article L112-2 du Code monétaire et financier interdit les indexations fondées sur le niveau général des prix ou sur des prix sans relation directe avec l'objet du contrat ou l'activité d'une partie. Avant d'écrire une référence à l'inflation, demandez un avis et cherchez un indice propre à votre activité.",
+    },
+    {
+      q: "Que faire si l'indice prévu disparaît ?",
+      a: "Le Code civil, à l'article 1167, prévoit son remplacement par l'indice qui s'en rapproche le plus. En pratique, l'Insee désigne souvent une série poursuivante et un coefficient de raccordement. Le mieux est de prévoir ce cas dans la clause.",
+    },
+    {
+      q: "Faut-il une partie fixe dans la formule ?",
+      a: "Ce n'est pas obligatoire entre entreprises. Une partie fixe amortit les variations, à la hausse comme à la baisse, et représente la part du prix qui ne dépend pas des cours. Plus elle est grande, plus vous gardez de risque à votre charge.",
+    },
+    {
+      q: "Une clause de révision peut-elle faire baisser le prix ?",
+      a: "Oui, et elle doit pouvoir le faire. Si un indice baisse, le prix révisé baisse. Une clause qui ne jouerait qu'à la hausse serait difficile à faire accepter et à défendre.",
+    },
+    {
+      q: "QuoteBuilder calcule-t-il la révision de prix ?",
+      a: "Non. QuoteBuilder ne suit aucun indice et ne recalcule pas les prix. Vous mettez à jour vous-même les prix du catalogue, à la main ou par import CSV, ainsi que les fourchettes de vos règles. La clause et le calcul se font dans votre devis et votre facturation.",
+    },
+    {
+      q: "Que deviennent les demandes déjà reçues quand je change mes prix dans QuoteBuilder ?",
+      a: "Elles ne changent pas. Les produits, leurs prix et la fourchette sont enregistrés dans le dossier à l'envoi de la demande. Le PDF, la fiche et l'espace prospect gardent les montants d'origine, ce qui montre ce que le client a vu.",
+    },
+  ],
   "analyser-devis-perdus-motifs-perte-b2b": [
     {
       q: "Comment analyser ses devis perdus ?",

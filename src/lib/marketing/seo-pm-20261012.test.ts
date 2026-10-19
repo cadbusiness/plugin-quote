@@ -41,15 +41,15 @@ for (const item of BLOG_FAQ[BLOG_SLUG] ?? []) {
   assert.doesNotMatch(item.a, EN_DASH);
 }
 
-assert.equal(BLOG_TOOLS.length, 48);
+assert.equal(BLOG_TOOLS.length, 49);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === TOOL_PATH));
 assert.deepEqual(BLOG_TOOLS.find((tool) => tool.href === TOOL_PATH)?.tags, ["relances", "funnel"]);
 for (const tool of BLOG_TOOLS) {
   assert.ok(tool.tags.every((tag) => BLOG_TAG_DEFS.some((def) => def.slug === tag)));
 }
-assert.ok(outilsHubIntro().startsWith("Quarante-huit outils publics."));
-assert.equal(outilsHubIntro(), "Quarante-huit outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(48), outilsHubIntro());
+assert.ok(outilsHubIntro().startsWith("Quarante-neuf outils publics."));
+assert.equal(outilsHubIntro(), "Quarante-neuf outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(49), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
 const paths = MARKETING_ROUTES.map((route) => route.path);
