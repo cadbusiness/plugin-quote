@@ -139,7 +139,7 @@ Une révision qui ne fonctionnerait qu'à la hausse sera refusée par la plupart
 
 Le texte qui suit est une illustration, pas un modèle juridique. Faites-le relire avant de l'utiliser.
 
-> Prix révisable. Le prix est établi aux conditions économiques du mois du présent devis (mois zéro). Il est révisé à la facturation par application du coefficient C = 0,15 + 0,85 × (0,60 × I1/I0 + 0,40 × J1/J0), où I est l'index [identifiant exact] et J l'index [identifiant exact] publiés par l'Insee, I0 et J0 leurs valeurs définitives du mois zéro, I1 et J1 leurs dernières valeurs définitives publiées à la date de la facture. C est arrondi à quatre décimales. La révision ne s'applique pas si C est compris entre 0,99 et 1,01. Elle s'applique à la hausse comme à la baisse. Si un index cesse d'être publié, il est remplacé par la série désignée par l'Insee pour lui succéder, avec le coefficient de raccordement publié.
+> Prix révisable. Le prix est établi aux conditions économiques du mois du présent devis (mois zéro). Il est révisé à la facturation par application du coefficient C = 0,15 + 0,85 × (0,60 × I1/I0 + 0,40 × J1/J0), où I est l'index [identifiant exact] et J l'index [identifiant exact] publiés par l'Insee, I0 et J0 leurs valeurs définitives du mois zéro, I1 et J1 leurs dernières valeurs définitives publiées à la date de la facture. C est arrondi à quatre décimales. La révision ne s'applique pas si C est strictement compris entre 0,99 et 1,01 (bornes exclues). Elle s'applique à la hausse comme à la baisse. Si un index cesse d'être publié, il est remplacé par la série désignée par l'Insee pour lui succéder, avec le coefficient de raccordement publié.
 
 ## Un exemple chiffré, pour illustrer
 
@@ -192,7 +192,7 @@ QuoteBuilder reçoit et qualifie les demandes de devis : un funnel pose les ques
 
 ### Les prix du catalogue
 
-Chaque produit du catalogue a son prix. À la création, « Comment annoncer le prix ? » propose trois modes : « Prix fixe », « Fourchette » ou « Sur devis ». Sur la fiche d'un produit, les champs « Prix min », « Prix max » et « Devise » se modifient à tout moment, et changer de devise convertit les montants au taux de la BCE. Un produit sans prix s'affiche « Sur devis ». Les changements de prix sont réservés aux administrateurs.
+Chaque produit du catalogue a son prix. À la création, « Comment annoncer le prix ? » propose trois modes : « Prix fixe », « Fourchette » ou « Sur devis ». Sur la fiche d'un produit, les champs « Prix min », « Prix max » et « Devise » se modifient, et changer de devise convertit les montants au taux de la BCE. Un produit créé en « Prix fixe » garde un prix unique : le « Prix max » saisi sur sa fiche n'est pas pris en compte, et la fiche ne permet pas de le passer en fourchette. Un produit sans prix s'affiche « Sur devis ». Les changements de prix sont réservés aux administrateurs.
 
 Quand vos coûts montent, c'est là que la fourchette affichée aux prospects se met à jour. Après une modification, ouvrez votre funnel sur son lien public pour vérifier la carte de chaque solution. Pour voir à quoi ressemble cette carte côté visiteur, la [démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) montre la fourchette telle que le prospect la lit.
 

@@ -139,7 +139,7 @@ export function CalculateurRevisionPrixDevisCalculator() {
           <Field
             id="seuil"
             label="Seuil de déclenchement (%)"
-            hint="Sous cet écart, à la hausse comme à la baisse, le prix ne bouge pas. Au-delà, toute la variation s'applique. 0 = aucun seuil."
+            hint="Si l'écart est strictement inférieur à ce seuil, à la hausse comme à la baisse, le prix ne bouge pas. Dès que l'écart atteint le seuil, toute la variation s'applique. 0 = aucun seuil."
             value={seuil}
             min={0}
             max={100}
