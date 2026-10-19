@@ -226,8 +226,8 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 57);
-assert.equal(BLOG_TOOLS.length, 47);
+assert.equal(BLOG_POSTS.length, 58);
+assert.equal(BLOG_TOOLS.length, 48);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-demandes-orales-non-capturees"));
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-double-saisie-devis"));
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-handoff-commercial-technique-devis"));
@@ -237,7 +237,7 @@ const outilsHub = readFileSync(new URL("../../app/(marketing)/outils/page.tsx", 
 assert.match(outilsHub, /outilsHubIntro\(\)/);
 assert.equal(
   outilsHubIntro(),
-  "Quarante-sept outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
+  "Quarante-huit outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
 );
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 assert.doesNotMatch(outilsHub, /Vingt-quatre|Vingt-cinq|Vingt-six|Vingt-sept|Vingt-huit|Vingt-neuf|Trente/);
@@ -932,8 +932,8 @@ const funnelRelated = getRelatedPosts(BLOG_POSTS.find((post) => post.slug === "f
 assert.ok(funnelRelated.length > 0, "funnel posts should have same-tag siblings");
 assert.ok(funnelRelated.every((post) => post.tags.includes("funnel") || post.tags.includes("scoring")));
 assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meurent-sans-relance"));
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 22);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 22);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 23);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 23);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 13);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 12);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);

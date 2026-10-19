@@ -121,6 +121,7 @@ export const BLOG_TOOL_DEVIS_PAYANT = "/outils/calculateur-devis-payant-etude-pr
 export const BLOG_TOOL_EMAIL_CONFIRMATION = "/outils/generateur-email-confirmation-demande-devis";
 export const BLOG_TOOL_ROI_SALON = "/outils/calculateur-roi-salon-professionnel-devis";
 export const BLOG_TOOL_FRAIS_DEPLACEMENT = "/outils/calculateur-frais-deplacement-devis";
+export const BLOG_TOOL_MOTIFS_PERDUS = "/outils/analyseur-motifs-devis-perdus";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -154,6 +155,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     45: "Quarante-cinq",
     46: "Quarante-six",
     47: "Quarante-sept",
+    48: "Quarante-huit",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -442,9 +444,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Véhicule, temps de route, allers-retours : ce que coûte le trajet d'un chantier dans chaque zone, le forfait à afficher et la commande minimum.",
     tags: ["funnel", "catalogue"],
   },
+  {
+    href: BLOG_TOOL_MOTIFS_PERDUS,
+    title: "Analyseur des motifs de devis perdus",
+    text: "Prix, délai, concurrent, pas de réponse : comment se répartissent vos devis perdus, ce qu'ils représentent, et ce que rapporterait d'en récupérer une partie ?",
+    tags: ["relances", "scoring"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "analyser-devis-perdus-motifs-perte-b2b",
+    path: "/blog/analyser-devis-perdus-motifs-perte-b2b",
+    title: "Devis perdus : noter le motif, compter les pertes et corriger ce qui peut l'être",
+    description:
+      "Devis perdus en B2B : une liste courte de motifs de perte, quand les noter et que demander au client, comment calculer le taux de gain sans se tromper, quoi faire pour chaque motif (prix, délai, concurrent, silence, projet reporté, hors cible) et comment tenir une revue trimestrielle des pertes.",
+    publishedAt: "2026-10-19",
+    readingMinutes: 20,
+    tags: ["relances", "scoring"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisListe,
+    pinned: false,
+  },
   {
     slug: "zone-intervention-frais-deplacement-devis-b2b",
     path: "/blog/zone-intervention-frais-deplacement-devis-b2b",
