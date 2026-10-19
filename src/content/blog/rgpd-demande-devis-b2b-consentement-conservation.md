@@ -182,7 +182,7 @@ Tenez une liste simple, qui servira aussi pour votre registre des traitements :
 | QuoteBuilder | dossier, réponses, fichiers | équipe commerciale | 3 ans sans contact |
 | CRM | contact, montant | commerciaux | selon votre règle |
 | Boîte mail | récapitulatifs | destinataires | selon votre règle |
-| Exports CSV | contacts, réponses | personne qui exporte | à supprimer après usage |
+| Exports CSV | contacts, statut, score | personne qui exporte | à supprimer après usage |
 
 ## Ce que le formulaire ne doit pas demander
 

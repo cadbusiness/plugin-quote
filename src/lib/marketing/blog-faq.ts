@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "analyser-devis-perdus-motifs-perte-b2b": [
+    {
+      q: "Comment analyser ses devis perdus ?",
+      a: "Notez un motif principal pour chaque devis perdu, au moment où vous le classez, avec une liste courte et fixe (prix, délai, concurrent préféré, pas de réponse, projet annulé ou reporté, hors cible). Une fois par trimestre, comptez les motifs, calculez le taux de gain sur les dossiers tranchés, relisez quelques dossiers des deux premiers motifs et décidez une action par motif.",
+    },
+    {
+      q: "Quels motifs de perte utiliser ?",
+      a: "Une liste de cinq à sept motifs suffit : prix, délai, concurrent préféré, pas de réponse, projet annulé ou reporté, hors cible, et sans motif pour compter les oublis. Écrivez une définition pour chacun et évitez le motif « Autre », qui devient vite le premier.",
+    },
+    {
+      q: "Comment calculer son taux de transformation de devis ?",
+      a: "Divisez le nombre de devis gagnés par le nombre de devis tranchés, c'est-à-dire gagnés plus perdus, sur la même période. Les dossiers encore ouverts n'entrent pas dans le calcul.",
+    },
+    {
+      q: "Faut-il demander au client pourquoi il n'a pas retenu notre devis ?",
+      a: "Oui, avec une seule question, au moment où il annonce sa décision : qu'est-ce qui a fait la différence ? Pas de questionnaire, pas de remise proposée dans la foulée. Notez ses mots, puis croisez avec le dossier.",
+    },
+    {
+      q: "Quand classer un devis en perdu ?",
+      a: "Quand l'affaire est tranchée : le client a choisi ailleurs, a renoncé, ou ne répond plus après les relances prévues par votre règle d'équipe. Un client qui attend une validation interne reste en attente.",
+    },
+    {
+      q: "Peut-on noter le motif de perte dans QuoteBuilder ?",
+      a: "Pas dans un champ dédié : le statut Perdu n'a pas de motif. Notez-le dans une note interne de la fiche, en commençant par « Motif : ». Les notes sont visibles par l'équipe, pas par le client, et ne se modifient pas une fois ajoutées.",
+    },
+    {
+      q: "Les statistiques de QuoteBuilder montrent-elles les devis perdus ?",
+      a: "Non. L'écran Statistiques compte les demandes reçues, rappelées et signées, et le pipeline montre les dossiers ouverts, mais aucun indicateur ne compte les dossiers Perdu. Le taux de gain se calcule à partir des exports CSV filtrés sur Gagné et sur Perdu.",
+    },
+    {
+      q: "Que voit le client quand son dossier passe en Perdu ?",
+      a: "Rien ne lui est envoyé automatiquement. Sur son espace prospect, la frise n'a pas d'étape de clôture et le dossier apparaît à l'étape « Reçu ». L'espace membres affiche « Clôturé ». Prévenez-le vous-même, depuis la fiche, avec « Écrire ».",
+    },
+    {
+      q: "Peut-on relancer plus tard un client dont le projet a été reporté ?",
+      a: "Oui. Notez la date de reprise dans la note de motif et prévoyez un rappel. Un segment sur le statut Perdu permet aussi une campagne, mais seulement vers les contacts qui ont donné leur consentement marketing, et la newsletter segmentée fait partie des plans Pro et Agency.",
+    },
+    {
+      q: "Que peut-on écrire dans une note sur un client ?",
+      a: "Des faits utiles au suivi du dossier, formulés de façon neutre. La CNIL rappelle que la personne peut demander à lire les commentaires la concernant, qu'ils doivent rester adéquats, pertinents et non excessifs, et que les données sensibles comme la santé ne s'y écrivent pas, sauf exceptions.",
+    },
+  ],
   "zone-intervention-frais-deplacement-devis-b2b": [
     {
       q: "Comment calculer des frais de déplacement pour un devis ?",

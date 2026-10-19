@@ -40,6 +40,7 @@ const ALL_TEMPLATES = [
   { href: "/secteurs/funnel-devis-isolation-thermique-ite", label: "Isolation thermique et ITE" },
   { href: "/secteurs/funnel-devis-pergola-terrasse", label: "Pergola et terrasse" },
   { href: "/secteurs/funnel-devis-cloture-portail", label: "Clôture et portail" },
+  { href: "/secteurs/funnel-devis-equipement-medical", label: "Équipement médical" },
 ];
 
 export default function SecteursPage() {
