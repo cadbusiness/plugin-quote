@@ -63,9 +63,11 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Funnel de devis géomètre-expert : https://www.quotebuilder.co/secteurs/funnel-devis-geometre-expert-bornage
 - Funnel de devis agence web et ESN : https://www.quotebuilder.co/secteurs/funnel-devis-agence-web-esn
 - Funnel de devis équipement médical : https://www.quotebuilder.co/secteurs/funnel-devis-equipement-medical
+- Funnel de devis cabinet de conseil : https://www.quotebuilder.co/secteurs/funnel-devis-cabinet-conseil
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Conditions de paiement dans un devis B2B : délai, pénalités de retard et indemnité de 40 € : https://www.quotebuilder.co/blog/conditions-paiement-penalites-retard-devis-b2b
 - Révision de prix dans un devis B2B : choisir l'indice, écrire la formule et l'annoncer dès la demande : https://www.quotebuilder.co/blog/revision-prix-indexation-devis-b2b
 - Devis perdus : noter le motif, compter les pertes et corriger ce qui peut l'être : https://www.quotebuilder.co/blog/analyser-devis-perdus-motifs-perte-b2b
 - Zone d'intervention et frais de déplacement : chiffrer le trajet, dessiner ses zones et l'annoncer dès la demande de devis : https://www.quotebuilder.co/blog/zone-intervention-frais-deplacement-devis-b2b
@@ -175,6 +177,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Calculateur des frais de déplacement par zone : https://www.quotebuilder.co/outils/calculateur-frais-deplacement-devis
 - Analyseur des motifs de devis perdus : https://www.quotebuilder.co/outils/analyseur-motifs-devis-perdus
 - Calculateur de révision de prix : https://www.quotebuilder.co/outils/calculateur-revision-prix-devis
+- Calculateur de pénalités de retard de paiement : https://www.quotebuilder.co/outils/calculateur-penalites-retard-paiement
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 

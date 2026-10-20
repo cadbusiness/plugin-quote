@@ -148,7 +148,7 @@ Là encore, le guide [acomptes et échéances](https://www.quotebuilder.co/blog/
 Les conditions générales de vente (CGV) ne se résument pas à un lien tout petit en bas de PDF. Points pratiques :
 
 - Avoir des **CGV à jour**, validées, versionnées (date / numéro de version)
-- Les rendre **accessibles** au moment de l’offre (lien, annexe PDF, page dans l’espace prospect)
+- Les rendre **accessibles** au moment de l’offre (lien vers vos CGV, annexe PDF jointe au devis)
 - Être capable de prouver que le client a pu en prendre connaissance **avant** acceptation
 - Éviter de coller 12 pages illisibles dans le corps du devis : un renvoi clair + annexe fonctionne souvent mieux pour la lisibilité commerciale
 
@@ -276,7 +276,7 @@ Il n’existe pas une liste unique « tamponnée » identique pour tous les cas.
 « Valide » au sens commercial et « conforme » au sens juridique ne sont pas la même chose. Opérationnellement, un devis sans identification claire de l’émetteur est fragile. Ajoutez le SIRET (et le reste de l’identité) dans le template.
 
 ### 3. Dois-je joindre les CGV à chaque devis ?
-Souvent oui, ou au minimum les rendre accessibles de façon prouvable au moment de l’offre (lien versionné, annexe, espace prospect). Demandez à votre avocat ce qui est adapté à votre process d’acceptation.
+Souvent oui, ou au minimum les rendre accessibles de façon prouvable au moment de l’offre (lien versionné, annexe jointe au devis). Demandez à votre avocat ce qui est adapté à votre process d’acceptation.
 
 ### 4. B2B et B2C, mêmes mentions ?
 Pas forcément. Le B2C ajoute souvent des contraintes de protection du consommateur. Si vous avez les deux clientèles, séparez les templates.

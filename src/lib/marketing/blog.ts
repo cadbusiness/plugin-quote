@@ -123,6 +123,7 @@ export const BLOG_TOOL_ROI_SALON = "/outils/calculateur-roi-salon-professionnel-
 export const BLOG_TOOL_FRAIS_DEPLACEMENT = "/outils/calculateur-frais-deplacement-devis";
 export const BLOG_TOOL_MOTIFS_PERDUS = "/outils/analyseur-motifs-devis-perdus";
 export const BLOG_TOOL_REVISION_PRIX = "/outils/calculateur-revision-prix-devis";
+export const BLOG_TOOL_PENALITES_RETARD = "/outils/calculateur-penalites-retard-paiement";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -158,6 +159,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     47: "Quarante-sept",
     48: "Quarante-huit",
     49: "Quarante-neuf",
+    50: "Cinquante",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -458,9 +460,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Partie fixe, indices pondérés, seuil et plafond : le coefficient de révision, le prix révisé et l'effet de chaque indice sur votre devis.",
     tags: ["catalogue", "funnel"],
   },
+  {
+    href: BLOG_TOOL_PENALITES_RETARD,
+    title: "Calculateur de pénalités de retard de paiement",
+    text: "Facture payée en retard : échéance, jours de retard, pénalités au taux BCE + 10 points par semestre et indemnité de 40 €, avec un récapitulatif à copier.",
+    tags: ["relances", "catalogue"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "conditions-paiement-penalites-retard-devis-b2b",
+    path: "/blog/conditions-paiement-penalites-retard-devis-b2b",
+    title: "Conditions de paiement dans un devis B2B : délai, pénalités de retard et indemnité de 40 €",
+    description:
+      "Conditions de paiement entre professionnels : délai de 30 jours par défaut, 60 jours maximum ou 45 jours fin de mois, pénalités de retard au taux BCE majoré de 10 points (12,40 % au second semestre 2026), plancher de trois fois l'intérêt légal, indemnité forfaitaire de 40 €, escompte, et pourquoi tout cela s'écrit dès le devis. Avec un exemple chiffré, un calculateur et ce que QuoteBuilder permet, ou pas.",
+    publishedAt: "2026-10-20",
+    readingMinutes: 21,
+    tags: ["catalogue", "relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "revision-prix-indexation-devis-b2b",
     path: "/blog/revision-prix-indexation-devis-b2b",
