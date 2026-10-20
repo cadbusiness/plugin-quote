@@ -124,6 +124,7 @@ export const BLOG_TOOL_FRAIS_DEPLACEMENT = "/outils/calculateur-frais-deplacemen
 export const BLOG_TOOL_MOTIFS_PERDUS = "/outils/analyseur-motifs-devis-perdus";
 export const BLOG_TOOL_REVISION_PRIX = "/outils/calculateur-revision-prix-devis";
 export const BLOG_TOOL_PENALITES_RETARD = "/outils/calculateur-penalites-retard-paiement";
+export const BLOG_TOOL_RETENUE_GARANTIE = "/outils/calculateur-retenue-garantie";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -160,6 +161,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     48: "Quarante-huit",
     49: "Quarante-neuf",
     50: "Cinquante",
+    51: "Cinquante-et-un",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -466,9 +468,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Facture payée en retard : échéance, jours de retard, pénalités au taux BCE + 10 points par semestre et indemnité de 40 €, avec un récapitulatif à copier.",
     tags: ["relances", "catalogue"],
   },
+  {
+    href: BLOG_TOOL_RETENUE_GARANTIE,
+    title: "Calculateur de retenue de garantie",
+    text: "Montant, taux, base HT ou TTC et versements : la retenue, sa date de libération et ce qu'elle vous coûte face à une caution bancaire.",
+    tags: ["catalogue", "funnel"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "retenue-garantie-caution-devis-travaux-b2b",
+    path: "/blog/retenue-garantie-caution-devis-travaux-b2b",
+    title: "Retenue de garantie dans un devis de travaux B2B : 5 %, caution bancaire et libération à un an",
+    description:
+      "Retenue de garantie sur un marché de travaux : plafond de 5 % (loi du 16 juillet 1971), consignation obligatoire, caution bancaire à la place, libération un an après la réception, règles des marchés publics (5 %, ou 3 % pour une PME dans certains cas, remboursement sous 30 jours), calcul sur le HT ou le TTC, et ce qu'on écrit dans le devis. Avec un exemple chiffré, un calculateur et ce que QuoteBuilder permet, ou pas.",
+    publishedAt: "2026-10-20",
+    readingMinutes: 22,
+    tags: ["catalogue", "funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.funnelPublic,
+    pinned: false,
+  },
   {
     slug: "conditions-paiement-penalites-retard-devis-b2b",
     path: "/blog/conditions-paiement-penalites-retard-devis-b2b",
