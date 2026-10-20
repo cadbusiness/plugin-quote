@@ -5,6 +5,9 @@ import { SITE_URL } from "@/lib/marketing/site";
 
 /** Dates éditoriales hors articles (le blog passe par publishedAt). */
 const CONTENT_LASTMOD: Record<string, string> = {
+  "/blog/conditions-paiement-penalites-retard-devis-b2b": "2026-10-20",
+  "/secteurs/funnel-devis-cabinet-conseil": "2026-10-20",
+  "/outils/calculateur-penalites-retard-paiement": "2026-10-20",
   "/blog/revision-prix-indexation-devis-b2b": "2026-10-19",
   "/outils/calculateur-revision-prix-devis": "2026-10-19",
   "/blog/analyser-devis-perdus-motifs-perte-b2b": "2026-10-19",

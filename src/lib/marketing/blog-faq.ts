@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "conditions-paiement-penalites-retard-devis-b2b": [
+    {
+      q: "Quel est le délai de paiement maximum entre professionnels ?",
+      a: "60 jours après la date d'émission de la facture, ou 45 jours fin de mois si c'est écrit au contrat et que ce n'est pas abusif pour le fournisseur. Sans accord, le délai est de 30 jours après la réception des marchandises ou l'exécution de la prestation. Certains secteurs, comme le transport routier de marchandises, ont des délais spécifiques.",
+    },
+    {
+      q: "Quel est le taux des pénalités de retard au second semestre 2026 ?",
+      a: "12,40 %, si vos conditions ne prévoient pas d'autre taux : le taux de refinancement de la BCE en vigueur au 1er juillet 2026, 2,40 %, majoré de 10 points. Au premier semestre 2026, il était de 12,15 %.",
+    },
+    {
+      q: "Peut-on prévoir un taux de pénalités plus bas ?",
+      a: "Oui, dans vos CGV ou au contrat, mais pas en dessous de trois fois le taux de l'intérêt légal. Au second semestre 2026, l'intérêt légal entre professionnels est de 2,75 %, donc le plancher est de 8,25 %.",
+    },
+    {
+      q: "Comment calculer les pénalités de retard ?",
+      a: "Somme due × taux annuel × nombre de jours de retard ÷ 365, à partir du lendemain de l'échéance. Si le retard couvre deux semestres, chaque jour prend le taux de son semestre. Le calculateur de pénalités fait ce calcul avec vos dates.",
+    },
+    {
+      q: "Faut-il envoyer une mise en demeure pour réclamer des pénalités ?",
+      a: "Non. Entre professionnels, les pénalités sont exigibles sans qu'un rappel soit nécessaire. En pratique, il faut quand même les réclamer par écrit, avec le calcul, puisque le client ne les paiera pas de lui-même.",
+    },
+    {
+      q: "L'indemnité de 40 € est-elle due par facture ou par client ?",
+      a: "Par facture payée en retard, une seule fois, même si la facture a été payée en partie. Elle n'est pas soumise à la TVA. Si vos frais de recouvrement réels sont plus élevés, une indemnisation complémentaire peut être demandée sur justificatifs.",
+    },
+    {
+      q: "Les conditions de paiement doivent-elles figurer sur le devis ?",
+      a: "Le délai de paiement, les pénalités et l'indemnité doivent figurer dans vos CGV et sur la facture. Les reprendre dans le devis, en un bloc court, permet au client de les voir avant de s'engager, et de signaler tout de suite s'il a ses propres conditions d'achat.",
+    },
+    {
+      q: "Comment se calcule un délai de 45 jours fin de mois ?",
+      a: "Deux méthodes sont admises : fin du mois d'émission de la facture, puis 45 jours ; ou 45 jours après la facture, puis fin du mois. Pour une facture du 1er août 2026, cela donne le 15 octobre ou le 30 septembre. Écrivez la méthode dans vos conditions.",
+    },
+    {
+      q: "QuoteBuilder calcule-t-il les pénalités de retard ?",
+      a: "Non. QuoteBuilder ne produit pas de factures, n'encaisse rien et ne calcule pas de pénalités. Il sert en amont : poser les bonnes questions dans le funnel, annoncer vos conditions dans la description des produits, l'email de confirmation ou vos réponses, et garder ce qui a été convenu en note interne.",
+    },
+    {
+      q: "Le récapitulatif PDF de QuoteBuilder peut-il porter mes conditions de paiement ?",
+      a: "Non. Le récapitulatif PDF montre la configuration et une fourchette indicative, avec un pied de page fixe, « Document indicatif, non contractuel. ». Vos conditions de paiement vont dans votre devis final et dans vos CGV.",
+    },
+  ],
   "revision-prix-indexation-devis-b2b": [
     {
       q: "Qu'est-ce qu'une clause de révision de prix ?",
@@ -1306,7 +1348,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Dois-je joindre les CGV à chaque devis ?",
-      a: "Souvent oui, ou au minimum les rendre accessibles de façon prouvable au moment de l’offre (lien versionné, annexe, espace prospect). Demandez à votre avocat ce qui est adapté à votre process d’acceptation.",
+      a: "Souvent oui, ou au minimum les rendre accessibles de façon prouvable au moment de l’offre (lien versionné, annexe jointe au devis). Demandez à votre avocat ce qui est adapté à votre process d’acceptation.",
     },
     {
       q: "B2B et B2C, mêmes mentions ?",

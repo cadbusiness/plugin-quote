@@ -45,7 +45,7 @@ for (const item of BLOG_FAQ[BLOG_SLUG] ?? []) {
   assert.doesNotMatch(item.a, EN_DASH);
 }
 
-assert.equal(BLOG_TOOLS.length, 49);
+assert.equal(BLOG_TOOLS.length, 50);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === TOOL_PATH));
 assert.deepEqual(
   BLOG_TOOLS.find((tool) => tool.href === TOOL_PATH)?.tags,
@@ -53,9 +53,9 @@ assert.deepEqual(
 );
 assert.equal(
   outilsHubIntro(),
-  "Quarante-neuf outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
+  "Cinquante outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
 );
-assert.equal(outilsHubIntro(49), outilsHubIntro());
+assert.equal(outilsHubIntro(50), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
 const paths = MARKETING_ROUTES.map((route) => route.path);
