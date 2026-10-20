@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "retenue-garantie-caution-devis-travaux-b2b": [
+    {
+      q: "Quel est le taux maximum d'une retenue de garantie ?",
+      a: "5 % sur un marché de travaux privé, en application de la loi n° 71-584 du 16 juillet 1971. Sur un marché public, 5 % du montant initial du marché, augmenté des modifications, et 3 % quand le titulaire est une PME et que l'acheteur est l'État, certains établissements publics de l'État ou une collectivité dont les dépenses de fonctionnement dépassent 60 millions d'euros.",
+    },
+    {
+      q: "La retenue de garantie est-elle obligatoire ?",
+      a: "Non. Sur un marché privé, elle n'existe que si le contrat la prévoit. Sur un marché public, l'acheteur est libre de la prévoir ou non dans les clauses financières du marché. La garantie de parfait achèvement, elle, ne dépend pas d'une clause : elle est prévue par l'article 1792-6 du Code civil.",
+    },
+    {
+      q: "La retenue de garantie se calcule-t-elle sur le HT ou sur le TTC ?",
+      a: "La loi parle de 5 % du montant des acomptes, sans préciser HT ou TTC. C'est le contrat qui le fixe. Sur un marché à 20 % de TVA, une retenue de 5 % du TTC représente 6 % du montant HT.",
+    },
+    {
+      q: "Quand la retenue de garantie doit-elle être libérée ?",
+      a: "Sur un marché privé, un an après la date de réception, avec ou sans réserves, sauf si le maître de l'ouvrage a notifié par lettre recommandée une opposition motivée par l'inexécution de vos obligations. Sur un marché public, dans les 30 jours qui suivent la fin du délai de garantie, ou 30 jours après la levée des réserves notifiées pendant ce délai.",
+    },
+    {
+      q: "Peut-on remplacer la retenue de garantie par une caution bancaire ?",
+      a: "Oui. Sur un marché privé, la retenue n'est pas pratiquée si l'entreprise fournit, pour le même montant, une caution personnelle et solidaire d'une banque, d'un établissement financier habilité ou d'une société de caution mutuelle. Sur un marché public, le titulaire peut la remplacer par une garantie à première demande ou, si l'acheteur ne s'y oppose pas, par une caution personnelle et solidaire.",
+    },
+    {
+      q: "Que faire si le client prévoit une retenue de 10 % ?",
+      a: "Sur un marché de travaux privé, c'est au-dessus du plafond de 5 %, et la loi déclare nulles les clauses qui font échec à ses règles. Demandez que le taux soit ramené à 5 % au plus avant de signer, et faites relire la clause par votre conseil.",
+    },
+    {
+      q: "Le client peut-il garder la retenue sur son compte ?",
+      a: "Pas sur un marché privé : le maître de l'ouvrage doit consigner une somme égale à la retenue entre les mains d'un consignataire accepté par les deux parties ou, à défaut, désigné par le président du tribunal judiciaire ou du tribunal de commerce.",
+    },
+    {
+      q: "Un sous-traitant peut-il subir une retenue de garantie ?",
+      a: "Sur un chantier privé, oui : la loi de 1971 s'applique aux conventions de sous-traitance, avec les mêmes règles. Sur un marché public, Service Public Entreprendre précise que la retenue s'applique au titulaire du marché, pas au sous-traitant.",
+    },
+    {
+      q: "QuoteBuilder calcule-t-il la retenue de garantie ?",
+      a: "Non. QuoteBuilder ne produit pas de factures, n'encaisse rien et ne connaît pas la date de réception de vos chantiers. Il sert en amont : poser la question de la retenue dans le funnel, annoncer vos conditions dans la description des produits, l'email de confirmation ou vos réponses, et garder ce qui a été convenu en note interne.",
+    },
+    {
+      q: "Le récapitulatif PDF de QuoteBuilder peut-il mentionner la retenue de garantie ?",
+      a: "Non. Le récapitulatif PDF montre la configuration et une fourchette indicative, avec un pied de page fixe, « Document indicatif, non contractuel. ». La clause de retenue de garantie va dans votre devis final et dans votre marché.",
+    },
+  ],
   "conditions-paiement-penalites-retard-devis-b2b": [
     {
       q: "Quel est le délai de paiement maximum entre professionnels ?",

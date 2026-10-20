@@ -67,6 +67,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Retenue de garantie dans un devis de travaux B2B : 5 %, caution bancaire et libération à un an : https://www.quotebuilder.co/blog/retenue-garantie-caution-devis-travaux-b2b
 - Conditions de paiement dans un devis B2B : délai, pénalités de retard et indemnité de 40 € : https://www.quotebuilder.co/blog/conditions-paiement-penalites-retard-devis-b2b
 - Révision de prix dans un devis B2B : choisir l'indice, écrire la formule et l'annoncer dès la demande : https://www.quotebuilder.co/blog/revision-prix-indexation-devis-b2b
 - Devis perdus : noter le motif, compter les pertes et corriger ce qui peut l'être : https://www.quotebuilder.co/blog/analyser-devis-perdus-motifs-perte-b2b
@@ -178,6 +179,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Analyseur des motifs de devis perdus : https://www.quotebuilder.co/outils/analyseur-motifs-devis-perdus
 - Calculateur de révision de prix : https://www.quotebuilder.co/outils/calculateur-revision-prix-devis
 - Calculateur de pénalités de retard de paiement : https://www.quotebuilder.co/outils/calculateur-penalites-retard-paiement
+- Calculateur de retenue de garantie : https://www.quotebuilder.co/outils/calculateur-retenue-garantie
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 

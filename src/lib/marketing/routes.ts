@@ -143,6 +143,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   {
+    path: "/blog/retenue-garantie-caution-devis-travaux-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-20",
+  },
+  {
     path: "/blog/conditions-paiement-penalites-retard-devis-b2b",
     changeFrequency: "monthly",
     priority: 0.8,
@@ -589,6 +595,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/calculateur-penalites-retard-paiement",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-20",
+  },
+  {
+    path: "/outils/calculateur-retenue-garantie",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-20",
