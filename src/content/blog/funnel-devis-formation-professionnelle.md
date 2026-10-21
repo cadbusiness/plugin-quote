@@ -166,7 +166,7 @@ Hypothèse d'illustration, sans chiffre de référence :
 
 ## Formation, location d'espaces ou studio : quel template ?
 
-Les trois templates de la famille Services professionnels partagent la même logique de questions. Choisissez Formation si vous vendez des actions de formation. Si votre activité principale est de louer des salles de formation ou de réunion, le template « Location d'espaces » pose les questions de jauge, de durée et de date. Si vous produisez aussi des supports (impression, vidéo), regardez la [landing imprimerie et signalétique](https://www.quotebuilder.co/secteurs/funnel-devis-imprimerie-signaletique), construite sur le template Studio & imprimerie.
+Les trois templates de la famille Services professionnels ne posent pas tous les mêmes questions. Choisissez Formation si vous vendez des actions de formation. Si votre activité principale est de louer des salles de formation ou de réunion, partez du template « Location d'espaces » : il demande le type d'espace, la durée et une date en texte libre, mais pas le nombre de personnes, à ajouter vous-même (voir la [landing location d'espaces](https://www.quotebuilder.co/secteurs/funnel-devis-location-espaces)). Si vous produisez aussi des supports (impression, vidéo), regardez la [landing imprimerie et signalétique](https://www.quotebuilder.co/secteurs/funnel-devis-imprimerie-signaletique), construite sur le template Studio & imprimerie.
 
 ## Erreurs fréquentes
 

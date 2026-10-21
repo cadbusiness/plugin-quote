@@ -65,7 +65,7 @@ for (const slug of [RGPD_SLUG, WEBHOOK_SLUG]) {
   }
 }
 
-assert.equal(BLOG_TOOLS.length, 51);
+assert.equal(BLOG_TOOLS.length, 52);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === RGPD_TOOL));
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === SIGNATURE_TOOL));
 assert.deepEqual(BLOG_TOOLS.find((tool) => tool.href === RGPD_TOOL)?.tags, ["funnel", "integrations"]);
@@ -73,9 +73,9 @@ assert.deepEqual(BLOG_TOOLS.find((tool) => tool.href === SIGNATURE_TOOL)?.tags, 
 for (const tool of BLOG_TOOLS) {
   assert.ok(tool.tags.every((tag) => BLOG_TAG_DEFS.some((def) => def.slug === tag)));
 }
-assert.equal(outilsHubIntro(), "Cinquante-et-un outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(), "Cinquante-deux outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
 assert.equal(outilsHubIntro(36), "Trente-six outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(51), outilsHubIntro());
+assert.equal(outilsHubIntro(52), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
 const paths = MARKETING_ROUTES.map((route) => route.path);
@@ -84,7 +84,8 @@ for (const path of DAY_PATHS) {
   assert.equal(MARKETING_ROUTES.find((route) => route.path === path)?.lastModified, "2026-10-09");
 }
 for (const path of CATCHUP_PATHS) {
-  assert.equal(MARKETING_ROUTES.find((route) => route.path === path)?.lastModified, "2026-10-07");
+  const expected = path === `/secteurs/${FORMATION_SLUG}` ? "2026-10-21" : "2026-10-07";
+  assert.equal(MARKETING_ROUTES.find((route) => route.path === path)?.lastModified, expected);
 }
 
 const sitemapSrc = readFileSync(join(process.cwd(), "src/app/sitemap.ts"), "utf8");
@@ -96,10 +97,11 @@ for (const path of DAY_PATHS) {
   assert.equal(entry?.lastModified, "2026-10-09");
 }
 for (const path of CATCHUP_PATHS) {
-  assert.match(sitemapSrc, new RegExp(`"${path}": "2026-10-07"`));
+  const expected = path === `/secteurs/${FORMATION_SLUG}` ? "2026-10-21" : "2026-10-07";
+  assert.match(sitemapSrc, new RegExp(`"${path}": "${expected}"`));
   const entry = sitemap().find((item) => item.url === `https://www.quotebuilder.co${path}`);
   assert.ok(entry, `sitemap missing ${path}`);
-  assert.equal(entry?.lastModified, "2026-10-07");
+  assert.equal(entry?.lastModified, expected);
 }
 
 const llms = readFileSync(join(process.cwd(), "public/llms.txt"), "utf8");
@@ -211,7 +213,7 @@ function assertNoDashes(text: string, label: string) {
   assert.match(sectorBody, /30 points/);
   assert.match(sectorBody, /10 Mo/);
   assertNoDashes(sectorRaw, "formation md");
-  assert.equal(sectorBody.split(/\s+/).filter(Boolean).length, 3166);
+  assert.equal(sectorBody.split(/\s+/).filter(Boolean).length, 3186);
   assert.equal(faqQuestionCount(sectorBody), 10);
   assertInternalLinks(sectorBody, "formation");
 }

@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "annulation-commande-devis-b2b-arrhes-dedit-clause-penale": [
+    {
+      q: "Un client professionnel peut-il annuler une commande signée ?",
+      a: "Par principe, non : un contrat signé l'engage, et il ne peut être révoqué que d'un commun accord ou pour une cause prévue par la loi (articles 1103 et 1193 du Code civil). En pratique, il le peut si le contrat lui en donne la faculté : arrhes, clause de dédit ou barème d'annulation. Sinon, il doit réparer votre préjudice.",
+    },
+    {
+      q: "Quelle différence entre un acompte et des arrhes ?",
+      a: "Les arrhes permettent à chaque partie de se dédire : le client en les perdant, le prestataire en restituant le double (article 1590 du Code civil). L'acompte est un premier paiement sur un engagement ferme : il ne permet pas d'annuler, il s'impute sur ce qui est dû.",
+    },
+    {
+      q: "Entre professionnels, une somme versée sans précision vaut-elle arrhes ?",
+      a: "La présomption d'arrhes de l'article L214-1 du Code de la consommation ne vise que les contrats entre un professionnel et un consommateur. Entre professionnels, c'est le contrat qui qualifie la somme, et en cas de doute le juge cherche l'intention des parties. Écrivez « acompte » ou « arrhes » en toutes lettres.",
+    },
+    {
+      q: "Peut-on garder tout l'acompte si le client annule ?",
+      a: "Si le contrat est ferme et que le client annule, l'acompte s'impute sur ce qui vous est dû : l'indemnité du barème si vous en avez un, ou votre préjudice. Si l'indemnité est inférieure à l'acompte, le surplus se rembourse, sauf clause contraire.",
+    },
+    {
+      q: "Le juge peut-il réduire des frais d'annulation ?",
+      a: "Oui, si la clause est une clause pénale et que la pénalité est manifestement excessive (article 1231-5 du Code civil). Une clause de dédit, qui fixe le prix d'une faculté d'annuler, n'est en principe pas modérable. La qualification dépend de la rédaction.",
+    },
+    {
+      q: "Faut-il une mise en demeure pour réclamer une clause pénale ?",
+      a: "Oui, sauf inexécution définitive : l'article 1231-5 prévoit que la pénalité n'est encourue que lorsque le débiteur est mis en demeure. Une annulation ferme et écrite peut constituer une inexécution définitive, mais une mise en demeure reste la voie la plus sûre.",
+    },
+    {
+      q: "Que se passe-t-il si c'est le prestataire qui annule ?",
+      a: "Avec des arrhes, il restitue le double. Avec un acompte, il le rembourse, et le client peut demander l'exécution ou des dommages et intérêts. Le barème d'annulation, écrit pour le client, ne joue pas en sa faveur.",
+    },
+    {
+      q: "Le client d'un marché de travaux peut-il résilier avant le chantier ?",
+      a: "Pour un marché à forfait, oui : l'article 1794 du Code civil lui permet de résilier par sa seule volonté, en dédommageant l'entrepreneur de ses dépenses, de ses travaux et de ce qu'il aurait pu gagner. La Cour de cassation exige que le caractère forfaitaire du marché soit constaté.",
+    },
+    {
+      q: "Un report de date décidé par le client est-il un cas de force majeure ?",
+      a: "En principe, non. L'article 1218 du Code civil vise un événement qui échappe au contrôle du débiteur, imprévisible lors de la conclusion du contrat et dont les effets ne peuvent être évités. Une décision interne n'en fait pas partie. Prévoyez plutôt une clause de report.",
+    },
+    {
+      q: "QuoteBuilder calcule-t-il les frais d'annulation ?",
+      a: "Non. QuoteBuilder recueille et suit la demande de devis, sans encaissement, facture ni signature. Vous pouvez annoncer votre barème dans la description de vos produits, noter l'annulation dans une note interne et passer le dossier en Perdu. Le calcul se fait avec le calculateur de frais d'annulation, en local.",
+    },
+  ],
   "retenue-garantie-caution-devis-travaux-b2b": [
     {
       q: "Quel est le taux maximum d'une retenue de garantie ?",

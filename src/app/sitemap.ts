@@ -5,6 +5,9 @@ import { SITE_URL } from "@/lib/marketing/site";
 
 /** Dates éditoriales hors articles (le blog passe par publishedAt). */
 const CONTENT_LASTMOD: Record<string, string> = {
+  "/blog/annulation-commande-devis-b2b-arrhes-dedit-clause-penale": "2026-10-21",
+  "/secteurs/funnel-devis-location-espaces": "2026-10-21",
+  "/outils/calculateur-frais-annulation-commande": "2026-10-21",
   "/blog/retenue-garantie-caution-devis-travaux-b2b": "2026-10-20",
   "/outils/calculateur-retenue-garantie": "2026-10-20",
   "/blog/conditions-paiement-penalites-retard-devis-b2b": "2026-10-20",
@@ -43,7 +46,7 @@ const CONTENT_LASTMOD: Record<string, string> = {
   "/secteurs/funnel-devis-laboratoire-faconnage-cosmetique": "2026-10-09",
   "/outils/generateur-mention-rgpd-formulaire-devis": "2026-10-09",
   "/blog/webhook-demande-devis-crm-signature-hmac": "2026-10-07",
-  "/secteurs/funnel-devis-formation-professionnelle": "2026-10-07",
+  "/secteurs/funnel-devis-formation-professionnelle": "2026-10-21",
   "/outils/verificateur-signature-webhook-devis": "2026-10-07",
   "/blog/mesurer-funnel-devis-b2b-entonnoir-statistiques": "2026-10-07",
   "/secteurs/funnel-devis-imprimerie-signaletique": "2026-10-07",
