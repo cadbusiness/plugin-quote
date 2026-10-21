@@ -125,6 +125,7 @@ export const BLOG_TOOL_MOTIFS_PERDUS = "/outils/analyseur-motifs-devis-perdus";
 export const BLOG_TOOL_REVISION_PRIX = "/outils/calculateur-revision-prix-devis";
 export const BLOG_TOOL_PENALITES_RETARD = "/outils/calculateur-penalites-retard-paiement";
 export const BLOG_TOOL_RETENUE_GARANTIE = "/outils/calculateur-retenue-garantie";
+export const BLOG_TOOL_FRAIS_ANNULATION = "/outils/calculateur-frais-annulation-commande";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -162,6 +163,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     49: "Quarante-neuf",
     50: "Cinquante",
     51: "Cinquante-et-un",
+    52: "Cinquante-deux",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -474,9 +476,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Montant, taux, base HT ou TTC et versements : la retenue, sa date de libération et ce qu'elle vous coûte face à une caution bancaire.",
     tags: ["catalogue", "funnel"],
   },
+  {
+    href: BLOG_TOOL_FRAIS_ANNULATION,
+    title: "Calculateur de frais d'annulation",
+    text: "Commande annulée avant le début : palier du barème, indemnité, acompte ou arrhes à garder ou à rendre, solde et perte réelle, avec un récapitulatif à copier.",
+    tags: ["catalogue", "relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "annulation-commande-devis-b2b-arrhes-dedit-clause-penale",
+    path: "/blog/annulation-commande-devis-b2b-arrhes-dedit-clause-penale",
+    title: "Annulation d'une commande B2B après un devis signé : arrhes, acompte, dédit et clause pénale",
+    description:
+      "Un client professionnel annule une commande signée : ce que vous pouvez garder selon que la somme versée est un acompte ou des arrhes (article 1590 du Code civil), la différence entre clause de dédit et clause pénale (article 1231-5), le cas du marché de travaux à forfait (article 1794), la force majeure, un barème d'annulation qui tient, un exemple chiffré et ce que QuoteBuilder permet, ou pas.",
+    publishedAt: "2026-10-21",
+    readingMinutes: 22,
+    tags: ["catalogue", "funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "retenue-garantie-caution-devis-travaux-b2b",
     path: "/blog/retenue-garantie-caution-devis-travaux-b2b",

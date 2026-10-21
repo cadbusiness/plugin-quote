@@ -31,6 +31,7 @@ const ALL_TEMPLATES = [
   { href: "/secteurs/funnel-devis-geometre-expert-bornage", label: "Géomètre-expert et topographie" },
   { href: "/secteurs/funnel-devis-agence-web-esn", label: "Agence web et ESN" },
   { href: "/secteurs/funnel-devis-cabinet-conseil", label: "Cabinet de conseil" },
+  { href: "/secteurs/funnel-devis-location-espaces", label: "Location de salles et d'espaces" },
   { href: "/secteurs/funnel-devis-location-materiel-btp", label: "Location de matériel BTP" },
   { href: "/secteurs/funnel-devis-usinage-sous-traitance-pieces", label: "Usinage et sous-traitance" },
   { href: "/secteurs/funnel-devis-paysagiste-amenagement-jardin", label: "Paysagiste et aménagement de jardin" },

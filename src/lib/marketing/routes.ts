@@ -101,7 +101,7 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     path: "/secteurs/funnel-devis-formation-professionnelle",
     changeFrequency: "monthly",
     priority: 0.8,
-    lastModified: "2026-10-07",
+    lastModified: "2026-10-21",
   },
   {
     path: "/secteurs/funnel-devis-architecte-bet",
@@ -139,9 +139,21 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.8,
     lastModified: "2026-10-20",
   },
+  {
+    path: "/secteurs/funnel-devis-location-espaces",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-21",
+  },
   { path: "/tarifs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  {
+    path: "/blog/annulation-commande-devis-b2b-arrhes-dedit-clause-penale",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-21",
+  },
   {
     path: "/blog/retenue-garantie-caution-devis-travaux-b2b",
     changeFrequency: "monthly",
@@ -604,6 +616,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-20",
+  },
+  {
+    path: "/outils/calculateur-frais-annulation-commande",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-21",
   },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },
