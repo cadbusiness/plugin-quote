@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "delai-livraison-penalites-retard-execution-devis-b2b": [
+    {
+      q: "Un délai de livraison écrit dans un devis est-il un engagement ?",
+      a: "Oui, le délai fait partie du contrat une fois le devis accepté. Mais tout dépend de sa rédaction : un délai « indicatif » engage moins qu'un délai avec un point de départ, qui engage moins qu'une date ferme. Un retard très important peut être reproché même sur un délai indicatif.",
+    },
+    {
+      q: "Le client peut-il appliquer des pénalités de retard sans clause dans le devis ?",
+      a: "Pas sous forme de pénalité forfaitaire. Sans clause, il peut suspendre son propre paiement, demander une réduction du prix, la résolution ou des dommages et intérêts (article 1217 du Code civil), mais il doit en principe mettre en demeure (article 1231) et prouver son préjudice.",
+    },
+    {
+      q: "Quel taux de pénalité de retard prévoir entre professionnels ?",
+      a: "Il n'y a pas de taux légal. Les CCAG publics servent de repère : 1/3000 par jour pour les travaux, 1/1000 par jour de la valeur en retard pour les fournitures et services, avec un plafond de 10 % et une exonération sous 1 000 €. Partez du préjudice réaliste d'un jour de retard pour fixer le vôtre.",
+    },
+    {
+      q: "Faut-il plafonner les pénalités de retard ?",
+      a: "C'est fortement conseillé. Sans plafond, la pénalité peut dépasser la marge ou le prix, et devenir manifestement excessive. Avec un plafond, prévoyez ce qui se passe au-delà : mise en demeure, puis résolution possible.",
+    },
+    {
+      q: "Le juge peut-il réduire une pénalité de retard ?",
+      a: "Oui. Une pénalité de retard est une clause pénale : l'article 1231-5 du Code civil permet au juge de la modérer si elle est manifestement excessive, ou de l'augmenter si elle est dérisoire, et de la diminuer en cas d'exécution partielle. Une clause qui interdit cette réduction est réputée non écrite.",
+    },
+    {
+      q: "Faut-il une mise en demeure pour appliquer des pénalités de retard ?",
+      a: "En principe, oui : sauf inexécution définitive, la pénalité n'est encourue que lorsque le débiteur est mis en demeure (article 1231-5). Beaucoup de clauses prévoient une application « de plein droit, par la seule échéance du terme » ; dans le doute, un écrit daté dès le dépassement de la date reste la meilleure protection.",
+    },
+    {
+      q: "Les jours de retard se comptent-ils en jours calendaires ou ouvrés ?",
+      a: "Ce que dit votre contrat. À défaut de précision, la lecture la plus courante est le jour calendaire. Le CCAG Travaux, par exemple, compte les délais en jours calendaires et ne déduit ni samedis, ni dimanches, ni jours fériés pour le calcul des pénalités.",
+    },
+    {
+      q: "Un retard causé par le client compte-t-il ?",
+      a: "Non, s'il est établi. L'article 1610 du Code civil vise le retard qui « ne vient que du fait du vendeur ». Écrivez dans le devis que tout retard du client (validation des plans, acompte, accès au site) prolonge le délai d'autant, et gardez la trace des dates.",
+    },
+    {
+      q: "Le retard d'un fournisseur de matière est-il un cas de force majeure ?",
+      a: "En général, non. La force majeure suppose un événement qui échappe au contrôle du débiteur, imprévisible lors de la conclusion du contrat et dont les effets ne peuvent pas être évités (article 1218 du Code civil). Si vous voulez couvrir ce risque, prévoyez-le comme une cause de prolongation négociée.",
+    },
+    {
+      q: "QuoteBuilder suit-il les délais de livraison et calcule-t-il les pénalités ?",
+      a: "Non. QuoteBuilder recueille et suit la demande de devis jusqu'à la décision. Le dossier n'a pas de champ date de livraison, il n'y a pas de planning ni de statut « En retard », et aucun calcul de pénalités. Vous pouvez demander la date impérative dans le funnel, la noter dans une note interne, et faire le calcul avec le calculateur de pénalités de retard de livraison.",
+    }
+  ],
   "annulation-commande-devis-b2b-arrhes-dedit-clause-penale": [
     {
       q: "Un client professionnel peut-il annuler une commande signée ?",

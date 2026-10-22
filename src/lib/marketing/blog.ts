@@ -126,6 +126,7 @@ export const BLOG_TOOL_REVISION_PRIX = "/outils/calculateur-revision-prix-devis"
 export const BLOG_TOOL_PENALITES_RETARD = "/outils/calculateur-penalites-retard-paiement";
 export const BLOG_TOOL_RETENUE_GARANTIE = "/outils/calculateur-retenue-garantie";
 export const BLOG_TOOL_FRAIS_ANNULATION = "/outils/calculateur-frais-annulation-commande";
+export const BLOG_TOOL_PENALITES_RETARD_LIVRAISON = "/outils/calculateur-penalites-retard-livraison";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -164,6 +165,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     50: "Cinquante",
     51: "Cinquante-et-un",
     52: "Cinquante-deux",
+    53: "Cinquante-trois",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -482,9 +484,28 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Commande annulée avant le début : palier du barème, indemnité, acompte ou arrhes à garder ou à rendre, solde et perte réelle, avec un récapitulatif à copier.",
     tags: ["catalogue", "relances"],
   },
+  {
+    href: BLOG_TOOL_PENALITES_RETARD_LIVRAISON,
+    title: "Calculateur de pénalités de retard de livraison",
+    text: "Livraison en retard : jours pénalisés après franchise, pénalité par jour, plafond, montant dû et part de la commande, avec un récapitulatif à copier.",
+    tags: ["catalogue", "relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "delai-livraison-penalites-retard-execution-devis-b2b",
+    path: "/blog/delai-livraison-penalites-retard-execution-devis-b2b",
+    title: "Délai de livraison et pénalités de retard dans un devis B2B : date, franchise, taux et plafond",
+    description:
+      "Votre devis promet un délai et la livraison arrive en retard : ce que dit le Code civil (délivrance au temps convenu, articles 1610 et 1611, sanctions de l'article 1217, mise en demeure), pourquoi une pénalité de retard est une clause pénale (article 1231-5), les repères des CCAG publics (1/3000, 1/1000, plafond de 10 %, seuil de 1 000 €), comment écrire une clause qui tient, un exemple chiffré et ce que QuoteBuilder permet, ou pas.",
+    publishedAt: "2026-10-22",
+    readingMinutes: 25,
+    tags: ["catalogue", "relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "annulation-commande-devis-b2b-arrhes-dedit-clause-penale",
     path: "/blog/annulation-commande-devis-b2b-arrhes-dedit-clause-penale",

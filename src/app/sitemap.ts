@@ -5,6 +5,10 @@ import { SITE_URL } from "@/lib/marketing/site";
 
 /** Dates éditoriales hors articles (le blog passe par publishedAt). */
 const CONTENT_LASTMOD: Record<string, string> = {
+  "/blog/delai-livraison-penalites-retard-execution-devis-b2b": "2026-10-22",
+  "/secteurs/funnel-devis-chapiteau-agence-evenementielle": "2026-10-22",
+  "/outils/calculateur-penalites-retard-livraison": "2026-10-22",
+  "/secteurs/funnel-devis-location-evenementiel": "2026-10-22",
   "/blog/annulation-commande-devis-b2b-arrhes-dedit-clause-penale": "2026-10-21",
   "/secteurs/funnel-devis-location-espaces": "2026-10-21",
   "/outils/calculateur-frais-annulation-commande": "2026-10-21",

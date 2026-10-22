@@ -20,7 +20,7 @@ const FAQ = [
   },
   {
     q: "Et la dispo temps réel ?",
-    a: "Idéal à moyen terme. Au démarrage, un brief riche + rappel rapide bat un configurateur déconnecté du planning. Branchez la sync quand le process commercial est stable.",
+    a: "QuoteBuilder ne connaît pas votre disponibilité : il n'a ni planning, ni stock, ni connexion à un logiciel de location. Un brief riche et un rappel rapide, puis une vérification dans votre outil de planning, restent la bonne méthode.",
   },
   {
     q: "B2B seulement ?",

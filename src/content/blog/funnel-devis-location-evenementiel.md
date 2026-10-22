@@ -59,7 +59,7 @@ Salon, mariage, fin d’année, festivals : la file explose. Sans score ni SLA, 
 |---|---|---|
 | Entrée | Texte libre | Étapes guidées (événement → dates → catégories → options → contact) |
 | Sortie | Mail à décrypter | Dossier : lieu, créneaux, listes, contraintes, score |
-| Priorisation | FIFO émotionnel | Hot / Warm / Cold selon urgence date + valeur + complétude |
+| Priorisation | FIFO émotionnel | Libellé Hot / Warm / Cold d'une formule fixe, qui ne lit pas la date ; le tri par urgence reste le vôtre |
 | Suivi | Mémoire du commercial | Autopilote + historique |
 | Prospect | Attend dans le flou | Voit un récap, peut compléter |
 
@@ -94,7 +94,7 @@ Ville / site, intérieur-extérieur, étages, horaires de livraison, besoin de n
 
 ### 4. Catégories matériel (multi-select)
 
-Sono, lumière, structure / tente, mobilier, audiovisuel, énergie, décor, autre. Puis sous-questions **conditionnelles** (ex. sono : puissance indicative ou effectif ; structure : surface couverte).
+Sono, lumière, structure / tente, mobilier, audiovisuel, énergie, décor, autre. Le parcours ne branche pas selon les réponses : les précisions (puissance indicative ou effectif pour la sono, surface couverte pour une structure) sont des questions posées à tout le monde, en facultatif.
 
 ### 5. Volumes et options humaines
 
@@ -122,7 +122,7 @@ Le second se score, s’assigne, se compare au planning. Le premier déclenche u
 
 ## Scoring location événementielle (grille simple)
 
-Inspirez-vous de la [grille score devis B2B](/blog/score-demande-devis-b2b) et adaptez :
+Cette grille sert à votre propre tri, à la main : le score de QuoteBuilder vient d'une formule fixe qui ne se configure pas et ne lit pas la date de l'événement (voir la [grille score devis B2B](/blog/score-demande-devis-b2b)) :
 
 | Critère | Signaux Hot | Signaux Cold |
 |---|---|---|
@@ -138,7 +138,7 @@ Playbooks :
 - **Warm** : mail récap + créneau call le jour même.
 - **Cold** : séquence courte de clarification, pas 40 minutes de chiffrage inventé.
 
-Côté vendeur, ces scores apparaissent dans la file Demandes. Vous filtrez Hot (événement proche + brief riche) sans ouvrir vingt mails.
+Côté vendeur, chaque dossier affiche un libellé Hot, Warm ou Cold dans la file Demandes, mais il ne tient compte ni de la date de l'événement ni de votre grille : un séminaire à dix jours peut sortir Cold. La proximité de la date, c'est vous qui la lisez dans le dossier.
 
 ![Liste des demandes devis avec scores et fourchettes](/images/secteurs/funnel-devis-location-evenementiel/03-devis.png)
 *Liste `/devis` : dossiers scorés, fourchettes, tags, source, alertes de suivi. En location, l’alerte « sans réponse » sur un Hot à J-14 est une option stock qui part chez le concurrent.*
@@ -203,7 +203,7 @@ Parcours typique :
 4. Dossier dans le pipeline + notif équipe.
 5. Export / recopie vers l’outil de planning quand le deal est sérieux.
 
-Vous n’êtes pas obligé de synchroniser tout le stock le jour 1. Commencez par **qualités d’entrée + vitesse de réponse**. La sync fine vient après.
+QuoteBuilder ne se synchronise pas avec un logiciel de stock ou de planning : seul le catalogue produits peut venir de WooCommerce ou de Shopify. Commencez par la **qualité d'entrée** et la **vitesse de réponse**, et vérifiez la disponibilité dans votre outil avant de répondre.
 
 Une PME n’a rarement qu’un seul point d’entrée. Ads, organique, pages « location sono », pages « tente 10×10 » : chaque canal peut mériter son parcours. L’écran Funnels liste les parcours actifs, leur type, et le lien public.
 
@@ -263,7 +263,7 @@ Afficher des **indicatifs** ou des packs aide à filtrer. Les prix fermes dépen
 
 ### Et la dispo temps réel ?
 
-Idéal à moyen terme. Au démarrage, un brief riche + rappel rapide bat un configurateur déconnecté du planning. Branchez la sync quand le process commercial est stable.
+QuoteBuilder ne connaît pas votre disponibilité : il n'a ni planning, ni stock, ni connexion à un logiciel de location. Un brief riche et un rappel rapide, puis une vérification dans votre outil de planning, restent la bonne méthode.
 
 ### B2B seulement ?
 
