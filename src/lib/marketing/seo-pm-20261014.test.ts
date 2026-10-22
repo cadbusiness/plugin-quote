@@ -57,8 +57,8 @@ for (const item of BLOG_FAQ[BLOG_SLUG] ?? []) {
   assert.doesNotMatch(item.a, EN_DASH);
 }
 
-assert.equal(BLOG_POSTS.length, 63);
-assert.equal(BLOG_TOOLS.length, 53);
+assert.equal(BLOG_POSTS.length, 64);
+assert.equal(BLOG_TOOLS.length, 54);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === TOOL_PATH));
 assert.equal(
   BLOG_TOOLS.find((tool) => tool.href === TOOL_PATH)?.title,
@@ -72,9 +72,9 @@ assert.equal(
 for (const tool of BLOG_TOOLS) {
   assert.ok(tool.tags.every((tag) => BLOG_TAG_DEFS.some((def) => def.slug === tag)));
 }
-assert.ok(outilsHubIntro().startsWith("Cinquante-trois outils publics."));
-assert.equal(outilsHubIntro(), "Cinquante-trois outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(53), outilsHubIntro());
+assert.ok(outilsHubIntro().startsWith("Cinquante-quatre outils publics."));
+assert.equal(outilsHubIntro(), "Cinquante-quatre outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(54), outilsHubIntro());
 assert.equal(outilsHubIntro(42), "Quarante-deux outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 

@@ -155,6 +155,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   {
+    path: "/blog/clause-reserve-propriete-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-22",
+  },
+  {
     path: "/blog/delai-livraison-penalites-retard-execution-devis-b2b",
     changeFrequency: "monthly",
     priority: 0.8,
@@ -637,6 +643,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/calculateur-penalites-retard-livraison",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-22",
+  },
+  {
+    path: "/outils/calculateur-escompte-paiement-anticipe",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-22",

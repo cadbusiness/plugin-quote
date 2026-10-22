@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "clause-reserve-propriete-devis-b2b": [
+    {
+      q: "Une clause de réserve de propriété est-elle valable entre professionnels ?",
+      a: "Oui. Elle est prévue par les articles 2367 à 2372 du Code civil et produit ses effets en procédure collective selon l'article L624-16 du Code de commerce. Elle doit être convenue par écrit et, pour être opposable en cas de redressement ou de liquidation, acceptée au plus tard au moment de la livraison.",
+    },
+    {
+      q: "Suffit-il de mettre la clause sur la facture ?",
+      a: "Non. Une mention sur les seules factures ne prouve pas que l'acheteur a accepté la clause, surtout si la facture est envoyée après la livraison. Mettez-la dans le devis signé ou dans des conditions générales acceptées avant la commande.",
+    },
+    {
+      q: "Où placer la clause de réserve de propriété dans un devis ?",
+      a: "Le plus sûr est dans les conditions particulières du devis, juste au-dessus de la signature ou du bon pour accord. À défaut, dans des conditions générales jointes au devis et expressément acceptées par le client.",
+    },
+    {
+      q: "Quel est le délai pour revendiquer un bien en cas de redressement judiciaire ?",
+      a: "Trois mois à compter de la publication du jugement d'ouverture (article L624-9 du Code de commerce). La demande s'adresse d'abord au mandataire de justice. Au-delà de ce délai, la revendication n'est plus possible.",
+    },
+    {
+      q: "Que se passe-t-il si le client a revendu le bien sans me payer ?",
+      a: "Votre droit de propriété se reporte sur la créance de votre client contre son propre acheteur (article 2372 du Code civil). En procédure collective, vous pouvez revendiquer le prix qui n'a été ni payé ni compensé à la date du jugement (article L624-18 du Code de commerce).",
+    },
+    {
+      q: "La réserve de propriété fonctionne-t-elle pour une prestation de service ?",
+      a: "Non. Sans bien livré dont vous resteriez propriétaire, la clause n'a pas d'objet. Pour une prestation, protégez-vous par un acompte, un échéancier et des conditions de paiement claires.",
+    },
+    {
+      q: "Et si le bien a été installé chez le client ?",
+      a: "La clause reste utile si le bien peut être séparé sans dommage (article 2370 du Code civil), par exemple des rayonnages boulonnés ou une machine posée. Si le bien est scellé, collé ou intégré au bâtiment, la reprise devient difficile et la clause perd l'essentiel de son intérêt.",
+    },
+    {
+      q: "Qui supporte les risques pendant la réserve de propriété ?",
+      a: "Sans précision, les risques suivent la propriété (article 1196 du Code civil), donc restent chez le vendeur. La plupart des clauses prévoient que les risques passent au client dès la livraison, avec obligation d'assurer le bien. Écrivez-le.",
+    },
+    {
+      q: "Si je reprends le bien, puis-je garder l'acompte en plus ?",
+      a: "La valeur du bien repris s'impute sur ce qui reste dû. Si elle dépasse la dette restante, vous devez rendre la différence au client (article 2371 du Code civil). La clause garantit votre créance, pas davantage.",
+    },
+    {
+      q: "QuoteBuilder ajoute-t-il une clause de réserve de propriété à mes devis ?",
+      a: "Non. Le PDF de QuoteBuilder est un récapitulatif de configuration indicatif et non contractuel, sans section conditions générales. Il n'y a pas non plus de signature électronique. Votre clause va dans votre propre devis ou vos conditions générales, signés avec votre outil habituel.",
+    },
+  ],
   "delai-livraison-penalites-retard-execution-devis-b2b": [
     {
       q: "Un délai de livraison écrit dans un devis est-il un engagement ?",
