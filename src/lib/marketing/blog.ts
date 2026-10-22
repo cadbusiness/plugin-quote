@@ -127,6 +127,7 @@ export const BLOG_TOOL_PENALITES_RETARD = "/outils/calculateur-penalites-retard-
 export const BLOG_TOOL_RETENUE_GARANTIE = "/outils/calculateur-retenue-garantie";
 export const BLOG_TOOL_FRAIS_ANNULATION = "/outils/calculateur-frais-annulation-commande";
 export const BLOG_TOOL_PENALITES_RETARD_LIVRAISON = "/outils/calculateur-penalites-retard-livraison";
+export const BLOG_TOOL_ESCOMPTE = "/outils/calculateur-escompte-paiement-anticipe";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -166,6 +167,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     51: "Cinquante-et-un",
     52: "Cinquante-deux",
     53: "Cinquante-trois",
+    54: "Cinquante-quatre",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -490,9 +492,29 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Livraison en retard : jours pénalisés après franchise, pénalité par jour, plafond, montant dû et part de la commande, avec un récapitulatif à copier.",
     tags: ["catalogue", "relances"],
   },
+  {
+    href: BLOG_TOOL_ESCOMPTE,
+    title: "Calculateur d'escompte pour paiement anticipé",
+    text: "Escompte pour paiement anticipé : montant, taux annuel équivalent, comparaison avec votre coût de financement et mention à porter sur la facture.",
+    tags: ["catalogue", "relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "clause-reserve-propriete-devis-b2b",
+    path: "/blog/clause-reserve-propriete-devis-b2b",
+    title:
+      "Clause de réserve de propriété dans un devis B2B : quand elle protège, comment l'écrire, ce qu'elle ne couvre pas",
+    description:
+      "Vous livrez avant d'être payé : la clause de réserve de propriété vous garde propriétaire jusqu'au paiement complet. Ce que disent les articles 2367 à 2372 du Code civil et L624-16 du Code de commerce, pourquoi elle doit être acceptée par écrit au plus tard à la livraison (la facture ne suffit pas), le délai de trois mois en cas de procédure collective, les biens incorporés ou revendus, un exemple chiffré, un modèle de clause et ce que QuoteBuilder fait, ou pas.",
+    publishedAt: "2026-10-22",
+    readingMinutes: 15,
+    tags: ["catalogue", "relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "delai-livraison-penalites-retard-execution-devis-b2b",
     path: "/blog/delai-livraison-penalites-retard-execution-devis-b2b",
