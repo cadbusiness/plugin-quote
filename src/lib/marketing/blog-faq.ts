@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "garantie-vices-caches-sav-devis-b2b": [
+    {
+      q: "La garantie des vices cachés s'applique-t-elle entre professionnels ?",
+      a: "Oui. Les articles 1641 à 1649 du Code civil s'appliquent à toute vente, y compris entre entreprises. Seule la garantie légale de conformité du Code de la consommation est réservée aux ventes à des consommateurs.",
+    },
+    {
+      q: "Combien de temps un client professionnel a-t-il pour agir ?",
+      a: "Deux ans à compter de la découverte du vice (article 1648), sans dépasser vingt ans à compter de la vente (article 2232, chambre mixte du 21 juillet 2023). Le délai de deux ans peut être suspendu pendant une expertise judiciaire.",
+    },
+    {
+      q: "Une garantie contractuelle d'un an limite-t-elle ma responsabilité à un an ?",
+      a: "Non. Elle définit ce que vous offrez en plus. La garantie des vices cachés continue de jouer selon ses propres règles.",
+    },
+    {
+      q: "Puis-je exclure la garantie des vices cachés dans mes conditions de vente ?",
+      a: "L'article 1643 le permet pour un vendeur qui ignorait le vice. Un vendeur professionnel étant présumé connaître les vices, la clause est en principe inefficace face à un acheteur d'une autre spécialité. Elle peut jouer entre professionnels de la même spécialité, pour un vice décelable. Faites relire la clause.",
+    },
+    {
+      q: "Que doit préciser une garantie contractuelle ?",
+      a: "La durée et son point de départ, ce qui est couvert (pièces, main-d'œuvre, déplacement), les exclusions, la façon de signaler une panne, le délai d'intervention et ce qui se passe si la réparation est impossible.",
+    },
+    {
+      q: "Comment chiffrer le coût de la garantie ?",
+      a: "Multipliez le coût d'une intervention par le nombre d'interventions attendu par vente, calculé à partir de votre taux d'intervention annuel, de la durée et du nombre moyen d'interventions par dossier. Le [calculateur de coût de garantie et de SAV](https://www.quotebuilder.co/outils/calculateur-cout-garantie-sav-devis) le fait pour vous.",
+    },
+    {
+      q: "Faut-il facturer l'extension de garantie à part ?",
+      a: "C'est souvent plus clair : le client voit ce qu'il paie et peut choisir. Dans QuoteBuilder, une extension peut être un produit du catalogue avec son propre prix.",
+    },
+    {
+      q: "Mes travaux de pose sont-ils couverts par les mêmes règles ?",
+      a: "Pas forcément. La pose dans un bâtiment peut relever des garanties des constructeurs (parfait achèvement, bon fonctionnement, décennale), qui partent de la réception des travaux. Le régime dépend de ce que vous faites exactement.",
+    },
+    {
+      q: "QuoteBuilder affiche-t-il ma garantie au client ?",
+      a: "Oui, si vous ajoutez un document « Garantie » (lien et libellé) sur la fiche produit. Il apparaît sur les cartes produit de l'étape Personnalisation, dans le catalogue et sur la page boutique. Il n'apparaît pas sur le PDF.",
+    },
+    {
+      q: "QuoteBuilder gère-t-il le SAV ?",
+      a: "Non. Il n'y a ni ticket ni suivi d'intervention. Le dossier s'arrête au statut du pipeline, par exemple « Gagné ». Gardez votre outil de SAV habituel.",
+    },
+  ],
   "clause-reserve-propriete-devis-b2b": [
     {
       q: "Une clause de réserve de propriété est-elle valable entre professionnels ?",

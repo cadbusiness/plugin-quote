@@ -30,6 +30,7 @@ const ALL_TEMPLATES = [
   { href: "/secteurs/funnel-devis-architecte-bet", label: "Architecte / BET" },
   { href: "/secteurs/funnel-devis-geometre-expert-bornage", label: "Géomètre-expert et topographie" },
   { href: "/secteurs/funnel-devis-agence-web-esn", label: "Agence web et ESN" },
+  { href: "/secteurs/funnel-devis-logiciel-sur-mesure", label: "Logiciel sur mesure" },
   { href: "/secteurs/funnel-devis-cabinet-conseil", label: "Cabinet de conseil" },
   { href: "/secteurs/funnel-devis-location-espaces", label: "Location de salles et d'espaces" },
   { href: "/secteurs/funnel-devis-chapiteau-agence-evenementielle", label: "Chapiteaux et agence événementielle" },
