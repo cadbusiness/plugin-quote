@@ -161,6 +161,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   {
+    path: "/blog/frais-port-franco-incoterms-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-23",
+  },
+  {
     path: "/blog/garantie-vices-caches-sav-devis-b2b",
     changeFrequency: "monthly",
     priority: 0.8,
@@ -667,6 +673,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/calculateur-cout-garantie-sav-devis",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-23",
+  },
+  {
+    path: "/outils/calculateur-seuil-franco-port",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-23",

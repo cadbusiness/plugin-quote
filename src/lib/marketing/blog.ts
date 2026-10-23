@@ -129,6 +129,7 @@ export const BLOG_TOOL_FRAIS_ANNULATION = "/outils/calculateur-frais-annulation-
 export const BLOG_TOOL_PENALITES_RETARD_LIVRAISON = "/outils/calculateur-penalites-retard-livraison";
 export const BLOG_TOOL_ESCOMPTE = "/outils/calculateur-escompte-paiement-anticipe";
 export const BLOG_TOOL_COUT_GARANTIE = "/outils/calculateur-cout-garantie-sav-devis";
+export const BLOG_TOOL_FRANCO = "/outils/calculateur-seuil-franco-port";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -170,6 +171,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     53: "Cinquante-trois",
     54: "Cinquante-quatre",
     55: "Cinquante-cinq",
+    56: "Cinquante-six",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -506,9 +508,29 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Garantie pièces et main-d'œuvre : coût par intervention, provision par vente, part du prix et de la marge, prix d'une année de plus et ligne de garantie à copier.",
     tags: ["catalogue", "relances"],
   },
+  {
+    href: BLOG_TOOL_FRANCO,
+    title: "Calculateur de seuil franco de port",
+    text: "Seuil franco de port calculé sur la marge : part de marge prise par le transport, participation sous le seuil et mention à reprendre dans le devis.",
+    tags: ["catalogue", "relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "frais-port-franco-incoterms-devis-b2b",
+    path: "/blog/frais-port-franco-incoterms-devis-b2b",
+    title:
+      "Frais de port et franco dans un devis B2B : fixer le seuil, choisir l'Incoterm, savoir qui porte les risques",
+    description:
+      "Port payé, port dû, franco à partir d'un montant : ce qu'il faut écrire dans un devis B2B pour que le transport ne mange pas la marge et ne finisse pas en litige. Ce que disent les articles 1604 à 1609 du Code civil sur la délivrance, les Incoterms® 2020, la responsabilité du transporteur (L133-1), les trois jours pour protester (L133-3), l'action directe du voiturier (L132-8), les plafonds du contrat type, un exemple chiffré de seuil franco et ce que QuoteBuilder fait, ou pas.",
+    publishedAt: "2026-10-23",
+    readingMinutes: 21,
+    tags: ["catalogue", "relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "garantie-vices-caches-sav-devis-b2b",
     path: "/blog/garantie-vices-caches-sav-devis-b2b",

@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "frais-port-franco-incoterms-devis-b2b": [
+    {
+      q: "Que veut dire « franco de port » sur un devis ?",
+      a: "Le transport est compris dans le prix : le client ne paie pas de frais de livraison en plus. Le terme ne dit pas, à lui seul, où la marchandise est livrée ni qui supporte les risques pendant le trajet. Précisez le lieu ou la zone, et le moment où les risques passent au client.",
+    },
+    {
+      q: "Si mon devis ne dit rien sur le transport, qui paie ?",
+      a: "Selon l'article 1608 du Code civil, les frais de délivrance sont à la charge du vendeur et ceux de l'enlèvement à la charge de l'acheteur, sauf stipulation contraire. La délivrance se fait par défaut là où se trouvait la chose au moment de la vente (article 1609). Sans clause, la livraison chez le client n'est donc pas due.",
+    },
+    {
+      q: "Comment calculer un seuil franco de port ?",
+      a: "Divisez le coût moyen d'une livraison par le produit de votre taux de marge brute et de la part de marge que vous acceptez de consacrer au transport. Avec 45 € de transport, 35 % de marge et 25 % de part acceptée (hypothèses d'exemple), le seuil est de 514,29 € HT, arrondi à 520 €.",
+    },
+    {
+      q: "Faut-il utiliser les Incoterms pour une vente en France ?",
+      a: "Ce n'est pas obligatoire, mais c'est possible et souvent utile. Un Incoterm a un sens précis, connu des deux parties. Il faut citer la règle, le lieu précis et l'édition, par exemple « DAP, entrepôt du client à Lyon, Incoterms® 2020 ».",
+    },
+    {
+      q: "Avec CPT, qui supporte les risques pendant le transport ?",
+      a: "Le client. Avec CPT, le vendeur paie le transport jusqu'à destination, mais les risques passent à l'acheteur dès la remise au premier transporteur. Si votre client attend une livraison en bon état chez lui à vos risques, DAP ou DPU correspondent mieux.",
+    },
+    {
+      q: "Les réserves sur le bon de livraison suffisent-elles ?",
+      a: "Non. L'article L133-3 du Code de commerce demande une protestation motivée notifiée au transporteur dans les trois jours qui suivent la réception, jours fériés non compris, par lettre recommandée ou acte extrajudiciaire. Sans elle, l'action pour avarie ou perte partielle s'éteint.",
+    },
+    {
+      q: "Combien le transporteur rembourse-t-il en cas de perte ?",
+      a: "À défaut de convention écrite, le contrat type général plafonne l'indemnité, hors dol ou faute inexcusable : pour les envois de moins de trois tonnes, 33 € par kilogramme sans dépasser 1 000 € par colis ; pour les envois de trois tonnes et plus, 20 € par kilogramme dans la limite du poids de l'envoi en tonnes multiplié par 3 200 €. Une déclaration de valeur faite à la commande du transport remplace ce plafond.",
+    },
+    {
+      q: "Mon client peut-il recevoir une facture du transporteur alors que j'ai vendu franco ?",
+      a: "Oui, si vous ne payez pas le transporteur. L'article L132-8 du Code de commerce donne au transporteur qui a exécuté le transport une action directe en paiement contre l'expéditeur et le destinataire. Une clause contraire est réputée non écrite.",
+    },
+    {
+      q: "Frais de port et frais de déplacement, c'est la même chose ?",
+      a: "Non. Les frais de port couvrent l'acheminement d'une marchandise par un transporteur. Les frais de déplacement couvrent le trajet de vos équipes pour une intervention. Ce sont deux lignes distinctes dans un devis, avec des modes de calcul différents.",
+    },
+    {
+      q: "QuoteBuilder calcule-t-il les frais de port ou le franco ?",
+      a: "Non. Il n'y a pas de champ frais de port, franco ou Incoterm. Vous pouvez créer une ligne « Livraison » au catalogue et la faire proposer par une règle selon les réponses du prospect, mais une règle ne lit pas le montant de la fourchette. Le seuil franco et vos conditions de transport s'écrivent dans votre devis final.",
+    },
+  ],
   "garantie-vices-caches-sav-devis-b2b": [
     {
       q: "La garantie des vices cachés s'applique-t-elle entre professionnels ?",
