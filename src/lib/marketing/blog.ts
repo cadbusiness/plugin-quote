@@ -128,6 +128,7 @@ export const BLOG_TOOL_RETENUE_GARANTIE = "/outils/calculateur-retenue-garantie"
 export const BLOG_TOOL_FRAIS_ANNULATION = "/outils/calculateur-frais-annulation-commande";
 export const BLOG_TOOL_PENALITES_RETARD_LIVRAISON = "/outils/calculateur-penalites-retard-livraison";
 export const BLOG_TOOL_ESCOMPTE = "/outils/calculateur-escompte-paiement-anticipe";
+export const BLOG_TOOL_COUT_GARANTIE = "/outils/calculateur-cout-garantie-sav-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -168,6 +169,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     52: "Cinquante-deux",
     53: "Cinquante-trois",
     54: "Cinquante-quatre",
+    55: "Cinquante-cinq",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -498,9 +500,29 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Escompte pour paiement anticipé : montant, taux annuel équivalent, comparaison avec votre coût de financement et mention à porter sur la facture.",
     tags: ["catalogue", "relances"],
   },
+  {
+    href: BLOG_TOOL_COUT_GARANTIE,
+    title: "Calculateur de coût de garantie et de SAV",
+    text: "Garantie pièces et main-d'œuvre : coût par intervention, provision par vente, part du prix et de la marge, prix d'une année de plus et ligne de garantie à copier.",
+    tags: ["catalogue", "relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "garantie-vices-caches-sav-devis-b2b",
+    path: "/blog/garantie-vices-caches-sav-devis-b2b",
+    title:
+      "Garantie et SAV dans un devis B2B : vices cachés, garantie contractuelle, clauses limitatives et coût à prévoir",
+    description:
+      "Entre professionnels, la garantie ne se résume pas à « 1 an pièces ». Ce que disent les articles 1603, 1604 et 1641 à 1649 du Code civil, le délai de deux ans et le butoir de vingt ans (chambre mixte, 21 juillet 2023), la présomption de connaissance du vendeur professionnel, ce qu'une clause limitative peut faire ou pas, comment écrire la garantie dans le devis, comment chiffrer le SAV, et ce que QuoteBuilder fait, ou pas.",
+    publishedAt: "2026-10-23",
+    readingMinutes: 15,
+    tags: ["catalogue", "relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "clause-reserve-propriete-devis-b2b",
     path: "/blog/clause-reserve-propriete-devis-b2b",

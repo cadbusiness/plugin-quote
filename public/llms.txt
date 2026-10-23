@@ -66,9 +66,11 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Funnel de devis cabinet de conseil : https://www.quotebuilder.co/secteurs/funnel-devis-cabinet-conseil
 - Funnel de devis location d'espaces : https://www.quotebuilder.co/secteurs/funnel-devis-location-espaces
 - Funnel de devis chapiteau et agence événementielle : https://www.quotebuilder.co/secteurs/funnel-devis-chapiteau-agence-evenementielle
+- Funnel de devis logiciel sur mesure : https://www.quotebuilder.co/secteurs/funnel-devis-logiciel-sur-mesure
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Garantie et SAV dans un devis B2B : vices cachés, garantie contractuelle, clauses limitatives et coût : https://www.quotebuilder.co/blog/garantie-vices-caches-sav-devis-b2b
 - Clause de réserve de propriété dans un devis B2B : quand elle protège, comment l'écrire, ce qu'elle ne couvre pas : https://www.quotebuilder.co/blog/clause-reserve-propriete-devis-b2b
 - Délai de livraison et pénalités de retard dans un devis B2B : date, franchise, taux et plafond : https://www.quotebuilder.co/blog/delai-livraison-penalites-retard-execution-devis-b2b
 - Annulation d'une commande B2B après un devis signé : arrhes, acompte, dédit et clause pénale : https://www.quotebuilder.co/blog/annulation-commande-devis-b2b-arrhes-dedit-clause-penale
@@ -188,6 +190,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Calculateur de frais d'annulation : https://www.quotebuilder.co/outils/calculateur-frais-annulation-commande
 - Calculateur de pénalités de retard de livraison : https://www.quotebuilder.co/outils/calculateur-penalites-retard-livraison
 - Calculateur d'escompte pour paiement anticipé : https://www.quotebuilder.co/outils/calculateur-escompte-paiement-anticipe
+- Calculateur de coût de garantie et de SAV : https://www.quotebuilder.co/outils/calculateur-cout-garantie-sav-devis
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 
