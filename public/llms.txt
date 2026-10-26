@@ -67,9 +67,11 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Funnel de devis location d'espaces : https://www.quotebuilder.co/secteurs/funnel-devis-location-espaces
 - Funnel de devis chapiteau et agence événementielle : https://www.quotebuilder.co/secteurs/funnel-devis-chapiteau-agence-evenementielle
 - Funnel de devis logiciel sur mesure : https://www.quotebuilder.co/secteurs/funnel-devis-logiciel-sur-mesure
+- Funnel de devis nettoyage et propreté en entreprise : https://www.quotebuilder.co/secteurs/funnel-devis-nettoyage-proprete-entreprise
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Reconduction tacite et préavis dans un devis B2B : durée, renouvellement, résiliation et rupture brutale : https://www.quotebuilder.co/blog/reconduction-tacite-preavis-resiliation-devis-b2b
 - Frais de port et franco dans un devis B2B : fixer le seuil, choisir l'Incoterm, savoir qui porte les risques : https://www.quotebuilder.co/blog/frais-port-franco-incoterms-devis-b2b
 - Garantie et SAV dans un devis B2B : vices cachés, garantie contractuelle, clauses limitatives et coût : https://www.quotebuilder.co/blog/garantie-vices-caches-sav-devis-b2b
 - Clause de réserve de propriété dans un devis B2B : quand elle protège, comment l'écrire, ce qu'elle ne couvre pas : https://www.quotebuilder.co/blog/clause-reserve-propriete-devis-b2b
@@ -193,6 +195,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Calculateur d'escompte pour paiement anticipé : https://www.quotebuilder.co/outils/calculateur-escompte-paiement-anticipe
 - Calculateur de coût de garantie et de SAV : https://www.quotebuilder.co/outils/calculateur-cout-garantie-sav-devis
 - Calculateur de seuil franco de port : https://www.quotebuilder.co/outils/calculateur-seuil-franco-port
+- Calculateur de préavis et de reconduction tacite : https://www.quotebuilder.co/outils/calculateur-preavis-reconduction-tacite
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 

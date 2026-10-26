@@ -130,6 +130,7 @@ export const BLOG_TOOL_PENALITES_RETARD_LIVRAISON = "/outils/calculateur-penalit
 export const BLOG_TOOL_ESCOMPTE = "/outils/calculateur-escompte-paiement-anticipe";
 export const BLOG_TOOL_COUT_GARANTIE = "/outils/calculateur-cout-garantie-sav-devis";
 export const BLOG_TOOL_FRANCO = "/outils/calculateur-seuil-franco-port";
+export const BLOG_TOOL_PREAVIS = "/outils/calculateur-preavis-reconduction-tacite";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -172,6 +173,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     54: "Cinquante-quatre",
     55: "Cinquante-cinq",
     56: "Cinquante-six",
+    57: "Cinquante-sept",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -514,9 +516,29 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Seuil franco de port calculé sur la marge : part de marge prise par le transport, participation sous le seuil et mention à reprendre dans le devis.",
     tags: ["catalogue", "relances"],
   },
+  {
+    href: BLOG_TOOL_PREAVIS,
+    title: "Calculateur de préavis et de reconduction tacite",
+    text: "Date limite pour dénoncer, fin effective du contrat et montant encore engagé si le courrier arrive trop tard.",
+    tags: ["catalogue", "relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "reconduction-tacite-preavis-resiliation-devis-b2b",
+    path: "/blog/reconduction-tacite-preavis-resiliation-devis-b2b",
+    title:
+      "Reconduction tacite et préavis dans un devis B2B : durée, renouvellement, résiliation et rupture brutale",
+    description:
+      "Contrat d'entretien, de maintenance ou de nettoyage signé pour un an puis « reconduit tacitement » : ce qu'il faut écrire dans le devis pour que la durée, la reconduction et le préavis soient clairs. Ce que disent les articles 1210 à 1215 du Code civil, la jurisprudence sur le contenu du contrat reconduit, la rupture brutale de l'article L442-1 II du Code de commerce, pourquoi la loi Chatel ne protège pas un client professionnel, un exemple chiffré de préavis manqué et ce que QuoteBuilder fait, ou pas.",
+    publishedAt: "2026-10-26",
+    readingMinutes: 19,
+    tags: ["catalogue", "relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisDetail,
+    pinned: false,
+  },
   {
     slug: "frais-port-franco-incoterms-devis-b2b",
     path: "/blog/frais-port-franco-incoterms-devis-b2b",

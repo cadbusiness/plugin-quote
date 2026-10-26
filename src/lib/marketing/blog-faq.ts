@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "reconduction-tacite-preavis-resiliation-devis-b2b": [
+    {
+      q: "Un contrat reconduit tacitement repart-il pour la même durée ?",
+      a: "Pas automatiquement. Selon les articles 1214 et 1215 du Code civil, la reconduction tacite crée un nouveau contrat au même contenu, mais à durée indéterminée. Pour qu'il reparte pour douze mois, le contrat doit prévoir une reconduction par périodes de douze mois.",
+    },
+    {
+      q: "Peut-on résilier un contrat à durée indéterminée à tout moment ?",
+      a: "Oui, chaque partie peut y mettre fin à tout moment, à condition de respecter le préavis prévu au contrat ou, à défaut, un délai raisonnable (article 1211 du Code civil). Entre professionnels, il faut aussi tenir compte de la durée de la relation (article L442-1 II du Code de commerce).",
+    },
+    {
+      q: "Que se passe-t-il si le client envoie sa résiliation après la date limite ?",
+      a: "Si le contrat prévoit une reconduction par périodes, il repart pour une période entière et le client reste engagé jusqu'à la fin de cette nouvelle période. Le prestataire peut accepter une sortie anticipée, mais il n'y est pas obligé.",
+    },
+    {
+      q: "Le préavis compte-t-il à partir de l'envoi ou de la réception du courrier ?",
+      a: "C'est la clause qui le dit. Si elle parle d'un courrier « reçu » trois mois avant l'échéance, c'est la date de réception qui compte. Écrivez-le dans le devis pour éviter toute discussion, et gardez la preuve de la date.",
+    },
+    {
+      q: "La loi Chatel s'applique-t-elle entre entreprises ?",
+      a: "Non. L'obligation d'informer le client de l'échéance (article L215-1 du Code de la consommation) vise les consommateurs, et l'article L215-3 l'étend aux non-professionnels. Une entreprise qui achète pour son activité n'est ni l'un ni l'autre.",
+    },
+    {
+      q: "Respecter le préavis du contrat suffit-il pour arrêter une relation ancienne ?",
+      a: "Pas toujours. L'article L442-1 II du Code de commerce exige un préavis écrit qui tient compte de la durée de la relation commerciale. Un préavis contractuel de trois mois peut être jugé trop court pour une relation de plusieurs années. Un préavis de dix-huit mois met à l'abri d'une condamnation pour préavis insuffisant.",
+    },
+    {
+      q: "Des contrats d'un an successifs forment-ils une relation commerciale établie ?",
+      a: "Ils peuvent. La Cour de cassation l'a admis le 5 avril 2018 (chambre commerciale, n° 16-26.568). Ce qui compte est la stabilité de la relation, pas la forme des contrats.",
+    },
+    {
+      q: "Le prix reste-t-il le même après la reconduction ?",
+      a: "Oui, sauf clause contraire, puisque le contrat reconduit reprend le même contenu. Pour faire évoluer le prix, prévoyez une clause d'indexation ou une révision proposée avant chaque date limite de dénonciation.",
+    },
+    {
+      q: "Peut-on prévoir une indemnité si le client part avant le terme ?",
+      a: "Oui. Mais si elle sanctionne l'inexécution, c'est une clause pénale, que le juge peut réduire si elle est manifestement excessive (article 1231-5 du Code civil). Une indemnité proportionnée au préjudice réel tient mieux.",
+    },
+    {
+      q: "QuoteBuilder gère-t-il la durée et la reconduction des contrats ?",
+      a: "Non. Il n'y a ni champ durée, ni reconduction, ni préavis, ni prix mensuel. Vous pouvez demander la durée souhaitée dans le funnel avec une question de type Liste et noter les conditions dans une note interne du dossier. La clause de durée s'écrit dans votre devis final.",
+    },
+  ],
   "frais-port-franco-incoterms-devis-b2b": [
     {
       q: "Que veut dire « franco de port » sur un devis ?",
