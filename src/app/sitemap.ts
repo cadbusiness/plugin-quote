@@ -5,6 +5,8 @@ import { SITE_URL } from "@/lib/marketing/site";
 
 /** Dates éditoriales hors articles (le blog passe par publishedAt). */
 const CONTENT_LASTMOD: Record<string, string> = {
+  "/blog/prix-vente-coefficient-debourse-sec-devis-b2b": "2026-10-26",
+  "/outils/calculateur-coefficient-vente-devis": "2026-10-26",
   "/blog/reconduction-tacite-preavis-resiliation-devis-b2b": "2026-10-26",
   "/secteurs/funnel-devis-nettoyage-proprete-entreprise": "2026-10-26",
   "/outils/calculateur-preavis-reconduction-tacite": "2026-10-26",

@@ -131,6 +131,7 @@ export const BLOG_TOOL_ESCOMPTE = "/outils/calculateur-escompte-paiement-anticip
 export const BLOG_TOOL_COUT_GARANTIE = "/outils/calculateur-cout-garantie-sav-devis";
 export const BLOG_TOOL_FRANCO = "/outils/calculateur-seuil-franco-port";
 export const BLOG_TOOL_PREAVIS = "/outils/calculateur-preavis-reconduction-tacite";
+export const BLOG_TOOL_COEFFICIENT = "/outils/calculateur-coefficient-vente-devis";
 export const BLOG_TOOL_TVA = "/outils/calculateur-tva-devis-ht-ttc";
 
 export type BlogTool = {
@@ -174,6 +175,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     55: "Cinquante-cinq",
     56: "Cinquante-six",
     57: "Cinquante-sept",
+    58: "Cinquante-huit",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -522,9 +524,29 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Date limite pour dénoncer, fin effective du contrat et montant encore engagé si le courrier arrive trop tard.",
     tags: ["catalogue", "relances"],
   },
+  {
+    href: BLOG_TOOL_COEFFICIENT,
+    title: "Calculateur de coefficient de vente",
+    text: "Du déboursé sec au prix de vente HT : coefficient, taux de marque et taux de marge, prix plancher et bénéfice réel au prix que vous envisagez.",
+    tags: ["catalogue"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "prix-vente-coefficient-debourse-sec-devis-b2b",
+    path: "/blog/prix-vente-coefficient-debourse-sec-devis-b2b",
+    title:
+      "Calculer le prix de vente d'un devis B2B : déboursé sec, frais généraux, coefficient, taux de marge et taux de marque",
+    description:
+      "Partir du déboursé sec, ajouter la juste part des frais généraux et un bénéfice, en tirer un coefficient de vente : la méthode pas à pas pour chiffrer un devis B2B sans se tromper de base. La différence entre taux de marge et taux de marque selon l'Insee, l'erreur du pourcentage ajouté au coût, le prix plancher, ce que disent la liberté des prix (L410-2), la revente à perte (L442-5), l'article 1165 du Code civil et le marché à forfait (1793), un exemple chiffré et ce que QuoteBuilder fait, ou pas.",
+    publishedAt: "2026-10-26",
+    readingMinutes: 22,
+    tags: ["catalogue"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.produits,
+    pinned: false,
+  },
   {
     slug: "reconduction-tacite-preavis-resiliation-devis-b2b",
     path: "/blog/reconduction-tacite-preavis-resiliation-devis-b2b",
