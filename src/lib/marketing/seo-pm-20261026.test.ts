@@ -234,7 +234,7 @@ function assertNoDashes(text: string, label: string) {
   assert.match(blogBody, /signup\?plan=free/);
   assertNoDashes(blogRaw, "coefficient md");
   assertNoDashes(blogBody, "coefficient body");
-  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 5177);
+  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 5191);
   assert.equal(faqQuestionCount(blogBody), 10);
   assert.deepEqual(faqFromMarkdown(blogBody), BLOG_FAQ[BLOG_SLUG]);
   assertInternalLinks(blogBody, "coefficient");
