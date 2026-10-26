@@ -167,6 +167,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   { path: "/a-propos", changeFrequency: "monthly", priority: 0.6 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
   {
+    path: "/blog/prix-vente-coefficient-debourse-sec-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-10-26",
+  },
+  {
     path: "/blog/reconduction-tacite-preavis-resiliation-devis-b2b",
     changeFrequency: "monthly",
     priority: 0.8,
@@ -697,6 +703,12 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
   },
   {
     path: "/outils/calculateur-preavis-reconduction-tacite",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-10-26",
+  },
+  {
+    path: "/outils/calculateur-coefficient-vente-devis",
     changeFrequency: "monthly",
     priority: 0.7,
     lastModified: "2026-10-26",

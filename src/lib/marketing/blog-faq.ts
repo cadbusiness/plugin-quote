@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "prix-vente-coefficient-debourse-sec-devis-b2b": [
+    {
+      q: "Qu'est-ce que le déboursé sec ?",
+      a: "C'est l'ensemble des coûts directement liés à un devis : achats de matériaux et fournitures, heures de main-d'œuvre valorisées à leur coût chargé, sous-traitance, location, déplacements. Il exclut les frais généraux et le bénéfice.",
+    },
+    {
+      q: "Comment calculer un coefficient de vente ?",
+      a: "Quand frais généraux et bénéfice sont exprimés en pourcentage du prix de vente HT, le coefficient vaut 1 / (1 − frais généraux − bénéfice). Avec 18 % et 7 %, hypothèses d'exemple, il vaut 1 / 0,75, soit 1,333. Le prix de vente HT est le déboursé sec multiplié par ce coefficient.",
+    },
+    {
+      q: "Quelle différence entre taux de marge et taux de marque ?",
+      a: "Les deux mesurent la même somme, le prix de vente moins le coût. Le taux de marque la rapporte au prix de vente, le taux de marge au coût. Pour un article acheté 75 € et vendu 100 €, le taux de marque est de 25 % et le taux de marge de 33,33 %.",
+    },
+    {
+      q: "Comment passer d'un taux de marque à un taux de marge ?",
+      a: "Taux de marge = taux de marque / (1 − taux de marque). Un taux de marque de 20 % correspond à un taux de marge de 25 %, un taux de marque de 50 % à un taux de marge de 100 %. Dans l'autre sens, taux de marque = taux de marge / (1 + taux de marge).",
+    },
+    {
+      q: "Comment calculer son taux de frais généraux ?",
+      a: "Divisez le total annuel des frais généraux par le chiffre d'affaires annuel HT, sur le dernier exercice et en tenant compte de l'activité prévue. Le résultat est un pourcentage du prix de vente. Recalculez-le chaque année.",
+    },
+    {
+      q: "Comment calculer un coût horaire chargé ?",
+      a: "Divisez le coût annuel du salarié pour l'entreprise (salaire brut et charges patronales) par le nombre d'heures réellement productives dans l'année, après déduction des congés, absences, trajets non facturés et temps non affectables. Diviser par les heures payées sous-estime le coût.",
+    },
+    {
+      q: "Peut-on vendre sous son prix de revient ?",
+      a: "Oui, en principe, entre professionnels : les prix sont libres (article L410-2 du Code de commerce). La limite est la revente en l'état sous le prix d'achat effectif, interdite par l'article L442-5 sauf exceptions, avec une amende pouvant atteindre 0,4 % du chiffre d'affaires réalisé en France depuis la loi du 14 avril 2025. Économiquement, un devis sous le prix plancher fait perdre de l'argent.",
+    },
+    {
+      q: "Que se passe-t-il si un travail commence sans prix convenu ?",
+      a: "Pour une prestation de service, l'article 1165 du Code civil permet au prestataire de fixer le prix, à charge pour lui de le motiver en cas de contestation, et le client peut agir en cas d'abus. Mieux vaut un devis accepté avant de commencer.",
+    },
+    {
+      q: "Peut-on augmenter un prix forfaitaire en cours de chantier ?",
+      a: "Pour la construction d'un bâtiment à forfait, l'article 1793 du Code civil l'exclut, sauf changements autorisés par écrit avec un prix convenu. La Cour de cassation admet aussi le supplément en cas de bouleversement de l'économie du contrat ou d'acceptation expresse et non équivoque après exécution.",
+    },
+    {
+      q: "QuoteBuilder calcule-t-il le prix de vente ou la marge ?",
+      a: "Non. Le catalogue reçoit un prix fixe, une fourchette ou « Sur devis », sans champ de coût, de marge ni de coefficient. Le calcul se fait avant, puis le prix obtenu est saisi sur la fiche ou importé en CSV. Le PDF affiche une fourchette indicative et précise qu'il s'agit d'un document indicatif, non contractuel.",
+    },
+  ],
   "reconduction-tacite-preavis-resiliation-devis-b2b": [
     {
       q: "Un contrat reconduit tacitement repart-il pour la même durée ?",

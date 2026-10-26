@@ -226,8 +226,8 @@ for (const required of [
   assert.ok(paths.includes(required), `missing route ${required}`);
 }
 
-assert.equal(BLOG_POSTS.length, 67);
-assert.equal(BLOG_TOOLS.length, 57);
+assert.equal(BLOG_POSTS.length, 68);
+assert.equal(BLOG_TOOLS.length, 58);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-demandes-orales-non-capturees"));
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-double-saisie-devis"));
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === "/outils/estimateur-cout-handoff-commercial-technique-devis"));
@@ -237,7 +237,7 @@ const outilsHub = readFileSync(new URL("../../app/(marketing)/outils/page.tsx", 
 assert.match(outilsHub, /outilsHubIntro\(\)/);
 assert.equal(
   outilsHubIntro(),
-  "Cinquante-sept outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
+  "Cinquante-huit outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
 );
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 assert.doesNotMatch(outilsHub, /Vingt-quatre|Vingt-cinq|Vingt-six|Vingt-sept|Vingt-huit|Vingt-neuf|Trente/);
@@ -935,7 +935,7 @@ assert.ok(!funnelRelated.some((post) => post.slug === "pourquoi-les-devis-meuren
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "scoring" }).length, 23);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "Scoring" }).length, 23);
 assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "integrations" }).length, 13);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 21);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 22);
 assert.equal(filterBlogPosts(BLOG_POSTS, { q: "woocommerce" }).length, 2);
 assert.equal(midArticleHeadingIndex(12), 5);
 assert.ok(trimMetaDescription(BLOG_POSTS[0]!.description).length <= 155);
