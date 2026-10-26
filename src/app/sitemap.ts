@@ -5,6 +5,9 @@ import { SITE_URL } from "@/lib/marketing/site";
 
 /** Dates éditoriales hors articles (le blog passe par publishedAt). */
 const CONTENT_LASTMOD: Record<string, string> = {
+  "/blog/reconduction-tacite-preavis-resiliation-devis-b2b": "2026-10-26",
+  "/secteurs/funnel-devis-nettoyage-proprete-entreprise": "2026-10-26",
+  "/outils/calculateur-preavis-reconduction-tacite": "2026-10-26",
   "/blog/frais-port-franco-incoterms-devis-b2b": "2026-10-23",
   "/outils/calculateur-seuil-franco-port": "2026-10-23",
   "/blog/garantie-vices-caches-sav-devis-b2b": "2026-10-23",
