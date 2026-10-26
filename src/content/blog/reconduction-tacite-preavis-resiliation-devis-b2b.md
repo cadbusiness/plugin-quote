@@ -93,7 +93,7 @@ Conséquence : le contrat repart pour douze mois. Il prend fin le 31 décembre 2
 
 Si la lettre avait été reçue le 1er septembre 2026, le contrat aurait pris fin le 31 décembre 2026, avec 122 jours restants, soit environ 7 219,73 € HT.
 
-Quinze jours de retard sur un courrier valent donc, ici, plus de 19 000 € HT d'écart. C'est la raison pour laquelle beaucoup de litiges sur la reconduction tacite ne portent pas sur le droit, mais sur une date. Le [calculateur de préavis et de reconduction tacite](https://www.quotebuilder.co/outils/calculateur-preavis-reconduction-tacite) refait ce calcul avec vos propres dates, et donne la prochaine date limite pour chaque période.
+Quinze jours de retard sur un courrier valent donc, ici, près de 19 000 € HT d'écart. C'est la raison pour laquelle beaucoup de litiges sur la reconduction tacite ne portent pas sur le droit, mais sur une date. Le [calculateur de préavis et de reconduction tacite](https://www.quotebuilder.co/outils/calculateur-preavis-reconduction-tacite) refait ce calcul avec vos propres dates, et donne la prochaine date limite pour chaque période.
 
 ### Côté prestataire, faut-il appliquer la clause à la lettre ?
 
