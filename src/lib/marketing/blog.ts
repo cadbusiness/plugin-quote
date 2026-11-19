@@ -168,6 +168,7 @@ export const BLOG_TOOL_POUVOIR_SIGNATAIRE = "/outils/verificateur-pouvoir-signat
 export const BLOG_TOOL_MENTION_DECHETS = "/outils/verificateur-mention-dechets-devis-travaux";
 export const BLOG_TOOL_DECLARATION_CREANCE = "/outils/calculateur-declaration-creance-procedure-collective";
 export const BLOG_TOOL_PRET_MAIN_OEUVRE = "/outils/verificateur-pret-main-oeuvre-devis";
+export const BLOG_TOOL_EXCLUSIVITE = "/outils/verificateur-clause-exclusivite";
 
 export type BlogTool = {
   href: string;
@@ -246,6 +247,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     91: "Quatre-vingt-onze",
     92: "Quatre-vingt-douze",
     93: "Quatre-vingt-treize",
+    94: "Quatre-vingt-quatorze",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -810,9 +812,27 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Régie, assistance technique ou mise à disposition : indices de fourniture de personnel, coût réel, but lucratif, la clause à coller et le message.",
     tags: ["catalogue","relances"],
   },
+  {
+    href: BLOG_TOOL_EXCLUSIVITE,
+    title: "Vérificateur de clause d'exclusivité",
+    text: "Achat ou fourniture exclusive : plafond de dix ans, seuil de cinq ans, contrats successifs, périmètre, sortie, la clause corrigée et le message.",
+    tags: ["catalogue","relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "clause-exclusivite-devis-contrat-approvisionnement-b2b",
+    path: "/blog/clause-exclusivite-devis-contrat-approvisionnement-b2b",
+    title: "Clause d'exclusivité dans un devis B2B : durée, périmètre et contreparties d'un achat ou d'une fourniture exclusive",
+    description: "Vous proposez une exclusivité d'achat à un client, ou un client vous demande de ne travailler que pour lui. Le plafond de dix ans de l'article L330-1, les contrats qui se suivent (L330-2), les engagements sans terme, le seuil de cinq ans et les parts de marché du règlement 2022/720, l'interdiction après la fin du contrat, la contrepartie, la sortie, la marque ou l'enseigne (L330-3), un exemple daté et chiffré et un vérificateur gratuit.",
+    publishedAt: "2026-11-19",
+    readingMinutes: 34,
+    tags: ["catalogue","relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisListe,
+    pinned: false,
+  },
   {
     slug: "pret-main-oeuvre-illicite-marchandage-devis-regie-b2b",
     path: "/blog/pret-main-oeuvre-illicite-marchandage-devis-regie-b2b",

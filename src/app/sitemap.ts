@@ -93,6 +93,8 @@ const CONTENT_LASTMOD: Record<string, string> = {
   "/blog/pret-main-oeuvre-illicite-marchandage-devis-regie-b2b": "2026-11-19",
   "/secteurs/funnel-devis-palettes-caisses-bois-export": "2026-11-19",
   "/outils/verificateur-pret-main-oeuvre-devis": "2026-11-19",
+  "/blog/clause-exclusivite-devis-contrat-approvisionnement-b2b": "2026-11-19",
+  "/outils/verificateur-clause-exclusivite": "2026-11-19",
   "/blog/prix-vente-coefficient-debourse-sec-devis-b2b": "2026-10-26",
   "/outils/calculateur-coefficient-vente-devis": "2026-10-26",
   "/blog/reconduction-tacite-preavis-resiliation-devis-b2b": "2026-10-26",

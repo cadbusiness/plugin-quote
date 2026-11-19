@@ -89,6 +89,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Clause d'exclusivité dans un devis B2B : durée, périmètre et contreparties d'un achat ou d'une fourniture exclusive : https://www.quotebuilder.co/blog/clause-exclusivite-devis-contrat-approvisionnement-b2b
 - Prêt de main-d'œuvre illicite et marchandage : rédiger un devis de régie ou d'assistance technique sans vendre du personnel : https://www.quotebuilder.co/blog/pret-main-oeuvre-illicite-marchandage-devis-regie-b2b
 - Client en redressement ou liquidation judiciaire : devis en cours, acompte et déclaration de créance : https://www.quotebuilder.co/blog/client-procedure-collective-declaration-creance-devis-b2b
 - Mention déchets sur un devis de travaux : les quatre informations obligatoires, le bordereau de dépôt, le tri et le coût à chiffrer : https://www.quotebuilder.co/blog/mention-dechets-devis-travaux-bordereau-depot-b2b
@@ -286,6 +287,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Vérificateur de mention déchets : https://www.quotebuilder.co/outils/verificateur-mention-dechets-devis-travaux
 - Calculateur de déclaration de créance : https://www.quotebuilder.co/outils/calculateur-declaration-creance-procedure-collective
 - Vérificateur de prêt de main-d'œuvre : https://www.quotebuilder.co/outils/verificateur-pret-main-oeuvre-devis
+- Vérificateur de clause d'exclusivité dans un devis ou un contrat d'approvisionnement : https://www.quotebuilder.co/outils/verificateur-clause-exclusivite
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 
