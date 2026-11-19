@@ -1827,7 +1827,7 @@ for (const { file, dir } of contentFiles) {
   assert.doesNotMatch(tvaBody, /ne prétend pas calculer la TVA/);
   assert.doesNotMatch(tvaBody, /blocs TVA/);
   assert.doesNotMatch(tvaBody, EM_DASH);
-  assert.equal(tvaBody.split(/\s+/).filter(Boolean).length, 3435);
+  assert.equal(tvaBody.split(/\s+/).filter(Boolean).length, 3445);
 }
 
 {
