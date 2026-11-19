@@ -41,7 +41,7 @@ for (const item of BLOG_FAQ[BLOG_SLUG] ?? []) {
   assert.doesNotMatch(item.a, EN_DASH);
 }
 
-assert.equal(BLOG_TOOLS.length, 58);
+assert.equal(BLOG_TOOLS.length, 93);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === TOOL_PATH));
 assert.deepEqual(
   BLOG_TOOLS.find((tool) => tool.href === TOOL_PATH)?.tags,
@@ -49,9 +49,9 @@ assert.deepEqual(
 );
 assert.equal(
   outilsHubIntro(),
-  "Cinquante-huit outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
+  "Quatre-vingt-treize outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.",
 );
-assert.equal(outilsHubIntro(58), outilsHubIntro());
+assert.equal(outilsHubIntro(93), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
 const paths = MARKETING_ROUTES.map((route) => route.path);
@@ -88,7 +88,7 @@ function faqQuestionCount(body: string) {
   const after = body.slice(start + marker.length);
   const next = after.search(/\n## [^#]/);
   const section = next === -1 ? after : after.slice(0, next);
-  return section.split("\n").filter((line) => line.startsWith("### ")).length;
+  return section.split("\n").filter((line: string) => line.startsWith("### ")).length;
 }
 
 function assertInternalLinks(body: string, label: string) {

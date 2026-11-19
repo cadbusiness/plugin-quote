@@ -65,8 +65,8 @@ for (const item of BLOG_FAQ[BLOG_SLUG] ?? []) {
   assert.doesNotMatch(item.a, EN_DASH);
 }
 
-assert.equal(BLOG_POSTS.length, 68);
-assert.equal(BLOG_TOOLS.length, 58);
+assert.equal(BLOG_POSTS.length, 103);
+assert.equal(BLOG_TOOLS.length, 93);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === TOOL_PATH));
 assert.equal(BLOG_TOOLS.find((tool) => tool.href === TOOL_PATH)?.title, "Calculateur de seuil franco de port");
 assert.deepEqual(BLOG_TOOLS.find((tool) => tool.href === TOOL_PATH)?.tags, ["catalogue", "relances"]);
@@ -77,9 +77,9 @@ assert.equal(
 for (const tool of BLOG_TOOLS) {
   assert.ok(tool.tags.every((tag) => BLOG_TAG_DEFS.some((def) => def.slug === tag)));
 }
-assert.ok(outilsHubIntro().startsWith("Cinquante-huit outils publics."));
-assert.equal(outilsHubIntro(), "Cinquante-huit outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(58), outilsHubIntro());
+assert.ok(outilsHubIntro().startsWith("Quatre-vingt-treize outils publics."));
+assert.equal(outilsHubIntro(), "Quatre-vingt-treize outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(93), outilsHubIntro());
 assert.equal(outilsHubIntro(55), "Cinquante-cinq outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
@@ -136,7 +136,7 @@ function faqQuestionCount(body: string) {
   const after = body.slice(start + marker.length);
   const next = after.search(/\n## [^#]/);
   const section = next === -1 ? after : after.slice(0, next);
-  return section.split("\n").filter((line) => line.startsWith("### ")).length;
+  return section.split("\n").filter((line: string) => line.startsWith("### ")).length;
 }
 
 function faqFromMarkdown(body: string) {
@@ -149,7 +149,7 @@ function faqFromMarkdown(body: string) {
   return section
     .split("\n### ")
     .slice(1)
-    .map((part) => {
+    .map((part: string) => {
       const nl = part.indexOf("\n");
       return {
         q: part.slice(0, nl).trim(),

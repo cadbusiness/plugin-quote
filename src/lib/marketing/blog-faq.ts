@@ -1,6 +1,1476 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "pret-main-oeuvre-illicite-marchandage-devis-regie-b2b": [
+    {
+      q: "Une régie au temps passé, c'est forcément du prêt de main-d'œuvre ?",
+      a: "Non. Le temps passé est une façon de compter le prix. Ce qui compte, c'est ce que paie ce prix : une prestation définie, que vous dirigez avec vos moyens, ou des personnes que le client dirige. La Cour de cassation a écarté le prêt illicite pour un ingénieur facturé au jour pendant plus de trois ans, parce que son employeur l'affectait, l'évaluait, contrôlait son temps et gérait ses congés et ses frais.",
+    },
+    {
+      q: "Mes salariés travaillent dans les locaux du client. Est-ce un problème ?",
+      a: "Pas en soi. Beaucoup de prestations s'exécutent chez le client par nature (maintenance, nettoyage, informatique). Le risque vient de l'ensemble : ordres donnés par le client, matériel du client, tâches identiques à celles de ses salariés, absence d'objet défini.",
+    },
+    {
+      q: "Puis-je prêter un salarié à une entreprise amie ?",
+      a: "Oui, sans but lucratif : vous refacturez seulement le salaire, les charges sociales et les frais professionnels remboursés, avec l'accord du salarié, une convention de mise à disposition, un avenant à son contrat et la consultation du CSE s'il existe (article L8241-2).",
+    },
+    {
+      q: "Puis-je ajouter une petite marge pour mes frais de gestion ?",
+      a: "Non, dans une mise à disposition. Le texte limite la refacturation au salaire, aux charges sociales afférentes et aux frais professionnels remboursés au salarié. Tout supplément rend l'opération lucrative.",
+    },
+    {
+      q: "Quelle est la différence entre prêt illicite et marchandage ?",
+      a: "Le prêt illicite vise la fourniture de personnel comme objet exclusif, à but lucratif. Le marchandage vise toute fourniture de main-d'œuvre à but lucratif qui cause un préjudice au salarié ou contourne une règle légale ou conventionnelle, même si elle n'est pas exclusive. Les deux sont punis de deux ans et 30 000 €.",
+    },
+    {
+      q: "Le titre « assistance technique » sur le devis suffit-il à me protéger ?",
+      a: "Non. Les juges regardent ce qui se passe réellement : qui dirige, qui fournit les moyens, ce qui est livré. Le titre ne change rien.",
+    },
+    {
+      q: "Mon client est-il aussi exposé ?",
+      a: "Oui. Dans deux des affaires citées dans cet article, c'est le dirigeant de l'entreprise qui utilisait la main-d'œuvre qui a été condamné. C'est un bon argument pour lui proposer une prestation définie plutôt que deux personnes à l'heure.",
+    },
+    {
+      q: "Combien de temps peut durer une mise à disposition ?",
+      a: "L'article L8241-2 ne fixe pas de durée maximale pour un prêt sans but lucratif, mais la convention doit en définir une. Le dispositif dérogatoire de l'article L8241-3 est limité à trois ans. Dans une prestation, la durée n'est pas interdite, mais une mission très longue avec des salariés intégrés aux équipes du client attire l'attention.",
+    },
+    {
+      q: "Que risque-t-on si le prêt illicite est retenu ?",
+      a: "Deux ans d'emprisonnement et 30 000 € d'amende pour une personne physique, jusqu'à cinq ans et 75 000 € si l'infraction vise plusieurs personnes, le quintuple de l'amende pour une société, une interdiction possible de sous-traiter de la main-d'œuvre, la nullité du contrat et des demandes du salarié.",
+    },
+    {
+      q: "QuoteBuilder peut-il détecter une demande de personnel ?",
+      a: "Non. Le funnel peut poser les bonnes questions (résultat attendu, livrables, qui organise sur place), et les notes internes gardent votre analyse. Mais le score Hot, Warm ou Cold suit une formule fixe qui ne lit pas ces réponses, et QuoteBuilder ne vérifie pas vos devis au regard du code du travail.",
+    },
+  ],
+  "client-procedure-collective-declaration-creance-devis-b2b": [
+    {
+      q: "Quel est le délai pour déclarer une créance quand le client est en redressement judiciaire ?",
+      a: "Deux mois à compter de la publication du jugement d'ouverture au BODACC (article R622-24 du code de commerce). Le délai passe à quatre mois si vous ne demeurez pas sur le territoire de la juridiction qui a ouvert la procédure (métropole, ou département ou collectivité d'outre-mer). Le même délai s'applique en sauvegarde et en liquidation.",
+    },
+    {
+      q: "Comment compter les deux mois ?",
+      a: "De quantième à quantième : une publication le 17 novembre donne une fin de délai le 17 janvier. S'il n'y a pas de même quantième, le délai finit le dernier jour du mois. Un délai qui expire un samedi, un dimanche ou un jour férié est prorogé au premier jour ouvrable suivant (articles 641 et 642 du code de procédure civile). Par prudence, envoyez avant le dernier jour ouvré.",
+    },
+    {
+      q: "À qui envoyer la déclaration de créance ?",
+      a: "Au mandataire judiciaire en sauvegarde et en redressement, au liquidateur en liquidation. Ses coordonnées figurent dans l'annonce du BODACC. Ni à l'administrateur, ni au client, ni au greffe.",
+    },
+    {
+      q: "Que doit contenir la déclaration ?",
+      a: "Le montant dû au jour du jugement, les sommes à échoir et leurs dates, la nature de la sûreté s'il y en a une, les éléments qui prouvent la créance, la mention du litige s'il y en a un, les pièces sous bordereau, et la certification de sincérité (articles L622-25 et R622-23).",
+    },
+    {
+      q: "Mon client m'a mis sur sa liste de créanciers : dois-je quand même déclarer ?",
+      a: "Oui. Le client est présumé avoir déclaré pour vous, mais seulement dans la limite de ce qu'il a indiqué, et vous ne savez pas ce qu'il a écrit. Votre propre déclaration fixe le montant que vous réclamez.",
+    },
+    {
+      q: "Qui peut signer la déclaration ?",
+      a: "Le représentant légal de votre entreprise, ou toute personne qu'il a désignée : un salarié, un avocat, un autre mandataire. Si ce n'est pas le représentant légal, joignez le pouvoir (article L622-24 et recommandations du CNAJMJ).",
+    },
+    {
+      q: "Dois-je continuer à livrer un client en redressement qui ne m'a pas payé ?",
+      a: "Si l'administrateur, ou le client avec l'avis conforme du mandataire, demande la poursuite du contrat, oui, même si la facture antérieure reste impayée. En redressement et en liquidation, la suite se paie au comptant, sauf délai que vous acceptez. Pour sortir de l'incertitude, mettez l'administrateur en demeure de prendre parti : sans réponse dans le mois, le contrat est résilié de plein droit.",
+    },
+    {
+      q: "Que devient l'acompte que j'ai reçu ?",
+      a: "Il reste acquis à hauteur de ce qui a été exécuté et se déduit de la créance à déclarer. Si le contrat est résilié et que l'acompte dépasse la valeur de ce que vous avez fait, vous pouvez différer la restitution de l'excédent jusqu'à ce que votre indemnité soit fixée (article L622-13 V).",
+    },
+    {
+      q: "J'ai laissé passer le délai : est-ce que tout est perdu ?",
+      a: "Pas forcément. Vous pouvez demander au juge-commissaire un relevé de forclusion dans les six mois de la publication du jugement, en montrant que la défaillance n'est pas de votre fait ou qu'elle vient d'une omission du client sur sa liste. Même relevé, vous ne participez qu'aux distributions postérieures à votre demande. Déclarez en même temps.",
+    },
+    {
+      q: "QuoteBuilder déclare-t-il les créances ou surveille-t-il le BODACC ?",
+      a: "Non. QuoteBuilder recueille les demandes de devis et les suit en équipe. Il ne fait ni facturation, ni recouvrement, ni veille des procédures collectives. Les notes internes du dossier servent à garder la chronologie, et le calculateur gratuit aide à fixer les dates et le montant.",
+    },
+  ],
+  "mention-dechets-devis-travaux-bordereau-depot-b2b": [
+    {
+      q: "La mention déchets est-elle obligatoire sur un devis de travaux ?",
+      a: "Oui, pour les devis de travaux de construction, de rénovation ou de démolition de bâtiments et pour les devis de jardinage, depuis le 1er juillet 2021 (article L541-21-2-3 du code de l'environnement et décret n° 2020-1817). Le devis doit indiquer la quantité estimée de déchets, le tri et l'enlèvement prévus, le ou les points de collecte et le coût estimé.",
+    },
+    {
+      q: "Quelles sont les quatre informations à écrire ?",
+      a: "L'article D541-45-1 demande une estimation de la quantité totale de déchets, les modalités de gestion et d'enlèvement (tri sur le chantier, flux en collecte séparée, broyage pour le jardinage), le ou les points de collecte identifiés par leur raison sociale, leur adresse et leur type, et une estimation des coûts.",
+    },
+    {
+      q: "La règle s'applique-t-elle à un devis pour une entreprise ?",
+      a: "Oui. L'article ne distingue pas selon le client. Un devis adressé à une PME, à une collectivité, à une copropriété ou à un particulier doit porter la même mention.",
+    },
+    {
+      q: "Y a-t-il un montant minimum de devis ?",
+      a: "Non. Aucun seuil n'est prévu. Un petit devis peut avoir une ligne courte, mais elle doit contenir les quatre informations.",
+    },
+    {
+      q: "« Évacuation des gravats comprise » suffit-il ?",
+      a: "Non. Cette phrase ne donne ni quantité, ni tri, ni point de collecte, ni coût. Vous pouvez garder un prix tout compris, à condition d'écrire le montant estimé de la gestion des déchets et les autres informations.",
+    },
+    {
+      q: "Quels chantiers sont exemptés ?",
+      a: "Les travaux soumis au diagnostic PEMD (IV de l'article). Selon l'article R126-8 du code de la construction et de l'habitation, il s'agit des démolitions et rénovations significatives de plus de 1 000 m² de surface de plancher cumulée, ou portant sur un bâtiment qui a accueilli une activité agricole, industrielle ou commerciale avec des substances dangereuses.",
+    },
+    {
+      q: "Qu'est-ce que le bordereau de dépôt ?",
+      a: "Un document gratuit que l'installation de collecte remet à l'entreprise qui dépose les déchets. Il indique notamment la date, l'installation, la nature et la quantité des déchets, le maître d'ouvrage et l'entreprise. L'entreprise le conserve et le transmet au client ou à l'administration sur demande.",
+    },
+    {
+      q: "Quelle amende en cas d'oubli ?",
+      a: "Une amende administrative de 3 000 € au plus pour une personne physique et de 15 000 € au plus pour une personne morale (III de l'article L541-21-2-3), prononcée selon la procédure du code de la consommation.",
+    },
+    {
+      q: "Faut-il facturer les déchets sur une ligne à part ?",
+      a: "Non. Le texte demande une estimation des coûts, pas une ligne facturée à part. Une ligne chiffrée est la présentation la plus claire. Vous pouvez aussi écrire le montant estimé à l'intérieur d'une ligne existante.",
+    },
+    {
+      q: "QuoteBuilder calcule-t-il la ligne déchets de mes devis ?",
+      a: "Non. QuoteBuilder reçoit et organise les demandes de devis : un funnel peut poser des questions utiles à l'estimation, et le prospect peut envoyer des photos par la zone « Plan (PDF ou image) ». Le calcul se fait dans le vérificateur gratuit, à part, et la ligne déchets se met dans votre outil de devis. Le PDF de QuoteBuilder porte le pied fixe « Document indicatif, non contractuel. ».",
+    },
+  ],
+  "pouvoir-signataire-devis-delegation-mandat-apparent-b2b": [
+    {
+      q: "Un salarié peut-il signer un devis au nom de son entreprise ?",
+      a: "Oui, s'il a reçu le pouvoir de le faire, en général par une délégation du représentant légal. Sans pouvoir, ou au-delà de son pouvoir, l'acte est inopposable à l'entreprise (article 1156 du code civil), sauf mandat apparent ou ratification. Demandez la copie de la délégation, ou la confirmation du dirigeant.",
+    },
+    {
+      q: "Comment savoir qui est le représentant légal d'une société ?",
+      a: "Cherchez la société sur l'Annuaire des entreprises, qui affiche ses dirigeants et permet de télécharger un justificatif d'immatriculation au registre national des entreprises. Gardez une capture datée ou le justificatif dans le dossier. Un changement de dirigeant non publié au registre ne vous est pas opposable (article L123-9 du code de commerce), sauf si vous le connaissiez.",
+    },
+    {
+      q: "Les statuts du client limitent les pouvoirs de son président : le devis est-il valable ?",
+      a: "À votre égard, oui. Les clauses des statuts qui limitent les pouvoirs du président d'une SAS, du gérant d'une SARL ou du directeur général d'une SA sont inopposables aux tiers (articles L227-6, L223-18 et L225-56 du code de commerce). Elles jouent à l'intérieur de la société. Cette protection ne vaut que pour le représentant légal, pas pour un salarié.",
+    },
+    {
+      q: "Qu'est-ce que le mandat apparent ?",
+      a: "C'est la situation où vous avez légitimement cru au pouvoir du signataire, notamment en raison du comportement ou des déclarations du client lui-même (article 1156 du code civil). L'acte reste alors opposable au client. C'est un argument à faire valoir en cas de litige, apprécié au cas par cas, pas une méthode pour sécuriser un devis.",
+    },
+    {
+      q: "Qu'est-ce que l'action interrogatoire de l'article 1158 ?",
+      a: "C'est une demande écrite que vous adressez au client, quand vous doutez du pouvoir de son représentant conventionnel pour un acte que vous vous apprêtez à conclure. Vous lui demandez de confirmer, dans un délai raisonnable que vous fixez, que le représentant est habilité. L'écrit doit mentionner qu'à défaut de réponse dans ce délai, le représentant est réputé habilité.",
+    },
+    {
+      q: "Quel délai fixer dans la demande de confirmation ?",
+      a: "Le code civil ne fixe pas de durée : le délai doit être raisonnable. Laissez au client le temps réel de répondre, en tenant compte des jours fériés et de la taille de l'enjeu, et écrivez une date précise de réponse. Ne lancez aucune commande avant cette date, sauf confirmation reçue plus tôt.",
+    },
+    {
+      q: "Le silence du client vaut-il acceptation de mon devis ?",
+      a: "En principe non : l'article 1120 du code civil dit que le silence ne vaut pas acceptation, sauf si la loi, les usages, les relations d'affaires ou des circonstances particulières en décident autrement. L'article 1158 est un de ces cas, mais il porte sur le pouvoir du signataire, pas sur l'acceptation du devis elle-même.",
+    },
+    {
+      q: "Le client a payé l'acompte : le devis est-il ratifié ?",
+      a: "Un acompte payé depuis un compte du client, après la signature, est un indice sérieux de ratification tacite (articles 1156 et 1998 du code civil). Ce n'est pas une certitude, et c'est à vous de la prouver. Faites confirmer l'accord par écrit dès que vous avez un doute.",
+    },
+    {
+      q: "Un maître d'œuvre peut-il signer le devis à la place du client ?",
+      a: "Seulement si le client lui a donné ce pouvoir par un mandat. Son visa sur le devis est un avis technique, pas un engagement du client. Faites signer le client, ou demandez la copie du mandat (article 1998 du code civil).",
+    },
+    {
+      q: "QuoteBuilder vérifie-t-il le pouvoir du signataire ?",
+      a: "Non. QuoteBuilder recueille la demande et les réponses du prospect, permet au prospect de partager le dossier à ses décideurs pour validation et de joindre des fichiers, et vous laisse tracer vos vérifications dans les notes internes. Il ne vérifie pas les dirigeants, ne fait pas signer les devis et ne remplace pas la vérification décrite dans cet article.",
+    },
+  ],
+  "devis-acheteur-public-marche-sans-publicite-b2b": [
+    {
+      q: "Une mairie peut-elle me commander des travaux sur simple devis ?",
+      a: "Oui, quand la valeur estimée de son besoin est inférieure à 100 000 € HT pour des travaux, ou à 60 000 € HT pour des fournitures ou des services (article R2122-8 du code de la commande publique, version en vigueur depuis le 1er avril 2026). Elle doit tout de même choisir une offre pertinente, bien utiliser l'argent public et ne pas toujours retenir la même entreprise. C'est pourquoi elle demande souvent plusieurs devis.",
+    },
+    {
+      q: "Mon devis accepté par une collectivité est-il un marché public ?",
+      a: "Oui. Le code de la commande publique appelle marché tout contrat conclu par un acheteur soumis au code avec une entreprise, pour des travaux, des fournitures ou des services, contre un prix (article L1111-1). Il n'y a pas de montant minimum. Les règles de délai de paiement et d'intérêts moratoires s'appliquent donc à un devis de 1 800 €.",
+    },
+    {
+      q: "Quel est le délai de paiement d'une collectivité ?",
+      a: "Trente jours pour l'État, les collectivités et la plupart des établissements publics (article R2192-10). Cinquante jours pour les établissements publics de santé (article R2192-11, 1°). Soixante jours pour les entreprises publiques qui ne sont pas des établissements publics locaux (article R2192-11, 2°). Le marché peut prévoir un délai plus court, jamais plus long (article L2192-10).",
+    },
+    {
+      q: "À partir de quand le délai de paiement court-il ?",
+      a: "De la réception de la facture par l'acheteur (article R2192-12). Si la facture arrive avant la fin des prestations, ou si sa date de réception est incertaine, le délai part de la fin des prestations (article R2192-13). Le dépôt sur Chorus Pro donne une date de réception claire.",
+    },
+    {
+      q: "L'acheteur peut-il suspendre le délai de paiement ?",
+      a: "Une seule fois, si la facture est incomplète, erronée ou incohérente (article R2192-27), par une notification qui donne une date certaine et précise les pièces à fournir (article R2192-28). Un nouveau délai de 30 jours, ou le solde restant s'il est plus long, court à partir de la réception des pièces (article R2192-29).",
+    },
+    {
+      q: "Comment calculer les intérêts moratoires d'un marché public ?",
+      a: "Montant TTC de la facture, diminué de la retenue de garantie, multiplié par le taux, multiplié par le nombre de jours de retard, divisé par 365. Le taux est celui de la BCE en vigueur au premier jour du semestre où le retard a commencé, plus huit points (article R2192-31). Les jours se comptent du lendemain de l'échéance jusqu'à la mise en paiement incluse (article R2192-32). Exemple : 21 600 € à 10,40 % pendant 30 jours donnent 184,64 €.",
+    },
+    {
+      q: "Quel est le taux des intérêts moratoires en 2026 ?",
+      a: "10,15 % pour des intérêts qui ont commencé à courir au premier semestre 2026 (BCE à 2,15 % au 1er janvier) et 10,40 % pour le second semestre (BCE à 2,40 % au 1er juillet), d'après le tableau des taux directeurs de la Banque de France lu le 17 novembre 2026. Le passage de la BCE à 2,65 % le 16 septembre 2026 ne change pas le taux du second semestre.",
+    },
+    {
+      q: "L'indemnité de 40 € est-elle due même pour un jour de retard ?",
+      a: "Le retard de paiement donne lieu, de plein droit et sans autre formalité, à l'indemnité forfaitaire pour frais de recouvrement (article L2192-13), fixée à 40 € (article D2192-35). Le texte ne prévoit pas de durée minimale de retard. Si vos frais réels de recouvrement sont plus élevés, vous pouvez demander un complément sur justificatifs.",
+    },
+    {
+      q: "Dois-je écrire les intérêts moratoires dans mon devis pour y avoir droit ?",
+      a: "Non, ils sont dus de plein droit. Les écrire reste utile : l'acheteur voit que vous connaissez la règle, et votre clause rappelle aussi Chorus Pro, les références de facture et l'interruption unique du délai. C'est souvent ce rappel qui évite le retard.",
+    },
+    {
+      q: "QuoteBuilder dépose-t-il mes factures sur Chorus Pro ou calcule-t-il les intérêts ?",
+      a: "Non. QuoteBuilder recueille la demande de devis, les réponses et les fichiers du prospect, et vous laisse suivre le dossier en équipe avec des notes internes. Il ne fait ni facture, ni dépôt sur Chorus Pro, ni suivi des paiements. Le calcul des intérêts se fait avec le calculateur gratuit, qui fonctionne sans compte.",
+    },
+  ],
+  "tva-client-etranger-ue-export-devis-b2b": [
+    {
+      q: "Un devis pour un client européen doit-il être hors taxes ?",
+      a: "Il doit au moins dire clairement si le prix est hors taxes ou toutes taxes comprises, et quel régime vous retenez. Pour une livraison intracommunautaire ou un service à un professionnel européen, le prix hors taxes est la base, et la TVA française ne s'ajoute que si une condition manque. Écrivez-le dans le devis.",
+    },
+    {
+      q: "Suffit-il que le client soit à l'étranger pour ne pas facturer de TVA ?",
+      a: "Non. Pour des biens, ce qui compte est le transport hors de France, le numéro de TVA du client et vos preuves (articles 258 et 262 ter du CGI). Pour des services, c'est la qualité d'assujetti du client et le lieu où il est établi (article 259). Un client étranger qui fait livrer les biens en France paie la TVA française.",
+    },
+    {
+      q: "Que se passe-t-il si le client ne donne pas son numéro de TVA ?",
+      a: "Pour une livraison de biens vers un autre pays de l'Union, l'exonération ne s'applique pas : le BOFiP indique que le vendeur n'a pas d'autre choix que de facturer la TVA (BOI-TVA-CHAMP-30-20-10, § 100). Si le client donne ensuite un numéro valide et établit qu'il était assujetti, la facture est rectifiée.",
+    },
+    {
+      q: "Comment vérifier un numéro de TVA intracommunautaire ?",
+      a: "Sur le service VIES de la Commission européenne, qui indique si le numéro est valide dans l'État qui l'a attribué. Gardez une trace datée de la vérification avec le dossier : le BOFiP demande au vendeur de s'assurer de l'existence et de la validité du numéro.",
+    },
+    {
+      q: "Quelle mention mettre sur la facture d'une livraison intracommunautaire ?",
+      a: "Les numéros de TVA du vendeur et de l'acquéreur (242 nonies A, 3°) et la référence de l'exonération (12°), par exemple « Exonération de TVA, article 262 ter I du CGI ». Indiquez aussi que la facture porte sur des biens (8° bis).",
+    },
+    {
+      q: "Et pour un service rendu à une entreprise d'un autre pays de l'UE ?",
+      a: "La mention « Autoliquidation » (242 nonies A, 13°), votre numéro de TVA et celui du client (4°), sans montant de TVA. Le service entre dans votre état récapitulatif des clients (article 289 B).",
+    },
+    {
+      q: "Quelle preuve garder pour une exportation hors de l'Union ?",
+      a: "La déclaration en douane d'exportation certifiée, ou une preuve alternative admise. Si le client organise le transport, la déclaration de son transporteur ou transitaire attestant la sortie, avec la preuve du paiement (BOI-TVA-CHAMP-30-30-10-20, § 25).",
+    },
+    {
+      q: "Le passage au code des impositions sur les biens et services change-t-il mes factures en 2027 ?",
+      a: "Pas sur le fond. Le rescrit BOI-RES-TVA-000253-20261007 indique que la recodification n'a aucune incidence sur les règles de facturation, et que les mentions des factures peuvent renvoyer au code général des impôts jusqu'au 30 juin 2028. Prévoyez la mise à jour de vos modèles avant cette date.",
+    },
+    {
+      q: "Je pose du matériel chez un client en Belgique : est-ce une livraison intracommunautaire ?",
+      a: "Non. Quand vous montez ou installez le bien, la livraison est située là où a lieu le montage (article 258 I b du CGI), donc en Belgique. La TVA belge peut s'appliquer et vous devrez peut-être vous y identifier. Faites valider le dossier avant le devis.",
+    },
+    {
+      q: "QuoteBuilder calcule-t-il la TVA d'un devis étranger ?",
+      a: "Non. QuoteBuilder recueille la demande, les réponses et les fichiers du prospect, et vous laisse tracer les vérifications dans les notes internes. Il n'affiche pas de hors taxes ni de toutes taxes comprises, ne vérifie pas les numéros de TVA et ne fait pas de factures. Les mentions fiscales viennent de votre outil de facturation.",
+    },
+  ],
+  "forfait-regie-temps-passe-devis-b2b": [
+    {
+      q: "Quelle différence entre un forfait et une régie ?",
+      a: "Au forfait, le prix est fixé à l'avance pour un périmètre décrit, quel que soit le temps passé : le prestataire porte le risque d'heures en plus. En régie, le client paie le temps passé, au taux convenu : il porte ce risque. Entre les deux, la régie plafonnée limite ce que le client peut payer.",
+    },
+    {
+      q: "Peut-on augmenter un forfait en cours de mission ?",
+      a: "Pas seul. Un contrat ne peut être modifié que du consentement mutuel des parties, ou pour les causes que la loi autorise (article 1193 du code civil). Si le périmètre change, un avenant écrit et chiffré avant exécution est la méthode la plus sûre. Si le prix doit pouvoir évoluer, par exemple selon un indice, il faut le prévoir dès le devis : voir la [révision de prix et l'indexation](https://www.quotebuilder.co/blog/revision-prix-indexation-devis-b2b).",
+    },
+    {
+      q: "Quelle réserve de risque mettre dans un forfait ?",
+      a: "Il n'existe pas de pourcentage légal ni universel. Un repère simple : la réserve couvre au moins la moitié de l'écart entre votre estimation basse et votre estimation haute, rapporté à l'estimation probable. Mesurez aussi ce que vos derniers projets ont réellement coûté par rapport à l'estimation : c'est votre meilleure donnée.",
+    },
+    {
+      q: "Une estimation en régie engage-t-elle le prestataire ?",
+      a: "Elle ne devrait pas, si le devis le dit : « estimation de 60 à 100 heures, sans engagement sur le nombre d'heures ». Un seul chiffre précis écrit sans réserve sera lu comme un engagement par le client. Écrivez une fourchette, et prévoyez une alerte à 80 %.",
+    },
+    {
+      q: "Le client peut-il contester une facture en régie ?",
+      a: "Oui. Il peut contester les heures qu'il juge non justifiées. C'est pourquoi un relevé d'heures détaillé, communiqué régulièrement, et un délai de contestation écrit dans le devis protègent les deux parties. En cas de désaccord sur le prix d'une prestation, l'article 1165 du code civil demande au prestataire qui fixe le prix de pouvoir en motiver le montant.",
+    },
+    {
+      q: "Qu'est-ce qu'une régie plafonnée ?",
+      a: "C'est une facturation au temps passé avec un montant maximum. Le client sait ce qu'il paiera au plus, le prestataire facture le temps réel jusqu'au plafond. Le devis doit dire ce qui se passe quand 80 % du plafond sont atteints, et que rien n'est facturé au-delà sans accord écrit.",
+    },
+    {
+      q: "Quand choisir un forfait par phase ?",
+      a: "Quand le besoin est trop flou pour un prix ferme mais que le client veut avancer : la phase 1 (étude, cadrage, prototype) est un forfait court avec un livrable, la phase 2 est chiffrée à la fin de la phase 1, avec ce qu'on a appris. Aucune heure de la phase 2 ne commence sans avenant écrit.",
+    },
+    {
+      q: "Les articles 1793 et 1794 du code civil s'appliquent-ils à une prestation de services ?",
+      a: "Ils concernent le marché à forfait de construction d'un bâtiment d'après un plan arrêté et convenu, et la résiliation d'un tel marché par le maître. Ils ne sont pas écrits pour une prestation informatique, de conseil ou de formation. Ils illustrent une logique (pas de supplément sans accord écrit), mais il ne faut pas les copier dans un devis sans vérifier qu'ils s'appliquent.",
+    },
+    {
+      q: "QuoteBuilder suit-il les heures passées ou facture-t-il au temps passé ?",
+      a: "Non. QuoteBuilder reçoit les demandes de devis, les trie, les suit et affiche un prix en euros entiers (fixe, fourchette ou « Sur devis »). Il n'a ni relevé d'heures, ni facturation, ni encaissement, ni signature électronique : le temps passé et les avenants se gèrent dans vos outils.",
+    },
+    {
+      q: "Le comparateur donne-t-il le bon mode de facturation ?",
+      a: "Il compare les prix, calcule la marge et le point mort, contrôle dix points et propose un mode d'après un barème simple (périmètre, inconnues, écart des estimations). C'est une aide à la discussion, pas un avis juridique ni une garantie de marge. Les valeurs par défaut sont des hypothèses d'exemple.",
+    },
+  ],
+  "bon-a-tirer-bat-validation-avant-production-devis-b2b": [
+    {
+      q: "Le bon à tirer est-il obligatoire ?",
+      a: "Non. Aucun texte n'impose un BAT entre professionnels. C'est une pratique contractuelle : il existe si le devis ou les conditions le prévoient, et il produit les effets qu'ils lui donnent. Pour une fabrication sur mesure, il est fortement recommandé.",
+    },
+    {
+      q: "Un BAT sans réponse vaut-il validation ?",
+      a: "Pas par principe. L'article 1120 du code civil dit que le silence ne vaut pas acceptation, sauf si la loi, les usages, les relations d'affaires ou des circonstances particulières en décident autrement. Une clause de validation tacite peut exister, mais elle sera discutée en cas de litige. Le plus sûr reste de ne pas produire sans validation écrite.",
+    },
+    {
+      q: "Qui paie une erreur présente dans le BAT validé ?",
+      a: "Si le devis prévoit qu'une erreur reproduite à l'identique depuis le BAT validé reste à la charge du client, c'est le client. Sans clause, le fabricant dispose d'un argument fort (le client a vu et validé), mais la discussion dépendra de ce que la validation couvrait et de la preuve de cette validation.",
+    },
+    {
+      q: "Combien de tours de corrections faut-il inclure ?",
+      a: "La loi ne fixe rien. Deux tours sont fréquents pour un BAT d'impression ou de signalétique. L'important est d'écrire le nombre inclus, ce qu'est un tour et le prix des suivants.",
+    },
+    {
+      q: "Le délai de livraison court-il à partir de la commande ou du BAT ?",
+      a: "De ce que dit le devis. Sans précision, le client peut considérer que la date promise est ferme. Écrivez que le délai de fabrication court à partir de la validation écrite du dernier BAT, et si vous donnez une date, à quelle date limite de validation elle correspond.",
+    },
+    {
+      q: "Un e-mail « OK » suffit-il comme validation ?",
+      a: "C'est une trace, mais faible. Les articles 1366 et 1367 du code civil donnent force probante à l'écrit électronique si son auteur est identifié et son intégrité garantie. Un e-mail de la personne désignée qui cite le numéro de version est bien plus solide qu'un « OK » dans un fil où circulent plusieurs versions.",
+    },
+    {
+      q: "Un BAT PDF valide-t-il les couleurs ?",
+      a: "Non, sauf si le devis le dit, ce qui serait risqué pour le fabricant. Un écran ne restitue pas la couleur imprimée sur un support réel. Si la couleur compte, prévoyez une épreuve ou un échantillon et une tolérance écrite.",
+    },
+    {
+      q: "Le prototype ou la présérie peuvent-ils être facturés même sans commande de série ?",
+      a: "Oui, si le devis le prévoit. Écrivez leur prix, leur caractère dû quelle que soit la suite, et s'ils sont déduits de la commande de série.",
+    },
+    {
+      q: "Que faire si le client modifie sa demande après validation ?",
+      a: "Traitez-la comme une modification de commande : chiffrez un avenant avec le nouveau prix et le nouveau délai, et facturez ce qui a déjà été produit si le devis le prévoit.",
+    },
+    {
+      q: "QuoteBuilder gère-t-il l'envoi et la validation des BAT ?",
+      a: "Non. QuoteBuilder recueille la demande et les fichiers du prospect (zone « Plan (PDF ou image) », espace prospect), et vous permet de tracer les étapes dans les notes internes. Il n'a pas d'objet BAT, pas de signature électronique, et l'équipe ne peut pas joindre de fichier au dossier : le BAT part par votre messagerie ou votre outil de production.",
+    },
+  ],
+  "plan-prevention-entreprise-exterieure-devis-b2b": [
+    {
+      q: "Qu'est-ce qu'un plan de prévention ?",
+      a: "C'est le document par lequel l'entreprise qui accueille (entreprise utilisatrice) et l'entreprise qui intervient (entreprise extérieure) fixent, d'un commun accord et avant le début des travaux, les mesures prises par chacune pour prévenir les risques nés de l'interférence entre leurs activités, installations et matériels (article R4512-6 du code du travail).",
+    },
+    {
+      q: "Quand le plan de prévention doit-il être écrit ?",
+      a: "Dans deux cas : quand l'opération représente au moins 400 heures de travail prévisibles sur douze mois au plus, sous-traitants compris, en continu ou non, ou quand elle comporte un des travaux dangereux de la liste fixée par l'arrêté du 19 mars 1993, quelle que soit sa durée (article R4512-7). Hors de ces cas, il peut être oral, mais un écrit simplifié reste prudent.",
+    },
+    {
+      q: "Les heures des sous-traitants comptent-elles dans les 400 heures ?",
+      a: "Oui. L'article R4512-7 vise l'opération réalisée par les entreprises extérieures, « y compris les entreprises sous-traitantes auxquelles elles peuvent faire appel ». On additionne toutes les heures prévisibles de l'opération.",
+    },
+    {
+      q: "Qui rédige le plan de prévention ?",
+      a: "Le texte dit que les employeurs l'arrêtent d'un commun accord. En pratique, le client propose souvent son modèle et l'entreprise extérieure le complète avec ses modes opératoires, ses matériels et ses intervenants. Les deux le signent quand il est écrit.",
+    },
+    {
+      q: "L'inspection commune est-elle obligatoire même pour une petite intervention ?",
+      a: "Le texte prévoit une inspection commune préalable avant toute opération réalisée par une entreprise extérieure dans l'établissement (article R4512-2). Pour une intervention brève et répétée, elle peut être courte, mais elle reste la base de l'analyse des risques.",
+    },
+    {
+      q: "Quelle différence entre plan de prévention et protocole de sécurité ?",
+      a: "Le protocole de sécurité concerne le chargement et le déchargement de marchandises par une entreprise de transport, en provenance ou à destination d'un lieu extérieur. Il est toujours écrit et remplace le plan de prévention pour ces opérations (articles R4515-1 à R4515-11). Quand les mêmes personnes montent ensuite du matériel sur place, le montage relève du plan de prévention.",
+    },
+    {
+      q: "Le temps d'accueil sécurité peut-il être facturé au client ?",
+      a: "Le temps consacré à l'information des salariés est du temps de travail effectif (article R4512-16) : il est payé aux salariés. Rien n'interdit de le faire apparaître dans le prix, comme une ligne ou une hypothèse de chiffrage. Le plus sûr est de l'écrire dans le devis, avec ce qui se passe si le site impose davantage.",
+    },
+    {
+      q: "Le plan de prévention s'applique-t-il sur un chantier de bâtiment ?",
+      a: "Pas sur les chantiers de bâtiment ou de génie civil soumis à la coordination SPS de l'article L4532-2, ni sur les autres chantiers clos et indépendants (article R4511-3). C'est alors le régime de la coordination de chantier qui joue. Les travaux dans un bâtiment en activité, au milieu des salariés du client, relèvent en revanche souvent du plan de prévention.",
+    },
+    {
+      q: "Que faire si le seuil de 400 heures est dépassé en cours de chantier ?",
+      a: "L'article R4512-7 le prévoit : dès qu'il apparaît que les heures doivent atteindre 400, le plan doit être établi par écrit. Prévenez le client, formalisez le plan avant la suite des travaux, et vérifiez que le dépassement est couvert par un avenant au devis.",
+    },
+    {
+      q: "QuoteBuilder rédige-t-il le plan de prévention ?",
+      a: "Non. QuoteBuilder aide à poser les bonnes questions dès la demande de devis (site en activité, accueil sécurité, contraintes), à recevoir les fichiers du prospect et à garder des notes internes. Il ne rédige ni ne fait signer de plan de prévention ou de protocole de sécurité, et ne compte pas les heures d'une opération.",
+    },
+  ],
+  "outillage-specifique-moule-propriete-amortissement-devis-b2b": [
+    {
+      q: "Qui est propriétaire d'un moule payé par le client ?",
+      a: "Celui que le devis désigne. Aucun texte ne dit qu'un moule appartient à celui qui le paie. Si le devis dit que le client est propriétaire sans dire quand, le transfert se fait en principe à la conclusion du contrat (article 1196 du code civil). S'il ne dit rien du tout, chaque partie peut soutenir sa position, et c'est le juge qui qualifiera le contrat. Écrivez le propriétaire et la date du transfert.",
+    },
+    {
+      q: "Vaut-il mieux facturer l'outillage à part ou l'amortir dans le prix des pièces ?",
+      a: "Facturer à part protège le fabricant et rend le prix des pièces lisible. Amortir baisse le prix d'entrée mais fait porter au fabricant le risque de volume. Le mixte partage ce risque. Le choix dépend de la fermeté des volumes et de la solidité du client. Dans tous les cas, écrivez la formule, la quantité et ce qui se passe si elle n'est pas atteinte.",
+    },
+    {
+      q: "Comment calculer l'amortissement d'un outillage dans le prix d'une pièce ?",
+      a: "Part amortie (coût de l'outil moins ce qui est facturé à part) divisée par la quantité d'amortissement, arrondie au centime supérieur. Dans l'exemple, 12 000 € sur 20 000 pièces donnent 0,60 € par pièce. Le [calculateur d'amortissement d'un outillage spécifique](https://www.quotebuilder.co/outils/calculateur-amortissement-outillage-specifique) fait le calcul et le tableau pas à pas. Ce n'est pas l'amortissement comptable.",
+    },
+    {
+      q: "Que se passe-t-il si le client arrête ses commandes avant la quantité prévue ?",
+      a: "Sans clause, le reste non amorti n'est dû par personne de façon évidente, surtout si la quantité était une estimation. Avec une clause d'arrêt anticipé, le client paie l'amortissement par pièce multiplié par les pièces non commandées, 7 200 € dans l'exemple. L'article 1794 du code civil, qui vise le marché à forfait, n'est pas une solution sûre pour une commande de pièces sans volume ferme.",
+    },
+    {
+      q: "Le fabricant peut-il refuser de rendre le moule tant qu'il n'est pas payé ?",
+      a: "Le dépositaire peut retenir le dépôt jusqu'à l'entier paiement de ce qui lui est dû à raison du dépôt (article 1948), et l'article 2286 ouvre un droit de rétention dans d'autres cas. Le lien entre la somme réclamée et l'outil se discute pour un reste d'amortissement ; une clause de rétention qui vise toutes les sommes dues au titre de l'outillage et de sa garde évite le débat. La rétention se perd si le fabricant laisse partir l'outil volontairement.",
+    },
+    {
+      q: "Le client peut-il récupérer son moule à tout moment ?",
+      a: "S'il en est propriétaire et que le moule est en dépôt chez le fabricant, le dépôt doit lui être remis dès qu'il le réclame (article 1944), sous réserve du droit de rétention pour ce qui est dû. En pratique, prévoyez un délai court pour préparer l'outil, le lieu de remise et la charge du transport (articles 1942 et 1943).",
+    },
+    {
+      q: "Qui doit assurer un outillage gardé chez le fabricant ?",
+      a: "Celui que le devis désigne. Les deux schémas courants : le fabricant l'assure au titre des biens confiés, ou le client l'assure dans sa police en indiquant le lieu. Écrivez aussi la valeur assurée, de préférence une valeur de remplacement. Sans écrit, chacun croit souvent que l'autre est assuré.",
+    },
+    {
+      q: "Combien de temps le fabricant doit-il garder un outillage inutilisé ?",
+      a: "Les articles du dépôt relus pour cet article ne fixent pas de durée de conservation : c'est au devis de la fixer. Une durée après la dernière commande, par exemple trente-six mois, suivie d'une lettre au client et d'un délai pour reprendre l'outil à ses frais, évite à la fois la destruction surprise et le stockage sans fin.",
+    },
+    {
+      q: "Le client récupère-t-il aussi les plans et fichiers de l'outil ?",
+      a: "Pas automatiquement. Être propriétaire de l'objet ne donne pas les fichiers qui ont servi à le concevoir. Si le client en a besoin, il faut le négocier et l'écrire : moment de la remise, format, usage permis. Le fabricant qui veut protéger son savoir-faire l'écrit aussi.",
+    },
+    {
+      q: "QuoteBuilder calcule-t-il l'amortissement d'un outillage ?",
+      a: "Non. Le catalogue connaît un prix fixe, une fourchette ou « Sur devis », et une ligne vaut prix unitaire fois quantité, sans palier ni coût d'outillage. Vous pouvez ajouter un produit « Outillage spécifique » en « Sur devis » pour l'annoncer dès la demande, faire le calcul avec le calculateur gratuit, puis mettre le prix et la clause dans votre devis final. Le PDF de QuoteBuilder reste un document indicatif, non contractuel.",
+    },
+  ],
+  "reception-travaux-proces-verbal-reserves-devis-b2b": [
+    {
+      q: "Qu'est-ce que la réception des travaux ?",
+      a: "C'est l'acte par lequel le maître de l'ouvrage déclare accepter l'ouvrage, avec ou sans réserves (article 1792-6 du code civil). Elle est demandée par la partie la plus diligente, se fait à l'amiable ou à défaut en justice, et toujours contradictoirement. C'est elle qui fait courir les garanties.",
+    },
+    {
+      q: "Le procès-verbal de réception est-il obligatoire ?",
+      a: "La loi n'impose pas de forme dans un marché privé, mais sans procès-verbal la réception se prouve mal et se date mal. Les tribunaux admettent parfois une réception tacite, au cas par cas. Un procès-verbal daté et signé des deux parties évite le débat.",
+    },
+    {
+      q: "Quel est le délai pour lever les réserves ?",
+      a: "Aucun délai légal fixe : les délais de reprise se fixent d'un commun accord (article 1792-6). Écrivez-les au procès-verbal, et prévoyez dans le devis un délai par défaut, par exemple trente jours. Si le délai n'est pas tenu, le client peut, après mise en demeure, faire exécuter les reprises aux frais de l'entreprise.",
+    },
+    {
+      q: "Que se passe-t-il si un défaut visible n'a pas été réservé ?",
+      a: "En général, un défaut apparent le jour de la réception et non réservé est considéré comme accepté, et se reproche ensuite très difficilement. Les désordres qui apparaissent après la réception restent couverts par la garantie de parfait achèvement, s'ils sont notifiés par écrit dans l'année.",
+    },
+    {
+      q: "Le client peut-il refuser la réception ?",
+      a: "Oui, s'il estime que l'ouvrage n'est pas en état d'être reçu, et il doit dire pourquoi. Pour des défauts de finition, la réception avec réserves est la bonne réponse. Un refus sans raison sérieuse peut conduire l'entreprise à demander une réception judiciaire.",
+    },
+    {
+      q: "Quelles garanties partent de la réception ?",
+      a: "La garantie de parfait achèvement (un an, article 1792-6), la garantie de bon fonctionnement des éléments d'équipement dissociables (deux ans au moins, article 1792-3) et la responsabilité décennale (dix ans, articles 1792 et 1792-4-1). La retenue de garantie se libère aussi un an après la réception.",
+    },
+    {
+      q: "Peut-on réduire la garantie de parfait achèvement dans le devis ?",
+      a: "Non. Une clause qui exclut ou limite les garanties des articles 1792 à 1792-6 est réputée non écrite (article 1792-5). Le devis peut prévoir une garantie plus longue, jamais plus courte.",
+    },
+    {
+      q: "Le client peut-il retenir une partie du solde à cause des réserves ?",
+      a: "Dans un marché de travaux privé, la retenue de garantie est limitée à 5 % des acomptes et doit être consignée ou remplacée par une caution (loi n° 71-584). Au-delà, le client doit justifier d'une raison sérieuse et proportionnée au défaut.",
+    },
+    {
+      q: "Les équipements professionnels sont-ils couverts par la décennale ?",
+      a: "Les éléments d'équipement dont la fonction exclusive est de permettre une activité professionnelle dans l'ouvrage ne sont pas des éléments d'équipement au sens des articles 1792 à 1792-4 (article 1792-7). Ils relèvent de la garantie du contrat et des vices cachés. Les travaux sur l'ouvrage qui les accueille gardent leurs garanties.",
+    },
+    {
+      q: "QuoteBuilder gère-t-il la réception des travaux ?",
+      a: "Non. QuoteBuilder reçoit et qualifie les demandes de devis, avec un funnel, un récapitulatif chiffré, un dossier et des relances. Il ne gère ni le chantier, ni le procès-verbal, ni les réserves, ni les délais de garantie. Le vérificateur gratuit calcule ces délais en local, sans compte.",
+    },
+  ],
+  "cotraitance-groupement-entreprises-devis-b2b": [
+    {
+      q: "Quelle différence entre cotraitance et sous-traitance ?",
+      a: "En cotraitance, chaque entreprise est partie au contrat avec le client et lui répond directement de ses prestations. En sous-traitance, une entreprise confie à une autre, par un contrat distinct et sous sa responsabilité, une partie du contrat qu'elle a passé avec le client (article 1er de la loi n° 75-1334 du 31 décembre 1975). Le sous-traitant n'est pas lié au client, et l'entreprise principale répond seule de tout envers lui.",
+    },
+    {
+      q: "Un groupement d'entreprises est-il une société ?",
+      a: "Non. Un groupement momentané d'entreprises n'a pas de personnalité morale. Il ne signe pas, n'encaisse pas et ne peut pas être poursuivi en tant que tel : ce sont ses membres qui s'engagent. Les membres peuvent créer une société commune s'ils le souhaitent, mais c'est alors une autre construction.",
+    },
+    {
+      q: "Groupement conjoint ou solidaire : lequel choisir ?",
+      a: "Le groupement conjoint limite l'engagement de chacun à ses prestations, mais laisse au client le risque de défaillance de chaque membre. Le groupement solidaire engage chacun pour le tout, ce qui protège le client mais expose tous les membres. Le groupement conjoint avec mandataire solidaire est un compromis : le mandataire garantit l'ensemble, les autres ne répondent que d'eux-mêmes. Le choix dépend de la confiance entre membres, de leur taille relative et de ce que le client exige.",
+    },
+    {
+      q: "Si nous n'écrivons rien, sommes-nous solidaires ?",
+      a: "En droit civil, non : la solidarité ne se présume pas (article 1310 du code civil), et chacun ne doit que sa part. Mais entre commerçants, la jurisprudence présume la solidarité des débiteurs pour une obligation commerciale. Des sociétés commerciales qui répondent ensemble sans rien écrire risquent donc d'être traitées comme solidaires. Écrivez toujours la forme du groupement dans le devis.",
+    },
+    {
+      q: "La convention de groupement suffit-elle ?",
+      a: "Non, pas face au client. Le client n'est pas partie à la convention (article 1199 du code civil) : elle règle les rapports entre membres, mais ne modifie pas ce que le devis accepté prévoit envers lui. La forme du groupement, la liste des membres, la répartition des prestations et le circuit de paiement doivent figurer dans le devis.",
+    },
+    {
+      q: "Le mandataire peut-il signer pour tout le monde ?",
+      a: "Oui, s'il a reçu un pouvoir qui le permet (article 1984 du code civil), et dans les limites de ce pouvoir (article 1989). Un pouvoir écrit, signé par chaque membre avant l'envoi du devis, évite toute discussion. Sans pouvoir, sa signature n'engage que lui.",
+    },
+    {
+      q: "Que se passe-t-il si un membre fait faillite en cours de chantier ?",
+      a: "Face au client, tout dépend de la forme écrite : en groupement conjoint, le client s'adresse au seul membre défaillant ; avec mandataire solidaire, au défaillant ou au mandataire ; en groupement solidaire, à n'importe quel membre. Entre membres, celui qui a payé se retourne contre le défaillant (articles 1317 à 1319 du code civil). Si celui-ci ne peut pas rembourser, la perte se répartit selon la convention, ou selon l'article 1317 entre codébiteurs solidaires.",
+    },
+    {
+      q: "Comment répartir les frais communs ?",
+      a: "Au prorata des parts, à parts égales, ou selon une clé propre à chaque poste. Le prorata est la clé la plus neutre. L'important est de l'écrire dans la convention avant l'acceptation du devis. Le calculateur répartit les frais au prorata ou à parts égales en gardant une somme exacte à l'euro.",
+    },
+    {
+      q: "QuoteBuilder gère-t-il les groupements ?",
+      a: "Non. QuoteBuilder reçoit la demande, calcule un récapitulatif indicatif à partir de votre catalogue, et crée un dossier dans une seule organisation, assignable aux membres actifs de votre équipe. Il n'a pas de notion de groupement, de cotraitant ou de mandataire, ne produit pas le devis contractuel, ne gère ni signature électronique ni facturation, et ne répartit pas les montants entre entreprises. La convention et les pouvoirs se préparent dans vos outils habituels.",
+    },
+    {
+      q: "Par où commencer concrètement ?",
+      a: "Listez les membres et leurs prestations, chiffrez chaque part, choisissez la forme du groupement, faites signer les pouvoirs et la convention, puis rédigez le devis avec la clause de groupement. Le [calculateur de répartition d'un groupement de cotraitants](https://www.quotebuilder.co/outils/calculateur-repartition-groupement-cotraitance) vérifie douze points, répartit les montants, simule une défaillance et rédige la clause et le message.",
+    },
+  ],
+  "cession-creance-affacturage-dailly-devis-b2b": [
+    {
+      q: "Peut-on céder une facture sans l'accord de son client ?",
+      a: "Oui. L'article 1321 du code civil précise que le consentement du débiteur n'est pas requis, sauf si la créance a été stipulée incessible. Et entre professionnels exerçant une activité de production, de distribution ou de services, une clause qui interdit de céder ses créances est nulle (article L442-3 c) du code de commerce). Il faut en revanche informer le client pour que la cession lui soit opposable.",
+    },
+    {
+      q: "Quelle est la différence entre Dailly et affacturage ?",
+      a: "Le Dailly est un crédit bancaire garanti par la cession de vos factures, au moyen d'un bordereau (articles L313-23 et suivants du code monétaire et financier). Vous gardez en général le recouvrement et le risque d'impayé. L'affacturage repose le plus souvent sur la subrogation : le factor paie la facture, devient créancier, se charge souvent du recouvrement et peut garantir l'impayé selon l'offre.",
+    },
+    {
+      q: "Faut-il un écrit pour céder une créance ?",
+      a: "Oui. La cession de créance du code civil doit être constatée par écrit, à peine de nullité (article 1322). Le bordereau Dailly doit contenir les mentions de l'article L313-23. La subrogation doit être expresse et consentie au moment du paiement (article 1346-1).",
+    },
+    {
+      q: "À partir de quand le client doit-il payer le factor ?",
+      a: "À partir du moment où la cession ou la subrogation lui a été notifiée, ou s'il en a pris acte (articles 1324 et 1346-5 du code civil). En Dailly, à compter de la notification de la banque, il ne se libère valablement qu'auprès d'elle (article L313-28).",
+    },
+    {
+      q: "Le client peut-il refuser de payer le factor à cause d'un défaut ?",
+      a: "Oui, s'il avait une bonne raison de ne pas vous payer. Il peut opposer au cessionnaire l'exception d'inexécution, la résolution, la nullité ou la compensation des dettes connexes. Seul un acte d'acceptation Dailly l'empêche d'opposer à la banque ses exceptions personnelles, sauf fraude.",
+    },
+    {
+      q: "Peut-on céder un devis accepté avant d'avoir exécuté la prestation ?",
+      a: "Le code civil et le Dailly permettent de céder une créance future. Mais tant que la prestation n'est pas exécutée, le client ne doit rien, et le cessionnaire le sait. En affacturage, le factor paie une facture émise : il faut attendre l'exécution et la facture.",
+    },
+    {
+      q: "Combien coûte l'affacturage ?",
+      a: "Cela dépend de l'offre. Il faut additionner la commission, les intérêts sur la somme avancée et les frais fixes, puis ramener ce coût à l'année pour comparer. Dans l'exemple de cet article, 296 € pour une facture de 18 000 € financée cinquante-six jours, soit environ 11,9 % par an sur la somme avancée. Ce sont des hypothèses d'exemple.",
+    },
+    {
+      q: "Qu'est-ce que la retenue de garantie en affacturage ?",
+      a: "C'est la part de la facture que le factor ne vous avance pas, pour couvrir les avoirs, les litiges et les impayés. Elle vous est rendue après le paiement du client, selon les règles du contrat. Ce n'est pas un coût, mais ce n'est pas de la trésorerie disponible tout de suite.",
+    },
+    {
+      q: "Comment éviter la fraude au changement de RIB ?",
+      a: "Ne changez jamais de coordonnées de paiement sur la foi d'un e-mail. Exigez une notification écrite signée, vérifiez par un appel au numéro habituel de votre fournisseur, et appliquez le changement à la seule facture concernée sauf mention contraire.",
+    },
+    {
+      q: "QuoteBuilder gère-t-il la cession des factures ?",
+      a: "Non. QuoteBuilder reçoit et organise les demandes de devis. Il n'a ni facturation, ni encaissement, ni connexion à un factor. Les notes internes du dossier, en ajout seul, peuvent servir de journal daté. Le calcul du coût et les points de contrôle se font avec le [vérificateur de cession de créance et d'affacturage](https://www.quotebuilder.co/outils/verificateur-cession-creance-affacturage), en local, sans compte.",
+    },
+  ],
+  "erreur-prix-devis-b2b": [
+    {
+      q: "Peut-on corriger un devis déjà accepté ?",
+      a: "Le prix accepté engage les deux parties (articles 1103 et 1121). Une erreur d'arithmétique visible sur le devis peut être rectifiée si elle l'est au regard des éléments de calcul connus des deux parties au moment de l'acceptation (Cass. 3e civ., 12 septembre 2012, n° 11-13.120). Les autres erreurs se négocient, et une mauvaise estimation ne permet pas de revenir sur le prix (article 1136).",
+    },
+    {
+      q: "Mon devis comporte une erreur et le client ne l'a pas encore accepté : que faire ?",
+      a: "Retirez-le par écrit, immédiatement, et envoyez un devis corrigé, numéroté et daté, qui remplace expressément le premier. Tant que l'offre n'est pas parvenue au client, elle se retire librement (article 1115) ; une fois reçue, sa rétractation empêche le contrat de se former mais peut engager votre responsabilité extracontractuelle (article 1116).",
+    },
+    {
+      q: "J'ai sous-estimé le temps de pose : puis-je facturer plus ?",
+      a: "Pas sans l'accord du client. C'est une erreur sur la valeur : une appréciation économique inexacte de votre propre prestation n'est pas une cause de nullité (article 1136). Le prix accepté reste dû. Vous pouvez proposer un avenant, que le client reste libre de refuser.",
+    },
+    {
+      q: "Le client savait que mon prix était faux : est-il de mauvaise foi ?",
+      a: "Cela dépend de ce qu'il savait. Ne pas révéler son estimation de la valeur n'est pas un dol (article 1137). Mais une erreur d'addition visible sur le devis n'est pas une question d'estimation, et le contrat doit être formé de bonne foi (article 1104). Le seul silence ne suffit pas toujours : la Cour de cassation a censuré une condamnation fondée sur l'absence de signalement d'une erreur de métré, faute d'obligation de vérifier (n° 17-11.226).",
+    },
+    {
+      q: "Le client m'a demandé de confirmer mon prix et je l'ai fait : est-ce grave ?",
+      a: "Oui. Un prix confirmé en termes clairs, excluant toute équivoque, a été jugé une erreur inexcusable, et l'offre acceptée ne pouvait plus être rétractée pour erreur matérielle (Cass. 3e civ., 8 juin 2010, n° 09-66.495). Avant de confirmer un prix sur lequel le client s'interroge, refaites le calcul ligne par ligne.",
+    },
+    {
+      q: "« Sauf erreur ou omission » sur mon devis me protège-t-il ?",
+      a: "Très peu. La formule ne dit pas ce qui fait foi en cas d'erreur. Une clause qui prévoit qu'en cas de discordance les quantités et prix unitaires font foi, et que le total est rectifié dans les deux sens, est beaucoup plus utile, à condition d'avoir été acceptée (article 1119).",
+    },
+    {
+      q: "Et dans un marché à forfait ?",
+      a: "L'article 1793 interdit à l'entrepreneur de demander une augmentation de prix pour des changements non autorisés par écrit avec un prix convenu. Un poste oublié, une quantité fausse ou une mauvaise estimation restent à sa charge, sauf avenant. À l'inverse, le maître d'ouvrage ne peut pas exiger le remboursement d'une erreur de métré sans obligation de vérifier de l'entrepreneur (n° 17-11.226). La recherche d'une erreur d'arithmétique rectifiable reste possible (n° 11-13.120).",
+    },
+    {
+      q: "Combien de temps ai-je pour agir ?",
+      a: "Il n'y a pas de délai légal spécifique pour signaler une erreur de prix ; signalez-la le plus vite possible. Les actions entre professionnels se prescrivent par cinq ans (article 2224 du code civil, article L110-4 du code de commerce) et, pour une nullité pour erreur, le délai court du jour de la découverte (article 1144).",
+    },
+    {
+      q: "QuoteBuilder peut-il éviter les erreurs de prix ?",
+      a: "Il en évite une partie : dans le récapitulatif, chaque ligne vaut prix unitaire × quantité et la fourchette reprend la somme des lignes ou la règle que vous avez posée. Il ne vérifie pas les prix saisis au catalogue, ne fait pas de devis ferme et ne permet pas de modifier un dossier après l'envoi. Le récapitulatif porte le pied « Document indicatif, non contractuel. ».",
+    },
+    {
+      q: "Par où commencer concrètement ?",
+      a: "Ouvrez le [vérificateur d'erreur de prix dans un devis](https://www.quotebuilder.co/outils/verificateur-erreur-prix-devis), saisissez le stade, la nature de l'erreur et les deux montants, puis copiez la clause et le message. Ajoutez ensuite la clause à votre modèle de devis.",
+    },
+  ],
+  "rupture-brutale-relations-commerciales-devis-b2b": [
+    {
+      q: "Qu'est-ce qu'une rupture brutale d'une relation commerciale établie ?",
+      a: "C'est le fait de mettre fin, en tout ou en partie, à une relation commerciale suivie et stable sans préavis écrit suffisant. L'article L442-1 II du code de commerce oblige l'auteur de la rupture à réparer le préjudice causé. Ce n'est pas la rupture qui est sanctionnée, c'est l'absence de préavis suffisant.",
+    },
+    {
+      q: "Une suite de devis acceptés peut-elle former une relation établie ?",
+      a: "Oui. Une relation établie n'exige pas un contrat unique. Une succession régulière de devis, de commandes ou de contrats annuels peut suffire, et la durée se compte depuis le début réel de la relation, même sous des contrats antérieurs (Cass. com., 16 février 2022, n° 20-18.844).",
+    },
+    {
+      q: "Quelle durée de préavis faut-il donner ?",
+      a: "Il n'y a pas de barème légal. Le juge tient compte de l'ancienneté, de la dépendance, de l'exclusivité, des investissements et des usages. Des décisions publiées ont retenu quatre mois pour deux ans et demi de relation, six mois pour quatorze ans avec 15 à 20 % du chiffre d'affaires, et jugé suffisants trente-cinq mois pour vingt-trois ans. Un préavis de dix-huit mois met l'auteur à l'abri d'un reproche sur la durée.",
+    },
+    {
+      q: "Le préavis prévu au contrat suffit-il ?",
+      a: "Il doit être respecté, mais il peut être jugé insuffisant au regard de l'ancienneté de la relation. Et une clause qui dispense de tout préavis n'écarte pas l'article L442-1 II (Cass. com., 5 avril 2018, n° 16-26.568).",
+    },
+    {
+      q: "Le préavis peut-il être donné par e-mail ?",
+      a: "Le texte exige un écrit, sans imposer de forme. Un e-mail daté est un écrit ; une lettre recommandée avec avis de réception prouve mieux la date de réception. L'écrit doit annoncer clairement la fin ou la réduction et sa date d'effet.",
+    },
+    {
+      q: "Une forte baisse des commandes est-elle une rupture ?",
+      a: "Elle peut l'être. Le texte vise la rupture « même partielle », et une baisse significative du chiffre d'affaires peut caractériser une rupture partielle (Cass. com., 16 février 2022, n° 20-18.844). Depuis août 2026, le texte vise aussi la réduction substantielle des volumes pendant la négociation d'un contrat, même temporaire.",
+    },
+    {
+      q: "Peut-on réduire les commandes pendant le préavis ?",
+      a: "En principe non : le préavis doit être effectif, et la relation doit se poursuivre aux conditions antérieures, sauf circonstances particulières. Des modifications non substantielles restent possibles ; dans un arrêt publié, une baisse d'environ 15 % a été jugée non substantielle (Cass. com., 19 mars 2025, n° 23-23.507).",
+    },
+    {
+      q: "Quand peut-on rompre sans préavis ?",
+      a: "En cas d'inexécution suffisamment grave par l'autre partie, ou de force majeure. Des difficultés ponctuelles, sans mise en garde préalable, ne suffisent pas (Cass. com., 24 juin 2014, n° 12-27.908). Mieux vaut documenter, mettre en demeure, puis décider.",
+    },
+    {
+      q: "Comment se calcule l'indemnité ?",
+      a: "Elle répare le seul caractère brutal de la rupture. Elle se calcule en principe sur la marge brute escomptée pendant le préavis manquant : chiffre d'affaires escompté moins les coûts variables non supportés, éventuellement moins certains coûts fixes non supportés (Cass. com., 28 juin 2023, n° 21-16.940, publié). Les éléments postérieurs à l'annonce, comme une reconversion réussie, ne comptent pas pour fixer la durée du préavis (Cass. com., 17 mai 2023, n° 21-24.809).",
+    },
+    {
+      q: "QuoteBuilder gère-t-il les préavis et les ruptures de relation ?",
+      a: "Non. QuoteBuilder reçoit et organise les demandes de devis. Il n'a pas de champ pour la date de début d'une relation, ni de rappel de fin de préavis, ni de signature électronique, ni de facturation. Les notes internes du dossier, en ajout seul, peuvent servir de journal daté. Le calcul du préavis se fait avec le [calculateur de préavis de rupture brutale](https://www.quotebuilder.co/outils/calculateur-preavis-rupture-brutale), en local, sans compte.",
+    },
+  ],
+  "compensation-creances-deduction-facture-devis-b2b": [
+    {
+      q: "Mon client a payé ma facture « moins » des pénalités de retard : a-t-il le droit ?",
+      a: "Seulement si la somme déduite est certaine, liquide et exigible, ou si vous avez accepté la compensation. Si vous contestez les pénalités avec des éléments sérieux, elles ne sont pas certaines et la compensation légale ne joue pas (Cass. com., 24 mars 2015, n° 13-23.791). La facture reste due en entier.",
+    },
+    {
+      q: "Qu'est-ce qu'une créance « certaine, liquide et exigible » ?",
+      a: "Certaine : son existence n'est pas sérieusement contestée. Liquide : son montant est fixé ou se calcule simplement à partir du contrat. Exigible : elle est échue. Les trois conditions viennent de l'article 1347-1 du code civil.",
+    },
+    {
+      q: "La compensation est-elle automatique ?",
+      a: "Non, plus depuis le 1er octobre 2016 : elle doit être invoquée (article 1347). Une fois invoquée, elle prend effet à la date où ses conditions étaient réunies.",
+    },
+    {
+      q: "Une clause de compensation dans mes CGV suffit-elle ?",
+      a: "Elle permet une compensation convenue (article 1348-2), si elle a été acceptée par le client. Elle ne rend pas due une somme contestée. La rédaction la plus solide admet la compensation des sommes reconnues par écrit et exclut la déduction des sommes discutées.",
+    },
+    {
+      q: "Puis-je interdire à mon client toute compensation ?",
+      a: "Vous pouvez l'écrire, et une clause acceptée donne un argument. Elle ne supprime pas la possibilité de demander au juge la compensation de dettes connexes (articles 1348 et 1348-1), et une clause très large, imposée, peut se discuter. La version équilibrée du vérificateur tient mieux.",
+    },
+    {
+      q: "Que change l'article L441-17 du code de commerce ?",
+      a: "Dans la relation entre un fournisseur et un distributeur (hors grossistes), il interdit de déduire d'office de la facture du fournisseur les pénalités ou rabais pour non-respect d'un engagement contractuel, même fondés. Les pénalités logistiques doivent être notifiées avec la preuve du manquement et du préjudice, et restent plafonnées à 2 % de la valeur des produits commandés de la catégorie.",
+    },
+    {
+      q: "Mon client est en redressement judiciaire : puis-je compenser ce que je lui dois ?",
+      a: "Seulement avec des créances connexes, nées du même contrat ou d'un ensemble contractuel unique (article L622-7 du code de commerce ; Cass. com., 6 mai 2026, n° 23-23.937). Déclarez votre créance dans les délais et faites-vous accompagner.",
+    },
+    {
+      q: "Ma facture a été cédée à un factor : le client peut-il lui opposer ses pénalités ?",
+      a: "Oui pour des dettes connexes, même après la notification de la cession (article 1324 ; Cass. com., 10 sept. 2025, n° 24-17.326), à condition que les pénalités soient elles-mêmes certaines, liquides et exigibles. Un client qui a pris acte de la cession sans réserve ne peut plus opposer la compensation qu'il aurait pu opposer au fournisseur (article 1347-5).",
+    },
+    {
+      q: "QuoteBuilder peut-il gérer une compensation ou un avoir ?",
+      a: "Non. QuoteBuilder ne gère ni factures, ni avoirs, ni encaissements. Il capte et qualifie les demandes de devis. La compensation se règle dans vos conditions, vos échanges écrits et votre comptabilité ; une note interne (ajout seul) peut garder une trace pour l'équipe.",
+    },
+    {
+      q: "Par où commencer concrètement ?",
+      a: "Passez votre cas dans le [vérificateur de compensation de créances](https://www.quotebuilder.co/outils/verificateur-compensation-creances), reprenez la clause dans vos devis et conditions générales, puis répondez par écrit à la déduction. Pour voir un funnel côté visiteur, testez la [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage).",
+    },
+  ],
+  "sous-traitance-loi-1975-paiement-direct-devis-b2b": [
+    {
+      q: "Qui est sous-traitant au sens de la loi du 31 décembre 1975 ?",
+      a: "Celui à qui un entrepreneur confie, par un sous-traité et sous sa responsabilité, l'exécution de tout ou partie d'un contrat d'entreprise ou d'une partie d'un marché public conclu avec le maître de l'ouvrage (article 1er). Il faut un contrat d'entreprise en haut et en bas de la chaîne : le fournisseur de produits standard n'est pas sous-traitant, celui qui réalise un travail spécifique pour les besoins particuliers du donneur d'ordre l'est (Cass. com., 17 mars 1998, n° 95-17.997).",
+    },
+    {
+      q: "L'acceptation du sous-traitant doit-elle être écrite ?",
+      a: "La loi n'impose pas de forme, mais l'écrit est de loin le plus sûr. L'acceptation tacite est admise si elle résulte d'actes manifestant sans équivoque la volonté du maître de l'ouvrage, pas d'une simple attitude passive (Cass. 3e civ., 18 juillet 1984, n° 83-11.401 ; Cass. 3e civ., 28 janvier 2021, n° 19-26.271). Un paiement direct du sous-traitant par le maître de l'ouvrage peut en être un.",
+    },
+    {
+      q: "Peut-on faire accepter le sous-traitant après la signature du sous-traité ?",
+      a: "Oui. L'article 3 vise la conclusion et toute la durée du contrat, et la chambre mixte a jugé que l'acceptation et l'agrément n'ont pas à être antérieurs ou concomitants à la conclusion du sous-traité (Cass. ch. mixte, 13 mars 1981, n° 80-12.125). En pratique, plus on attend, plus le maître de l'ouvrage risque d'avoir déjà payé l'entreprise principale.",
+    },
+    {
+      q: "Que risque l'entreprise principale qui ne présente pas son sous-traitant ?",
+      a: "Elle reste tenue envers lui mais ne peut pas lui opposer le sous-traité (article 3, alinéa 2), et l'infraction est punie d'une amende de 7 500 € (article L8271-1-1 du code du travail). Le sous-traitant peut aussi, selon la jurisprudence, résilier le sous-traité ; s'il ne le fait pas, le contrat doit être exécuté (Cass. 3e civ., 10 novembre 2021, n° 20-19.372).",
+    },
+    {
+      q: "Quand la caution doit-elle être remise au sous-traitant ?",
+      a: "Avant la conclusion du sous-traité et, si les travaux ont commencé plus tôt, avant leur commencement (Cass. 3e civ., 21 janvier 2021, n° 19-22.219). Une caution remise après coup ne sauve pas le contrat : il est nul, d'une nullité relative que seul le sous-traitant peut invoquer, et qu'il peut aussi choisir de confirmer (Cass. 3e civ., 23 novembre 2023, n° 22-21.463).",
+    },
+    {
+      q: "Comment fonctionne l'action directe ?",
+      a: "Le sous-traitant accepté et agréé met l'entreprise principale en demeure de payer et envoie une copie au maître de l'ouvrage. Un mois après, sans paiement, il peut réclamer directement au maître de l'ouvrage les sommes dues au titre du sous-traité (article 12), dans la limite de ce que le maître de l'ouvrage doit encore à l'entreprise principale à la date où il reçoit la copie (article 13).",
+    },
+    {
+      q: "Et si l'entreprise principale est en liquidation ?",
+      a: "L'action directe subsiste (article 12). Si aucune mise en demeure n'a été envoyée avant la liquidation, la déclaration de la créance au passif vaut mise en demeure (Cass. 3e civ., 13 juillet 2023, n° 21-23.747). Prévenez aussi le maître de l'ouvrage par écrit, sans attendre.",
+    },
+    {
+      q: "Le maître de l'ouvrage peut-il être tenu de payer un sous-traitant qu'il n'a pas accepté ?",
+      a: "Pas par l'action directe, qui suppose l'acceptation. Mais dans les travaux de bâtiment et de travaux publics, et en sous-traitance industrielle, l'article 14-1 l'oblige, s'il connaît la présence du sous-traitant, à mettre l'entrepreneur principal en demeure de le présenter, et à exiger la justification de la caution sans délégation. S'il ne le fait pas, sa responsabilité peut être engagée (Cass. 3e civ., 11 septembre 2013, n° 12-21.077), à condition qu'il ait personnellement su (Cass. 3e civ., 15 avril 2021, n° 19-20.424).",
+    },
+    {
+      q: "En marché public, le sous-traitant a-t-il besoin d'une caution ?",
+      a: "Le sous-traitant direct accepté et agréé est payé directement par l'acheteur au-delà de 600 euros toutes taxes comprises (article R2193-10 du code de la commande publique), et toute renonciation au paiement direct est réputée non écrite. La caution vise surtout le second rang : le sous-traitant qui sous-traite à son tour doit délivrer une caution ou une délégation de paiement (article 6 de la loi, dernier alinéa).",
+    },
+    {
+      q: "QuoteBuilder gère-t-il l'acceptation des sous-traitants ou la caution ?",
+      a: "Non. QuoteBuilder reçoit les demandes de devis et garde, pour chaque dossier, les réponses du prospect, ses fichiers et les notes internes de l'équipe. Il ne fait ni signature, ni facture, ni suivi de paiement, et n'a pas de champ dédié à la sous-traitance. Vous pouvez ajouter des questions au funnel (maître de l'ouvrage, chantier, marché public ou privé) et noter les dates clés dans le dossier ; le contrôle se fait avec le vérificateur, à part.",
+    },
+  ],
+  "exception-inexecution-devis-b2b": [
+    {
+      q: "L'exception d'inexécution met-elle fin au contrat ?",
+      a: "Non. Elle permet de refuser (1219) ou de suspendre (1220) l'exécution. Pour mettre fin au contrat, voyez la résolution (articles 1224 à 1226) et l'article sur la [clause résolutoire](https://www.quotebuilder.co/blog/clause-resolutoire-devis-b2b).",
+    },
+    {
+      q: "Faut-il une mise en demeure avant d'invoquer l'article 1219 ?",
+      a: "Le texte de l'article 1219 n'impose pas de mise en demeure. L'arrêt Cass. 3e civ., 18 septembre 2025, n° 23-24.005, le rappelle en bail commercial lorsque les locaux sont impropres à l'usage. En devis B2B, une information écrite datée reste une bonne pratique.",
+    },
+    {
+      q: "Quelle différence entre 1219 et 1220 ?",
+      a: "1219 : inexécution actuelle. 1220 : inexécution future manifeste, avec notification dans les meilleurs délais et conséquences suffisamment graves pour vous.",
+    },
+    {
+      q: "Que signifie « suffisamment grave » ?",
+      a: "Le code ne fixe pas de pourcentage. On regarde l'économie du contrat, le caractère essentiel du manquement, la possibilité de rattrapage et la bonne foi. Les arrêts locatifs cités insistent souvent sur l'impropriété à l'usage.",
+    },
+    {
+      q: "Puis-je suspendre toute la prestation pour un petit retard ?",
+      a: "Risqué. Une suspension disproportionnée peut être jugée abusive et devenir une inexécution fautive (article 1231-1). Préférez une suspension partielle liée au manquement.",
+    },
+    {
+      q: "L'exception d'inexécution s'applique-t-elle à une obligation de paiement ?",
+      a: "Selon les cas, oui : par exemple refuser de payer le solde tant que la livraison conforme n'est pas faite. Ce n'est pas un permis général de ne pas payer une somme exigible sans manquement caractérisé de l'autre.",
+    },
+    {
+      q: "Que se passe-t-il si je ne notifie pas sous 1220 ?",
+      a: "Le texte exige la notification dans les meilleurs délais. Sans elle, la suspension anticipée est fragile.",
+    },
+    {
+      q: "Une clause peut-elle écarter les articles 1219 et 1220 ?",
+      a: "Entre professionnels, l'aménagement est possible mais limité par la bonne foi, l'article 1171 (contrat d'adhésion) et l'interdiction de clauses qui videraient l'obligation essentielle (article 1170). Renoncer purement et simplement à toute exception, de façon unilatérale, est souvent fragile.",
+    },
+    {
+      q: "QuoteBuilder enregistre-t-il ma notification de suspension ?",
+      a: "Non. Aucun champ dédié sur le dossier. Gardez la preuve hors outil (courriel, LRAR). L'espace prospect ne remplace pas cette preuve.",
+    },
+    {
+      q: "Par où commencer concrètement ?",
+      a: "Passez votre cas dans le [vérificateur d'exception d'inexécution](https://www.quotebuilder.co/outils/verificateur-exception-inexecution), alignez la clause de vos CGV, puis, si besoin, créez un compte Free ou testez la [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage).",
+    },
+  ],
+  "clause-resolutoire-devis-b2b": [
+    {
+      q: "Quelle différence entre clause résolutoire et résolution unilatérale ?",
+      a: "La clause résolutoire (article 1225) est prévue au contrat : si ses conditions sont réunies et la mise en demeure correcte, la résolution est en principe de plein droit. La résolution unilatérale (article 1226) existe même sans clause : le créancier notifie à ses risques et périls et doit prouver la gravité si le débiteur conteste.",
+    },
+    {
+      q: "Faut-il toujours une mise en demeure ?",
+      a: "En principe oui. L'article 1225 l'impose pour la clause résolutoire sauf stipulation contraire. L'article 1226 l'impose sauf urgence. La jurisprudence admet aussi une dispense quand la mise en demeure serait vaine (Cass. com., 17 janvier 2024, n° 22-20.785). Ces exceptions sont étroites.",
+    },
+    {
+      q: "La mise en demeure doit-elle citer la clause ?",
+      a: "Oui, pour une clause résolutoire : l'article 1225 dit que la mise en demeure ne produit effet que si elle mentionne expressément la clause. Pour l'article 1226, elle doit mentionner qu'à défaut d'exécution, le créancier sera en droit de résoudre le contrat.",
+    },
+    {
+      q: "Quel délai laisser ?",
+      a: "Le code civil parle d'un délai raisonnable, sans durée chiffrée. Si le contrat fixe quinze ou trente jours, respectez-le. Un délai manifestement trop court laisse penser que la rupture était décidée d'avance. Les repères de quinze et trente jours dans le vérificateur sont ceux de l'outil, pas des seuils légaux.",
+    },
+    {
+      q: "Une clause peut-elle viser « toute obligation du contrat » ?",
+      a: "Oui, sous condition que le débiteur puisse identifier clairement les engagements (Cass. com., 3 juin 2026, n° 24-19.612). Lister nommément les obligations critiques reste plus sûr.",
+    },
+    {
+      q: "Que devient l'acompte en cas de résolution ?",
+      a: "Cela dépend de l'utilité des prestations déjà fournies (article 1229) et des clauses éventuelles sur les acomptes, arrhes ou dédit. Ce n'est pas automatique. Voir aussi [annulation, arrhes et dédit](https://www.quotebuilder.co/blog/annulation-commande-devis-b2b-arrhes-dedit-clause-penale).",
+    },
+    {
+      q: "QuoteBuilder peut-il envoyer la mise en demeure ?",
+      a: "Non. QuoteBuilder ne fait pas de signature électronique, ni de facturation, ni d'envoi d'acte juridique de rupture. Vous rédigez et envoyez la mise en demeure hors de l'outil. Le vérificateur vous aide à préparer le contenu.",
+    },
+    {
+      q: "La clause survit-elle dans le PDF du devis QuoteBuilder ?",
+      a: "Non. Le PDF porte le pied « Document indicatif, non contractuel. » et ne peut afficher aucune clause. La clause vit dans vos CGV acceptées avec le devis.",
+    },
+    {
+      q: "Peut-on résoudre si le client est en redressement judiciaire ?",
+      a: "Pas du seul fait de l'ouverture de la procédure (L622-13). Des règles spécifiques s'appliquent. Consultez votre conseil dès qu'une procédure collective apparaît.",
+    },
+    {
+      q: "Où tester le vérificateur ?",
+      a: "Sur [quotebuilder.co/outils/verificateur-clause-resolutoire](https://www.quotebuilder.co/outils/verificateur-clause-resolutoire). Calcul local, aucune donnée envoyée, pas un conseil juridique.",
+    },
+  ],
+  "force-majeure-imprevision-devis-b2b": [
+    {
+      q: "Quelle est la différence entre force majeure et imprévision ?",
+      a: "La force majeure (article 1218) suppose un empêchement d'exécuter. L'imprévision (article 1195) suppose une exécution encore possible, mais excessivement onéreuse après un changement de circonstances imprévisible, pour une partie qui n'avait pas accepté d'assumer le risque. Les effets ne sont pas les mêmes : suspension ou résolution de plein droit d'un côté, renégociation puis éventuelle intervention du juge de l'autre.",
+    },
+    {
+      q: "Les trois conditions de l'article 1218 sont-elles cumulatives ?",
+      a: "Oui. Il faut un événement hors du contrôle du débiteur, imprévisible raisonnablement à la conclusion du contrat, et dont les effets ne peuvent être évités par des mesures appropriées, qui empêche l'exécution. Manquer l'une des trois fait tomber la qualification.",
+    },
+    {
+      q: "Puis-je exclure l'article 1195 dans un devis entre professionnels ?",
+      a: "Oui, si la clause est claire et que la partie concernée accepte d'assumer le risque. Une formule vague (« prix fermes et définitifs ») est plus fragile qu'une renonciation expresse à se prévaloir de l'article 1195, ou qu'une indexation qui organise le risque. L'acceptation des CGV suit l'article 1119.",
+    },
+    {
+      q: "Une liste d'événements (épidémie, guerre, grève) suffit-elle ?",
+      a: "Rarement. Une liste fermée laisse hors champ tout ce qui n'y figure pas. Mieux vaut renvoyer à l'article 1218 et donner des exemples non limitatifs, puis traiter l'imprévision à part.",
+    },
+    {
+      q: "Le client peut-il refuser de payer en invoquant la force majeure ?",
+      a: "En principe, une obligation de somme d'argent n'est pas empêchée au sens de l'article 1218. La Cour de cassation l'a rappelé pour les loyers commerciaux pendant les fermetures COVID (Cass. 3e civ., 30 juin 2022, n° 21-20.190). Le débat sur un acompte ou un solde dépend des faits et des clauses, mais « je ne peux plus exploiter mon atelier » ne suspend pas automatiquement une dette d'argent.",
+    },
+    {
+      q: "Dois-je continuer d'exécuter pendant une renégociation 1195 ?",
+      a: "Oui. L'article 1195 le dit expressément. Arrêter d'exécuter, c'est s'exposer aux sanctions de l'inexécution (article 1217), même si la demande de renégociation est légitime.",
+    },
+    {
+      q: "Un incendie chez mon fournisseur est-il de la force majeure ?",
+      a: "Cela dépend : exclusivité réelle du fournisseur, alternatives possibles, mesures prises, caractère temporaire ou définitif. Ce n'est pas automatique. Documentez les tentatives d'alternative et notifiez tôt.",
+    },
+    {
+      q: "Le silence du client vaut-il acceptation d'une hausse de prix ?",
+      a: "Non, sauf circonstances particulières caractérisées. Toute modification du contrat requiert en principe le consentement des parties (article 1193) ; le silence ne vaut pas à lui seul acceptation (Cass. com., 26 février 2025, n° 23-21.063).",
+    },
+    {
+      q: "QuoteBuilder peut-il enregistrer ma clause de force majeure ?",
+      a: "Non. Aucun champ dédié, pas de case d'acceptation des CGV, pas de signature électronique, PDF récapitulatif « Document indicatif, non contractuel. ». La clause vit dans votre devis ferme et vos conditions générales.",
+    },
+    {
+      q: "Les pourcentages +30 % / +50 % / +100 % de l'outil sont-ils légaux ?",
+      a: "Non. Ce sont des **repères de l'outil** pour classer une situation. Le code civil ne fixe aucun pourcentage d'onérosité excessive. Seuls les faits, et le cas échéant le juge, tranchent.",
+    },
+  ],
+  "clause-attributive-juridiction-mediation-devis-b2b": [
+    {
+      q: "Une clause attributive de juridiction est-elle valable avec un artisan ?",
+      a: "Non, si l'artisan exerce en entreprise individuelle sans être commerçant. L'article 48 exige que toutes les parties aient contracté en qualité de commerçant, et la Cour de cassation a jugé qu'un artisan n'acquiert pas cette qualité en acceptant des lettres de change (Cass. com., 11 mai 1993, n° 91-14.734). Le fait que le tribunal de commerce soit compétent pour les litiges entre artisans ne change pas cette règle.",
+    },
+    {
+      q: "Et avec une association ou une société civile ?",
+      a: "Non plus : elles ne sont pas commerçantes. La clause est réputée non écrite à leur égard, et les articles 42 et 46 du code de procédure civile s'appliquent. Si votre client est une SAS ou une SARL, il est commerçant par sa forme (article L210-1 du code de commerce).",
+    },
+    {
+      q: "Qu'est-ce qu'une clause « très apparente » ?",
+      a: "La loi ne fixe pas de taille de police. La Cour de cassation demande au juge de regarder la typographie et la présentation de la clause dans le document (Cass. com., 20 avril 2017, n° 15-20.908). Un titre explicite, des caractères distincts du reste, un rappel près de la signature du client vont dans le bon sens. Une clause noyée dans un bloc de CGV en petits caractères, non.",
+    },
+    {
+      q: "Si je saute l'étape de médiation prévue, que risque mon action ?",
+      a: "D'être déclarée irrecevable, si le client l'invoque et si la clause institue une vraie procédure préalable obligatoire (Cass. ch. mixte, 14 février 2003). Le juge n'examine alors pas le fond. Et lancer la médiation après l'assignation ne régularise pas l'action (Cass. ch. mixte, 12 décembre 2014).",
+    },
+    {
+      q: "« Les parties tenteront de régler leur différend à l'amiable » : est-ce une clause obligatoire ?",
+      a: "C'est discuté. En 2014, la chambre commerciale a jugé qu'une clause non assortie de conditions particulières de mise en œuvre n'était pas une conciliation obligatoire. En 2018, elle a appliqué une clause courte qui désignait un tiers. Le plus sûr est d'écrire une clause précise (tiers, délai, notification) si vous voulez une étape obligatoire, et de ne rien écrire d'ambigu si vous n'en voulez pas.",
+    },
+    {
+      q: "La médiation m'empêche-t-elle de demander une mesure urgente ?",
+      a: "Non. Depuis le 1er septembre 2025, l'article 1537 du code de procédure civile prévoit que le recours à un mode amiable conventionnel ne fait pas obstacle à ce que le juge ordonne une mesure d'instruction ou une mesure provisoire ou conservatoire. Écrivez-le aussi dans la clause.",
+    },
+    {
+      q: "Pendant la médiation, le délai pour agir continue-t-il de courir ?",
+      a: "Non, il est suspendu à compter du jour où les parties conviennent, après la survenance du litige, de recourir à la médiation ou à la conciliation, ou à défaut d'accord écrit, du jour de la première réunion. Il reprend, pour au moins six mois, quand la médiation est déclarée terminée (article 2238 du code civil). Gardez une trace datée de ces étapes.",
+    },
+    {
+      q: "Ma facture impayée doit-elle passer par la médiation ?",
+      a: "Si votre clause s'applique à « tout différend » sans exception, le client peut le soutenir. Pour l'éviter, prévoyez dans la clause que l'étape amiable ne s'applique pas au recouvrement des sommes dont le principe et le montant ne sont pas contestés par écrit avant l'échéance.",
+    },
+    {
+      q: "Puis-je mettre une clause d'arbitrage dans mon devis ?",
+      a: "Entre commerçants, c'est possible (article L721-3 du code de commerce). Elle ne peut pas être opposée à une partie qui n'a pas contracté dans le cadre de son activité professionnelle (article 2061 du code civil). Pour un devis courant, l'arbitrage coûte souvent trop cher au regard des montants en jeu : une étape de médiation suivie du tribunal est en général plus adaptée.",
+    },
+    {
+      q: "QuoteBuilder peut-il faire accepter ma clause de juridiction au client ?",
+      a: "Non. QuoteBuilder ne gère ni CGV, ni signature électronique, ni case d'acceptation, et son PDF récapitulatif porte la mention « Document indicatif, non contractuel. ». La clause doit figurer dans votre devis ferme et vos conditions générales, acceptés par le client dans vos outils habituels. QuoteBuilder vous aide à garder la trace de la demande et, dans les notes internes, celle des étapes amiables.",
+    },
+  ],
+  "clause-non-sollicitation-personnel-devis-b2b": [
+    {
+      q: "Une clause de non-sollicitation du personnel est-elle valable ?",
+      a: "Elle peut l'être. Elle n'est licite que si elle est proportionnée aux intérêts légitimes à protéger au regard de l'objet du contrat, parce qu'elle porte atteinte à la liberté du travail et à la liberté d'entreprendre (Cass. com., 27 mai 2021 ; Cass. com., 23 septembre 2026). Une clause limitée aux personnes affectées au contrat, de durée courte, et dont l'intérêt est expliqué, a les meilleures chances de tenir.",
+    },
+    {
+      q: "Qui doit prouver que la clause est proportionnée ?",
+      a: "Celui qui l'invoque. La Cour de cassation l'a jugé le 23 septembre 2026 (n° 24-21.805) : l'entreprise qui demande l'application de la clause doit démontrer qu'elle est proportionnée. Dans cette affaire, la clause ne durait que six mois et elle a été jugée illicite, faute d'explication de l'intérêt protégé.",
+    },
+    {
+      q: "Quelle durée prévoir ?",
+      a: "Aucun texte ne la fixe. Les affaires jugées portaient sur un an (2021) et six mois (2026), et la durée n'a pas suffi dans les deux cas. Le plus défendable est la durée du contrat, plus une période courte après la fin, justifiée par exemple par le temps de recruter et de former un remplaçant. Le vérificateur utilise douze mois comme repère interne, pas comme seuil légal.",
+    },
+    {
+      q: "La clause peut-elle viser tout le personnel ?",
+      a: "Elle le peut sur le papier, mais c'est difficile à justifier. Le prestataire devra expliquer pourquoi l'embauche d'une personne qui n'a jamais travaillé pour le client menace un intérêt légitime lié au contrat. Viser les personnes qui ont participé à l'exécution du contrat est beaucoup plus solide.",
+    },
+    {
+      q: "Le salarié est-il lié par la clause ?",
+      a: "Non. Il n'est pas partie au contrat (article 1199 du code civil) et reste libre de démissionner. La clause engage l'entreprise qui embauche, pas le salarié. Et si la clause l'empêche d'être embauché, il peut demander réparation à son employeur (Cass. soc., 2 mars 2011, n° 09-40.547).",
+    },
+    {
+      q: "Une agence d'intérim peut-elle interdire l'embauche de ses intérimaires ?",
+      a: "Non, pas à l'issue de la mission. L'article L1251-44 du code du travail répute non écrite toute clause tendant à interdire l'embauche par l'entreprise utilisatrice du salarié temporaire à l'issue de sa mission, et le contrat de mission doit mentionner que cette embauche n'est pas interdite (article L1251-16, 7°).",
+    },
+    {
+      q: "Quelle indemnité prévoir ?",
+      a: "Un montant en rapport avec le préjudice réel, en général le coût de recrutement et de formation d'un remplaçant, avec la base de calcul écrite. Une indemnité forfaitaire est une clause pénale : le juge peut la réduire si elle est manifestement excessive (article 1231-5 du code civil). Sans indemnité, il faut prouver son préjudice.",
+    },
+    {
+      q: "Le salarié a postulé de lui-même : la clause s'applique-t-elle ?",
+      a: "Cela dépend de la rédaction. Une clause qui interdit seulement de « solliciter » ne vise pas la candidature spontanée ; une clause qui interdit toute embauche la vise. Une rédaction d'équilibre exclut la réponse à une offre publique non ciblée, sans contact préalable du client, et prévoit d'informer le prestataire.",
+    },
+    {
+      q: "Non-sollicitation et non-concurrence, est-ce la même chose ?",
+      a: "Non. La clause de non-sollicitation n'est ni une variante ni une précision de la clause de non-concurrence (Cass. com., 11 juillet 2006, n° 04-20.438). La non-concurrence limite l'activité de celui qui s'engage ; la non-sollicitation limite le recrutement du personnel d'une autre entreprise.",
+    },
+    {
+      q: "QuoteBuilder ajoute-t-il une clause de non-sollicitation à mes devis ?",
+      a: "Non. QuoteBuilder reçoit et suit les demandes de devis ; le PDF récapitulatif d'une demande porte la mention « Document indicatif, non contractuel. » et ne contient pas de clause. La clause se rédige dans votre devis et vos conditions générales, en dehors du logiciel. Le [vérificateur gratuit](https://www.quotebuilder.co/outils/verificateur-clause-non-sollicitation-personnel) vous aide à la contrôler et à la rédiger.",
+    },
+  ],
+  "accord-confidentialite-nda-avant-devis-b2b": [
+    {
+      q: "Faut-il un accord de confidentialité pour une simple demande de devis ?",
+      a: "Pas toujours. Si le premier prix peut se faire sans plan, sans volume prévisionnel et sans nom de client, il n'y a rien à protéger à ce stade. L'accord devient utile quand il faut transmettre ce qui a une valeur : un plan coté, un fichier 3D, une formulation, un prix cible. Et il devient indispensable si l'objet peut être breveté.",
+    },
+    {
+      q: "Sans NDA, le fournisseur peut-il réutiliser mes plans ?",
+      a: "Non, pas librement. L'article 1112-2 du code civil engage la responsabilité de celui qui utilise ou divulgue sans autorisation une information confidentielle obtenue pendant des négociations. Mais il faudra prouver que l'information était confidentielle, puis la faute et le préjudice. L'accord rend cette preuve beaucoup plus simple.",
+    },
+    {
+      q: "Un e-mail qui dit « merci de garder ces plans confidentiels » suffit-il ?",
+      a: "C'est mieux que rien : il montre que l'information était identifiée comme confidentielle et qu'une mesure de protection a été prise. Mais il ne dit ni la finalité, ni la durée, ni les destinataires, ni le sort des fichiers. Et le fournisseur ne s'est engagé à rien tant qu'il n'a pas accepté.",
+    },
+    {
+      q: "Quelle durée choisir ?",
+      a: "Une durée cohérente avec la vie de l'information. Un prix cible vieillit vite ; un plan de pièce ou une formulation beaucoup moins. Évitez la confidentialité « sans limite », que l'article 1210 du code civil rend fragile. Distinguez aussi la période d'échange et la durée de l'obligation, qui doit survivre à la fin des discussions.",
+    },
+    {
+      q: "Le fournisseur peut-il démonter l'échantillon que je lui ai confié ?",
+      a: "Oui, en principe, s'il le détient de façon licite et si rien ne l'interdit. L'article L151-3 du code de commerce range le démontage et le test parmi les modes d'obtention licite d'un secret, sauf stipulation contractuelle contraire. Si vous ne voulez pas, écrivez-le dans l'accord.",
+    },
+    {
+      q: "Le NDA protège-t-il mon invention ?",
+      a: "Il protège l'information, pas l'invention. Il aide à ne pas détruire la nouveauté avant un dépôt de brevet, ce que l'INPI recommande expressément. Mais seul le dépôt donne un titre. L'e-Soleau prouve une date, sans protéger.",
+    },
+    {
+      q: "Une clause pénale est-elle vraiment utile ?",
+      a: "Oui, surtout pour la confidentialité. La Cour de cassation a jugé en 2019 que la violation d'un accord de confidentialité ne dispensait pas de prouver le principe et le montant du préjudice. La clause pénale fixe ce montant à l'avance. Le juge peut toutefois la modérer si elle est manifestement excessive (article 1231-5 du code civil).",
+    },
+    {
+      q: "Je suis le fournisseur : puis-je refuser de signer ?",
+      a: "Oui. Vous pouvez aussi demander des corrections : exclusions classiques, définition par catégories, durée raisonnable, sous-traitants autorisés, clause pénale proportionnée, accord mutuel. La plupart des clients sérieux les acceptent, parce qu'elles rendent l'accord plus solide.",
+    },
+    {
+      q: "Les informations données à l'oral sont-elles couvertes ?",
+      a: "Seulement si l'accord le prévoit. La règle habituelle : l'information orale est confidentielle si elle est identifiée comme telle au moment de l'échange et confirmée par écrit dans un délai court. Sans cette règle, une visite d'atelier ou une réunion de lancement laisse peu de traces.",
+    },
+    {
+      q: "Combien de temps ai-je pour agir en cas d'atteinte au secret des affaires ?",
+      a: "Cinq ans, à compter du jour où le détenteur légitime a connu ou aurait dû connaître le dernier fait qui permet d'agir (article L152-2 du code de commerce). Pour une action fondée sur l'accord lui-même, parlez du délai avec votre avocat.",
+    },
+  ],
+  "clause-limitation-responsabilite-devis-b2b": [
+    {
+      q: "Une clause de limitation de responsabilité est-elle valable entre professionnels ?",
+      a: "Oui, en principe. Le code civil ne l'interdit pas entre professionnels ; il en fixe les limites. Elle est réputée non écrite si elle prive de sa substance l'obligation essentielle (article 1170), écartée en cas de faute lourde ou dolosive, interdite pour les dommages aux personnes causés par un produit défectueux (article 1245-14), et contrôlable au titre du déséquilibre significatif dans un contrat d'adhésion (article 1171).",
+    },
+    {
+      q: "Quel plafond prévoir ?",
+      a: "Aucun texte ne fixe de montant. Dans l'affaire Faurecia (Cass. com., 29 juin 2010), un plafond égal au prix payé n'a pas été jugé dérisoire. Un plafond au moins égal au prix du devis est donc le plus facile à défendre ; un plafond très inférieur au prix, pour un engagement central, sera discuté. Il doit aussi rester sous le plafond par sinistre de votre assurance.",
+    },
+    {
+      q: "Peut-on exclure toute responsabilité ?",
+      a: "Non, pas utilement. Une clause « aucune responsabilité » prive l'engagement principal de sa substance et est réputée non écrite (article 1170). Le prestataire répond alors de tout le dommage prouvé, ce qui est pire qu'un plafond modéré.",
+    },
+    {
+      q: "Qu'est-ce qu'une obligation essentielle ?",
+      a: "C'est l'engagement que le client achète, celui qui fait l'intérêt du contrat : livrer dans le délai pour un transporteur rapide (Chronopost, 1996), livrer une installation qui fonctionne pour un intégrateur. La clause qui rend son manquement gratuit ou symbolique est réputée non écrite ; celle qui en limite la réparation à un montant réel peut être valable.",
+    },
+    {
+      q: "La clause s'applique-t-elle en cas de faute lourde ?",
+      a: "Non. La faute lourde et le dol écartent la clause. Mais la faute lourde est rare : la Cour de cassation exige une négligence d'une extrême gravité dénotant l'inaptitude du débiteur à accomplir sa mission (ch. mixte, 22 avril 2005 ; Cass. com., 9 septembre 2026), et elle ne se déduit pas du seul manquement, même à une obligation essentielle (Faurecia, 2010).",
+    },
+    {
+      q: "« Dommages indirects exclus » : cela suffit-il ?",
+      a: "C'est risqué. Le mot « indirect » sera discuté, et une perte de production causée par une panne est souvent présentée comme un dommage direct. Dans un contrat d'adhésion, le doute profite au client (article 1190). Mieux vaut nommer les préjudices exclus : perte d'exploitation, de production, de chiffre d'affaires ou de marge, de données.",
+    },
+    {
+      q: "Les conditions générales au verso du devis suffisent-elles ?",
+      a: "Pas toujours. Elles n'ont effet que si le client les a connues et acceptées (article 1119). Une mention d'acceptation dans le devis signé, avec les CGV jointes, est la preuve la plus simple. Une clause écrite directement dans le devis est encore plus sûre, et elle l'emporte sur des conditions générales contraires du client.",
+    },
+    {
+      q: "Peut-on limiter le délai pour réclamer ?",
+      a: "Oui, mais pas à moins d'un an (article 2254), et le délai doit courir à compter du jour où le client a connu ou aurait dû connaître les faits. La Cour de cassation a réputé non écrite une clause d'un an à compter du fait générateur (Cass. 1re civ., 13 mars 2024, n° 22-12.345). Sans clause, le délai est de cinq ans (article 2224).",
+    },
+    {
+      q: "Et si le client est un particulier ?",
+      a: "La clause qui supprime ou réduit son droit à réparation est présumée abusive de manière irréfragable (article R. 212-1, 6° du code de la consommation). Elle ne doit pas figurer dans un devis adressé à un consommateur. Décrivez plutôt précisément la prestation et ses limites techniques.",
+    },
+    {
+      q: "QuoteBuilder ajoute-t-il une clause de responsabilité à mes devis ?",
+      a: "Non. QuoteBuilder reçoit et suit les demandes de devis ; le PDF récapitulatif d'une demande porte la mention « Document indicatif, non contractuel. » et ne contient pas de clause. La clause se rédige dans votre devis et vos conditions générales, en dehors du logiciel. Le [vérificateur gratuit](https://www.quotebuilder.co/outils/verificateur-clause-limitation-responsabilite) vous aide à la contrôler et à la rédiger.",
+    },
+  ],
+  "cession-droits-auteur-devis-b2b": [
+    {
+      q: "Si je paie un photographe, les photos sont-elles à moi ?",
+      a: "Les fichiers, oui. Les droits d'auteur, non. L'article L111-1 du code de la propriété intellectuelle précise que le contrat de commande n'emporte pas dérogation aux droits de l'auteur. Pour utiliser les photos, il faut une cession écrite qui liste les droits, les supports, la destination, le territoire et la durée.",
+    },
+    {
+      q: "Un e-mail du photographe qui dit « vous pouvez les utiliser » suffit-il ?",
+      a: "C'est un écrit, donc mieux que rien, mais il prouve mal l'étendue de ce qui a été cédé. Un juge lira l'accord de façon restrictive : sans supports ni durée, le client aura du mal à justifier un usage sur un emballage ou en affichage. Mieux vaut une clause signée dans le devis ou dans un avenant.",
+    },
+    {
+      q: "Peut-on céder les droits « pour toujours » ?",
+      a: "On peut céder pour toute la durée légale des droits, soit la vie de l'auteur et 70 ans après sa mort. C'est rarement nécessaire et cela coûte plus cher. Une durée de 3 à 10 ans, avec une possibilité de prolongation, suffit pour la plupart des usages de communication.",
+    },
+    {
+      q: "La formule « tous supports, connus et inconnus » est-elle valable ?",
+      a: "Elle n'est pas interdite, mais elle est lue restrictivement et ne règle pas la question de la destination. Pour les formes d'exploitation non prévisibles à la signature, l'article L131-6 exige une clause expresse et une participation aux profits. Une liste des supports réellement prévus est plus sûre pour les deux parties.",
+    },
+    {
+      q: "Le forfait est-il permis pour une cession de droits photo ?",
+      a: "Oui, dans les cas listés par l'article L131-4, notamment quand la base de calcul proportionnelle ne peut pas être déterminée, ce qui est le cas pour une photo utilisée dans une communication sans recettes identifiables. Il vaut mieux citer ce motif dans la clause et indiquer un montant distinct pour la cession.",
+    },
+    {
+      q: "Le client peut-il recadrer ou retoucher mes photos ?",
+      a: "Seulement si la clause cède l'adaptation et, idéalement, liste les modifications acceptées. Le droit au respect de l'œuvre ne se cède pas (article L121-1) : même avec une cession large, une modification qui dénature la photo peut être contestée.",
+    },
+    {
+      q: "Dois-je être crédité sur tous les supports ?",
+      a: "Le droit au nom est un droit moral, qui ne se cède pas. Dans la pratique, l'auteur peut accepter par écrit que son nom ne figure pas sur certains supports (emballage, écran de salon) et que le crédit soit regroupé ailleurs (mentions légales du site). Il faut l'écrire dans la clause.",
+    },
+    {
+      q: "Une agence peut-elle me céder les droits de ses graphistes ?",
+      a: "Seulement si elle les a elle-même obtenus de ses graphistes, salariés ou pigistes, car le contrat de travail ne cède pas les droits d'auteur (sauf pour les logiciels, article L113-9). Demandez une garantie écrite : l'agence déclare détenir les droits et vous garantit contre les réclamations des auteurs.",
+    },
+    {
+      q: "Peut-on signer un contrat annuel qui cède tous les reportages à venir ?",
+      a: "Non pour la cession elle-même : la cession globale des œuvres futures est nulle (article L131-1). Le contrat-cadre peut fixer les prix et les conditions, mais chaque commande doit avoir sa propre cession, qui identifie les œuvres livrées.",
+    },
+    {
+      q: "Les salariés photographiés doivent-ils donner leur accord ?",
+      a: "Oui, s'ils sont reconnaissables. Leur droit à l'image (article 9 du code civil) est distinct des droits du photographe, qui ne peut pas le céder. L'autorisation doit être écrite et préciser les supports et la durée. Il faut aussi décider, dans le devis, qui la recueille.",
+    },
+  ],
+  "obligation-vigilance-attestation-urssaf-devis-b2b": [
+    {
+      q: "À partir de quel montant l'obligation de vigilance s'applique-t-elle ?",
+      a: "À partir de 5 000 € hors taxes, pour toute opération portant sur une prestation de services, des travaux ou un acte de commerce (article R. 8222-1 du code du travail). Le seuil s'apprécie sur le montant global du contrat, même s'il est payé en plusieurs factures, comme le précise Service-Public.fr.",
+    },
+    {
+      q: "Quels documents le donneur d'ordre doit-il se faire remettre ?",
+      a: "Pour un donneur d'ordre professionnel : une attestation de vigilance de moins de six mois, dont il vérifie l'authenticité, et, si l'immatriculation du prestataire est obligatoire, un Kbis, un extrait RNE, un devis ou un courrier portant nom, adresse complète et numéro d'immatriculation, ou un récépissé de dépôt de déclaration (article D. 8222-5). Pour un particulier, un seul de ces documents suffit (article D. 8222-4).",
+    },
+    {
+      q: "Combien de temps une attestation de vigilance est-elle valable ?",
+      a: "Elle doit dater de moins de six mois au moment où elle est remise. Une attestation du 12 octobre 2026 peut être remise jusqu'au 11 avril 2027 inclus. L'attestation provisoire de début d'activité vaut jusqu'à la première échéance déclarative ou de paiement.",
+    },
+    {
+      q: "À quelle fréquence faut-il renouveler la vérification ?",
+      a: "À la conclusion du contrat, puis tous les six mois jusqu'à la fin de son exécution. Le rythme part de la date de conclusion, et à chaque échéance la pièce remise doit avoir moins de six mois.",
+    },
+    {
+      q: "Une attestation sur l'honneur peut-elle remplacer l'attestation de vigilance ?",
+      a: "Non. La Cour de cassation juge que seuls les documents de l'article D. 8222-5 libèrent le donneur d'ordre (Cass. 2e civ., 11 février 2016, n° 14-10.614). Elle a refusé en 2024 des attestations sur l'honneur de la gérante et une attestation sur ses cotisations personnelles, le sous-traitant employant des salariés (Cass. 2e civ., 5 décembre 2024, n° 22-21.152).",
+    },
+    {
+      q: "Comment vérifier l'authenticité d'une attestation ?",
+      a: "Avec le code de sécurité qui figure sur l'attestation, saisi sur le service de vérification de l'Urssaf ou de la MSA. Le donneur d'ordre compare le document affiché avec celui qu'il a reçu, et garde une trace datée du contrôle.",
+    },
+    {
+      q: "Une entreprise qui a des dettes Urssaf peut-elle obtenir son attestation ?",
+      a: "Oui, si elle a souscrit un plan d'apurement et le respecte, ou si elle conteste les sommes par un recours contentieux qui ne fait pas suite à une verbalisation pour travail dissimulé (article L. 243-15 du code de la sécurité sociale). Une déclaration manquante ou une cotisation impayée hors plan bloque en revanche la délivrance.",
+    },
+    {
+      q: "Que risque le donneur d'ordre qui n'a pas vérifié ?",
+      a: "Si son cocontractant fait l'objet d'un procès-verbal pour travail dissimulé, il est tenu solidairement des impôts, taxes, cotisations, pénalités, majorations et rémunérations dus (article L. 8222-2), à proportion de la valeur des travaux ou services (article L. 8222-3). Le Conseil constitutionnel a jugé ce mécanisme conforme, à condition que le donneur d'ordre puisse contester la procédure et les sommes.",
+    },
+    {
+      q: "Un particulier qui fait faire des travaux chez lui est-il concerné ?",
+      a: "Oui, au-delà de 5 000 € HT, mais avec une obligation allégée : il doit se faire remettre un seul des documents de l'article D. 8222-5, à la conclusion puis tous les six mois, sans contrôle d'authenticité (article D. 8222-4). Les mécanismes d'injonction de l'article L. 8222-5 ne s'appliquent pas à lui.",
+    },
+    {
+      q: "Qu'est-ce qui change avec la loi du 25 juin 2026 ?",
+      a: "Elle crée l'article L. 8222-1-1 : le maître de l'ouvrage devra vérifier périodiquement les sous-traitants qu'il accepte, pour les contrats d'un montant minimum, selon des documents et des conditions fixés par décret, avec un contrôle d'authenticité. Le texte entre en vigueur au plus tard fin décembre 2026. Au 2 novembre 2026, nous n'avons pas trouvé de décret publié.",
+    },
+  ],
+  "cgv-conditions-achat-client-devis-b2b": [
+    {
+      q: "Mes CGV prévalent-elles sur les conditions générales d'achat du client ?",
+      a: "Non, pas par principe. Vos CGV n'ont effet que si le client les a connues et acceptées. Si ses conditions d'achat ont aussi été acceptées et disent l'inverse sur un point, les deux clauses sont sans effet sur ce point (code civil, article 1119, alinéa 2). Seul ce qui est écrit dans le devis signé l'emporte sur les deux.",
+    },
+    {
+      q: "Qu'appelle-t-on la « bataille des formulaires » ?",
+      a: "C'est le conflit entre les conditions générales du vendeur, envoyées avec le devis, et celles de l'acheteur, envoyées avec le bon de commande. Chacun considère que les siennes s'appliquent. En droit français, depuis 2016, l'article 1119 règle la question : les clauses incompatibles s'annulent, et on applique la loi sur les points concernés.",
+    },
+    {
+      q: "Le client m'envoie un bon de commande avec ses conditions d'achat : que faire avant d'exécuter ?",
+      a: "Lisez au moins les clauses de paiement, de propriété, de responsabilité, de pénalités et de tribunal. Si un point ne vous convient pas, répondez par écrit avant de lancer la fabrication ou l'intervention, et attendez la confirmation. Le bon de commande qui modifie votre devis est une nouvelle offre (article 1118) ; l'exécuter sans réserve peut valoir acceptation (article 1113).",
+    },
+    {
+      q: "La clause « nos CGV prévalent sur toute autre condition » suffit-elle ?",
+      a: "Non, dès que les conditions d'achat contiennent la clause inverse. Les deux clauses sont incompatibles et sont neutralisées comme les autres. Pour faire prévaloir un point, écrivez-le dans le devis signé.",
+    },
+    {
+      q: "Mes CGV imprimées au dos de la facture sont-elles opposables ?",
+      a: "En principe non : la facture arrive après la conclusion du contrat, le client n'a pas pu les accepter au moment de commander. Dans une relation d'affaires suivie, on peut parfois soutenir qu'il les connaissait déjà, mais c'est une question de preuve. Joignez-les au devis.",
+    },
+    {
+      q: "Que devient ma réserve de propriété si les conditions d'achat la refusent ?",
+      a: "Elle ne joue pas. La Cour de cassation juge que des clauses croisées qui se contredisent excluent la réserve de propriété, et que le refus de l'acheteur ne peut être levé que par une acceptation expresse et antérieure à la livraison ; ni l'exécution du contrat ni la signature du bon de livraison n'y suffisent (Cass. com., 11 février 2026, n° 24-13.195). Faites accepter la clause par écrit dans le devis signé, avant de livrer.",
+    },
+    {
+      q: "Mes CGV et celles du client désignent deux tribunaux différents : lequel est compétent ?",
+      a: "Aucun des deux par l'effet des clauses : quand des clauses attributives de juridiction se contredisent, on applique les règles de compétence de droit commun (Cass. 1re civ., 28 mars 1995, n° 93-13.237). Si le tribunal compte pour vous, écrivez-le de façon très apparente dans le devis signé.",
+    },
+    {
+      q: "Si nos délais de paiement se contredisent, lequel s'applique ?",
+      a: "Si les deux conditions générales ont été acceptées, les deux clauses tombent et le délai par défaut de l'article L441-10 s'applique : 30 jours après la réception des marchandises ou l'exécution de la prestation. Si le délai figure sur le bon de commande lui-même ou dans le devis signé, c'est une condition particulière, elle l'emporte.",
+    },
+    {
+      q: "Le client peut-il m'imposer un délai de paiement de 90 jours ?",
+      a: "Non. Un délai convenu entre professionnels ne peut pas dépasser 60 jours à compter de la date de la facture, ou 45 jours fin de mois si c'est expressément prévu (article L441-10, rédaction en vigueur au 2 novembre 2026, une nouvelle rédaction étant annoncée au 1er janvier 2027). Une clause d'achat à 90 jours est contraire à la loi, même si vous l'avez acceptée.",
+    },
+    {
+      q: "Le silence du client vaut-il acceptation de mes CGV ?",
+      a: "Le silence ne vaut pas acceptation, sauf si la loi, les usages, les relations d'affaires ou des circonstances particulières en décident autrement (article 1120). Un client qui commande en connaissant vos CGV, sans les contester, peut être considéré comme les ayant acceptées par son comportement ; mais s'il commande avec ses propres conditions, son comportement dit plutôt le contraire. La signature du devis tranche la question.",
+    },
+  ],
+  "attestation-assurance-decennale-devis-b2b": [
+    {
+      q: "L'attestation d'assurance décennale doit-elle vraiment être jointe au devis ?",
+      a: "Oui, pour les constructeurs soumis à l'obligation d'assurance. L'article L. 243-2 du code des assurances prévoit que la justification prend la forme d'attestations jointes aux devis et aux factures des professionnels assurés. Une simple mention sur le devis ne remplace pas l'attestation.",
+    },
+    {
+      q: "Quelles mentions doit comporter l'attestation ?",
+      a: "Le modèle de l'arrêté du 5 janvier 2016, repris à l'article A. 243-3, impose notamment la mention « Assurance de responsabilité décennale obligatoire », l'identité et le numéro SIREN de l'assuré, l'assureur, le numéro du contrat, la période de validité, la date d'établissement, les activités couvertes, l'étendue géographique et le plafond de coût de chantier, et le cas échéant le montant de marché. Elle est signée par l'assureur ou son mandataire.",
+    },
+    {
+      q: "Mon attestation expire avant le démarrage du chantier : suis-je couvert ?",
+      a: "Ce n'est pas l'attestation jointe au devis qui couvrira le chantier, mais le contrat en vigueur à la date d'ouverture du chantier. Si votre contrat est renouvelé, vous serez couvert ; il faut alors fournir l'attestation de la nouvelle période avant l'ouverture.",
+    },
+    {
+      q: "Qu'est-ce que la date d'ouverture du chantier ?",
+      a: "C'est une date unique pour toute l'opération : la déclaration d'ouverture de chantier pour les travaux soumis à permis de construire, sinon le premier ordre de service ou, à défaut, le début effectif des travaux. Une entreprise qui arrive après cette date retient la date à laquelle elle commence effectivement ses prestations.",
+    },
+    {
+      q: "Une partie de mon devis sort de mes activités déclarées : que faire ?",
+      a: "Avant l'ouverture du chantier, retirez ces lignes, confiez-les à une entreprise assurée pour cette activité, ou obtenez par écrit une extension de votre assureur. Sinon, ces travaux ne sont pas couverts, et la jurisprudence admet que l'assureur oppose ce refus au client.",
+    },
+    {
+      q: "Le plafond de l'attestation se compare-t-il au montant de mon devis ?",
+      a: "Non. Il se compare au coût total de construction de l'opération, tous corps d'état, déclaré par le maître d'ouvrage ; l'attestation précise si les honoraires sont inclus. Demandez ce chiffre au client au moment du chiffrage.",
+    },
+    {
+      q: "Un sous-traitant doit-il fournir une attestation décennale ?",
+      a: "Pas au titre de l'obligation légale, puisqu'il n'est pas lié au maître d'ouvrage par un contrat de louage d'ouvrage. Mais le contrat de sous-traitance l'exige très souvent ; c'est alors une obligation contractuelle, et le contrat dit quelle attestation fournir.",
+    },
+    {
+      q: "Quels travaux échappent à l'obligation d'assurance décennale ?",
+      a: "Ceux de la liste de l'article L. 243-1-1 : ouvrages maritimes, fluviaux, routiers, ferroviaires, portuaires, aéroportuaires, de traitement des déchets, voiries, réseaux, parkings, ouvrages sportifs non couverts, entre autres, sauf s'ils sont accessoires à un ouvrage soumis. Les existants non incorporés sont aussi exclus.",
+    },
+    {
+      q: "Que risque une entreprise qui travaille sans assurance décennale ?",
+      a: "Six mois d'emprisonnement et 75 000 € d'amende, ou l'une des deux peines (article L. 243-3). Le dirigeant peut aussi être condamné personnellement à indemniser le maître d'ouvrage, la Cour de cassation voyant dans ce défaut une faute séparable de ses fonctions.",
+    },
+    {
+      q: "Le client peut-il se retourner contre l'assureur indiqué sur l'attestation ?",
+      a: "Oui, c'est l'un des objectifs de l'attestation : si le constructeur fait défaut, le maître d'ouvrage s'adresse à l'assureur désigné. Mais l'attestation n'engage pas l'assureur au-delà du contrat : si l'activité n'était pas déclarée, il peut refuser sa garantie.",
+    },
+  ],
+  "travaux-supplementaires-avenant-devis-b2b": [
+    {
+      q: "Un e-mail du client suffit-il comme autorisation écrite ?",
+      a: "Un e-mail est un écrit. S'il vient de la personne qui peut engager le client, qu'il désigne clairement les travaux et qu'il reprend le prix, il remplit le rôle d'une autorisation écrite avec prix convenu. Un e-mail qui dit seulement « faites-le » sans prix est une autorisation sans prix : insuffisante dans un forfait de construction, au sens de l'article 1793.",
+    },
+    {
+      q: "Le client a vu les travaux se faire et n'a rien dit. Doit-il payer ?",
+      a: "Pas forcément. Dans un marché à forfait, le fait que les travaux soient apparents, que le client ait été informé et qu'il n'ait pas protesté ne vaut pas acceptation (Cass. 3e civ., 27 juin 2019, n° 16-25.262). Il faut une acceptation expresse et non équivoque, ou un bouleversement de l'économie du contrat. Hors forfait, il faut prouver la commande.",
+    },
+    {
+      q: "À partir de quel pourcentage le forfait est-il bouleversé ?",
+      a: "Aucun texte ne fixe de pourcentage pour les marchés privés. Les juges regardent la nature et l'importance des modifications demandées par le client. Un doublement du volume a pu être retenu (arrêt du 12 mars 1997), mais un écart chiffré ne suffit jamais à lui seul à garantir le résultat.",
+    },
+    {
+      q: "Mon devis n'est pas un forfait, il est à prix unitaires. Qu'est-ce qui change ?",
+      a: "Les quantités réellement exécutées se paient aux prix unitaires du bordereau, sans avenant, si le contrat le prévoit. En revanche, un ouvrage nouveau, sans prix au bordereau, reste un supplément : il faut une commande et un prix accepté. Notre calculateur traite ce cas avec l'option « prix unitaires, métré ou régie ».",
+    },
+    {
+      q: "Je fais de la rénovation, pas de la construction. L'article 1793 s'applique-t-il ?",
+      a: "Pas automatiquement. Pour une rénovation ponctuelle sans intervention sur la structure, la Cour de cassation a admis que l'article 1793 soit écarté (23 juin 1999, n° 98-10.276). Mais le contrat peut prévoir une règle aussi stricte, et il faudra de toute façon prouver la commande. Écrire reste la seule solution sûre.",
+    },
+    {
+      q: "La norme NF P 03-001 prévoit une acceptation tacite du décompte. Les suppléments passent-ils ?",
+      a: "Pas dans un marché à forfait. La Cour de cassation a jugé le 8 juin 2023 (n° 22-10.393) que la procédure contractuelle de clôture des comptes ne peut pas prévaloir sur la qualification de forfait et que le silence du maître de l'ouvrage au mémoire définitif ne vaut pas acceptation expresse et non équivoque des travaux supplémentaires.",
+    },
+    {
+      q: "Le chef de chantier du client a signé le bon d'intervention. Est-ce suffisant ?",
+      a: "C'est une preuve utile que les travaux ont été demandés et faits. Si le bon mentionne le prix, c'est mieux. Mais si cette personne n'a pas le pouvoir d'engager une dépense, le client pourra contester la facture. Faites valider les suppléments par la personne désignée au début du chantier.",
+    },
+    {
+      q: "J'ai découvert un problème caché en cours de travaux. Puis-je le traiter et le facturer ?",
+      a: "Signalez-le d'abord par écrit, avec photos et chiffrage, et attendez l'accord, sauf urgence de sécurité. Dans un forfait, le risque d'un support mal évalué pèse souvent sur l'entreprise. Une réserve écrite dans le devis initial sur l'état des supports, avec la règle de chiffrage en cas de découverte, est la meilleure protection.",
+    },
+    {
+      q: "Mon client est une collectivité. Puis-je faire des travaux supplémentaires sur simple demande ?",
+      a: "Non. Avec un acheteur public, une modification du marché suit le Code de la commande publique et l'exécution passe par des ordres de service. Une modification de faible montant est possible sous les seuils européens et sous 15 % du marché initial pour des travaux (R2194-8), en cumulant les modifications successives (R2194-9). Attendez l'ordre de service ou l'avenant.",
+    },
+    {
+      q: "QuoteBuilder peut-il générer et faire signer l'avenant ?",
+      a: "Non. QuoteBuilder n'a pas de signature électronique ni de gestion d'avenants, et son PDF est un document indicatif. Il peut recevoir la demande de supplément comme une nouvelle demande, garder les fichiers et les notes internes du dossier. L'avenant se rédige et se signe dans vos outils habituels. Le calculateur d'avenant prépare un texte à reprendre.",
+    },
+  ],
+  "autoliquidation-tva-sous-traitance-btp-devis-b2b": [
+    {
+      q: "Quand un sous-traitant du bâtiment doit-il facturer sans TVA ?",
+      a: "Quand trois conditions sont réunies : il réalise des travaux de construction en relation avec un bien immobilier (réparation, nettoyage, entretien, transformation et démolition compris), il intervient comme sous-traitant au sens de la loi du 31 décembre 1975, et son client est assujetti à la TVA. Il facture alors hors taxes, avec la mention « Autoliquidation ».",
+    },
+    {
+      q: "Quelle mention porter sur la facture ?",
+      a: "La mention « Autoliquidation », exigée par le 13° du I de l'article 242 nonies A de l'annexe II au CGI, et l'indication que la TVA est due par le preneur assujetti. La référence à l'article du CGI n'est pas obligatoire. Le numéro de TVA du preneur n'est pas obligatoire non plus pour ce cas d'autoliquidation.",
+    },
+    {
+      q: "Un devis accepté suffit-il, sans contrat de sous-traitance ?",
+      a: "Oui. Le BOFiP admet qu'à défaut de contrat formel, un devis, un bon de commande signé ou tout document établissant l'accord sur les travaux et leur prix en tienne lieu. C'est pourquoi le devis doit décrire clairement les travaux et le chantier.",
+    },
+    {
+      q: "La location d'un engin avec chauffeur est-elle autoliquidée ?",
+      a: "Non, si elle fait l'objet d'un contrat à part. Le BOFiP exclut la location d'engins et de matériels de chantier, même avec montage et démontage, et le rescrit de 2026 précise que la location avec chauffeur n'est pas concernée. Si la location fait partie d'un contrat unique qui comprend des travaux immobiliers, l'ensemble est autoliquidé.",
+    },
+    {
+      q: "Et la fourniture de matériaux sans pose ?",
+      a: "C'est une livraison de biens, hors du dispositif. La fabrication de pièces sur mesure aussi, tout comme les travaux réalisés en atelier sur des biens meubles. La fourniture avec pose, en revanche, relève des travaux immobiliers quand la pose incorpore les éléments au bâti.",
+    },
+    {
+      q: "Le nettoyage de fin de chantier est-il concerné ?",
+      a: "Oui quand il est compris dans le contrat de travaux du sous-traitant sur le même chantier, parce qu'il prolonge les travaux. Non quand il est confié par un contrat distinct, indépendamment des travaux.",
+    },
+    {
+      q: "Mon sous-traitant est micro-entrepreneur, dois-je autoliquider ?",
+      a: "Pas s'il est en franchise en base de TVA et n'a pas opté pour un régime réel. Il facture sans TVA avec la mention « TVA non applicable, article 293 B du CGI », et vous n'avez rien à autoliquider.",
+    },
+    {
+      q: "Quand l'entreprise principale doit-elle déclarer la TVA autoliquidée ?",
+      a: "Sur la déclaration de la période au cours de laquelle elle paie son sous-traitant, puisque la TVA sur les travaux est exigible à l'encaissement. Elle porte le montant hors taxes en « autres opérations imposables » et déduit la TVA dans les conditions de droit commun.",
+    },
+    {
+      q: "Que risque l'entreprise principale qui oublie ?",
+      a: "Une amende égale à 5 % de la taxe qu'elle aurait pu déduire, prévue au 4 de l'article 1788 A du CGI. Le commentaire officiel de la décision du Conseil constitutionnel du 22 septembre 2022 cite une tolérance pour celui qui régularise spontanément avant toute action de l'administration. Pour un cas réel, voyez votre expert-comptable.",
+    },
+    {
+      q: "Le passage au CIBS en 2027 change-t-il quelque chose ?",
+      a: "Les références changent, pas la doctrine. Le transfert des dispositions législatives de la TVA dans le code des impositions sur les biens et services est reporté au 1er janvier 2027, les anciennes références au CGI restent utilisables jusqu'au 30 juin 2028, et l'administration indique que sa doctrine opposable est inchangée. La mention « Autoliquidation » reste la même.",
+    },
+  ],
+  "contrat-cadre-bordereau-prix-unitaires-devis-b2b": [
+    {
+      q: "Quelle différence entre un devis et un contrat-cadre ?",
+      a: "Un devis accepté porte sur une commande précise. Un contrat-cadre fixe les règles générales d'une relation suivie, et des contrats d'application, souvent des bons de commande, en précisent l'exécution (article 1111 du Code civil). Le contrat-cadre évite de renégocier chaque commande.",
+    },
+    {
+      q: "Un contrat-cadre oblige-t-il le client à commander ?",
+      a: "Pas forcément. Tout dépend de ce qui est écrit. Un volume prévisionnel n'oblige pas. Un volume minimal ou ferme oblige, et le contrat doit dire ce qui se passe s'il n'est pas atteint.",
+    },
+    {
+      q: "Le prix peut-il être fixé plus tard, par le fournisseur ?",
+      a: "Oui, si le contrat-cadre le prévoit. L'article 1164 du Code civil permet de convenir que le prix sera fixé unilatéralement par une partie. Celle-ci doit motiver son prix en cas de contestation, et l'abus peut donner lieu à des dommages et intérêts, voire à la résolution du contrat.",
+    },
+    {
+      q: "Qu'est-ce qu'un bordereau de prix unitaires ?",
+      a: "C'est la liste des prix par unité : par pièce, par heure, par mètre, par tonne. Le montant d'une commande est le prix unitaire multiplié par la quantité commandée. Le bordereau doit préciser l'unité et ce qui est compris dans le prix.",
+    },
+    {
+      q: "Remise par tranche ou remise globale : laquelle choisir ?",
+      a: "La remise globale applique le palier atteint à tout le volume : elle pousse le client à franchir les seuils, mais crée un effet de seuil. La remise par tranche donne à chaque tranche son taux : elle est plus lisible et sans effet de seuil, mais moins incitative. L'important est d'écrire laquelle s'applique.",
+    },
+    {
+      q: "Que faire si le client n'atteint pas le palier de la remise appliquée ?",
+      a: "Si le contrat prévoit une clause de rappel, vous facturez la différence entre le prix du palier réellement atteint et le prix facturé. Sans clause, récupérer cette différence est difficile. Le [calculateur de remise sur volume](https://www.quotebuilder.co/outils/calculateur-remise-volume-contrat-cadre) donne le montant du rappel.",
+    },
+    {
+      q: "Comment verser une ristourne de fin d'année ?",
+      a: "Par un avoir, une fois le volume de la période connu. La ristourne réduit la base de la TVA, conformément à l'article 267 du Code général des impôts. Le contrat doit fixer la date du bilan et le délai d'émission de l'avoir.",
+    },
+    {
+      q: "Peut-on prévoir une pénalité si le client commande moins que prévu ?",
+      a: "Oui, mais c'est une clause pénale. L'article 1231-5 du Code civil permet au juge de la réduire si elle est manifestement excessive, et en proportion de l'exécution partielle. Perdre le palier de remise suffit souvent.",
+    },
+    {
+      q: "Un accord-cadre public fonctionne-t-il de la même façon ?",
+      a: "Il s'en rapproche, mais il suit le Code de la commande publique : un maximum en valeur ou en quantité est obligatoire depuis le 1er janvier 2022, la durée est en principe limitée à quatre ans pour les pouvoirs adjudicateurs, et l'exécution se fait par bons de commande.",
+    },
+    {
+      q: "QuoteBuilder gère-t-il les contrats-cadres et les remises sur volume ?",
+      a: "Non. QuoteBuilder reçoit et suit les demandes de devis. Son catalogue calcule chaque ligne au prix unitaire multiplié par la quantité, sans palier de remise. Il ne gère ni contrat-cadre, ni bons de commande, ni facturation, ni avoirs.",
+    },
+  ],
+  "garantie-paiement-1799-1-devis-travaux-b2b": [
+    {
+      q: "À partir de quel montant la garantie de paiement est-elle obligatoire ?",
+      a: "Quand les sommes dues dépassent 12 000 € HT. Elles se calculent sur le prix convenu au marché, déduction faite des arrhes et acomptes versés à la signature (article 1er du décret n° 99-658 du 30 juillet 1999). Les paiements faits ensuite ne se déduisent pas pour apprécier le seuil.",
+    },
+    {
+      q: "Quelles formes peut prendre la garantie ?",
+      a: "Le versement direct par la banque d'un crédit dédié aux travaux, sur ordre écrit du client. Sans crédit dédié, ou pour la part qu'il ne couvre pas, un cautionnement solidaire d'un établissement de crédit, d'une société de financement, d'une entreprise d'assurance ou d'un organisme de garantie collective, sauf autre garantie stipulée au contrat, comme une hypothèque ou une consignation.",
+    },
+    {
+      q: "Un particulier doit-il fournir la garantie ?",
+      a: "Il n'a pas à fournir de caution quand il fait faire des travaux pour ses besoins personnels (alinéa 4 de l'article 1799-1). En revanche, s'il finance les travaux par un crédit dédié, la banque ne peut verser les fonds qu'à l'entreprise, tant qu'elle n'est pas intégralement payée.",
+    },
+    {
+      q: "Peut-on renoncer à la garantie dans le devis ?",
+      a: "Non. L'obligation est d'ordre public : une clause de renonciation est sans effet, et l'entreprise peut demander la garantie à tout moment malgré la clause.",
+    },
+    {
+      q: "Peut-on demander la garantie en cours de chantier ou après la réception ?",
+      a: "Oui. La Cour de cassation admet la demande à tout moment, en cours d'exécution (9 novembre 2005, n° 04-20.047), après la réalisation des travaux (15 septembre 2016, n° 15-19.648) et même après la résiliation du marché (18 mai 2017, n° 16-16.795), tant que le prix n'est pas intégralement payé.",
+    },
+    {
+      q: "Les travaux supplémentaires sont-ils couverts ?",
+      a: "Ceux qui ont été acceptés, oui : la garantie porte sur le prix initial ou sur le nouveau montant convenu entre les parties (Cass. 3e civ., 4 janvier 2006, n° 04-17.226). Les travaux faits sans accord écrit ne sont pas couverts tant que le client ne les a pas acceptés.",
+    },
+    {
+      q: "Quand peut-on suspendre le chantier ?",
+      a: "Quand trois conditions sont réunies : une mise en demeure en recommandé de fournir la garantie, un délai de quinze jours écoulé sans réponse, et des travaux exécutés restés impayés. Par prudence, comptez le délai à partir de la réception de la lettre et suspendez à partir du seizième jour. Prévenez le client par écrit.",
+    },
+    {
+      q: "Que faire si le client refuse malgré la mise en demeure ?",
+      a: "Saisir le juge des référés. L'obligation n'étant pas sérieusement contestable, il peut ordonner la fourniture de la garantie, au besoin sous astreinte (articles 835 et 873 du Code de procédure civile). Des reproches sur la qualité des travaux ne suffisent pas à l'écarter.",
+    },
+    {
+      q: "Comment est protégé un sous-traitant ?",
+      a: "Par l'article 14 de la loi du 31 décembre 1975 : l'entreprise principale doit lui fournir une caution personnelle et solidaire, sauf délégation de paiement du maître de l'ouvrage, à peine de nullité du sous-traité. S'il est accepté et ses conditions de paiement agréées, il dispose aussi d'une action directe contre le maître de l'ouvrage un mois après une mise en demeure restée sans effet.",
+    },
+    {
+      q: "QuoteBuilder gère-t-il la garantie de paiement ?",
+      a: "Non. QuoteBuilder reçoit les demandes de devis et garde, pour chaque dossier, les réponses du prospect, ses fichiers et les notes internes de l'équipe. Il ne fait ni signature, ni facture, ni suivi de paiement, et ne calcule pas de garantie. Vous pouvez ajouter au funnel des questions sur le type de client et le financement des travaux ; le calcul se fait avec le calculateur, à part.",
+    },
+  ],
+  "facturation-electronique-2026-devis-b2b-tpe-pme": [
+    {
+      q: "Une TPE doit-elle déjà faire quelque chose en 2026 ?",
+      a: "Oui : depuis le 1er septembre 2026, toute entreprise assujettie à la TVA doit pouvoir recevoir des factures électroniques, donc avoir choisi une plateforme agréée. L'émission, elle, n'est obligatoire qu'au 1er septembre 2027 pour les PME et les micro-entreprises.",
+    },
+    {
+      q: "Un auto-entrepreneur en franchise en base est-il concerné ?",
+      a: "Oui. La franchise en base dispense de facturer la TVA, pas de la réforme. L'auto-entrepreneur reçoit depuis 2026 et émettra en 2027 ses factures à des clients professionnels par une plateforme agréée.",
+    },
+    {
+      q: "Mon devis doit-il passer par une plateforme agréée ?",
+      a: "Non. La réforme porte sur les factures. Le devis reste un document commercial libre dans sa forme, avec ses propres mentions. La facture d'acompte, en revanche, est une facture.",
+    },
+    {
+      q: "Une facture PDF envoyée par e-mail est-elle une facture électronique ?",
+      a: "Non. Au sens de la réforme, une facture électronique est émise, transmise et reçue sous forme de données structurées, par une plateforme agréée. Un PDF seul reste une facture papier dématérialisée.",
+    },
+    {
+      q: "Comment savoir si je suis PME ou micro-entreprise ?",
+      a: "Regardez l'effectif, le chiffre d'affaires et le bilan du dernier exercice clos avant le 1er janvier 2025. Moins de 10 personnes et un chiffre d'affaires ou un bilan inférieur ou égal à 2 M€ : micro-entreprise. Pour la réforme, les deux catégories ont de toute façon la même date d'émission.",
+    },
+    {
+      q: "Un client grand compte peut-il m'imposer la facture électronique avant 2027 ?",
+      a: "Pas au titre de la réforme. Le guide de démarrage de la DGFiP indique qu'un client ne peut pas imposer l'émission électronique à une entreprise dont l'échéance est en 2027, ni refuser de payer une facture au seul motif qu'elle n'est pas électronique. Un accord commercial peut prévoir autre chose.",
+    },
+    {
+      q: "Quelles sont les nouvelles mentions sur la facture ?",
+      a: "Le SIREN du client, l'adresse de livraison si elle diffère de l'adresse de facturation, la catégorie de l'opération (biens, services ou les deux) et, le cas échéant, l'option pour le paiement de la TVA d'après les débits. Pour une PME, à partir du 1er septembre 2027.",
+    },
+    {
+      q: "Que risque une PME qui continue d'envoyer des PDF après le 1er septembre 2027 ?",
+      a: "50 € par facture, dans la limite de 15 000 € par an (article 1737 du CGI). La première infraction n'est pas sanctionnée si elle est réparée spontanément ou dans les trente jours d'une demande de l'administration.",
+    },
+    {
+      q: "Je fais des prestations de services : quel est ce e-reporting des paiements ?",
+      a: "Si vous payez la TVA à l'encaissement, ce qui est le régime par défaut des services, vous transmettez via votre plateforme les données des paiements reçus, à partir de votre date d'émission. Ce n'est pas le cas si vous avez opté pour les débits ou si l'opération est autoliquidée.",
+    },
+    {
+      q: "QuoteBuilder peut-il émettre mes factures électroniques ?",
+      a: "Non. QuoteBuilder gère la demande de devis et son suivi. Il n'émet pas de facture et n'est pas une plateforme agréée. Il peut en revanche collecter en amont des informations utiles à la facture, comme le SIREN du client, en ajoutant une question au funnel.",
+    },
+  ],
+  "prescription-facture-impayee-devis-b2b": [
+    {
+      q: "Quel est le délai de prescription d'une facture impayée entre professionnels ?",
+      a: "Cinq ans en principe. L'article L110-4 du Code de commerce s'applique entre commerçants ou entre un commerçant et un non-commerçant ; entre deux professionnels non commerçants, l'article 2224 du Code civil donne aussi cinq ans. Certains contrats ont un délai spécial plus court, comme le transport (un an), et un contrat entre professionnels peut fixer une durée entre un et dix ans.",
+    },
+    {
+      q: "Quel est le délai contre un particulier ?",
+      a: "Deux ans. L'article L218-2 du Code de la consommation prévoit que l'action des professionnels, pour les biens ou les services qu'ils fournissent aux consommateurs, se prescrit par deux ans. Ce délai ne peut pas être modifié par contrat (article L218-1).",
+    },
+    {
+      q: "À partir de quand court le délai : la date de la facture, l'échéance ou la fin des travaux ?",
+      a: "En principe à partir de l'exigibilité, souvent l'échéance écrite sur la facture (Cass. com., 5 décembre 2018, n° 17-16.282 ; 14 juin 2023, n° 21-14.841). Mais une facture émise tardivement ne repousse pas le délai : la Cour de cassation retient alors la date d'achèvement des prestations (Cass. com., 26 février 2020, n° 18-25.036). Par prudence, calculez les deux et retenez la plus proche.",
+    },
+    {
+      q: "Une mise en demeure en recommandé interrompt-elle la prescription ?",
+      a: "Non. La chambre commerciale de la Cour de cassation l'a rappelé le 18 mai 2022 (n° 20-23.204) : les causes d'interruption sont la reconnaissance du débiteur, la demande en justice et les mesures conservatoires ou actes d'exécution forcée. Une lettre recommandée, même avec accusé de réception, n'en fait pas partie.",
+    },
+    {
+      q: "Un paiement partiel fait-il repartir le délai ?",
+      a: "Oui, s'il vaut reconnaissance de la dette par le client, ce qui est le cas d'un acompte clairement rattaché à la facture. L'article 2240 du Code civil fait de la reconnaissance une cause d'interruption, et l'article 2231 fait alors courir un nouveau délai de même durée. Gardez le relevé qui rattache le virement à la facture.",
+    },
+    {
+      q: "Comment compter le dernier jour ?",
+      a: "Le délai se compte en jours (article 2228) et il est acquis quand le dernier jour du terme est accompli (article 2229). Pour une échéance au 14 janvier 2022, le délai de cinq ans finit le 14 janvier 2027 à minuit. Il n'y a pas de report au jour ouvrable suivant : les règles des délais de procédure ne s'appliquent pas (Cass. 1re civ., 12 décembre 2018, n° 17-25.697).",
+    },
+    {
+      q: "Une médiation suspend-elle la prescription ?",
+      a: "Oui, si les parties conviennent de recourir à une médiation ou à une conciliation après la naissance du litige, ou à défaut d'accord écrit, à partir de la première réunion (article 2238). Le délai repart à la fin déclarée de la médiation, pour au moins six mois. De simples négociations commerciales ne suspendent pas le délai.",
+    },
+    {
+      q: "Que se passe-t-il si la facture est prescrite ?",
+      a: "La dette existe toujours, mais vous ne pouvez plus en obtenir le paiement forcé si le client oppose la prescription. Le juge ne la soulève pas de lui-même (article 2247), et un client qui paie une dette prescrite ne peut pas se faire rembourser pour ce motif (article 2249). Une reconnaissance après coup ne fait pas repartir un délai expiré, sauf si elle vaut renonciation à la prescription, ce qui s'apprécie strictement.",
+    },
+    {
+      q: "Quelle procédure choisir pour recouvrer une facture B2B ?",
+      a: "Pour une facture non contestée, l'injonction de payer reste la voie courante, quel que soit le montant. La procédure des petites créances, jusqu'à 5 000 €, ne vise pas les créances commerciales facturées entre commerçants. La nouvelle procédure de recouvrement des créances commerciales incontestées, créée par la loi du 23 avril 2026, doit entrer en vigueur au plus tard le 31 décembre 2026. Si le client conteste, il faut une assignation.",
+    },
+    {
+      q: "QuoteBuilder suit-il les factures et les délais de prescription ?",
+      a: "Non. QuoteBuilder ne fait ni facture, ni encaissement, ni suivi d'échéance, et ne calcule pas de prescription. Il reçoit les demandes de devis et garde, pour chaque dossier, les réponses du prospect, ses fichiers et les notes internes de l'équipe. Le devis accepté et la facture restent dans vos outils habituels. Le calcul de prescription se fait avec le calculateur, à part.",
+    },
+  ],
+  "retractation-hors-etablissement-tpe-devis-b2b": [
+    {
+      q: "Un professionnel peut-il se rétracter d'un contrat signé avec un autre professionnel ?",
+      a: "Oui, dans un cas précis : le contrat est conclu hors établissement, son objet n'entre pas dans le champ de l'activité principale du client, et le client emploie cinq salariés au plus (article L221-3 du Code de la consommation). Les trois conditions sont cumulatives.",
+    },
+    {
+      q: "Le texte s'applique-t-il si le client a lui-même demandé le rendez-vous ?",
+      a: "Oui. La définition du contrat hors établissement (article L221-1) vise le contrat conclu hors des locaux du vendeur, en présence des deux parties, « y compris à la suite d'une sollicitation ou d'une offre faite par le consommateur ».",
+    },
+    {
+      q: "Et si le devis est signé par e-mail après une visite ?",
+      a: "Le texte ne tranche pas ce cas au jour près. Le contrat conclu à distance « immédiatement après » une sollicitation personnelle dans un autre lieu est visé. Plus la signature est éloignée de la visite, et faite par le client seul, plus on s'en éloigne. Dans le doute, appliquez la règle.",
+    },
+    {
+      q: "Comment savoir si l'objet du contrat entre dans l'activité principale du client ?",
+      a: "Comparez l'objet du contrat au métier du client, pas à son utilité pour l'entreprise. La Cour de cassation a laissé aux juges du fond l'appréciation de ce point (1re civ., 27 novembre 2019, n° 18-22.525) et a admis la protection pour un site internet vendu à un architecte (1re civ., 12 septembre 2018, n° 17-17.319).",
+    },
+    {
+      q: "Comment se compte le délai de quatorze jours ?",
+      a: "Le jour de la signature (ou de la réception) n'est pas compté. Le délai se termine à la fin du 14e jour. S'il tombe un samedi, un dimanche ou un jour férié ou chômé, il est reporté au premier jour ouvrable suivant (article L221-19).",
+    },
+    {
+      q: "Quand le délai part-il de la livraison ?",
+      a: "Pour une vente de biens et pour un contrat de service qui inclut la livraison de biens. Un contrat mixte, fourniture et pose, est assimilé à une vente (article L221-1 II). Pour un service seul, le délai part de la signature.",
+    },
+    {
+      q: "Peut-on encaisser un acompte à la signature ?",
+      a: "Non pour un contrat hors établissement dans le champ du texte : aucun paiement ni contrepartie ne peut être reçu avant l'expiration d'un délai de sept jours à compter de la conclusion (article L221-10), sauf exceptions limitées prévues par le texte.",
+    },
+    {
+      q: "Que se passe-t-il si le devis ne mentionne pas le droit de rétractation ?",
+      a: "Le délai est prolongé de douze mois à compter de la fin du délai initial (article L221-20). Si l'information est fournie pendant cette prolongation, un délai de quatorze jours court à partir de sa réception. Le contrat peut aussi être annulé si l'article L221-9 n'est pas respecté (article L242-1).",
+    },
+    {
+      q: "Le client doit-il payer la prestation commencée s'il se rétracte ?",
+      a: "Seulement s'il a fait une demande expresse de démarrage sur papier ou support durable et qu'il a reçu l'information prévue. Il paie alors un montant proportionné à ce qui a été fourni (article L221-25). Sans cette demande, il ne doit rien pour la période d'exécution pendant le délai.",
+    },
+    {
+      q: "QuoteBuilder ajoute-t-il le formulaire de rétractation au devis ?",
+      a: "Non. QuoteBuilder n'a pas de champ de mentions légales ni de formulaire de rétractation, et sa PDF est un récapitulatif indiqué « Document indicatif, non contractuel. ». Le contrat et le formulaire se gèrent avec vos propres documents.",
+    },
+  ],
   "prix-vente-coefficient-debourse-sec-devis-b2b": [
     {
       q: "Qu'est-ce que le déboursé sec ?",

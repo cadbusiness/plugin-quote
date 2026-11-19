@@ -68,9 +68,62 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Funnel de devis chapiteau et agence événementielle : https://www.quotebuilder.co/secteurs/funnel-devis-chapiteau-agence-evenementielle
 - Funnel de devis logiciel sur mesure : https://www.quotebuilder.co/secteurs/funnel-devis-logiciel-sur-mesure
 - Funnel de devis nettoyage et propreté en entreprise : https://www.quotebuilder.co/secteurs/funnel-devis-nettoyage-proprete-entreprise
+- Funnel de devis alarme et vidéosurveillance pour entreprise : https://www.quotebuilder.co/secteurs/funnel-devis-alarme-videosurveillance-entreprise
+- Funnel de devis pour expert-comptable : https://www.quotebuilder.co/secteurs/funnel-devis-expert-comptable-lettre-de-mission
+- Funnel de devis pour transporteur routier de marchandises : https://www.quotebuilder.co/secteurs/funnel-devis-transport-routier-marchandises
+- Funnel de devis sécurité incendie et extincteurs : https://www.quotebuilder.co/secteurs/funnel-devis-securite-incendie-extincteurs
+- Funnel de devis dératisation et désinsectisation : https://www.quotebuilder.co/secteurs/funnel-devis-deratisation-desinsectisation-3d
+- Funnel de devis photo et vidéo d'entreprise : https://www.quotebuilder.co/secteurs/funnel-devis-photographe-video-entreprise
+- Funnel de devis impression 3D et prototypage : https://www.quotebuilder.co/secteurs/funnel-devis-impression-3d-prototypage
+- Funnel de devis séminaire d'entreprise : https://www.quotebuilder.co/secteurs/funnel-devis-seminaire-entreprise
+- Funnel de devis peinture entreprise : https://www.quotebuilder.co/secteurs/funnel-devis-peinture-entreprise
+- Funnel de devis thermolaquage et traitement de surface : https://www.quotebuilder.co/secteurs/funnel-devis-thermolaquage-traitement-surface
+- Funnel de devis déménagement d'entreprise : https://www.quotebuilder.co/secteurs/funnel-devis-demenagement-entreprise
+- Funnel de devis chambre froide et froid commercial : https://www.quotebuilder.co/secteurs/funnel-devis-chambre-froide-froid-commercial
+- Funnel de devis mezzanine et plateforme industrielle : https://www.quotebuilder.co/secteurs/funnel-devis-mezzanine-plateforme-industrielle
+- Funnel de devis portes industrielles et quais de chargement : https://www.quotebuilder.co/secteurs/funnel-devis-porte-industrielle-quai-chargement
+- Funnel de devis maintenance industrielle et contrats d'entretien : https://www.quotebuilder.co/secteurs/funnel-devis-maintenance-industrielle-contrat
+- Funnel de devis sol industriel, résine et marquage au sol : https://www.quotebuilder.co/secteurs/funnel-devis-sol-industriel-resine-marquage
+- Funnel de devis découpe laser, tôlerie et pliage : https://www.quotebuilder.co/secteurs/funnel-devis-decoupe-laser-tolerie-pliage
+- Funnel de devis palettes et caisses bois : https://www.quotebuilder.co/secteurs/funnel-devis-palettes-caisses-bois-export
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
+- Prêt de main-d'œuvre illicite et marchandage : rédiger un devis de régie ou d'assistance technique sans vendre du personnel : https://www.quotebuilder.co/blog/pret-main-oeuvre-illicite-marchandage-devis-regie-b2b
+- Client en redressement ou liquidation judiciaire : devis en cours, acompte et déclaration de créance : https://www.quotebuilder.co/blog/client-procedure-collective-declaration-creance-devis-b2b
+- Mention déchets sur un devis de travaux : les quatre informations obligatoires, le bordereau de dépôt, le tri et le coût à chiffrer : https://www.quotebuilder.co/blog/mention-dechets-devis-travaux-bordereau-depot-b2b
+- Qui peut signer un devis côté client : pouvoir, délégation et mandat apparent : https://www.quotebuilder.co/blog/pouvoir-signataire-devis-delegation-mandat-apparent-b2b
+- Devis pour un acheteur public (mairie, hôpital, établissement public) : seuils, bon de commande, Chorus Pro, délai de paiement et intérêts moratoires : https://www.quotebuilder.co/blog/devis-acheteur-public-marche-sans-publicite-b2b
+- TVA d'un devis pour un client étranger (UE ou export) : ce qu'il faut vérifier et écrire avant de chiffrer : https://www.quotebuilder.co/blog/tva-client-etranger-ue-export-devis-b2b
+- Forfait, régie ou régie plafonnée : comment choisir le mode de facturation d'un devis de prestation B2B : https://www.quotebuilder.co/blog/forfait-regie-temps-passe-devis-b2b
+- Bon à tirer, échantillon et prototype : faire valider avant de produire, ce qu'il faut écrire dans un devis B2B : https://www.quotebuilder.co/blog/bon-a-tirer-bat-validation-avant-production-devis-b2b
+- Plan de prévention et entreprise extérieure : ce qu'il faut prévoir dans un devis B2B avant d'intervenir chez un client : https://www.quotebuilder.co/blog/plan-prevention-entreprise-exterieure-devis-b2b
+- Outillage spécifique et moules dans un devis B2B : amortissement, propriété, garde et restitution, ce qu'il faut écrire avant de lancer l'outil : https://www.quotebuilder.co/blog/outillage-specifique-moule-propriete-amortissement-devis-b2b
+- Réception des travaux en B2B : procès-verbal, réserves, levée et garanties, ce qu'il faut prévoir dès le devis : https://www.quotebuilder.co/blog/reception-travaux-proces-verbal-reserves-devis-b2b
+- Cotraitance et groupement d'entreprises dans un devis B2B : forme, solidarité, mandataire et répartition, ce qu'il faut écrire avant l'acceptation : https://www.quotebuilder.co/blog/cotraitance-groupement-entreprises-devis-b2b
+- Céder une facture B2B : cession de créance, Dailly et affacturage, ce qu'il faut prévoir dès le devis : https://www.quotebuilder.co/blog/cession-creance-affacturage-dailly-devis-b2b
+- Erreur de prix dans un devis B2B : total faux, prix unitaire, oubli ou mauvaise estimation, ce qui se corrige et ce qui engage : https://www.quotebuilder.co/blog/erreur-prix-devis-b2b
+- Rupture brutale d'une relation commerciale établie : préavis écrit, durée, dépendance et devis récurrents B2B : https://www.quotebuilder.co/blog/rupture-brutale-relations-commerciales-devis-b2b
+- Compensation de créances dans un devis B2B : quand le client paie la facture « moins » une somme, ce que dit le code civil et ce qu'il faut écrire : https://www.quotebuilder.co/blog/compensation-creances-deduction-facture-devis-b2b
+- Sous-traitance et loi de 1975 dans un devis B2B : acceptation, caution, action directe et paiement direct : https://www.quotebuilder.co/blog/sous-traitance-loi-1975-paiement-direct-devis-b2b
+- Exception d'inexécution dans un devis B2B : articles 1219 et 1220, gravité, notification, et ce qu'il faut écrire : https://www.quotebuilder.co/blog/exception-inexecution-devis-b2b
+- Clause résolutoire dans un devis B2B : articles 1224 à 1226, mise en demeure, et ce qui tient vraiment : https://www.quotebuilder.co/blog/clause-resolutoire-devis-b2b
+- Force majeure et imprévision dans un devis B2B : article 1218, article 1195, et ce qu'il faut écrire dans la clause : https://www.quotebuilder.co/blog/force-majeure-imprevision-devis-b2b
+- Clause attributive de juridiction et médiation préalable dans un devis B2B : quel tribunal, quelle étape amiable, et ce qui tient vraiment : https://www.quotebuilder.co/blog/clause-attributive-juridiction-mediation-devis-b2b
+- Clause de non-sollicitation du personnel dans un devis B2B : quand elle tient, combien de temps, et qui doit la justifier : https://www.quotebuilder.co/blog/clause-non-sollicitation-personnel-devis-b2b
+- Accord de confidentialité (NDA) avant un devis B2B : protéger ses plans, ses fichiers et son savoir-faire avant de demander un prix : https://www.quotebuilder.co/blog/accord-confidentialite-nda-avant-devis-b2b
+- Clause de limitation de responsabilité dans un devis B2B : ce qui tient, ce qui tombe, et comment l'écrire : https://www.quotebuilder.co/blog/clause-limitation-responsabilite-devis-b2b
+- Cession de droits d'auteur dans un devis B2B : photos, vidéos, graphisme, ce qu'il faut écrire pour pouvoir vraiment s'en servir : https://www.quotebuilder.co/blog/cession-droits-auteur-devis-b2b
+- Obligation de vigilance et attestation Urssaf : ce que le devis doit prévoir, et comment la vérifier : https://www.quotebuilder.co/blog/obligation-vigilance-attestation-urssaf-devis-b2b
+- Vos CGV contre les conditions d'achat du client : quelle clause s'applique à votre devis ? : https://www.quotebuilder.co/blog/cgv-conditions-achat-client-devis-b2b
+- Attestation d'assurance décennale et devis : ce qu'elle doit couvrir, et comment la vérifier : https://www.quotebuilder.co/blog/attestation-assurance-decennale-devis-b2b
+- Travaux supplémentaires et avenant au devis : ce qui se paie, ce qui se perd, et comment l'écrire : https://www.quotebuilder.co/blog/travaux-supplementaires-avenant-devis-b2b
+- Autoliquidation de la TVA en sous-traitance BTP : ce que doivent dire votre devis et votre facture : https://www.quotebuilder.co/blog/autoliquidation-tva-sous-traitance-btp-devis-b2b
+- Contrat-cadre et bordereau de prix unitaires : chiffrer un client récurrent sans refaire un devis à chaque commande : https://www.quotebuilder.co/blog/contrat-cadre-bordereau-prix-unitaires-devis-b2b
+- Garantie de paiement de l'article 1799-1 : ce que votre client doit fournir au-delà de 12 000 € HT de travaux : https://www.quotebuilder.co/blog/garantie-paiement-1799-1-devis-travaux-b2b
+- Facturation électronique 2026 : ce qui change pour une TPE ou une PME qui fait des devis B2B, de la demande à la facture : https://www.quotebuilder.co/blog/facturation-electronique-2026-devis-b2b-tpe-pme
+- Facture impayée entre professionnels : cinq ans pour agir, et ce qui fait courir, arrêter ou repartir la prescription : https://www.quotebuilder.co/blog/prescription-facture-impayee-devis-b2b
+- Rétractation hors établissement entre professionnels : la règle des cinq salariés, expliquée sur un devis B2B : https://www.quotebuilder.co/blog/retractation-hors-etablissement-tpe-devis-b2b
 - Calculer le prix de vente d'un devis B2B : déboursé sec, frais généraux, coefficient, taux de marge et taux de marque : https://www.quotebuilder.co/blog/prix-vente-coefficient-debourse-sec-devis-b2b
 - Reconduction tacite et préavis dans un devis B2B : durée, renouvellement, résiliation et rupture brutale : https://www.quotebuilder.co/blog/reconduction-tacite-preavis-resiliation-devis-b2b
 - Frais de port et franco dans un devis B2B : fixer le seuil, choisir l'Incoterm, savoir qui porte les risques : https://www.quotebuilder.co/blog/frais-port-franco-incoterms-devis-b2b
@@ -198,6 +251,41 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Calculateur de seuil franco de port : https://www.quotebuilder.co/outils/calculateur-seuil-franco-port
 - Calculateur de préavis et de reconduction tacite : https://www.quotebuilder.co/outils/calculateur-preavis-reconduction-tacite
 - Calculateur de coefficient de vente : https://www.quotebuilder.co/outils/calculateur-coefficient-vente-devis
+- Calculateur de délai de rétractation hors établissement : https://www.quotebuilder.co/outils/calculateur-delai-retractation-hors-etablissement
+- Calculateur de prescription d'une facture impayée : https://www.quotebuilder.co/outils/calculateur-prescription-facture-impayee
+- Calculateur d'échéance de facturation électronique : https://www.quotebuilder.co/outils/calculateur-echeance-facturation-electronique
+- Calculateur de garantie de paiement (article 1799-1) : https://www.quotebuilder.co/outils/calculateur-garantie-paiement-marche-travaux
+- Calculateur de remise sur volume d'un contrat-cadre : https://www.quotebuilder.co/outils/calculateur-remise-volume-contrat-cadre
+- Vérificateur d'autoliquidation de TVA en sous-traitance BTP : https://www.quotebuilder.co/outils/verificateur-autoliquidation-tva-sous-traitance-btp
+- Calculateur d'avenant et de travaux supplémentaires : https://www.quotebuilder.co/outils/calculateur-avenant-travaux-supplementaires
+-vérificateur d'attestation d'assurance décennale: https://www.quotebuilder.co/outils/verificateur-attestation-assurance-decennale
+- Comparateur CGV et conditions d'achat du client : https://www.quotebuilder.co/outils/comparateur-cgv-conditions-achat-client
+-vérificateur d'obligation de vigilance (attestation Urssaf): https://www.quotebuilder.co/outils/verificateur-obligation-vigilance-sous-traitant
+- Vérificateur de clause de cession de droits d'auteur : https://www.quotebuilder.co/outils/verificateur-clause-cession-droits-auteur
+- Vérificateur de clause de limitation de responsabilité : https://www.quotebuilder.co/outils/verificateur-clause-limitation-responsabilite
+-vérificateur d'accord de confidentialité (NDA): https://www.quotebuilder.co/outils/verificateur-accord-confidentialite-nda
+-vérificateur de clause de non-sollicitation du personnel: https://www.quotebuilder.co/outils/verificateur-clause-non-sollicitation-personnel
+- Vérificateur de clause de règlement des litiges : https://www.quotebuilder.co/outils/verificateur-clause-reglement-litiges
+- Vérificateur de clause de force majeure et d'imprévision : https://www.quotebuilder.co/outils/verificateur-clause-force-majeure-imprevision
+-vérificateur de clause résolutoire: https://www.quotebuilder.co/outils/verificateur-clause-resolutoire
+- Vérificateur d'exception d'inexécution : https://www.quotebuilder.co/outils/verificateur-exception-inexecution
+-vérificateur de sous-traitance (loi de 1975): https://www.quotebuilder.co/outils/verificateur-sous-traitance-loi-1975
+- Vérificateur de compensation de créances : https://www.quotebuilder.co/outils/verificateur-compensation-creances
+- Calculateur de préavis de rupture brutale : https://www.quotebuilder.co/outils/calculateur-preavis-rupture-brutale
+- Vérificateur d'erreur de prix dans un devis : https://www.quotebuilder.co/outils/verificateur-erreur-prix-devis
+- Vérificateur de cession de créance et d'affacturage : https://www.quotebuilder.co/outils/verificateur-cession-creance-affacturage
+-calculateur de répartition d'un groupement de cotraitants: https://www.quotebuilder.co/outils/calculateur-repartition-groupement-cotraitance
+-vérificateur de réception des travaux et des réserves: https://www.quotebuilder.co/outils/verificateur-reception-travaux-reserves
+-calculateur d'amortissement d'un outillage spécifique: https://www.quotebuilder.co/outils/calculateur-amortissement-outillage-specifique
+- Vérificateur de plan de prévention pour entreprise extérieure : https://www.quotebuilder.co/outils/verificateur-plan-prevention-entreprise-exterieure
+- Vérificateur de bon à tirer (BAT) avant production : https://www.quotebuilder.co/outils/verificateur-bon-a-tirer-validation-production
+-comparateur forfait ou régie: https://www.quotebuilder.co/outils/comparateur-forfait-regie-devis
+- Vérificateur TVA client étranger : https://www.quotebuilder.co/outils/verificateur-tva-client-etranger-devis
+-calculateur d'intérêts moratoires (marché public): https://www.quotebuilder.co/outils/calculateur-interets-moratoires-marche-public
+- Vérificateur du pouvoir du signataire : https://www.quotebuilder.co/outils/verificateur-pouvoir-signataire-devis
+- Vérificateur de mention déchets : https://www.quotebuilder.co/outils/verificateur-mention-dechets-devis-travaux
+- Calculateur de déclaration de créance : https://www.quotebuilder.co/outils/calculateur-declaration-creance-procedure-collective
+- Vérificateur de prêt de main-d'œuvre : https://www.quotebuilder.co/outils/verificateur-pret-main-oeuvre-devis
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 
