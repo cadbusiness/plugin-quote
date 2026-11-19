@@ -21,7 +21,7 @@ export const FAQ = [
   { q: "QuoteBuilder vérifie-t-il la disponibilité des lieux ?", a: "Non. Il n'a ni calendrier, ni réservation, ni gestion d'options. Il reçoit la demande et vous aide à la suivre ; la recherche de lieux et les options se font dans vos outils." },
   { q: "Peut-on proposer un « pack séminaire » tout compris ?", a: "Pas sous forme de kit : QuoteBuilder n'a ni kits ni lots. Décrivez le pack comme une formule de votre catalogue, avec ses options, et proposez-le par une règle Si/Alors." },
   { q: "Plusieurs personnes peuvent-elles valider la proposition côté client ?", a: "Oui. Le contact principal peut inviter des relecteurs, avec un rôle (Directeur financier, Acheteur, Décideur, Responsable technique), chacun avec son lien valable 30 jours. Ils commentent, valident ou demandent des modifications. Ce n'est pas une signature." },
-  { q: "Les prix affichés sont-ils HT ?", a: "QuoteBuilder affiche des montants en euros entiers, sans mention HT, TVA ou TTC. Précisez-le dans votre devis ferme." },
+  { q: "Les prix affichés sont-ils HT ?", a: "QuoteBuilder affiche des montants qui se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), sans mention HT, TVA ou TTC. Précisez-le dans votre devis ferme." },
   { q: "Faut-il un plan payant pour ce funnel ?", a: "Non pour commencer : selon la page des tarifs consultée le 5 novembre 2026, l'offre Free comprend un funnel et 10 soumissions au total, sans carte. Pour plusieurs funnels (séminaires et journées d'étude, par exemple), Starter en comprend trois à 39 € par mois, Pro un nombre illimité à 79 € par mois." },
 ];
 

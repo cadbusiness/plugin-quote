@@ -138,7 +138,7 @@ Un forfait se calcule en deux étapes : le coût du travail probable, puis une r
 
 **Le point mort.** C'est le nombre d'heures à partir duquel le forfait est perdant : prix divisé par coût de revient horaire. 7 820 € divisés par 52 € donnent 150 heures. L'agence ne perd de l'argent qu'au-delà de 150 heures, soit près du double de l'estimation probable. Si le point mort était à 105 heures, le forfait serait dangereux, parce que l'estimation haute s'en approcherait trop.
 
-Le prix s'écrit en euros entiers dans le devis. Le chiffre exact dépend de ce que vous mettez dans le taux et le coût : une autre structure obtiendra d'autres résultats avec la même méthode.
+Le prix se saisit au centime et s'affiche arrondi à l'euro dès 1 € (sous 1 €, les centimes restent). Le chiffre exact dépend de ce que vous mettez dans le taux et le coût : une autre structure obtiendra d'autres résultats avec la même méthode.
 
 ## La régie : un taux, une estimation, un relevé
 
@@ -273,7 +273,7 @@ QuoteBuilder sert à recevoir des demandes de devis complètes, à les trier et 
 
 - **Poser dans le funnel les questions qui réduisent l'incertitude.** Vous ajoutez à vos questions une liste « Existant : documenté, partiellement, inconnu », un choix « Cahier des charges : oui, en cours, non », un texte libre pour les contraintes. Elles s'affichent dans un ordre fixe, pour tout le monde : il n'y a pas de branchement conditionnel, on ne peut pas afficher une question seulement si le prospect a répondu « non » à la précédente. Les réponses arrivent dans le dossier, avant votre premier appel.
 - **Recevoir les documents du prospect.** Le prospect peut déposer un plan ou un document dans la zone « Plan (PDF ou image) » de l'étape Personnalisation (PDF, JPEG, PNG, WebP, 10 Mo), puis ajouter des fichiers plus tard depuis son espace prospect, rubrique « Compléter la demande ». C'est un moyen simple de recevoir un cahier des charges ou une capture de l'existant. Voir [l'espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) et [les pièces jointes](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b).
-- **Afficher un prix en euros entiers : fixe, fourchette ou « Sur devis ».** Un produit de catalogue peut porter un prix fixe (un forfait de cadrage), une fourchette (« à partir de ») ou « Sur devis » quand le prix se discute. La fourchette est une façon honnête d'annoncer l'écart entre l'estimation basse et la haute : voir [la fourchette de prix indicative](https://www.quotebuilder.co/blog/fourchette-prix-indicative-demande-devis-b2b).
+- **Saisir le prix au centime et l'afficher arrondi à l'euro dès 1 € : fixe, fourchette ou « Sur devis ».** Un produit de catalogue peut porter un prix fixe (un forfait de cadrage), une fourchette (« à partir de ») ou « Sur devis » quand le prix se discute. Sous 1 €, les centimes restent. La fourchette est une façon honnête d'annoncer l'écart entre l'estimation basse et la haute : voir [la fourchette de prix indicative](https://www.quotebuilder.co/blog/fourchette-prix-indicative-demande-devis-b2b).
 - **Garder une trace interne.** Les notes internes du dossier, en texte brut, en ajout seul, servent à noter les trois estimations, les hypothèses, le mode proposé et la décision. Voir [les notes internes d'un dossier](https://www.quotebuilder.co/blog/notes-internes-dossier-devis-equipe-b2b).
 - **Faire relire en interne avant l'envoi.** Un second regard sur un forfait évite les erreurs de périmètre : voir [la validation interne avant envoi](https://www.quotebuilder.co/blog/validation-interne-avant-envoi-devis-b2b).
 
@@ -426,7 +426,7 @@ Ils concernent le marché à forfait de construction d'un bâtiment d'après un 
 
 ### QuoteBuilder suit-il les heures passées ou facture-t-il au temps passé ?
 
-Non. QuoteBuilder reçoit les demandes de devis, les trie, les suit et affiche un prix en euros entiers (fixe, fourchette ou « Sur devis »). Il n'a ni relevé d'heures, ni facturation, ni encaissement, ni signature électronique : le temps passé et les avenants se gèrent dans vos outils.
+Non. QuoteBuilder reçoit les demandes de devis, les trie, les suit et affiche un prix saisi au centime et arrondi à l'euro dès 1 € (sous 1 €, les centimes restent), en fixe, en fourchette ou « Sur devis ». Il n'a ni relevé d'heures, ni facturation, ni encaissement, ni signature électronique : le temps passé et les avenants se gèrent dans vos outils.
 
 ### Le comparateur donne-t-il le bon mode de facturation ?
 

@@ -422,7 +422,7 @@ QuoteBuilder sert à recevoir des demandes de devis complètes, par un funnel pa
 - Une question de type Mesure « Surface concernée (m²) » donne l'ordre de grandeur. Elle ne calcule pas de tonnage : il n'y a pas de calcul entre les réponses.
 - Le prospect peut déposer des photos ou un plan dans la zone « Plan (PDF ou image) » de l'étape Personnalisation (PDF, JPEG, PNG ou WebP, 10 Mo), puis compléter sa demande depuis son [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect). Des photos de l'existant aident à estimer la dépose. Voir [pièces jointes, plans et photos dans une demande de devis](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b).
 - Les notes internes du dossier gardent ce qui a été dit pendant la visite : « carrelage à déposer dans le coin cuisine, environ 12 m² ; benne impossible dans la cour ». Elles s'ajoutent et ne se modifient pas. Voir [notes internes d'un dossier de devis](https://www.quotebuilder.co/blog/notes-internes-dossier-devis-equipe-b2b).
-- Le catalogue peut contenir un produit « Gestion des déchets de chantier » affiché « Sur devis », en prix fixe ou en fourchette, en euros entiers, et une règle Si/Alors peut le suggérer quand le prospect coche une dépose. Les règles choisissent seulement les produits suggérés.
+- Le catalogue peut contenir un produit « Gestion des déchets de chantier » affiché « Sur devis », en prix fixe ou en fourchette ; les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), et une règle Si/Alors peut le suggérer quand le prospect coche une dépose. Les règles choisissent seulement les produits suggérés.
 
 **Ce qui reste hors de QuoteBuilder.**
 

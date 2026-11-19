@@ -120,7 +120,7 @@ function assertNoDashes(text: string, label: string) {
   const description = blogRaw.match(/^description: "([\s\S]*?)"$/m)?.[1];
   assert.equal(BLOG_POSTS.find((post) => post.slug === BLOG_SLUG)?.title, title);
   assert.equal(BLOG_POSTS.find((post) => post.slug === BLOG_SLUG)?.description, description);
-  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 6127);
+  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 6141);
   assert.equal(faqQuestionCount(blogBody), 10);
   assert.deepEqual(faqFromMarkdown(blogBody), BLOG_FAQ[BLOG_SLUG]);
   assertNoDashes(blogRaw, "blog md");
@@ -142,7 +142,7 @@ function assertNoDashes(text: string, label: string) {
     assert.ok(sectorPage.includes(JSON.stringify(item.q)), item.q);
     assert.ok(sectorPage.includes(JSON.stringify(item.a)), item.a.slice(0, 80));
   }
-  assert.equal(sectorBody.split(/\s+/).filter(Boolean).length, 5589);
+  assert.equal(sectorBody.split(/\s+/).filter(Boolean).length, 5612);
   assertNoDashes(sectorRaw, "sector md");
   assertInternalLinks(sectorBody, "sector");
   assert.ok(sectorPage.includes("Sécurité incendie et extincteurs"));

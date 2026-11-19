@@ -180,7 +180,7 @@ Il n'y a pas non plus de duplication de funnel ni de test A/B : si vous voulez u
 
 **À l'étape Personnalisation**, la zone de dépôt s'appelle « Plan (PDF ou image) ». Elle accepte PDF, JPEG, PNG et WebP, jusqu'à 10 Mo par fichier. Elle est facultative.
 
-**Après l'envoi**, le contact principal peut ajouter un fichier depuis son [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect), dans la section « Compléter la demande », avec une note facultative. Mêmes formats, même limite.
+**Après l'envoi**, le contact principal peut ajouter un fichier depuis son [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect), dans la rubrique « Compléter la demande » : un fichier, mêmes formats, même limite.
 
 Pour un laqueur, c'est souvent suffisant : une photo des pièces avec un mètre, un plan PDF coté, une capture du nuancier ou de la fiche couleur. Un fichier de CAO ne passe pas, mais il est rarement utile pour chiffrer un laquage.
 
@@ -194,7 +194,7 @@ Le catalogue décrit ce que vous vendez. Pour un atelier de traitement de surfac
 - **des services autour** : « Masquage », « Rapport d'épaisseur », « Enlèvement et livraison », « Galvanisation à chaud » si vous la proposez via un partenaire ;
 - **la teinte** en variante quand elle change le prix (teinte standard, teinte spéciale, aspect texturé ou métallisé).
 
-Chaque produit porte un prix fixe, une fourchette (minimum et maximum) ou la mention « sur devis ». Les prix sont en euros entiers, sans HT, TVA ni TTC. Le dossier affiche une fourchette indicative : c'est un ordre de grandeur pour le client, pas le prix ferme, qui sort de votre chiffrage habituel une fois les pièces vues.
+Chaque produit porte un prix fixe, une fourchette (minimum et maximum) ou la mention « sur devis ». Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), sans HT, TVA ni TTC. Le dossier affiche une fourchette indicative : c'est un ordre de grandeur pour le client, pas le prix ferme, qui sort de votre chiffrage habituel une fois les pièces vues.
 
 Quelques règles de bon sens :
 
@@ -273,7 +273,7 @@ Chez un constructeur de machines, la demande de laquage passe souvent par trois 
 - Il ne calcule pas la surface développée d'une pièce, ni le nombre de charges, ni la consommation de poudre.
 - Il n'a pas de branchement conditionnel, pas de kits, pas de duplication de funnel, pas de test A/B.
 - Il ne fait ni signature électronique, ni facture, ni encaissement.
-- Les prix sont en euros entiers, sans HT ni TTC, et le devis n'a pas de date de validité.
+- Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), sans HT ni TTC, et le devis n'a pas de date de validité.
 - Le score est une formule fixe qui ne lit pas vos questions ajoutées.
 - Votre équipe ne peut pas joindre de fichier à un dossier ; les fichiers viennent du client.
 - Il n'a pas de champ dédié à la sous-traitance (client final, acceptation, caution) : ce sont des questions ajoutées et des notes internes.
@@ -313,7 +313,7 @@ Pas sous forme de kit : QuoteBuilder ne gère pas de lots composés. Créez deux
 
 ### QuoteBuilder calcule-t-il le prix à partir des dimensions ?
 
-Non. Les produits portent un prix fixe, une fourchette ou la mention « sur devis », en euros entiers. Les règles peuvent proposer un produit « pièces longues » au-delà d'une longueur, mais le calcul de la surface développée et des charges reste votre chiffrage.
+Non. Les produits portent un prix fixe, une fourchette ou la mention « sur devis ». Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Les règles peuvent proposer un produit « pièces longues » au-delà d'une longueur, mais le calcul de la surface développée et des charges reste votre chiffrage.
 
 ### Comment noter qu'une demande vient d'un métallier qui sous-traite ?
 
@@ -325,7 +325,7 @@ Non. L'équipe ne peut pas joindre de fichier à un dossier : les fichiers vienn
 
 ### Les prix affichés sont-ils HT ?
 
-QuoteBuilder n'affiche pas de mention HT ou TTC : les prix du catalogue sont des montants en euros entiers, et le dossier affiche une fourchette indicative. Précisez dans votre devis ferme la base hors taxes et le taux de TVA applicable.
+QuoteBuilder n'affiche pas de mention HT ou TTC : les prix du catalogue se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), et le dossier affiche une fourchette indicative. Précisez dans votre devis ferme la base hors taxes et le taux de TVA applicable.
 
 ### Peut-on fixer une date de validité sur la fourchette ?
 

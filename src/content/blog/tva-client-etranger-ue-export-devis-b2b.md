@@ -309,7 +309,7 @@ QuoteBuilder sert à recevoir des demandes de devis complètes, avec un funnel p
 - Le funnel pose ses questions dans un ordre fixe. Vous pouvez y ajouter une question de type Liste « Pays de livraison » et une question de type Texte « Numéro de TVA intracommunautaire, si vous en avez un ». Une question peut être facultative : c'est le bon réglage ici, puisque le funnel n'a pas de branchement conditionnel et que la question s'affichera aussi aux prospects français.
 - Le prospect peut joindre des fichiers dans la zone « Plan (PDF ou image) » (PDF, JPEG, PNG ou WebP, 10 Mo) et compléter sa demande ensuite depuis son [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect). C'est utile pour un plan coté, moins pour un document de transport qui arrive après la livraison.
 - Les notes internes du dossier permettent de tracer la vérification du numéro (« numéro vérifié sur VIES le 23 novembre, capture classée ») ou la réponse du comptable. Elles s'ajoutent et ne se modifient pas.
-- Les prix du catalogue s'affichent dans la devise choisie, en montants entiers, en prix fixe, en fourchette ou « Sur devis ».
+- Les prix du catalogue se saisissent au centime, en euros, et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), en prix fixe, en fourchette ou « Sur devis ».
 
 **Ce qui reste hors de QuoteBuilder.**
 

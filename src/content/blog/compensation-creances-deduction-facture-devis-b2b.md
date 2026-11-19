@@ -282,7 +282,7 @@ Sur main (commit 4ba2123, PR #183), QuoteBuilder :
 
 - capture la demande via funnel, API, plugin ou agent chat ;
 - calcule un score Hot / Warm / Cold à formule fixe ;
-- affiche des fourchettes et des prix en euros entiers ;
+- affiche des fourchettes. Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent) ;
 - permet des notes internes en ajout seul (non modifiables, sans notification) ;
 - reçoit les fichiers envoyés par le prospect seulement (zone « Plan (PDF ou image) », PDF, JPEG, PNG, WebP, 10 Mo) ;
 - expose un [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) pour suivre la demande ;

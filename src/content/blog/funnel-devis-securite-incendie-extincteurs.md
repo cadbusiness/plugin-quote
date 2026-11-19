@@ -150,7 +150,7 @@ Le libellé de la question peut devenir « Ce qui s'applique à votre site (plus
 
 Dans cet ordre, sur l'étape « Le site » :
 
-**Votre besoin**, choix visuel : Équiper un site, Vérifier un parc existant, Former le personnel, Plans et signalétique. C'est la question qui pilote les règles. Les quatre choix ajoutés reçoivent des valeurs `opt_N` : notez lesquelles.
+**Votre besoin**, choix visuel : Équiper un site, Vérifier un parc existant, Former le personnel, Plans et signalétique. C'est la question qui pilote les règles. Les deux premiers choix d'une question ajoutée valent `a` et `b`, les suivants `opt_3`, `opt_4`... : notez-les.
 
 **Surface de plancher**, mesure en m². Libellé : « Surface de plancher totale (m², une estimation suffit) ». Obligatoire.
 
@@ -217,7 +217,7 @@ Sept règles pour démarrer, avec les libellés renommés plus haut :
 
 Le seuil de 1 500 m² est un exemple : mettez le vôtre.
 
-Pour les questions du template, rappelez-vous que la règle compare la valeur d'origine. « Contraintes » contient « Locaux électriques ou salle serveur » correspond, en base, à la valeur `height`. Pour les choix ajoutés, comme ceux de « Votre besoin », la règle compare la valeur `opt_N`. Si une règle ne se déclenche pas, c'est la première chose à vérifier.
+Pour les questions du template, rappelez-vous que la règle compare la valeur d'origine. « Contraintes » contient « Locaux électriques ou salle serveur » correspond, en base, à la valeur `height`. Pour les choix ajoutés, comme ceux de « Votre besoin », les deux premiers valent `a` et `b`, les suivants `opt_3`, `opt_4`... Si une règle ne se déclenche pas, c'est la première chose à vérifier.
 
 Trois suggestions au plus : un client qui coche beaucoup de choses ne verra pas tout. Ce n'est pas grave, la demande arrive complète, et c'est vous qui ferez le devis.
 
@@ -237,7 +237,7 @@ Ce n'est pas un jugement sur la demande. C'est la formule, fixe et non réglable
 
 Pour une dotation, le plan donne les surfaces, les niveaux et l'emplacement des locaux à risque. Pour une vérification, la photo des étiquettes donne l'âge des appareils et la date de la dernière visite, ce qui évite de mauvaises surprises le jour de l'intervention.
 
-Le contact principal peut ajouter un document plus tard depuis son espace prospect, rubrique « Compléter la demande » : une note facultative et un fichier, mêmes formats, même limite. C'est utile pour le registre de sécurité ou le dernier compte rendu de vérification, que le client n'a pas toujours sous la main. Voir [pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b).
+Le contact principal peut ajouter un document plus tard depuis son espace prospect, rubrique « Compléter la demande » : un fichier, mêmes formats, même limite. C'est utile pour le registre de sécurité ou le dernier compte rendu de vérification, que le client n'a pas toujours sous la main. Voir [pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b).
 
 ## Après l'envoi : dossier, visite, relances
 
@@ -271,7 +271,7 @@ Hypothèse d'illustration, sans chiffre de référence :
 - Pas de registre de sécurité, de compte rendu de vérification, d'étiquette ni de document APSAD.
 - Pas de planning des visites annuelles ni de rappel de la date anniversaire.
 - Pas de signature électronique, pas de facturation ni de suivi de paiement.
-- Pas de distinction HT et TTC, des prix en euros entiers, pas de date de validité sur une demande.
+- Pas de distinction HT et TTC, des prix qui se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), pas de date de validité sur une demande.
 - Pas de branchement conditionnel dans le funnel : la question sur la dernière vérification s'affiche même pour un local neuf. Laissez-la facultative.
 - Le PDF généré porte la mention « Document indicatif, non contractuel. » : ce n'est pas votre devis ni votre contrat.
 - Le score ne lit presque rien de ce questionnaire.

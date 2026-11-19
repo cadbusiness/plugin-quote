@@ -62,7 +62,7 @@ Le template « Menuisier » existe aussi, avec une valeur « Ouverture » (« Fe
 1. **Le site** (sous-titre : « Usage et contraintes d'implantation »)
    - « Type de site », choix visuel requis, clé `site` : Entrepôt / logistique (`warehouse`), Atelier de production (`workshop`), Bureaux / vestiaires (`office`), Autre (`other`).
    - « Contraintes », choix multiple facultatif (« Plusieurs choix possibles »), clé `constraints` : Normes alimentaires (`food`), Hauteur limitée (`height`), Accès / quai (`access`), Aucune particulière (`none`).
-2. **Solutions recommandées** : titre de l'écran « Ensembles adaptés à votre site ». Ce sont des produits de votre catalogue, choisis par les règles Si/Alors, trois au plus.
+2. **Solutions recommandées** : titre « Solutions recommandées », sous-titre « Ensembles adaptés à votre site ». Ce sont des produits de votre catalogue, choisis par les règles Si/Alors, trois au plus.
 3. **Personnalisation** : sous-titre « Quantités, options et précisions ». Le prospect règle la quantité et les options des produits suggérés, et peut déposer un fichier dans la zone « Plan (PDF ou image) » (PDF, JPEG, PNG, WebP, 10 Mo). Il n'y a pas de champ de texte libre sur cette étape, malgré le mot « précisions ».
 4. **Vos coordonnées** : sous-titre « Recevez le récapitulatif de votre projet ».
 
@@ -157,7 +157,7 @@ Le catalogue sert à proposer des équipements et des prestations dès la demand
 - contrat d'entretien, par porte et par an ;
 - forfait de déplacement pour dépannage.
 
-Chaque ligne est un produit. Un produit affiche un prix fixe, une fourchette ou « Sur devis ». Les prix sont en euros entiers. Il n'y a ni HT ni TTC dans le produit : indiquez dans la description si vos montants sont hors taxes. Il n'y a pas de kits : « une porte sectionnelle posée et motorisée » n'est pas un assemblage automatique de tablier, rails, moteur et pose. Créez soit un produit complet par taille standard, soit des produits séparés que les règles suggèrent ensemble.
+Chaque ligne est un produit. Un produit affiche un prix fixe, une fourchette ou « Sur devis ». Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Il n'y a ni HT ni TTC dans le produit : indiquez dans la description si vos montants sont hors taxes. Il n'y a pas de kits : « une porte sectionnelle posée et motorisée » n'est pas un assemblage automatique de tablier, rails, moteur et pose. Créez soit un produit complet par taille standard, soit des produits séparés que les règles suggèrent ensemble.
 
 Les options et variantes d'un produit servent à présenter les choix : couleur, hublots, portillon intégré, type de commande. Voir [options, variantes et alternatives dans un devis](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b).
 

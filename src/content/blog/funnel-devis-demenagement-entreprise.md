@@ -44,7 +44,7 @@ QuoteBuilder n'a pas de template pour le déménagement. Les templates existants
 1. **Le site** (sous-titre : « Usage et contraintes d'implantation »)
    - « Type de site », choix visuel requis, clé `site` : Entrepôt / logistique (`warehouse`), Atelier de production (`workshop`), Bureaux / vestiaires (`office`), Autre (`other`).
    - « Contraintes », choix multiple facultatif (« Plusieurs choix possibles »), clé `constraints` : Normes alimentaires (`food`), Hauteur limitée (`height`), Accès / quai (`access`), Aucune particulière (`none`).
-2. **Solutions recommandées** : titre « Ensembles adaptés à votre site ». Ce sont des produits du catalogue, choisis par les règles Si/Alors, trois suggestions au plus.
+2. **Solutions recommandées** : titre « Solutions recommandées », sous-titre « Ensembles adaptés à votre site ». Ce sont des produits du catalogue, choisis par les règles Si/Alors, trois suggestions au plus.
 3. **Personnalisation** : sous-titre « Quantités, options et précisions ». Le prospect y règle la quantité et les options, et peut déposer un fichier dans la zone « Plan (PDF ou image) » (PDF, JPEG, PNG, WebP, 10 Mo). Il n'y a pas de champ de texte libre sur cette étape, malgré le mot « précisions » du sous-titre.
 4. **Vos coordonnées** : sous-titre « Recevez le récapitulatif de votre projet ».
 
@@ -120,7 +120,7 @@ Le catalogue sert à proposer des ensembles dès la demande. Pour un déménageu
 - location de caisses de déménagement ;
 - évacuation de mobilier ancien.
 
-Les prix sont en euros entiers. Il n'y a ni HT ni TTC dans le produit, et pas de kits : chaque ligne est un produit, avec ses options et ses variantes. Les règles Si/Alors (opérateurs égal, différent, supérieur ou égal, inférieur ou égal, dans la liste, contient ; conditions combinées en ET ; trois suggestions au plus) choisissent quoi montrer.
+Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Il n'y a ni HT ni TTC dans le produit, et pas de kits : chaque ligne est un produit, avec ses options et ses variantes. Les règles Si/Alors (opérateurs égal, différent, supérieur ou égal, inférieur ou égal, dans la liste, contient ; conditions combinées en ET ; trois suggestions au plus) choisissent quoi montrer.
 
 Exemples de règles, hypothèses d'exemple :
 
@@ -170,7 +170,7 @@ Le déménagement de particuliers relève de règles de consommation différente
 5. **Trier sur le score.** Il reste Cold sur ce template. Lisez les réponses.
 6. **Compter sur l'équipe pour joindre le plan des nouveaux locaux au dossier.** Elle ne peut pas : seuls les fichiers du prospect y entrent. Demandez au client de le déposer.
 7. **Oublier de retirer ou d'adapter la « Demande de photo ».** Telle quelle, son texte est générique.
-8. **Afficher des prix au centime.** Les prix sont en euros entiers.
+8. **Afficher des prix au centime.** Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent).
 9. **Mélanger particuliers et entreprises dans le même funnel.** Faites deux parcours si vous avez les deux activités.
 10. **Oublier la date.** Sans période souhaitée, vous ne savez pas si la demande est urgente.
 
@@ -362,7 +362,7 @@ Pour les accès, une seule question en Liste suffit souvent pour l'étage, et la
 | Garde-meubles | au mois | Assurance selon vos conditions |
 | Évacuation de mobilier | au mètre cube | Tri pour réemploi |
 
-Les montants sont à fixer par vous, en euros entiers. Ils apparaissent dans le funnel sous forme de fourchette indicative.
+Les montants se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Ils apparaissent dans le funnel sous forme de fourchette indicative.
 
 ## Règles Si/Alors : exemples (valeurs gardées)
 

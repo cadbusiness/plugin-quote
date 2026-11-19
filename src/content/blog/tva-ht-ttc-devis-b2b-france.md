@@ -160,12 +160,12 @@ Cette relecture prend deux minutes. Elle évite souvent un aller-retour de deux 
 
 QuoteBuilder ne calcule pas la TVA et n’affiche pas de totaux HT, TVA ou TTC.
 
-Les produits et les lignes de devis portent un prix minimum et un prix maximum. Il n’y a pas de taux de TVA (ni par ligne, ni par produit, ni pour l’ensemble du devis) et aucun total n’est enregistré. À l’écran, la fourchette est la somme des lignes : quantité fois le minimum, quantité fois le maximum. Les montants sont en euros entiers.
+Les produits et les lignes de devis portent un prix minimum et un prix maximum. Il n’y a pas de taux de TVA (ni par ligne, ni par produit, ni pour l’ensemble du devis) et aucun total n’est enregistré. À l’écran, la fourchette est la somme des lignes : quantité fois le minimum, quantité fois le maximum. Les montants sont saisis au centime et affichés arrondis à l'euro dès 1 € (sous 1 €, les centimes restent).
 
 Trois endroits montrent la même chose :
 
-- la **fiche devis**, avec le libellé « Total indicatif » et une fourchette minimum – maximum ;
-- l’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect), avec le libellé « Total indicatif · min – max » ;
+- la **fiche devis**, avec le libellé « Total indicatif » et une fourchette minimum / maximum ;
+- l’[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect), avec le libellé « Total indicatif · min / max » ;
 - le **PDF**, avec le libellé « Fourchette indicative ».
 
 S’il n’y a ni minimum ni maximum, l’affichage devient « Sur devis ».
@@ -194,7 +194,7 @@ Ces exemples servent à vérifier une calculette. Ils ne décrivent pas un écra
 
 **Deux taux.** Fourniture 4 000 € HT à 20 % (TVA 800 €) plus prestation 3 000 € HT à 10 % (TVA 300 €, taux hypothétique pour l’exemple). HT 7 000 €, TVA totale 1 100 €, TTC 8 100 €. Sans ventilation par taux, le client ne comprend pas d’où vient la TVA. Le [calculateur](https://www.quotebuilder.co/outils/calculateur-tva-devis-ht-ttc) en mode plusieurs lignes montre ce découpage, jusqu’à trois lignes, toujours en local.
 
-**Budget client en TTC.** « Je ne dépasse pas 15 000 € TTC » donne, à 20 %, un HT maximum indicatif d’environ 12 500 €. Le mode TTC vers HT du calculateur sert en réunion ou au téléphone. Sur un dossier QuoteBuilder, le nombre affiché reste une fourchette en euros entiers : si le prospect la lit comme un TTC ferme, dites-le à voix haute.
+**Budget client en TTC.** « Je ne dépasse pas 15 000 € TTC » donne, à 20 %, un HT maximum indicatif d’environ 12 500 €. Le mode TTC vers HT du calculateur sert en réunion ou au téléphone. Sur un dossier QuoteBuilder, le nombre affiché reste une fourchette : les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent) : si le prospect la lit comme un TTC ferme, dites-le à voix haute.
 
 **Remise après le HT.** Une remise de 5 % sur 10 000 € HT donne 9 500 € HT. À 20 %, la TVA est 1 900 € et le TTC 11 400 €. Si la remise avait été calculée sur le TTC de 12 000 €, le résultat n’est pas le même. Écrivez la base.
 
@@ -226,7 +226,7 @@ Les taux courants qu’on croise sont notamment 20 %, 10 %, 5,5 %, 2,1 %, et par
 
 ### 5. Peut-on mélanger plusieurs taux sur un même devis ?
 
-Oui, c’est fréquent. Bonne pratique générale, hors QuoteBuilder : le taux sur chaque ligne, et une ventilation de la TVA par taux en bas de page. QuoteBuilder ne fait pas cette ventilation. Il affiche une fourchette indicative, en euros entiers.
+Oui, c’est fréquent. Bonne pratique générale, hors QuoteBuilder : le taux sur chaque ligne, et une ventilation de la TVA par taux en bas de page. QuoteBuilder ne fait pas cette ventilation. Il affiche une fourchette indicative. Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent).
 
 ### 6. Que mettre en cas d’exonération ou d’autoliquidation ?
 
@@ -238,7 +238,7 @@ Sur la base que vous écrivez. Choisissez une règle, notez-la (« 30 % TTC à l
 
 ### 8. Un logiciel de devis choisit-il le bon taux tout seul ?
 
-Le taux applicable se valide avec votre expert-comptable. Une bonne pratique générale, hors QuoteBuilder, est de porter un taux par ligne et de ventiler la TVA. QuoteBuilder n’a pas de champ taux : la fiche, l’espace prospect (« Total indicatif ») et le PDF (« Fourchette indicative ») montrent une fourchette minimum – maximum, en euros entiers. Le calculateur TVA devis HT/TTC applique le taux que vous saisissez, dans le navigateur.
+Le taux applicable se valide avec votre expert-comptable. Une bonne pratique générale, hors QuoteBuilder, est de porter un taux par ligne et de ventiler la TVA. QuoteBuilder n’a pas de champ taux : la fiche, l’espace prospect (« Total indicatif ») et le PDF (« Fourchette indicative ») montrent une fourchette minimum / maximum. Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Le calculateur TVA devis HT/TTC applique le taux que vous saisissez, dans le navigateur.
 
 ### 9. Que faire si le prospect ne comprend que le TTC ?
 
@@ -253,7 +253,7 @@ Ouvrez trois devis récents. Vérifiez qu’aucune ligne ne mélange HT et TTC, 
 
 Sur un devis B2B en France, HT, TVA et TTC forment un contrat de lisibilité avec le prospect et avec votre future facture. Chiffrez selon une convention d’équipe claire. Portez le taux sur chaque ligne, ventilez la TVA quand il y a plusieurs taux, contrôlez le total TTC, et gardez les libellés d’exonération pour les phrases validées par un pro. Cette discipline est une bonne pratique générale, hors QuoteBuilder.
 
-QuoteBuilder affiche une fourchette indicative (minimum et maximum, euros entiers) sur la fiche, dans l’espace prospect et sur le PDF. Le prospect a son lien. Chaque relecteur reçoit le sien, valable 30 jours, vers la même page. Les mentions légales vont sur votre devis définitif : le pied de page du PDF QuoteBuilder est fixe. Le [calculateur](https://www.quotebuilder.co/outils/calculateur-tva-devis-ht-ttc) reste l’outil local pour passer du HT au TTC.
+QuoteBuilder affiche une fourchette indicative (minimum et maximum). Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), sur la fiche, dans l’espace prospect et sur le PDF. Le prospect a son lien. Chaque relecteur reçoit le sien, valable 30 jours, vers la même page. Les mentions légales vont sur votre devis définitif : le pied de page du PDF QuoteBuilder est fixe. Le [calculateur](https://www.quotebuilder.co/outils/calculateur-tva-devis-ht-ttc) reste l’outil local pour passer du HT au TTC.
 
 
 **Prochaine étape :** ouvrez la [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage) pour voir la fourchette sur un dossier, ou [créez un compte Free](https://www.quotebuilder.co/signup?plan=free). Le prospect a son lien, chaque relecteur le sien (30 jours) vers la même page, et le PDF reprend la fourchette.

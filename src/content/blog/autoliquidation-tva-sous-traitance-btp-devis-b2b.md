@@ -236,7 +236,7 @@ Les questions s'enchaînent toujours dans le même ordre : il n'y a pas de branc
 
 ### Ce qu'il ne fait pas
 
-- Pas de distinction HT et TTC, pas de ligne de TVA, pas de mention « Autoliquidation » : les montants sont des prix en euros entiers.
+- Pas de distinction HT et TTC, pas de ligne de TVA, pas de mention « Autoliquidation » : les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent).
 - Pas de facturation, donc pas de facture autoliquidée, pas de déclaration de TVA.
 - Pas de signature électronique : l'acceptation du devis de sous-traitance se fait en dehors du logiciel.
 - Pas de vérification automatique du régime de TVA d'une demande.

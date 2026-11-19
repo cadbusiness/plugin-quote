@@ -191,7 +191,7 @@ QuoteBuilder est un logiciel de demande de devis : un funnel en ligne où votre 
 
 - Il n'émet pas de facture, ni papier ni électronique. Il n'est relié à aucune plateforme agréée.
 - Il ne fait pas de e-reporting et n'encaisse pas de paiements.
-- Le PDF de devis qu'il produit porte en pied « Document indicatif, non contractuel. ». Il n'affiche pas de mention HT ou TTC et présente les prix en euros entiers. Ce PDF ne remplace pas votre devis contractuel ni votre facture.
+- Le PDF de devis qu'il produit porte en pied « Document indicatif, non contractuel. ». Il n'affiche pas de mention HT ou TTC et présente des prix qui se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Ce PDF ne remplace pas votre devis contractuel ni votre facture.
 - L'étape de coordonnées du funnel demande le nom et l'e-mail (obligatoires), le téléphone et la société (facultatifs). Il n'y a pas de champ SIREN natif ni de champ « adresse de livraison » distinct.
 
 **Ce que QuoteBuilder peut faire pour préparer la facture :**

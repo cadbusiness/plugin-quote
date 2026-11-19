@@ -142,7 +142,7 @@ function assertNoDashes(text: string, label: string) {
     assert.ok(sectorPage.includes(JSON.stringify(item.q)), item.q);
     assert.ok(sectorPage.includes(JSON.stringify(item.a)), item.a.slice(0, 80));
   }
-  assert.equal(sectorBody.split(/\s+/).filter(Boolean).length, 5588);
+  assert.equal(sectorBody.split(/\s+/).filter(Boolean).length, 5619);
   assertNoDashes(sectorRaw, "sector md");
   assertInternalLinks(sectorBody, "sector");
   assert.ok(sectorPage.includes("Impression 3D et prototypage"));

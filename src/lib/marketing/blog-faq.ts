@@ -288,7 +288,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "QuoteBuilder suit-il les heures passées ou facture-t-il au temps passé ?",
-      a: "Non. QuoteBuilder reçoit les demandes de devis, les trie, les suit et affiche un prix en euros entiers (fixe, fourchette ou « Sur devis »). Il n'a ni relevé d'heures, ni facturation, ni encaissement, ni signature électronique : le temps passé et les avenants se gèrent dans vos outils.",
+      a: "Non. QuoteBuilder reçoit les demandes de devis, les trie, les suit et affiche un prix saisi au centime et arrondi à l'euro dès 1 € (sous 1 €, les centimes restent), en fixe, en fourchette ou « Sur devis ». Il n'a ni relevé d'heures, ni facturation, ni encaissement, ni signature électronique : le temps passé et les avenants se gèrent dans vos outils.",
     },
     {
       q: "Le comparateur donne-t-il le bon mode de facturation ?",
@@ -2876,7 +2876,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Peut-on mélanger plusieurs taux sur un même devis ?",
-      a: "Oui, c’est fréquent. Bonne pratique générale, hors QuoteBuilder : le taux sur chaque ligne, et une ventilation de la TVA par taux en bas de page. QuoteBuilder ne fait pas cette ventilation. Il affiche une fourchette indicative, en euros entiers.",
+      a: "Oui, c’est fréquent. Bonne pratique générale, hors QuoteBuilder : le taux sur chaque ligne, et une ventilation de la TVA par taux en bas de page. QuoteBuilder ne fait pas cette ventilation. Il affiche une fourchette indicative. Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent).",
     },
     {
       q: "Que mettre en cas d’exonération ou d’autoliquidation ?",
@@ -2888,7 +2888,7 @@ export const BLOG_FAQ: Record<string, FaqItem[]> = {
     },
     {
       q: "Un logiciel de devis choisit-il le bon taux tout seul ?",
-      a: "Le taux applicable se valide avec votre expert-comptable. Une bonne pratique générale, hors QuoteBuilder, est de porter un taux par ligne et de ventiler la TVA. QuoteBuilder n’a pas de champ taux : la fiche, l’espace prospect (« Total indicatif ») et le PDF (« Fourchette indicative ») montrent une fourchette minimum – maximum, en euros entiers. Le calculateur TVA devis HT/TTC applique le taux que vous saisissez, dans le navigateur.",
+      a: "Le taux applicable se valide avec votre expert-comptable. Une bonne pratique générale, hors QuoteBuilder, est de porter un taux par ligne et de ventiler la TVA. QuoteBuilder n’a pas de champ taux : la fiche, l’espace prospect (« Total indicatif ») et le PDF (« Fourchette indicative ») montrent une fourchette minimum / maximum. Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Le calculateur TVA devis HT/TTC applique le taux que vous saisissez, dans le navigateur.",
     },
     {
       q: "Que faire si le prospect ne comprend que le TTC ?",

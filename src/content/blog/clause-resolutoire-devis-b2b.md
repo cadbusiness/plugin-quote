@@ -123,7 +123,7 @@ L'ouverture d'une sauvegarde, d'un redressement ou d'une liquidation ne permet p
 
 ## Ce que QuoteBuilder fait (et ne fait pas) avec une clause résolutoire
 
-QuoteBuilder sert à recevoir une demande de devis structurée, à proposer des produits du catalogue, à suivre le dossier et à laisser le prospect compléter dans son [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect). Ce n'est pas un outil de signature électronique, ni de facturation, ni d'encaissement. Les prix affichés sont en euros entiers. Il n'y a pas de date de validité de devis dans le produit. Le PDF récapitulatif porte le pied fixe « Document indicatif, non contractuel. » : il ne porte aucune clause résolutoire.
+QuoteBuilder sert à recevoir une demande de devis structurée, à proposer des produits du catalogue, à suivre le dossier et à laisser le prospect compléter dans son [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect). Ce n'est pas un outil de signature électronique, ni de facturation, ni d'encaissement. Les prix affichés sont saisis au centime et affichés arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Il n'y a pas de date de validité de devis dans le produit. Le PDF récapitulatif porte le pied fixe « Document indicatif, non contractuel. » : il ne porte aucune clause résolutoire.
 
 Conséquences concrètes pour la clause :
 
@@ -131,7 +131,7 @@ Conséquences concrètes pour la clause :
 - Aucune case « clause résolutoire acceptée » ni date de mise en demeure n'existe sur un dossier.
 - L'équipe ne peut pas joindre de fichier au dossier : seuls les envois du prospect (Plan PDF, JPEG, PNG ou WebP, 10 Mo) apparaissent. Impossible d'y ranger la mise en demeure ou la notification.
 - Les notes internes s'ajoutent seulement ; elles ne se modifient ni ne se suppriment.
-- Les relecteurs reçoivent un lien valable 30 jours vers la même page prospect.
+- Les relecteurs reçoivent un lien valable 30 jours vers une version réduite de la page prospect.
 - Le score Hot / Warm / Cold est une formule fixe ; il ne lit pas la présence d'une clause.
 
 Pour voir un funnel côté visiteur : [démo rayonnage](https://www.quotebuilder.co/c/demo/rayonnage). Pour créer un compte : [signup Free](https://www.quotebuilder.co/signup?plan=free). Pour contrôler votre clause avant de la coller dans vos CGV : [vérificateur de clause résolutoire](https://www.quotebuilder.co/outils/verificateur-clause-resolutoire).

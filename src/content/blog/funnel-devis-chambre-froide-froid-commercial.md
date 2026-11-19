@@ -67,7 +67,7 @@ Le template « Cuisiniste » existe aussi, mais il est pensé pour une cuisine d
 1. **Le site** (sous-titre : « Usage et contraintes d'implantation »)
    - « Type de site », choix visuel requis, clé `site` : Entrepôt / logistique (`warehouse`), Atelier de production (`workshop`), Bureaux / vestiaires (`office`), Autre (`other`).
    - « Contraintes », choix multiple facultatif (« Plusieurs choix possibles »), clé `constraints` : Normes alimentaires (`food`), Hauteur limitée (`height`), Accès / quai (`access`), Aucune particulière (`none`).
-2. **Solutions recommandées** : titre de l'écran « Ensembles adaptés à votre site ». Ce sont des produits du catalogue, choisis par les règles Si/Alors, trois suggestions au plus.
+2. **Solutions recommandées** : titre « Solutions recommandées », sous-titre « Ensembles adaptés à votre site ». Ce sont des produits du catalogue, choisis par les règles Si/Alors, trois suggestions au plus.
 3. **Personnalisation** : sous-titre « Quantités, options et précisions ». Le prospect règle la quantité et les options, et peut déposer un fichier dans la zone « Plan (PDF ou image) » (PDF, JPEG, PNG, WebP, 10 Mo). Il n'y a pas de champ de texte libre sur cette étape, malgré le mot « précisions » du sous-titre.
 4. **Vos coordonnées** : sous-titre « Recevez le récapitulatif de votre projet ».
 
@@ -150,7 +150,7 @@ Le catalogue sert à proposer des équipements et des prestations dès la demand
 - contrat de maintenance préventive, par visite ou à l'année ;
 - forfait de déplacement pour dépannage.
 
-Chaque ligne est un produit. Un produit a trois façons d'afficher un prix : un prix fixe, une fourchette, ou « Sur devis ». Les prix sont en euros entiers. Il n'y a ni HT ni TTC dans le produit : indiquez dans la description si vos montants sont hors taxes. Il n'y a pas de kits : une « chambre froide complète » n'est pas un assemblage automatique de panneaux, porte et groupe. Créez soit un produit complet par taille standard, soit des produits séparés que les règles suggèrent ensemble.
+Chaque ligne est un produit. Un produit a trois façons d'afficher un prix : un prix fixe, une fourchette, ou « Sur devis ». Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Il n'y a ni HT ni TTC dans le produit : indiquez dans la description si vos montants sont hors taxes. Il n'y a pas de kits : une « chambre froide complète » n'est pas un assemblage automatique de panneaux, porte et groupe. Créez soit un produit complet par taille standard, soit des produits séparés que les règles suggèrent ensemble.
 
 Les options et les variantes d'un produit servent à présenter les choix : épaisseur des panneaux, type de porte, finition. Le détail est dans [options, variantes et alternatives dans un devis](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b).
 
@@ -210,7 +210,7 @@ Les seuils exacts de contrôle d'étanchéité, les fluides autorisés et les ca
 5. **Trier sur le score.** Il reste Cold sur ce template. Lisez le délai.
 6. **Compter sur l'équipe pour joindre le bilan frigorifique au dossier.** Elle ne peut pas : seuls les fichiers du prospect y entrent.
 7. **Oublier la plaque signalétique.** C'est souvent la photo qui fait gagner le plus de temps en remplacement.
-8. **Afficher des prix au centime.** Les prix sont en euros entiers.
+8. **Afficher des prix au centime.** Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent).
 9. **Mélanger maintenance et projet dans le même catalogue sans ordre.** Les règles doivent proposer un contrat quand le projet est « Contrat de maintenance », pas une chambre.
 10. **Oublier l'accès.** Une chambre qui ne passe pas la porte se découvre le jour de la livraison.
 

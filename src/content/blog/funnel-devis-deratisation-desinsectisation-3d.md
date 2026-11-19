@@ -151,7 +151,7 @@ Le libellé de la question peut devenir « Ce qui s'applique à votre site (plus
 
 Dans cet ordre, sur l'étape « Le site » :
 
-**Le nuisible**, choix visuel : Rats ou souris, Blattes (cafards), Punaises de lit, Guêpes ou frelons, Autre insecte. C'est la question qui pilote les règles. Les choix ajoutés reçoivent des valeurs `opt_N` : notez lesquelles. Le texte d'aide sous chaque vignette peut dire ce qu'on observe : « crottes, rongements, bruits », « insectes la nuit près des points d'eau », « piqûres alignées, taches sur la literie », « nid visible, allées et venues ».
+**Le nuisible**, choix visuel : Rats ou souris, Blattes (cafards), Punaises de lit, Guêpes ou frelons, Autre insecte. C'est la question qui pilote les règles. Les deux premiers choix d'une question ajoutée valent `a` et `b`, les suivants `opt_3`, `opt_4`... : notez-les. Le texte d'aide sous chaque vignette peut dire ce qu'on observe : « crottes, rongements, bruits », « insectes la nuit près des points d'eau », « piqûres alignées, taches sur la literie », « nid visible, allées et venues ».
 
 **Ce que vous attendez**, liste : Une intervention ponctuelle ; Un contrat de suivi ; Un diagnostic d'abord. Obligatoire.
 
@@ -218,7 +218,7 @@ Sept règles pour démarrer, avec les libellés renommés plus haut :
 
 Le seuil de 2 000 m² est un exemple : mettez le vôtre.
 
-Pour les questions du template, rappelez-vous que la règle compare la valeur d'origine. « Contraintes » contient « On prépare, transforme ou stocke des aliments » correspond, en base, à la valeur `food`. Pour les choix ajoutés, comme ceux de « Le nuisible », la règle compare la valeur `opt_N`. Si une règle ne se déclenche pas, c'est la première chose à vérifier.
+Pour les questions du template, rappelez-vous que la règle compare la valeur d'origine. « Contraintes » contient « On prépare, transforme ou stocke des aliments » correspond, en base, à la valeur `food`. Pour les choix ajoutés, comme ceux de « Le nuisible », les deux premiers valent `a` et `b`, les suivants `opt_3`, `opt_4`... Si une règle ne se déclenche pas, c'est la première chose à vérifier.
 
 Trois suggestions au plus : un restaurant qui a des rongeurs, veut un contrat et coche « aliments » verra le contrat de suivi et le dossier pour audit, et peut-être le diagnostic. Ce n'est pas grave, la demande arrive complète, et c'est vous qui ferez le devis.
 
@@ -238,7 +238,7 @@ Ce n'est pas un jugement sur la demande. C'est la formule, fixe et non réglable
 
 Pour des rongeurs, la photo des traces et de leur emplacement aide à juger l'ampleur et à préparer le plan de pose. Pour des frelons, la photo du nid et de son accès dit s'il faut une perche, une échelle ou une nacelle. Pour un contrat dans un établissement alimentaire, le plan des locaux permet de proposer un nombre de postes dès le devis.
 
-Le contact principal peut ajouter un document plus tard depuis son espace prospect, rubrique « Compléter la demande » : une note facultative et un fichier, mêmes formats, même limite. C'est utile pour le dernier rapport de l'ancien prestataire ou une remarque écrite d'un auditeur, que le client n'a pas toujours sous la main au moment de la demande. Voir [pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b).
+Le contact principal peut ajouter un document plus tard depuis son espace prospect, rubrique « Compléter la demande » : un fichier, mêmes formats, même limite. C'est utile pour le dernier rapport de l'ancien prestataire ou une remarque écrite d'un auditeur, que le client n'a pas toujours sous la main au moment de la demande. Voir [pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b).
 
 ## Après l'envoi : dossier, visite, relances
 
@@ -272,7 +272,7 @@ Hypothèse d'illustration, sans chiffre de référence :
 - Pas de plan de pose, de fiche de passage, de registre de suivi ni de gestion des fiches de données de sécurité.
 - Pas de suivi des Certibiocides de vos techniciens.
 - Pas de signature électronique, pas de facturation ni de suivi de paiement.
-- Pas de distinction HT et TTC, des prix en euros entiers, pas de date de validité sur une demande.
+- Pas de distinction HT et TTC, des prix qui se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), pas de date de validité sur une demande.
 - Pas de branchement conditionnel dans le funnel : la question des niveaux s'affiche même pour un nid de frelons. Laissez-la facultative.
 - Le PDF généré porte la mention « Document indicatif, non contractuel. » : ce n'est pas votre devis ni votre contrat.
 - Le score ne lit presque rien de ce questionnaire.

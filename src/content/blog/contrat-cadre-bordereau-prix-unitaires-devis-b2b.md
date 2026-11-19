@@ -243,7 +243,7 @@ Vous pouvez ajouter au funnel une question sur le volume annuel prévu, en liste
 - Pas de contrat-cadre, pas de bons de commande, pas de prix récurrent ni de suivi des volumes cumulés.
 - Pas de facturation, pas d'avoir, pas d'encaissement ni de suivi de paiement.
 - Pas de signature électronique : le contrat-cadre se signe en dehors du logiciel.
-- Pas de distinction HT et TTC, des prix en euros entiers, pas de date de validité sur une demande.
+- Pas de distinction HT et TTC, des prix qui se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), pas de date de validité sur une demande.
 - Le PDF récapitulatif d'une demande porte la mention fixe « Document indicatif, non contractuel. » : ce n'est ni un devis accepté ni un contrat.
 
 Pour voir à quoi ressemble une demande structurée côté visiteur, ouvrez la [démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage), sans compte. Pour essayer l'interface, [créez un compte Free](https://www.quotebuilder.co/signup?plan=free).

@@ -302,7 +302,7 @@ Les questions s'enchaînent toujours dans le même ordre : il n'y a pas de branc
 - Pas de conditions générales jointes par l'équipe : les fichiers d'un dossier viennent du prospect, et l'acceptation des CGV ne s'enregistre pas dans QuoteBuilder.
 - Pas de suivi des réclamations ni des délais pour agir.
 - Pas de signature électronique ni de facturation : la clause figure dans votre devis signé, en dehors du logiciel.
-- Les montants sont des prix en euros entiers, sans distinction HT et TTC, il n'y a pas de date de validité sur les devis, et le PDF récapitulatif d'une demande porte la mention fixe « Document indicatif, non contractuel. » : ce n'est pas un devis, et il ne contient pas de clause de responsabilité.
+- Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), sans distinction HT et TTC, il n'y a pas de date de validité sur les devis, et le PDF récapitulatif d'une demande porte la mention fixe « Document indicatif, non contractuel. » : ce n'est pas un devis, et il ne contient pas de clause de responsabilité.
 
 Pour voir à quoi ressemble une demande structurée côté visiteur, ouvrez la [démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage), sans compte. Pour essayer l'interface, [créez un compte Free](https://www.quotebuilder.co/signup?plan=free).
 

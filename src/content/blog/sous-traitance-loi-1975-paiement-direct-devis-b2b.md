@@ -295,7 +295,7 @@ QuoteBuilder est un logiciel de demande de devis : un funnel par étapes sur vot
 - pas de signature électronique : l'acceptation d'un devis, d'un sous-traité ou d'un acte d'acceptation se signe ailleurs ;
 - pas de facturation ni d'encaissement, donc pas de suivi des échéances du sous-traité, ni de relance de paiement ;
 - pas de champ dédié à la sous-traitance (maître de l'ouvrage, acceptation, caution, mise en demeure), ni de rappel daté ;
-- pas de HT ni de TTC dans les prix : ils sont en euros entiers ; pas de date de validité sur le devis ;
+- pas de HT ni de TTC dans les prix : ils se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent) ; pas de date de validité sur le devis ;
 - le PDF récapitulatif porte le pied fixe « Document indicatif, non contractuel. » et ne peut afficher aucune clause.
 
 Le score Hot, Warm ou Cold d'une demande se calcule avec une formule fixe et ne lit pas vos questions ajoutées : il ne dira pas si une demande vient d'un sous-traitant ou d'un client final. Détail : [le score d'une demande de devis](https://www.quotebuilder.co/blog/score-demande-devis-b2b).

@@ -141,7 +141,7 @@ Le plan PDF suffit souvent pour un premier prix ou une fourchette. Le DXF sert e
 
 ### Pourquoi pas un calcul automatique du prix
 
-Le funnel ne calcule rien entre les réponses. Il n'y a pas de prix au kilo, pas de temps de coupe estimé à partir de l'épaisseur, pas d'imbrication des pièces sur une tôle. Les prix du catalogue sont des montants entiers, fixes, en fourchette ou « Sur devis ». Le prix d'une pièce de tôlerie dépend de sa géométrie, de la longueur de coupe, du nombre de plis, de l'imbrication et du lot : il sort de votre logiciel de chiffrage, pas d'un formulaire. Le funnel sert à ce que la demande arrive complète.
+Le funnel ne calcule rien entre les réponses. Il n'y a pas de prix au kilo, pas de temps de coupe estimé à partir de l'épaisseur, pas d'imbrication des pièces sur une tôle. Les prix du catalogue se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), fixes, en fourchette ou « Sur devis ». Le prix d'une pièce de tôlerie dépend de sa géométrie, de la longueur de coupe, du nombre de plis, de l'imbrication et du lot : il sort de votre logiciel de chiffrage, pas d'un formulaire. Le funnel sert à ce que la demande arrive complète.
 
 ## Score : ce qui se passe vraiment sur ce template
 
@@ -167,7 +167,7 @@ L'écran « Solutions recommandées » affiche jusqu'à trois ensembles de produ
 - Galvanisation sous-traitée ;
 - Prototype en 48 heures (si c'est votre offre).
 
-Chaque produit porte un prix en euros entiers : fixe, en fourchette ou « Sur devis ». Pour la tôlerie, « Sur devis » ou une fourchette large sont les plus honnêtes. Un prix fixe convient à une prestation vraiment standard, comme un forfait de programmation.
+Chaque produit porte un prix qui se saisit au centime et s'affiche arrondi à l'euro dès 1 € (sous 1 €, les centimes restent) : fixe, en fourchette ou « Sur devis ». Pour la tôlerie, « Sur devis » ou une fourchette large sont les plus honnêtes. Un prix fixe convient à une prestation vraiment standard, comme un forfait de programmation.
 
 Les produits peuvent avoir des options (ébavurage, film de protection, emballage individuel) et des variantes (par matière). QuoteBuilder ne gère pas de kits ni de lots composés : si deux prestations vont souvent ensemble, mettez-les dans le même ensemble de la règle, ou faites de l'une une option de l'autre. Voir [options, variantes et alternatives dans un devis](https://www.quotebuilder.co/blog/options-variantes-alternatives-devis-b2b).
 
@@ -376,7 +376,7 @@ Non. La zone « Plan (PDF ou image) » accepte les fichiers PDF, JPEG, PNG et We
 
 ### Le funnel peut-il calculer un prix à partir de l'épaisseur et de la quantité ?
 
-Non. Il n'y a pas de calcul entre les réponses. Les prix du catalogue sont en euros entiers, fixes, en fourchette ou « Sur devis ». Le prix ferme sort de votre logiciel de chiffrage.
+Non. Il n'y a pas de calcul entre les réponses. Les prix du catalogue se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), fixes, en fourchette ou « Sur devis ». Le prix ferme sort de votre logiciel de chiffrage.
 
 ### Pourquoi mes demandes de découpe sortent-elles toutes Cold ?
 

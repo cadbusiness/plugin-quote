@@ -5,7 +5,7 @@ import { createToolDom } from "./tool-dom";
 var SLUG = "calculateur-declaration-creance-procedure-collective";
   var PROCEDURE_LABELS = { sauvegarde: "sauvegarde", redressement: "redressement judiciaire", liquidation: "liquidation judiciaire" };
   var ADMIN_LABELS = { oui: "administrateur désigné", non: "pas d'administrateur" };
-  var DOMICILE_LABELS = { meme: "même territoire que le tribunal", autre: "hors du territoire du tribunal" };
+  var DOMICILE_LABELS = { meme: "en métropole ou dans un département d'outre-mer", autre: "hors de la métropole et d'un département d'outre-mer" };
   var SURETE_LABELS = { aucune: "aucune sûreté ni contrat publié", publiee: "sûreté ou contrat publié" };
   var ETAT_LABELS = { a_faire: "pas encore envoyée", envoyee: "déjà envoyée" };
   var TVA_LABELS = { "20": "20 %", "10": "10 %", "5.5": "5,5 %", "0": "0 %" };
@@ -152,7 +152,7 @@ var SLUG = "calculateur-declaration-creance-procedure-collective";
     else add("ok", "Jugement du " + fmtDate(o.dJugement) + ", publié au BODACC le " + fmtDate(o.dPublication) + " : c'est la publication qui fait courir les délais (article R622-24).");
 
     // 3. Délai de déclaration
-    var hors = nbMois === 4 ? " (deux mois, plus deux mois parce que vous n'êtes pas sur le territoire du tribunal)" : " (deux mois, article R622-24)";
+    var hors = nbMois === 4 ? " (deux mois, plus deux mois si le domicile est hors de la métropole et d'un département d'outre-mer, article R622-24)" : " (deux mois, article R622-24)";
     var noteOff = tombeOff ? " Ce jour tombe un " + JOURS[fin.getUTCDay()] + (JOURS[fin.getUTCDay()] === "samedi" || JOURS[fin.getUTCDay()] === "dimanche" ? "" : " férié") + " : l'article 642 du code de procédure civile reporte au " + fmtDate(proroge) + ", mais ne comptez pas dessus." : "";
     var forclos = "Le délai est passé : vous êtes forclos. Vous ne participerez aux répartitions que si le juge-commissaire vous relève de la forclusion, sur demande faite avant le " + fmtDate(releve) + " (six mois), et seulement si le retard n'est pas de votre fait ou vient d'une omission de votre client sur la liste de ses créanciers (article L622-26).";
     if (!fin) add("bad", "Délai non calculable sans la date de publication.");

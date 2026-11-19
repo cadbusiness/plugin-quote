@@ -274,7 +274,7 @@ Pensez aussi à la [remise commerciale](https://www.quotebuilder.co/blog/remise-
 Sur main (commit 4ba2123, PR #183), QuoteBuilder :
 
 - capture la demande via funnel, API, plugin ou agent chat ;
-- calcule le montant de chaque ligne du récapitulatif comme prix unitaire × quantité, avec des prix en euros entiers ;
+- calcule le montant de chaque ligne du récapitulatif comme prix unitaire × quantité. Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent) ;
 - affiche une fourchette unique, reprise partout (carte solution, PDF, e-mail, fiche, espace prospect) : celle d'une règle Si/Alors si vous en avez posé une, sinon la somme des lignes ; elle est figée à l'envoi de la demande ;
 - calcule un score Hot / Warm / Cold à formule fixe ;
 - permet des notes internes en ajout seul (non modifiables, sans notification) ;

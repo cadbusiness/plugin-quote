@@ -72,7 +72,7 @@ assert.equal(BLOG_TOOLS.length, 93);
 assert.equal(BLOG_POSTS.length, 103);
 assert.equal(outilsHubIntro(), "Quatre-vingt-treize outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
 assert.equal(outilsHubIntro(93), outilsHubIntro());
-assert.equal(outilsHubIntro(71), "Soixante et onze outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(71), "Soixante-et-onze outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
 assert.equal(outilsHubIntro(80), "Quatre-vingts outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
 assert.equal(outilsHubIntro(61), "Soixante-et-un outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
 

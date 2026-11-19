@@ -258,7 +258,7 @@ QuoteBuilder est un outil de demande de devis : il aide vos prospects à décrir
 - pas de facturation ni de suivi des paiements ;
 - pas de gestion d'avenants, de numérotation d'avenants ou de cumul automatique des suppléments ;
 - pas de date de validité sur les devis ;
-- les prix sont en euros entiers, sans mention HT ou TTC dans l'outil ;
+- les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), sans mention HT ou TTC dans l'outil ;
 - le PDF généré porte le pied fixe « Document indicatif, non contractuel. » : ce n'est ni un devis signé ni un avenant.
 
 Le calcul de suppléments se fait avec le [calculateur d'avenant](https://www.quotebuilder.co/outils/calculateur-avenant-travaux-supplementaires), en dehors de votre compte, sans envoi de données. Les offres et limites de chaque formule sont sur la page [tarifs](https://www.quotebuilder.co/tarifs).

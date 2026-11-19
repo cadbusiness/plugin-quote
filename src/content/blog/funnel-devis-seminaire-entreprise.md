@@ -196,7 +196,7 @@ Le catalogue est la liste de ce que vous vendez. Pour un séminaire, il se const
 - transfert depuis la gare ou autocar ;
 - captation vidéo ou photo.
 
-Chaque produit peut avoir des options et des variantes, et des produits associés. Les prix sont des montants en euros entiers, sans mention HT, TVA ou TTC. Si vos prix dépendent fortement du lieu retenu, affichez une fourchette, ou un prix « à partir de », plutôt qu'un prix ferme. Le récapitulatif affiche une seule fourchette de prix pour la demande.
+Chaque produit peut avoir des options et des variantes, et des produits associés. Les prix sont des montants saisis au centime et affichés arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), sans mention HT, TVA ou TTC. Si vos prix dépendent fortement du lieu retenu, affichez une fourchette, ou un prix « à partir de », plutôt qu'un prix ferme. Le récapitulatif affiche une seule fourchette de prix pour la demande.
 
 QuoteBuilder ne propose ni kits ni lots : un « pack séminaire » se décrit comme une formule, avec ses options.
 
@@ -331,7 +331,7 @@ Oui. Le contact principal peut inviter des relecteurs, avec un rôle (Directeur 
 
 ### Les prix affichés sont-ils HT ?
 
-QuoteBuilder affiche des montants en euros entiers, sans mention HT, TVA ou TTC. Précisez-le dans votre devis ferme.
+QuoteBuilder affiche des montants qui se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), sans mention HT, TVA ou TTC. Précisez-le dans votre devis ferme.
 
 ### Faut-il un plan payant pour ce funnel ?
 

@@ -312,7 +312,7 @@ QuoteBuilder sert à recevoir des demandes de devis complètes, par un funnel pa
 - Le prospect peut déposer un fichier dans la zone « Plan (PDF ou image) » (PDF, JPEG, PNG ou WebP, 10 Mo), par exemple un plan du site ou un cahier des charges d'une page, et compléter sa demande ensuite depuis son [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect).
 - Le client peut partager le dossier avec d'autres personnes, chacune avec son propre lien valable 30 jours : le responsable technique peut l'ouvrir au service financier ou à l'élu qui signera. Voir [l'approbation par plusieurs décideurs](https://www.quotebuilder.co/blog/approbation-client-multi-decideurs-devis-b2b).
 - Les notes internes du dossier gardent la trace de ce qui a été dit au téléphone : « bon de commande signé par l'adjoint aux travaux, numéro d'engagement à venir ». Elles s'ajoutent et ne se modifient pas. Voir [notes internes d'un dossier de devis](https://www.quotebuilder.co/blog/notes-internes-dossier-devis-equipe-b2b).
-- Les prix du catalogue s'affichent en montants entiers, en prix fixe, en fourchette ou « Sur devis ».
+- Les prix du catalogue se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), en prix fixe, en fourchette ou « Sur devis ».
 
 **Ce qui reste hors de QuoteBuilder.**
 

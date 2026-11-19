@@ -186,7 +186,7 @@ C'est le point à connaître avant de monter le funnel.
 
 **À l'étape Personnalisation**, la zone de dépôt s'appelle « Plan (PDF ou image) ». Elle accepte PDF, JPEG, PNG et WebP, jusqu'à 10 Mo par fichier. Elle est facultative.
 
-**Après l'envoi**, le contact principal peut ajouter un fichier depuis son [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect), dans la section « Compléter la demande » (« Photo, plan, mesures oubliées. »), avec une note facultative. Les formats acceptés sont les mêmes, et la limite aussi : 10 Mo. Les relecteurs invités n'ont pas accès à cette section.
+**Après l'envoi**, le contact principal peut ajouter un fichier depuis son [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect), dans la rubrique « Compléter la demande » : un fichier, mêmes formats, même limite. Les relecteurs invités n'ont pas accès à cette section.
 
 Un fichier STL, STEP ou 3MF n'entre donc pas dans QuoteBuilder, ni dans le funnel ni depuis l'espace prospect. Pour un atelier d'impression 3D, il faut le savoir et l'écrire au client, plutôt que de le laisser essayer.
 
@@ -208,7 +208,7 @@ Le catalogue décrit ce que vous vendez. Pour un atelier d'impression 3D, ce son
 - **des prestations autour de l'impression** : « Modélisation à partir d'un plan ou d'une pièce », « Reprise ou réparation de fichier », « Pose d'inserts filetés » ;
 - **la finition** en option ou en produit séparé : ponçage, teinte, peinture.
 
-Chaque produit porte un prix fixe, une fourchette (minimum et maximum) ou la mention « sur devis ». Les prix sont en euros entiers, sans HT, TVA ni TTC. Le dossier affiche une fourchette indicative : c'est un ordre de grandeur pour le client, pas le prix ferme, qui sort de votre chiffrage habituel une fois le fichier reçu.
+Chaque produit porte un prix fixe, une fourchette (minimum et maximum) ou la mention « sur devis ». Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), sans HT, TVA ni TTC. Le dossier affiche une fourchette indicative : c'est un ordre de grandeur pour le client, pas le prix ferme, qui sort de votre chiffrage habituel une fois le fichier reçu.
 
 Quelques règles de bon sens :
 
@@ -340,7 +340,7 @@ Pas sous forme de kit : QuoteBuilder n'en gère pas. Créez deux produits et sug
 
 ### QuoteBuilder calcule-t-il le prix à partir du fichier ?
 
-Non. Il ne lit pas les fichiers et ne calcule ni volume ni temps d'impression. La fourchette affichée vient de votre catalogue, en euros entiers.
+Non. Il ne lit pas les fichiers et ne calcule ni volume ni temps d'impression. La fourchette affichée vient de votre catalogue. Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent).
 
 ### Comment gérer un client qui veut un accord de confidentialité ?
 
@@ -352,7 +352,7 @@ Non. Les fichiers d'un dossier viennent du prospect, par le funnel ou par l'espa
 
 ### Les prix affichés sont-ils HT ?
 
-QuoteBuilder affiche des montants en euros entiers, sans mention HT, TVA ou TTC. Précisez-le dans votre devis ferme.
+QuoteBuilder affiche des montants qui se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), sans mention HT, TVA ou TTC. Précisez-le dans votre devis ferme.
 
 ## Sources
 

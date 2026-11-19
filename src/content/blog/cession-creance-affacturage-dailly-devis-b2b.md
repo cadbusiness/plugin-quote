@@ -345,7 +345,7 @@ QuoteBuilder est un logiciel de demande de devis : un funnel par étapes sur vot
 - pas de facturation ni d'encaissement, donc pas de suivi des échéances ni des factures cédées ;
 - pas de connexion à un factor ou à une banque ;
 - pas de signature électronique ;
-- pas de date de validité sur un devis, pas de HT ni de TTC : les prix sont en euros entiers ;
+- pas de date de validité sur un devis, pas de HT ni de TTC : les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent) ;
 - le PDF récapitulatif porte le pied fixe « Document indicatif, non contractuel. » et n'affiche pas vos conditions de paiement ni une clause de cession.
 
 Le score Hot, Warm ou Cold d'une demande se calcule avec une formule fixe, sur quelques réponses du funnel : il ne mesure ni la solvabilité du client, ni ses délais de paiement habituels. Détail : [le score d'une demande de devis](https://www.quotebuilder.co/blog/score-demande-devis-b2b).

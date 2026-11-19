@@ -178,7 +178,7 @@ La duplication d'un funnel n'existe pas : le second se crée à la main, à part
 
 ## Catalogue : des prestations et des cessions, en lignes séparées
 
-Chaque prestation est un produit du [catalogue](https://www.quotebuilder.co/fonctionnalites/catalogue). Un produit affiche un prix fixe (minimum et maximum identiques), une fourchette (deux montants) ou « Sur devis » (les deux vides). Les montants sont en euros entiers. Il n'y a pas de TVA dans QuoteBuilder : indiquez dans la description si vos montants sont HT. Le montant d'une ligne est le prix unitaire multiplié par la quantité. Une option ne change pas le prix, et il n'y a pas de prix dégressif selon la quantité ni de kit qui regrouperait plusieurs produits.
+Chaque prestation est un produit du [catalogue](https://www.quotebuilder.co/fonctionnalites/catalogue). Un produit affiche un prix fixe (minimum et maximum identiques), une fourchette (deux montants) ou « Sur devis » (les deux vides). Les montants sont saisis au centime et affichés arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Il n'y a pas de TVA dans QuoteBuilder : indiquez dans la description si vos montants sont HT. Le montant d'une ligne est le prix unitaire multiplié par la quantité. Une option ne change pas le prix, et il n'y a pas de prix dégressif selon la quantité ni de kit qui regrouperait plusieurs produits.
 
 Une base de catalogue, sans prix de référence :
 
@@ -234,7 +234,7 @@ Ce n'est pas un jugement sur la demande. C'est la formule, fixe et non réglable
 
 À l'étape Personnalisation, la zone s'appelle « Plan (PDF ou image) ». Le libellé est fait pour l'industrie, mais la zone accepte tout ce qui sert à un photographe : un moodboard en PDF, la charte graphique, la liste des produits, le plan des ateliers, une photo du lieu, un exemple d'image. Le sélecteur accepte PDF, JPEG, PNG et WebP, jusqu'à 10 Mo. Une vidéo de référence n'y passe pas : c'est pour cela qu'on a ajouté la question « Lien vers vos fichiers ».
 
-Le contact principal peut ajouter un document plus tard depuis son espace prospect, rubrique « Compléter la demande » : une note facultative et un fichier, mêmes formats, même limite. C'est utile pour la liste définitive des produits ou la charte, que le client n'a pas toujours sous la main. Votre équipe, elle, ne peut pas joindre de fichier au dossier : les pièces viennent du prospect. Voir [pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b), et pour mesurer ce que coûtent les briefs qui arrivent par morceaux, l'[estimateur du coût des allers-retours de brief](https://www.quotebuilder.co/outils/estimateur-cout-aller-retours-brief-photos).
+Le contact principal peut ajouter un document plus tard depuis son espace prospect, rubrique « Compléter la demande » : un fichier, mêmes formats, même limite. C'est utile pour la liste définitive des produits ou la charte, que le client n'a pas toujours sous la main. Votre équipe, elle, ne peut pas joindre de fichier au dossier : les pièces viennent du prospect. Voir [pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b), et pour mesurer ce que coûtent les briefs qui arrivent par morceaux, l'[estimateur du coût des allers-retours de brief](https://www.quotebuilder.co/outils/estimateur-cout-aller-retours-brief-photos).
 
 Les fichiers livrés au client, eux, ne passent pas par QuoteBuilder. Ils partent par votre outil de transfert habituel, avec la clause de cession.
 
@@ -273,7 +273,7 @@ Ce devis aurait pu être meilleur. Il ne citait pas le motif du forfait, ne céd
 - Pas de galerie de livraison, pas de transfert de fichiers lourds, pas de sélection d'images par le client.
 - Pas de planning des prises de vue ni d'agenda.
 - Pas de signature électronique, pas de facturation ni de suivi de paiement, pas de calcul de la contribution diffuseur.
-- Pas de distinction HT et TTC, des prix en euros entiers, pas de date de validité sur une demande.
+- Pas de distinction HT et TTC, des prix qui se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), pas de date de validité sur une demande.
 - Pas de branchement conditionnel dans le funnel : les questions vidéo s'affichent aussi pour un packshot.
 - Pas de duplication de funnel ni de test A/B.
 - Le PDF généré porte la mention « Document indicatif, non contractuel. » : ce n'est pas votre devis ni votre contrat de cession.

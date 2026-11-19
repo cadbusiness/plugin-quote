@@ -352,7 +352,7 @@ QuoteBuilder sert à recevoir et qualifier les demandes de devis : un funnel en 
 **Ce qu'il fait**
 
 - Il recueille la demande du client dans un funnel aux étapes fixes : l'ordre des questions est le même pour tous les visiteurs. Pour voir à quoi ressemble un funnel côté visiteur, ouvrez la [démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage).
-- Il calcule un récapitulatif à partir des lignes du catalogue : montant de ligne égal au prix unitaire multiplié par la quantité, en euros entiers, avec une fourchette affichée. Ce récapitulatif est figé à la soumission.
+- Il calcule un récapitulatif à partir des lignes du catalogue : montant de ligne égal au prix unitaire multiplié par la quantité. Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), avec une fourchette affichée. Ce récapitulatif est figé à la soumission.
 - Il crée un dossier par demande, que l'on peut assigner à un ou plusieurs membres actifs de votre équipe, avec des notes internes en ajout seul (sans modification ni suppression).
 - Il donne au client un [espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect) où il retrouve sa demande, peut envoyer des fichiers (zone « Plan (PDF ou image) », PDF, JPEG, PNG ou WebP, 10 Mo), et lire les réponses de votre équipe en texte.
 - Il peut transmettre la demande à un autre outil par l'API ou des webhooks, ce qui permet à un partenaire de recevoir une copie dans son propre système.

@@ -120,7 +120,7 @@ Les questions se modifient dans le constructeur de parcours : libellé, texte d'
 - **Une question ajoutée est obligatoire par défaut.** Décochez « Requis » sur tout ce qui n'est pas indispensable.
 - **Le texte d'aide ne s'affiche que sous les choix visuels.** Pour une liste, une mesure ou un texte, mettez la consigne dans le libellé.
 - **N'ajoutez pas de question de type « Fichier ».** Dans le funnel public, ce type s'affiche comme un simple champ texte. Le dépôt passe par la zone « Plan (PDF ou image) » de l'étape Personnalisation.
-- **Les choix d'une question ajoutée reçoivent une valeur automatique** de la forme `opt_N`, et renommer un choix ne change que son libellé. Notez la correspondance entre libellés et valeurs : les règles comparent les valeurs.
+- **Les choix d'une question ajoutée** : les deux premiers valent `a` et `b`, les suivants `opt_3`, `opt_4`... Renommer un choix ne change que son libellé. Notez la correspondance entre libellés et valeurs : les règles comparent les valeurs.
 
 Commencez par changer le libellé de la question texte : « Quel est votre projet ? » devient « Que faut-il transporter, d'où à où ? (une phrase) ». Puis ajoutez, dans cet ordre :
 
@@ -195,7 +195,7 @@ Sept règles pour démarrer. Les seuils sont des hypothèses d'exemple, à adapt
 - Si « Livraison sur place » est la valeur de « Ni quai ni chariot, hayon nécessaire », Alors proposer Livraison avec hayon.
 - Si « Marchandise particulière » contient la valeur de « Sous température dirigée », Alors proposer Transport sous température dirigée.
 
-Plusieurs règles peuvent se déclencher pour une même demande : le client verra au plus trois produits. Si une règle ne se déclenche pas, vérifiez que vous comparez la valeur `opt_N` et non le libellé.
+Plusieurs règles peuvent se déclencher pour une même demande : le client verra au plus trois produits. Si une règle ne se déclenche pas, vérifiez la condition choisie dans l'éditeur de règles.
 
 Si aucune règle ne correspond, le client voit un message qui l'invite à continuer, et il peut toujours envoyer sa demande.
 
@@ -213,7 +213,7 @@ Ce n'est pas un jugement sur la demande. C'est la formule, fixe et non réglable
 
 Pour un transport hors gabarit, une photo et les cotes évitent souvent un déplacement. Pour une livraison en centre-ville, une photo de la rue montre tout de suite si un porteur passe.
 
-Le contact principal peut ajouter un document plus tard depuis son espace prospect, rubrique « Compléter la demande » : une note facultative et un fichier, mêmes formats, même limite. Voir [pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b).
+Le contact principal peut ajouter un document plus tard depuis son espace prospect, rubrique « Compléter la demande » : un fichier, mêmes formats, même limite. Voir [pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b).
 
 ## Après l'envoi : dossier, cotation, relances
 
@@ -252,7 +252,7 @@ Hypothèse d'illustration, sans chiffre de référence :
 - Pas de planification, d'affectation de véhicule, de suivi GPS, de lettre de voiture ni de preuve de livraison.
 - Pas de prix récurrent, pas de contrat-cadre, pas de remise sur volume.
 - Pas de signature électronique, pas de facturation, pas d'encaissement ni de suivi de paiement.
-- Pas de distinction HT et TTC, des prix en euros entiers, pas de date de validité sur une demande.
+- Pas de distinction HT et TTC, des prix qui se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), pas de date de validité sur une demande.
 - Pas de branchement conditionnel dans le funnel : toutes les questions s'affichent, quel que soit le type d'envoi.
 - Le PDF généré porte la mention « Document indicatif, non contractuel. » : ce n'est ni une cotation ferme ni un contrat de transport.
 - Le score ne lit pas les réponses de ce questionnaire : presque toutes les demandes sortent cold.

@@ -118,7 +118,7 @@ function assertNoDashes(text: string, label: string) {
   const description = blogRaw.match(/^description: "([\s\S]*?)"$/m)?.[1];
   assert.equal(BLOG_POSTS.find((post) => post.slug === BLOG_SLUG)?.title, title);
   assert.equal(BLOG_POSTS.find((post) => post.slug === BLOG_SLUG)?.description, description);
-  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 8864);
+  assert.equal(blogBody.split(/\s+/).filter(Boolean).length, 8881);
   assert.equal(faqQuestionCount(blogBody), 10);
   assert.deepEqual(faqFromMarkdown(blogBody), BLOG_FAQ[BLOG_SLUG]);
   assertNoDashes(blogRaw, "blog md");

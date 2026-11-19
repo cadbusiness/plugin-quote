@@ -163,7 +163,7 @@ Le catalogue sert à proposer des solutions dès la demande. Pour un fabricant d
 - étude et note de calcul ;
 - dépose d'une mezzanine existante.
 
-Chaque ligne est un produit. Un produit a trois façons d'afficher un prix : un prix fixe, une fourchette, ou « Sur devis ». Les prix sont en euros entiers. Il n'y a ni HT ni TTC dans le produit : indiquez dans la description si vos montants sont hors taxes. Il n'y a pas de kits : une « mezzanine complète » n'est pas un assemblage automatique de plancher, escalier et garde-corps. Créez soit un produit complet par taille standard, soit des produits séparés que les règles suggèrent ensemble.
+Chaque ligne est un produit. Un produit a trois façons d'afficher un prix : un prix fixe, une fourchette, ou « Sur devis ». Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Il n'y a ni HT ni TTC dans le produit : indiquez dans la description si vos montants sont hors taxes. Il n'y a pas de kits : une « mezzanine complète » n'est pas un assemblage automatique de plancher, escalier et garde-corps. Créez soit un produit complet par taille standard, soit des produits séparés que les règles suggèrent ensemble.
 
 Le montant d'une ligne est le prix unitaire multiplié par la quantité. Pour un produit au mètre carré, le prospect règle la quantité à l'étape Personnalisation : elle n'est pas reprise automatiquement de la surface saisie plus tôt, faute de calcul entre les réponses. Dites-le dans le texte d'aide : « Indiquez en quantité le nombre de mètres carrés. »
 
@@ -227,7 +227,7 @@ Les seuils exacts d'urbanisme, les charges réglementaires par usage et les règ
 6. **Trier seulement sur le score.** Il est utile ici, mais il ne lit pas le délai ni le statut du bâtiment.
 7. **Compter sur l'équipe pour joindre la note de calcul au dossier.** Elle ne peut pas : seuls les fichiers du prospect y entrent.
 8. **Oublier le sol.** Une mezzanine lourde sur une dalle fissurée se découvre à la pose, pas au devis.
-9. **Afficher des prix au centime.** Les prix sont en euros entiers.
+9. **Afficher des prix au centime.** Au-delà de 1 €, les prix s'affichent arrondis à l'euro.
 10. **Oublier la question du bailleur.** Un locataire sans accord, c'est un projet qui s'arrête après la visite.
 
 ## Exemple de scénario (hypothèse d'exemple)

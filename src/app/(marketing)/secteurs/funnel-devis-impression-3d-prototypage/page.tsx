@@ -19,10 +19,10 @@ export const FAQ = [
   { q: "Les suggestions peuvent-elles dépendre de la quantité ?", a: "Oui, si la quantité est une liste ou un champ nombre. Le champ texte du template ne permet pas de condition numérique." },
   { q: "Pourquoi toutes mes demandes sont-elles Cold ?", a: "Parce que la formule du score ne lit aucune des questions de ce template. Elle donne 30 points, Cold, à chaque dossier, sauf si un texte de besoin ajoute des points. Triez sur l'usage, la quantité, l'échéance et le fichier disponible." },
   { q: "Peut-on proposer un lot « prototype + série » ?", a: "Pas sous forme de kit : QuoteBuilder n'en gère pas. Créez deux produits et suggérez-les ensemble avec une règle." },
-  { q: "QuoteBuilder calcule-t-il le prix à partir du fichier ?", a: "Non. Il ne lit pas les fichiers et ne calcule ni volume ni temps d'impression. La fourchette affichée vient de votre catalogue, en euros entiers." },
+  { q: "QuoteBuilder calcule-t-il le prix à partir du fichier ?", a: "Non. Il ne lit pas les fichiers et ne calcule ni volume ni temps d'impression. La fourchette affichée vient de votre catalogue. Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent)." },
   { q: "Comment gérer un client qui veut un accord de confidentialité ?", a: "Ajoutez une question « Confidentialité » au funnel, ne demandez pas de fichier sensible au premier tour, et faites signer l'accord hors de QuoteBuilder avant l'envoi. Notez la date et la durée dans les notes internes. L'article sur [l'accord de confidentialité avant un devis](https://www.quotebuilder.co/blog/accord-confidentialite-nda-avant-devis-b2b) détaille les clauses à vérifier." },
   { q: "Mon équipe peut-elle ajouter le fichier reçu par e-mail au dossier ?", a: "Non. Les fichiers d'un dossier viennent du prospect, par le funnel ou par l'espace prospect. Notez dans une note interne où le fichier est rangé." },
-  { q: "Les prix affichés sont-ils HT ?", a: "QuoteBuilder affiche des montants en euros entiers, sans mention HT, TVA ou TTC. Précisez-le dans votre devis ferme." },
+  { q: "Les prix affichés sont-ils HT ?", a: "QuoteBuilder affiche des montants qui se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), sans mention HT, TVA ou TTC. Précisez-le dans votre devis ferme." },
 ];
 
 export default function FunnelDevisImpression3dPrototypagePage() {

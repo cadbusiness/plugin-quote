@@ -237,7 +237,7 @@ Les questions s'enchaînent toujours dans le même ordre : il n'y a pas de branc
 - Pas de contrôle des activités déclarées, de la période de validité ou du plafond : la vérification se fait avec le vérificateur gratuit ou avec votre assureur.
 - Pas de date d'ouverture de chantier gérée comme telle, ni de notion de sous-traitance.
 - Pas de signature électronique ni de facturation : l'attestation se joint à votre devis signé et à votre facture, en dehors du logiciel.
-- Les montants sont des prix en euros entiers, sans distinction HT et TTC, et le PDF récapitulatif d'une demande porte la mention fixe « Document indicatif, non contractuel. » : ce n'est pas un devis.
+- Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), sans distinction HT et TTC, et le PDF récapitulatif d'une demande porte la mention fixe « Document indicatif, non contractuel. » : ce n'est pas un devis.
 
 Pour voir à quoi ressemble une demande structurée côté visiteur, ouvrez la [démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage), sans compte. Pour essayer l'interface, [créez un compte Free](https://www.quotebuilder.co/signup?plan=free).
 

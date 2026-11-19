@@ -225,7 +225,7 @@ Ce n'est pas un jugement sur la demande. C'est la formule, fixe et non réglable
 
 Pour une alarme, le plan donne le nombre d'ouvertures et la position probable de la centrale. Pour la vidéo, il permet de discuter des angles avant la visite, et de repérer tout de suite une caméra qui filmerait un poste de travail.
 
-Le contact principal peut ajouter un document plus tard depuis son espace prospect, rubrique « Compléter la demande » : une note facultative et un fichier, mêmes formats, même limite. Voir [pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b).
+Le contact principal peut ajouter un document plus tard depuis son espace prospect, rubrique « Compléter la demande » : un fichier, mêmes formats, même limite. Voir [pièces jointes, plans et photos](https://www.quotebuilder.co/blog/pieces-jointes-plans-photos-devis-b2b).
 
 ## Après l'envoi : dossier, visite, relances
 

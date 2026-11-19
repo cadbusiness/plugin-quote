@@ -42,7 +42,7 @@ QuoteBuilder n'a pas de template pour la peinture. Le plus proche est « Aménag
 1. **Le site** (sous-titre : « Usage et contraintes d'implantation »)
    - « Type de site », choix visuel requis, clé `site` : Entrepôt / logistique (`warehouse`), Atelier de production (`workshop`), Bureaux / vestiaires (`office`), Autre (`other`).
    - « Contraintes », choix multiple facultatif, clé `constraints` : Normes alimentaires (`food`), Hauteur limitée (`height`), Accès / quai (`access`), Aucune particulière (`none`).
-2. **Suggestions** : titre « Ensembles adaptés à votre site » (produits du catalogue selon règles Si/Alors, conditions en ET, trois suggestions au plus).
+2. **Suggestions** : titre « Solutions recommandées », sous-titre « Ensembles adaptés à votre site » (produits du catalogue selon règles Si/Alors, conditions en ET, trois suggestions au plus).
 3. **Personnalisation** : quantité, options, zone « Plan (PDF ou image) » (PDF, JPEG, PNG, WebP, 10 Mo). Pas de champ texte libre « précisions » dans cette étape.
 4. **Coordonnées** : contact du prospect.
 
@@ -92,19 +92,19 @@ La formule (`src/lib/quotes/score.ts`) part de 30 points. Elle lit :
 - `constraints` si au moins une vraie contrainte (pas `none`) : +5 ;
 - longueur de `need` / `besoin` (+8 dès 20 caractères, +15 dès 80).
 
-Sur le template fitout tel quel, les questions natives sont `site` et `constraints`. La formule ne lit pas `site`. Elle lit `constraints` : si le prospect coche Normes alimentaires, Hauteur limitée ou Accès / quai, le score passe à 35. Sinon il reste à 30. Warm commence à 45, Hot à 70. Donc un cas type fitout sans texte de besoin long reste **Cold à 30 ou 35**.
+Sur le template fitout tel quel, les questions natives sont `site` et `constraints`. La formule ne lit pas `site`. Elle lit `constraints` : si le prospect coche Normes alimentaires, Hauteur limitée ou Accès / quai, le score passe à 35. Sinon il reste à 30. Warm commence à 45, Hot à 70. Donc un cas type fitout reste **Cold à 30 ou 35**.
 
 Ce n'est pas un jugement sur la demande. Triez sur la surface saisie dans vos questions ajoutées, le délai, l'occupation du site et le type intérieur/extérieur, pas sur la pastille. Le détail de la formule est dans [le score d'une demande de devis](https://www.quotebuilder.co/blog/score-demande-devis-b2b).
 
 ## Catalogue et suggestions
 
-Créez dans le catalogue des lignes du type : peinture intérieure bureaux (forfait ou au m²), peinture atelier, ravalement façade, sol antidérapant, lessivage, protection au sol, location nacelle. Les prix sont en euros entiers. Pas de HT/TTC dans le produit. Pas de kits. Les options et variantes existent ; les règles Si/Alors (eq, neq, gte, lte, in, contains, en ET, trois suggestions max) choisissent quoi montrer selon `site` ou selon vos questions ajoutées si vous alignez les clés.
+Créez dans le catalogue des lignes du type : peinture intérieure bureaux (forfait ou au m²), peinture atelier, ravalement façade, sol antidérapant, lessivage, protection au sol, location nacelle. Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Pas de HT/TTC dans le produit. Pas de kits. Les options et variantes existent ; les règles Si/Alors (eq, neq, gte, lte, in, contains, en ET, trois suggestions max) choisissent quoi montrer selon `site` ou selon vos questions ajoutées si vous alignez les clés.
 
 Exemple de règle (hypothèse) : si `site` = `office`, suggérer « Pack bureaux » ; si `site` = `warehouse`, suggérer « Pack entrepôt ». Ce ne sont pas des kits : ce sont des produits du catalogue.
 
 ## Parcours après la soumission
 
-Le dossier arrive avec le score, les réponses, éventuellement un plan. Sept statuts. Notes internes en ajout seul (pas d'édition, pas de suppression, auteur stocké mais non affiché dans la timeline). Autopilote « Demande de photo » à J+2 si vous l'activez. Espace prospect : [fonctionnalites/espace-prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect). Relecteurs : lien 30 jours. PDF : pied « Document indicatif, non contractuel. »
+Le dossier arrive avec le score, les réponses, éventuellement un plan. Sept statuts. Notes internes en ajout seul (pas d'édition, pas de suppression, auteur stocké mais non affiché dans la timeline). Autopilote « Demande de photo » à J+2, active par défaut. Espace prospect : [fonctionnalites/espace-prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect). Relecteurs : lien 30 jours. PDF : pied « Document indicatif, non contractuel. »
 
 Pas de signature électronique. Pas de facturation ni d'encaissement. Pas de date de validité de devis dans le produit. Les CGV et la [clause résolutoire](https://www.quotebuilder.co/blog/clause-resolutoire-devis-b2b) se gèrent hors QuoteBuilder.
 
@@ -168,11 +168,11 @@ Ces scripts sont des hypothèses d'exemple, pas des textes obligatoires.
 
 Désignez un responsable de la file peinture. Règle simple : toute demande avec contrainte alimentaire ou hauteur limitée est rappelée dans l'heure ouvrée. Les autres sous 24 h. Le score Cold ne change rien à cette règle. Notez dans la note interne le créneau de visite promis. Les notes ne s'éditent pas : écrivez juste du premier coup, ou ajoutez une seconde note « Visite reportée à vendredi ».
 
-Les relecteurs (responsable technique, associé) reçoivent un lien 30 jours. Ils voient le même espace prospect. Ils ne remplacent pas un outil GED pour vos CCTP et vos plans internes.
+Les relecteurs (responsable technique, associé) reçoivent un lien 30 jours. Ils voient une version réduite de l'espace prospect, sans les fichiers ni les messages. Ils ne remplacent pas un outil GED pour vos CCTP et vos plans internes.
 
 ## Contenu catalogue : profondeur utile
 
-Évitez un catalogue à une seule ligne « Peinture diverse ». Préférez une dizaine de lignes lisibles. Le prospect comprend ce qu'il coche. Le commercial retrouve le même vocabulaire au téléphone. Les options portent les surcoûts fréquents (nuit, week-end, deux teintes, protection renforcée). Les prix restent en euros entiers : arrondissez vos barèmes au m².
+Évitez un catalogue à une seule ligne « Peinture diverse ». Préférez une dizaine de lignes lisibles. Le prospect comprend ce qu'il coche. Le commercial retrouve le même vocabulaire au téléphone. Les options portent les surcoûts fréquents (nuit, week-end, deux teintes, protection renforcée). Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent) : arrondissez vos barèmes au m².
 
 Pas de HT/TTC affiché par le produit. Votre devis contractuel, lui, respectera les règles fiscales hors QuoteBuilder.
 
@@ -238,7 +238,7 @@ Oui. Gardez la valeur `warehouse`. Changez seulement le libellé.
 
 ### Pourquoi toutes les demandes sortent Cold ?
 
-Parce que la formule ne lit presque rien du questionnaire fitout : au mieux +5 pour une vraie contrainte, soit 35, sous le seuil warm de 45. Ajoutez un texte de besoin long côté contact si vous voulez faire monter le score, ou ignorez la pastille et triez à la main.
+Parce que la formule ne lit presque rien du questionnaire fitout : au mieux +5 pour une vraie contrainte, soit 35, sous le seuil warm de 45. Aucun champ des coordonnées ne compte, et les questions ajoutées n'entrent pas dans le score : ignorez la pastille et triez à la main.
 
 ### Puis-je poser la question façade seulement pour l'extérieur ?
 
@@ -258,7 +258,7 @@ https://www.quotebuilder.co/fonctionnalites/espace-prospect
 
 ### Les prix peuvent-ils être au m² avec décimales ?
 
-Les prix catalogue sont en euros entiers dans le produit. Structurez vos lignes (forfait zone, prix au m² arrondi) en conséquence.
+Les prix du catalogue se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Structurez vos lignes (forfait zone, prix au m² arrondi) en conséquence.
 
 ### Free suffit-il pour tester ?
 
@@ -297,7 +297,7 @@ Quand le devis contractuel part, joignez les CGV avec une clause résolutoire li
 
 ### Dernier rappel produit (main 4ba2123)
 
-Pas de signature électronique. Pas de facturation. Pas de HT/TTC. Prix euros entiers. Pas de date de validité. Pas de branchement conditionnel. Pas de kits. Pas d'A/B. Score fixe. Notes en ajout seul. Fichiers prospect seulement. Espace prospect sur `/fonctionnalites/espace-prospect`. Relecteurs 30 jours. PDF « Document indicatif, non contractuel. ». Template peinture : inexistant. Base : `fitout`.
+Pas de signature électronique. Pas de facturation. Pas de HT/TTC. Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Pas de date de validité. Pas de branchement conditionnel. Pas de kits. Pas d'A/B. Score fixe. Notes en ajout seul. Fichiers prospect seulement. Espace prospect sur `/fonctionnalites/espace-prospect`. Relecteurs 30 jours. PDF « Document indicatif, non contractuel. ». Template peinture : inexistant. Base : `fitout`.
 
 
 
@@ -392,7 +392,7 @@ Une demande = un brief. Pour plusieurs sites, soit le prospect envoie plusieurs 
 
 ### Les relecteurs voient-ils les photos ?
 
-Ils voient la même page prospect via leur lien 30 jours, donc les fichiers déposés par le prospect oui.
+Non. Leur lien 30 jours ouvre une vue réduite : les fichiers déposés et les messages n'y figurent pas. Partagez les photos utiles en interne.
 
 
 

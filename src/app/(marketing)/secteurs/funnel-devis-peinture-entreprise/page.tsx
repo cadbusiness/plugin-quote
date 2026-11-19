@@ -15,12 +15,12 @@ export const metadata: Metadata = pageMetadata({
 export const FAQ = [
   { q: "QuoteBuilder a-t-il un template peinture ?", a: "Non. Il n'y a pas de template peinture. On part de « Aménagement industriel » (`fitout`)." },
   { q: "Puis-je renommer « Entrepôt / logistique » en « Entrepôt à peindre » ?", a: "Oui. Gardez la valeur `warehouse`. Changez seulement le libellé." },
-  { q: "Pourquoi toutes les demandes sortent Cold ?", a: "Parce que la formule ne lit presque rien du questionnaire fitout : au mieux +5 pour une vraie contrainte, soit 35, sous le seuil warm de 45. Ajoutez un texte de besoin long côté contact si vous voulez faire monter le score, ou ignorez la pastille et triez à la main." },
+  { q: "Pourquoi toutes les demandes sortent Cold ?", a: "Parce que la formule ne lit presque rien du questionnaire fitout : au mieux +5 pour une vraie contrainte, soit 35, sous le seuil warm de 45. Aucun champ des coordonnées ne compte, et les questions ajoutées n'entrent pas dans le score : ignorez la pastille et triez à la main." },
   { q: "Puis-je poser la question façade seulement pour l'extérieur ?", a: "Non. Pas de branchement conditionnel. Posez la question à tout le monde, ou acceptez qu'elle apparaisse toujours." },
   { q: "Le prospect peut-il envoyer des photos des murs ?", a: "Oui, via « Plan (PDF ou image) » en personnalisation, ou plus tard dans l'espace prospect. Formats PDF, JPEG, PNG, WebP, 10 Mo." },
   { q: "L'équipe peut-elle joindre le CCTP au dossier ?", a: "Non. Seuls les fichiers du prospect apparaissent. Gardez le CCTP dans votre GED et référencez-le en note interne." },
   { q: "Quel lien pour l'espace prospect ?", a: "https://www.quotebuilder.co/fonctionnalites/espace-prospect" },
-  { q: "Les prix peuvent-ils être au m² avec décimales ?", a: "Les prix catalogue sont en euros entiers dans le produit. Structurez vos lignes (forfait zone, prix au m² arrondi) en conséquence." },
+  { q: "Les prix peuvent-ils être au m² avec décimales ?", a: "Les prix du catalogue se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent). Structurez vos lignes (forfait zone, prix au m² arrondi) en conséquence." },
   { q: "Free suffit-il pour tester ?", a: "Oui : 1 funnel, 10 soumissions. Ensuite Starter ou Pro selon le volume." },
   { q: "Où voir une démo de funnel ?", a: "https://www.quotebuilder.co/c/demo/rayonnage (démo rayonnage, pour voir le parcours visiteur). Compte : https://www.quotebuilder.co/signup?plan=free" },
 ];

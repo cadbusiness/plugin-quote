@@ -223,7 +223,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     68: "Soixante-huit",
     69: "Soixante-neuf",
     70: "Soixante-dix",
-    71: "Soixante et onze",
+    71: "Soixante-et-onze",
     72: "Soixante-douze",
     73: "Soixante-treize",
     74: "Soixante-quatorze",

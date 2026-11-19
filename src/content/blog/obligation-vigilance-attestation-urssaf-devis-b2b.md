@@ -261,7 +261,7 @@ Les questions s'enchaînent toujours dans le même ordre : il n'y a pas de branc
 - Pas de contrôle d'authenticité ni de lien avec l'Urssaf : la vérification se fait avec le code de sécurité, sur le site de l'organisme.
 - Pas de rappel automatique tous les six mois, ni de date de validité sur les devis : l'échéancier se tient dans votre agenda, ou avec le vérificateur gratuit.
 - Pas de signature électronique ni de facturation : les pièces accompagnent votre devis signé et vos situations, en dehors du logiciel.
-- Les montants sont des prix en euros entiers, sans distinction HT et TTC, et le PDF récapitulatif d'une demande porte la mention fixe « Document indicatif, non contractuel. » : ce n'est pas un devis, et il ne tient pas lieu de pièce d'immatriculation.
+- Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), sans distinction HT et TTC, et le PDF récapitulatif d'une demande porte la mention fixe « Document indicatif, non contractuel. » : ce n'est pas un devis, et il ne tient pas lieu de pièce d'immatriculation.
 
 Pour voir à quoi ressemble une demande structurée côté visiteur, ouvrez la [démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage), sans compte. Pour essayer l'interface, [créez un compte Free](https://www.quotebuilder.co/signup?plan=free).
 

@@ -204,7 +204,7 @@ Ce n'est pas un jugement sur la demande. C'est la formule, fixe et non réglable
 
 Ne demandez pas de relevés bancaires, de pièce d'identité ni de Kbis à ce stade. Ces pièces relèvent de votre vigilance client, après le premier échange. Le principe de minimisation du RGPD va dans le même sens : ne collectez que ce qui sert à chiffrer. Voir [RGPD et demande de devis B2B](https://www.quotebuilder.co/blog/rgpd-demande-devis-b2b-consentement-conservation).
 
-Le contact principal peut ajouter un document plus tard depuis son espace prospect, rubrique « Compléter la demande » : une note facultative et un fichier, mêmes formats, même limite.
+Le contact principal peut ajouter un document plus tard depuis son espace prospect, rubrique « Compléter la demande » : un fichier, mêmes formats, même limite.
 
 ## Après l'envoi : dossier, rendez-vous, relances
 

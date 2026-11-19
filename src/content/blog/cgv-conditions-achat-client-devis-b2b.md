@@ -221,7 +221,7 @@ Les questions s'enchaînent toujours dans le même ordre : il n'y a pas de branc
 - Pas de comparaison automatique des conditions générales : c'est le rôle du comparateur gratuit, ou de votre conseil.
 - Pas de zone « conditions particulières » sur la demande, pas de délai de paiement, pas de réserve de propriété : ces clauses s'écrivent dans votre devis, en dehors du logiciel.
 - Pas de signature électronique ni de facturation : le devis signé et les factures se font avec vos outils habituels.
-- Les montants sont des prix en euros entiers, sans distinction HT et TTC, et le PDF récapitulatif d'une demande porte la mention fixe « Document indicatif, non contractuel. » : ce n'est pas un devis, et il ne fait pas entrer de conditions dans le contrat.
+- Les prix se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), sans distinction HT et TTC, et le PDF récapitulatif d'une demande porte la mention fixe « Document indicatif, non contractuel. » : ce n'est pas un devis, et il ne fait pas entrer de conditions dans le contrat.
 
 Pour voir à quoi ressemble une demande structurée côté visiteur, ouvrez la [démo funnel rayonnage](https://www.quotebuilder.co/c/demo/rayonnage), sans compte. Pour essayer l'interface, [créez un compte Free](https://www.quotebuilder.co/signup?plan=free).
 

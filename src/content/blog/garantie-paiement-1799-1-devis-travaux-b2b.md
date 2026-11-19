@@ -227,7 +227,7 @@ Les questions s'enchaînent toujours dans le même ordre : il n'y a pas de branc
 
 - Pas de signature électronique : l'acceptation du devis et des avenants se fait en dehors du logiciel.
 - Pas de facturation, pas de situations de travaux, pas de suivi de paiement.
-- Pas de distinction HT et TTC, des prix en euros entiers, pas de date de validité sur une demande.
+- Pas de distinction HT et TTC, des prix qui se saisissent au centime et s'affichent arrondis à l'euro dès 1 € (sous 1 €, les centimes restent), pas de date de validité sur une demande.
 - Pas de calcul de garantie de paiement ni de rappel de mise en demeure.
 - Le PDF récapitulatif d'une demande porte la mention fixe « Document indicatif, non contractuel. » : ce n'est ni un devis accepté ni un marché.
 
