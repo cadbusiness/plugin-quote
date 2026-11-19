@@ -90,7 +90,7 @@ export default function RayonnageLandingPage() {
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
               { href: "/fonctionnalites/funnel", t: "Funnel", d: "Steps usage, charge, plan, produits." },
-              { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Gammes actives + Si/Alors." },
+              { href: "/fonctionnalites/catalogue", t: "Catalogue", d: "Gammes actives. Les règles Si/Alors choisissent les produits." },
               { href: "/fonctionnalites/demandes", t: "Demandes", d: "Score, fiche, assignation." },
               { href: "/fonctionnalites/autopilote", t: "Autopilote", d: "T+0 jusqu’à J+30." },
             ].map((item) => (

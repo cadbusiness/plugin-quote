@@ -297,7 +297,7 @@ Non. Le catalogue reçoit un prix fixe, une fourchette ou « Sur devis », sans 
 - Code de commerce, article L420-5 (prix abusivement bas aux consommateurs), version en vigueur depuis le 1er janvier 2026. https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006113741
 - Code civil, article 1165 (prix dans les contrats de prestation de service). https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036829839
 - Code civil, article 1169 (contrepartie illusoire ou dérisoire). https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000032041120
-- Code civil, article 1793 (marché à forfait). https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006443502
+- Code civil, article 1793 (marché à forfait). https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006443573
 - Cour de cassation, chambre commerciale, 20 septembre 2023, n° 21-25.386, publié au Bulletin (article 1165 et honoraires d'expert-comptable). https://www.courdecassation.fr/recherche-judilibre?search_api_fulltext=21-25.386
 - Cour de cassation, troisième chambre civile, 3 juin 1998, n° 96-20.671 (travaux supplémentaires sur un marché à forfait). https://www.courdecassation.fr/recherche-judilibre?search_api_fulltext=96-20.671
 - Cour de cassation, troisième chambre civile, 15 décembre 1999, n° 98-12.607, inédit (conditions d'un supplément de prix sur un forfait). https://www.courdecassation.fr/recherche-judilibre?search_api_fulltext=98-12.607

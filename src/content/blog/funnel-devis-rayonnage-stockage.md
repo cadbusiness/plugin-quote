@@ -16,7 +16,7 @@ QuoteBuilder pose ces steps dans un [funnel](/fonctionnalites/funnel) : choix, t
 
 ## Le catalogue, pas la brochure
 
-Une plaquette PDF sur le site ne suffit plus dès que vous avez trois gammes. Le [catalogue](/fonctionnalites/catalogue) QuoteBuilder porte les références que vous savez poser, avec min / max, tags, activation. Les règles Si/Alors font le travail du commercial junior : usage alimentaire → inox ; allée étroite → une profondeur ; charge > X → une série.
+Une plaquette PDF sur le site ne suffit plus dès que vous avez trois gammes. Le [catalogue](/fonctionnalites/catalogue) QuoteBuilder porte les références que vous savez poser, avec min / max, tags, activation. Les étapes et les questions suivent un ordre fixe : il n'y a pas de branchement conditionnel. Les règles Si/Alors ne font que choisir les produits suggérés : usage alimentaire vers l'inox, allée étroite vers une profondeur, charge au-dessus d'un seuil vers une série.
 
 Si les fiches existent déjà dans WooCommerce ou Shopify, [synchronisez](/blog/sync-catalogue-woocommerce-shopify-parcours-devis). N’ouvrez pas un troisième tarif. Désactivez ce qui n’a rien à faire dans un projet (consommables, pièces détachées) : deux CTA, deux funnels si besoin.
 

@@ -65,7 +65,7 @@ for (const slug of [RGPD_SLUG, WEBHOOK_SLUG]) {
   }
 }
 
-assert.equal(BLOG_TOOLS.length, 58);
+assert.equal(BLOG_TOOLS.length, 93);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === RGPD_TOOL));
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === SIGNATURE_TOOL));
 assert.deepEqual(BLOG_TOOLS.find((tool) => tool.href === RGPD_TOOL)?.tags, ["funnel", "integrations"]);
@@ -73,9 +73,9 @@ assert.deepEqual(BLOG_TOOLS.find((tool) => tool.href === SIGNATURE_TOOL)?.tags, 
 for (const tool of BLOG_TOOLS) {
   assert.ok(tool.tags.every((tag) => BLOG_TAG_DEFS.some((def) => def.slug === tag)));
 }
-assert.equal(outilsHubIntro(), "Cinquante-huit outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(), "Quatre-vingt-treize outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
 assert.equal(outilsHubIntro(36), "Trente-six outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(58), outilsHubIntro());
+assert.equal(outilsHubIntro(93), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
 const paths = MARKETING_ROUTES.map((route) => route.path);
@@ -124,7 +124,7 @@ function faqQuestionCount(body: string) {
   const after = body.slice(start + marker.length);
   const next = after.search(/\n## [^#]/);
   const section = next === -1 ? after : after.slice(0, next);
-  return section.split("\n").filter((line) => line.startsWith("### ")).length;
+  return section.split("\n").filter((line: string) => line.startsWith("### ")).length;
 }
 
 function assertInternalLinks(body: string, label: string) {
