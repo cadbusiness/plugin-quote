@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "clause-exclusivite-devis-contrat-approvisionnement-b2b": [
+    {
+      q: "Quelle est la durée maximale d'une clause d'exclusivité entre professionnels ?",
+      a: "Pour une exclusivité par laquelle l'acheteur ou le locataire de biens meubles s'engage à ne pas utiliser des produits d'un autre fournisseur, dix ans au plus (article L330-1 du code de commerce). Pour les autres exclusivités, il n'y a pas de plafond chiffré dans la loi, mais un engagement perpétuel est interdit et un engagement sans terme peut être quitté avec un préavis raisonnable.",
+    },
+    {
+      q: "Que se passe-t-il si mon contrat prévoit douze ans d'exclusivité ?",
+      a: "L'exclusivité ne vaut que dix ans. Dans l'exemple de cet article, elle s'arrêterait le samedi 3 janvier 2037 au lieu du lundi 3 janvier 2039. Selon la place de l'exclusivité dans le contrat, la question de l'ensemble du contrat peut aussi se poser.",
+    },
+    {
+      q: "L'article L330-1 s'applique-t-il à un contrat de maintenance ?",
+      a: "Non, s'il ne porte que sur des services : le texte vise les biens meubles. Si le contrat mêle fourniture de pièces et maintenance, la partie qui porte sur les pièces reste concernée.",
+    },
+    {
+      q: "Pourquoi parle-t-on de cinq ans pour un achat exclusif ?",
+      a: "Parce que le règlement (UE) 2022/720 exclut de son exemption les obligations de non-concurrence de plus de cinq ans ou sans terme, et qu'un achat de plus de 80 % des besoins chez un fournisseur en est une. Perdre l'exemption ne rend pas l'accord nul, mais il faut alors analyser ses effets sur la concurrence.",
+    },
+    {
+      q: "Si mes parts de marché sont faibles, la durée n'a plus d'importance ?",
+      a: "Elle en garde. Sous les seuils de la communication de minimis, la question de la concurrence est en général réglée, mais le plafond de dix ans de l'article L330-1 et le contrôle des clauses pénales excessives s'appliquent quelles que soient les parts de marché.",
+    },
+    {
+      q: "Puis-je signer un nouveau contrat d'exclusivité avant la fin du premier ?",
+      a: "Vous pouvez, mais pour un engagement analogue sur le même genre de biens, la nouvelle exclusivité prend fin à la même date que la première (article L330-2). Pour repartir sur une nouvelle période, il faut attendre que le client soit redevenu libre.",
+    },
+    {
+      q: "Mon client m'interdit de travailler pour ses concurrents. Est-ce valable ?",
+      a: "Rien ne l'interdit en soi, mais une interdiction large, longue et sans contrepartie peut engager la responsabilité de celui qui l'impose (article L442-1 du code de commerce : avantage sans contrepartie, déséquilibre significatif). Limitez-la aux pièces faites sur ses plans, avec une durée, ou demandez un volume garanti.",
+    },
+    {
+      q: "Peut-on interdire au client d'acheter chez un concurrent après la fin du contrat ?",
+      a: "C'est exclu de l'exemption du règlement 2022/720, sauf si l'interdiction porte sur des produits concurrents, se limite aux locaux utilisés pendant le contrat, est indispensable à la protection d'un savoir-faire transmis et dure un an au plus. Dans la plupart des devis, mieux vaut ne rien prévoir.",
+    },
+    {
+      q: "Je mets ma marque à disposition de revendeurs exclusifs. Que dois-je faire ?",
+      a: "Leur remettre, vingt jours au moins avant la signature, un document d'information précontractuelle et le projet de contrat (article L330-3). Le contenu du document est fixé par décret : expérience de l'entreprise, marché, réseau, durée, renouvellement, résiliation et champ des exclusivités.",
+    },
+    {
+      q: "QuoteBuilder vérifie-t-il les clauses d'exclusivité de mes devis ?",
+      a: "Non. QuoteBuilder reçoit et suit les demandes de devis. Le funnel peut poser des questions utiles (fournisseur actuel, contrat en cours, volume prévu) et les notes internes gardent la trace de la négociation, mais il ne rédige ni ne contrôle les clauses, et le PDF récapitulatif est un document indicatif, non contractuel.",
+    },
+  ],
   "pret-main-oeuvre-illicite-marchandage-devis-regie-b2b": [
     {
       q: "Une régie au temps passé, c'est forcément du prêt de main-d'œuvre ?",

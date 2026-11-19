@@ -1241,6 +1241,18 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.7,
     lastModified: "2026-11-19",
   },
+  {
+    path: "/blog/clause-exclusivite-devis-contrat-approvisionnement-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-11-19",
+  },
+  {
+    path: "/outils/verificateur-clause-exclusivite",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-11-19",
+  },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },
 ];
