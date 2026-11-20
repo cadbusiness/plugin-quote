@@ -76,8 +76,8 @@ for (const item of BLOG_FAQ[BLOG_SLUG] ?? []) {
   assert.doesNotMatch(item.a, EN_DASH);
 }
 
-assert.equal(BLOG_POSTS.length, 104);
-assert.equal(BLOG_TOOLS.length, 94);
+assert.equal(BLOG_POSTS.length, 105);
+assert.equal(BLOG_TOOLS.length, 95);
 assert.ok(BLOG_TOOLS.some((tool) => tool.href === TOOL_PATH));
 assert.equal(BLOG_TOOLS.find((tool) => tool.href === TOOL_PATH)?.title, "Calculateur de coût de garantie et de SAV");
 assert.deepEqual(BLOG_TOOLS.find((tool) => tool.href === TOOL_PATH)?.tags, ["catalogue", "relances"]);
@@ -88,9 +88,9 @@ assert.equal(
 for (const tool of BLOG_TOOLS) {
   assert.ok(tool.tags.every((tag) => BLOG_TAG_DEFS.some((def) => def.slug === tag)));
 }
-assert.ok(outilsHubIntro().startsWith("Quatre-vingt-quatorze outils publics."));
-assert.equal(outilsHubIntro(), "Quatre-vingt-quatorze outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(94), outilsHubIntro());
+assert.ok(outilsHubIntro().startsWith("Quatre-vingt-quinze outils publics."));
+assert.equal(outilsHubIntro(), "Quatre-vingt-quinze outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(95), outilsHubIntro());
 assert.equal(outilsHubIntro(54), "Cinquante-quatre outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 

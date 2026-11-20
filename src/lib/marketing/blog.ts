@@ -169,6 +169,7 @@ export const BLOG_TOOL_MENTION_DECHETS = "/outils/verificateur-mention-dechets-d
 export const BLOG_TOOL_DECLARATION_CREANCE = "/outils/calculateur-declaration-creance-procedure-collective";
 export const BLOG_TOOL_PRET_MAIN_OEUVRE = "/outils/verificateur-pret-main-oeuvre-devis";
 export const BLOG_TOOL_EXCLUSIVITE = "/outils/verificateur-clause-exclusivite";
+export const BLOG_TOOL_AGENT_COMMERCIAL = "/outils/calculateur-preavis-commission-agent-commercial";
 
 export type BlogTool = {
   href: string;
@@ -248,6 +249,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     92: "Quatre-vingt-douze",
     93: "Quatre-vingt-treize",
     94: "Quatre-vingt-quatorze",
+    95: "Quatre-vingt-quinze",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -818,9 +820,27 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Achat ou fourniture exclusive : plafond de dix ans, seuil de cinq ans, contrats successifs, périmètre, sortie, la clause corrigée et le message.",
     tags: ["catalogue","relances"],
   },
+  {
+    href: BLOG_TOOL_AGENT_COMMERCIAL,
+    title: "Calculateur agent commercial : préavis, commission, indemnité",
+    text: "Préavis de 1 à 3 mois en fin de mois, commission d'un devis signé pendant ou après le contrat, date de paiement, repère d'indemnité, non-concurrence.",
+    tags: ["catalogue","relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "agent-commercial-apporteur-affaires-commission-devis-b2b",
+    path: "/blog/agent-commercial-apporteur-affaires-commission-devis-b2b",
+    title: "Agent commercial ou apporteur d'affaires : commission sur les devis signés, préavis et indemnité de fin de contrat",
+    description: "Un agent ou un apporteur vous amène des clients et des devis signés. Ce que disent les articles L134-1 à L134-17 du code de commerce : qui est agent commercial, sur quels devis la commission est due (pendant et après le contrat), quand elle est acquise et payée, le relevé trimestriel, le préavis de 1 à 3 mois, l'indemnité de fin de contrat, la non-concurrence de deux ans au plus, un exemple daté et un calculateur gratuit.",
+    publishedAt: "2026-11-20",
+    readingMinutes: 36,
+    tags: ["catalogue","relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisListe,
+    pinned: false,
+  },
   {
     slug: "clause-exclusivite-devis-contrat-approvisionnement-b2b",
     path: "/blog/clause-exclusivite-devis-contrat-approvisionnement-b2b",

@@ -1253,6 +1253,24 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.7,
     lastModified: "2026-11-19",
   },
+  {
+    path: "/blog/agent-commercial-apporteur-affaires-commission-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-11-20",
+  },
+  {
+    path: "/secteurs/funnel-devis-injection-plastique-moules",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-11-20",
+  },
+  {
+    path: "/outils/calculateur-preavis-commission-agent-commercial",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-11-20",
+  },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },
 ];
