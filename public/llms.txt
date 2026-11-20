@@ -86,6 +86,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Funnel de devis sol industriel, résine et marquage au sol : https://www.quotebuilder.co/secteurs/funnel-devis-sol-industriel-resine-marquage
 - Funnel de devis découpe laser, tôlerie et pliage : https://www.quotebuilder.co/secteurs/funnel-devis-decoupe-laser-tolerie-pliage
 - Funnel de devis palettes et caisses bois : https://www.quotebuilder.co/secteurs/funnel-devis-palettes-caisses-bois-export
+- Funnel de devis injection plastique et moules : https://www.quotebuilder.co/secteurs/funnel-devis-injection-plastique-moules
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
@@ -288,6 +289,8 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Calculateur de déclaration de créance : https://www.quotebuilder.co/outils/calculateur-declaration-creance-procedure-collective
 - Vérificateur de prêt de main-d'œuvre : https://www.quotebuilder.co/outils/verificateur-pret-main-oeuvre-devis
 - Vérificateur de clause d'exclusivité dans un devis ou un contrat d'approvisionnement : https://www.quotebuilder.co/outils/verificateur-clause-exclusivite
+- Agent commercial ou apporteur d'affaires : commission sur les devis signés, préavis et indemnité de fin de contrat : https://www.quotebuilder.co/blog/agent-commercial-apporteur-affaires-commission-devis-b2b
+- Calculateur de préavis, de commission et d'indemnité d'agent commercial : https://www.quotebuilder.co/outils/calculateur-preavis-commission-agent-commercial
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 

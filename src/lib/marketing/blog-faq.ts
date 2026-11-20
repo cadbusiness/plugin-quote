@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "agent-commercial-apporteur-affaires-commission-devis-b2b": [
+    {
+      q: "Quelle différence entre un agent commercial et un apporteur d'affaires ?",
+      a: "L'agent commercial est chargé de façon permanente de négocier, et parfois de conclure, des contrats au nom et pour le compte de l'entreprise (article L134-1 du code de commerce). L'apporteur d'affaires met seulement en relation l'entreprise et un prospect, de façon ponctuelle, et se retire. Le juge regarde ce que fait vraiment l'intermédiaire, pas le titre du contrat.",
+    },
+    {
+      q: "Faut-il pouvoir fixer les prix pour être agent commercial ?",
+      a: "Non. Depuis l'arrêt Trendsetteuse de la Cour de justice de l'Union européenne du 4 juin 2020 (C-828/18) et l'arrêt de la Cour de cassation du 2 décembre 2020 (n° 18-20.231), un intermédiaire peut être agent commercial même s'il ne peut modifier ni les prix ni les conditions. Prospecter, informer, conseiller et discuter avec les clients pour favoriser la vente peut suffire (Cass. com., 24 avril 2024, n° 23-12.643).",
+    },
+    {
+      q: "L'agent a-t-il droit à une commission sur un client de son secteur qui commande en direct ?",
+      a: "Si le contrat lui confie un secteur géographique ou un groupe de clients, oui en principe : l'article L134-6 lui donne droit à la commission sur toute opération conclue pendant le contrat avec une personne de ce secteur ou de ce groupe. Le contrat peut prévoir autre chose, mais il doit le dire clairement.",
+    },
+    {
+      q: "Un devis signé après la fin du contrat donne-t-il droit à commission ?",
+      a: "Oui dans deux cas (article L134-7) : si la commande du client a été reçue avant la fin du contrat, ou si l'affaire est principalement due au travail de l'agent pendant le contrat et a été conclue dans un délai raisonnable après sa fin. Le code ne chiffre pas ce délai : le contrat peut le préciser.",
+    },
+    {
+      q: "Quand faut-il payer la commission sur un devis signé ?",
+      a: "Elle est acquise quand l'opération est exécutée, et au plus tard quand le client a payé ou aurait dû payer. Elle est payée au plus tard le dernier jour du mois qui suit le trimestre où elle a été acquise (article L134-9). Une commission acquise le 15 février est payée au plus tard le 30 avril.",
+    },
+    {
+      q: "Le relevé de commissions est-il obligatoire ?",
+      a: "Oui. L'article R134-3 du code de commerce impose au mandant de remettre un relevé des commissions dues au plus tard le dernier jour du mois suivant le trimestre où elles sont acquises, avec tous les éléments du calcul. L'agent peut demander un extrait des documents comptables pour vérifier.",
+    },
+    {
+      q: "Quel préavis pour mettre fin à un contrat d'agent commercial ?",
+      a: "Un mois la première année, deux mois la deuxième année commencée, trois mois à partir de la troisième année commencée (article L134-11). Sauf clause contraire, la fin du préavis coïncide avec la fin d'un mois civil. Une clause plus courte est réputée non écrite. Le préavis n'est pas dû en cas de faute grave ou de force majeure.",
+    },
+    {
+      q: "Combien vaut l'indemnité de fin de contrat d'un agent commercial ?",
+      a: "Le code ne la chiffre pas : elle répare le préjudice subi (article L134-12). Service Public Entreprendre indique qu'elle est calculée par référence aux commissions brutes des dernières années et qu'elle est généralement égale à deux ou trois années de commissions. C'est un repère, pas un barème.",
+    },
+    {
+      q: "Dans quels cas l'indemnité n'est-elle pas due ?",
+      a: "Dans trois cas seulement (article L134-13) : faute grave de l'agent qui a provoqué la rupture, départ à l'initiative de l'agent sans circonstances imputables au mandant ni raison d'âge, d'infirmité ou de maladie, et cession du contrat à un successeur avec l'accord du mandant. L'agent perd aussi son droit s'il ne le réclame pas dans l'année qui suit la fin du contrat.",
+    },
+    {
+      q: "Une clause de non-concurrence de trois ans est-elle valable pour un agent ?",
+      a: "Non pour ce qui dépasse deux ans. L'article L134-14 limite la non-concurrence à deux ans après la fin du contrat, par écrit, sur le secteur, la clientèle et les produits confiés à l'agent. L'article L134-16 répute non écrite une clause qui déroge à cette durée au détriment de l'agent.",
+    },
+  ],
   "clause-exclusivite-devis-contrat-approvisionnement-b2b": [
     {
       q: "Quelle est la durée maximale d'une clause d'exclusivité entre professionnels ?",
