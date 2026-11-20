@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "commande-non-retiree-frais-stockage-mise-en-demeure-client-b2b": [
+    {
+      q: "Puis-je facturer des frais de stockage si mon devis n'en prévoit pas ?",
+      a: "Pas un tarif que le client n'a pas accepté. Vous pouvez en revanche demander réparation de votre coût réel, après une mise en demeure, à condition de le justifier (articles 1231, 1231-1 et 1231-2 du code civil). Pour les prochains devis, écrivez un tarif.",
+    },
+    {
+      q: "À partir de quand les frais de stockage courent-ils ?",
+      a: "Selon votre clause : en général après un nombre de jours gratuits qui suit l'avis de mise à disposition. Sans avis écrit et daté, le point de départ se discute. Le calculateur compte les jours à partir du lendemain de la fin de la franchise.",
+    },
+    {
+      q: "Qui supporte les risques d'une commande prête mais non retirée ?",
+      a: "Pour un ouvrage sur mesure, vous, tant que le client n'est pas mis en demeure de le recevoir (article 1788). Pour une vente sans réserve de propriété, le client (article 1196). Dans tous les cas, la mise en demeure de l'article 1345 fait passer les risques au client, sauf faute lourde ou dolosive de votre part, et une clause du devis peut les transférer dès la mise à disposition.",
+    },
+    {
+      q: "Comment mettre en demeure un client de venir chercher sa commande ?",
+      a: "Par un courrier recommandé avec avis de réception qui rappelle la date de mise à disposition, constate que le délai de retrait est dépassé, fixe une date limite, rappelle que les risques passent à sa charge (article 1345) et annonce le séquestre au bout de deux mois (article 1345-1). Le canevas ci-dessus et le calculateur donnent le texte.",
+    },
+    {
+      q: "Au bout de combien de temps puis-je me débarrasser d'une commande non retirée ?",
+      a: "Deux mois après la mise en demeure, vous pouvez la confier à un gardien professionnel, aux frais du client, et la notification de ce séquestre vous libère (article 1345-1). La vente n'est possible que si le séquestre est impossible ou trop cher, et seulement avec l'autorisation du juge.",
+    },
+    {
+      q: "Puis-je revendre la commande à un autre client ?",
+      a: "Pas de votre propre autorité. Pour une vente avec un terme de retrait expiré, l'article 1657 permet de tenir la vente pour résolue de plein droit, et vous redevenez libre de revendre, en restituant l'acompte sous déduction de votre préjudice. Pour un ouvrage sur mesure ou un objet confié, il faut passer par la résolution, le séquestre ou le juge.",
+    },
+    {
+      q: "Je garde l'acompte si le client ne vient jamais ?",
+      a: "L'acompte est une partie du prix. Si le contrat est exécuté, il reste acquis. Si le contrat est résolu, il se restitue, sous déduction de ce que le client vous doit : frais de stockage prévus et préjudice justifié. Il ne devient pas une indemnité forfaitaire sans clause en ce sens.",
+    },
+    {
+      q: "Que faire d'un objet qu'un client m'a confié pour réparation et qu'il ne reprend pas ?",
+      a: "Après un an, la loi du 31 décembre 1903 vous permet de demander au juge du tribunal judiciaire l'autorisation de le faire vendre aux enchères. Vous êtes payé sur le prix, le surplus est consigné au nom du client. Avant, et sans ordonnance, vous ne pouvez ni le vendre ni le détruire.",
+    },
+    {
+      q: "La mise en demeure suffit-elle si le client conteste la conformité ?",
+      a: "Non. L'article 1345 suppose un refus « sans motif légitime ». Un client qui refuse une commande non conforme exerce l'exception d'inexécution. Constatez l'état de la commande, traitez la réclamation, puis seulement relancez.",
+    },
+    {
+      q: "QuoteBuilder peut-il me rappeler la date du séquestre ou facturer le stockage ?",
+      a: "Non. QuoteBuilder reçoit et suit les demandes de devis. Il ne gère ni les livraisons, ni la facturation, ni les rappels datés. Vous pouvez écrire les dates dans une note interne du dossier et envoyer l'avis par un message au prospect, mais la mise en demeure part en recommandé, et les factures de stockage depuis votre logiciel de facturation.",
+    },
+  ],
   "agent-commercial-apporteur-affaires-commission-devis-b2b": [
     {
       q: "Quelle différence entre un agent commercial et un apporteur d'affaires ?",
