@@ -170,6 +170,7 @@ export const BLOG_TOOL_DECLARATION_CREANCE = "/outils/calculateur-declaration-cr
 export const BLOG_TOOL_PRET_MAIN_OEUVRE = "/outils/verificateur-pret-main-oeuvre-devis";
 export const BLOG_TOOL_EXCLUSIVITE = "/outils/verificateur-clause-exclusivite";
 export const BLOG_TOOL_AGENT_COMMERCIAL = "/outils/calculateur-preavis-commission-agent-commercial";
+export const BLOG_TOOL_STOCKAGE = "/outils/calculateur-frais-stockage-commande-non-retiree";
 
 export type BlogTool = {
   href: string;
@@ -250,6 +251,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     93: "Quatre-vingt-treize",
     94: "Quatre-vingt-quatorze",
     95: "Quatre-vingt-quinze",
+    96: "Quatre-vingt-seize",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -826,9 +828,27 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Préavis de 1 à 3 mois en fin de mois, commission d'un devis signé pendant ou après le contrat, date de paiement, repère d'indemnité, non-concurrence.",
     tags: ["catalogue","relances"],
   },
+  {
+    href: BLOG_TOOL_STOCKAGE,
+    title: "Calculateur de frais de stockage d'une commande non retirée",
+    text: "Commande prête que le client ne vient pas chercher : frais courus, risques, mise en demeure, séquestre au bout de deux mois, la clause et le courrier.",
+    tags: ["catalogue","relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "commande-non-retiree-frais-stockage-mise-en-demeure-client-b2b",
+    path: "/blog/commande-non-retiree-frais-stockage-mise-en-demeure-client-b2b",
+    title: "Commande non retirée par le client : frais de stockage, mise en demeure et risques dans un devis B2B",
+    description: "La commande est fabriquée et le client ne vient pas la chercher, ou repousse la pose sans date. Ce que vous pouvez facturer pour le stockage, comment mettre le client en demeure (article 1345 du code civil), à qui sont les risques, quand confier la commande à un gardien ou la faire vendre (deux mois, article 1345-1 ; un an pour un objet confié, loi de 1903), la résolution de l'article 1657, la clause à écrire dans vos devis, un exemple daté et chiffré et un calculateur gratuit.",
+    publishedAt: "2026-11-20",
+    readingMinutes: 45,
+    tags: ["catalogue","relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisListe,
+    pinned: false,
+  },
   {
     slug: "agent-commercial-apporteur-affaires-commission-devis-b2b",
     path: "/blog/agent-commercial-apporteur-affaires-commission-devis-b2b",

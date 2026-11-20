@@ -291,6 +291,8 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Vérificateur de clause d'exclusivité dans un devis ou un contrat d'approvisionnement : https://www.quotebuilder.co/outils/verificateur-clause-exclusivite
 - Agent commercial ou apporteur d'affaires : commission sur les devis signés, préavis et indemnité de fin de contrat : https://www.quotebuilder.co/blog/agent-commercial-apporteur-affaires-commission-devis-b2b
 - Calculateur de préavis, de commission et d'indemnité d'agent commercial : https://www.quotebuilder.co/outils/calculateur-preavis-commission-agent-commercial
+- Commande non retirée par le client : frais de stockage, mise en demeure et risques dans un devis B2B : https://www.quotebuilder.co/blog/commande-non-retiree-frais-stockage-mise-en-demeure-client-b2b
+- Calculateur de frais de stockage et de délais pour une commande non retirée : https://www.quotebuilder.co/outils/calculateur-frais-stockage-commande-non-retiree
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 
