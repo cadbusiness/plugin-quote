@@ -65,6 +65,7 @@ const ALL_TEMPLATES = [
   { href: "/secteurs/funnel-devis-decoupe-laser-tolerie-pliage", label: "Découpe laser, tôlerie et pliage" },
   { href: "/secteurs/funnel-devis-palettes-caisses-bois-export", label: "Palettes et caisses bois" },
   { href: "/secteurs/funnel-devis-injection-plastique-moules", label: "Injection plastique et moules" },
+  { href: "/secteurs/funnel-devis-vitrerie-miroiterie", label: "Vitrerie et miroiterie" },
 ];
 
 export default function SecteursPage() {

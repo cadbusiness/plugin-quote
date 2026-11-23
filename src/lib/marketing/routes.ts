@@ -1283,6 +1283,24 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.7,
     lastModified: "2026-11-20",
   },
+  {
+    path: "/blog/marquage-ce-declaration-performances-produits-construction-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-11-23",
+  },
+  {
+    path: "/secteurs/funnel-devis-vitrerie-miroiterie",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-11-23",
+  },
+  {
+    path: "/outils/verificateur-marquage-ce-declaration-performances",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-11-23",
+  },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },
 ];

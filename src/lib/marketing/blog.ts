@@ -171,6 +171,7 @@ export const BLOG_TOOL_PRET_MAIN_OEUVRE = "/outils/verificateur-pret-main-oeuvre
 export const BLOG_TOOL_EXCLUSIVITE = "/outils/verificateur-clause-exclusivite";
 export const BLOG_TOOL_AGENT_COMMERCIAL = "/outils/calculateur-preavis-commission-agent-commercial";
 export const BLOG_TOOL_STOCKAGE = "/outils/calculateur-frais-stockage-commande-non-retiree";
+export const BLOG_TOOL_MARQUAGE_CE = "/outils/verificateur-marquage-ce-declaration-performances";
 
 export type BlogTool = {
   href: string;
@@ -252,6 +253,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     94: "Quatre-vingt-quatorze",
     95: "Quatre-vingt-quinze",
     96: "Quatre-vingt-seize",
+    97: "Quatre-vingt-dix-sept",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -834,9 +836,27 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Commande prête que le client ne vient pas chercher : frais courus, risques, mise en demeure, séquestre au bout de deux mois, la clause et le courrier.",
     tags: ["catalogue","relances"],
   },
+  {
+    href: BLOG_TOOL_MARQUAGE_CE,
+    title: "Vérificateur de marquage CE et de déclaration des performances",
+    text: "Fenêtre, porte, vitrage ou structure : déclaration des performances, marquage CE, dérogation du sur-mesure, organisme notifié, la mention de devis et le courrier.",
+    tags: ["catalogue","funnel"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "marquage-ce-declaration-performances-produits-construction-devis-b2b",
+    path: "/blog/marquage-ce-declaration-performances-produits-construction-devis-b2b",
+    title: "Marquage CE et déclaration des performances : ce qu'un fabricant ou un poseur doit remettre avec son devis de produits de construction",
+    description: "Fenêtres, portes, vitrages, structures acier, portails : quand la déclaration des performances (DoP) et le marquage CE sont obligatoires (règlement UE 305/2011, articles 4 à 9), la dérogation du sur-mesure de l'article 5 et ses limites, le rôle de l'organisme notifié selon le système 1+ à 4, la remise au client (papier, e-mail, site internet), les performances qu'un devis peut annoncer, la conservation pendant dix ans, le passage au règlement 2024/3110 d'ici 2040, un exemple daté et un vérificateur gratuit.",
+    publishedAt: "2026-11-23",
+    readingMinutes: 29,
+    tags: ["catalogue","funnel"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisListe,
+    pinned: false,
+  },
   {
     slug: "commande-non-retiree-frais-stockage-mise-en-demeure-client-b2b",
     path: "/blog/commande-non-retiree-frais-stockage-mise-en-demeure-client-b2b",
