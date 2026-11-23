@@ -127,10 +127,10 @@ assert.ok(secteursHub.includes(SECTOR_PATH));
 assert.ok(secteursHub.includes("Vitrerie et miroiterie"));
 assert.ok(secteursHub.indexOf(SECTOR_PATH) > secteursHub.indexOf(PRIOR_SECTOR));
 
-assert.equal(BLOG_TOOLS.length, 97);
-assert.equal(BLOG_POSTS.length, 107);
-assert.equal(outilsHubIntro(), "Quatre-vingt-dix-sept outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(97), outilsHubIntro());
+assert.equal(BLOG_TOOLS.length, 98);
+assert.equal(BLOG_POSTS.length, 108);
+assert.equal(outilsHubIntro(), "Quatre-vingt-dix-huit outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(98), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
 function faqQuestionCount(body: string) {

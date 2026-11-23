@@ -103,6 +103,8 @@ const CONTENT_LASTMOD: Record<string, string> = {
   "/blog/marquage-ce-declaration-performances-produits-construction-devis-b2b": "2026-11-23",
   "/secteurs/funnel-devis-vitrerie-miroiterie": "2026-11-23",
   "/outils/verificateur-marquage-ce-declaration-performances": "2026-11-23",
+  "/blog/matiere-fournie-par-le-client-rebut-perte-responsabilite-devis-b2b": "2026-11-23",
+  "/outils/calculateur-matiere-fournie-rebut-responsabilite": "2026-11-23",
   "/blog/prix-vente-coefficient-debourse-sec-devis-b2b": "2026-10-26",
   "/outils/calculateur-coefficient-vente-devis": "2026-10-26",
   "/blog/reconduction-tacite-preavis-resiliation-devis-b2b": "2026-10-26",
