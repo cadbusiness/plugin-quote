@@ -172,6 +172,7 @@ export const BLOG_TOOL_EXCLUSIVITE = "/outils/verificateur-clause-exclusivite";
 export const BLOG_TOOL_AGENT_COMMERCIAL = "/outils/calculateur-preavis-commission-agent-commercial";
 export const BLOG_TOOL_STOCKAGE = "/outils/calculateur-frais-stockage-commande-non-retiree";
 export const BLOG_TOOL_MARQUAGE_CE = "/outils/verificateur-marquage-ce-declaration-performances";
+export const BLOG_TOOL_MATIERE_FOURNIE = "/outils/calculateur-matiere-fournie-rebut-responsabilite";
 
 export type BlogTool = {
   href: string;
@@ -254,6 +255,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     95: "Quatre-vingt-quinze",
     96: "Quatre-vingt-seize",
     97: "Quatre-vingt-dix-sept",
+    98: "Quatre-vingt-dix-huit",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -842,9 +844,27 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Fenêtre, porte, vitrage ou structure : déclaration des performances, marquage CE, dérogation du sur-mesure, organisme notifié, la mention de devis et le courrier.",
     tags: ["catalogue","funnel"],
   },
+  {
+    href: BLOG_TOOL_MATIERE_FOURNIE,
+    title: "Calculateur de matière fournie par le client",
+    text: "Le client fournit la matière : quantité à demander avec chute et rebut toléré, qui supporte le rebut, plafond et assurance, la clause et le courrier.",
+    tags: ["catalogue","relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "matiere-fournie-par-le-client-rebut-perte-responsabilite-devis-b2b",
+    path: "/blog/matiere-fournie-par-le-client-rebut-perte-responsabilite-devis-b2b",
+    title: "Matière ou pièces fournies par le client : rebut, perte et responsabilité de l'atelier dans un devis B2B",
+    description: "Le client vous livre la matière ou les composants et vous apportez le travail. Combien de matière demander (chute, rebut toléré, mise en route), que faire à réception, qui supporte le rebut, la perte ou le vol (articles 1787 à 1790 du code civil, preuve de l'absence de faute), la clause du devis, le plafond et l'assurance des biens confiés, un exemple daté et chiffré et un calculateur gratuit.",
+    publishedAt: "2026-11-23",
+    readingMinutes: 37,
+    tags: ["catalogue","relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisListe,
+    pinned: false,
+  },
   {
     slug: "marquage-ce-declaration-performances-produits-construction-devis-b2b",
     path: "/blog/marquage-ce-declaration-performances-produits-construction-devis-b2b",

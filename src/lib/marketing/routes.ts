@@ -1301,6 +1301,18 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.7,
     lastModified: "2026-11-23",
   },
+  {
+    path: "/blog/matiere-fournie-par-le-client-rebut-perte-responsabilite-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-11-23",
+  },
+  {
+    path: "/outils/calculateur-matiere-fournie-rebut-responsabilite",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-11-23",
+  },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },
 ];

@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "matiere-fournie-par-le-client-rebut-perte-responsabilite-devis-b2b": [
+    {
+      q: "Qui supporte le rebut quand le client fournit la matière ?",
+      a: "Dans la tolérance de rebut écrite au devis, c'est le client : la matière est la sienne et la tolérance mesure ce qu'il a accepté de perdre. Au-dessus, tout dépend de la cause. Si le rebut vient de votre fait (réglage, outil, manipulation), vous remplacez la matière et refaites les pièces. S'il vient de la matière ou du plan, il est pour le client, à condition que vous le prouviez. Si la cause n'est pas établie, c'est à vous de prouver que vous n'avez commis aucune faute (article 1789), sinon vous supportez.",
+    },
+    {
+      q: "Dois-je rembourser la matière que le client m'a confiée si elle est volée ?",
+      a: "Pas automatiquement. L'article 1789 ne vous rend responsable que de votre faute, mais c'est à vous de prouver que vous n'en avez pas commis. Un vol après effraction, avec des précautions normales (fermeture, alarme, clôture) que vous pouvez démontrer, peut vous exonérer : c'est la logique de l'arrêt du 24 mars 1993 sur l'incendie volontaire. En revanche, vous perdez le prix de la façon sur ce qui a disparu (article 1790). Prévenez votre assureur et le client sans attendre.",
+    },
+    {
+      q: "Quelle est la différence entre la chute et le rebut ?",
+      a: "La chute est ce qui ne devient jamais de la pièce (bout de barre, fin de barre) et qui existe même quand tout se passe bien. Le rebut est une pièce faite et inutilisable (hors tolérance, cassée, rayée). La première est un fait du procédé, que le client doit prévoir. Le second est un accident, qu'on encadre par une tolérance. Les deux consomment de la matière, et il faut deux pourcentages écrits.",
+    },
+    {
+      q: "Faut-il écrire un taux de chute dans le devis ?",
+      a: "Oui. Le code civil n'en fixe aucun : c'est un usage de métier. Sans taux écrit, le client peut contester la consommation réelle, et vous ne pouvez pas lui opposer un chiffre qu'il n'a pas accepté. Écrivez un pourcentage et la consommation théorique qui en résulte pour la série.",
+    },
+    {
+      q: "Que faire si la matière arrive abîmée ?",
+      a: "Écrivez-le sur le bon de réception le jour même, avec des photos, et prévenez le client par écrit avant de lancer. L'article 1933, sur le dépôt, va dans le sens d'un gardien qui ne répond pas des détériorations survenues avant qu'il reçoive la chose : mais il faut pouvoir dire dans quel état elle est arrivée. Sans trace, le client dira qu'elle était intacte.",
+    },
+    {
+      q: "Qui doit prouver le défaut de la matière ?",
+      a: "Vous, si vous voulez en tirer un effet : garder le prix de la façon (article 1790) ou faire supporter la matière de remplacement au client. Gardez les pièces défectueuses avec leur lot, mesurez, photographiez, et si l'enjeu le justifie, faites faire un rapport par un laboratoire ou un centre technique.",
+    },
+    {
+      q: "Mon plafond de responsabilité est inférieur à la valeur de la matière : est-ce un problème ?",
+      a: "C'est un risque. Une clause qui prive de sa substance l'obligation essentielle du débiteur est réputée non écrite (article 1170), et dans un contrat d'adhésion, une clause non négociable qui crée un déséquilibre significatif aussi (article 1171). Un plafond très inférieur à la valeur de ce que vous gardez peut être contesté. Il ne vous protège pas non plus d'une faute lourde ou dolosive. Alignez le plafond sur la valeur confiée, ou prévoyez une assurance qui couvre la différence.",
+    },
+    {
+      q: "Mon assurance responsabilité civile couvre-t-elle la matière de mes clients ?",
+      a: "Pas toujours. Les biens confiés sont souvent une garantie à part ou une extension : vérifiez dans votre contrat s'ils sont couverts, jusqu'à quel montant, avec quelle franchise, et pour quelles causes. Posez la question par écrit à votre assureur ou à votre courtier, avec la valeur maximale de matière que vous aurez en atelier.",
+    },
+    {
+      q: "À qui appartiennent les chutes et les copeaux ?",
+      a: "Au client, en principe, puisque la matière est la sienne. Si vous voulez les garder ou les vendre, écrivez-le dans le devis et dites si leur valeur est déduite du prix. Sans accord écrit, les vendre revient à disposer de la matière d'autrui.",
+    },
+    {
+      q: "Cet article s'applique-t-il à un client consommateur ?",
+      a: "Non. Il traite des contrats entre professionnels. Pour un particulier qui vous confie un objet ou des matériaux, le code de la consommation s'ajoute au code civil, avec des règles propres sur l'information, la garantie et les clauses abusives. Faites relire votre contrat.",
+    },
+  ],
   "marquage-ce-declaration-performances-produits-construction-devis-b2b": [
     {
       q: "Une fenêtre fabriquée sur mesure doit-elle avoir une déclaration des performances ?",
