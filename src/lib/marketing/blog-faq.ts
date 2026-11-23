@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "marquage-ce-declaration-performances-produits-construction-devis-b2b": [
+    {
+      q: "Une fenêtre fabriquée sur mesure doit-elle avoir une déclaration des performances ?",
+      a: "Oui dans la très grande majorité des cas. La dérogation de l'article 5 du règlement 305/2011 vise un produit fabriqué selon un procédé autre que la production en série et posé par le fabricant dans un ouvrage identifié. Un atelier qui fabrique des fenêtres régulièrement, même aux cotes de chaque client, fait de la série au sens du texte.",
+    },
+    {
+      q: "Puis-je apposer le marquage CE sans déclaration des performances ?",
+      a: "Non. L'article 8, paragraphe 2, est clair : le marquage CE s'appose sur les produits pour lesquels le fabricant a établi une déclaration, et seulement sur ceux-là. Un marquage CE sans déclaration, ou sur un produit qu'aucune norme harmonisée ne couvre, n'a pas de base.",
+    },
+    {
+      q: "Puis-je écrire dans mon devis une performance qui n'est pas dans ma DoP ?",
+      a: "Non, pour un produit couvert par une norme harmonisée ou une ETE. L'article 4, paragraphe 2, interdit de communiquer, sous quelque forme que ce soit, une performance sur une caractéristique essentielle qui ne figure pas dans la déclaration. Reprenez les valeurs déclarées, ou mettez la déclaration à jour avec des essais selon la norme.",
+    },
+    {
+      q: "Comment dois-je remettre la déclaration au client ?",
+      a: "Sur papier ou par voie électronique, avec le produit, et sur papier si le client le demande (article 7). Vous pouvez aussi la publier sur votre site, si elle n'y change plus, reste accessible gratuitement pendant dix ans et si le client reçoit le lien et le code du produit type (règlement délégué 157/2014). En France, en français.",
+    },
+    {
+      q: "Un organisme notifié doit-il intervenir pour mes produits ?",
+      a: "Cela dépend du système fixé par la norme. Systèmes 1+ et 1 : certificat de constance des performances. Système 2+ : certificat du contrôle de la production en usine, c'est le cas de la NF EN 1090-1. Système 3 : essais par un laboratoire notifié, c'est le cas général des fenêtres. Système 4 : pas d'organisme notifié.",
+    },
+    {
+      q: "Je suis une petite entreprise : ai-je des facilités ?",
+      a: "Une microentreprise (moins de dix personnes, chiffre d'affaires ou bilan jusqu'à deux millions d'euros) peut, pour les systèmes 3 et 4, utiliser d'autres méthodes que celles de la norme et traiter un produit du système 3 selon le système 4 (article 37). Elle doit le justifier dans une documentation technique spécifique et démontrer l'équivalence des méthodes.",
+    },
+    {
+      q: "Je pose des fenêtres que j'achète : la DoP est-elle mon affaire ?",
+      a: "C'est celle du fabricant, mais c'est vous que l'architecte interroge. Vérifiez le marquage CE, récupérez la déclaration en français et transmettez-la au client. Si vous modifiez le produit d'une façon qui peut changer ses performances, vous devenez le fabricant (article 15).",
+    },
+    {
+      q: "Combien de temps garder la déclaration ?",
+      a: "Dix ans après la mise sur le marché du produit pour le fabricant, avec la documentation technique (article 11, paragraphe 2), et pour l'importateur (article 13, paragraphe 8). Un distributeur ou un poseur n'a pas de durée imposée, mais garder la déclaration aussi longtemps l'aide en cas de litige.",
+    },
+    {
+      q: "Le règlement 2024/3110 change-t-il déjà quelque chose pour moi ?",
+      a: "Pas tant qu'aucune nouvelle norme n'est devenue obligatoire pour votre famille de produits. Le basculement se fait famille par famille, un an après l'acte qui rend la nouvelle norme obligatoire (article 95, paragraphe 9), et les deux règlements coexistent jusqu'au 8 janvier 2040. La déclaration deviendra alors une déclaration des performances et de conformité.",
+    },
+    {
+      q: "QuoteBuilder peut-il stocker ou envoyer mes déclarations des performances ?",
+      a: "Il ne les établit pas et ne les héberge pas. Vous pouvez mettre le lien de la déclaration dans la ligne « Conformité » du bloc « Mode d'emploi » d'un produit, qui s'affiche dans le funnel, la boutique et le catalogue, et coller ce lien dans un message envoyé depuis le dossier. Votre équipe ne peut pas joindre de fichier au dossier.",
+    },
+  ],
   "commande-non-retiree-frais-stockage-mise-en-demeure-client-b2b": [
     {
       q: "Puis-je facturer des frais de stockage si mon devis n'en prévoit pas ?",
