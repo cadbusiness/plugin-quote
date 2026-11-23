@@ -288,7 +288,7 @@ QuoteBuilder sert à recevoir des demandes de devis complètes par un funnel en 
 **Ce qui aide.**
 
 - Le funnel peut poser, dans un ordre fixe, les questions qui évitent le litige : « Fournissez-vous la matière ? », « Quelle quantité par pièce ? », « Quelle matière, quel certificat ? », « Quelles tolérances sur le plan ? ». Vous les ajoutez vous-même, en question Texte, Liste, Mesure ou Choix multiple. Il n'y a pas de type de question date ni de branchement conditionnel : toutes les questions s'affichent dans le même ordre pour tout le monde.
-- Le prospect peut envoyer son plan par la zone « Plan (PDF ou image) » de l'étape de personnalisation (PDF, JPEG, PNG ou WebP, 10 Mo), C'est la voie d'entrée des plans et des cahiers des charges.
+- Le prospect peut envoyer son plan par la zone « Plan (PDF ou image) » de l'étape de personnalisation (PDF, JPEG, PNG ou WebP, 10 Mo). C'est la voie d'entrée des plans et des cahiers des charges.
 - Les [notes internes](https://www.quotebuilder.co/blog/notes-internes-dossier-devis-equipe-b2b) du dossier gardent la chronologie : « matière reçue le 5/11, 960 kg, lot noté », « rebut 14 pièces le 20/11 ». Elles s'ajoutent et ne se modifient pas.
 - Un message envoyé depuis le dossier part par e-mail au prospect et reste dans le fil de l'[espace prospect](https://www.quotebuilder.co/fonctionnalites/espace-prospect). Pour le courrier de complément de matière, c'est une trace utile.
 
