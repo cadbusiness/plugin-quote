@@ -88,6 +88,7 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Funnel de devis palettes et caisses bois : https://www.quotebuilder.co/secteurs/funnel-devis-palettes-caisses-bois-export
 - Funnel de devis injection plastique et moules : https://www.quotebuilder.co/secteurs/funnel-devis-injection-plastique-moules
 - Funnel de devis vitrerie et miroiterie : https://www.quotebuilder.co/secteurs/funnel-devis-vitrerie-miroiterie
+- Funnel de devis élagage et abattage d'arbres : https://www.quotebuilder.co/secteurs/funnel-devis-elagage-abattage-arbres
 - Tarifs : https://www.quotebuilder.co/tarifs
 - À propos : https://www.quotebuilder.co/a-propos
 - Blog : https://www.quotebuilder.co/blog
@@ -298,6 +299,8 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Vérificateur de marquage CE et de déclaration des performances : https://www.quotebuilder.co/outils/verificateur-marquage-ce-declaration-performances
 - Matière ou pièces fournies par le client : rebut, perte et responsabilité de l'atelier dans un devis B2B : https://www.quotebuilder.co/blog/matiere-fournie-par-le-client-rebut-perte-responsabilite-devis-b2b
 - Calculateur de matière fournie par le client : besoin, rebut toléré et responsabilité : https://www.quotebuilder.co/outils/calculateur-matiere-fournie-rebut-responsabilite
+- Réduction du prix pour exécution imparfaite (article 1223) : quand le client baisse la facture, comment la chiffrer et quoi écrire dans le devis B2B : https://www.quotebuilder.co/blog/reduction-prix-execution-imparfaite-article-1223-devis-b2b
+- Calculateur de réduction du prix pour exécution imparfaite (article 1223) : https://www.quotebuilder.co/outils/calculateur-reduction-prix-execution-imparfaite
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 

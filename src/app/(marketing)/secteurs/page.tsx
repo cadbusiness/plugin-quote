@@ -66,6 +66,7 @@ const ALL_TEMPLATES = [
   { href: "/secteurs/funnel-devis-palettes-caisses-bois-export", label: "Palettes et caisses bois" },
   { href: "/secteurs/funnel-devis-injection-plastique-moules", label: "Injection plastique et moules" },
   { href: "/secteurs/funnel-devis-vitrerie-miroiterie", label: "Vitrerie et miroiterie" },
+  { href: "/secteurs/funnel-devis-elagage-abattage-arbres", label: "Élagage et abattage" },
 ];
 
 export default function SecteursPage() {

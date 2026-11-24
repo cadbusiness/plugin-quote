@@ -188,10 +188,10 @@ assert.ok(secteursHub.includes(SECTOR_PATH));
 assert.ok(secteursHub.includes("Injection plastique et moules"));
 assert.ok(secteursHub.indexOf(SECTOR_PATH) > secteursHub.indexOf("/secteurs/funnel-devis-palettes-caisses-bois-export"));
 
-assert.equal(BLOG_TOOLS.length, 98);
-assert.equal(BLOG_POSTS.length, 108);
-assert.equal(outilsHubIntro(), "Quatre-vingt-dix-huit outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(98), outilsHubIntro());
+assert.equal(BLOG_TOOLS.length, 99);
+assert.equal(BLOG_POSTS.length, 109);
+assert.equal(outilsHubIntro(), "Quatre-vingt-dix-neuf outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(99), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
 function faqQuestionCount(body: string) {
