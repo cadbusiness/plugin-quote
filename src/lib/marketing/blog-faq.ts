@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "reduction-prix-execution-imparfaite-article-1223-devis-b2b": [
+    {
+      q: "Mon client peut-il réduire ma facture sans mon accord ?",
+      a: "Oui, à certaines conditions, et pour la partie qu'il n'a pas encore payée. L'article 1223 du code civil lui permet, en cas d'exécution imparfaite et après vous avoir mis en demeure de bien exécuter, de vous notifier dans les meilleurs délais sa décision de réduire le prix de manière proportionnelle. Il le fait à ses risques : si la réduction se révèle injustifiée ou excessive, il peut devoir des dommages et intérêts. S'il a déjà tout payé, il ne peut pas se rembourser seul : il lui faut votre accord ou une décision du juge.",
+    },
+    {
+      q: "Le client doit-il me mettre en demeure avant de réduire le prix ?",
+      a: "Oui. L'article 1223 exige une mise en demeure préalable : le client doit vous avoir demandé clairement de corriger le défaut, en principe par écrit et avec un délai. Un client qui retient une partie du prix sans vous avoir laissé l'occasion de reprendre n'est pas dans les conditions du texte. Le rapport au Président de la République réserve seulement le cas de l'urgence admis par la jurisprudence.",
+    },
+    {
+      q: "Comment calculer une réduction « proportionnelle » ?",
+      a: "Le code ne donne pas de formule. Pour un lot de pièces, la méthode la plus simple à défendre est : prix total × part des éléments touchés × perte de valeur de ces éléments. Avec 36 pièces touchées sur 400 et une perte de valeur de 40 %, la réduction d'une commande de 7 400 € HT est de 266,40 € HT. Pour un service, on retient souvent la part du prix de ce qui n'a pas été fourni. Dans tous les cas, gardez le calcul et les pièces qui justifient chaque chiffre.",
+    },
+    {
+      q: "Que se passe-t-il si j'ai déjà été payé en entier ?",
+      a: "Le client ne peut plus réduire seul. Il peut vous demander un remboursement partiel ; si vous n'êtes pas d'accord, il doit saisir le juge, qui fixera la réduction. Depuis l'arrêt de la Cour de cassation du 18 décembre 2024 (n° 24-14.750), on sait aussi que le client qui n'a pas payé peut, lui aussi, choisir de demander la réduction au juge plutôt que de la décider seul.",
+    },
+    {
+      q: "Dois-je répondre par écrit à une réduction annoncée ?",
+      a: "Oui, dans les deux cas. Si vous l'acceptez, l'article 1223 exige que votre acceptation soit rédigée par écrit. Si vous la refusez, en tout ou en partie, un refus écrit et chiffré évite que votre silence soit présenté comme un accord et prépare la discussion. Répondez vite, en proposant un constat contradictoire si le défaut est discuté.",
+    },
+    {
+      q: "L'article 1223 s'applique-t-il à mon contrat signé en 2015 ?",
+      a: "Non. Les contrats conclus avant le 1er octobre 2016 restent soumis à l'ancien droit, comme l'a rappelé la Cour de cassation le 17 octobre 2024 (n° 23-10.288). Pour les contrats conclus entre le 1er octobre 2016 et le 30 septembre 2018, c'est la première rédaction de l'article 1223 qui s'applique. Le texte actuel vaut pour les contrats conclus à partir du 1er octobre 2018.",
+    },
+    {
+      q: "Puis-je exclure la réduction du prix dans mes conditions générales ?",
+      a: "L'article 1223 ne se dit pas d'ordre public, et les commentateurs admettent en général qu'on l'aménage. Mais une clause qui supprimerait tout recours en cas de défaut pourrait être réputée non écrite si elle prive de sa substance votre obligation essentielle (article 1170), ou, dans un contrat d'adhésion, si elle crée un déséquilibre significatif (article 1171). Il est plus sûr d'organiser la procédure : délai de signalement, constat contradictoire, droit de reprise prioritaire, méthode de calcul.",
+    },
+    {
+      q: "Le client peut-il refuser ma proposition de reprise et demander quand même une réduction ?",
+      a: "Souvent, oui. La réduction du prix est un remède au choix du client, et il peut avoir de bonnes raisons de garder la prestation (un montage qui commence, un délai qu'il ne peut pas tenir). Votre proposition de reprise compte toutefois : elle montre votre bonne foi, et le fait que le client ait choisi de garder et d'utiliser les éléments pèse sur la perte de valeur. Une clause de devis qui vous donne un droit de reprise prioritaire, dans un délai précis, change l'équilibre.",
+    },
+    {
+      q: "Une réduction du prix s'ajoute-t-elle aux pénalités de retard ?",
+      a: "Pas pour le même dommage. L'article 1217 permet de cumuler les sanctions qui ne sont pas incompatibles, et les pénalités de retard réparent le retard, la réduction du prix compense un défaut. Elles peuvent donc coexister si le client subit à la fois un retard et un défaut. En revanche, il ne peut pas obtenir deux fois la réparation du même écart, par exemple une réduction du prix et des dommages et intérêts pour le même défaut d'aspect.",
+    },
+    {
+      q: "Comment enregistrer la réduction dans ma comptabilité ?",
+      a: "Par un avoir, c'est-à-dire une facture rectificative qui renvoie à la facture d'origine et réduit le montant hors taxes et la TVA correspondante. Émettez-le pour le montant que vous avez accepté par écrit, pas pour le montant annoncé par le client si vous le contestez. Les mentions et la régularisation de TVA sont à valider avec votre expert-comptable.",
+    },
+  ],
   "matiere-fournie-par-le-client-rebut-perte-responsabilite-devis-b2b": [
     {
       q: "Qui supporte le rebut quand le client fournit la matière ?",

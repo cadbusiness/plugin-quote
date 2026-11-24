@@ -1313,6 +1313,24 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.7,
     lastModified: "2026-11-23",
   },
+  {
+    path: "/blog/reduction-prix-execution-imparfaite-article-1223-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-11-24",
+  },
+  {
+    path: "/secteurs/funnel-devis-elagage-abattage-arbres",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-11-24",
+  },
+  {
+    path: "/outils/calculateur-reduction-prix-execution-imparfaite",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-11-24",
+  },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },
 ];

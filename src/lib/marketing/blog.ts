@@ -173,6 +173,7 @@ export const BLOG_TOOL_AGENT_COMMERCIAL = "/outils/calculateur-preavis-commissio
 export const BLOG_TOOL_STOCKAGE = "/outils/calculateur-frais-stockage-commande-non-retiree";
 export const BLOG_TOOL_MARQUAGE_CE = "/outils/verificateur-marquage-ce-declaration-performances";
 export const BLOG_TOOL_MATIERE_FOURNIE = "/outils/calculateur-matiere-fournie-rebut-responsabilite";
+export const BLOG_TOOL_REDUCTION_PRIX = "/outils/calculateur-reduction-prix-execution-imparfaite";
 
 export type BlogTool = {
   href: string;
@@ -256,6 +257,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     96: "Quatre-vingt-seize",
     97: "Quatre-vingt-dix-sept",
     98: "Quatre-vingt-dix-huit",
+    99: "Quatre-vingt-dix-neuf",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -850,9 +852,27 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Le client fournit la matière : quantité à demander avec chute et rebut toléré, qui supporte le rebut, plafond et assurance, la clause et le courrier.",
     tags: ["catalogue","relances"],
   },
+  {
+    href: BLOG_TOOL_REDUCTION_PRIX,
+    title: "Calculateur de réduction du prix pour exécution imparfaite",
+    text: "Le client baisse la facture pour un défaut : réduction proportionnelle, écart avec sa demande, reste à payer, coût d'une reprise, dix points de l'article 1223, la clause et le courrier.",
+    tags: ["catalogue","relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "reduction-prix-execution-imparfaite-article-1223-devis-b2b",
+    path: "/blog/reduction-prix-execution-imparfaite-article-1223-devis-b2b",
+    title: "Réduction du prix pour exécution imparfaite (article 1223) : quand le client baisse la facture, comment la chiffrer et quoi écrire dans le devis B2B",
+    description: "Votre client trouve un défaut et annonce qu'il paiera moins. Ce que permet l'article 1223 du code civil (mise en demeure, notification dans les meilleurs délais, réduction proportionnelle, acceptation écrite), ce qui a changé en 2018, l'arrêt du 18 décembre 2024 sur la saisine du juge, la façon de calculer une réduction proportionnelle, la différence avec la reprise, la pénalité et la retenue, la clause à écrire dans le devis, un exemple daté et chiffré et un calculateur gratuit.",
+    publishedAt: "2026-11-24",
+    readingMinutes: 38,
+    tags: ["catalogue","relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisListe,
+    pinned: false,
+  },
   {
     slug: "matiere-fournie-par-le-client-rebut-perte-responsabilite-devis-b2b",
     path: "/blog/matiere-fournie-par-le-client-rebut-perte-responsabilite-devis-b2b",
