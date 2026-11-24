@@ -301,6 +301,8 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Calculateur de matière fournie par le client : besoin, rebut toléré et responsabilité : https://www.quotebuilder.co/outils/calculateur-matiere-fournie-rebut-responsabilite
 - Réduction du prix pour exécution imparfaite (article 1223) : quand le client baisse la facture, comment la chiffrer et quoi écrire dans le devis B2B : https://www.quotebuilder.co/blog/reduction-prix-execution-imparfaite-article-1223-devis-b2b
 - Calculateur de réduction du prix pour exécution imparfaite (article 1223) : https://www.quotebuilder.co/outils/calculateur-reduction-prix-execution-imparfaite
+- Devoir de conseil envers un client professionnel : besoin, mise en garde et preuve dans le devis B2B : https://www.quotebuilder.co/blog/devoir-conseil-information-client-professionnel-devis-b2b
+- Vérificateur de devoir de conseil envers un client professionnel : https://www.quotebuilder.co/outils/verificateur-devoir-conseil-client-professionnel
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 

@@ -174,6 +174,7 @@ export const BLOG_TOOL_STOCKAGE = "/outils/calculateur-frais-stockage-commande-n
 export const BLOG_TOOL_MARQUAGE_CE = "/outils/verificateur-marquage-ce-declaration-performances";
 export const BLOG_TOOL_MATIERE_FOURNIE = "/outils/calculateur-matiere-fournie-rebut-responsabilite";
 export const BLOG_TOOL_REDUCTION_PRIX = "/outils/calculateur-reduction-prix-execution-imparfaite";
+export const BLOG_TOOL_DEVOIR_CONSEIL = "/outils/verificateur-devoir-conseil-client-professionnel";
 
 export type BlogTool = {
   href: string;
@@ -258,6 +259,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     97: "Quatre-vingt-dix-sept",
     98: "Quatre-vingt-dix-huit",
     99: "Quatre-vingt-dix-neuf",
+    100: "Cent",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -858,9 +860,27 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Le client baisse la facture pour un défaut : réduction proportionnelle, écart avec sa demande, reste à payer, coût d'une reprise, dix points de l'article 1223, la clause et le courrier.",
     tags: ["catalogue","relances"],
   },
+  {
+    href: BLOG_TOOL_DEVOIR_CONSEIL,
+    title: "Vérificateur de devoir de conseil envers un client professionnel",
+    text: "Matériel inadapté à l'usage du client : le conseil est-il dû, qui doit prouver quoi, dix points, la part discutable d'une remise à niveau, la mention de devis et le courrier.",
+    tags: ["catalogue","relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "devoir-conseil-information-client-professionnel-devis-b2b",
+    path: "/blog/devoir-conseil-information-client-professionnel-devis-b2b",
+    title: "Devoir de conseil envers un client professionnel : besoin, mise en garde et preuve dans le devis B2B",
+    description: "Vous vendez, installez ou fabriquez pour une entreprise : quand devez-vous la conseiller sur l'adaptation du matériel à son usage, quand la compétence du client vous en dispense (arrêt du 8 juillet 2026, publié), qui doit prouver quoi, ce que coûte vraiment un manquement, les clauses qui ne protègent pas, les questions à poser avant de chiffrer, la mention du devis, un exemple daté et chiffré et un vérificateur gratuit.",
+    publishedAt: "2026-11-24",
+    readingMinutes: 38,
+    tags: ["catalogue","relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisListe,
+    pinned: false,
+  },
   {
     slug: "reduction-prix-execution-imparfaite-article-1223-devis-b2b",
     path: "/blog/reduction-prix-execution-imparfaite-article-1223-devis-b2b",
