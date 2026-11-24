@@ -108,6 +108,8 @@ const CONTENT_LASTMOD: Record<string, string> = {
   "/blog/reduction-prix-execution-imparfaite-article-1223-devis-b2b": "2026-11-24",
   "/secteurs/funnel-devis-elagage-abattage-arbres": "2026-11-24",
   "/outils/calculateur-reduction-prix-execution-imparfaite": "2026-11-24",
+  "/blog/devoir-conseil-information-client-professionnel-devis-b2b": "2026-11-24",
+  "/outils/verificateur-devoir-conseil-client-professionnel": "2026-11-24",
   "/blog/prix-vente-coefficient-debourse-sec-devis-b2b": "2026-10-26",
   "/outils/calculateur-coefficient-vente-devis": "2026-10-26",
   "/blog/reconduction-tacite-preavis-resiliation-devis-b2b": "2026-10-26",

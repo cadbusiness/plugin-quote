@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "devoir-conseil-information-client-professionnel-devis-b2b": [
+    {
+      q: "Dois-je conseiller un client qui est lui-même un professionnel ?",
+      a: "Oui, s'il n'a pas la compétence technique pour juger du matériel que vous lui vendez. La Cour de cassation juge que le devoir de conseil sur l'adaptation du matériel à l'usage n'existe envers un acheteur professionnel que dans la mesure où sa compétence ne lui permet pas d'apprécier la portée exacte des caractéristiques techniques. Un négociant, un logisticien ou une agence n'est pas compétent en rayonnage parce qu'il est professionnel. À l'inverse, un client compétent n'a pas droit à ce conseil.",
+    },
+    {
+      q: "Le client doit-il exercer le même métier que moi pour que je sois dispensé ?",
+      a: "Non. L'arrêt de la chambre commerciale du 8 juillet 2026 (n° 25-11.256, publié au Bulletin) l'a dit expressément : le juge n'a pas à rechercher si la spécialité de l'acheteur est identique ou différente de celle du vendeur. Un exploitant de carrière depuis quatorze ans, déjà propriétaire d'une pelle hydraulique, était assez compétent pour apprécier la pelle qu'il achetait. Seule compte la compétence réelle sur le matériel en cause.",
+    },
+    {
+      q: "Qui doit prouver que le conseil a été donné ?",
+      a: "Quand le devoir de conseil existe, c'est le fournisseur : il doit prouver qu'il s'est renseigné sur les besoins du client et l'a informé de l'adéquation du matériel à l'usage prévu (Cass. 1re civ., 28 octobre 2010, n° 09-16.913). Pour l'information précontractuelle de l'article 1112-1, le client prouve d'abord que l'information lui était due, puis le fournisseur prouve qu'il l'a fournie. Entre commerçants, la preuve est libre : e-mails, formulaires, comptes rendus comptent.",
+    },
+    {
+      q: "Une clause « le client renonce à tout conseil » me protège-t-elle ?",
+      a: "Pas pour l'information déterminante : l'article 1112-1 interdit de limiter ou d'exclure ce devoir. Si le conseil est au cœur de votre prestation, une clause qui l'exclut peut aussi priver de sa substance votre obligation essentielle et être réputée non écrite (article 1170). Mieux vaut une mention qui récapitule l'usage décrit par le client, les limites d'emploi et les préalables : elle ne limite rien et vous aide à prouver ce qui a été dit.",
+    },
+    {
+      q: "Le client n'a rien dit de l'usage. Est-ce ma faute ?",
+      a: "Cela dépend de sa compétence. Face à un client compétent qui n'a remis ni cahier des charges ni indication sur la destination du matériel, le vendeur a été mis hors de cause (Cass. com., 14 janvier 2014, n° 12-26.109). Face à un client sans compétence technique, c'est à vous de poser la question : son silence ne vous dispense pas de vous renseigner. Une question écrite avant le devis règle le problème.",
+    },
+    {
+      q: "Le client a choisi lui-même une tranche de charge dans mon formulaire. Suis-je couvert ?",
+      a: "En partie. Sa réponse écrite prouve que vous avez posé une question et qu'il a répondu, ce qui compte. Mais une tranche (« Moyenne », de 250 à 800 kg) ne donne pas la valeur exacte, et si le client vous a ensuite signalé autre chose (« c'est lourd »), il fallait creuser. Quand une valeur décide du dimensionnement, demandez la valeur maximale et reprenez-la dans le devis comme une limite.",
+    },
+    {
+      q: "Le client me réclame tout le coût de la remise à niveau. Que dois-je payer ?",
+      a: "Au plus, le préjudice causé par le manquement. La Cour de cassation a jugé que le coût que le client aurait dû engager de toute façon pour la bonne solution n'a pas de lien de causalité avec le défaut de conseil (Cass. com., 11 mars 2020, n° 19-11.742). Retirez donc de la réclamation ce que la bonne solution aurait coûté au départ ; ce qui reste (dépose, repose, matériel inutile) peut se discuter. Le vérificateur fait ce calcul.",
+    },
+    {
+      q: "Que change le fait que le client ait un bureau d'études ?",
+      a: "Le client qui conçoit l'installation, avec des personnes qualifiées, doit expliciter ses besoins pour que vous puissiez le conseiller utilement (Cass. com., 21 janvier 2026, n° 24-13.471). Votre rôle est alors de répondre précisément à sa spécification et de signaler par écrit ce que vous voyez d'inadapté. Dans cette affaire, un courriel du fabricant indiquant quel modèle convenait aux métros a compté.",
+    },
+    {
+      q: "Dois-je prévenir le client des travaux à prévoir chez lui ?",
+      a: "Oui, et avec les données : puissance, intensité, charge au sol, cotes, accès. Écrire seulement « alimentation à la charge du client » ne suffit pas toujours ; dans l'affaire de l'aspiration de 2020, l'offre donnait la puissance et le débat a quand même porté sur l'alerte, avant que la Cour ne renvoie à la question de la compétence du client. Dites ce que les préalables impliquent chez lui et proposez une vérification.",
+    },
+    {
+      q: "QuoteBuilder peut-il m'aider à prouver que j'ai conseillé le client ?",
+      a: "Il garde des traces utiles : les réponses du funnel, datées, sur le dossier ; les fichiers envoyés par le prospect ; les messages envoyés depuis le dossier, qui partent par e-mail et restent dans le fil de l'espace prospect ; les notes internes, qui ne se modifient pas. Il ne rédige pas votre devis, son PDF récapitulatif est « Document indicatif, non contractuel. » et ne porte aucune clause, et votre équipe ne peut pas joindre de fichier au dossier.",
+    },
+  ],
   "reduction-prix-execution-imparfaite-article-1223-devis-b2b": [
     {
       q: "Mon client peut-il réduire ma facture sans mon accord ?",

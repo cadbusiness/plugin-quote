@@ -106,10 +106,10 @@ assert.ok(outilsHub.includes("calculateur de matière fournie par le client"));
 }
 assert.ok(outilsHub.includes("outilsHubIntro()"));
 
-assert.equal(BLOG_TOOLS.length, 99);
-assert.equal(BLOG_POSTS.length, 109);
-assert.equal(outilsHubIntro(), "Quatre-vingt-dix-neuf outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(99), outilsHubIntro());
+assert.equal(BLOG_TOOLS.length, 100);
+assert.equal(BLOG_POSTS.length, 110);
+assert.equal(outilsHubIntro(), "Cent outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(100), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
 function faqQuestionCount(body: string) {

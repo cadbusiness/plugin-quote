@@ -1331,6 +1331,18 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.7,
     lastModified: "2026-11-24",
   },
+  {
+    path: "/blog/devoir-conseil-information-client-professionnel-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-11-24",
+  },
+  {
+    path: "/outils/verificateur-devoir-conseil-client-professionnel",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-11-24",
+  },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },
 ];
