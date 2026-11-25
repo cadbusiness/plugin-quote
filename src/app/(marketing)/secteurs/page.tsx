@@ -67,6 +67,7 @@ const ALL_TEMPLATES = [
   { href: "/secteurs/funnel-devis-injection-plastique-moules", label: "Injection plastique et moules" },
   { href: "/secteurs/funnel-devis-vitrerie-miroiterie", label: "Vitrerie et miroiterie" },
   { href: "/secteurs/funnel-devis-elagage-abattage-arbres", label: "Élagage et abattage" },
+  { href: "/secteurs/funnel-devis-arrosage-automatique-irrigation", label: "Arrosage et irrigation" },
 ];
 
 export default function SecteursPage() {

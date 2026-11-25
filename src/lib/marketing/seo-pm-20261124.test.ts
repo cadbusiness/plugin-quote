@@ -43,7 +43,7 @@ const TOOL_TEXT =
   "Matériel inadapté à l'usage du client : le conseil est-il dû, qui doit prouver quoi, dix points, la part discutable d'une remise à niveau, la mention de devis et le courrier.";
 const PRIOR_TOOL = "/outils/calculateur-reduction-prix-execution-imparfaite";
 const PRIOR_BLOG = "/blog/reduction-prix-execution-imparfaite-article-1223-devis-b2b";
-const HUB_100 = "Cent outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.";
+const HUB_101 = "Cent un outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.";
 const HUB_99 = "Quatre-vingt-dix-neuf outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.";
 
 type Controle = { id: string; point: string; statut: string; texte: string };
@@ -135,10 +135,10 @@ assert.ok(outilsHub.includes("vérificateur de devoir de conseil envers un clien
 }
 assert.ok(outilsHub.includes("outilsHubIntro()"));
 
-assert.equal(BLOG_TOOLS.length, 100);
-assert.equal(BLOG_POSTS.length, 110);
-assert.equal(outilsHubIntro(), HUB_100);
-assert.equal(outilsHubIntro(100), outilsHubIntro());
+assert.equal(BLOG_TOOLS.length, 101);
+assert.equal(BLOG_POSTS.length, 111);
+assert.equal(outilsHubIntro(), HUB_101);
+assert.equal(outilsHubIntro(101), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 assert.equal(outilsHubIntro(99), HUB_99);
 

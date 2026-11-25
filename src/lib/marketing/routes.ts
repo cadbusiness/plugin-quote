@@ -1343,6 +1343,24 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.7,
     lastModified: "2026-11-24",
   },
+  {
+    path: "/blog/cession-contrat-changement-client-article-1216-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-11-25",
+  },
+  {
+    path: "/secteurs/funnel-devis-arrosage-automatique-irrigation",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-11-25",
+  },
+  {
+    path: "/outils/verificateur-cession-contrat-changement-client",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-11-25",
+  },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },
 ];

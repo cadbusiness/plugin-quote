@@ -175,6 +175,7 @@ export const BLOG_TOOL_MARQUAGE_CE = "/outils/verificateur-marquage-ce-declarati
 export const BLOG_TOOL_MATIERE_FOURNIE = "/outils/calculateur-matiere-fournie-rebut-responsabilite";
 export const BLOG_TOOL_REDUCTION_PRIX = "/outils/calculateur-reduction-prix-execution-imparfaite";
 export const BLOG_TOOL_DEVOIR_CONSEIL = "/outils/verificateur-devoir-conseil-client-professionnel";
+export const BLOG_TOOL_CESSION_CONTRAT = "/outils/verificateur-cession-contrat-changement-client";
 
 export type BlogTool = {
   href: string;
@@ -260,6 +261,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     98: "Quatre-vingt-dix-huit",
     99: "Quatre-vingt-dix-neuf",
     100: "Cent",
+    101: "Cent un",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -866,9 +868,27 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Matériel inadapté à l'usage du client : le conseil est-il dû, qui doit prouver quoi, dix points, la part discutable d'une remise à niveau, la mention de devis et le courrier.",
     tags: ["catalogue","relances"],
   },
+  {
+    href: BLOG_TOOL_CESSION_CONTRAT,
+    title: "Vérificateur de cession de contrat et de changement de client",
+    text: "Le client passe la commande à une autre société : votre accord, l'écrit, la libération du cédant, la répartition de l'acompte, dix points de l'article 1216, la clause et le courrier.",
+    tags: ["catalogue","relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "cession-contrat-changement-client-article-1216-devis-b2b",
+    path: "/blog/cession-contrat-changement-client-article-1216-devis-b2b",
+    title: "Cession de contrat et changement de client (article 1216) : quand votre client passe la commande à une autre société, ce qu'il faut exiger et quoi écrire dans le devis B2B",
+    description: "Votre client vous annonce qu'il a vendu son activité et que la commande continue avec une autre société. Ce que dit l'article 1216 du code civil (accord du cocontractant, écrit à peine de nullité, notification ou prise d'acte), les deux arrêts de la chambre commerciale de 2022 et 2024, la libération du cédant, le sort de l'acompte, la différence avec la fusion, la vente de fonds, la cession de parts et le plan de cession, l'avenant à faire signer, la clause à mettre dans le devis et un vérificateur gratuit.",
+    publishedAt: "2026-11-25",
+    readingMinutes: 38,
+    tags: ["catalogue","relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisListe,
+    pinned: false,
+  },
   {
     slug: "devoir-conseil-information-client-professionnel-devis-b2b",
     path: "/blog/devoir-conseil-information-client-professionnel-devis-b2b",

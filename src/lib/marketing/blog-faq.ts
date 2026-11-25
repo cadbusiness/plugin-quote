@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "cession-contrat-changement-client-article-1216-devis-b2b": [
+    {
+      q: "Mon client peut-il céder la commande à une autre société sans mon accord ?",
+      a: "Il peut signer un acte de cession avec cette société, mais cet acte ne vous sera pas opposable. D'après l'article 1216 du code civil, la cession de contrat suppose l'accord du cocontractant cédé, et la Cour de cassation a jugé le 24 avril 2024 (n° 22-15.958) que le défaut d'accord n'emporte pas la nullité de la cession, mais son inopposabilité au cédé. Vous pouvez donc continuer à traiter avec votre client d'origine. Deux exceptions : un transfert prévu par la loi (fusion, plan de cession arrêté par un tribunal) et un accord que vous avez donné par avance dans vos conditions.",
+    },
+    {
+      q: "J'ai répondu « d'accord, on continue avec B » par courriel : suis-je engagé ?",
+      a: "Probablement oui sur le principe. Selon l'arrêt du 24 avril 2024, l'accord du cédé peut être donné sans forme, pourvu qu'il soit non équivoque, et se prouve par tout moyen : un courriel suffit s'il est clair. Cela ne veut pas dire que vous avez libéré le client d'origine : l'article 1216-1 exige un consentement exprès pour cela. Si votre courriel était ambigu, écrivez sans attendre ce que vous acceptez, avec quelles conditions, et que le client d'origine reste tenu.",
+    },
+    {
+      q: "Le client d'origine est-il libéré quand j'accepte la cession ?",
+      a: "Non, pas par défaut. L'article 1216-1 prévoit que la cession libère le cédant pour l'avenir si le cédé y a expressément consenti, et qu'à défaut, et sauf clause contraire, le cédant reste tenu solidairement. Tant que vous n'avez pas écrit que vous le libérez, vous pouvez demander le paiement à l'un ou à l'autre. Même quand il est libéré, la libération vaut pour l'avenir : ce qui était déjà exécuté avant la cession se règle dans l'avenant.",
+    },
+    {
+      q: "Que devient l'acompte versé par le client d'origine ?",
+      a: "Le code ne le dit pas : c'est à l'avenant de le dire. Deux méthodes courantes : l'acompte suit le contrat et le nouveau client est crédité, ou il s'impute d'abord sur le travail déjà exécuté pour le client d'origine, le surplus étant reporté sur la suite. Dans l'exemple de cet article (48 000 € HT, acompte de 14 400 € HT, 35 % exécuté, soit 16 800 € HT), la seconde méthode laisse 2 400 € HT à la charge du client d'origine et 31 200 € HT au nouveau client. Écrivez le montant, la date et la méthode.",
+    },
+    {
+      q: "Mon client fusionne avec une autre société : puis-je refuser ?",
+      a: "Pas dans le cas d'une fusion proprement dite. L'article L236-3 du code de commerce prévoit que la fusion entraîne la dissolution sans liquidation des sociétés qui disparaissent et la transmission universelle de leur patrimoine aux sociétés bénéficiaires, dans l'état où il se trouve. Votre contrat suit. Vous pouvez en revanche exiger la preuve de l'opération (extrait d'immatriculation à jour de la société bénéficiaire) et une adresse de facturation. Un apport partiel d'actifs, lui, ne transmet que ce qui est apporté : la Cour de cassation a raisonné en 2024 sur l'article 1216 dans un cas de ce type.",
+    },
+    {
+      q: "Mon client vend ses parts à un groupe : faut-il un avenant ?",
+      a: "En principe non : la société reste la même personne morale et le même cocontractant. Il n'y a pas de cession de contrat. Ce qui peut jouer, c'est une clause de votre devis ou de vos conditions sur le changement de contrôle ou sur la personne du client. Vérifiez la solvabilité du nouveau propriétaire, mettez à jour vos informations (contacts, adresse de facturation) et gardez une trace de l'annonce dans le dossier.",
+    },
+    {
+      q: "Mes conditions de vente prévoient que le client peut céder le contrat : que se passe-t-il ?",
+      a: "L'article 1216 permet l'accord par avance. Dans ce cas, la cession produit effet à votre égard quand le contrat de cession vous est notifié ou quand vous en prenez acte. La chambre commerciale a jugé le 9 juin 2022 (n° 20-18.490) qu'un cédé qui payait le cessionnaire avait pris acte de la cession. Si votre clause est large, vous avez peut-être perdu le choix de votre débiteur. Pour la suite, limitez-la aux sociétés du même groupe, avec information préalable et solidarité du cédant, comme dans la clause proposée plus haut.",
+    },
+    {
+      q: "Le nouveau client doit-il accepter mes conditions de vente ?",
+      a: "Il devient partie au contrat tel qu'il est : le contrat cédé, avec ses conditions. Le cessionnaire ne peut pas vous opposer les exceptions personnelles au cédant, mais vous pouvez lui opposer toutes celles que vous auriez pu opposer au cédant (article 1216-2). Pour éviter les discussions, faites écrire dans l'avenant que le nouveau client reconnaît le devis, vos conditions générales, l'état d'avancement et les réserves. Si le client apporte ses propres conditions d'achat, ne les acceptez pas par silence.",
+    },
+    {
+      q: "Puis-je continuer à facturer l'ancien client si je n'ai pas donné mon accord ?",
+      a: "Oui. Sans accord, la cession ne vous est pas opposable et votre cocontractant reste le client d'origine : vous lui facturez et vous lui réclamez le paiement. Ne facturez pas le nouveau client à la demande de l'ancien tant que rien n'est signé : une facture à son nom peut se lire comme une acceptation. Si la livraison à l'adresse du nouveau client pose problème, demandez une confirmation écrite de l'adresse et de la personne qui réceptionne.",
+    },
+    {
+      q: "L'article 1216 s'applique-t-il à un contrat conclu en 2015 ?",
+      a: "Non. Les articles 1216 à 1216-3 viennent de l'ordonnance du 10 février 2016, applicable aux contrats conclus à partir du 1er octobre 2016. Pour un contrat plus ancien, c'est l'ancien droit qui s'applique, avec ses propres règles, qui assimilaient la cession de contrat aux formalités de la cession de créance. La situation d'une commande acceptée sur devis est presque toujours récente, mais un contrat-cadre ancien reconduit peut poser la question : faites attention à sa date de conclusion.",
+    },
+  ],
   "devoir-conseil-information-client-professionnel-devis-b2b": [
     {
       q: "Dois-je conseiller un client qui est lui-même un professionnel ?",
