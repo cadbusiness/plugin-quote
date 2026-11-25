@@ -102,13 +102,13 @@ assert.ok(outilsHub.includes(TOOL_TEXT));
 }
 assert.match(outilsHub, /vérificateur de clause d'exclusivité/);
 
-assert.equal(BLOG_TOOLS.length, 100);
-assert.equal(BLOG_POSTS.length, 110);
-assert.equal(outilsHubIntro(), "Cent outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(100), outilsHubIntro());
+assert.equal(BLOG_TOOLS.length, 101);
+assert.equal(BLOG_POSTS.length, 111);
+assert.equal(outilsHubIntro(), "Cent un outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(101), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 62);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "relances" }).length, 63);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 63);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "relances" }).length, 64);
 
 function faqQuestionCount(body: string) {
   const marker = "\n## FAQ\n";
