@@ -155,10 +155,10 @@ assert.ok(secteursHub.includes(SECTOR_PATH));
 assert.ok(secteursHub.includes("Élagage et abattage"));
 assert.ok(secteursHub.indexOf(SECTOR_PATH) > secteursHub.indexOf(PRIOR_SECTOR));
 
-assert.equal(BLOG_TOOLS.length, 101);
-assert.equal(BLOG_POSTS.length, 111);
-assert.equal(outilsHubIntro(), "Cent un outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(101), outilsHubIntro());
+assert.equal(BLOG_TOOLS.length, 102);
+assert.equal(BLOG_POSTS.length, 112);
+assert.equal(outilsHubIntro(), "Cent deux outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(102), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 
 function faqQuestionCount(body: string) {

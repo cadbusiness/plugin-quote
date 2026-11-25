@@ -46,7 +46,7 @@ const TOOL_TEXT =
   "Le client passe la commande à une autre société : votre accord, l'écrit, la libération du cédant, la répartition de l'acompte, dix points de l'article 1216, la clause et le courrier.";
 const PRIOR_TOOL = "/outils/verificateur-devoir-conseil-client-professionnel";
 const PRIOR_SECTOR = "/secteurs/funnel-devis-elagage-abattage-arbres";
-const HUB_101 = "Cent un outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.";
+const HUB_101 = "Cent deux outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.";
 const HUB_100 = "Cent outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.";
 
 type Controle = { id: string; point: string; statut: string; texte: string };
@@ -151,10 +151,10 @@ assert.ok(secteursHub.includes(SECTOR_PATH));
 assert.ok(secteursHub.includes("Arrosage et irrigation"));
 assert.ok(secteursHub.indexOf(SECTOR_PATH) > secteursHub.indexOf(PRIOR_SECTOR));
 
-assert.equal(BLOG_TOOLS.length, 101);
-assert.equal(BLOG_POSTS.length, 111);
+assert.equal(BLOG_TOOLS.length, 102);
+assert.equal(BLOG_POSTS.length, 112);
 assert.equal(outilsHubIntro(), HUB_101);
-assert.equal(outilsHubIntro(101), outilsHubIntro());
+assert.equal(outilsHubIntro(102), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
 assert.equal(outilsHubIntro(100), HUB_100);
 

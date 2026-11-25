@@ -163,13 +163,13 @@ assert.ok(outilsHub.includes("calculateur de frais de stockage d'une commande no
 }
 assert.ok(outilsHub.includes("outilsHubIntro()"));
 
-assert.equal(BLOG_TOOLS.length, 101);
-assert.equal(BLOG_POSTS.length, 111);
-assert.equal(outilsHubIntro(), "Cent un outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(101), outilsHubIntro());
+assert.equal(BLOG_TOOLS.length, 102);
+assert.equal(BLOG_POSTS.length, 112);
+assert.equal(outilsHubIntro(), "Cent deux outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(102), outilsHubIntro());
 assert.equal(outilsHubIntro(BLOG_TOOLS.length), outilsHubIntro());
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 63);
-assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "relances" }).length, 64);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "catalogue" }).length, 64);
+assert.equal(filterBlogPosts(BLOG_POSTS, { tag: "relances" }).length, 65);
 
 function faqQuestionCount(body: string) {
   const marker = "\n## FAQ\n";

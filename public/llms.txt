@@ -306,6 +306,8 @@ QuoteBuilder est le vertical « commerce agent » B2B sur devis : Claude sert de
 - Vérificateur de devoir de conseil envers un client professionnel : https://www.quotebuilder.co/outils/verificateur-devoir-conseil-client-professionnel
 - Cession de contrat et changement de client (article 1216) : quand votre client passe la commande à une autre société, ce qu'il faut exiger et quoi écrire dans le devis B2B : https://www.quotebuilder.co/blog/cession-contrat-changement-client-article-1216-devis-b2b
 - Vérificateur de cession de contrat et de changement de client (article 1216) : https://www.quotebuilder.co/outils/verificateur-cession-contrat-changement-client
+- Condition suspensive dans un devis B2B : commande sous réserve de financement, de marché ou d'autorisation, ce qu'il faut écrire et ce qui se passe si elle échoue : https://www.quotebuilder.co/blog/condition-suspensive-commande-financement-devis-b2b
+- Vérificateur de condition suspensive dans un devis B2B : https://www.quotebuilder.co/outils/verificateur-condition-suspensive-devis
 - Conditions d’utilisation : https://www.quotebuilder.co/legal/cgu
 - Politique de confidentialité : https://www.quotebuilder.co/legal/confidentialite
 
