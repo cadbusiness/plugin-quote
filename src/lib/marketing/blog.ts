@@ -176,6 +176,7 @@ export const BLOG_TOOL_MATIERE_FOURNIE = "/outils/calculateur-matiere-fournie-re
 export const BLOG_TOOL_REDUCTION_PRIX = "/outils/calculateur-reduction-prix-execution-imparfaite";
 export const BLOG_TOOL_DEVOIR_CONSEIL = "/outils/verificateur-devoir-conseil-client-professionnel";
 export const BLOG_TOOL_CESSION_CONTRAT = "/outils/verificateur-cession-contrat-changement-client";
+export const BLOG_TOOL_CONDITION_SUSPENSIVE = "/outils/verificateur-condition-suspensive-devis";
 
 export type BlogTool = {
   href: string;
@@ -262,6 +263,7 @@ export function outilsHubIntro(count = BLOG_TOOLS.length): string {
     99: "Quatre-vingt-dix-neuf",
     100: "Cent",
     101: "Cent un",
+    102: "Cent deux",
   };
   const label = words[count] ?? String(count);
   return `${label} outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.`;
@@ -874,9 +876,27 @@ export const BLOG_TOOLS: readonly BlogTool[] = [
     text: "Le client passe la commande à une autre société : votre accord, l'écrit, la libération du cédant, la répartition de l'acompte, dix points de l'article 1216, la clause et le courrier.",
     tags: ["catalogue","relances"],
   },
+  {
+    href: BLOG_TOOL_CONDITION_SUSPENSIVE,
+    title: "Vérificateur de condition suspensive dans un devis B2B",
+    text: "Commande sous réserve de financement, de marché ou d'autorisation : dix points, où en est la commande, le sort de l'acompte et du matériel engagé, la clause et le courrier.",
+    tags: ["catalogue","relances"],
+  },
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "condition-suspensive-commande-financement-devis-b2b",
+    path: "/blog/condition-suspensive-commande-financement-devis-b2b",
+    title: "Condition suspensive dans un devis B2B : commande sous réserve de financement, de marché ou d'autorisation, ce qu'il faut écrire et ce qui se passe si elle échoue",
+    description: "Votre client signe « bon pour accord sous réserve de financement » ou fait dépendre sa commande d'un marché, d'une autorisation ou de l'accord de sa direction. Ce que disent les articles 1304 à 1304-7 du code civil, la réserve ajoutée à la signature (article 1118), la condition potestative, l'arrêt publié du 24 septembre 2026 sur la condition réputée accomplie, la renonciation, le sort de l'acompte et du matériel commandé, la clause à écrire, un exemple daté et chiffré et un vérificateur gratuit.",
+    publishedAt: "2026-11-25",
+    readingMinutes: 42,
+    tags: ["catalogue","relances"],
+    ctaHref: "https://www.quotebuilder.co/signup?plan=free",
+    cover: BLOG_DEMO_SHOTS.devisListe,
+    pinned: false,
+  },
   {
     slug: "cession-contrat-changement-client-article-1216-devis-b2b",
     path: "/blog/cession-contrat-changement-client-article-1216-devis-b2b",

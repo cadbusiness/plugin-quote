@@ -113,6 +113,8 @@ const CONTENT_LASTMOD: Record<string, string> = {
   "/blog/cession-contrat-changement-client-article-1216-devis-b2b": "2026-11-25",
   "/secteurs/funnel-devis-arrosage-automatique-irrigation": "2026-11-25",
   "/outils/verificateur-cession-contrat-changement-client": "2026-11-25",
+  "/blog/condition-suspensive-commande-financement-devis-b2b": "2026-11-25",
+  "/outils/verificateur-condition-suspensive-devis": "2026-11-25",
   "/blog/prix-vente-coefficient-debourse-sec-devis-b2b": "2026-10-26",
   "/outils/calculateur-coefficient-vente-devis": "2026-10-26",
   "/blog/reconduction-tacite-preavis-resiliation-devis-b2b": "2026-10-26",

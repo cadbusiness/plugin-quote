@@ -1361,6 +1361,18 @@ export const MARKETING_ROUTES: MarketingRoute[] = [
     priority: 0.7,
     lastModified: "2026-11-25",
   },
+  {
+    path: "/blog/condition-suspensive-commande-financement-devis-b2b",
+    changeFrequency: "monthly",
+    priority: 0.8,
+    lastModified: "2026-11-25",
+  },
+  {
+    path: "/outils/verificateur-condition-suspensive-devis",
+    changeFrequency: "monthly",
+    priority: 0.7,
+    lastModified: "2026-11-25",
+  },
   { path: "/legal/cgu", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/confidentialite", changeFrequency: "yearly", priority: 0.3 },
 ];

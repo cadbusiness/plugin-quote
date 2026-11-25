@@ -68,10 +68,10 @@ const secteursHub = readFileSync(join(process.cwd(), "src/app/(marketing)/secteu
 assert.ok(secteursHub.includes("/secteurs/funnel-devis-palettes-caisses-bois-export"));
 assert.ok(secteursHub.includes("Palettes et caisses bois"));
 
-assert.equal(BLOG_TOOLS.length, 101);
-assert.equal(BLOG_POSTS.length, 111);
-assert.equal(outilsHubIntro(), "Cent un outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
-assert.equal(outilsHubIntro(101), outilsHubIntro());
+assert.equal(BLOG_TOOLS.length, 102);
+assert.equal(BLOG_POSTS.length, 112);
+assert.equal(outilsHubIntro(), "Cent deux outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
+assert.equal(outilsHubIntro(102), outilsHubIntro());
 assert.equal(outilsHubIntro(71), "Soixante-et-onze outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
 assert.equal(outilsHubIntro(80), "Quatre-vingts outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");
 assert.equal(outilsHubIntro(61), "Soixante-et-un outils publics. Le logiciel, ensuite, envoie vraiment les e-mails.");

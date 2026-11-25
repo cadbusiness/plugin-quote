@@ -1,6 +1,48 @@
 import type { FaqItem } from "@/components/marketing/marketing-faq";
 
 export const BLOG_FAQ: Record<string, FaqItem[]> = {
+  "condition-suspensive-commande-financement-devis-b2b": [
+    {
+      q: "Qu'est-ce qu'une commande sous condition suspensive ?",
+      a: "C'est une commande qui ne devient ferme que si un événement futur et incertain se produit : un prêt accordé, un marché attribué au client, une autorisation obtenue. Tant que l'événement n'est pas arrivé, ni vous ni le client n'êtes tenus d'exécuter. S'il arrive, la commande devient ferme ; s'il n'arrive pas, elle est réputée n'avoir jamais existé (articles 1304 et 1304-6 du code civil).",
+    },
+    {
+      q: "Mon client a écrit « bon pour accord sous réserve de financement » en signant. La commande est-elle passée ?",
+      a: "Pas encore. Une acceptation qui ajoute une réserve absente de votre devis n'est pas une acceptation : c'est une offre nouvelle du client (article 1118). Il n'y a contrat que si vous l'acceptez, et votre silence ne vaut pas acceptation (article 1120). Répondez par écrit : soit vous refusez la réserve, soit vous proposez une clause complète, avec montant, démarches, date limite et sort de l'acompte.",
+    },
+    {
+      q: "Puis-je écrire « sous réserve de validation par nos services » ?",
+      a: "C'est risqué. Une condition qui dépend de la seule volonté de celui qui s'oblige est nulle (article 1304-2). Remplacez-la par un critère objectif que l'on peut vérifier : le résultat d'une visite technique datée (épaisseur de dalle, puissance disponible), un accord écrit d'un tiers identifié. La Cour de cassation demande de dire de quel acte de volonté ou de quelle circonstance dépend la condition (Cass. com., 25 juin 2025, n° 22-17.090).",
+    },
+    {
+      q: "Que se passe-t-il si la condition n'a pas de date limite ?",
+      a: "Le code ne fixe aucun délai. La commande reste en suspens, vous ne pouvez rien planifier et le client peut revenir des mois plus tard. Écrivez toujours une date limite et ce qui se passe à cette date : « à défaut de réalisation le [date], la commande est réputée n'avoir jamais existé ». Une date se proroge par écrit, avant son expiration.",
+    },
+    {
+      q: "Le client n'a jamais demandé son prêt. Puis-je l'obliger à payer ?",
+      a: "Si vous prouvez qu'il a empêché la réalisation de la condition, elle est réputée accomplie contre lui (article 1304-3), et la commande est ferme. La Cour de cassation a précisé le 24 septembre 2026, dans un arrêt publié (n° 24-16.732), que cette sanction vise le débiteur obligé sous la condition qui en a empêché l'accomplissement. Vous pouvez alors demander l'exécution, ou la résolution et la réparation de votre perte. Tout repose sur la preuve : une clause qui oblige le client à vous transmettre la preuve de sa demande vous la facilite.",
+    },
+    {
+      q: "Et si c'est moi qui ai fait échouer le financement ?",
+      a: "Par exemple en n'envoyant pas à la banque ou au bailleur la facture pro forma qu'ils demandaient. La condition n'est pas réputée accomplie contre le client : la commande n'existe pas, et le client peut vous demander réparation du préjudice causé (même arrêt du 24 septembre 2026). Quand un client finance par un tiers, demandez tout de suite la liste des pièces attendues et envoyez-les vite.",
+    },
+    {
+      q: "Le client peut-il renoncer à la condition et commander quand même ?",
+      a: "Oui, si la condition est stipulée dans son intérêt exclusif et s'il le fait avant qu'elle soit réalisée ou ait défailli (article 1304-4). Demandez une renonciation écrite et claire : son silence pendant le délai ne vaut pas renonciation (Cass. 3e civ., 24 septembre 2026, n° 24-16.361). Après la date limite, il ne peut plus renoncer : il faut un nouvel accord.",
+    },
+    {
+      q: "Dois-je rendre l'acompte si la condition échoue ?",
+      a: "Oui, si elle a vraiment défailli : la commande est réputée n'avoir jamais existé et ce qui a été versé se rend (article 1304-6 ; Cass. com., 18 juin 2025, n° 23-14.050). Même avant l'échec, le client peut réclamer ce qu'il a payé tant que la condition n'est pas réalisée (article 1304-5). Seul un travail facturé par une convention distincte, comme une étude acceptée à part, justifie de garder une somme. Si la condition est réputée accomplie par la faute du client, l'acompte reste un acompte sur une commande ferme.",
+    },
+    {
+      q: "J'ai déjà commandé le matériel. Qui paie si la condition échoue ?",
+      a: "Vous, en principe. Tant que la condition n'est pas réalisée, la commande n'est pas ferme, et le matériel reste à vos risques (article 1304-6). C'est pourquoi la clause doit dire qu'aucune commande de matériel n'est engagée avant la réalisation, ou que ce qui doit l'être est facturé à part. Si l'échec vient du client, vos frais deviennent la base d'une demande de réparation.",
+    },
+    {
+      q: "QuoteBuilder gère-t-il les commandes sous condition ?",
+      a: "Non, pas en tant que telles. Il aide en amont : une question du funnel peut demander comment le client finance son projet et s'il attend un accord extérieur. Ensuite, le statut En attente, qui n'est pas clos, convient à une commande acceptée sous condition ; les notes internes et les messages gardent la trace des échanges ; le prospect peut déposer la lettre de sa banque depuis son espace prospect. En revanche, il n'y a ni champ pour la condition, ni rappel daté, ni signature du devis, et le PDF récapitulatif porte « Document indicatif, non contractuel. » sans clause.",
+    },
+  ],
   "cession-contrat-changement-client-article-1216-devis-b2b": [
     {
       q: "Mon client peut-il céder la commande à une autre société sans mon accord ?",
